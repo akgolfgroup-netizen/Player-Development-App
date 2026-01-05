@@ -210,7 +210,7 @@ export const CalendarMonthView: React.FC<CalendarMonthViewProps> = ({
                   key={dayInfo.dateKey}
                   className={`min-h-[100px] p-2 border-r border-ak-border-subtle last:border-r-0 cursor-pointer transition-colors ${
                     dayInfo.isToday
-                      ? 'bg-ak-brand-primary/5'
+                      ? 'bg-ak-primary/5'
                       : !dayInfo.isCurrentMonth
                       ? 'bg-ak-surface-subtle hover:bg-ak-surface-subtle/80'
                       : dayInfo.isWeekend
@@ -223,7 +223,7 @@ export const CalendarMonthView: React.FC<CalendarMonthViewProps> = ({
                   <span
                     className={`text-sm font-medium inline-flex items-center justify-center ${
                       dayInfo.isToday
-                        ? 'w-7 h-7 rounded-full bg-ak-brand-primary text-white'
+                        ? 'w-7 h-7 rounded-full bg-ak-primary text-white'
                         : !dayInfo.isCurrentMonth
                         ? 'text-ak-text-tertiary'
                         : dayInfo.isWeekend

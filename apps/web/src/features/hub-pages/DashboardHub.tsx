@@ -83,7 +83,7 @@ export default function DashboardHub({
             gap: 8,
             padding: '12px 24px',
             borderRadius: 10,
-            backgroundColor: colors.primary,
+            backgroundColor: 'var(--ak-gold, #B8860B)',
             color: '#FFFFFF',
             fontSize: 15,
             fontWeight: 600,
@@ -102,8 +102,8 @@ export default function DashboardHub({
             padding: '12px 24px',
             borderRadius: 10,
             backgroundColor: '#FFFFFF',
-            color: colors.primary,
-            border: `2px solid ${colors.primary}`,
+            color: 'var(--ak-gold, #B8860B)',
+            border: '2px solid var(--ak-gold, #B8860B)',
             fontSize: 15,
             fontWeight: 600,
             textDecoration: 'none',
@@ -166,7 +166,7 @@ export default function DashboardHub({
         />
         <NavigationCard
           title="Min utvikling"
-          description="Se din fremgang, statistikk og oppnådde badges"
+          description="Se din fremgang, statistikk og oppnådde merker"
           href="/utvikling"
           icon={<TrendingUp size={24} />}
           color={navigationColors.utvikling}

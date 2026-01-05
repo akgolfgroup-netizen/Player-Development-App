@@ -193,7 +193,7 @@ export const WorkoutContentViewer: React.FC<WorkoutContentViewerProps> = ({
                   className={`flex items-start gap-3 p-3 rounded-lg cursor-pointer transition-all border ${
                     exercise.isCompleted
                       ? 'bg-ak-status-success/10 border-ak-status-success'
-                      : 'bg-ak-surface-card border-ak-border-default hover:border-ak-brand-primary'
+                      : 'bg-ak-surface-card border-ak-border-default hover:border-ak-primary'
                   }`}
                 >
                   <div className="flex-shrink-0 mt-0.5">
@@ -235,7 +235,7 @@ export const WorkoutContentViewer: React.FC<WorkoutContentViewerProps> = ({
         <div className="p-4 border-t border-ak-border-subtle bg-ak-surface-subtle">
           <button
             onClick={onClose}
-            className="w-full p-3 rounded-lg text-base font-semibold transition-colors bg-ak-brand-primary text-white hover:bg-ak-brand-primary/90"
+            className="w-full p-3 rounded-lg text-base font-semibold transition-colors bg-ak-primary text-white hover:bg-ak-primary/90"
           >
             Lukk
           </button>

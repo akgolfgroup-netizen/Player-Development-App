@@ -129,8 +129,8 @@ export default function CoachTrainingPlan({
 
         <div className="flex items-center justify-between">
           <div className="flex items-center gap-3">
-            <div className="w-12 h-12 rounded-lg bg-ak-brand-primary/15 flex items-center justify-center">
-              <ClipboardList size={24} className="text-ak-brand-primary" />
+            <div className="w-12 h-12 rounded-lg bg-ak-primary/15 flex items-center justify-center">
+              <ClipboardList size={24} className="text-ak-primary" />
             </div>
             <div>
               <PageTitle className="m-0">
@@ -155,8 +155,8 @@ export default function CoachTrainingPlan({
         {nextSession && (
           <Card variant="accent" padding="lg" className="mb-6">
             <div className="flex items-center gap-2 mb-3">
-              <Calendar size={18} className="text-ak-brand-primary" />
-              <span className="text-[13px] text-ak-brand-primary opacity-90">
+              <Calendar size={18} className="text-ak-primary" />
+              <span className="text-[13px] text-ak-primary opacity-90">
                 Neste økt
               </span>
             </div>
@@ -204,7 +204,7 @@ export default function CoachTrainingPlan({
                     index < upcomingBlocks.length - 1 ? 'border-b border-ak-border-default' : ''
                   }`}
                 >
-                  <div className="w-14 p-2 rounded-lg bg-ak-brand-primary/15 text-ak-brand-primary text-center">
+                  <div className="w-14 p-2 rounded-lg bg-ak-primary/15 text-ak-primary text-center">
                     <div className="text-[13px] font-semibold">
                       {new Date(block.date).toLocaleDateString("nb-NO", { weekday: 'short' }).toUpperCase()}
                     </div>

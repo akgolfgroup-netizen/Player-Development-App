@@ -37,6 +37,7 @@ import {
 } from './components/session-planner';
 import StateCard from '../../ui/composites/StateCard';
 import Button from '../../ui/primitives/Button';
+import { CalendarSkeleton } from '../../ui/skeletons';
 import { RefreshCw, Info } from 'lucide-react';
 
 const CalendarPage: React.FC = () => {
@@ -220,14 +221,26 @@ const CalendarPage: React.FC = () => {
   }, [goToMonth]);
 
   // Loading state (only show when no cached data)
+  // Use CalendarSkeleton to prevent layout shift/flickering
   if (isLoading && events.length === 0) {
     return (
-      <div className="h-[calc(100vh-160px)] flex items-center justify-center bg-ak-surface-base">
-        <StateCard
-          variant="loading"
-          title="Laster kalender..."
-          description="Henter dine økter"
+      <div className="flex flex-col h-[calc(100vh-160px)] bg-ak-surface-base">
+        {/* Skeleton header */}
+        <CalendarHeader
+          view={view}
+          monthName={monthName}
+          year={year}
+          weekNumber={weekNumber}
+          onViewChange={setView}
+          onToday={handleGoToToday}
+          onPrev={goToPrev}
+          onNext={goToNext}
+          onNewSession={handleNewSession}
         />
+        {/* Skeleton content matching actual view */}
+        <div className="flex-1 overflow-hidden">
+          <CalendarSkeleton view={view === 'year' ? 'month' : view} />
+        </div>
       </div>
     );
   }

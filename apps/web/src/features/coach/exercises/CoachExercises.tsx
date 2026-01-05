@@ -48,14 +48,14 @@ function ExerciseCard({
   return (
     <div
       onClick={onClick}
-      className="p-4 bg-ak-surface-card rounded-xl border border-ak-border-default cursor-pointer hover:border-ak-brand-primary transition-colors"
+      className="p-4 bg-ak-surface-card rounded-xl border border-ak-border-default cursor-pointer hover:border-ak-primary transition-colors"
       role="button"
       tabIndex={0}
       onKeyDown={(e) => e.key === 'Enter' && onClick()}
     >
       <div className="flex items-start gap-4">
         {/* Category icon */}
-        <div className="w-12 h-12 rounded-xl bg-ak-brand-primary/10 flex items-center justify-center text-2xl shrink-0">
+        <div className="w-12 h-12 rounded-xl bg-ak-primary/10 flex items-center justify-center text-2xl shrink-0">
           {categoryConfig?.icon || '📝'}
         </div>
 
@@ -108,7 +108,7 @@ function CategoryChip({
       onClick={onClick}
       className={`px-4 py-2 rounded-full text-sm font-medium transition-colors flex items-center gap-2 ${
         active
-          ? 'bg-ak-brand-primary text-white'
+          ? 'bg-ak-primary text-white'
           : 'bg-ak-surface-subtle text-ak-text-secondary hover:bg-ak-border-default'
       }`}
     >
@@ -175,7 +175,7 @@ export default function CoachExercises() {
 
         <button
           onClick={() => navigate('/coach/exercises/create')}
-          className="flex items-center gap-2 px-4 py-2.5 bg-ak-brand-primary text-white rounded-lg font-medium hover:bg-ak-brand-primary/90 transition-colors"
+          className="flex items-center gap-2 px-4 py-2.5 bg-ak-primary text-white rounded-lg font-medium hover:bg-ak-primary/90 transition-colors"
         >
           <Plus size={18} />
           Ny øvelse
@@ -202,7 +202,7 @@ export default function CoachExercises() {
           onClick={() => setCategoryFilter('all')}
           className={`px-4 py-2 rounded-full text-sm font-medium transition-colors ${
             categoryFilter === 'all'
-              ? 'bg-ak-brand-primary text-white'
+              ? 'bg-ak-primary text-white'
               : 'bg-ak-surface-subtle text-ak-text-secondary hover:bg-ak-border-default'
           }`}
         >

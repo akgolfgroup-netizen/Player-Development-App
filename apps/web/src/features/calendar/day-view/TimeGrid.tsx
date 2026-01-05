@@ -166,7 +166,7 @@ export const TimeGrid: React.FC<TimeGridProps> = ({
                 onClick={() => onEventClick(event)}
                 className={`inline-flex items-center gap-2 px-3 py-2 rounded text-sm font-medium cursor-pointer transition-opacity border ${
                   isAK
-                    ? 'bg-ak-brand-primary/10 text-ak-brand-primary border-ak-brand-primary'
+                    ? 'bg-ak-primary/10 text-ak-primary border-ak-primary'
                     : 'bg-ak-surface-elevated text-ak-text-secondary border-ak-border-default'
                 }`}
                 role="listitem"
@@ -230,17 +230,17 @@ export const TimeGrid: React.FC<TimeGridProps> = ({
               role="presentation"
             >
               <div
-                className="w-2.5 h-2.5 rounded-full -ml-[5px] shadow-[0_0_0_2px_white] bg-ak-brand-primary"
+                className="w-2.5 h-2.5 rounded-full -ml-[5px] shadow-[0_0_0_2px_white] bg-ak-primary"
                 aria-hidden="true"
               />
-              <div className="flex-1 h-0.5 bg-ak-brand-primary" aria-hidden="true" />
+              <div className="flex-1 h-0.5 bg-ak-primary" aria-hidden="true" />
             </div>
           )}
 
           {/* Ghost slot for S2 state */}
           {recommendedSlot && (
             <div
-              className="absolute left-2 right-2 z-5 opacity-40 border-2 border-dashed border-ak-brand-primary"
+              className="absolute left-2 right-2 z-5 opacity-40 border-2 border-dashed border-ak-primary"
               style={{
                 top: `${getPositionFromTime(recommendedSlot.time)}%`,
                 height: `${getHeightFromDuration(recommendedSlot.duration)}%`,

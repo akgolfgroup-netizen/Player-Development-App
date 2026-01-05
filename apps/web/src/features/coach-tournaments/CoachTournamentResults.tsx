@@ -247,7 +247,7 @@ export default function CoachTournamentResults() {
     });
 
     const stats: PlayerStats[] = [];
-    const colors = ['rgb(var(--ak-brand-primary-rgb))', 'rgb(var(--ak-status-success-rgb))', 'rgb(var(--ak-status-warning-rgb))', 'rgb(var(--ak-status-error-rgb))', 'rgb(var(--ak-text-secondary-rgb))'];
+    const colors = ['rgb(var(--ak-primary-rgb))', 'rgb(var(--ak-status-success-rgb))', 'rgb(var(--ak-status-warning-rgb))', 'rgb(var(--ak-status-error-rgb))', 'rgb(var(--ak-text-secondary-rgb))'];
 
     playerMap.forEach((playerResults, playerId) => {
       const first = playerResults[0];
@@ -363,7 +363,7 @@ export default function CoachTournamentResults() {
   if (loading) {
     return (
       <div className="min-h-screen bg-ak-surface-subtle flex items-center justify-center">
-        <div className="w-12 h-12 border-4 border-ak-border-default border-t-ak-brand-primary rounded-full animate-spin" />
+        <div className="w-12 h-12 border-4 border-ak-border-default border-t-ak-primary rounded-full animate-spin" />
       </div>
     );
   }
@@ -381,8 +381,8 @@ export default function CoachTournamentResults() {
 
         {/* Summary stats */}
         <div className="flex gap-4 flex-wrap">
-          <div className="flex items-center gap-2 py-2 px-3.5 bg-ak-brand-primary/10 rounded-lg">
-            <Trophy size={16} className="text-ak-brand-primary" />
+          <div className="flex items-center gap-2 py-2 px-3.5 bg-ak-primary/10 rounded-lg">
+            <Trophy size={16} className="text-ak-primary" />
             <span className="text-[13px] text-ak-text-primary">
               <strong>{summary.totalTournaments}</strong> turneringer
             </span>
@@ -537,7 +537,7 @@ export default function CoachTournamentResults() {
                       {/* Player and score */}
                       <div className="flex items-center justify-between mt-4 p-3 bg-ak-surface-muted rounded-lg">
                         <div className="flex items-center gap-2.5">
-                          <div className="w-8 h-8 rounded-full bg-ak-brand-primary text-ak-surface-base flex items-center justify-center text-xs font-semibold">
+                          <div className="w-8 h-8 rounded-full bg-ak-primary text-ak-surface-base flex items-center justify-center text-xs font-semibold">
                             {result.playerInitials}
                           </div>
                           <div>
@@ -661,8 +661,8 @@ export default function CoachTournamentResults() {
                     </div>
                     <div className="text-xs text-ak-text-secondary">Top 3</div>
                   </div>
-                  <div className="p-3 bg-ak-brand-primary/10 rounded-lg text-center">
-                    <div className="text-2xl font-bold text-ak-brand-primary">
+                  <div className="p-3 bg-ak-primary/10 rounded-lg text-center">
+                    <div className="text-2xl font-bold text-ak-primary">
                       {player.topTen}
                     </div>
                     <div className="text-xs text-ak-text-secondary">Top 10</div>

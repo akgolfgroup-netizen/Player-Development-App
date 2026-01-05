@@ -18,7 +18,7 @@ const skipLinkStyles: React.CSSProperties = {
   top: '-40px',
   left: '0',
   padding: '8px 16px',
-  backgroundColor: 'var(--ak-brand-primary)',
+  backgroundColor: 'var(--ak-primary)',
   color: 'var(--ak-surface-card)',
   textDecoration: 'none',
   fontWeight: 600,

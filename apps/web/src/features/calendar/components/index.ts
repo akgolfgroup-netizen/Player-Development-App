@@ -6,3 +6,6 @@ export { CalendarYearView } from './CalendarYearView';
 export { EventDetailsPanel } from './EventDetailsPanel';
 export { CreateSessionModal } from './CreateSessionModal';
 export type { NewSession } from './CreateSessionModal';
+
+// Notion Calendar replica
+export * from './NotionCalendar';

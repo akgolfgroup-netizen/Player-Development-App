@@ -14,7 +14,44 @@ import apiClient from '../../services/apiClient';
 import {
   HomeIcon, CalendarIcon, GolfScorecard, ChartIcon, ProfileIcon
 } from '../../components/icons';
+import {
+  Zap, Ruler, Target, Crosshair, CircleDot, Flag, Waves,
+  Circle, MapPin, Dumbbell, ArrowUp, RotateCw, RefreshCw,
+  Activity, FlagTriangleRight, Brain, Timer, Trophy
+} from 'lucide-react';
 import { testDefinitions } from './config/testDefinitions';
+
+// Icon mapping for test icons
+const TestIconMap = {
+  'zap': Zap,
+  'ruler': Ruler,
+  'target': Target,
+  'crosshair': Crosshair,
+  'circle-dot': CircleDot,
+  'flag': Flag,
+  'waves': Waves,
+  'circle': Circle,
+  'map-pin': MapPin,
+  'dumbbell': Dumbbell,
+  'arrow-up': ArrowUp,
+  'rotate-cw': RotateCw,
+  'refresh-cw': RefreshCw,
+  'activity': Activity,
+  'flag-triangle-right': FlagTriangleRight,
+  'brain': Brain,
+  'timer': Timer,
+  'trophy': Trophy,
+};
+
+// Render test icon component
+const TestIcon = ({ icon, size = 20, className = '' }) => {
+  const IconComponent = TestIconMap[icon];
+  if (IconComponent) {
+    return <IconComponent size={size} className={className} />;
+  }
+  // Fallback for emojis (legacy support)
+  return <span className={className}>{icon}</span>;
+};
 
 // ===== ICONS =====
 const Icons = {
@@ -72,7 +109,7 @@ const Card = ({ children, className = '', padding = true }) => (
 const Badge = ({ children, variant = 'neutral', size = 'sm' }) => {
   const variantClasses = {
     neutral: 'bg-ak-surface-subtle text-ak-text-tertiary',
-    accent: 'bg-ak-brand-primary/10 text-ak-brand-primary',
+    accent: 'bg-ak-primary/10 text-ak-primary',
     success: 'bg-ak-status-success/10 text-ak-status-success',
     warning: 'bg-ak-status-warning/10 text-ak-status-warning',
     error: 'bg-ak-status-error/10 text-ak-status-error',
@@ -96,7 +133,7 @@ const Avatar = ({ name, size = 40 }) => {
   const initials = name?.split(' ').map(n => n[0]).join('').slice(0, 2).toUpperCase() || 'AK';
   return (
     <div
-      className="rounded-full flex items-center justify-center font-medium text-white bg-ak-brand-primary"
+      className="rounded-full flex items-center justify-center font-medium text-white bg-ak-primary"
       style={{
         width: size,
         height: size,
@@ -108,7 +145,7 @@ const Avatar = ({ name, size = 40 }) => {
   );
 };
 
-const ProgressBar = ({ value, max, color = 'var(--ak-brand-primary)' }) => {
+const ProgressBar = ({ value, max, color = 'var(--ak-primary)' }) => {
   const percentage = Math.min((value / max) * 100, 100);
   return (
     <div className="h-2 bg-ak-surface-muted rounded-full overflow-hidden">
@@ -659,7 +696,7 @@ const AKGolfTestprotokoll = ({ player: apiPlayer = null, tests: apiTests = null,
 
           <Card className="text-center">
             <p className="text-[11px] text-ak-text-secondary uppercase tracking-wide mb-1">Forbedret</p>
-            <p className="text-[32px] font-bold text-ak-brand-primary">{stats.improved}</p>
+            <p className="text-[32px] font-bold text-ak-primary">{stats.improved}</p>
             <p className="text-[12px] text-ak-text-secondary">av {stats.total} tester</p>
           </Card>
 
@@ -682,19 +719,31 @@ const AKGolfTestprotokoll = ({ player: apiPlayer = null, tests: apiTests = null,
             if (categoryTests.length === 0) return null;
 
             const categoryLabels = {
-              speed: '⚡ Hastighet',
-              distance: '📏 Avstand',
-              accuracy: '🎯 Presisjon',
-              short_game: '⛳ Kortspill',
-              putting: '🕳️ Putting',
-              physical: '💪 Fysisk',
-              scoring: '📊 Scoring',
-              mental: '🧠 Mental',
+              speed: 'Hastighet',
+              distance: 'Avstand',
+              accuracy: 'Presisjon',
+              short_game: 'Kortspill',
+              putting: 'Putting',
+              physical: 'Fysisk',
+              scoring: 'Scoring',
+              mental: 'Mental',
+            };
+
+            const categoryIcons = {
+              speed: 'zap',
+              distance: 'ruler',
+              accuracy: 'target',
+              short_game: 'flag',
+              putting: 'circle',
+              physical: 'dumbbell',
+              scoring: 'flag-triangle-right',
+              mental: 'brain',
             };
 
             return (
               <div key={category} className="mb-4">
-                <SubSectionTitle className="text-[14px] font-medium text-ak-text-secondary mb-2">
+                <SubSectionTitle className="text-[14px] font-medium text-ak-text-secondary mb-2 flex items-center gap-2">
+                  <TestIcon icon={categoryIcons[category]} size={16} className="text-ak-primary" />
                   {categoryLabels[category]}
                 </SubSectionTitle>
                 <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-3">
@@ -704,11 +753,10 @@ const AKGolfTestprotokoll = ({ player: apiPlayer = null, tests: apiTests = null,
                       to={`/testing/${test.id}`}
                       style={{ textDecoration: 'none' }}
                     >
-                      <Card className="cursor-pointer transition-all hover:shadow-md hover:border-ak-brand-primary">
+                      <Card className="cursor-pointer transition-all hover:shadow-md hover:border-ak-primary">
                         <div className="flex items-center gap-3">
-                          <div className="w-10 h-10 rounded-lg flex items-center justify-center text-lg"
-                               style={{ backgroundColor: 'rgba(0,82,147,0.08)' }}>
-                            {test.icon}
+                          <div className="w-10 h-10 rounded-lg flex items-center justify-center bg-ak-primary/10">
+                            <TestIcon icon={test.icon} size={20} className="text-ak-primary" />
                           </div>
                           <div className="flex-1 min-w-0">
                             <SubSectionTitle className="text-[14px] font-semibold text-ak-text-primary truncate">
@@ -760,14 +808,14 @@ const AKGolfTestprotokoll = ({ player: apiPlayer = null, tests: apiTests = null,
               <Card
                 key={test.id}
                 className={`cursor-pointer transition-all hover:shadow-md ${
-                  selectedTest === test.id ? 'ring-2 ring-ak-brand-primary' : ''
+                  selectedTest === test.id ? 'ring-2 ring-ak-primary' : ''
                 }`}
                 onClick={() => setSelectedTest(selectedTest === test.id ? null : test.id)}
               >
                 <div className="flex items-start justify-between mb-3">
                   <div className="flex items-center gap-3">
-                    <div className="w-10 h-10 rounded-lg bg-ak-surface-subtle flex items-center justify-center text-lg">
-                      {test.icon}
+                    <div className="w-10 h-10 rounded-lg bg-ak-primary/10 flex items-center justify-center">
+                      <TestIcon icon={test.icon} size={20} className="text-ak-primary" />
                     </div>
                     <div>
                       <SubSectionTitle className="text-[15px] font-semibold text-ak-text-primary">{test.name}</SubSectionTitle>
@@ -802,7 +850,7 @@ const AKGolfTestprotokoll = ({ player: apiPlayer = null, tests: apiTests = null,
                   </div>
                   <div className="bg-ak-surface-subtle rounded-lg p-2 text-center">
                     <p className="text-[10px] text-ak-text-secondary uppercase">Beste</p>
-                    <p className="text-[16px] font-bold text-ak-brand-primary">
+                    <p className="text-[16px] font-bold text-ak-primary">
                       {test.bestResult !== null ? `${test.bestResult}${test.unit}` : '–'}
                     </p>
                   </div>
@@ -883,7 +931,7 @@ const AKGolfTestprotokoll = ({ player: apiPlayer = null, tests: apiTests = null,
         </div>
 
         {/* Info Card */}
-        <Card className="mt-6 bg-ak-brand-primary/5 border-ak-brand-primary/20">
+        <Card className="mt-6 bg-ak-primary/5 border-ak-primary/20">
           <div className="flex items-start gap-3">
             <Icons.Info />
             <div>
@@ -912,13 +960,13 @@ const AKGolfTestprotokoll = ({ player: apiPlayer = null, tests: apiTests = null,
               key={tab.id}
               className={`flex flex-col items-center py-2 px-4 rounded-xl transition-all ${
                 tab.active
-                  ? 'text-ak-brand-primary'
+                  ? 'text-ak-primary'
                   : 'text-ak-text-secondary hover:text-ak-text-primary'
               }`}
             >
               <span className="mb-1">{tab.Icon && <tab.Icon size={20} />}</span>
               <span className={`text-[11px] font-medium ${
-                tab.active ? 'text-ak-brand-primary' : 'text-ak-text-secondary'
+                tab.active ? 'text-ak-primary' : 'text-ak-text-secondary'
               }`}>{tab.label}</span>
             </button>
           ))}

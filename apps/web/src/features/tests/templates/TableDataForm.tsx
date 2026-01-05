@@ -150,7 +150,7 @@ const CellInput: React.FC<CellInputProps> = ({ column, value, onChange, rowIndex
           paddingRight: column.unit ? '35px' : '12px',
           fontSize: '14px',
           fontWeight: 500,
-          border: `1px solid ${value ? 'var(--ak-brand-primary)' : 'var(--ak-border-default)'}`,
+          border: `1px solid ${value ? 'var(--ak-primary)' : 'var(--ak-border-default)'}`,
           borderRadius: '8px',
           backgroundColor: value ? `rgba(26, 61, 46, 0.03)` : 'var(--ak-surface-card)',
           outline: 'none',
@@ -307,7 +307,7 @@ const TableDataForm: React.FC<TableDataFormProps> = ({
         <span style={{
           fontSize: '14px',
           fontWeight: 600,
-          color: completedRows === test.attempts ? 'var(--ak-status-success)' : 'var(--ak-brand-primary)',
+          color: completedRows === test.attempts ? 'var(--ak-status-success)' : 'var(--ak-primary)',
         }}>
           {completedRows} / {test.attempts} rader
         </span>

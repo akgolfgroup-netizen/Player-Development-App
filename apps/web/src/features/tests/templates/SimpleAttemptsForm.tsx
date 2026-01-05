@@ -215,7 +215,7 @@ const SimpleAttemptsForm: React.FC<SimpleAttemptsFormProps> = ({
                     padding: '12px 40px 12px 16px',
                     fontSize: '18px',
                     fontWeight: 600,
-                    border: `2px solid ${value > 0 ? 'var(--ak-brand-primary)' : 'var(--ak-border-default)'}`,
+                    border: `2px solid ${value > 0 ? 'var(--ak-primary)' : 'var(--ak-border-default)'}`,
                     borderRadius: '10px',
                     backgroundColor: value > 0 ? `rgba(26, 61, 46, 0.05)` : 'var(--ak-surface-card)',
                     outline: 'none',

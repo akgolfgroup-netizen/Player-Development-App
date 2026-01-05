@@ -1,7 +1,8 @@
 import React from 'react';
 import { AppShell, PageHeader, CardSimple } from '../raw-blocks';
 import { Button, Text } from '../primitives';
-import { Tabs, Modal, useToast } from '../composites';
+import { Tabs, Modal } from '../composites';
+import { useToast } from '../../components/shadcn/use-toast';
 
 /**
  * SettingsTemplate

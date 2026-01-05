@@ -121,12 +121,12 @@ const ConversationCard = ({ conversation, selected, onClick }) => {
       onClick={() => onClick(conversation)}
       className={`flex items-center gap-3 py-3 px-3.5 rounded-xl cursor-pointer transition-all ${
         selected
-          ? 'bg-ak-brand-primary/10 border-l-[3px] border-l-ak-brand-primary'
+          ? 'bg-ak-primary/10 border-l-[3px] border-l-ak-primary'
           : 'bg-ak-surface-base border-l-[3px] border-l-transparent hover:bg-ak-surface-subtle'
       }`}
     >
       <div className="relative">
-        <div className="w-12 h-12 rounded-full bg-ak-brand-primary flex items-center justify-center text-white text-base font-semibold">
+        <div className="w-12 h-12 rounded-full bg-ak-primary flex items-center justify-center text-white text-base font-semibold">
           {contact.name.split(' ').map((n) => n[0]).join('')}
         </div>
         {isOnline && (
@@ -150,7 +150,7 @@ const ConversationCard = ({ conversation, selected, onClick }) => {
             {lastMessage}
           </p>
           {unread > 0 && (
-            <div className="min-w-[20px] h-5 rounded-[10px] bg-ak-brand-primary text-white text-[11px] font-semibold flex items-center justify-center px-1.5">
+            <div className="min-w-[20px] h-5 rounded-[10px] bg-ak-primary text-white text-[11px] font-semibold flex items-center justify-center px-1.5">
               {unread}
             </div>
           )}
@@ -171,7 +171,7 @@ const MessageBubble = ({ message, isOwn }) => {
     <div className={`flex mb-2 ${isOwn ? 'justify-end' : 'justify-start'}`}>
       <div className={`max-w-[70%] py-2.5 px-3.5 shadow-sm ${
         isOwn
-          ? 'bg-ak-brand-primary text-white rounded-[16px_16px_4px_16px]'
+          ? 'bg-ak-primary text-white rounded-[16px_16px_4px_16px]'
           : 'bg-ak-surface-base text-ak-text-primary rounded-[16px_16px_16px_4px]'
       }`}>
         <p className="text-sm m-0 leading-snug">
@@ -232,7 +232,7 @@ const ChatView = ({ conversation, messages, onMessageSent, isLoading }) => {
     <div className="flex-1 flex flex-col bg-ak-surface-subtle rounded-[14px] overflow-hidden">
       {/* Header */}
       <div className="py-3.5 px-4 bg-ak-surface-base border-b border-ak-border-default flex items-center gap-3">
-        <div className="w-10 h-10 rounded-full bg-ak-brand-primary flex items-center justify-center text-white text-sm font-semibold">
+        <div className="w-10 h-10 rounded-full bg-ak-primary flex items-center justify-center text-white text-sm font-semibold">
           {conversation.contact.name.split(' ').map((n) => n[0]).join('')}
         </div>
         <div>
@@ -249,7 +249,7 @@ const ChatView = ({ conversation, messages, onMessageSent, isLoading }) => {
       <div className="flex-1 p-4 overflow-y-auto">
         {isLoading ? (
           <div className="flex justify-center p-5">
-            <Loader2 size={24} className="text-ak-brand-primary animate-spin" />
+            <Loader2 size={24} className="text-ak-primary animate-spin" />
           </div>
         ) : (
           messages.map((message) => (
@@ -273,14 +273,14 @@ const ChatView = ({ conversation, messages, onMessageSent, isLoading }) => {
           onChange={(e) => setNewMessage(e.target.value)}
           onKeyPress={(e) => e.key === 'Enter' && handleSend()}
           placeholder="Skriv en melding..."
-          className="flex-1 py-2.5 px-3.5 rounded-[20px] border border-ak-border-default text-sm outline-none bg-ak-surface-base text-ak-text-primary focus:border-ak-brand-primary"
+          className="flex-1 py-2.5 px-3.5 rounded-[20px] border border-ak-border-default text-sm outline-none bg-ak-surface-base text-ak-text-primary focus:border-ak-primary"
         />
         <button
           onClick={handleSend}
           disabled={!newMessage.trim() || isSending}
           className={`p-2.5 rounded-full border-none cursor-pointer transition-opacity ${
             newMessage.trim() && !isSending
-              ? 'bg-ak-brand-primary'
+              ? 'bg-ak-primary'
               : 'bg-ak-border-default cursor-not-allowed'
           } ${isSending ? 'opacity-70' : 'opacity-100'}`}
         >
@@ -446,7 +446,7 @@ const MeldingerContainer = () => {
       {loading && (
         <div className="fixed inset-0 bg-black/30 flex items-center justify-center z-[100]">
           <div className="bg-ak-surface-base py-6 px-8 rounded-xl flex items-center gap-3">
-            <Loader2 size={24} className="text-ak-brand-primary animate-spin" />
+            <Loader2 size={24} className="text-ak-primary animate-spin" />
             <span className="text-ak-text-primary">Laster samtaler...</span>
           </div>
         </div>

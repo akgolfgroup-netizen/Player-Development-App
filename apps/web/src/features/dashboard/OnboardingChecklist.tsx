@@ -143,7 +143,7 @@ const StepItem = memo(({ step, isCompleted, onNavigate }: StepItemProps) => {
         className={`w-10 h-10 rounded-[10px] flex items-center justify-center flex-shrink-0 ${
           isCompleted
             ? 'bg-ak-status-success/10 text-ak-status-success'
-            : 'bg-ak-brand-primary/10 text-ak-brand-primary'
+            : 'bg-ak-primary/10 text-ak-primary'
         }`}
         aria-hidden="true"
       >
@@ -224,13 +224,13 @@ const OnboardingChecklist = memo(({
       aria-label="Kom i gang med AK Golf"
     >
       {/* Header */}
-      <div className="flex items-start justify-between px-6 py-5 pb-4 border-b border-ak-border-subtle bg-ak-brand-primary/5">
+      <div className="flex items-start justify-between px-6 py-5 pb-4 border-b border-ak-border-subtle bg-ak-primary/5">
         <div className="flex items-center gap-3">
-          <div className="w-10 h-10 rounded-[10px] bg-ak-brand-primary flex items-center justify-center text-white" aria-hidden="true">
+          <div className="w-10 h-10 rounded-[10px] bg-ak-primary flex items-center justify-center text-white" aria-hidden="true">
             <Sparkles size={22} />
           </div>
           <div className="flex-1">
-            <div className="text-xs font-semibold text-ak-brand-primary uppercase tracking-wider mb-0.5">
+            <div className="text-xs font-semibold text-ak-primary uppercase tracking-wider mb-0.5">
               Velkommen!
             </div>
             <SectionTitle className="text-lg font-bold text-ak-text-primary m-0 p-0">Kom i gang</SectionTitle>

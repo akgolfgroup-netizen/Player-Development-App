@@ -211,7 +211,7 @@ const CellInput: React.FC<CellInputProps> = ({ column, value, onChange, compact 
         padding: compact ? '6px 8px' : '8px 10px',
         fontSize: compact ? '14px' : '15px',
         fontWeight: 500,
-        border: `1px solid ${value !== undefined && value !== '' ? 'var(--ak-brand-primary)' : 'var(--ak-border-default)'}`,
+        border: `1px solid ${value !== undefined && value !== '' ? 'var(--ak-primary)' : 'var(--ak-border-default)'}`,
         borderRadius: '6px',
         backgroundColor: value !== undefined && value !== '' ? `rgba(26, 61, 46, 0.03)` : 'var(--ak-surface-card)',
         outline: 'none',
@@ -358,7 +358,7 @@ const RoundScoringForm: React.FC<RoundScoringFormProps> = ({
         justifyContent: 'space-between',
       }}>
         <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
-          <Flag size={16} color="var(--ak-brand-primary)" />
+          <Flag size={16} color="var(--ak-primary)" />
           <span style={{ fontSize: '14px', color: 'var(--ak-text-primary)' }}>
             Fremgang
           </span>
@@ -366,7 +366,7 @@ const RoundScoringForm: React.FC<RoundScoringFormProps> = ({
         <span style={{
           fontSize: '14px',
           fontWeight: 600,
-          color: completedHoles === numHoles ? 'var(--ak-status-success)' : 'var(--ak-brand-primary)',
+          color: completedHoles === numHoles ? 'var(--ak-status-success)' : 'var(--ak-primary)',
         }}>
           {completedHoles} / {numHoles}
         </span>
@@ -433,7 +433,7 @@ const RoundScoringForm: React.FC<RoundScoringFormProps> = ({
                 width: '32px',
                 height: '32px',
                 borderRadius: '8px',
-                backgroundColor: 'var(--ak-brand-primary)',
+                backgroundColor: 'var(--ak-primary)',
                 color: 'var(--ak-surface-card)',
                 fontSize: '14px',
                 fontWeight: 700,

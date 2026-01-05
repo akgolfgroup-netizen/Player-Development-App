@@ -123,8 +123,8 @@ const SESSION_TYPE_CLASSES = {
     label: 'Oppvarming',
   },
   technical: {
-    text: 'text-ak-brand-primary',
-    bg: 'bg-ak-brand-primary/15',
+    text: 'text-ak-primary',
+    bg: 'bg-ak-primary/15',
     icon: Target,
     label: 'Teknikk',
   },
@@ -163,9 +163,9 @@ const STATUS_CLASSES = {
     label: 'Fullført',
   },
   in_progress: {
-    text: 'text-ak-brand-primary',
-    bg: 'bg-ak-brand-primary/15',
-    progressBg: 'bg-ak-brand-primary',
+    text: 'text-ak-primary',
+    bg: 'bg-ak-primary/15',
+    progressBg: 'bg-ak-primary',
     icon: Play,
     label: 'Pågår',
   },
@@ -194,7 +194,7 @@ const SessionCard = ({ session, onStart, onComplete }) => {
 
   return (
     <div className={`bg-ak-surface-base rounded-2xl overflow-hidden shadow-sm border-2 ${
-      session.status === 'in_progress' ? 'border-ak-brand-primary' : 'border-transparent'
+      session.status === 'in_progress' ? 'border-ak-primary' : 'border-transparent'
     } ${session.status === 'completed' ? 'opacity-80' : 'opacity-100'}`}>
       {/* Header */}
       <div
@@ -288,8 +288,8 @@ const SessionCard = ({ session, onStart, onComplete }) => {
 
           {/* Trackman Data (if available) */}
           {session.trackmanData && (
-            <div className="mt-3 p-3 bg-ak-brand-primary/10 rounded-[10px]">
-              <div className="text-xs font-semibold text-ak-brand-primary mb-2 flex items-center gap-1.5">
+            <div className="mt-3 p-3 bg-ak-primary/10 rounded-[10px]">
+              <div className="text-xs font-semibold text-ak-primary mb-2 flex items-center gap-1.5">
                 <Video size={14} />
                 TrackMan Data
               </div>
@@ -396,7 +396,7 @@ const DagensTreningsplanContainer = () => {
               </div>
             </div>
             <div className={`text-[28px] font-bold ${
-              progressPercent >= 100 ? 'text-ak-status-success' : 'text-ak-brand-primary'
+              progressPercent >= 100 ? 'text-ak-status-success' : 'text-ak-primary'
             }`}>
               {progressPercent}%
             </div>
@@ -405,7 +405,7 @@ const DagensTreningsplanContainer = () => {
           <div className="h-2 bg-ak-surface-subtle rounded overflow-hidden">
             <div
               className={`h-full rounded transition-[width] duration-500 ${
-                progressPercent >= 100 ? 'bg-ak-status-success' : 'bg-ak-brand-primary'
+                progressPercent >= 100 ? 'bg-ak-status-success' : 'bg-ak-primary'
               }`}
               style={{ width: `${progressPercent}%` }}
             />
@@ -419,10 +419,10 @@ const DagensTreningsplanContainer = () => {
 
         {/* Right column: Coach Note (top-right position) */}
         {plan.coachNote && (
-          <div className="bg-ak-brand-primary/10 rounded-xl p-4 border-l-4 border-ak-brand-primary self-start">
+          <div className="bg-ak-primary/10 rounded-xl p-4 border-l-4 border-ak-primary self-start">
             <div className="flex items-center gap-2 mb-2">
-              <MessageCircle size={16} className="text-ak-brand-primary" />
-              <span className="text-[13px] font-semibold text-ak-brand-primary">
+              <MessageCircle size={16} className="text-ak-primary" />
+              <span className="text-[13px] font-semibold text-ak-primary">
                 Beskjed fra trener
               </span>
             </div>

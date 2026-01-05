@@ -102,7 +102,7 @@ const MiniMonth: React.FC<MiniMonthProps> = ({
     <div
       className={`p-3 rounded-xl cursor-pointer transition-all hover:shadow-lg ${
         isCurrentMonth
-          ? 'bg-ak-brand-primary/5 border-2 border-ak-brand-primary'
+          ? 'bg-ak-primary/5 border-2 border-ak-primary'
           : 'bg-ak-surface-card border border-ak-border-default'
       }`}
       onClick={onClick}
@@ -111,7 +111,7 @@ const MiniMonth: React.FC<MiniMonthProps> = ({
       <div className="flex items-center justify-between mb-2">
         <span
           className={`text-sm font-semibold ${
-            isCurrentMonth ? 'text-ak-brand-primary' : 'text-ak-text-primary'
+            isCurrentMonth ? 'text-ak-primary' : 'text-ak-text-primary'
           }`}
         >
           {MONTH_NAMES[month]}
@@ -142,9 +142,9 @@ const MiniMonth: React.FC<MiniMonthProps> = ({
             key={idx}
             className={`w-4 h-4 flex items-center justify-center text-[9px] rounded-sm ${
               cell.isToday
-                ? 'font-bold bg-ak-brand-primary text-white'
+                ? 'font-bold bg-ak-primary text-white'
                 : cell.eventCount > 0
-                ? 'bg-ak-brand-primary/10 text-ak-brand-primary'
+                ? 'bg-ak-primary/10 text-ak-primary'
                 : cell.day
                 ? 'text-ak-text-primary'
                 : 'text-transparent'
@@ -233,7 +233,7 @@ export const CalendarYearView: React.FC<CalendarYearViewProps> = ({
       <div className="border-t border-ak-border-default p-4 bg-ak-surface-subtle">
         <div className="grid grid-cols-3 gap-4 text-center">
           <div>
-            <div className="text-2xl font-bold text-ak-brand-primary">
+            <div className="text-2xl font-bold text-ak-primary">
               {yearStats.total}
             </div>
             <div className="text-xs text-ak-text-tertiary">

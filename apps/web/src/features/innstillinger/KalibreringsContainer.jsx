@@ -103,7 +103,7 @@ const CalibrationInput = ({ label, value, unit, lastUpdated, onChange }) => (
         type="number"
         value={value}
         onChange={(e) => onChange(parseFloat(e.target.value))}
-        className="w-20 py-2 px-3 rounded-md border border-ak-border-default text-sm font-medium text-right outline-none focus:border-ak-brand-primary bg-ak-surface-base"
+        className="w-20 py-2 px-3 rounded-md border border-ak-border-default text-sm font-medium text-right outline-none focus:border-ak-primary bg-ak-surface-base"
       />
       <span className="text-[13px] text-ak-text-secondary min-w-[40px]">
         {unit}
@@ -125,13 +125,13 @@ const ClubDistanceRow = ({ club, carry, total, onChange }) => (
       type="number"
       value={carry}
       onChange={(e) => onChange('carry', parseInt(e.target.value))}
-      className="py-2 px-3 rounded-md border border-ak-border-default text-sm text-center outline-none focus:border-ak-brand-primary bg-ak-surface-base"
+      className="py-2 px-3 rounded-md border border-ak-border-default text-sm text-center outline-none focus:border-ak-primary bg-ak-surface-base"
     />
     <input
       type="number"
       value={total}
       onChange={(e) => onChange('total', parseInt(e.target.value))}
-      className="py-2 px-3 rounded-md border border-ak-border-default text-sm text-center outline-none focus:border-ak-brand-primary bg-ak-surface-base"
+      className="py-2 px-3 rounded-md border border-ak-border-default text-sm text-center outline-none focus:border-ak-primary bg-ak-surface-base"
     />
   </div>
 );
@@ -226,7 +226,7 @@ const KalibreringsContainer = () => {
     return (
       <div className="min-h-screen bg-ak-surface-subtle flex items-center justify-center">
         <div className="text-center">
-          <div className="w-10 h-10 border-[3px] border-ak-border-default border-t-ak-brand-primary rounded-full animate-spin mx-auto mb-4" />
+          <div className="w-10 h-10 border-[3px] border-ak-border-default border-t-ak-primary rounded-full animate-spin mx-auto mb-4" />
           <p className="text-ak-text-secondary">Laster kalibrering...</p>
         </div>
       </div>
@@ -242,8 +242,8 @@ const KalibreringsContainer = () => {
 
       <div className="p-4 px-6 pb-6 max-w-[800px] mx-auto">
         {/* Info Banner */}
-        <div className="flex items-start gap-3 p-3.5 bg-ak-brand-primary/10 rounded-xl mb-6">
-          <Info size={20} className="text-ak-brand-primary flex-shrink-0 mt-0.5" />
+        <div className="flex items-start gap-3 p-3.5 bg-ak-primary/10 rounded-xl mb-6">
+          <Info size={20} className="text-ak-primary flex-shrink-0 mt-0.5" />
           <div>
             <CardTitle className="text-sm font-semibold text-ak-text-primary m-0 mb-1">
               Viktig for presise mål
@@ -278,8 +278,8 @@ const KalibreringsContainer = () => {
         {/* Driving Settings */}
         <div className="bg-ak-surface-base rounded-[14px] p-4 mb-5">
           <div className="flex items-center gap-2.5 mb-3.5">
-            <div className="w-9 h-9 rounded-lg bg-ak-brand-primary/15 flex items-center justify-center">
-              <Gauge size={18} className="text-ak-brand-primary" />
+            <div className="w-9 h-9 rounded-lg bg-ak-primary/15 flex items-center justify-center">
+              <Gauge size={18} className="text-ak-primary" />
             </div>
             <SubSectionTitle className="text-[15px] font-semibold text-ak-text-primary m-0">
               Driver-verdier
@@ -418,7 +418,7 @@ const KalibreringsContainer = () => {
             disabled={!hasChanges}
             className={`flex-[2] flex items-center justify-center gap-2 py-3.5 rounded-[10px] border-none text-[15px] font-semibold transition-colors ${
               hasChanges
-                ? 'bg-ak-brand-primary text-white cursor-pointer hover:bg-ak-brand-primary/90'
+                ? 'bg-ak-primary text-white cursor-pointer hover:bg-ak-primary/90'
                 : 'bg-ak-border-default text-ak-text-secondary cursor-not-allowed'
             }`}
           >

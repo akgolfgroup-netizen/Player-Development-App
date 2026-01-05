@@ -82,8 +82,8 @@ export const CoachCreateModal: React.FC<CoachCreateModalProps> = ({
         {/* Header */}
         <div className="flex items-center justify-between p-5 border-b border-ak-border-default">
           <div className="flex items-center gap-3">
-            <div className="w-10 h-10 rounded-xl bg-ak-brand-primary/10 flex items-center justify-center">
-              <UserPlus size={20} className="text-ak-brand-primary" />
+            <div className="w-10 h-10 rounded-xl bg-ak-primary/10 flex items-center justify-center">
+              <UserPlus size={20} className="text-ak-primary" />
             </div>
             <h2 className="text-lg font-semibold text-ak-text-primary">
               Opprett ny trener
@@ -114,7 +114,7 @@ export const CoachCreateModal: React.FC<CoachCreateModalProps> = ({
                 type="text"
                 value={formData.firstName}
                 onChange={(e) => setFormData({ ...formData, firstName: e.target.value })}
-                className="w-full py-2.5 px-3 rounded-lg border border-ak-border-default bg-ak-surface-base text-sm text-ak-text-primary outline-none focus:border-ak-brand-primary transition-colors"
+                className="w-full py-2.5 px-3 rounded-lg border border-ak-border-default bg-ak-surface-base text-sm text-ak-text-primary outline-none focus:border-ak-primary transition-colors"
                 placeholder="Ola"
               />
             </div>
@@ -126,7 +126,7 @@ export const CoachCreateModal: React.FC<CoachCreateModalProps> = ({
                 type="text"
                 value={formData.lastName}
                 onChange={(e) => setFormData({ ...formData, lastName: e.target.value })}
-                className="w-full py-2.5 px-3 rounded-lg border border-ak-border-default bg-ak-surface-base text-sm text-ak-text-primary outline-none focus:border-ak-brand-primary transition-colors"
+                className="w-full py-2.5 px-3 rounded-lg border border-ak-border-default bg-ak-surface-base text-sm text-ak-text-primary outline-none focus:border-ak-primary transition-colors"
                 placeholder="Nordmann"
               />
             </div>
@@ -140,7 +140,7 @@ export const CoachCreateModal: React.FC<CoachCreateModalProps> = ({
               type="email"
               value={formData.email}
               onChange={(e) => setFormData({ ...formData, email: e.target.value })}
-              className="w-full py-2.5 px-3 rounded-lg border border-ak-border-default bg-ak-surface-base text-sm text-ak-text-primary outline-none focus:border-ak-brand-primary transition-colors"
+              className="w-full py-2.5 px-3 rounded-lg border border-ak-border-default bg-ak-surface-base text-sm text-ak-text-primary outline-none focus:border-ak-primary transition-colors"
               placeholder="ola@akgolf.no"
             />
           </div>
@@ -153,7 +153,7 @@ export const CoachCreateModal: React.FC<CoachCreateModalProps> = ({
               type="text"
               value={formData.specializations}
               onChange={(e) => setFormData({ ...formData, specializations: e.target.value })}
-              className="w-full py-2.5 px-3 rounded-lg border border-ak-border-default bg-ak-surface-base text-sm text-ak-text-primary outline-none focus:border-ak-brand-primary transition-colors"
+              className="w-full py-2.5 px-3 rounded-lg border border-ak-border-default bg-ak-surface-base text-sm text-ak-text-primary outline-none focus:border-ak-primary transition-colors"
               placeholder="Putting, Driving, Mental trening"
             />
             <p className="text-xs text-ak-text-tertiary mt-1">
@@ -171,7 +171,7 @@ export const CoachCreateModal: React.FC<CoachCreateModalProps> = ({
               max={10}
               value={formData.maxPlayersPerSession}
               onChange={(e) => setFormData({ ...formData, maxPlayersPerSession: parseInt(e.target.value) || 4 })}
-              className="w-full py-2.5 px-3 rounded-lg border border-ak-border-default bg-ak-surface-base text-sm text-ak-text-primary outline-none focus:border-ak-brand-primary transition-colors"
+              className="w-full py-2.5 px-3 rounded-lg border border-ak-border-default bg-ak-surface-base text-sm text-ak-text-primary outline-none focus:border-ak-primary transition-colors"
             />
           </div>
 

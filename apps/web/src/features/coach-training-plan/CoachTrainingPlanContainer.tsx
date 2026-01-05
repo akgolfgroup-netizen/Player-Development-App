@@ -4,7 +4,7 @@ import React, { useState, useEffect, useCallback } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import { useAuth } from '../../contexts/AuthContext';
 import { trainingPlanAPI, playersAPI } from '../../services/api';
-import LoadingState from '../../components/ui/LoadingState';
+import { TrainingPlanSkeleton } from '../../ui/skeletons';
 import ErrorState from '../../components/ui/ErrorState';
 import CoachTrainingPlan from './CoachTrainingPlan';
 
@@ -84,14 +84,28 @@ const CoachTrainingPlanContainer: React.FC = () => {
     navigate(`/coach/athletes/${playerId}/training-plan/edit`);
   };
 
+  // Use TrainingPlanSkeleton to prevent layout shift/flickering during loading
   if (state === 'loading') {
-    return <LoadingState message="Laster treningsplan..." />;
+    return <TrainingPlanSkeleton />;
+  }
+
+  // Guard: playerId must exist
+  if (!playerId) {
+    return (
+      <ErrorState
+        message="Spiller-ID mangler"
+        onRetry={() => navigate('/coach/athletes')}
+      />
+    );
   }
 
   if (state === 'error') {
+    const errorType = error && typeof error === 'object' && 'type' in error
+      ? (error as { type?: string }).type
+      : undefined;
     return (
       <ErrorState
-        errorType={(error as any)?.type}
+        errorType={errorType}
         message={error?.message || 'Kunne ikke laste treningsplan'}
         onRetry={fetchTrainingPlan}
       />
@@ -100,7 +114,7 @@ const CoachTrainingPlanContainer: React.FC = () => {
 
   return (
     <CoachTrainingPlan
-      athleteId={playerId!}
+      athleteId={playerId}
       athleteName={data.athleteName}
       blocks={data.blocks.length > 0 ? data.blocks : undefined}
       onBack={handleBack}

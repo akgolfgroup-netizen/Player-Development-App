@@ -30,9 +30,9 @@ const SLAG_TYPE_CLASSES = {
     short: 'R',
   },
   t: {
-    text: 'text-ak-brand-primary',
-    bg: 'bg-ak-brand-primary/15',
-    border: 'border-ak-brand-primary',
+    text: 'text-ak-primary',
+    bg: 'bg-ak-primary/15',
+    border: 'border-ak-primary',
     label: 'Tee',
     short: 'T',
   },
@@ -105,7 +105,7 @@ const ShotRow = ({ shot, onChange, isEven }) => {
           value={shot.hull}
           onChange={(e) => onChange('hull', e.target.value)}
           placeholder="-"
-          className="w-full py-2 px-2.5 border border-ak-border-default rounded-md text-sm text-center outline-none focus:border-ak-brand-primary"
+          className="w-full py-2 px-2.5 border border-ak-border-default rounded-md text-sm text-center outline-none focus:border-ak-primary"
         />
       </td>
 
@@ -144,7 +144,7 @@ const ShotRow = ({ shot, onChange, isEven }) => {
             value={shot.lengde}
             onChange={(e) => onChange('lengde', e.target.value)}
             placeholder="0"
-            className="w-full py-2 px-2.5 border border-ak-border-default rounded-md text-sm text-right outline-none focus:border-ak-brand-primary"
+            className="w-full py-2 px-2.5 border border-ak-border-default rounded-md text-sm text-right outline-none focus:border-ak-primary"
           />
           <span className="text-xs text-ak-text-secondary min-w-[16px]">m</span>
         </div>
@@ -160,7 +160,7 @@ const ShotRow = ({ shot, onChange, isEven }) => {
             value={shot.tillHull}
             onChange={(e) => onChange('tillHull', e.target.value)}
             placeholder="0"
-            className="w-full py-2 px-2.5 border border-ak-border-default rounded-md text-sm text-right outline-none focus:border-ak-brand-primary"
+            className="w-full py-2 px-2.5 border border-ak-border-default rounded-md text-sm text-right outline-none focus:border-ak-primary"
           />
           <span className="text-xs text-ak-text-secondary min-w-[16px]">m</span>
         </div>
@@ -262,8 +262,8 @@ const PEIBaneTestForm = ({ onSubmit, onClose }) => {
       {/* Header */}
       <div className="py-5 px-6 border-b border-ak-border-default flex items-center justify-between">
         <div className="flex items-center gap-3">
-          <div className="w-11 h-11 rounded-xl bg-ak-brand-primary/15 flex items-center justify-center">
-            <Target size={24} className="text-ak-brand-primary" />
+          <div className="w-11 h-11 rounded-xl bg-ak-primary/15 flex items-center justify-center">
+            <Target size={24} className="text-ak-primary" />
           </div>
           <div>
             <SectionTitle className="m-0 text-lg font-semibold">
@@ -285,7 +285,7 @@ const PEIBaneTestForm = ({ onSubmit, onClose }) => {
       </div>
 
       {/* Instructions */}
-      <div className="py-4 px-6 bg-ak-brand-primary/5 border-b border-ak-border-default">
+      <div className="py-4 px-6 bg-ak-primary/5 border-b border-ak-border-default">
         <p className="m-0 text-[13px] text-ak-text-primary leading-relaxed">
           <strong>Instruksjoner:</strong> Registrer 18 slag fra ulike posisjoner på banen.
           For hvert slag, noter hull-nummer, underlag (F=Fairway, R=Rough, T=Tee, B=Bunker),
@@ -366,7 +366,7 @@ const PEIBaneTestForm = ({ onSubmit, onClose }) => {
             <p className="m-0 text-[11px] text-ak-text-secondary mb-1">
               Gjennomsnitt til hull
             </p>
-            <p className="m-0 text-lg font-bold text-ak-brand-primary">
+            <p className="m-0 text-lg font-bold text-ak-primary">
               {stats.avgTillHull.toFixed(1)} m
             </p>
           </div>
@@ -383,7 +383,7 @@ const PEIBaneTestForm = ({ onSubmit, onClose }) => {
           onChange={(e) => setNotes(e.target.value)}
           placeholder="F.eks. værforhold, baneforhold, utstyr brukt..."
           rows={2}
-          className="w-full py-2.5 px-3.5 rounded-lg border border-ak-border-default text-sm outline-none resize-y font-inherit focus:border-ak-brand-primary"
+          className="w-full py-2.5 px-3.5 rounded-lg border border-ak-border-default text-sm outline-none resize-y font-inherit focus:border-ak-primary"
         />
       </div>
 

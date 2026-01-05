@@ -43,7 +43,7 @@ interface InfoCardProps {
   color?: string;
 }
 
-const InfoCard: React.FC<InfoCardProps> = ({ icon: Icon, title, children, color = 'var(--ak-brand-primary)' }) => (
+const InfoCard: React.FC<InfoCardProps> = ({ icon: Icon, title, children, color = 'var(--ak-primary)' }) => (
   <div style={{
     backgroundColor: 'var(--ak-surface-card)',
     borderRadius: '12px',
@@ -271,7 +271,7 @@ const TestOverviewPage: React.FC<TestOverviewPageProps> = ({
         marginBottom: '24px',
       }}>
         {/* Purpose */}
-        <InfoCard icon={Info} title="Formål" color="var(--ak-brand-primary)">
+        <InfoCard icon={Info} title="Formål" color="var(--ak-primary)">
           <p style={{
             margin: 0,
             fontSize: '14px',
@@ -326,7 +326,7 @@ const TestOverviewPage: React.FC<TestOverviewPageProps> = ({
 
       {/* Scoring */}
       <div style={{ marginTop: '16px' }}>
-        <InfoCard icon={Target} title="Scoring" color="var(--ak-brand-primary)">
+        <InfoCard icon={Target} title="Scoring" color="var(--ak-primary)">
           <p style={{
             margin: '0 0 16px 0',
             fontSize: '14px',

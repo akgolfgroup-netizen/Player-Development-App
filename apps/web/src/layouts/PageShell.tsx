@@ -145,7 +145,7 @@ const EmptyState = ({ title, description, cta }: EmptyStateProps) => (
     {cta && (
       <button
         onClick={cta.onClick}
-        className="mt-6 px-6 py-3 rounded-xl border-none bg-ak-brand-primary text-white text-sm font-semibold cursor-pointer transition-opacity hover:opacity-90"
+        className="mt-6 px-6 py-3 rounded-xl border-none bg-ak-primary text-white text-sm font-semibold cursor-pointer transition-opacity hover:opacity-90"
       >
         {cta.label}
       </button>
@@ -196,7 +196,7 @@ interface NextStepCTAProps {
 
 const NextStepCTA = ({ label, href, onClick }: NextStepCTAProps) => {
   const content = (
-    <div className="flex items-center justify-between py-5 px-6 rounded-2xl bg-ak-brand-primary text-white cursor-pointer transition-opacity hover:opacity-90">
+    <div className="flex items-center justify-between py-5 px-6 rounded-2xl bg-ak-primary text-white cursor-pointer transition-opacity hover:opacity-90">
       <span className="text-base font-semibold">{label}</span>
       <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
         <path d="M5 12h14M12 5l7 7-7 7" />

@@ -449,7 +449,7 @@ const ApproachDistanceCard: React.FC<{ skill: ApproachSkillData; index: number }
   const gradients = [
     'linear-gradient(135deg, var(--ak-status-success-light) 0%, var(--ak-status-success) 100%)',
     'linear-gradient(135deg, var(--ak-status-info-light) 0%, var(--ak-status-info) 100%)',
-    'linear-gradient(135deg, var(--ak-brand-primary-light) 0%, var(--ak-brand-primary) 100%)',
+    'linear-gradient(135deg, var(--ak-primary-light) 0%, var(--ak-primary) 100%)',
     'linear-gradient(135deg, var(--ak-status-warning-light) 0%, var(--ak-status-warning) 100%)',
   ];
 

@@ -104,7 +104,7 @@ const mockGroup: GroupInfo = {
   id: 'g1',
   name: 'Wang Golf Herrer',
   memberCount: 8,
-  avatarColor: 'var(--ak-brand-primary)',
+  avatarColor: 'var(--ak-primary)',
   avatarInitials: 'WH',
 };
 
@@ -164,11 +164,17 @@ export default function CoachGroupPlan() {
   const [hasUnsavedChanges, setHasUnsavedChanges] = useState(false);
 
   // New session form state
-  const [newSession, setNewSession] = useState({
+  const [newSession, setNewSession] = useState<{
+    title: string;
+    time: string;
+    type: 'group' | 'individual' | 'competition';
+    exercises: Exercise[];
+    notes: string;
+  }>({
     title: '',
     time: '09:00',
-    type: 'group' as const,
-    exercises: [] as Exercise[],
+    type: 'group',
+    exercises: [],
     notes: '',
   });
 
@@ -286,7 +292,7 @@ export default function CoachGroupPlan() {
   if (loading) {
     return (
       <div className="min-h-screen flex items-center justify-center">
-        <div className="w-12 h-12 border-4 border-ak-border-default border-t-ak-brand-primary rounded-full animate-spin" />
+        <div className="w-12 h-12 border-4 border-ak-border-default border-t-ak-primary rounded-full animate-spin" />
       </div>
     );
   }
@@ -331,7 +337,7 @@ export default function CoachGroupPlan() {
       {/* Week Theme/Focus */}
       <div className="flex gap-6 py-4 px-6 bg-ak-surface-card">
         <div className="flex items-center gap-2">
-          <Flag size={16} className="text-ak-brand-primary" />
+          <Flag size={16} className="text-ak-primary" />
           <span className="text-[13px] text-ak-text-secondary">Tema:</span>
           <span className="text-sm font-medium text-ak-text-primary">{weeklyPlan.theme || 'Ikke satt'}</span>
         </div>
@@ -353,7 +359,7 @@ export default function CoachGroupPlan() {
         </button>
 
         <div className="flex items-center gap-3">
-          <Calendar size={20} className="text-ak-brand-primary" />
+          <Calendar size={20} className="text-ak-primary" />
           <span className="text-xl font-bold text-ak-text-primary">Uke {currentWeekNumber}</span>
           <span className="text-sm text-ak-text-secondary">
             {weekDates[0].toLocaleDateString('nb-NO', { day: 'numeric', month: 'short' })} -{' '}
@@ -381,13 +387,13 @@ export default function CoachGroupPlan() {
           return (
             <div
               key={day}
-              className={`min-h-[400px] ${isToday ? 'bg-ak-brand-primary/5' : 'bg-ak-surface-card'}`}
+              className={`min-h-[400px] ${isToday ? 'bg-ak-primary/5' : 'bg-ak-surface-card'}`}
             >
               {/* Day Header */}
               <div
                 className={`p-3 text-center border-b ${
                   isToday
-                    ? 'bg-ak-brand-primary border-transparent'
+                    ? 'bg-ak-primary border-transparent'
                     : 'border-ak-border-default'
                 }`}
               >
@@ -407,7 +413,7 @@ export default function CoachGroupPlan() {
                     className={`p-3 bg-ak-surface-base rounded-lg border border-ak-border-default ${isPast ? 'opacity-60' : ''}`}
                   >
                     <div className="flex items-center justify-between mb-2">
-                      <span className="flex items-center gap-1 text-xs font-medium text-ak-brand-primary">
+                      <span className="flex items-center gap-1 text-xs font-medium text-ak-primary">
                         <Clock size={12} />
                         {session.time}
                       </span>
@@ -465,7 +471,7 @@ export default function CoachGroupPlan() {
                       setSelectedDay(dayIndex);
                       setShowAddSessionModal(true);
                     }}
-                    className="flex items-center justify-center gap-1.5 p-2.5 bg-transparent border-2 border-dashed border-ak-border-default rounded-lg text-[13px] font-medium text-ak-text-secondary cursor-pointer hover:border-ak-brand-primary hover:text-ak-brand-primary"
+                    className="flex items-center justify-center gap-1.5 p-2.5 bg-transparent border-2 border-dashed border-ak-border-default rounded-lg text-[13px] font-medium text-ak-text-secondary cursor-pointer hover:border-ak-primary hover:text-ak-primary"
                   >
                     <Plus size={16} />
                     Legg til økt
@@ -494,7 +500,7 @@ export default function CoachGroupPlan() {
                 value={newSession.title}
                 onChange={(e) => setNewSession({ ...newSession, title: e.target.value })}
                 placeholder="F.eks. Morgentrening"
-                className="py-2.5 px-3.5 bg-ak-surface-base border border-ak-border-default rounded-lg text-sm text-ak-text-primary outline-none focus:border-ak-brand-primary"
+                className="py-2.5 px-3.5 bg-ak-surface-base border border-ak-border-default rounded-lg text-sm text-ak-text-primary outline-none focus:border-ak-primary"
               />
             </div>
 
@@ -505,7 +511,7 @@ export default function CoachGroupPlan() {
                 type="time"
                 value={newSession.time}
                 onChange={(e) => setNewSession({ ...newSession, time: e.target.value })}
-                className="py-2.5 px-3.5 bg-ak-surface-base border border-ak-border-default rounded-lg text-sm text-ak-text-primary outline-none focus:border-ak-brand-primary"
+                className="py-2.5 px-3.5 bg-ak-surface-base border border-ak-border-default rounded-lg text-sm text-ak-text-primary outline-none focus:border-ak-primary"
               />
             </div>
 
@@ -516,10 +522,10 @@ export default function CoachGroupPlan() {
                 {['group', 'individual', 'competition'].map((type) => (
                   <button
                     key={type}
-                    onClick={() => setNewSession({ ...newSession, type: type as any })}
+                    onClick={() => setNewSession({ ...newSession, type: type as typeof newSession.type })}
                     className={`flex-1 p-2.5 rounded-lg text-[13px] font-medium cursor-pointer ${
                       newSession.type === type
-                        ? 'bg-ak-brand-primary border-ak-brand-primary text-white'
+                        ? 'bg-ak-primary border-ak-primary text-white'
                         : 'bg-ak-surface-subtle border border-ak-border-default text-ak-text-secondary'
                     }`}
                   >
@@ -557,7 +563,7 @@ export default function CoachGroupPlan() {
               )}
               <button
                 onClick={() => setShowExerciseLibrary(true)}
-                className="flex items-center justify-center gap-2 p-3 bg-ak-surface-base border border-dashed border-ak-border-default rounded-lg text-sm font-medium text-ak-text-secondary cursor-pointer hover:border-ak-brand-primary hover:text-ak-brand-primary"
+                className="flex items-center justify-center gap-2 p-3 bg-ak-surface-base border border-dashed border-ak-border-default rounded-lg text-sm font-medium text-ak-text-secondary cursor-pointer hover:border-ak-primary hover:text-ak-primary"
               >
                 <Dumbbell size={16} />
                 Legg til øvelse fra bibliotek
@@ -571,7 +577,7 @@ export default function CoachGroupPlan() {
                 value={newSession.notes}
                 onChange={(e) => setNewSession({ ...newSession, notes: e.target.value })}
                 placeholder="Spesielle instruksjoner..."
-                className="py-2.5 px-3.5 bg-ak-surface-base border border-ak-border-default rounded-lg text-sm text-ak-text-primary outline-none resize-y font-inherit focus:border-ak-brand-primary"
+                className="py-2.5 px-3.5 bg-ak-surface-base border border-ak-border-default rounded-lg text-sm text-ak-text-primary outline-none resize-y font-inherit focus:border-ak-primary"
                 rows={3}
               />
             </div>

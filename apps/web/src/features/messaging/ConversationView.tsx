@@ -274,7 +274,7 @@ export default function ConversationView() {
   if (loading) {
     return (
       <div className="p-6 text-center">
-        <div className="w-10 h-10 border-[3px] border-ak-border-default border-t-ak-brand-primary rounded-full mx-auto mb-4 animate-spin" />
+        <div className="w-10 h-10 border-[3px] border-ak-border-default border-t-ak-primary rounded-full mx-auto mb-4 animate-spin" />
         <p className="text-ak-text-secondary">Laster samtale...</p>
       </div>
     );
@@ -286,7 +286,7 @@ export default function ConversationView() {
         <p className="text-ak-status-error">Samtale ikke funnet</p>
         <Link
           to="/meldinger"
-          className="text-ak-brand-primary mt-4 block"
+          className="text-ak-primary mt-4 block"
         >
           Tilbake til meldinger
         </Link>
@@ -365,11 +365,11 @@ export default function ConversationView() {
                     <div
                       className={`py-2 px-3 rounded-t-lg -mb-1 border-l-[3px] ${
                         message.isOwn
-                          ? 'bg-ak-brand-primary/20 border-l-ak-brand-primary'
+                          ? 'bg-ak-primary/20 border-l-ak-primary'
                           : 'bg-ak-surface-elevated border-l-ak-status-warning'
                       }`}
                     >
-                      <p className="text-xs leading-4 text-ak-brand-primary font-semibold m-0 mb-0.5">
+                      <p className="text-xs leading-4 text-ak-primary font-semibold m-0 mb-0.5">
                         {message.replyTo.senderName}
                       </p>
                       <p className="text-[13px] leading-[18px] text-ak-text-secondary m-0">
@@ -382,7 +382,7 @@ export default function ConversationView() {
                   <div
                     className={`py-2.5 px-3.5 ${
                       message.isOwn
-                        ? 'bg-ak-brand-primary text-white'
+                        ? 'bg-ak-primary text-white'
                         : 'bg-ak-surface-base text-ak-text-primary shadow-sm'
                     } ${message.replyTo ? 'rounded-b-lg' : 'rounded-lg'}`}
                   >
@@ -433,9 +433,9 @@ export default function ConversationView() {
       {/* Reply indicator */}
       {replyingTo && (
         <div className="flex items-center gap-3 py-2.5 px-4 bg-ak-surface-elevated border-t border-ak-border-default">
-          <Reply size={16} className="text-ak-brand-primary" />
+          <Reply size={16} className="text-ak-primary" />
           <div className="flex-1">
-            <p className="text-xs leading-4 text-ak-brand-primary font-semibold m-0">
+            <p className="text-xs leading-4 text-ak-primary font-semibold m-0">
               Svarer til {replyingTo.senderName}
             </p>
             <p className="text-[13px] leading-[18px] text-ak-text-secondary m-0 overflow-hidden text-ellipsis whitespace-nowrap">
@@ -465,7 +465,7 @@ export default function ConversationView() {
             onKeyPress={handleKeyPress}
             placeholder="Skriv en melding..."
             rows={1}
-            className="w-full py-2.5 px-3.5 bg-ak-surface-elevated border border-ak-border-default rounded-lg text-[15px] resize-none outline-none font-[inherit] focus:border-ak-brand-primary"
+            className="w-full py-2.5 px-3.5 bg-ak-surface-elevated border border-ak-border-default rounded-lg text-[15px] resize-none outline-none font-[inherit] focus:border-ak-primary"
           />
         </div>
 
@@ -474,7 +474,7 @@ export default function ConversationView() {
           disabled={!newMessage.trim() || sending}
           className={`flex items-center justify-center w-10 h-10 border-none rounded-lg text-white transition-colors ${
             newMessage.trim()
-              ? 'bg-ak-brand-primary cursor-pointer hover:bg-ak-brand-primary/90'
+              ? 'bg-ak-primary cursor-pointer hover:bg-ak-primary/90'
               : 'bg-ak-border-default cursor-not-allowed'
           }`}
         >

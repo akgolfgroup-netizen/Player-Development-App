@@ -10,6 +10,7 @@ import React, { useState, useEffect, useMemo } from 'react';
 import { Link, useLocation, useNavigate } from 'react-router-dom';
 import * as LucideIcons from 'lucide-react';
 import { coachNavigationConfig, coachQuickActions, type NavItem } from '../../config/coach-navigation';
+import { AKLogo } from '../branding/AKLogo';
 
 const { LogOut, ChevronDown, ChevronRight, Menu, X } = LucideIcons;
 
@@ -43,14 +44,9 @@ export default function CoachSidebar({ user, unreadAlerts = 0, onLogout, isMobil
   const items = useMemo(() => {
     return coachNavigationConfig.map(item => ({
       ...item,
-      label: item.labelNO, // Use Norwegian labels
       Icon: getIcon(item.icon),
       // Replace dynamic badge values
       badge: item.badge === 'unreadCount' && unreadAlerts > 0 ? String(unreadAlerts) : undefined,
-      submenu: item.submenu?.map(sub => ({
-        ...sub,
-        label: sub.labelNO, // Use Norwegian labels for submenu
-      })),
     }));
   }, [unreadAlerts]);
 
@@ -97,13 +93,13 @@ export default function CoachSidebar({ user, unreadAlerts = 0, onLogout, isMobil
   const renderNavItems = () => {
     return items.map((item) => {
       if (item.submenu) {
-        const isOpen = openSubmenus[item.label] || false;
+        const isOpen = openSubmenus[item.labelNO] || false;
         const activeChild = hasActiveChild(item.submenu);
 
         return (
-          <div key={item.label}>
+          <div key={item.labelNO}>
             <button
-              onClick={() => setOpenSubmenus({ ...openSubmenus, [item.label]: !isOpen })}
+              onClick={() => setOpenSubmenus({ ...openSubmenus, [item.labelNO]: !isOpen })}
               aria-expanded={isOpen}
               style={{
                 width: '100%',
@@ -112,24 +108,24 @@ export default function CoachSidebar({ user, unreadAlerts = 0, onLogout, isMobil
                 gap: '12px',
                 borderRadius: '12px',
                 padding: '12px 16px',
-                color: activeChild ? 'var(--bg-primary)' : 'rgba(255, 255, 255, 0.75)',
-                backgroundColor: activeChild ? 'rgba(var(--accent-rgb), 0.8)' : 'transparent',
+                color: activeChild ? '#FFFFFF' : 'rgba(255, 255, 255, 0.75)',
+                backgroundColor: activeChild ? 'rgba(255, 255, 255, 0.15)' : 'transparent',
                 transition: 'all 0.2s',
                 fontSize: '15px',
-                fontWeight: 500,
+                fontWeight: 600,
                 border: 'none',
                 cursor: 'pointer',
                 textAlign: 'left',
               }}
             >
-              <item.Icon size={20} />
-              <span style={{ flex: 1 }}>{item.label}</span>
-              {isOpen ? <ChevronDown size={16} /> : <ChevronRight size={16} />}
+              <item.Icon size={20} style={{ flexShrink: 0 }} />
+              <span style={{ flex: 1 }}>{item.labelNO}</span>
+              {isOpen ? <ChevronDown size={16} style={{ flexShrink: 0 }} /> : <ChevronRight size={16} style={{ flexShrink: 0 }} />}
             </button>
 
             {isOpen && (
               <div style={{ marginLeft: '28px', marginTop: '4px', marginBottom: '8px' }}>
-                {item.submenu.map((subItem: { href: string; label: string }) => {
+                {item.submenu.map((subItem) => {
                   const active = isActive(subItem.href);
                   return (
                     <Link
@@ -142,11 +138,11 @@ export default function CoachSidebar({ user, unreadAlerts = 0, onLogout, isMobil
                         borderRadius: '8px',
                         padding: '10px 12px',
                         textDecoration: 'none',
-                        color: active ? 'var(--bg-primary)' : 'rgba(255, 255, 255, 0.65)',
-                        backgroundColor: active ? `${'rgba(var(--accent-rgb), 0.8)'}80` : 'transparent',
+                        color: active ? '#FFFFFF' : 'rgba(255, 255, 255, 0.65)',
+                        backgroundColor: active ? 'rgba(255, 255, 255, 0.1)' : 'transparent',
                         transition: 'all 0.2s',
                         fontSize: '14px',
-                        fontWeight: 400,
+                        fontWeight: active ? 500 : 400,
                         marginBottom: '2px',
                       }}
                     >
@@ -158,7 +154,7 @@ export default function CoachSidebar({ user, unreadAlerts = 0, onLogout, isMobil
                           backgroundColor: active ? 'var(--achievement)' : 'rgba(255, 255, 255, 0.3)',
                         }}
                       />
-                      {subItem.label}
+                      {subItem.labelNO || subItem.label}
                     </Link>
                   );
                 })}
@@ -179,16 +175,16 @@ export default function CoachSidebar({ user, unreadAlerts = 0, onLogout, isMobil
               borderRadius: '12px',
               padding: '12px 16px',
               textDecoration: 'none',
-              color: active ? 'var(--bg-primary)' : 'rgba(255, 255, 255, 0.75)',
-              backgroundColor: active ? 'rgba(var(--accent-rgb), 0.8)' : 'transparent',
+              color: active ? '#FFFFFF' : 'rgba(255, 255, 255, 0.75)',
+              backgroundColor: active ? 'rgba(255, 255, 255, 0.15)' : 'transparent',
               transition: 'all 0.2s',
               fontSize: '15px',
-              fontWeight: 500,
+              fontWeight: 600,
               position: 'relative',
             }}
           >
-            <item.Icon size={20} />
-            <span style={{ flex: 1 }}>{item.label}</span>
+            <item.Icon size={20} style={{ flexShrink: 0 }} />
+            <span style={{ flex: 1 }}>{item.labelNO}</span>
             {item.badge && (
               <span
                 style={{
@@ -273,7 +269,7 @@ export default function CoachSidebar({ user, unreadAlerts = 0, onLogout, isMobil
             {(user?.firstName?.[0] || 'T').toUpperCase()}
           </div>
           <div>
-            <div style={{ fontSize: '14px', fontWeight: 600, color: 'var(--bg-primary)' }}>
+            <div style={{ fontSize: '14px', fontWeight: 600, color: 'rgba(255, 255, 255, 0.95)' }}>
               {user?.firstName || 'Trener'} {user?.lastName || ''}
             </div>
             <div style={{ fontSize: '12px', color: 'rgba(255, 255, 255, 0.55)' }}>
@@ -432,8 +428,8 @@ export default function CoachSidebar({ user, unreadAlerts = 0, onLogout, isMobil
       style={{
         width: '280px',
         height: '100vh',
-        backgroundColor: 'var(--accent)',
-        color: 'var(--bg-primary)',
+        backgroundColor: 'var(--ak-primary, #1A3D2E)',
+        color: '#FFFFFF',
         display: 'flex',
         flexDirection: 'column',
         flexShrink: 0,
@@ -457,28 +453,13 @@ export default function CoachSidebar({ user, unreadAlerts = 0, onLogout, isMobil
             textDecoration: 'none',
           }}
         >
-          <div
-            style={{
-              width: 40,
-              height: 40,
-              borderRadius: '10px',
-              backgroundColor: 'var(--achievement)',
-              display: 'flex',
-              alignItems: 'center',
-              justifyContent: 'center',
-              fontWeight: 700,
-              fontSize: '16px',
-              color: 'var(--text-primary)',
-            }}
-          >
-            AK
-          </div>
+          <AKLogo size={40} color="#FFFFFF" />
           <div>
-            <div style={{ color: 'var(--bg-primary)', fontWeight: 600, fontSize: '16px' }}>
-              Coach Portal
+            <div style={{ color: '#FFFFFF', fontWeight: 600, fontSize: '16px' }}>
+              AK Golf
             </div>
             <div style={{ color: 'rgba(255, 255, 255, 0.5)', fontSize: '12px' }}>
-              AK Golf Academy
+              Trenerportal
             </div>
           </div>
         </Link>

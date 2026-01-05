@@ -100,7 +100,7 @@ const COACH_MESSAGES = [
 const getTypeConfig = (type) => {
   switch (type) {
     case 'feedback':
-      return { label: 'Feedback', colorClasses: { bg: 'bg-ak-brand-primary/15', text: 'text-ak-brand-primary' }, icon: MessageSquare };
+      return { label: 'Feedback', colorClasses: { bg: 'bg-ak-primary/15', text: 'text-ak-primary' }, icon: MessageSquare };
     case 'plan_update':
       return { label: 'Planoppdatering', colorClasses: { bg: 'bg-ak-status-success/15', text: 'text-ak-status-success' }, icon: Calendar };
     case 'goal_review':
@@ -137,12 +137,12 @@ const CoachMessageCard = ({ message, onClick }) => {
     <div
       onClick={() => onClick(message)}
       className={`bg-ak-surface-base rounded-[14px] p-4 cursor-pointer transition-all shadow-sm hover:-translate-y-0.5 hover:shadow-md ${
-        message.read ? '' : 'border-l-[3px] border-l-ak-brand-primary'
+        message.read ? '' : 'border-l-[3px] border-l-ak-primary'
       }`}
     >
       <div className="flex items-start gap-3.5">
         {/* Coach Avatar */}
-        <div className="w-11 h-11 rounded-full bg-ak-brand-primary flex items-center justify-center text-white text-sm font-semibold flex-shrink-0">
+        <div className="w-11 h-11 rounded-full bg-ak-primary flex items-center justify-center text-white text-sm font-semibold flex-shrink-0">
           {message.coach.name.split(' ').map((n) => n[0]).join('')}
         </div>
 
@@ -182,7 +182,7 @@ const CoachMessageCard = ({ message, onClick }) => {
           <div className="flex items-center justify-between">
             <div className="flex gap-3">
               {message.attachments.length > 0 && (
-                <div className="flex items-center gap-1 text-[11px] text-ak-brand-primary">
+                <div className="flex items-center gap-1 text-[11px] text-ak-primary">
                   <Video size={12} />
                   {message.attachments.length} vedlegg
                 </div>
@@ -194,7 +194,7 @@ const CoachMessageCard = ({ message, onClick }) => {
               )}
             </div>
             {!message.read && (
-              <div className="w-2 h-2 rounded-full bg-ak-brand-primary" />
+              <div className="w-2 h-2 rounded-full bg-ak-primary" />
             )}
           </div>
         </div>
@@ -237,7 +237,7 @@ const FraTrenerContainer = () => {
         {/* Stats */}
         <div className="grid grid-cols-[repeat(auto-fit,minmax(120px,1fr))] gap-2.5 mb-6">
           <div className="bg-ak-surface-base rounded-xl p-3.5 text-center">
-            <div className="text-[22px] font-bold text-ak-brand-primary">
+            <div className="text-[22px] font-bold text-ak-primary">
               {COACH_MESSAGES.length}
             </div>
             <div className="text-[11px] text-ak-text-secondary">Totalt</div>
@@ -264,7 +264,7 @@ const FraTrenerContainer = () => {
               onClick={() => setFilter(f.key)}
               className={`py-2 px-3.5 rounded-lg border-none text-[13px] font-medium cursor-pointer whitespace-nowrap transition-colors ${
                 filter === f.key
-                  ? 'bg-ak-brand-primary text-white'
+                  ? 'bg-ak-primary text-white'
                   : 'bg-ak-surface-base text-ak-text-primary hover:bg-ak-surface-subtle'
               }`}
             >

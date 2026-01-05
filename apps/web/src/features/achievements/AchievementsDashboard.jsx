@@ -22,7 +22,7 @@ const CATEGORY_LABELS = {
   improvement: 'Forbedring',
   milestone: 'Milepæler',
   special: 'Spesial',
-  streak: 'Streak',
+  streak: 'Serie',
   strength: 'Styrke',
   speed: 'Hastighet',
   accuracy: 'Presisjon',

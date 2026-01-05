@@ -244,6 +244,13 @@ export default function CoachTournamentCalendar() {
     ];
   };
 
+  // Helper functions (must be defined before useMemo hooks that use them)
+  const getDaysUntil = (dateStr: string) => {
+    const today = new Date();
+    const target = new Date(dateStr);
+    return Math.ceil((target.getTime() - today.getTime()) / (1000 * 60 * 60 * 24));
+  };
+
   // Filter tournaments
   const filteredTournaments = useMemo(() => {
     return tournaments.filter((t) => {
@@ -278,13 +285,6 @@ export default function CoachTournamentCalendar() {
 
     return { upcoming, withPlayers, totalParticipations, pendingRegistrations };
   }, [tournaments]);
-
-  // Helper functions
-  const getDaysUntil = (dateStr: string) => {
-    const today = new Date();
-    const target = new Date(dateStr);
-    return Math.ceil((target.getTime() - today.getTime()) / (1000 * 60 * 60 * 24));
-  };
 
   const formatDate = (dateStr: string) => {
     return new Date(dateStr).toLocaleDateString('nb-NO', { day: 'numeric', month: 'short' });
@@ -384,8 +384,8 @@ export default function CoachTournamentCalendar() {
 
         {/* Stats */}
         <div className="flex gap-4 flex-wrap">
-          <div className="flex items-center gap-2 py-2 px-3.5 bg-ak-brand-primary/10 rounded-lg">
-            <Trophy size={16} className="text-ak-brand-primary" />
+          <div className="flex items-center gap-2 py-2 px-3.5 bg-ak-primary/10 rounded-lg">
+            <Trophy size={16} className="text-ak-primary" />
             <span className="text-[13px] text-ak-text-primary">
               <strong>{stats.upcoming}</strong> kommende
             </span>
@@ -482,7 +482,7 @@ export default function CoachTournamentCalendar() {
                   onClick={() => setSelectedTournament(tournament)}
                   className={`cursor-pointer overflow-hidden ${
                     tournament.myPlayers.length > 0
-                      ? 'border-2 border-ak-brand-primary'
+                      ? 'border-2 border-ak-primary'
                       : 'border border-ak-border-default'
                   }`}
                 >
@@ -541,9 +541,9 @@ export default function CoachTournamentCalendar() {
 
                     {/* My Players */}
                     {tournament.myPlayers.length > 0 && (
-                      <div className="p-3 px-4 bg-ak-brand-primary/10 rounded-lg border-l-[3px] border-ak-brand-primary">
+                      <div className="p-3 px-4 bg-ak-primary/10 rounded-lg border-l-[3px] border-ak-primary">
                         <div className="flex items-center justify-between mb-2">
-                          <span className="text-[13px] font-semibold text-ak-brand-primary">
+                          <span className="text-[13px] font-semibold text-ak-primary">
                             Mine spillere ({tournament.myPlayers.length})
                           </span>
                           {pendingPlayers.length > 0 && (
@@ -560,7 +560,7 @@ export default function CoachTournamentCalendar() {
                                   : 'border border-ak-border-default'
                               }`}
                             >
-                              <div className="w-5 h-5 rounded-full bg-ak-brand-primary text-ak-surface-base text-[9px] font-semibold flex items-center justify-center">
+                              <div className="w-5 h-5 rounded-full bg-ak-primary text-ak-surface-base text-[9px] font-semibold flex items-center justify-center">
                                 {player.initials}
                               </div>
                               <span className="text-xs text-ak-text-primary">
@@ -645,19 +645,19 @@ export default function CoachTournamentCalendar() {
 
             <div className="flex flex-col gap-3 mb-5">
               <div className="flex items-center gap-3">
-                <Calendar size={18} className="text-ak-brand-primary" />
+                <Calendar size={18} className="text-ak-primary" />
                 <span className="text-ak-text-primary">{formatDateRange(selectedTournament.startDate, selectedTournament.endDate)}</span>
               </div>
               <div className="flex items-center gap-3">
-                <MapPin size={18} className="text-ak-brand-primary" />
+                <MapPin size={18} className="text-ak-primary" />
                 <span className="text-ak-text-primary">{selectedTournament.location}, {selectedTournament.city}</span>
               </div>
               <div className="flex items-center gap-3">
-                <Flag size={18} className="text-ak-brand-primary" />
+                <Flag size={18} className="text-ak-primary" />
                 <span className="text-ak-text-primary">{selectedTournament.format}</span>
               </div>
               <div className="flex items-center gap-3">
-                <Clock size={18} className="text-ak-brand-primary" />
+                <Clock size={18} className="text-ak-primary" />
                 <span className="text-ak-text-primary">Påmeldingsfrist: {formatDate(selectedTournament.registrationDeadline)}</span>
               </div>
             </div>
@@ -674,7 +674,7 @@ export default function CoachTournamentCalendar() {
                       className="flex items-center justify-between py-2.5 px-3 bg-ak-surface-subtle rounded-lg"
                     >
                       <div className="flex items-center gap-2.5">
-                        <div className="w-8 h-8 rounded-full bg-ak-brand-primary text-ak-surface-base text-xs font-semibold flex items-center justify-center">
+                        <div className="w-8 h-8 rounded-full bg-ak-primary text-ak-surface-base text-xs font-semibold flex items-center justify-center">
                           {player.initials}
                         </div>
                         <div>

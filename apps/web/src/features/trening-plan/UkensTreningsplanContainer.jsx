@@ -2,62 +2,117 @@
  * UkensTreningsplanContainer.jsx
  * Design System v3.0 - Premium Light
  *
+ * Integrert med AK_GOLF_KATEGORI_HIERARKI_v2.0
+ * Bruker pyramide-systemet: FYS → TEK → SLAG → SPILL → TURN
+ *
  * MIGRATED TO PAGE ARCHITECTURE - Zero inline styles
  */
 import React, { useState, useEffect, useCallback, useRef } from 'react';
 import {
   Calendar, Clock, Target, CheckCircle, ChevronRight, ChevronLeft,
   Dumbbell, Brain, Flag, RotateCcw, Flame, X, Plus, FileText,
-  MoreHorizontal
+  MoreHorizontal, Trophy, Crosshair
 } from 'lucide-react';
 import { PageHeader } from '../../components/layout/PageHeader';
 import { AICoachGuide } from '../ai-coach';
 import { GUIDE_PRESETS } from '../ai-coach/types';
 
-// Session type color configuration
-const SESSION_TYPE_CLASSES = {
-  technical: {
-    text: 'text-ak-info',
-    bg: 'bg-ak-info/10',
-    activeBg: 'bg-ak-info',
-    icon: Target,
-    label: 'Teknikk',
-  },
-  physical: {
-    text: 'text-danger',
-    bg: 'bg-danger/10',
-    activeBg: 'bg-danger',
+// =============================================================================
+// AK HIERARCHY CONFIGURATION (from AK_GOLF_KATEGORI_HIERARKI_v2.0)
+// =============================================================================
+
+// Pyramid-based session types (replaces old SESSION_TYPE_CLASSES)
+const PYRAMID_CLASSES = {
+  FYS: {
+    text: 'text-red-600',
+    bg: 'bg-red-500/10',
+    activeBg: 'bg-red-500',
     icon: Dumbbell,
+    emoji: '🏋️',
     label: 'Fysisk',
+    description: 'Styrke, power, mobilitet',
   },
-  mental: {
-    text: 'text-ak-brand-primary',
-    bg: 'bg-ak-brand-primary/10',
-    activeBg: 'bg-ak-brand-primary',
-    icon: Brain,
-    label: 'Mental',
+  TEK: {
+    text: 'text-ak-primary',
+    bg: 'bg-ak-primary/10',
+    activeBg: 'bg-ak-primary',
+    icon: Target,
+    emoji: '🎯',
+    label: 'Teknikk',
+    description: 'Bevegelsesmønster, posisjoner',
   },
-  short_game: {
-    text: 'text-ak-status-success',
-    bg: 'bg-ak-status-success/10',
-    activeBg: 'bg-ak-status-success',
+  SLAG: {
+    text: 'text-emerald-600',
+    bg: 'bg-emerald-500/10',
+    activeBg: 'bg-emerald-500',
+    icon: Crosshair,
+    emoji: '⛳',
+    label: 'Golfslag',
+    description: 'Slagkvalitet, nøyaktighet',
+  },
+  SPILL: {
+    text: 'text-amber-600',
+    bg: 'bg-amber-500/10',
+    activeBg: 'bg-amber-500',
     icon: Flag,
-    label: 'Kortspill',
+    emoji: '🏌️',
+    label: 'Spill',
+    description: 'Strategi, banehåndtering',
   },
-  warmup: {
-    text: 'text-ak-status-warning',
-    bg: 'bg-ak-status-warning/10',
-    activeBg: 'bg-ak-status-warning',
-    icon: Flame,
-    label: 'Oppvarming',
+  TURN: {
+    text: 'text-purple-600',
+    bg: 'bg-purple-500/10',
+    activeBg: 'bg-purple-500',
+    icon: Trophy,
+    emoji: '🏆',
+    label: 'Turnering',
+    description: 'Mental prestasjon',
   },
-  rest: {
+  REST: {
     text: 'text-ak-text-secondary',
     bg: 'bg-ak-surface-subtle',
     activeBg: 'bg-ak-text-secondary',
     icon: RotateCcw,
+    emoji: '😴',
     label: 'Hvile',
+    description: 'Restitusjon',
   },
+};
+
+// L-Phase labels for display
+const L_PHASE_LABELS = {
+  'L-KROPP': 'Kropp',
+  'L-ARM': 'Arm',
+  'L-KØLLE': 'Kølle',
+  'L-BALL': 'Ball',
+  'L-AUTO': 'Auto',
+};
+
+// Environment labels
+const ENVIRONMENT_LABELS = {
+  M0: 'Gym',
+  M1: 'Simulator',
+  M2: 'Range',
+  M3: 'Øvingsfelt',
+  M4: 'Bane',
+  M5: 'Turnering',
+};
+
+// Legacy mapping for backwards compatibility
+const SESSION_TYPE_CLASSES = {
+  technical: PYRAMID_CLASSES.TEK,
+  physical: PYRAMID_CLASSES.FYS,
+  mental: PYRAMID_CLASSES.TURN, // Mental maps to TURN
+  short_game: PYRAMID_CLASSES.SLAG,
+  warmup: { ...PYRAMID_CLASSES.FYS, label: 'Oppvarming' },
+  rest: PYRAMID_CLASSES.REST,
+  // Direct pyramid mappings
+  FYS: PYRAMID_CLASSES.FYS,
+  TEK: PYRAMID_CLASSES.TEK,
+  SLAG: PYRAMID_CLASSES.SLAG,
+  SPILL: PYRAMID_CLASSES.SPILL,
+  TURN: PYRAMID_CLASSES.TURN,
+  REST: PYRAMID_CLASSES.REST,
 };
 
 // ============================================================================
@@ -92,8 +147,31 @@ const WEEK_DATA = {
       isToday: false,
       isCompleted: true,
       sessions: [
-        { id: 's1', type: 'physical', name: 'Styrketrening', duration: 60, status: 'completed', description: 'Fokus på core og rotasjon. 3 sett av hver øvelse.', exercises: ['Planke 3x60s', 'Russian twists 3x20', 'Cable rotations 3x15'] },
-        { id: 's2', type: 'mental', name: 'Visualisering', duration: 20, status: 'completed', description: 'Visualiser perfekte slag på driving range.' },
+        {
+          id: 's1',
+          type: 'FYS',
+          pyramid: 'FYS',
+          name: 'Styrketrening',
+          formula: 'FYS_STYRKE_M0',
+          lPhase: null,
+          csLevel: null,
+          environment: 'M0',
+          pressure: 'PR1',
+          duration: 60,
+          status: 'completed',
+          description: 'Fokus på core og rotasjon. 3 sett av hver øvelse.',
+          exercises: ['Planke 3x60s', 'Russian twists 3x20', 'Cable rotations 3x15'],
+        },
+        {
+          id: 's2',
+          type: 'TURN',
+          pyramid: 'TURN',
+          name: 'Visualisering',
+          formula: 'TURN_UTV_M0_PR1',
+          duration: 20,
+          status: 'completed',
+          description: 'Visualiser perfekte slag på driving range.',
+        },
       ],
     },
     {
@@ -102,8 +180,33 @@ const WEEK_DATA = {
       isToday: false,
       isCompleted: true,
       sessions: [
-        { id: 's3', type: 'technical', name: 'Simulator - Driver', duration: 90, status: 'completed', description: 'Fokus på konsistent kontakt og ballbane.', exercises: ['Oppvarming 20 baller', 'Alignment drill', 'Tempo drill 1-2-3', 'Full sving med mål'] },
-        { id: 's4', type: 'short_game', name: 'Putting drill', duration: 30, status: 'completed', description: 'Gate putting og avstandskontroll.' },
+        {
+          id: 's3',
+          type: 'TEK',
+          pyramid: 'TEK',
+          name: 'Simulator - Driver',
+          formula: 'TEK_TEE_L-BALL_CS60_M1_PR2',
+          lPhase: 'L-BALL',
+          csLevel: 60,
+          environment: 'M1',
+          pressure: 'PR2',
+          duration: 90,
+          status: 'completed',
+          description: 'Fokus på konsistent kontakt og ballbane.',
+          exercises: ['Oppvarming 20 baller', 'Alignment drill', 'Tempo drill 1-2-3', 'Full sving med mål'],
+        },
+        {
+          id: 's4',
+          type: 'SLAG',
+          pyramid: 'SLAG',
+          name: 'Putting drill',
+          formula: 'SLAG_PUTT5-10_M3_PR2_SPEED',
+          environment: 'M3',
+          pressure: 'PR2',
+          duration: 30,
+          status: 'completed',
+          description: 'Gate putting og avstandskontroll.',
+        },
       ],
     },
     {
@@ -112,7 +215,7 @@ const WEEK_DATA = {
       isToday: true,
       isCompleted: false,
       sessions: [
-        { id: 's5', type: 'rest', name: 'Hviledag', duration: 0, status: 'pending' },
+        { id: 's5', type: 'REST', pyramid: 'REST', name: 'Hviledag', duration: 0, status: 'pending' },
       ],
     },
     {
@@ -121,8 +224,35 @@ const WEEK_DATA = {
       isToday: false,
       isCompleted: false,
       sessions: [
-        { id: 's6', type: 'technical', name: 'Lange jern', duration: 120, status: 'pending', description: 'Presisjon og avstandskontroll med 4-6 jern.', exercises: ['6-jern til mål 147m', '5-jern til mål 160m', '4-jern til mål 175m'] },
-        { id: 's7', type: 'short_game', name: 'Chipping', duration: 40, status: 'pending', description: 'Chip fra tight lie og fringe.' },
+        {
+          id: 's6',
+          type: 'TEK',
+          pyramid: 'TEK',
+          name: 'Lange jern',
+          formula: 'TEK_INN150_L-BALL_CS70_M2_PR2_P4.0-P7.0',
+          lPhase: 'L-BALL',
+          csLevel: 70,
+          environment: 'M2',
+          pressure: 'PR2',
+          positionStart: 'P4.0',
+          positionEnd: 'P7.0',
+          duration: 120,
+          status: 'pending',
+          description: 'Presisjon og avstandskontroll med 4-6 jern.',
+          exercises: ['6-jern til mål 147m', '5-jern til mål 160m', '4-jern til mål 175m'],
+        },
+        {
+          id: 's7',
+          type: 'SLAG',
+          pyramid: 'SLAG',
+          name: 'Chipping',
+          formula: 'SLAG_CHIP_M3_PR2_P6.0-P8.0',
+          environment: 'M3',
+          pressure: 'PR2',
+          duration: 40,
+          status: 'pending',
+          description: 'Chip fra tight lie og fringe.',
+        },
       ],
     },
     {
@@ -131,8 +261,27 @@ const WEEK_DATA = {
       isToday: false,
       isCompleted: false,
       sessions: [
-        { id: 's8', type: 'physical', name: 'Mobilitet', duration: 45, status: 'pending', description: 'Dynamisk stretching og mobilitetstrening.' },
-        { id: 's9', type: 'mental', name: 'Mental forberedelse', duration: 30, status: 'pending', description: 'Pre-round rutine og fokusøvelser.' },
+        {
+          id: 's8',
+          type: 'FYS',
+          pyramid: 'FYS',
+          name: 'Mobilitet',
+          formula: 'FYS_MOBILITET_M0',
+          environment: 'M0',
+          duration: 45,
+          status: 'pending',
+          description: 'Dynamisk stretching og mobilitetstrening.',
+        },
+        {
+          id: 's9',
+          type: 'TURN',
+          pyramid: 'TURN',
+          name: 'Mental forberedelse',
+          formula: 'TURN_UTV_M0_PR2',
+          duration: 30,
+          status: 'pending',
+          description: 'Pre-round rutine og fokusøvelser.',
+        },
       ],
     },
     {
@@ -141,7 +290,20 @@ const WEEK_DATA = {
       isToday: false,
       isCompleted: false,
       sessions: [
-        { id: 's10', type: 'technical', name: 'Simulert runde', duration: 150, status: 'pending', description: 'Full 18-hulls simulering på TrackMan.', exercises: ['Pre-shot rutine', 'Course management', 'Scoring fokus'] },
+        {
+          id: 's10',
+          type: 'SPILL',
+          pyramid: 'SPILL',
+          name: 'Simulert runde',
+          formula: 'SPILL_BANE_CS90_M4_PR4_STRATEGI',
+          csLevel: 90,
+          environment: 'M4',
+          pressure: 'PR4',
+          duration: 150,
+          status: 'pending',
+          description: 'Full 18-hulls simulering på TrackMan.',
+          exercises: ['Pre-shot rutine', 'Course management', 'Scoring fokus'],
+        },
       ],
     },
     {
@@ -150,7 +312,7 @@ const WEEK_DATA = {
       isToday: false,
       isCompleted: false,
       sessions: [
-        { id: 's11', type: 'rest', name: 'Hviledag', duration: 0, status: 'pending' },
+        { id: 's11', type: 'REST', pyramid: 'REST', name: 'Hviledag', duration: 0, status: 'pending' },
       ],
     },
   ],
@@ -193,8 +355,9 @@ const formatFullDate = (dateStr) => {
 const SessionChip = ({ session, isSelected, onClick }) => {
   const config = getSessionTypeConfig(session.type);
   const Icon = config.icon;
-  const isRest = session.type === 'rest';
+  const isRest = session.type === 'rest' || session.type === 'REST';
   const isCompleted = session.status === 'completed';
+  const pyramidConfig = session.pyramid ? PYRAMID_CLASSES[session.pyramid] : null;
 
   if (isRest) {
     return (
@@ -204,25 +367,46 @@ const SessionChip = ({ session, isSelected, onClick }) => {
     );
   }
 
+  // Build subtitle from AK hierarchy data
+  const subtitleParts = [];
+  if (session.lPhase && L_PHASE_LABELS[session.lPhase]) {
+    subtitleParts.push(L_PHASE_LABELS[session.lPhase]);
+  }
+  if (session.csLevel) {
+    subtitleParts.push(`CS${session.csLevel}`);
+  }
+  if (session.environment && ENVIRONMENT_LABELS[session.environment]) {
+    subtitleParts.push(ENVIRONMENT_LABELS[session.environment]);
+  }
+
   return (
     <button
       onClick={(e) => {
         e.stopPropagation();
         onClick(session);
       }}
-      className={`flex items-center gap-1.5 py-1.5 px-2.5 border-none rounded-md text-xs font-medium cursor-pointer w-full text-left transition-all duration-150 ${
+      data-session-chip
+      className={`flex flex-col gap-0.5 py-1.5 px-2.5 border-none rounded-md text-xs font-medium cursor-pointer w-full text-left transition-all duration-150 ${
         isSelected
           ? `${config.activeBg} text-white`
-          : `${config.bg} ${config.text} hover:${config.activeBg} hover:text-white`
-      } ${isCompleted ? 'opacity-70 line-through' : ''}`}
+          : `${config.bg} ${config.text} hover:opacity-80`
+      } ${isCompleted ? 'opacity-70' : ''}`}
     >
-      {isCompleted ? <CheckCircle size={12} /> : <Icon size={12} />}
-      <span className="flex-1 overflow-hidden text-ellipsis whitespace-nowrap">
-        {session.name}
-      </span>
-      <span className="text-[10px] opacity-80">
-        {session.duration}m
-      </span>
+      <div className="flex items-center gap-1.5">
+        {pyramidConfig?.emoji && <span className="text-sm">{pyramidConfig.emoji}</span>}
+        {!pyramidConfig?.emoji && (isCompleted ? <CheckCircle size={12} /> : <Icon size={12} />)}
+        <span className={`flex-1 overflow-hidden text-ellipsis whitespace-nowrap ${isCompleted ? 'line-through' : ''}`}>
+          {session.name}
+        </span>
+        <span className="text-[10px] opacity-80">
+          {session.duration}m
+        </span>
+      </div>
+      {subtitleParts.length > 0 && (
+        <div className={`text-[10px] opacity-70 ${isSelected ? 'text-white/80' : ''}`}>
+          {subtitleParts.join(' • ')}
+        </div>
+      )}
     </button>
   );
 };
@@ -240,23 +424,23 @@ const DayColumn = ({ day, selectedSessionId, onSessionClick }) => {
     <div className="flex-1 min-w-0 border-r border-ak-border-default flex flex-col">
       {/* Day Header */}
       <div className={`py-3 px-2 border-b border-ak-border-default text-center relative ${
-        isToday ? 'bg-ak-brand-primary/5' : ''
+        isToday ? 'bg-ak-primary/5' : ''
       }`}>
         {isToday && (
-          <div className="absolute left-0 top-0 bottom-0 w-[3px] bg-ak-brand-primary" />
+          <div className="absolute left-0 top-0 bottom-0 w-[3px] bg-ak-primary" />
         )}
         <div className={`text-[11px] font-medium uppercase tracking-wide ${
-          isToday ? 'text-ak-brand-primary' : 'text-ak-text-secondary'
+          isToday ? 'text-ak-primary' : 'text-ak-text-secondary'
         }`}>
           {dayName}
         </div>
         <div className={`text-xl font-semibold mt-0.5 ${
-          isToday ? 'text-ak-brand-primary' : 'text-ak-text-primary'
+          isToday ? 'text-ak-primary' : 'text-ak-text-primary'
         }`}>
           {dayNumber}
         </div>
         {isToday && (
-          <div className="mt-1 text-[9px] font-semibold text-ak-brand-primary uppercase tracking-wide">
+          <div className="mt-1 text-[9px] font-semibold text-ak-primary uppercase tracking-wide">
             I dag
           </div>
         )}
@@ -438,7 +622,7 @@ const SessionSidebarDrawer = ({ isOpen, session, onClose, allSessions, onSession
               {/* Actions */}
               <div className="flex flex-col gap-2">
                 {session.status !== 'completed' && (
-                  <button className="flex items-center justify-center gap-2 py-3 px-4 bg-ak-brand-primary text-white border-none rounded-lg text-sm font-medium cursor-pointer">
+                  <button className="flex items-center justify-center gap-2 py-3 px-4 bg-ak-primary text-white border-none rounded-lg text-sm font-medium cursor-pointer">
                     <CheckCircle size={16} />
                     Marker som fullført
                   </button>
@@ -511,7 +695,7 @@ const SessionSidebarDrawer = ({ isOpen, session, onClose, allSessions, onSession
                   </div>
                   <div className="h-1.5 bg-ak-border-default rounded-sm overflow-hidden">
                     <div
-                      className="h-full bg-ak-brand-primary rounded-sm"
+                      className="h-full bg-ak-primary rounded-sm"
                       style={{ width: `${(WEEK_DATA.completedHours / WEEK_DATA.totalPlannedHours) * 100}%` }}
                     />
                   </div>
@@ -560,7 +744,7 @@ const WeekStatsBar = ({ stats, completedHours, totalHours }) => {
         <span className="font-semibold text-ak-text-primary">{progressPercent}%</span>
         <div className="w-20 h-1 bg-ak-border-default rounded-sm overflow-hidden">
           <div
-            className="h-full bg-ak-brand-primary rounded-sm"
+            className="h-full bg-ak-primary rounded-sm"
             style={{ width: `${progressPercent}%` }}
           />
         </div>
@@ -689,7 +873,7 @@ const UkensTreningsplanContainer = () => {
 
         {/* Right Side */}
         <div className="flex items-center gap-3">
-          <div className="flex items-center gap-1.5 py-1.5 px-3 bg-ak-brand-primary/10 rounded-md text-xs font-medium text-ak-brand-primary">
+          <div className="flex items-center gap-1.5 py-1.5 px-3 bg-ak-primary/10 rounded-md text-xs font-medium text-ak-primary">
             <Calendar size={12} />
             {WEEK_DATA.period}
           </div>

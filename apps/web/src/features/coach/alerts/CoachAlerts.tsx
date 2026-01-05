@@ -69,7 +69,7 @@ function AlertCard({
       className={`flex items-start gap-4 p-4 bg-ak-surface-card rounded-xl border cursor-pointer transition-all ${
         alert.isRead
           ? 'border-ak-border-default hover:border-ak-border-strong'
-          : 'border-ak-brand-primary border-l-4 hover:shadow-md'
+          : 'border-ak-primary border-l-4 hover:shadow-md'
       }`}
       role="button"
       tabIndex={0}
@@ -87,7 +87,7 @@ function AlertCard({
             {alert.athleteName}
           </span>
           {!alert.isRead && (
-            <span className="w-2 h-2 rounded-full bg-ak-brand-primary" />
+            <span className="w-2 h-2 rounded-full bg-ak-primary" />
           )}
         </div>
         <p className="text-ak-text-secondary text-sm">{alert.message}</p>
@@ -196,7 +196,7 @@ export default function CoachAlerts() {
         {unreadCount > 0 && (
           <button
             onClick={handleMarkAllRead}
-            className="text-sm text-ak-brand-primary hover:underline"
+            className="text-sm text-ak-primary hover:underline"
           >
             Merk alle som lest
           </button>

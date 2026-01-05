@@ -253,7 +253,10 @@ const SessionPreviewDialog: React.FC<SessionPreviewDialogProps> = ({
       <DialogContent>
         <DialogHeader>
           <div className="flex items-start gap-3">
-            <TrainingCategoryBadge category={category as any} size="md" />
+            <TrainingCategoryBadge
+              category={(['teknikk', 'slag', 'spill', 'fysisk', 'mental', 'turnering'].includes(category) ? category : 'teknikk') as 'teknikk' | 'slag' | 'spill' | 'fysisk' | 'mental' | 'turnering'}
+              size="md"
+            />
             <div>
               <DialogTitle>{session.name}</DialogTitle>
               <p className="text-sm text-text-secondary mt-1">

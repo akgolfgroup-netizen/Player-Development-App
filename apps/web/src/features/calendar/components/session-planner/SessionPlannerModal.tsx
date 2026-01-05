@@ -164,7 +164,7 @@ export const SessionPlannerModal: React.FC<SessionPlannerModalProps> = ({
                 type="button"
                 onClick={handleSubmit}
                 disabled={!planner.parsedFormula?.isValid}
-                className="flex items-center gap-2 px-4 py-2 rounded-lg font-medium text-sm transition-colors disabled:opacity-40 bg-ak-brand-primary text-white hover:bg-ak-brand-primary/90"
+                className="flex items-center gap-2 px-4 py-2 rounded-lg font-medium text-sm transition-colors disabled:opacity-40 bg-ak-primary text-white hover:bg-ak-primary/90"
               >
                 Opprett økt
               </button>
@@ -173,7 +173,7 @@ export const SessionPlannerModal: React.FC<SessionPlannerModalProps> = ({
                 type="button"
                 onClick={planner.goNext}
                 disabled={!planner.canGoNext}
-                className="flex items-center gap-1 px-4 py-2 rounded-lg font-medium text-sm transition-colors disabled:opacity-40 bg-ak-brand-primary text-white hover:bg-ak-brand-primary/90"
+                className="flex items-center gap-1 px-4 py-2 rounded-lg font-medium text-sm transition-colors disabled:opacity-40 bg-ak-primary text-white hover:bg-ak-primary/90"
               >
                 Neste
                 <ChevronRight size={16} />

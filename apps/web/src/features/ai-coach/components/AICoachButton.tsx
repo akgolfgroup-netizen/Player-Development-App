@@ -35,7 +35,7 @@ export function AICoachButton() {
   return (
     <button
       onClick={handleClick}
-      className="fixed right-4 bottom-4 flex items-center gap-2 py-3 px-4 bg-ak-brand-primary text-white border-none rounded-full cursor-pointer shadow-lg z-[1000] transition-all duration-200 font-inherit hover:scale-105 hover:shadow-xl active:scale-[0.98] max-[480px]:right-3 max-[480px]:bottom-3 max-[480px]:p-3"
+      className="fixed right-4 bottom-4 flex items-center gap-2 py-3 px-4 bg-ak-primary text-white border-none rounded-full cursor-pointer shadow-lg z-[1000] transition-all duration-200 font-inherit hover:scale-105 hover:shadow-xl active:scale-[0.98] max-[480px]:right-3 max-[480px]:bottom-3 max-[480px]:p-3"
       aria-label={`Åpne AI Coach${unreadCount > 0 ? ` (${unreadCount} uleste)` : ''}`}
     >
       <Sparkles size={24} />

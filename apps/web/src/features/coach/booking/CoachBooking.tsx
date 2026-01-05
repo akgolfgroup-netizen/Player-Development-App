@@ -240,7 +240,7 @@ export default function CoachBooking() {
           </button>
           <button
             onClick={goToToday}
-            className="px-3 py-1 text-sm font-medium text-ak-brand-primary hover:bg-ak-brand-primary/10 rounded-lg transition-colors"
+            className="px-3 py-1 text-sm font-medium text-ak-primary hover:bg-ak-primary/10 rounded-lg transition-colors"
           >
             I dag
           </button>
@@ -264,10 +264,10 @@ export default function CoachBooking() {
               <div
                 key={i}
                 className={`p-3 text-center border-l border-ak-border-default ${
-                  isToday ? 'bg-ak-brand-primary/10' : 'bg-ak-surface-subtle'
+                  isToday ? 'bg-ak-primary/10' : 'bg-ak-surface-subtle'
                 }`}
               >
-                <div className={`text-sm font-medium ${isToday ? 'text-ak-brand-primary' : 'text-ak-text-primary'}`}>
+                <div className={`text-sm font-medium ${isToday ? 'text-ak-primary' : 'text-ak-text-primary'}`}>
                   {formatDate(day)}
                 </div>
               </div>

@@ -16,7 +16,6 @@
  */
 
 import React, { useCallback } from 'react';
-import { Loader2 } from 'lucide-react';
 
 import { useOversiktState } from './hooks/useOversiktState';
 import { useUnifiedCalendar } from './hooks/useUnifiedCalendar';
@@ -26,6 +25,7 @@ import { OversiktMonthView } from './components/OversiktMonthView';
 import { OversiktDayView } from './components/OversiktDayView';
 import { EventLegend } from './components/EventLegend';
 import { AICoachGuide, GUIDE_PRESETS } from '../ai-coach';
+import { CalendarSkeleton } from '../../ui/skeletons';
 import type { UnifiedCalendarEvent, OversiktView } from './types';
 
 export const CalendarOversiktPage: React.FC = () => {
@@ -72,12 +72,9 @@ export const CalendarOversiktPage: React.FC = () => {
   }, []);
 
   const renderView = () => {
+    // Use CalendarSkeleton to prevent layout shift/flickering during loading
     if (isLoading) {
-      return (
-        <div className="flex-1 flex items-center justify-center bg-ak-surface-base">
-          <Loader2 className="w-8 h-8 animate-spin text-ak-text-tertiary" />
-        </div>
-      );
+      return <CalendarSkeleton view={view} />;
     }
 
     if (error) {

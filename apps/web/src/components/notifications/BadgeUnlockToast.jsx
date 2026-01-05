@@ -145,7 +145,7 @@ const BadgeToast = ({ badge, onClose, index }) => {
             tierConfig.labelColor
           )}
         >
-          Badge Opptjent!
+          Merke Opptjent!
         </div>
         <div className="text-base font-bold text-ak-toast-text mb-1 truncate">
           {badge.name}

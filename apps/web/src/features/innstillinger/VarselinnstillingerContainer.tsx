@@ -1,4 +1,4 @@
-// @ts-nocheck
+// @ts-nocheck - API type mismatch needs to be resolved
 import React, { useState } from 'react';
 import {
   Bell, Mail, Smartphone, MessageSquare, Calendar,
@@ -16,7 +16,7 @@ import {
   Button,
   Separator,
 } from '../../components/shadcn';
-import { useToast } from '../../ui/composites/Toast.composite';
+import { useToast } from '../../components/shadcn/use-toast';
 import { cn } from 'lib/utils';
 
 // ============================================================================
@@ -276,10 +276,11 @@ const VarselinnstillingerContainer: React.FC = () => {
         description: "Varselinnstillingene dine er oppdatert.",
       });
       setHasChanges(false);
-    } catch (err: any) {
+    } catch (err) {
+      const errorMessage = err instanceof Error ? err.message : "Kunne ikke lagre innstillinger.";
       toast({
         title: "Feil ved lagring",
-        description: err.response?.data?.message || "Kunne ikke lagre innstillinger.",
+        description: errorMessage,
         variant: "destructive",
       });
     } finally {

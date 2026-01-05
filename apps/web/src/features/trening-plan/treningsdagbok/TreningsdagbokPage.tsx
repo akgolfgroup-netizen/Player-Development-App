@@ -102,7 +102,7 @@ export const TreningsdagbokPage: React.FC = () => {
         <div className="flex items-center justify-end pb-4">
           <button
             onClick={handleNewSession}
-            className="flex items-center gap-1.5 px-4 py-2 bg-ak-brand-primary text-white border-none rounded-lg text-sm font-medium cursor-pointer"
+            className="flex items-center gap-1.5 px-4 py-2 bg-ak-primary text-white border-none rounded-lg text-sm font-medium cursor-pointer"
           >
             <Plus size={18} />
             Ny okt

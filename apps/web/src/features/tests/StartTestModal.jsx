@@ -198,7 +198,7 @@ const StartTestModal = ({ test, player, onClose, onSubmit }) => {
                 <p style={{ fontSize: '12px', color: 'var(--ak-text-secondary)', marginBottom: '4px' }}>
                   Krav for kategori {player?.category || 'B'}
                 </p>
-                <p style={{ fontSize: '18px', fontWeight: 700, color: 'var(--ak-brand-primary)' }}>
+                <p style={{ fontSize: '18px', fontWeight: 700, color: 'var(--ak-primary)' }}>
                   {test.lowerIsBetter ? '≤ ' : '≥ '}{requirement}{test.unit}
                 </p>
               </div>

@@ -15,7 +15,7 @@ import { SectionTitle, SubSectionTitle } from '../../components/typography/Headi
 
 // Color class mapping for tools
 const COLOR_CLASSES = {
-  brand: { text: 'text-ak-brand-primary', bg: 'bg-ak-brand-primary/15' },
+  brand: { text: 'text-ak-primary', bg: 'bg-ak-primary/15' },
   success: { text: 'text-ak-status-success', bg: 'bg-ak-status-success/15' },
   warning: { text: 'text-ak-status-warning', bg: 'bg-ak-status-warning/15' },
   error: { text: 'text-ak-status-error', bg: 'bg-ak-status-error/15' },
@@ -152,14 +152,14 @@ const ClubDistancesWidget = () => {
     <div className="bg-ak-surface-base rounded-2xl p-5 shadow-sm">
       <div className="flex items-center justify-between mb-4">
         <div className="flex items-center gap-2.5">
-          <BarChart2 size={18} className="text-ak-brand-primary" />
+          <BarChart2 size={18} className="text-ak-primary" />
           <SubSectionTitle className="text-[15px] m-0">
             Mine kollelengder
           </SubSectionTitle>
         </div>
         <button
           onClick={() => setShowAll(!showAll)}
-          className="text-xs text-ak-brand-primary bg-transparent border-none cursor-pointer font-medium"
+          className="text-xs text-ak-primary bg-transparent border-none cursor-pointer font-medium"
         >
           {showAll ? 'Vis mindre' : 'Vis alle'}
         </button>
@@ -245,8 +245,8 @@ const StrokesGainedWidget = () => {
         ))}
       </div>
 
-      <div className="mt-4 p-2.5 bg-ak-brand-primary/5 rounded-lg flex items-center gap-2">
-        <Info size={14} className="text-ak-brand-primary" />
+      <div className="mt-4 p-2.5 bg-ak-primary/5 rounded-lg flex items-center gap-2">
+        <Info size={14} className="text-ak-primary" />
         <span className="text-xs text-ak-text-primary">
           Basert pa dine siste 10 turneringsrunder
         </span>
@@ -267,8 +267,8 @@ const QuickStatsWidget = ({ stats }) => {
       </SubSectionTitle>
 
       <div className="grid grid-cols-2 gap-3">
-        <div className="p-3.5 bg-ak-brand-primary/10 rounded-xl text-center">
-          <div className="text-[22px] font-bold text-ak-brand-primary">
+        <div className="p-3.5 bg-ak-primary/10 rounded-xl text-center">
+          <div className="text-[22px] font-bold text-ak-primary">
             {stats.currentHandicap}
           </div>
           <div className="text-[11px] text-ak-text-secondary">Handicap</div>

@@ -121,7 +121,7 @@ export const testDefinitions: TestDefinition[] = [
     name: 'Driver Klubbhodehastighet',
     shortName: 'Driver Speed',
     category: 'speed',
-    icon: '⚡',
+    icon: 'zap',
     description: 'Mål klubbhodehastighet med driver. 6 slag, beste resultat teller.',
     purpose: 'Klubbhodehastighet er en av de viktigste faktorene for å oppnå lang slaglengde. Denne testen gir deg et presist mål på din maksimale hastighet.',
     methodology: [
@@ -155,7 +155,7 @@ export const testDefinitions: TestDefinition[] = [
     name: '7-Jern Klubbhodehastighet',
     shortName: '7-Iron Speed',
     category: 'speed',
-    icon: '⚡',
+    icon: 'zap',
     description: 'Mål klubbhodehastighet med 7-jern. 6 slag, beste resultat teller.',
     purpose: 'Hastighet med jern korrelerer med carry-avstand og muligheten til å treffe greener fra lengre hold.',
     methodology: [
@@ -189,7 +189,7 @@ export const testDefinitions: TestDefinition[] = [
     name: 'Driver Carry-avstand',
     shortName: 'Driver Carry',
     category: 'distance',
-    icon: '📏',
+    icon: 'ruler',
     description: 'Mål carry-avstand med driver. 6 slag, gjennomsnitt av beste 3.',
     purpose: 'Carry-avstand viser hvor langt ballen flyr i luften før den lander. Dette er viktig for å planlegge slag over hindringer.',
     methodology: [
@@ -222,7 +222,7 @@ export const testDefinitions: TestDefinition[] = [
     name: 'PEI - Presisjon',
     shortName: 'PEI',
     category: 'accuracy',
-    icon: '🎯',
+    icon: 'target',
     description: 'Slå 10 slag fra 100m. Mål avstand til flagg. Beregn PEI.',
     purpose: 'PEI (Precision Error Index) måler hvor presist du treffer i forhold til slaglengden. En PEI på 5% betyr at ballen lander 5m fra målet på et 100m slag.',
     methodology: [
@@ -261,7 +261,7 @@ export const testDefinitions: TestDefinition[] = [
     name: 'Fairway-treff',
     shortName: 'FIR',
     category: 'accuracy',
-    icon: '🏌️',
+    icon: 'crosshair',
     description: 'Slå 10 driver-slag mot fairway-mål. Tell treff innenfor 30m bredde.',
     purpose: 'Fairway-treff er avgjørende for å sette opp gode approach-slag. Denne testen måler din evne til å treffe fairway konsistent.',
     methodology: [
@@ -297,7 +297,7 @@ export const testDefinitions: TestDefinition[] = [
     name: 'GIR Simulering',
     shortName: 'GIR',
     category: 'accuracy',
-    icon: '🟢',
+    icon: 'circle-dot',
     description: 'Slå approach-slag til 9 ulike avstander. Tell greener truffet.',
     purpose: 'Greens in Regulation (GIR) er en av de viktigste statistikkene for scoring. Denne testen simulerer approach-slag fra typiske avstander.',
     methodology: [
@@ -338,7 +338,7 @@ export const testDefinitions: TestDefinition[] = [
     name: 'Up & Down',
     shortName: 'Up&Down',
     category: 'short_game',
-    icon: '⛳',
+    icon: 'flag',
     description: 'Chip og putt fra 10 posisjoner rundt green. Tell up-and-down prosent.',
     purpose: 'Up-and-down evne er avgjørende for å redde par når du bommer på green. Denne testen måler din kortspill-effektivitet.',
     methodology: [
@@ -385,7 +385,7 @@ export const testDefinitions: TestDefinition[] = [
     name: 'Bunker Presisjon',
     shortName: 'Bunker',
     category: 'short_game',
-    icon: '🏖️',
+    icon: 'waves',
     description: 'Slå 10 bunker-slag. Mål gjennomsnittlig avstand til hull.',
     purpose: 'Bunker-spill er ofte en svakhet for amatører. Denne testen måler din evne til å komme nær hullet fra sand.',
     methodology: [
@@ -423,7 +423,7 @@ export const testDefinitions: TestDefinition[] = [
     name: 'Putting 1.5m',
     shortName: 'Putt 1.5m',
     category: 'putting',
-    icon: '🕳️',
+    icon: 'circle',
     description: 'Putt 20 baller fra 1.5 meter. Tell antall holet.',
     purpose: 'Korte putter er avgjørende for scoring. Denne avstanden er typisk for "must-make" putter.',
     methodology: [
@@ -456,7 +456,7 @@ export const testDefinitions: TestDefinition[] = [
     name: 'Putting 3m',
     shortName: 'Putt 3m',
     category: 'putting',
-    icon: '🕳️',
+    icon: 'circle',
     description: 'Putt 20 baller fra 3 meter. Tell antall holet.',
     purpose: 'Putter fra 3 meter er ofte avgjørende for birdie-muligheter og par-redninger.',
     methodology: [
@@ -489,7 +489,7 @@ export const testDefinitions: TestDefinition[] = [
     name: 'Lag Putting 10m',
     shortName: 'Lag Putt',
     category: 'putting',
-    icon: '📍',
+    icon: 'map-pin',
     description: 'Putt 10 baller fra 10 meter. Mål gjennomsnittlig avstand til hull.',
     purpose: 'Lag putting handler om å få ballen nær hullet fra lang avstand for å unngå tre-putter.',
     methodology: [
@@ -527,7 +527,7 @@ export const testDefinitions: TestDefinition[] = [
     name: 'Medisinball Kast',
     shortName: 'Med Ball',
     category: 'physical',
-    icon: '💪',
+    icon: 'dumbbell',
     description: 'Kast 3kg medisinball med rotasjon. 3 forsøk, beste teller.',
     purpose: 'Rotasjonskraft er essensielt for svingfart. Denne testen måler eksplosiv kraft i overkroppen.',
     methodology: [
@@ -560,7 +560,7 @@ export const testDefinitions: TestDefinition[] = [
     name: 'Vertikalt Hopp',
     shortName: 'Hopp',
     category: 'physical',
-    icon: '🦘',
+    icon: 'arrow-up',
     description: 'Stående vertikalt hopp. 3 forsøk, beste teller.',
     purpose: 'Vertikalt hopp måler eksplosiv beinstyrke, som korrelerer med evnen til å generere kraft fra bakken i svingen.',
     methodology: [
@@ -593,7 +593,7 @@ export const testDefinitions: TestDefinition[] = [
     name: 'Hofterotasjon',
     shortName: 'Hofte',
     category: 'physical',
-    icon: '🔄',
+    icon: 'rotate-cw',
     description: 'Mål intern hofterotasjon i liggende posisjon.',
     purpose: 'God hoftemobilitet er viktig for å kunne rotere effektivt i golfsvingen uten å kompensere med andre kroppsdeler.',
     methodology: [
@@ -626,7 +626,7 @@ export const testDefinitions: TestDefinition[] = [
     name: 'Thorax Rotasjon',
     shortName: 'Thorax',
     category: 'physical',
-    icon: '🔄',
+    icon: 'refresh-cw',
     description: 'Mål thorax-rotasjon i sittende posisjon.',
     purpose: 'Thorax-rotasjon er kritisk for baksvingen og gjennomsvingen. Begrenset rotasjon kan føre til kompensasjoner.',
     methodology: [
@@ -659,7 +659,7 @@ export const testDefinitions: TestDefinition[] = [
     name: 'Planke',
     shortName: 'Planke',
     category: 'physical',
-    icon: '🏋️',
+    icon: 'activity',
     description: 'Hold plankeposisjon så lenge som mulig med god form.',
     purpose: 'Kjernemuskulatur er fundamentet for en stabil golfsving. Planken tester utholdenhet i kjernen.',
     methodology: [
@@ -692,7 +692,7 @@ export const testDefinitions: TestDefinition[] = [
     name: '9-Hull Scoring',
     shortName: '9 Hull',
     category: 'scoring',
-    icon: '⛳',
+    icon: 'flag-triangle-right',
     description: 'Spill 9 hull under testforhold. Noter score.',
     purpose: 'Denne testen måler din evne til å score under kontrollerte forhold, og gir et bilde av ditt faktiske spillnivå.',
     methodology: [
@@ -736,7 +736,7 @@ export const testDefinitions: TestDefinition[] = [
     name: 'Mental Fokus',
     shortName: 'Mental',
     category: 'mental',
-    icon: '🧠',
+    icon: 'brain',
     description: 'Putt-serie med økende press. Evaluer mental kontroll.',
     purpose: 'Mental styrke er ofte det som skiller gode spillere fra de beste. Denne testen måler din evne til å prestere under press.',
     methodology: [
@@ -777,7 +777,7 @@ export const testDefinitions: TestDefinition[] = [
     name: 'Pre-Shot Rutine',
     shortName: 'Rutine',
     category: 'mental',
-    icon: '⏱️',
+    icon: 'timer',
     description: 'Observer og ti pre-shot rutine over 10 slag. Mål konsistens.',
     purpose: 'En konsistent pre-shot rutine hjelper deg å prestere under press. Denne testen måler hvor stabil rutinen din er.',
     methodology: [
@@ -810,7 +810,7 @@ export const testDefinitions: TestDefinition[] = [
     name: 'Konkurransesimulering',
     shortName: 'Konkurranse',
     category: 'mental',
-    icon: '🏆',
+    icon: 'trophy',
     description: 'Spill 3 hull med simulert konkurransepress. Score og mental evaluering.',
     purpose: 'Denne testen simulerer konkurransesituasjoner for å måle din evne til å prestere når det gjelder.',
     methodology: [

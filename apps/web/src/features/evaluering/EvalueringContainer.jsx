@@ -96,7 +96,7 @@ const STATS = {
 const getTypeConfig = (type) => {
   switch (type) {
     case 'training':
-      return { label: 'Trening', colorClasses: { bg: 'bg-ak-brand-primary/15', text: 'text-ak-brand-primary' }, icon: Dumbbell };
+      return { label: 'Trening', colorClasses: { bg: 'bg-ak-primary/15', text: 'text-ak-primary' }, icon: Dumbbell };
     case 'tournament':
       return { label: 'Turnering', colorClasses: { bg: 'bg-amber-500/15', text: 'text-amber-600' }, icon: Trophy };
     default:
@@ -202,7 +202,7 @@ const StatsOverview = ({ stats }) => {
   return (
     <div className="grid grid-cols-[repeat(auto-fit,minmax(120px,1fr))] gap-3 mb-6">
       <div className="bg-ak-surface-base rounded-xl p-4 text-center">
-        <div className="text-2xl font-bold text-ak-brand-primary">
+        <div className="text-2xl font-bold text-ak-primary">
           {stats.totalEvaluations}
         </div>
         <div className="text-xs text-ak-text-secondary">Totalt</div>
@@ -217,7 +217,7 @@ const StatsOverview = ({ stats }) => {
         <div className="text-xs text-ak-text-secondary">Gj.sn. rating</div>
       </div>
       <div className="bg-ak-surface-base rounded-xl p-4 text-center">
-        <div className="text-2xl font-bold text-ak-brand-primary">
+        <div className="text-2xl font-bold text-ak-primary">
           {stats.trainingCount}
         </div>
         <div className="text-xs text-ak-text-secondary">Treninger</div>
@@ -267,7 +267,7 @@ const EvalueringContainer = () => {
                 onClick={() => setFilter(f.key)}
                 className={`py-2 px-4 rounded-full text-xs font-medium cursor-pointer transition-colors ${
                   filter === f.key
-                    ? 'bg-ak-brand-primary text-white border-none'
+                    ? 'bg-ak-primary text-white border-none'
                     : 'bg-ak-surface-base text-ak-text-secondary border border-ak-border-default'
                 }`}
               >
@@ -286,7 +286,7 @@ const EvalueringContainer = () => {
               value={searchQuery}
               onChange={(e) => setSearchQuery(e.target.value)}
               placeholder="Sok i evalueringer..."
-              className="w-full py-2.5 pr-3 pl-9 rounded-lg border border-ak-border-default text-[13px] bg-ak-surface-base text-ak-text-primary outline-none focus:border-ak-brand-primary"
+              className="w-full py-2.5 pr-3 pl-9 rounded-lg border border-ak-border-default text-[13px] bg-ak-surface-base text-ak-text-primary outline-none focus:border-ak-primary"
             />
           </div>
 

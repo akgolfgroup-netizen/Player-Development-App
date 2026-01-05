@@ -58,7 +58,7 @@ export default function ModificationRequestDashboard() {
 
   const statusBadge = {
     pending: { bg: 'var(--ak-status-warning-light)', text: 'var(--ak-status-warning)', label: 'Pending' },
-    under_review: { bg: 'var(--ak-brand-primary-light)', text: 'var(--ak-brand-primary)', label: 'Under Review' },
+    under_review: { bg: 'var(--ak-primary-light)', text: 'var(--ak-primary)', label: 'Under Review' },
     resolved: { bg: 'var(--ak-status-success-light)', text: 'var(--ak-status-success)', label: 'Resolved' },
     rejected: { bg: 'var(--ak-status-error-light)', text: 'var(--ak-status-error)', label: 'Rejected' },
   };

@@ -55,13 +55,13 @@ export const ContextStep: React.FC<ContextStepProps> = ({ planner }) => {
                 onClick={() => setEnvironment(key)}
                 className={`flex flex-col items-start p-3 rounded-lg transition-all duration-200 border-2 ${
                   isSelected
-                    ? 'bg-ak-brand-primary/10 border-ak-brand-primary'
+                    ? 'bg-ak-primary/10 border-ak-primary'
                     : 'bg-ak-surface-subtle border-transparent'
                 }`}
               >
                 <span
                   className={`font-medium text-sm ${
-                    isSelected ? 'text-ak-brand-primary' : 'text-ak-text-primary'
+                    isSelected ? 'text-ak-primary' : 'text-ak-text-primary'
                   }`}
                 >
                   {value.label}
@@ -82,7 +82,7 @@ export const ContextStep: React.FC<ContextStepProps> = ({ planner }) => {
             <SubSectionTitle className="text-sm font-medium text-ak-text-secondary">
               Klubbhastighet
             </SubSectionTitle>
-            <span className="text-lg font-bold text-ak-brand-primary">
+            <span className="text-lg font-bold text-ak-primary">
               {formState.csLevel}%
             </span>
           </div>
@@ -98,7 +98,7 @@ export const ContextStep: React.FC<ContextStepProps> = ({ planner }) => {
               onChange={(e) => setCSLevel(Number(e.target.value) as CSLevel)}
               className="w-full h-2 rounded-lg appearance-none cursor-pointer"
               style={{
-                background: `linear-gradient(to right, var(--ak-brand-primary) 0%, var(--ak-brand-primary) ${formState.csLevel}%, var(--ak-border-default) ${formState.csLevel}%, var(--ak-border-default) 100%)`,
+                background: `linear-gradient(to right, var(--ak-primary) 0%, var(--ak-primary) ${formState.csLevel}%, var(--ak-border-default) ${formState.csLevel}%, var(--ak-border-default) 100%)`,
               }}
             />
 
@@ -140,14 +140,14 @@ export const ContextStep: React.FC<ContextStepProps> = ({ planner }) => {
                 onClick={() => setPressure(key)}
                 className={`w-full flex items-center justify-between p-3 rounded-lg transition-all duration-200 border-2 ${
                   isSelected
-                    ? 'bg-ak-brand-primary/10 border-ak-brand-primary'
+                    ? 'bg-ak-primary/10 border-ak-primary'
                     : 'bg-ak-surface-subtle border-transparent'
                 }`}
               >
                 <div className="text-left">
                   <span
                     className={`font-medium text-sm block ${
-                      isSelected ? 'text-ak-brand-primary' : 'text-ak-text-primary'
+                      isSelected ? 'text-ak-primary' : 'text-ak-text-primary'
                     }`}
                   >
                     {value.label}

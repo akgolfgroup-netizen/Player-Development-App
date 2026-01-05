@@ -3,6 +3,7 @@ import React, { useState, useEffect, useCallback } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useAuth } from '../../contexts/AuthContext';
 import { coachesAPI } from '../../services/api';
+import { useToast } from '../../components/shadcn/use-toast';
 import LoadingState from '../../components/ui/LoadingState';
 import ErrorState from '../../components/ui/ErrorState';
 import CoachAthleteList from './CoachAthleteList';
@@ -14,9 +15,11 @@ import CoachAthleteList from './CoachAthleteList';
 const CoachAthleteListContainer: React.FC = () => {
   const navigate = useNavigate();
   const { user } = useAuth();
+  const { toast } = useToast();
   const [state, setState] = useState<'loading' | 'idle' | 'error'>('loading');
   const [error, setError] = useState<Error | null>(null);
   const [athletes, setAthletes] = useState<any[]>([]);
+  const [usingFallback, setUsingFallback] = useState(false);
 
   const fetchAthletes = useCallback(async () => {
     try {
@@ -30,7 +33,9 @@ const CoachAthleteListContainer: React.FC = () => {
         data = response.data?.data || response.data || [];
       } catch {
         // Fallback to specific coach ID endpoint
-        const coachId = (user as any)?.coachId || user?.id;
+        // Safely extract coachId from user object
+        const userWithCoach = user as { coachId?: string; id?: string } | null;
+        const coachId = userWithCoach?.coachId || userWithCoach?.id;
         if (coachId) {
           const response = await coachesAPI.getPlayers(coachId);
           data = response.data?.data || response.data || [];
@@ -43,17 +48,29 @@ const CoachAthleteListContainer: React.FC = () => {
       if (athleteArray.length === 0) {
         // Use demo data when no athletes found
         setAthletes(getDemoAthletes());
+        setUsingFallback(true);
+        toast({
+          title: 'Ingen spillere funnet',
+          description: 'Viser demodata. Legg til spillere for å se dine egne.',
+        });
       } else {
         setAthletes(athleteArray);
+        setUsingFallback(false);
       }
       setState('idle');
     } catch (err: any) {
       console.error('Error fetching athletes:', err);
       // Use demo data on error
       setAthletes(getDemoAthletes());
+      setUsingFallback(true);
+      toast({
+        title: 'Kunne ikke laste spillere',
+        description: 'Viser demodata. Prøv igjen senere.',
+        variant: 'destructive',
+      });
       setState('idle');
     }
-  }, [user]);
+  }, [user, toast]);
 
   useEffect(() => {
     if (user) {
@@ -70,9 +87,12 @@ const CoachAthleteListContainer: React.FC = () => {
   }
 
   if (state === 'error' && athletes.length === 0) {
+    const errorType = error && typeof error === 'object' && 'type' in error
+      ? (error as { type?: string }).type
+      : undefined;
     return (
       <ErrorState
-        errorType={(error as any)?.type}
+        errorType={errorType}
         message={error?.message || 'Kunne ikke laste spillere'}
         onRetry={fetchAthletes}
       />

@@ -157,11 +157,11 @@ const styles = {
     ],
     // AK Golf Academy Custom Colors (using semantic tokens)
     primary: [
-      'text-white [--btn-hover-overlay:var(--color-white)]/10 [--btn-bg:var(--accent)] [--btn-border:var(--ak-brand-primary-active)]/90',
+      'text-white [--btn-hover-overlay:var(--color-white)]/10 [--btn-bg:var(--accent)] [--btn-border:var(--ak-primary-active)]/90',
       '[--btn-icon:var(--color-white)]/60 data-active:[--btn-icon:var(--color-white)]/80 data-hover:[--btn-icon:var(--color-white)]/80',
     ],
     'primary-light': [
-      'text-white [--btn-hover-overlay:var(--color-white)]/10 [--btn-bg:var(--ak-brand-primary-hover)] [--btn-border:var(--accent)]/90',
+      'text-white [--btn-hover-overlay:var(--color-white)]/10 [--btn-bg:var(--ak-primary-hover)] [--btn-border:var(--accent)]/90',
       '[--btn-icon:var(--color-white)]/60 data-active:[--btn-icon:var(--color-white)]/80 data-hover:[--btn-icon:var(--color-white)]/80',
     ],
     gold: [

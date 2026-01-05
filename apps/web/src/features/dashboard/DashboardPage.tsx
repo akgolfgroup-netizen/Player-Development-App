@@ -45,7 +45,7 @@ const getStatusColorClass = (status: DashboardSession['status']) => {
     case 'completed':
       return 'text-ak-status-success';
     case 'in_progress':
-      return 'text-ak-brand-primary';
+      return 'text-ak-primary';
     default:
       return 'text-ak-text-secondary';
   }

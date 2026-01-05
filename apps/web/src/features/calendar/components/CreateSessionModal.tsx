@@ -136,7 +136,7 @@ export const CreateSessionModal: React.FC<CreateSessionModalProps> = ({
                 value={title}
                 onChange={(e) => setTitle(e.target.value)}
                 placeholder="F.eks. Putting – 100 putts"
-                className="w-full px-3 py-2 rounded-lg text-sm bg-ak-surface-subtle border border-ak-border-default text-ak-text-primary focus:border-ak-brand-primary outline-none"
+                className="w-full px-3 py-2 rounded-lg text-sm bg-ak-surface-subtle border border-ak-border-default text-ak-text-primary focus:border-ak-primary outline-none"
                 required
                 autoFocus
               />
@@ -151,7 +151,7 @@ export const CreateSessionModal: React.FC<CreateSessionModalProps> = ({
                 type="date"
                 value={date}
                 onChange={(e) => setDate(e.target.value)}
-                className="w-full px-3 py-2 rounded-lg text-sm bg-ak-surface-subtle border border-ak-border-default text-ak-text-primary focus:border-ak-brand-primary outline-none"
+                className="w-full px-3 py-2 rounded-lg text-sm bg-ak-surface-subtle border border-ak-border-default text-ak-text-primary focus:border-ak-primary outline-none"
                 required
               />
             </div>
@@ -167,7 +167,7 @@ export const CreateSessionModal: React.FC<CreateSessionModalProps> = ({
                   type="time"
                   value={startTime}
                   onChange={(e) => setStartTime(e.target.value)}
-                  className="w-full px-3 py-2 rounded-lg text-sm bg-ak-surface-subtle border border-ak-border-default text-ak-text-primary focus:border-ak-brand-primary outline-none"
+                  className="w-full px-3 py-2 rounded-lg text-sm bg-ak-surface-subtle border border-ak-border-default text-ak-text-primary focus:border-ak-primary outline-none"
                   required
                 />
               </div>
@@ -220,7 +220,7 @@ export const CreateSessionModal: React.FC<CreateSessionModalProps> = ({
               </button>
               <button
                 type="submit"
-                className="flex-1 px-4 py-2 rounded-lg font-medium text-sm transition-colors bg-ak-brand-primary text-white hover:bg-ak-brand-primary/90"
+                className="flex-1 px-4 py-2 rounded-lg font-medium text-sm transition-colors bg-ak-primary text-white hover:bg-ak-primary/90"
               >
                 Opprett økt
               </button>

@@ -1,8 +1,14 @@
 /**
  * shadcn/ui Components
  *
+ * NOW POWERED BY CATALYST UI (Tailwind CSS UI Kit)
+ *
  * Pre-built, accessible components integrated with AK Golf design tokens.
- * These components use Tailwind CSS and are fully customizable.
+ * These components use Tailwind CSS, Headless UI, and are fully customizable.
+ *
+ * Many of these components are wrappers around Catalyst UI components,
+ * providing backward compatibility with the shadcn API while using
+ * Catalyst's implementation under the hood.
  *
  * Usage:
  * import { Button, Card, Badge } from 'components/shadcn'
@@ -33,6 +39,13 @@ export {
   DialogFooter,
   DialogTitle,
   DialogDescription,
+  DialogBody,
+  // Catalyst Direct exports
+  CatalystDialog,
+  CatalystDialogTitle,
+  CatalystDialogDescription,
+  CatalystDialogBody,
+  CatalystDialogActions,
 } from "./dialog"
 export {
   Sheet,
@@ -119,7 +132,7 @@ export {
 export { Switch } from "./switch"
 export { Slider } from "./slider"
 export { Checkbox } from "./checkbox"
-export { RadioGroup, RadioGroupItem } from "./radio-group"
+export { RadioGroup, RadioGroupItem, RadioField } from "./radio-group"
 export { Label } from "./label"
 export { Textarea } from "./textarea"
 export { Toggle, toggleVariants } from "./toggle"
@@ -155,6 +168,8 @@ export { Popover, PopoverTrigger, PopoverContent } from "./popover"
 export { Tooltip, TooltipTrigger, TooltipContent, TooltipProvider } from "./tooltip"
 export { HoverCard, HoverCardTrigger, HoverCardContent } from "./hover-card"
 export { Toaster } from "./sonner"
+export { useToast } from "./use-toast"
+export type { ToastOptions } from "./use-toast"
 export { Alert, AlertTitle, AlertDescription } from "./alert"
 
 // Layout & Structure

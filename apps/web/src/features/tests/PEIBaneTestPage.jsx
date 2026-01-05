@@ -44,7 +44,7 @@ const TEST_INFO = {
 // INFO CARD COMPONENT
 // ============================================================================
 
-const InfoCard = ({ icon: Icon, title, children, color = 'var(--ak-brand-primary)' }) => (
+const InfoCard = ({ icon: Icon, title, children, color = 'var(--ak-primary)' }) => (
   <div className="bg-ak-surface-card rounded-xl p-5 shadow-sm">
     <div className="flex items-center gap-3 mb-3">
       <div
@@ -127,20 +127,20 @@ const PEIBaneTestPage = () => {
         padding: '32px',
         marginBottom: '24px',
         boxShadow: '0 2px 8px rgba(0,0,0,0.06)',
-        background: 'linear-gradient(135deg, var(--ak-surface-card) 0%, var(--ak-brand-primary) 8%)',
+        background: 'linear-gradient(135deg, var(--ak-surface-card) 0%, var(--ak-primary) 8%)',
       }}>
         <div style={{ display: 'flex', alignItems: 'flex-start', gap: '20px', marginBottom: '24px' }}>
           <div style={{
             width: '64px',
             height: '64px',
             borderRadius: '16px',
-            backgroundColor: 'var(--ak-brand-primary-light)',
+            backgroundColor: 'var(--ak-primary-light)',
             display: 'flex',
             alignItems: 'center',
             justifyContent: 'center',
             flexShrink: 0,
           }}>
-            <Target size={32} color="var(--ak-brand-primary)" />
+            <Target size={32} color="var(--ak-primary)" />
           </div>
           <div style={{ flex: 1 }}>
             <SectionTitle style={{ margin: 0, fontSize: '24px', marginBottom: '8px' }}>
@@ -215,7 +215,7 @@ const PEIBaneTestPage = () => {
         marginBottom: '24px',
       }}>
         {/* Purpose */}
-        <InfoCard icon={Info} title="Formål" color="var(--ak-brand-primary)">
+        <InfoCard icon={Info} title="Formål" color="var(--ak-primary)">
           <p style={{
             margin: 0,
             fontSize: '14px',
@@ -270,7 +270,7 @@ const PEIBaneTestPage = () => {
 
       {/* Scoring */}
       <div style={{ marginTop: '16px' }}>
-        <InfoCard icon={Target} title="Scoring (PEI)" color="var(--ak-brand-primary)">
+        <InfoCard icon={Target} title="Scoring (PEI)" color="var(--ak-primary)">
           <p style={{
             margin: '0 0 16px 0',
             fontSize: '14px',

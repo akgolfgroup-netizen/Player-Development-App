@@ -154,7 +154,7 @@ const WeekAtGlanceCard: React.FC<WeekAtGlanceCardProps> = ({ stats, loading }) =
       <Card className="h-full shadow-ak-card rounded-ak-lg">
         <CardHeader className="pb-4">
           <CardTitle className="flex items-center gap-2 text-headline">
-            <Calendar className="h-5 w-5 text-ak-brand-primary" />
+            <Calendar className="h-5 w-5 text-ak-primary" />
             Denne uken
           </CardTitle>
         </CardHeader>
@@ -283,8 +283,8 @@ const BadgesScoreCard: React.FC<BadgesScoreCardProps> = ({
       <Card className="h-full shadow-ak-card rounded-ak-lg">
         <CardHeader className="pb-4">
           <CardTitle className="flex items-center gap-2 text-headline">
-            <Award className="h-5 w-5 text-ak-brand-primary" />
-            Badges & Score
+            <Award className="h-5 w-5 text-ak-primary" />
+            Merker & Poeng
           </CardTitle>
         </CardHeader>
         <CardContent>
@@ -336,7 +336,7 @@ const BadgesScoreCard: React.FC<BadgesScoreCardProps> = ({
         <div className="flex items-center gap-3 pt-3 border-t border-ak-border-muted mt-auto">
           <div className="flex items-baseline gap-1.5">
             <span className="text-title-2 tabular-nums text-ak-text-primary">{badgeCount}</span>
-            <span className="text-subhead text-ak-text-secondary">badges opptjent</span>
+            <span className="text-subhead text-ak-text-secondary">merker opptjent</span>
           </div>
           {badgeCount > 0 && achievements?.slice(0, 3).map((badge, idx) => (
             <span key={badge.id || idx} className="text-xl">
@@ -398,16 +398,16 @@ const Last7DaysVisualization: React.FC<Last7DaysProps> = ({ calendarEvents, stat
             const status = getDayStatus(day, index)
             return (
               <div key={day.date} className="flex flex-col items-center gap-2 flex-1">
-                <span className={`text-caption-1 ${day.isToday ? 'text-ak-brand-primary font-semibold' : 'text-ak-text-tertiary'}`}>
+                <span className={`text-caption-1 ${day.isToday ? 'text-ak-primary font-semibold' : 'text-ak-text-tertiary'}`}>
                   {day.label}
                 </span>
                 <div className={`
                   w-full max-w-12 h-8 rounded-ak-sm flex items-center justify-center transition-all duration-ak-base
                   ${status === 'completed' ? 'bg-ak-status-success' : ''}
-                  ${status === 'has-events' ? 'bg-ak-brand-primary' : ''}
+                  ${status === 'has-events' ? 'bg-ak-primary' : ''}
                   ${status === 'weekend' ? 'bg-ak-surface-elevated' : ''}
                   ${status === 'empty' ? 'bg-ak-surface-subtle' : ''}
-                  ${day.isToday ? 'ring-2 ring-ak-brand-primary' : 'border border-ak-border-muted'}
+                  ${day.isToday ? 'ring-2 ring-ak-primary' : 'border border-ak-border-muted'}
                 `}>
                   {status === 'completed' && <CheckCircle2 className="h-3 w-3 text-ak-text-inverse" />}
                   {status === 'has-events' && <div className="w-2 h-2 rounded-full bg-ak-surface-card" />}
@@ -424,7 +424,7 @@ const Last7DaysVisualization: React.FC<Last7DaysProps> = ({ calendarEvents, stat
             <span>Fullført</span>
           </div>
           <div className="flex items-center gap-1.5 text-caption-1 text-ak-text-tertiary">
-            <div className="w-2.5 h-2.5 rounded-ak-xs bg-ak-brand-primary" />
+            <div className="w-2.5 h-2.5 rounded-ak-xs bg-ak-primary" />
             <span>I dag</span>
           </div>
           <div className="flex items-center gap-1.5 text-caption-1 text-ak-text-tertiary">
@@ -642,7 +642,7 @@ const TasksList: React.FC<TasksListProps> = ({ tasks, onToggle, onViewAll, onSta
             Dagens oppgaver
           </CardTitle>
           {tasks.length > 3 && (
-            <Button variant="ghost" size="sm" onClick={onViewAll} className="text-caption-1 h-7 text-ak-brand-primary hover:text-ak-brand-primary-hover">
+            <Button variant="ghost" size="sm" onClick={onViewAll} className="text-caption-1 h-7 text-ak-primary hover:text-ak-primary-hover">
               +{tasks.length - 3} mer <ChevronRight className="h-3 w-3 ml-1" />
             </Button>
           )}
@@ -677,7 +677,7 @@ const TasksList: React.FC<TasksListProps> = ({ tasks, onToggle, onViewAll, onSta
                   <Button
                     variant="ghost"
                     size="sm"
-                    className="text-caption-1 h-7 text-ak-brand-primary hover:text-ak-brand-primary-hover hover:bg-ak-brand-primary-muted"
+                    className="text-caption-1 h-7 text-ak-primary hover:text-ak-primary-hover hover:bg-ak-primary-muted"
                     onClick={() => onStartTask(task)}
                   >
                     Start
@@ -730,7 +730,7 @@ const NotificationsList: React.FC<NotificationsListProps> = ({ notifications, on
             )}
           </CardTitle>
           {notifications.length > 2 && (
-            <Button variant="ghost" size="sm" onClick={onViewAll} className="text-caption-1 h-7 text-ak-brand-primary hover:text-ak-brand-primary-hover">
+            <Button variant="ghost" size="sm" onClick={onViewAll} className="text-caption-1 h-7 text-ak-primary hover:text-ak-primary-hover">
               Se alle <ChevronRight className="h-3 w-3 ml-1" />
             </Button>
           )}
@@ -740,7 +740,7 @@ const NotificationsList: React.FC<NotificationsListProps> = ({ notifications, on
         <div className="space-y-1">
           {displayNotifications.map((notif, idx) => (
             <div key={notif.id || idx} className="flex items-start gap-3 py-3">
-              <div className="w-2 h-2 rounded-full bg-ak-brand-primary mt-2 flex-shrink-0" />
+              <div className="w-2 h-2 rounded-full bg-ak-primary mt-2 flex-shrink-0" />
               <div className="flex-1 min-w-0">
                 <p className="text-subhead font-medium text-ak-text-primary">{notif.title}</p>
                 <p className="text-subhead text-ak-text-secondary truncate">{notif.message}</p>

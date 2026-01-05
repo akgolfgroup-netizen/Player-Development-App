@@ -74,7 +74,7 @@ const STATUS_CLASSES = {
 
 const CATEGORY_CLASSES = {
   A: { bg: 'bg-ak-status-success/15', text: 'text-ak-status-success' },
-  B: { bg: 'bg-ak-brand-primary/15', text: 'text-ak-brand-primary' },
+  B: { bg: 'bg-ak-primary/15', text: 'text-ak-primary' },
   C: { bg: 'bg-ak-status-warning/15', text: 'text-ak-status-warning' },
 };
 
@@ -413,7 +413,7 @@ export const CoachAthleteStatus: React.FC = () => {
       {/* Header */}
       <div className="mb-6">
         <div className="flex items-center gap-3 mb-2">
-          <div className="w-12 h-12 rounded-lg bg-ak-brand-primary flex items-center justify-center">
+          <div className="w-12 h-12 rounded-lg bg-ak-primary flex items-center justify-center">
             <Activity size={24} className="text-white" />
           </div>
           <div>
@@ -497,7 +497,7 @@ export const CoachAthleteStatus: React.FC = () => {
             placeholder="Søk etter spiller..."
             value={searchQuery}
             onChange={(e) => setSearchQuery(e.target.value)}
-            className="w-full py-3 pl-10 pr-3 rounded-lg border border-ak-border-default bg-ak-surface-base text-sm text-ak-text-primary outline-none focus:border-ak-brand-primary"
+            className="w-full py-3 pl-10 pr-3 rounded-lg border border-ak-border-default bg-ak-surface-base text-sm text-ak-text-primary outline-none focus:border-ak-primary"
           />
         </div>
         <div className="flex gap-2">
@@ -552,7 +552,7 @@ export const CoachAthleteStatus: React.FC = () => {
                           Sist aktiv: {formatLastActive(player.lastActive)}
                         </span>
                         {player.upcomingSession && (
-                          <span className="text-xs text-ak-brand-primary flex items-center gap-1">
+                          <span className="text-xs text-ak-primary flex items-center gap-1">
                             <Calendar size={12} />
                             Neste økt: {new Date(player.upcomingSession).toLocaleDateString('nb-NO', { day: 'numeric', month: 'short' })}
                           </span>

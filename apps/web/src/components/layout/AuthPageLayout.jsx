@@ -14,7 +14,7 @@ export default function AuthPageLayout({ children, title, subtitle }) {
       {/* Header */}
       <header className="flex justify-center py-8">
         <div className="flex items-center gap-3">
-          <div className="flex h-12 w-12 items-center justify-center rounded-xl bg-ak-brand-primary">
+          <div className="flex h-12 w-12 items-center justify-center rounded-xl bg-ak-primary">
             <span className="font-logo text-xl font-bold text-ak-text-inverse">AK</span>
           </div>
           <div>

@@ -147,7 +147,7 @@ const WeekView = ({
               <button
                 type="button"
                 onClick={onAddEvent}
-                className="ml-6 rounded-lg bg-ak-brand-primary px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-ak-brand-primary/90"
+                className="ml-6 rounded-lg bg-ak-primary px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-ak-primary/90"
               >
                 Ny hendelse
               </button>
@@ -176,7 +176,7 @@ const WeekView = ({
                 <span
                   className={classNames(
                     'mt-1 flex h-8 w-8 items-center justify-center font-semibold',
-                    isToday && 'rounded-full bg-ak-brand-primary text-white',
+                    isToday && 'rounded-full bg-ak-primary text-white',
                     isSelected && !isToday && 'rounded-full bg-ak-text-primary text-white',
                     !isToday && !isSelected && 'text-ak-text-primary'
                   )}
@@ -203,15 +203,15 @@ const WeekView = ({
                 onClick={() => onDateSelect?.(date)}
                 className={classNames(
                   'flex flex-col items-center py-3 hover:bg-ak-surface-subtle transition-colors',
-                  isSelected && 'bg-ak-brand-primary/5'
+                  isSelected && 'bg-ak-primary/5'
                 )}
               >
                 <span className="text-xs">{weekDays[idx]}</span>
                 <span
                   className={classNames(
                     'mt-1 flex h-8 w-8 items-center justify-center text-lg font-semibold',
-                    isToday && 'rounded-full bg-ak-brand-primary text-white',
-                    isSelected && !isToday && 'rounded-full bg-ak-brand-primary/10 text-ak-brand-primary',
+                    isToday && 'rounded-full bg-ak-primary text-white',
+                    isSelected && !isToday && 'rounded-full bg-ak-primary/10 text-ak-primary',
                     !isToday && !isSelected && 'text-ak-text-primary'
                   )}
                 >
@@ -281,7 +281,7 @@ const WeekView = ({
                       key={dayIdx}
                       className={classNames(
                         'relative',
-                        isSelected && 'bg-ak-brand-primary/5'
+                        isSelected && 'bg-ak-primary/5'
                       )}
                       style={{ minHeight: `${hours.length * 3.5}rem` }}
                     >

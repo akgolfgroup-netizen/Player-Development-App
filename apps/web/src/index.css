@@ -18,232 +18,149 @@
 
 /* ═══════════════════════════════════════════
    AK GOLF ACADEMY - CSS VARIABLES
-   Premium Light (Forest Green)
+   Premium Light: Stone × Midnight Blue × Emerald × Soft Gold
+
+   SEMANTIC TOKEN RULES:
+   - ak-action-*   → Interaction (buttons, focus, tabs)
+   - ak-progress-* → Progress/completion indicators
+   - ak-prestige-* → Achievements/badges ONLY
+   - ak-surface-*  → All backgrounds
+   - ak-text-*     → All typography
+   - ak-status-*   → Success/warning/error/info
    ═══════════════════════════════════════════ */
 
 :root {
   /* ─────────────────────────────────────────
-     GREEN SCALE - Primary Brand Hierarchy
-     ───────────────────────────────────────── */
-  --green-950: #0A231C;  /* Darkest - almost black with green tint */
-  --green-900: #0F3329;  /* Brand Pine (logo text) */
-  --green-800: #144033;  /* Dark hover state */
-  --green-700: #1B4D3E;  /* Brand Forest (primary) */
-  --green-600: #059669;  /* Brand Sage (accent) */
-  --green-500: #10B981;  /* Bright green */
-  --green-400: #34D399;  /* Light accent */
-  --green-300: #6EE7B7;  /* Subtle highlights */
-  --green-200: #A7F3D0;  /* Background tints */
-  --green-100: #D1FAE5;  /* Lightest backgrounds */
-  --green-50:  #ECFDF5;  /* Nearly white */
+     LEGACY BRIDGE - Maps old tokens to semantic tokens
+     These exist ONLY for backwards compatibility.
+     New code should use ak-* semantic tokens directly.
 
-  /* ─────────────────────────────────────────
-     GOLD/BRONZE SCALE - Achievements & Premium
+     Using direct RGB values to avoid circular references.
+     Source: tokens.css
      ───────────────────────────────────────── */
-  --gold-800: #92400E;   /* Rich bronze */
-  --gold-700: #B45309;   /* Deep gold */
-  --gold-600: #D97706;   /* Warm gold */
-  --gold-500: #F59E0B;   /* Bright gold */
-  --gold-400: #FBBF24;   /* Light gold */
-  --gold-300: #FCD34D;   /* Pale gold */
-  --gold-200: #FDE68A;   /* Very light gold */
-  --gold-100: #FEF3C7;   /* Gold background */
-  --gold-50:  #FFFBEB;   /* Near-white gold */
 
-  /* ─────────────────────────────────────────
-     BRAND COLORS - Deep Forest Green
-     ───────────────────────────────────────── */
-  --ak-ink: #111827;
-  --ak-primary: var(--green-700);
-  --ak-primary-light: #2A6B55;
-  --ak-primary-dark: var(--green-900);
-  --ak-snow: #FAFBFC;
-  --ak-surface: #F5F7F9;
-  --ak-gold: var(--gold-600);
-  --ak-gold-light: var(--gold-400);
-  --ak-gold-dark: var(--gold-800);
+  /* Action tokens (buttons, links, focus, tabs) - Midnight Blue */
+  --ak-primary: rgb(16 69 106);           /* --blue-700 */
+  --ak-primary-light: rgb(26 90 138);     /* --blue-600 */
+  --ak-primary-dark: rgb(16 69 106);      /* --blue-700 */
+
+  /* Surface tokens (backgrounds) - Stone */
+  --ak-snow: rgb(250 250 248);            /* --stone-50 */
+  --ak-surface: rgb(244 243 239);         /* --stone-100 */
   --ak-white: #FFFFFF;
+  --ak-ink: rgb(44 46 51);                /* --stone-800 */
 
-  /* Brand Named Colors */
-  --brand-forest: var(--green-700);  /* Primary buttons, logo circle */
-  --brand-pine: var(--green-900);    /* Logo text, headings, premium */
-  --brand-sage: var(--green-600);    /* Accents, hover, success */
-  --brand-cream: var(--warm-50);     /* Premium backgrounds */
+  /* Prestige tokens (achievements/badges ONLY) - Soft Gold */
+  --ak-gold: rgb(198 162 77);             /* --gold-500 */
+  --ak-gold-light: rgb(158 124 47);       /* --gold-600 */
 
-  /* Legacy Aliases (Backwards Compatible) */
-  --ak-forest: var(--green-700);
-  --ak-forest-light: #2A6B55;
-  --ak-foam: #FAFBFC;
-  --ak-ivory: #F5F7F9;
-
-  /* ─────────────────────────────────────────
-     TEAL SCALE - Statistics & Analytics
-     ───────────────────────────────────────── */
-  --teal-900: #134e4a;
-  --teal-800: #115e59;
-  --teal-700: #0F766E;
-  --teal-600: #0d9488;
-  --teal-500: #14B8A6;  /* Primary teal */
-  --teal-400: #2dd4bf;
-  --teal-300: #5eead4;
-  --teal-200: #99F6E4;
-  --teal-100: #ccfbf1;
-  --teal-50:  #F0FDFA;
+  /* Legacy aliases - DO NOT USE IN NEW CODE */
+  --ak-forest: rgb(16 69 106);            /* --blue-700 (was Forest Green) */
+  --ak-forest-light: rgb(26 90 138);      /* --blue-600 */
+  --ak-foam: rgb(250 250 248);            /* --stone-50 */
+  --ak-ivory: rgb(244 243 239);           /* --stone-100 */
 
   /* ─────────────────────────────────────────
-     GRAY SCALE (matches tokens.css - warmer/softer)
-     Source of truth: packages/design-system/tokens/tokens.css
+     STATUS - Direct RGB values from tokens.css
      ───────────────────────────────────────── */
-  --gray-950: #030712;
-  --gray-900: #111827;   /* Primary text */
-  --gray-800: #1F2937;
-  --gray-700: #374151;
-  --gray-600: #6B7280;   /* Updated: was #4B5563 */
-  --gray-500: #9CA3AF;   /* Updated: was #6B7280 */
-  --gray-400: #D1D5DB;   /* Updated: was #9CA3AF - Secondary text */
-  --gray-300: #E5E7EB;   /* Updated: was #D1D5DB */
-  --gray-200: #EEF1F4;   /* Updated: was #E5E7EB */
-  --gray-100: #F5F7F9;   /* Updated: was #F3F4F6 */
-  --gray-50:  #FAFBFC;   /* Updated: was #F9FAFB */
+  --ak-success: rgb(5 150 105);           /* --status-success */
+  --ak-warning: rgb(217 119 6);           /* --status-warning */
+  --ak-error: rgb(220 38 38);             /* --status-error */
+  --ak-info: rgb(2 132 199);              /* --status-info */
 
-  /* ─────────────────────────────────────────
-     WARM GRAY SCALE (matches cream aesthetic)
-     ───────────────────────────────────────── */
-  --warm-950: #1C1917;   /* Near black with warmth */
-  --warm-900: #292524;   /* Deep charcoal */
-  --warm-800: #44403C;   /* Dark gray */
-  --warm-700: #57534E;   /* Medium-dark gray */
-  --warm-600: #78716C;   /* Medium gray */
-  --warm-500: #A8A29E;   /* Mid-tone gray */
-  --warm-400: #D6D3D1;   /* Light gray */
-  --warm-300: #E7E5E4;   /* Very light gray */
-  --warm-200: #F5F5F4;   /* Nearly white gray */
-  --warm-100: #FAFAF9;   /* Off-white */
-  --warm-50:  #FAF9F5;   /* Brand Cream */
+  /* Legacy neutral aliases - Stone scale */
+  --ak-charcoal: rgb(44 46 51);           /* --stone-800 */
+  --ak-steel: rgb(107 110 116);           /* --stone-500 */
+  --ak-mist: rgb(218 216 210);            /* --stone-300 */
+  --ak-cloud: rgb(244 243 239);           /* --stone-100 */
 
-  /* Legacy neutral aliases */
-  --ak-charcoal: #111827;
-  --ak-steel: #6B7280;
-  --ak-mist: #E5E7EB;
-  --ak-cloud: #F5F7F9;
-
-  /* ─────────────────────────────────────────
-     STATUS COLORS - Complete Semantic System
-     ───────────────────────────────────────── */
-  /* Success (Green - reuse brand) */
-  --ak-success: #059669;
-  --ak-success-light: #10B981;
-  --ak-success-dark: var(--green-800);
-  --ak-success-bg: var(--green-50);
-  --ak-success-border: var(--green-200);
-
-  /* Warning (Orange/Amber) */
-  --ak-warning: #D97706;
-  --ak-warning-light: #F59E0B;
-  --ak-warning-dark: #B45309;
-  --ak-warning-bg: #FFFBEB;
-  --ak-warning-border: #FDBA74;
-
-  /* Danger/Error (Red) */
-  --ak-error: #DC2626;
-  --ak-error-light: #EF4444;
-  --ak-error-dark: #B91C1C;
-  --ak-error-bg: #FEF2F2;
-  --ak-error-border: #FCA5A5;
-
-  /* Info (Blue) */
-  --ak-info: #0284C7;
-  --ak-info-light: #0EA5E9;
-  --ak-info-dark: #1D4ED8;
-  --ak-info-bg: #EFF6FF;
-  --ak-info-border: #93C5FD;
-
-  /* Teal (Statistics, Analytics) */
-  --ak-teal: var(--teal-500);
-  --ak-teal-dark: var(--teal-700);
-  --ak-teal-bg: var(--teal-50);
-  --ak-teal-border: var(--teal-200);
+  /* Gray scale - mapped to Stone */
+  --gray-50: rgb(250 250 248);            /* --stone-50 */
+  --gray-100: rgb(244 243 239);           /* --stone-100 */
+  --gray-200: rgb(233 231 226);           /* --stone-200 */
+  --gray-300: rgb(218 216 210);           /* --stone-300 */
+  --gray-500: rgb(107 110 116);           /* --stone-500 */
+  --gray-700: rgb(68 70 75);              /* --stone-700 */
+  --gray-900: rgb(44 46 51);              /* --stone-800 */
 
   /* ─────────────────────────────────────────
      SEMANTIC TOKENS - BACKGROUNDS
+     Direct RGB values from tokens.css
      ───────────────────────────────────────── */
-  --background-default: #FAFBFC;
-  --background-surface: #F5F7F9;
-  --background-elevated: #EEF1F4;
-  --background-muted: #E4E8EC;
-  --background-inverse: #111827;
-  --background-accent: #1B4D3E;
+  --background-default: rgb(250 250 248); /* --stone-50 / --ak-bg-app */
+  --background-surface: rgb(244 243 239); /* --stone-100 / --ak-surface-elevated */
+  --background-elevated: rgb(233 231 226);/* --stone-200 / --ak-surface-card */
+  --background-muted: rgb(218 216 210);   /* --stone-300 */
+  --background-inverse: rgb(44 46 51);    /* --stone-800 */
+  --background-accent: rgb(16 69 106);    /* --blue-700 / --ak-action-primary */
   --background-white: #FFFFFF;
 
   /* ─────────────────────────────────────────
      SEMANTIC TOKENS - TEXT
+     Direct RGB values from tokens.css
      ───────────────────────────────────────── */
-  --text-primary: #111827;
-  --text-secondary: #374151;
-  --text-tertiary: #6B7280;
-  --text-muted: #9CA3AF;
-  --text-faint: #D1D5DB;
-  --text-brand: #1B4D3E;
+  --text-primary: rgb(44 46 51);          /* --stone-800 / --ak-text-primary */
+  --text-secondary: rgb(68 70 75);        /* --stone-700 / --ak-text-body */
+  --text-tertiary: rgb(107 110 116);      /* --stone-500 / --ak-text-muted */
+  --text-muted: rgb(107 110 116);         /* --stone-500 */
+  --text-faint: rgb(218 216 210);         /* --stone-300 */
+  --text-brand: rgb(16 69 106);           /* --blue-700 / --ak-action-primary */
   --text-inverse: #FFFFFF;
-  --text-accent: #B8860B;
+  --text-accent: rgb(198 162 77);         /* --gold-500 / --ak-prestige */
 
   /* ─────────────────────────────────────────
      SEMANTIC TOKENS - BORDERS
+     Direct RGB values from tokens.css
      ───────────────────────────────────────── */
-  --border-default: #E5E7EB;
-  --border-strong: #D1D5DB;
-  --border-subtle: #EEF1F4;
-  --border-brand: #1B4D3E;
-  --border-primary: rgba(27, 77, 62, 0.2);
-  --border-accent: #B8860B;
+  --border-default: rgb(218 216 210);     /* --stone-300 / --ak-border */
+  --border-strong: rgb(218 216 210);      /* --stone-300 */
+  --border-subtle: rgb(233 231 226);      /* --stone-200 */
+  --border-brand: rgb(16 69 106);         /* --blue-700 / --ak-action-primary */
+  --border-primary: rgb(16 69 106 / 0.2); /* --blue-700 with opacity */
+  --border-accent: rgb(198 162 77);       /* --gold-500 / --ak-prestige */
 
   /* ─────────────────────────────────────────
      STANDARDIZED COLOR TOKENS
-     Aliases for consistent Tailwind usage
      ───────────────────────────────────────── */
-  --color-primary: var(--ak-primary);
-  --color-primary-foreground: var(--text-inverse);
-  --color-surface: var(--background-white);
-  --color-surface-2: var(--background-surface);
-  --color-border: var(--border-default);
-  --color-text: var(--text-primary);
-  --color-text-muted: var(--text-secondary);
-  --color-success: var(--ak-success);
-  --color-warning: var(--ak-warning);
-  --color-danger: var(--ak-error);
+  --color-primary: rgb(16 69 106);        /* --blue-700 */
+  --color-primary-foreground: #FFFFFF;
+  --color-surface: #FFFFFF;
+  --color-surface-2: rgb(244 243 239);    /* --stone-100 */
+  --color-border: rgb(218 216 210);       /* --stone-300 */
+  --color-text: rgb(44 46 51);            /* --stone-800 */
+  --color-text-muted: rgb(68 70 75);      /* --stone-700 */
+  --color-success: rgb(5 150 105);        /* --status-success */
+  --color-warning: rgb(217 119 6);        /* --status-warning */
+  --color-danger: rgb(220 38 38);         /* --status-error */
 
   /* ─────────────────────────────────────────
      COMPONENT LEGACY ALIASES
-     For backward compatibility with existing pages
+     For backward compatibility - DO NOT USE IN NEW CODE
      ───────────────────────────────────────── */
-  --accent: var(--ak-primary);
-  --accent-hover: var(--ak-primary-light);
-  --accent-dark: var(--ak-primary-dark);
-  --accent-muted: rgba(27, 77, 62, 0.08);
-  --accent-soft: rgba(27, 77, 62, 0.12);
-  --accent-rgb: 27, 77, 62;
-  --bg-primary: var(--background-white);
-  --bg-secondary: var(--background-default);
-  --bg-tertiary: var(--gray-100);
-  --success: var(--ak-success);
-  --success-muted: rgba(5, 150, 105, 0.1);
-  --success-border-muted: rgba(34, 197, 94, 0.2);
-  --warning: var(--ak-warning);
-  --warning-muted: rgba(217, 119, 6, 0.1);
-  --warning-border-muted: rgba(234, 179, 8, 0.2);
-  --error: var(--ak-error);
-  --error-muted: rgba(220, 38, 38, 0.08);
-  --error-border-muted: rgba(239, 68, 68, 0.2);
-  --error-rgb: 220, 38, 38;
-  --info: var(--ak-info);
-  --info-muted: rgba(2, 132, 199, 0.1);
-  --info-border-muted: rgba(14, 165, 233, 0.2);
-  --card: var(--background-white);
+  --accent: rgb(16 69 106);               /* --blue-700 */
+  --accent-hover: rgb(26 90 138);         /* --blue-600 */
+  --accent-dark: rgb(16 69 106);          /* --blue-700 */
+  --accent-muted: rgb(16 69 106 / 0.08);
+  --accent-soft: rgb(16 69 106 / 0.12);
+  --accent-rgb: 16, 69, 106;              /* For rgba() usage */
+  --bg-primary: #FFFFFF;
+  --bg-secondary: rgb(250 250 248);       /* --stone-50 */
+  --bg-tertiary: rgb(244 243 239);        /* --stone-100 */
+  --success: rgb(5 150 105);              /* --status-success */
+  --success-muted: rgb(5 150 105 / 0.1);
+  --warning: rgb(217 119 6);              /* --status-warning */
+  --warning-muted: rgb(217 119 6 / 0.1);
+  --error: rgb(220 38 38);                /* --status-error */
+  --error-muted: rgb(220 38 38 / 0.08);
+  --error-rgb: 220, 38, 38;               /* For rgba() usage */
+  --info: rgb(2 132 199);                 /* --status-info */
+  --info-muted: rgb(2 132 199 / 0.1);
+  --card: #FFFFFF;
 
-  /* Achievement/Gold tokens */
-  --achievement: var(--ak-gold);
-  --achievement-light: var(--ak-gold-light);
-  --achievement-muted: rgba(184, 134, 11, 0.1);
+  /* Achievement/Prestige tokens - ONLY for badges */
+  --achievement: rgb(198 162 77);         /* --gold-500 */
+  --achievement-light: rgb(158 124 47);   /* --gold-600 */
+  --achievement-muted: rgb(198 162 77 / 0.1);
 
   /* Overlay/Backdrop tokens */
   --overlay-backdrop: rgba(0, 0, 0, 0.5);
@@ -418,7 +335,7 @@
   --calendar-surface-card: var(--background-white);
   --calendar-surface-elevated: var(--background-elevated);
   --calendar-surface-weekend: var(--gray-50);
-  --calendar-surface-today: rgba(27, 77, 62, 0.04);
+  --calendar-surface-today: rgba(16, 69, 106, 0.04);
 
   /* Calendar borders */
   --calendar-border: var(--border-default);
@@ -434,7 +351,7 @@
   --calendar-text-weekend: var(--text-muted);
 
   /* Calendar event - Recommended (Anbefalt) */
-  --calendar-event-recommended-bg: rgba(27, 77, 62, 0.08);
+  --calendar-event-recommended-bg: rgba(16, 69, 106, 0.08);
   --calendar-event-recommended-border: var(--ak-primary);
   --calendar-event-recommended-text: var(--ak-primary);
 
@@ -444,7 +361,7 @@
   --calendar-event-planned-text: var(--text-primary);
 
   /* Calendar event - In Progress (Pågår) */
-  --calendar-event-inprogress-bg: rgba(27, 77, 62, 0.12);
+  --calendar-event-inprogress-bg: rgba(16, 69, 106, 0.12);
   --calendar-event-inprogress-border: var(--ak-primary);
   --calendar-event-inprogress-text: var(--ak-primary);
 
@@ -454,7 +371,7 @@
   --calendar-event-completed-text: var(--ak-success);
 
   /* Calendar event - Ghost/Suggested (Foreslått) */
-  --calendar-event-ghost-bg: rgba(27, 77, 62, 0.04);
+  --calendar-event-ghost-bg: rgba(16, 69, 106, 0.04);
   --calendar-event-ghost-border: var(--ak-primary);
   --calendar-event-ghost-text: var(--text-tertiary);
 
@@ -478,7 +395,7 @@
 
   /* Calendar interactive */
   --calendar-hover: rgba(0, 0, 0, 0.02);
-  --calendar-selected: rgba(27, 77, 62, 0.08);
+  --calendar-selected: rgba(16, 69, 106, 0.08);
 
   /* ─────────────────────────────────────────
      VIDEO FEATURE TOKENS
@@ -591,10 +508,10 @@
 /* Manual dark mode toggle (via class or data-theme attribute) */
 :root.dark,
 :root[data-theme="dark"] {
-  /* Brand Colors - Dark Mode (Forest Green adjusted) */
-  --ak-primary: #2A6B55;
-  --ak-primary-light: #3D8A6E;
-  --ak-primary-dark: #1B4D3E;
+  /* Brand Colors - Dark Mode (Midnight Blue adjusted for dark backgrounds) */
+  --ak-primary: #4A7A96;
+  --ak-primary-light: #6B95AD;
+  --ak-primary-dark: #2C5F7F;
   --ak-ink: #F9FAFB;
   --ak-snow: #111827;
   --ak-surface: #1F2937;
@@ -602,8 +519,8 @@
   --ak-gold-light: #F0C040;
 
   /* Legacy aliases */
-  --ak-forest: #2A6B55;
-  --ak-forest-light: #3D8A6E;
+  --ak-forest: #4A7A96;
+  --ak-forest-light: #6B95AD;
   --ak-foam: #111827;
   --ak-ivory: #1F2937;
 
@@ -641,7 +558,7 @@
   --background-elevated: #374151;
   --background-muted: #4B5563;
   --background-inverse: #F9FAFB;
-  --background-accent: #2A6B55;
+  --background-accent: #2C5F7F;
   --background-white: #111827;
 
   /* Semantic - Text */
@@ -650,7 +567,7 @@
   --text-tertiary: #9CA3AF;
   --text-muted: #6B7280;
   --text-faint: #4B5563;
-  --text-brand: #3D8A6E;
+  --text-brand: #6B95AD;
   --text-inverse: #111827;
   --text-accent: #DAA520;
 
@@ -658,8 +575,8 @@
   --border-default: #374151;
   --border-strong: #4B5563;
   --border-subtle: #1F2937;
-  --border-brand: #2A6B55;
-  --border-primary: rgba(42, 107, 85, 0.3);
+  --border-brand: #4A7A96;
+  --border-primary: rgba(74, 122, 150, 0.3);
   --border-accent: #DAA520;
 
   /* Standardized Color Tokens - Dark Mode */
@@ -685,9 +602,9 @@
   --accent: var(--ak-primary);
   --accent-hover: var(--ak-primary-light);
   --accent-dark: var(--ak-primary-dark);
-  --accent-muted: rgba(42, 107, 85, 0.15);
-  --accent-soft: rgba(42, 107, 85, 0.2);
-  --accent-rgb: 42, 107, 85;
+  --accent-muted: rgba(74, 122, 150, 0.15);
+  --accent-soft: rgba(74, 122, 150, 0.2);
+  --accent-rgb: 74, 122, 150;
   --bg-primary: var(--background-white);
   --bg-secondary: var(--background-default);
   --bg-tertiary: var(--gray-100);
@@ -762,16 +679,16 @@
   --shadow-elevated: 0 4px 12px rgba(0, 0, 0, 0.4);
   --shadow-float: 0 8px 24px rgba(0, 0, 0, 0.5);
   --shadow-hover: var(--shadow-float);
-  --focus-ring: 0 0 0 3px rgba(42, 107, 85, 0.4);
+  --focus-ring: 0 0 0 3px rgba(16, 69, 106, 0.4);
 }
 
 /* System preference dark mode (only if no manual override) */
 @media (prefers-color-scheme: dark) {
   :root:not([data-theme="light"]):not(.light) {
-    /* Brand Colors - Dark Mode (Forest Green adjusted) */
-    --ak-primary: #2A6B55;
-    --ak-primary-light: #3D8A6E;
-    --ak-primary-dark: #1B4D3E;
+    /* Brand Colors - Dark Mode (Midnight Blue adjusted for dark backgrounds) */
+    --ak-primary: #4A7A96;
+    --ak-primary-light: #6B95AD;
+    --ak-primary-dark: #2C5F7F;
     --ak-ink: #F9FAFB;
     --ak-snow: #111827;
     --ak-surface: #1F2937;
@@ -779,8 +696,8 @@
     --ak-gold-light: #F0C040;
 
     /* Legacy aliases */
-    --ak-forest: #2A6B55;
-    --ak-forest-light: #3D8A6E;
+    --ak-forest: #4A7A96;
+    --ak-forest-light: #6B95AD;
     --ak-foam: #111827;
     --ak-ivory: #1F2937;
 
@@ -818,7 +735,7 @@
     --background-elevated: #374151;
     --background-muted: #4B5563;
     --background-inverse: #F9FAFB;
-    --background-accent: #2A6B55;
+    --background-accent: #2C5F7F;
     --background-white: #111827;
 
     /* Semantic - Text */
@@ -827,7 +744,7 @@
     --text-tertiary: #9CA3AF;
     --text-muted: #6B7280;
     --text-faint: #4B5563;
-    --text-brand: #3D8A6E;
+    --text-brand: #6B95AD;
     --text-inverse: #111827;
     --text-accent: #DAA520;
 
@@ -835,8 +752,8 @@
     --border-default: #374151;
     --border-strong: #4B5563;
     --border-subtle: #1F2937;
-    --border-brand: #2A6B55;
-    --border-primary: rgba(42, 107, 85, 0.3);
+    --border-brand: #4A7A96;
+    --border-primary: rgba(74, 122, 150, 0.3);
     --border-accent: #DAA520;
 
     /* Standardized Color Tokens - Dark Mode (System) */
@@ -862,9 +779,9 @@
     --accent: var(--ak-primary);
     --accent-hover: var(--ak-primary-light);
     --accent-dark: var(--ak-primary-dark);
-    --accent-muted: rgba(42, 107, 85, 0.15);
-    --accent-soft: rgba(42, 107, 85, 0.2);
-    --accent-rgb: 42, 107, 85;
+    --accent-muted: rgba(74, 122, 150, 0.15);
+    --accent-soft: rgba(74, 122, 150, 0.2);
+    --accent-rgb: 74, 122, 150;
     --bg-primary: var(--background-white);
     --bg-secondary: var(--background-default);
     --bg-tertiary: var(--gray-100);
@@ -939,7 +856,7 @@
     --shadow-elevated: 0 4px 12px rgba(0, 0, 0, 0.4);
     --shadow-float: 0 8px 24px rgba(0, 0, 0, 0.5);
     --shadow-hover: var(--shadow-float);
-    --focus-ring: 0 0 0 3px rgba(42, 107, 85, 0.4);
+    --focus-ring: 0 0 0 3px rgba(16, 69, 106, 0.4);
   }
 }
 

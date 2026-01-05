@@ -239,7 +239,7 @@ const TestResultsPage: React.FC = () => {
           </div>
           <select
             value={sortBy}
-            onChange={(e) => setSortBy(e.target.value as any)}
+            onChange={(e) => setSortBy(e.target.value as 'date' | 'name' | 'result')}
             style={styles.sortSelect}
           >
             <option value="date">Nyeste først</option>

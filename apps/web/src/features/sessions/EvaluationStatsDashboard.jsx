@@ -21,7 +21,7 @@ import { SectionTitle, SubSectionTitle } from '../../components/typography';
 const getIconBgClasses = (colorKey) => {
   switch (colorKey) {
     case 'accent':
-      return 'bg-ak-brand-primary/15';
+      return 'bg-ak-primary/15';
     case 'success':
       return 'bg-ak-status-success/15';
     case 'warning':
@@ -29,14 +29,14 @@ const getIconBgClasses = (colorKey) => {
     case 'error':
       return 'bg-ak-status-error/15';
     default:
-      return 'bg-ak-brand-primary/15';
+      return 'bg-ak-primary/15';
   }
 };
 
 const getIconTextClasses = (colorKey) => {
   switch (colorKey) {
     case 'accent':
-      return 'text-ak-brand-primary';
+      return 'text-ak-primary';
     case 'success':
       return 'text-ak-status-success';
     case 'warning':
@@ -44,7 +44,7 @@ const getIconTextClasses = (colorKey) => {
     case 'error':
       return 'text-ak-status-error';
     default:
-      return 'text-ak-brand-primary';
+      return 'text-ak-primary';
   }
 };
 
@@ -99,7 +99,7 @@ function RatingBar({ label, value, maxValue = 10, colorKey = 'accent' }) {
       case 'success': return 'bg-ak-status-success';
       case 'warning': return 'bg-ak-status-warning';
       case 'achievement': return 'bg-amber-500';
-      default: return 'bg-ak-brand-primary';
+      default: return 'bg-ak-primary';
     }
   };
 
@@ -107,7 +107,7 @@ function RatingBar({ label, value, maxValue = 10, colorKey = 'accent' }) {
     <div className="mb-4">
       <div className="flex justify-between mb-1">
         <span className="text-[15px] text-ak-text-primary">{label}</span>
-        <span className="text-xs font-medium text-ak-brand-primary">{value.toFixed(1)}/10</span>
+        <span className="text-xs font-medium text-ak-primary">{value.toFixed(1)}/10</span>
       </div>
       <div className="w-full h-2 bg-ak-border-default rounded-full overflow-hidden">
         <div
@@ -134,13 +134,13 @@ function TechnicalCuesList({ cues }) {
         <div
           key={cue.name}
           className={`flex justify-between items-center p-2 rounded-lg ${
-            index === 0 ? 'bg-ak-brand-primary/10' : 'bg-ak-surface-subtle'
+            index === 0 ? 'bg-ak-primary/10' : 'bg-ak-surface-subtle'
           }`}
         >
           <span className="text-[15px] text-ak-text-primary">
             {cue.name}
           </span>
-          <span className="text-xs font-medium text-ak-brand-primary">
+          <span className="text-xs font-medium text-ak-primary">
             {cue.count}x
           </span>
         </div>

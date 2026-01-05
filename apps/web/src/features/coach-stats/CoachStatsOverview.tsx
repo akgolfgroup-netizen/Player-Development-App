@@ -247,7 +247,7 @@ export default function CoachStatsOverview() {
   if (loading) {
     return (
       <div className="min-h-screen bg-ak-surface-subtle flex items-center justify-center">
-        <div className="w-12 h-12 border-4 border-ak-border-default border-t-ak-brand-primary rounded-full animate-spin" />
+        <div className="w-12 h-12 border-4 border-ak-border-default border-t-ak-primary rounded-full animate-spin" />
       </div>
     );
   }
@@ -285,8 +285,8 @@ export default function CoachStatsOverview() {
             <div className="text-[28px] font-bold text-ak-status-error">{overallStats.declining}</div>
             <div className="text-[13px] text-ak-text-primary">Trenger oppfølging</div>
           </div>
-          <div className="p-4 bg-ak-brand-primary/10 rounded-lg text-center">
-            <div className="text-[28px] font-bold text-ak-brand-primary">
+          <div className="p-4 bg-ak-primary/10 rounded-lg text-center">
+            <div className="text-[28px] font-bold text-ak-primary">
               {overallStats.avgHandicapChange > 0 ? '+' : ''}{overallStats.avgHandicapChange}
             </div>
             <div className="text-[13px] text-ak-text-primary">Snitt HCP-endring</div>
@@ -308,12 +308,12 @@ export default function CoachStatsOverview() {
               onClick={() => setCategoryFilter(cat.category)}
               className={`p-4 rounded-lg cursor-pointer border-2 ${
                 categoryFilter === cat.category
-                  ? 'bg-ak-brand-primary/5 border-ak-brand-primary'
+                  ? 'bg-ak-primary/5 border-ak-primary'
                   : 'bg-ak-surface-muted border-transparent'
               }`}
             >
               <div className="flex items-center justify-between mb-3">
-                <span className="text-lg font-bold text-ak-brand-primary">Kategori {cat.category}</span>
+                <span className="text-lg font-bold text-ak-primary">Kategori {cat.category}</span>
                 <span className="text-sm text-ak-text-secondary">{cat.playerCount} spillere</span>
               </div>
               <div className="grid grid-cols-2 gap-2">
@@ -410,7 +410,7 @@ export default function CoachStatsOverview() {
                     <div>
                       <SubSectionTitle className="m-0">{player.name}</SubSectionTitle>
                       <div className="flex items-center gap-2 mt-1">
-                        <span className="text-xs font-semibold text-ak-brand-primary bg-ak-brand-primary/15 py-0.5 px-2 rounded">
+                        <span className="text-xs font-semibold text-ak-primary bg-ak-primary/15 py-0.5 px-2 rounded">
                           Kategori {player.category}
                         </span>
                         {player.highlights.map((h, i) => (

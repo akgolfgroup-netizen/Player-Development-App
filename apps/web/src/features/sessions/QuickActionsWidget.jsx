@@ -94,7 +94,7 @@ export default function QuickActionsWidget({ planId }) {
 
   if (assignment.isRestDay) {
     return (
-      <div className="bg-ak-brand-primary/10 rounded-lg shadow p-6 border-2 border-ak-brand-primary/30">
+      <div className="bg-ak-primary/10 rounded-lg shadow p-6 border-2 border-ak-primary/30">
         <SubSectionTitle className="mb-2">Rest Day</SubSectionTitle>
         <p className="text-ak-text-primary">Recovery is important! Enjoy your rest day.</p>
       </div>
@@ -103,7 +103,7 @@ export default function QuickActionsWidget({ planId }) {
 
   const statusColors = {
     planned: 'bg-ak-surface-subtle text-ak-text-secondary',
-    in_progress: 'bg-ak-brand-primary/15 text-ak-brand-primary',
+    in_progress: 'bg-ak-primary/15 text-ak-primary',
     completed: 'bg-ak-status-success/15 text-ak-status-success',
     skipped: 'bg-ak-status-warning/15 text-ak-status-warning',
   };

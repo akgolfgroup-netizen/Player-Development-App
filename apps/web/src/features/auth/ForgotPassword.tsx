@@ -44,7 +44,7 @@ const ForgotPassword: React.FC = () => {
   return (
     <AuthPage state={loading ? 'loading' : submitted ? 'success' : 'idle'} maxWidth="md">
       <AuthPage.Logo title="Tilbakestill passord" subtitle="Vi sender deg en sikker lenke for å tilbakestille passordet ditt">
-        <AKLogo size={60} className="text-ak-brand-primary" />
+        <AKLogo size={60} className="text-ak-primary" />
       </AuthPage.Logo>
 
       <AuthPage.Card>
@@ -72,7 +72,7 @@ const ForgotPassword: React.FC = () => {
                     setSubmitted(false);
                     setEmail('');
                   }}
-                  className="text-ak-brand-primary underline bg-transparent border-none cursor-pointer font-inherit"
+                  className="text-ak-primary underline bg-transparent border-none cursor-pointer font-inherit"
                 >
                   prøv igjen
                 </button>
@@ -81,7 +81,7 @@ const ForgotPassword: React.FC = () => {
 
             <Link
               to="/login"
-              className="inline-flex items-center gap-2 px-6 py-3 bg-ak-brand-primary text-white rounded-lg font-semibold hover:bg-ak-brand-hover transition-colors no-underline"
+              className="inline-flex items-center gap-2 px-6 py-3 bg-ak-primary text-white rounded-lg font-semibold hover:bg-ak-brand-hover transition-colors no-underline"
             >
               <ArrowLeft size={18} />
               Tilbake til innlogging
@@ -139,7 +139,7 @@ const ForgotPassword: React.FC = () => {
             <div className="mt-6 pt-6 border-t border-ak-border-default text-center">
               <Link
                 to="/login"
-                className="inline-flex items-center gap-2 text-ak-brand-primary no-underline text-sm"
+                className="inline-flex items-center gap-2 text-ak-primary no-underline text-sm"
               >
                 <ArrowLeft size={18} />
                 Tilbake til innlogging
@@ -151,7 +151,7 @@ const ForgotPassword: React.FC = () => {
 
       <AuthPage.Footer>
         Trenger du hjelp? Kontakt{' '}
-        <a href="mailto:support@akgolf.no" className="text-ak-brand-primary no-underline">
+        <a href="mailto:support@akgolf.no" className="text-ak-primary no-underline">
           support@akgolf.no
         </a>
       </AuthPage.Footer>

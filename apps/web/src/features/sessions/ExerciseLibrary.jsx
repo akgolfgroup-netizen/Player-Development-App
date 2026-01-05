@@ -280,7 +280,7 @@ const getPyramideClasses = (pyramide) => {
     case 'FYS':
       return { bar: 'bg-purple-500', text: 'text-purple-600', bg: 'bg-purple-500/15' };
     case 'TEK':
-      return { bar: 'bg-ak-brand-primary', text: 'text-ak-brand-primary', bg: 'bg-ak-brand-primary/15' };
+      return { bar: 'bg-ak-primary', text: 'text-ak-primary', bg: 'bg-ak-primary/15' };
     case 'SLAG':
       return { bar: 'bg-ak-status-success', text: 'text-ak-status-success', bg: 'bg-ak-status-success/15' };
     case 'SPILL':
@@ -288,7 +288,7 @@ const getPyramideClasses = (pyramide) => {
     case 'TURN':
       return { bar: 'bg-ak-status-error', text: 'text-ak-status-error', bg: 'bg-ak-status-error/15' };
     default:
-      return { bar: 'bg-ak-brand-primary', text: 'text-ak-brand-primary', bg: 'bg-ak-brand-primary/15' };
+      return { bar: 'bg-ak-primary', text: 'text-ak-primary', bg: 'bg-ak-primary/15' };
   }
 };
 
@@ -403,18 +403,18 @@ function ExerciseDetailModal({ exercise, onClose, onAddToSession }) {
         <div className="flex gap-4 mb-6 flex-wrap">
           <div className="bg-ak-surface-subtle py-2 px-4 rounded-lg">
             <span className="text-xs text-ak-text-secondary">Kategori</span>
-            <div className="text-xs font-medium text-ak-brand-primary">{exercise.category}</div>
+            <div className="text-xs font-medium text-ak-primary">{exercise.category}</div>
           </div>
           <div className="bg-ak-surface-subtle py-2 px-4 rounded-lg">
             <span className="text-xs text-ak-text-secondary">Varighet</span>
-            <div className="text-xs font-medium text-ak-brand-primary">
+            <div className="text-xs font-medium text-ak-primary">
               {exercise.duration.min}-{exercise.duration.max} min
             </div>
           </div>
           {exercise.reps && (
             <div className="bg-ak-surface-subtle py-2 px-4 rounded-lg">
               <span className="text-xs text-ak-text-secondary">Repetisjoner</span>
-              <div className="text-xs font-medium text-ak-brand-primary">{exercise.reps}</div>
+              <div className="text-xs font-medium text-ak-primary">{exercise.reps}</div>
             </div>
           )}
         </div>
@@ -454,7 +454,7 @@ function ExerciseDetailModal({ exercise, onClose, onAddToSession }) {
             <div className="flex flex-col gap-2">
               {exercise.variants.map((variant, i) => (
                 <div key={i} className="bg-ak-surface-subtle p-2 rounded">
-                  <span className="text-xs font-medium text-ak-brand-primary">
+                  <span className="text-xs font-medium text-ak-primary">
                     {variant.name}
                   </span>
                   {variant.description && (
@@ -502,7 +502,7 @@ function ExerciseDetailModal({ exercise, onClose, onAddToSession }) {
               {exercise.trainingAreas.map((area, i) => (
                 <span
                   key={i}
-                  className="text-xs py-1 px-2.5 bg-ak-brand-primary/10 rounded text-ak-brand-primary capitalize"
+                  className="text-xs py-1 px-2.5 bg-ak-primary/10 rounded text-ak-primary capitalize"
                 >
                   {area}
                 </span>
@@ -604,7 +604,7 @@ export default function ExerciseLibrary({ onSelectExercise, onClose }) {
             placeholder="Søk..."
             value={searchQuery}
             onChange={(e) => setSearchQuery(e.target.value)}
-            className="w-[200px] py-2 px-3 bg-ak-surface-subtle border-none rounded-lg text-[13px] text-ak-text-primary outline-none focus:ring-1 focus:ring-ak-brand-primary"
+            className="w-[200px] py-2 px-3 bg-ak-surface-subtle border-none rounded-lg text-[13px] text-ak-text-primary outline-none focus:ring-1 focus:ring-ak-primary"
           />
 
           {/* Pyramide level chips */}

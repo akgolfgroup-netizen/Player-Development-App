@@ -43,7 +43,7 @@ const ToggleSwitch: React.FC<ToggleSwitchProps> = ({ enabled, onToggle }) => (
   <button
     onClick={onToggle}
     className={`w-11 h-6 rounded-xl border-none relative cursor-pointer transition-colors ${
-      enabled ? 'bg-ak-brand-primary' : 'bg-ak-border-default'
+      enabled ? 'bg-ak-primary' : 'bg-ak-border-default'
     }`}
   >
     <div
@@ -319,7 +319,7 @@ export default function CoachBookingSettings() {
   if (loading || !settings) {
     return (
       <div className="min-h-screen bg-ak-surface-subtle flex items-center justify-center">
-        <div className="w-12 h-12 border-4 border-ak-border-default border-t-ak-brand-primary rounded-full animate-spin" />
+        <div className="w-12 h-12 border-4 border-ak-border-default border-t-ak-primary rounded-full animate-spin" />
       </div>
     );
   }
@@ -349,7 +349,7 @@ export default function CoachBookingSettings() {
         {/* Weekly Schedule */}
         <div className="bg-ak-surface-base rounded-xl shadow-sm mb-6 overflow-hidden">
           <div className="py-4 px-5 border-b border-ak-border-default flex items-center gap-3">
-            <Clock size={20} className="text-ak-brand-primary" />
+            <Clock size={20} className="text-ak-primary" />
             <SectionTitle className="m-0">
               Ukentlig tilgjengelighet
             </SectionTitle>
@@ -432,7 +432,7 @@ export default function CoachBookingSettings() {
                           size="sm"
                           onClick={() => addTimeSlot(key)}
                           leftIcon={<Plus size={16} />}
-                          className="border border-dashed border-ak-brand-primary"
+                          className="border border-dashed border-ak-primary"
                         >
                           Legg til tidsluke
                         </Button>
@@ -458,7 +458,7 @@ export default function CoachBookingSettings() {
         {/* Session Types */}
         <div className="bg-ak-surface-base rounded-xl shadow-sm mb-6 overflow-hidden">
           <div className="py-4 px-5 border-b border-ak-border-default flex items-center gap-3">
-            <Calendar size={20} className="text-ak-brand-primary" />
+            <Calendar size={20} className="text-ak-primary" />
             <SectionTitle className="m-0">
               Økttyper
             </SectionTitle>
@@ -475,7 +475,7 @@ export default function CoachBookingSettings() {
                   key={session.id}
                   className={`flex items-center justify-between p-3 px-4 rounded-lg border ${
                     session.enabled
-                      ? 'bg-ak-brand-primary/5 border-ak-brand-primary'
+                      ? 'bg-ak-primary/5 border-ak-primary'
                       : 'bg-ak-surface-subtle border-ak-border-default'
                   }`}
                 >
@@ -484,7 +484,7 @@ export default function CoachBookingSettings() {
                       onClick={() => toggleSessionType(session.id)}
                       className={`w-6 h-6 rounded-md flex items-center justify-center cursor-pointer border-2 ${
                         session.enabled
-                          ? 'bg-ak-brand-primary border-ak-brand-primary'
+                          ? 'bg-ak-primary border-ak-primary'
                           : 'bg-ak-surface-base border-ak-border-default'
                       }`}
                     >
@@ -524,7 +524,7 @@ export default function CoachBookingSettings() {
         <div className="bg-ak-surface-base rounded-xl shadow-sm mb-6 overflow-hidden">
           <div className="py-4 px-5 border-b border-ak-border-default flex items-center justify-between">
             <div className="flex items-center gap-3">
-              <Lock size={20} className="text-ak-brand-primary" />
+              <Lock size={20} className="text-ak-primary" />
               <SectionTitle className="m-0">
                 Blokkerte datoer
               </SectionTitle>
@@ -615,7 +615,7 @@ export default function CoachBookingSettings() {
         {/* Booking Preferences */}
         <div className="bg-ak-surface-base rounded-xl shadow-sm overflow-hidden">
           <div className="py-4 px-5 border-b border-ak-border-default flex items-center gap-3">
-            <Settings size={20} className="text-ak-brand-primary" />
+            <Settings size={20} className="text-ak-primary" />
             <SectionTitle className="m-0">
               Bookinginnstillinger
             </SectionTitle>
@@ -688,7 +688,7 @@ export default function CoachBookingSettings() {
               <div className="flex items-center justify-between p-3 px-4 bg-ak-surface-subtle rounded-lg">
                 <div className="flex items-center gap-3">
                   {settings.autoApprove ? (
-                    <Unlock size={18} className="text-ak-brand-primary" />
+                    <Unlock size={18} className="text-ak-primary" />
                   ) : (
                     <Lock size={18} className="text-ak-text-secondary" />
                   )}
@@ -709,7 +709,7 @@ export default function CoachBookingSettings() {
 
               <div className="flex items-center justify-between p-3 px-4 bg-ak-surface-subtle rounded-lg">
                 <div className="flex items-center gap-3">
-                  <Bell size={18} className={settings.notifyOnRequest ? 'text-ak-brand-primary' : 'text-ak-text-secondary'} />
+                  <Bell size={18} className={settings.notifyOnRequest ? 'text-ak-primary' : 'text-ak-text-secondary'} />
                   <div>
                     <p className="text-sm font-medium text-ak-text-primary m-0">
                       Varsler ved nye forespørsler

@@ -2,6 +2,8 @@
  * AK Golf Academy - Input Components
  * Premium Light System: Stone × Midnight Blue × Emerald × Soft Gold
  *
+ * NOW POWERED BY CATALYST UI
+ *
  * Rules:
  * - Inputs are calm/neutral
  * - Focus = ak.action (blue)
@@ -9,6 +11,10 @@
  */
 
 import React from "react";
+// @ts-expect-error - Catalyst components are JS without type definitions
+import { Input as CatalystInput, InputGroup } from "../../components/catalyst/input";
+// @ts-expect-error - Catalyst components are JS without type definitions
+import { Field, Label, Description, ErrorMessage } from "../../components/catalyst/fieldset";
 
 type InputSize = "sm" | "md";
 
@@ -26,11 +32,6 @@ interface TextInputProps extends Omit<React.InputHTMLAttributes<HTMLInputElement
   size?: InputSize;
 }
 
-const sizeClasses: Record<InputSize, string> = {
-  sm: "px-3 py-2 text-[13px] leading-[18px]",
-  md: "px-4 py-3 text-[15px] leading-[20px]",
-};
-
 export const TextInput: React.FC<TextInputProps> = ({
   label,
   error,
@@ -45,50 +46,41 @@ export const TextInput: React.FC<TextInputProps> = ({
 }) => {
   const resolvedHelperText = helperText ?? hint;
   const hasLeftElement = Boolean(icon || leftAddon);
+  const isInvalid = Boolean(error);
+
+  const inputElement = hasLeftElement ? (
+    <InputGroup>
+      {(icon || leftAddon) && <span data-slot="icon">{icon ?? leftAddon}</span>}
+      <CatalystInput
+        data-invalid={isInvalid || undefined}
+        className={className}
+        {...props}
+      />
+    </InputGroup>
+  ) : (
+    <CatalystInput
+      data-invalid={isInvalid || undefined}
+      className={className}
+      {...props}
+    />
+  );
+
+  // If no label/error/helper, just return the input
+  if (!label && !error && !resolvedHelperText) {
+    return (
+      <div className={fullWidth ? "w-full" : ""}>
+        {inputElement}
+      </div>
+    );
+  }
 
   return (
-    <div className={["flex flex-col gap-1.5", fullWidth ? "w-full" : ""].join(" ")}>
-      {label ? (
-        <label className="text-[13px] font-medium text-ak-text-primary">
-          {label}
-        </label>
-      ) : null}
-
-      <div className="relative flex items-center">
-        {(icon || leftAddon) ? (
-          <span className="pointer-events-none absolute left-3 text-ak-text-muted">
-            {icon ?? leftAddon}
-          </span>
-        ) : null}
-
-        <input
-          className={[
-            "w-full rounded-xl bg-ak-surface-elevated text-ak-text-body",
-            sizeClasses[size],
-            "border-2",
-            error ? "border-ak-status-error" : "border-ak-surface-border",
-            "outline-none transition-all duration-200",
-            "focus:border-ak-action-active focus:ring-2 focus:ring-ak-action-active/20",
-            hasLeftElement ? "pl-11" : "",
-            className ?? "",
-          ]
-            .filter(Boolean)
-            .join(" ")}
-          {...props}
-        />
-      </div>
-
-      {error || resolvedHelperText ? (
-        <span
-          className={[
-            "text-[12px]",
-            error ? "text-ak-status-error" : "text-ak-text-muted",
-          ].join(" ")}
-        >
-          {error ?? resolvedHelperText}
-        </span>
-      ) : null}
-    </div>
+    <Field className={fullWidth ? "w-full" : ""}>
+      {label && <Label className="">{label}</Label>}
+      {inputElement}
+      {error && <ErrorMessage className="">{error}</ErrorMessage>}
+      {!error && resolvedHelperText && <Description className="">{resolvedHelperText}</Description>}
+    </Field>
   );
 };
 

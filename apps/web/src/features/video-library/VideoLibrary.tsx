@@ -262,8 +262,8 @@ export function VideoLibrary({
           key={video.id}
           className={`flex gap-4 p-3 bg-ak-surface-elevated rounded-xl cursor-pointer transition-colors border ${
             selectedVideos.has(video.id)
-              ? 'border-ak-brand-primary'
-              : 'border-ak-border-default hover:border-ak-brand-primary/50'
+              ? 'border-ak-primary'
+              : 'border-ak-border-default hover:border-ak-primary/50'
           }`}
           onClick={() => onVideoClick?.(video)}
           role="button"
@@ -318,7 +318,7 @@ export function VideoLibrary({
               }}
               onClick={(e) => e.stopPropagation()}
               aria-label={`Velg ${video.title}`}
-              className="w-5 h-5 accent-ak-brand-primary"
+              className="w-5 h-5 accent-ak-primary"
             />
           </div>
         </div>
@@ -355,7 +355,7 @@ export function VideoLibrary({
 
       {/* Bulk actions bar */}
       {selectedVideos.size > 0 && (
-        <div className="flex items-center gap-4 px-4 py-3 bg-ak-brand-primary rounded-xl text-white">
+        <div className="flex items-center gap-4 px-4 py-3 bg-ak-primary rounded-xl text-white">
           <span className="text-sm font-semibold">
             {selectedVideos.size} valgt
           </span>
@@ -389,7 +389,7 @@ export function VideoLibrary({
       {/* Content */}
       {loading ? (
         <div className="flex items-center justify-center py-8">
-          <div className="w-10 h-10 border-[3px] border-ak-border-default border-t-ak-brand-primary rounded-full animate-spin" />
+          <div className="w-10 h-10 border-[3px] border-ak-border-default border-t-ak-primary rounded-full animate-spin" />
         </div>
       ) : error ? (
         <StateCard

@@ -80,7 +80,7 @@ function GoalCard({ goal }: GoalCardProps) {
           </div>
           <div className="h-1.5 bg-ak-surface-subtle rounded-full overflow-hidden">
             <div
-              className="h-full bg-ak-brand-primary rounded-full transition-all duration-300"
+              className="h-full bg-ak-primary rounded-full transition-all duration-300"
               style={{ width: `${progressPercent}%` }}
             />
           </div>

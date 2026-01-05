@@ -23,6 +23,7 @@ import {
 import { CoachPlayerAlerts, CoachWeeklyTournaments, CoachInjuryTracker } from './widgets';
 import { coachesAPI } from '../../services/api';
 import { useAuth } from '../../contexts/AuthContext';
+import { useToast } from '../../components/shadcn/use-toast';
 import { TeamFocusHeatmap } from '../focus-engine';
 import StatsGridTemplate from '../../ui/templates/StatsGridTemplate';
 import Button from '../../ui/primitives/Button';
@@ -66,7 +67,7 @@ const WidgetHeader: React.FC<{
 }> = ({ title, icon: Icon, action }) => (
   <div className="flex items-center justify-between mb-4">
     <div className="flex items-center gap-2">
-      {Icon && <Icon size={18} className="text-ak-brand-primary" />}
+      {Icon && <Icon size={18} className="text-ak-primary" />}
       <SubSectionTitle>
         {title}
       </SubSectionTitle>
@@ -80,8 +81,8 @@ const WidgetHeader: React.FC<{
   </div>
 );
 
-// Avatar component
-const AVATAR_COLORS = ['bg-ak-brand-primary', 'bg-ak-status-success', 'bg-ak-status-warning'];
+// Avatar component - use correct Tailwind color classes from tailwind.config.js
+const AVATAR_COLORS = ['bg-ak-primary', 'bg-ak-success', 'bg-ak-warning'];
 
 const Avatar: React.FC<{ name: string; size?: number }> = ({ name, size = 40 }) => {
   const initials = name.split(' ').map(n => n[0]).join('').slice(0, 2).toUpperCase();
@@ -185,6 +186,7 @@ export default function CoachDashboard(props: CoachDashboardProps) {
   // ALL HOOKS MUST BE AT TOP - NO CONDITIONALS BEFORE HOOKS
   const navigate = useNavigate();
   const { user } = useAuth();
+  const { toast } = useToast();
   const [searchTerm, setSearchTerm] = useState('');
 
   // Destructure props after all hooks are called
@@ -207,13 +209,23 @@ export default function CoachDashboard(props: CoachDashboardProps) {
         setLoading(true);
       }
 
-      const coachId = (user as any)?.coachId || user?.id;
+      const userWithCoach = user as { coachId?: string; id?: string } | null;
+      const coachId = userWithCoach?.coachId || userWithCoach?.id;
 
+      let hadApiError = false;
       const [athletesRes, alertsRes, statsRes] = await Promise.all([
-        coachesAPI.getAthletes().catch(() => ({ data: { data: mockAthletes } })),
-        coachesAPI.getAlerts().catch(() => ({ data: { data: { alerts: mockPendingItems } } })),
-        coachId ? coachesAPI.getWeeklyStats(coachId).catch(() => ({ data: null })) : Promise.resolve({ data: null }),
+        coachesAPI.getAthletes().catch(() => { hadApiError = true; return { data: { data: mockAthletes } }; }),
+        coachesAPI.getAlerts().catch(() => { hadApiError = true; return { data: { data: { alerts: mockPendingItems } } }; }),
+        coachId ? coachesAPI.getWeeklyStats(coachId).catch(() => { hadApiError = true; return { data: null }; }) : Promise.resolve({ data: null }),
       ]);
+
+      if (hadApiError && !isBackground) {
+        toast({
+          title: 'Begrenset data',
+          description: 'Noen data kunne ikke lastes. Viser demodata.',
+          variant: 'default',
+        });
+      }
 
       // Transform athletes response
       const athleteData = athletesRes.data?.data || athletesRes.data || mockAthletes;
@@ -351,7 +363,7 @@ export default function CoachDashboard(props: CoachDashboardProps) {
         </div>
         {/* Refreshing indicator bar */}
         {isRefreshing && (
-          <div className="absolute top-0 left-0 right-0 h-[3px] bg-ak-brand-primary animate-pulse" />
+          <div className="absolute top-0 left-0 right-0 h-[3px] bg-ak-primary animate-pulse" />
         )}
       </div>
 
@@ -364,8 +376,8 @@ export default function CoachDashboard(props: CoachDashboardProps) {
               onClick={() => navigate(action.href)}
               className="flex flex-col items-center gap-2 py-4 px-3 bg-ak-surface-base border-none rounded-lg shadow-sm cursor-pointer transition-all hover:shadow-md"
             >
-              <div className="w-11 h-11 rounded-lg bg-ak-brand-primary/10 flex items-center justify-center">
-                <action.icon size={22} className="text-ak-brand-primary" />
+              <div className="w-11 h-11 rounded-lg bg-ak-primary/10 flex items-center justify-center">
+                <action.icon size={22} className="text-ak-primary" />
               </div>
               <span className="text-[13px] font-medium text-ak-text-primary">
                 {action.label}
@@ -456,12 +468,12 @@ export default function CoachDashboard(props: CoachDashboardProps) {
                 {pendingItems.map(item => (
                   <div
                     key={item.id}
-                    className="flex items-start gap-3 p-3.5 bg-ak-brand-primary/5 rounded-lg border-l-[3px] border-ak-brand-primary cursor-pointer"
+                    className="flex items-start gap-3 p-3.5 bg-ak-primary/5 rounded-lg border-l-[3px] border-ak-primary cursor-pointer"
                   >
                     <div className="w-9 h-9 rounded-md bg-ak-surface-base flex items-center justify-center shrink-0">
-                      {item.type === 'proof' && <User size={18} className="text-ak-brand-primary" />}
-                      {item.type === 'note' && <MessageSquare size={18} className="text-ak-brand-primary" />}
-                      {item.type === 'plan' && <ClipboardList size={18} className="text-ak-brand-primary" />}
+                      {item.type === 'proof' && <User size={18} className="text-ak-primary" />}
+                      {item.type === 'note' && <MessageSquare size={18} className="text-ak-primary" />}
+                      {item.type === 'plan' && <ClipboardList size={18} className="text-ak-primary" />}
                     </div>
                     <div className="flex-1">
                       <p className="text-[15px] font-medium text-ak-text-primary m-0">
@@ -531,7 +543,7 @@ export default function CoachDashboard(props: CoachDashboardProps) {
                   key={index}
                   className="flex items-center gap-3 p-3 bg-ak-surface-subtle rounded-lg"
                 >
-                  <div className="w-12 h-12 rounded-lg bg-ak-brand-primary text-white flex items-center justify-center text-[13px] font-semibold">
+                  <div className="w-12 h-12 rounded-lg bg-ak-primary text-white flex items-center justify-center text-[13px] font-semibold">
                     {event.time}
                   </div>
                   <div className="flex-1">

@@ -21,7 +21,8 @@ import {
 } from 'lucide-react';
 import Card from '../../ui/primitives/Card';
 import Button from '../../ui/primitives/Button';
-import { PageTitle, SectionTitle, SubSectionTitle } from '../../components/typography';
+import PageHeader from '../../ui/raw-blocks/PageHeader.raw';
+import { SectionTitle, SubSectionTitle } from '../../components/typography';
 
 // ============================================================================
 // CLASS MAPPINGS
@@ -29,8 +30,8 @@ import { PageTitle, SectionTitle, SubSectionTitle } from '../../components/typog
 
 const SLOT_STATUS_CLASSES = {
   booked: {
-    bg: 'bg-ak-brand-primary/15',
-    border: 'border-l-ak-brand-primary',
+    bg: 'bg-ak-primary/15',
+    border: 'border-l-ak-primary',
   },
   pending: {
     bg: 'bg-ak-status-warning/15',
@@ -248,56 +249,48 @@ export default function CoachBookingCalendar() {
   if (loading) {
     return (
       <div className="min-h-screen bg-ak-surface-subtle flex items-center justify-center">
-        <div className="w-12 h-12 border-4 border-ak-border-default border-t-ak-brand-primary rounded-full animate-spin" />
+        <div className="w-12 h-12 border-4 border-ak-border-default border-t-ak-primary rounded-full animate-spin" />
       </div>
     );
   }
 
   return (
     <div className="min-h-screen bg-ak-surface-subtle font-sans">
-      {/* Header */}
-      <div className="bg-ak-surface-base border-b border-ak-border-default py-5 px-6">
-        <div className="flex items-center justify-between mb-4">
-          <div>
-            <PageTitle className="m-0">
-              Booking-kalender
-            </PageTitle>
-            <p className="text-[15px] text-ak-text-secondary mt-1 m-0">
-              Administrer dine bookinger og tilgjengelighet
-            </p>
-          </div>
-
+      {/* Header - Standardized layout matching other coach pages */}
+      <PageHeader
+        title="Booking-kalender"
+        subtitle="Administrer dine bookinger og tilgjengelighet"
+        actions={
           <div className="flex gap-2.5">
-            <button
+            <Button
+              variant="secondary"
+              leftIcon={<Clock size={18} />}
               onClick={() => navigate('/coach/booking/requests')}
-              className={`flex items-center gap-2 py-2.5 px-4 rounded-lg text-sm font-medium cursor-pointer ${
-                stats.pending > 0
-                  ? 'bg-ak-status-warning/15 text-ak-status-warning border border-ak-status-warning'
-                  : 'bg-ak-surface-base text-ak-text-primary border border-ak-border-default'
-              }`}
+              className={stats.pending > 0 ? 'border-ak-status-warning text-ak-status-warning' : ''}
             >
-              <Clock size={18} />
               Forespørsler
               {stats.pending > 0 && (
-                <span className="py-0.5 px-2 bg-ak-status-warning text-white rounded-full text-xs font-semibold">
+                <span className="ml-2 py-0.5 px-2 bg-ak-status-warning text-white rounded-full text-xs font-semibold">
                   {stats.pending}
                 </span>
               )}
-            </button>
-            <button
+            </Button>
+            <Button
+              variant="primary"
+              leftIcon={<Settings size={18} />}
               onClick={() => navigate('/coach/booking/settings')}
-              className="flex items-center gap-2 py-2.5 px-4 bg-ak-brand-primary text-white border-none rounded-lg text-sm font-semibold cursor-pointer"
             >
-              <Settings size={18} />
               Tilgjengelighet
-            </button>
+            </Button>
           </div>
-        </div>
+        }
+      />
 
-        {/* Quick stats */}
+      {/* Quick stats below header */}
+      <div className="px-6 pb-4">
         <div className="flex gap-4">
-          <div className="flex items-center gap-2 py-2 px-3.5 bg-ak-brand-primary/10 rounded-lg">
-            <div className="w-2 h-2 rounded-full bg-ak-brand-primary" />
+          <div className="flex items-center gap-2 py-2 px-3.5 bg-ak-primary/10 rounded-lg">
+            <div className="w-2 h-2 rounded-full bg-ak-primary" />
             <span className="text-[13px] text-ak-text-primary">
               <strong>{stats.booked}</strong> bookede
             </span>
@@ -361,16 +354,16 @@ export default function CoachBookingCalendar() {
             return (
               <div
                 key={date.toISOString()}
-                className={`p-3 text-center ${isToday ? 'bg-ak-brand-primary/5' : 'bg-ak-surface-subtle'}`}
+                className={`p-3 text-center ${isToday ? 'bg-ak-primary/5' : 'bg-ak-surface-subtle'}`}
               >
                 <p className="text-[11px] text-ak-text-secondary m-0 uppercase">
                   {date.toLocaleDateString('nb-NO', { weekday: 'short' })}
                 </p>
-                <p className={`text-lg font-semibold mt-1 m-0 ${isToday ? 'text-ak-brand-primary' : 'text-ak-text-primary'}`}>
+                <p className={`text-lg font-semibold mt-1 m-0 ${isToday ? 'text-ak-primary' : 'text-ak-text-primary'}`}>
                   {date.getDate()}
                 </p>
                 {bookedCount > 0 && (
-                  <p className="text-[10px] text-ak-brand-primary mt-1 m-0">
+                  <p className="text-[10px] text-ak-primary mt-1 m-0">
                     {bookedCount} booking{bookedCount > 1 ? 'er' : ''}
                   </p>
                 )}
@@ -400,7 +393,7 @@ export default function CoachBookingCalendar() {
                       {slot?.booking && (
                         <div>
                           <div className="flex items-center gap-1.5 mb-1">
-                            <div className="w-6 h-6 rounded-full bg-ak-brand-primary text-white flex items-center justify-center text-[10px] font-semibold">
+                            <div className="w-6 h-6 rounded-full bg-ak-primary text-white flex items-center justify-center text-[10px] font-semibold">
                               {slot.booking.playerInitials}
                             </div>
                             <span className="text-xs font-medium text-ak-text-primary overflow-hidden text-ellipsis whitespace-nowrap">
@@ -453,7 +446,7 @@ export default function CoachBookingCalendar() {
 
             <div className="mb-5">
               <div className="flex items-center gap-3 mb-4">
-                <div className="w-12 h-12 rounded-full bg-ak-brand-primary text-white flex items-center justify-center text-base font-semibold">
+                <div className="w-12 h-12 rounded-full bg-ak-primary text-white flex items-center justify-center text-base font-semibold">
                   {selectedSlot.booking.playerInitials}
                 </div>
                 <div>
@@ -490,7 +483,7 @@ export default function CoachBookingCalendar() {
               </div>
 
               {selectedSlot.booking.notes && (
-                <div className="p-3 bg-ak-brand-primary/5 rounded-lg border-l-[3px] border-l-ak-brand-primary">
+                <div className="p-3 bg-ak-primary/5 rounded-lg border-l-[3px] border-l-ak-primary">
                   <p className="text-xs text-ak-text-secondary m-0">
                     Notat fra spiller
                   </p>
@@ -521,7 +514,7 @@ export default function CoachBookingCalendar() {
             ) : (
               <button
                 onClick={() => navigate(`/coach/athletes/${selectedSlot.booking?.id}`)}
-                className="w-full p-3 bg-ak-brand-primary text-white border-none rounded-lg text-sm font-semibold cursor-pointer"
+                className="w-full p-3 bg-ak-primary text-white border-none rounded-lg text-sm font-semibold cursor-pointer"
               >
                 Se spillerprofil
               </button>

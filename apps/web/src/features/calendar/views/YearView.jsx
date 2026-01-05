@@ -63,8 +63,8 @@ const YearView = ({
         <div
           key={d}
           className={`w-4 h-4 flex items-center justify-center text-[9px] rounded-sm ${
-            isToday ? 'bg-ak-brand-primary text-white font-bold' :
-            hasSessions ? 'bg-ak-brand-primary/20 text-ak-brand-primary' :
+            isToday ? 'bg-ak-primary text-white font-bold' :
+            hasSessions ? 'bg-ak-primary/20 text-ak-primary' :
             'text-ak-text-primary'
           }`}
         >
@@ -83,7 +83,7 @@ const YearView = ({
       <div
         key={monthIndex}
         className={`p-3 rounded-xl cursor-pointer transition-all hover:shadow-md ${
-          isCurrentMonth ? 'ring-2 ring-ak-brand-primary' : 'border border-ak-border-subtle'
+          isCurrentMonth ? 'ring-2 ring-ak-primary' : 'border border-ak-border-subtle'
         }`}
         style={{
           backgroundColor: periodColor ? `${periodColor}08` : 'var(--ak-surface-card)'
@@ -93,7 +93,7 @@ const YearView = ({
         {/* Month Header */}
         <div className="flex items-center justify-between mb-2">
           <span className={`text-sm font-semibold ${
-            isCurrentMonth ? 'text-ak-brand-primary' : 'text-ak-text-primary'
+            isCurrentMonth ? 'text-ak-primary' : 'text-ak-text-primary'
           }`}>
             {monthNames[monthIndex]}
           </span>
@@ -175,7 +175,7 @@ const YearView = ({
       <div className="border-t border-ak-border-subtle p-4 bg-ak-surface-subtle/30">
         <div className="grid grid-cols-4 gap-4 text-center">
           <div>
-            <div className="text-2xl font-bold text-ak-brand-primary">
+            <div className="text-2xl font-bold text-ak-primary">
               {Object.values(sessionsByMonth).reduce((acc, month) =>
                 acc + Object.values(month).flat().length, 0
               )}

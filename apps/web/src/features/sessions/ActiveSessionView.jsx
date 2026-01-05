@@ -29,7 +29,7 @@ function ProgressBar({ current, total, color }) {
         className="h-full transition-all duration-300 ease-out"
         style={{
           width: `${percentage}%`,
-          backgroundColor: color || 'var(--ak-brand-primary)',
+          backgroundColor: color || 'var(--ak-primary)',
         }}
       />
     </div>
@@ -47,7 +47,7 @@ function RepCounter({ current, target, onIncrement, onDecrement }) {
       <div className="flex items-center justify-center gap-8 mt-4">
         <button
           onClick={onDecrement}
-          className="w-14 h-14 rounded-lg bg-ak-surface-subtle border-none text-2xl text-ak-brand-primary cursor-pointer hover:bg-ak-surface-base transition-colors"
+          className="w-14 h-14 rounded-lg bg-ak-surface-subtle border-none text-2xl text-ak-primary cursor-pointer hover:bg-ak-surface-base transition-colors"
         >
           −
         </button>
@@ -58,7 +58,7 @@ function RepCounter({ current, target, onIncrement, onDecrement }) {
 
         <button
           onClick={onIncrement}
-          className="w-14 h-14 rounded-lg bg-ak-brand-primary border-none text-2xl text-white cursor-pointer hover:opacity-90 transition-opacity"
+          className="w-14 h-14 rounded-lg bg-ak-primary border-none text-2xl text-white cursor-pointer hover:opacity-90 transition-opacity"
         >
           +
         </button>
@@ -68,13 +68,13 @@ function RepCounter({ current, target, onIncrement, onDecrement }) {
       <div className="flex justify-center gap-2 mt-4">
         <button
           onClick={() => onIncrement(10)}
-          className="py-2 px-4 rounded-lg bg-ak-surface-subtle border-none text-ak-brand-primary cursor-pointer text-xs font-medium hover:bg-ak-surface-base transition-colors"
+          className="py-2 px-4 rounded-lg bg-ak-surface-subtle border-none text-ak-primary cursor-pointer text-xs font-medium hover:bg-ak-surface-base transition-colors"
         >
           + 10
         </button>
         <button
           onClick={() => onIncrement(25)}
-          className="py-2 px-4 rounded-lg bg-ak-surface-subtle border-none text-ak-brand-primary cursor-pointer text-xs font-medium hover:bg-ak-surface-base transition-colors"
+          className="py-2 px-4 rounded-lg bg-ak-surface-subtle border-none text-ak-primary cursor-pointer text-xs font-medium hover:bg-ak-surface-base transition-colors"
         >
           + 25
         </button>
@@ -98,7 +98,7 @@ function BlockNavigationChips({ blocks, currentIndex, completedIndices, onSelect
     const isCompleted = completedIndices.includes(index);
 
     if (isActive) {
-      return 'bg-ak-brand-primary text-white border-none';
+      return 'bg-ak-primary text-white border-none';
     }
     if (isCompleted) {
       return 'bg-ak-status-success text-white border-none';
@@ -331,7 +331,7 @@ export default function ActiveSessionView({ session, onEndSession, onPause: _onP
       </div>
 
       {/* Total timer */}
-      <div className="text-center p-6 bg-ak-brand-primary">
+      <div className="text-center p-6 bg-ak-primary">
         <div className="text-5xl font-bold text-white">
           {formatTime(totalSeconds)}
         </div>
@@ -371,7 +371,7 @@ export default function ActiveSessionView({ session, onEndSession, onPause: _onP
           <div className="bg-ak-surface-subtle rounded-lg p-4 mt-4">
             <div className="flex items-center gap-2">
               <span>🎯</span>
-              <span className="text-xs font-medium text-ak-brand-primary">
+              <span className="text-xs font-medium text-ak-primary">
                 {currentBlock.focus}
               </span>
             </div>
@@ -430,7 +430,7 @@ export default function ActiveSessionView({ session, onEndSession, onPause: _onP
             value={blockNote}
             onChange={(e) => setBlockNote(e.target.value)}
             placeholder="Notater for denne blokken..."
-            className="w-full min-h-[60px] p-2 bg-ak-surface-subtle border-none rounded-lg resize-none text-sm text-ak-text-primary outline-none focus:ring-1 focus:ring-ak-brand-primary"
+            className="w-full min-h-[60px] p-2 bg-ak-surface-subtle border-none rounded-lg resize-none text-sm text-ak-text-primary outline-none focus:ring-1 focus:ring-ak-primary"
           />
         </div>
       </div>

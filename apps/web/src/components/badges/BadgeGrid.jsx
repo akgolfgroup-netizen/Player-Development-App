@@ -110,7 +110,7 @@ const LOCKED_CLASSES = {
  */
 const CATEGORY_LABELS = {
   volume: 'Volum',
-  streak: 'Streak',
+  streak: 'Serie',
   strength: 'Styrke',
   speed: 'Hastighet',
   accuracy: 'Presisjon',
@@ -414,7 +414,7 @@ export const BadgeGrid = ({
             <SubSectionTitle className="text-base font-semibold mb-4 text-ak-text-primary flex items-center gap-2">
               {groupBy === 'category' && CATEGORY_LABELS[groupKey]}
               {groupBy === 'tier' && tierLabels[groupKey]}
-              {groupBy === 'none' && 'Alle badges'}
+              {groupBy === 'none' && 'Alle merker'}
               <span className="text-xs font-normal text-ak-text-muted">
                 ({groupBadges.length})
               </span>
@@ -438,7 +438,7 @@ export const BadgeGrid = ({
       {/* Empty state */}
       {filteredBadges.length === 0 && (
         <div className="text-center p-12 text-ak-text-tertiary">
-          Ingen badges funnet med valgte filter
+          Ingen merker funnet med valgte filter
         </div>
       )}
     </div>

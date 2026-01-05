@@ -20,10 +20,10 @@ import { getTestCategoryIcon } from '../../constants/icons';
 
 const CATEGORY_CLASSES = {
   driving: {
-    text: 'text-ak-brand-primary',
-    bg: 'bg-ak-brand-primary/15',
-    activeBg: 'bg-ak-brand-primary',
-    border: 'border-ak-brand-primary',
+    text: 'text-ak-primary',
+    bg: 'bg-ak-primary/15',
+    activeBg: 'bg-ak-primary',
+    border: 'border-ak-primary',
   },
   iron_play: {
     text: 'text-ak-status-success',
@@ -181,7 +181,7 @@ const TestInput = ({ test, value, onChange, onRemove }) => {
             onChange={handleChange}
             placeholder="0"
             step={test.type === 'decimal' ? '0.1' : '1'}
-            className="flex-1 py-2 px-3 rounded-lg border border-ak-border-default text-base font-medium outline-none focus:border-ak-brand-primary"
+            className="flex-1 py-2 px-3 rounded-lg border border-ak-border-default text-base font-medium outline-none focus:border-ak-primary"
           />
           {test.unit && (
             <span className="text-sm text-ak-text-secondary min-w-[40px]">
@@ -261,7 +261,7 @@ const RecentTests = ({ tests }) => (
               {new Date(test.date).toLocaleDateString('nb-NO')}
             </div>
           </div>
-          <div className="text-base font-semibold text-ak-brand-primary">
+          <div className="text-base font-semibold text-ak-primary">
             {test.value}{test.unit}
           </div>
         </div>
@@ -399,7 +399,7 @@ const RegistrerTestContainer = () => {
             onChange={(e) => setNotes(e.target.value)}
             placeholder="Legg til eventuelle notater om testen..."
             rows={3}
-            className="w-full py-3 px-3 rounded-lg border border-ak-border-default text-sm outline-none resize-y font-inherit focus:border-ak-brand-primary"
+            className="w-full py-3 px-3 rounded-lg border border-ak-border-default text-sm outline-none resize-y font-inherit focus:border-ak-primary"
           />
         </div>
       )}

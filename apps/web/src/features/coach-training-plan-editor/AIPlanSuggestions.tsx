@@ -88,12 +88,12 @@ export default function AIPlanSuggestions({ playerId, playerName = 'Spiller', on
   };
 
   return (
-    <div className="bg-ak-surface-base rounded-2xl shadow-ak-card overflow-hidden border border-ak-brand-primary/20">
+    <div className="bg-ak-surface-base rounded-2xl shadow-ak-card overflow-hidden border border-ak-primary/20">
       {/* Header */}
-      <div className="p-5 border-b border-ak-border-default bg-gradient-to-br from-ak-brand-primary/5 to-ak-brand-primary/[0.02]">
+      <div className="p-5 border-b border-ak-border-default bg-gradient-to-br from-ak-primary/5 to-ak-primary/[0.02]">
         <div className="flex items-center gap-3">
-          <div className="w-10 h-10 rounded-lg bg-ak-brand-primary/10 flex items-center justify-center">
-            <Sparkles size={20} className="text-ak-brand-primary" />
+          <div className="w-10 h-10 rounded-lg bg-ak-primary/10 flex items-center justify-center">
+            <Sparkles size={20} className="text-ak-primary" />
           </div>
           <div>
             <h3 className="m-0 text-[17px] font-semibold text-ak-text-primary">
@@ -143,7 +143,7 @@ export default function AIPlanSuggestions({ playerId, playerName = 'Spiller', on
           className={`mt-4 w-full py-3 rounded-lg border-none text-sm font-semibold flex items-center justify-center gap-2 transition-colors ${
             isLoading
               ? 'bg-ak-border-default text-ak-text-secondary cursor-not-allowed'
-              : 'bg-ak-brand-primary text-ak-surface-base cursor-pointer'
+              : 'bg-ak-primary text-ak-surface-base cursor-pointer'
           }`}
         >
           {isLoading ? (
@@ -185,7 +185,7 @@ export default function AIPlanSuggestions({ playerId, playerName = 'Spiller', on
               className="w-full flex items-center justify-between py-3 bg-transparent border-none cursor-pointer"
             >
               <div className="flex items-center gap-2">
-                <Target size={18} className="text-ak-brand-primary" />
+                <Target size={18} className="text-ak-primary" />
                 <span className="text-[15px] font-semibold text-ak-text-primary">
                   Fokusområder ({suggestions.suggestedFocus.length})
                 </span>
@@ -234,7 +234,7 @@ export default function AIPlanSuggestions({ playerId, playerName = 'Spiller', on
               className="w-full flex items-center justify-between py-3 bg-transparent border-none cursor-pointer"
             >
               <div className="flex items-center gap-2">
-                <Calendar size={18} className="text-ak-brand-primary" />
+                <Calendar size={18} className="text-ak-primary" />
                 <span className="text-[15px] font-semibold text-ak-text-primary">
                   Ukestruktur ({suggestions.weeklyStructure.recommendedDays} dager/uke)
                 </span>
@@ -264,7 +264,7 @@ export default function AIPlanSuggestions({ playerId, playerName = 'Spiller', on
                     {onApplySuggestion && (
                       <button
                         onClick={() => handleApplySession(session)}
-                        className="py-1.5 px-3 rounded border border-ak-brand-primary bg-transparent text-ak-brand-primary text-xs font-medium cursor-pointer flex items-center gap-1"
+                        className="py-1.5 px-3 rounded border border-ak-primary bg-transparent text-ak-primary text-xs font-medium cursor-pointer flex items-center gap-1"
                       >
                         <CheckCircle2 size={12} />
                         Legg til
@@ -283,7 +283,7 @@ export default function AIPlanSuggestions({ playerId, playerName = 'Spiller', on
               className="w-full flex items-center justify-between py-3 bg-transparent border-none cursor-pointer"
             >
               <div className="flex items-center gap-2">
-                <TrendingUp size={18} className="text-ak-brand-primary" />
+                <TrendingUp size={18} className="text-ak-primary" />
                 <span className="text-[15px] font-semibold text-ak-text-primary">
                   Periodisering
                 </span>
@@ -299,7 +299,7 @@ export default function AIPlanSuggestions({ playerId, playerName = 'Spiller', on
               <div className="p-4 rounded-lg bg-ak-surface-subtle border border-ak-border-default">
                 <div className="grid grid-cols-3 gap-3 mb-4">
                   <div className="text-center">
-                    <div className="text-2xl font-bold text-ak-brand-primary">
+                    <div className="text-2xl font-bold text-ak-primary">
                       {suggestions.periodization.baseWeeks}
                     </div>
                     <div className="text-xs text-ak-text-secondary">Base uker</div>
@@ -326,7 +326,7 @@ export default function AIPlanSuggestions({ playerId, playerName = 'Spiller', on
 
           {/* Tools Used */}
           {suggestions.toolsUsed.length > 0 && (
-            <div className="mt-5 py-3 px-4 rounded-lg bg-ak-brand-primary/5 text-xs text-ak-text-secondary">
+            <div className="mt-5 py-3 px-4 rounded-lg bg-ak-primary/5 text-xs text-ak-text-secondary">
               <strong>Data brukt:</strong> {suggestions.toolsUsed.join(', ')}
             </div>
           )}

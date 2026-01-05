@@ -1,424 +1,368 @@
 /**
- * SplitScreenLanding Component
- *
- * Premium split-screen landing page with hero section on left,
- * feature list on right. Based on the "Split with screenshot" pattern.
- *
- * Design principles:
- * - Clean, premium aesthetic
- * - Clear CTA: "Kom i gang" → navigates to login
- * - Forest green (--accent) as brand color
- * - Mobile responsive (stacks vertically)
+ * AK Golf Academy Landing Page
+ * Premium hero section with app preview
  */
 
-import React from 'react';
+import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
+import { Menu, X, ChevronRight } from 'lucide-react';
 import { AKLogo } from '../../components/branding/AKLogo';
-import { PageTitle, SectionTitle } from '../../components/typography';
-import { triggerHaptic } from '../../hooks/useHaptic';
 
-// Feature list icons
-const icons = {
-  calendar: (
-    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
-      <rect x="3" y="4" width="18" height="18" rx="2" ry="2" />
-      <line x1="16" y1="2" x2="16" y2="6" />
-      <line x1="8" y1="2" x2="8" y2="6" />
-      <line x1="3" y1="10" x2="21" y2="10" />
-    </svg>
-  ),
-  trending: (
-    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
-      <polyline points="23 6 13.5 15.5 8.5 10.5 1 18" />
-      <polyline points="17 6 23 6 23 12" />
-    </svg>
-  ),
-  target: (
-    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
-      <circle cx="12" cy="12" r="10" />
-      <circle cx="12" cy="12" r="6" />
-      <circle cx="12" cy="12" r="2" />
-    </svg>
-  ),
-  users: (
-    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
-      <path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2" />
-      <circle cx="9" cy="7" r="4" />
-      <path d="M23 21v-2a4 4 0 0 0-3-3.87" />
-      <path d="M16 3.13a4 4 0 0 1 0 7.75" />
-    </svg>
-  ),
-  award: (
-    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
-      <circle cx="12" cy="8" r="7" />
-      <polyline points="8.21 13.89 7 23 12 20 17 23 15.79 13.88" />
-    </svg>
-  ),
-  video: (
-    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
-      <polygon points="23 7 16 12 23 17 23 7" />
-      <rect x="1" y="5" width="15" height="14" rx="2" ry="2" />
-    </svg>
-  ),
-};
-
-// Features data
-const features = [
-  {
-    name: 'Treningsplanlegging',
-    description: 'Personlige treningsplaner tilpasset ditt nivå og mål.',
-    icon: icons.calendar,
-  },
-  {
-    name: 'Fremgangsanalyse',
-    description: 'Se din utvikling med tydelige statistikker og grafer.',
-    icon: icons.trending,
-  },
-  {
-    name: 'Måloppfølging',
-    description: 'Sett mål og følg progresjonen mot neste kategori.',
-    icon: icons.target,
-  },
-  {
-    name: 'Trener-kommunikasjon',
-    description: 'Direkte kontakt med din trener for veiledning.',
-    icon: icons.users,
-  },
-  {
-    name: 'Kategorisystem',
-    description: 'Tydelig nivåinndeling fra D til A med klare krav.',
-    icon: icons.award,
-  },
-  {
-    name: 'Videoanalyse',
-    description: 'Last opp og analyser dine svinger over tid.',
-    icon: icons.video,
-  },
+const navigation = [
+  { name: 'Om oss', href: '#features' },
+  { name: 'Funksjoner', href: '#features' },
+  { name: 'For trenere', href: '#coaches' },
+  { name: 'Kontakt', href: '#contact' },
 ];
 
 export function SplitScreenLanding() {
+  const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const navigate = useNavigate();
 
+  const handleLogin = () => {
+    navigate('/login');
+  };
+
+  const handleGetStarted = () => {
+    navigate('/login?signup=true');
+  };
+
   return (
-    <div style={styles.container} className="split-screen-landing">
-      {/* Left panel - Hero */}
-      <div style={styles.leftPanel} className="split-screen-left">
-        <div style={styles.leftContent}>
-          {/* Logo */}
-          <div style={styles.logoContainer}>
-            <AKLogo size={48} color="var(--accent)" />
-            <span style={styles.logoText}>AK Golf</span>
+    <div className="bg-white">
+      {/* Header */}
+      <header className="absolute inset-x-0 top-0 z-50">
+        <nav aria-label="Global" className="flex items-center justify-between p-6 lg:px-8">
+          <div className="flex lg:flex-1">
+            <a href="#" className="-m-1.5 p-1.5 flex items-center gap-3">
+              <AKLogo size={36} color="#10456A" />
+              <span className="text-lg font-semibold text-[#10456A]">AK Golf</span>
+            </a>
           </div>
-
-          {/* Tagline */}
-          <div style={styles.tagline}>
-            <span style={styles.taglineDot} />
-            <span>Individuell Utviklingsplan</span>
-          </div>
-
-          {/* Headline */}
-          <PageTitle style={styles.headline} className="split-headline">
-            Utvikle ditt <span style={styles.headlineAccent}>golfspill</span> systematisk
-          </PageTitle>
-
-          {/* Description */}
-          <p style={styles.description} className="split-description">
-            AK Golf IUP gir deg verktøyene for å spore fremgang, følge treningsplaner og nå dine golfmål.
-            Fra kategori D til A – vi er med deg hele veien.
-          </p>
-
-          {/* CTAs */}
-          <div style={styles.ctas} className="split-ctas">
+          <div className="flex lg:hidden">
             <button
-              style={styles.primaryButton}
-              onClick={() => {
-                triggerHaptic.tap();
-                navigate('/login?signup=true');
-              }}
-              onMouseEnter={(e) => {
-                e.currentTarget.style.backgroundColor = 'var(--accent-dark)';
-                e.currentTarget.style.transform = 'translateY(-1px)';
-              }}
-              onMouseLeave={(e) => {
-                e.currentTarget.style.backgroundColor = 'var(--accent)';
-                e.currentTarget.style.transform = 'translateY(0)';
-              }}
+              type="button"
+              onClick={() => setMobileMenuOpen(true)}
+              className="-m-2.5 inline-flex items-center justify-center rounded-md p-2.5 text-gray-700"
             >
-              GET STARTED
-            </button>
-            <button
-              style={styles.secondaryButton}
-              onClick={() => {
-                triggerHaptic.select();
-                const featuresSection = document.getElementById('features');
-                featuresSection?.scrollIntoView({ behavior: 'smooth' });
-              }}
-            >
-              Les mer <span aria-hidden="true">→</span>
+              <span className="sr-only">Åpne meny</span>
+              <Menu size={24} aria-hidden="true" />
             </button>
           </div>
+          <div className="hidden lg:flex lg:gap-x-12">
+            {navigation.map((item) => (
+              <a
+                key={item.name}
+                href={item.href}
+                className="text-sm font-semibold leading-6 text-gray-900 hover:text-[#10456A] transition-colors"
+              >
+                {item.name}
+              </a>
+            ))}
+          </div>
+          <div className="hidden lg:flex lg:flex-1 lg:justify-end">
+            <button
+              onClick={handleLogin}
+              className="text-sm font-semibold leading-6 text-gray-900 hover:text-[#10456A] transition-colors"
+            >
+              Logg inn <span aria-hidden="true">&rarr;</span>
+            </button>
+          </div>
+        </nav>
 
-          {/* Trust indicators */}
-          <div style={styles.trustSection}>
-            <p style={styles.trustText}>Brukt av utøvere i AK Golf Academy</p>
+        {/* Mobile menu */}
+        {mobileMenuOpen && (
+          <>
+            <div className="fixed inset-0 z-50 bg-black/20" onClick={() => setMobileMenuOpen(false)} />
+            <div className="fixed inset-y-0 right-0 z-50 w-full overflow-y-auto bg-white px-6 py-6 sm:max-w-sm sm:ring-1 sm:ring-gray-900/10">
+              <div className="flex items-center justify-between">
+                <a href="#" className="-m-1.5 p-1.5 flex items-center gap-3">
+                  <AKLogo size={32} color="#10456A" />
+                  <span className="text-lg font-semibold text-[#10456A]">AK Golf</span>
+                </a>
+                <button
+                  type="button"
+                  onClick={() => setMobileMenuOpen(false)}
+                  className="-m-2.5 rounded-md p-2.5 text-gray-700"
+                >
+                  <span className="sr-only">Lukk meny</span>
+                  <X size={24} aria-hidden="true" />
+                </button>
+              </div>
+              <div className="mt-6 flow-root">
+                <div className="-my-6 divide-y divide-gray-500/10">
+                  <div className="space-y-2 py-6">
+                    {navigation.map((item) => (
+                      <a
+                        key={item.name}
+                        href={item.href}
+                        onClick={() => setMobileMenuOpen(false)}
+                        className="-mx-3 block rounded-lg px-3 py-2 text-base font-semibold leading-7 text-gray-900 hover:bg-gray-50"
+                      >
+                        {item.name}
+                      </a>
+                    ))}
+                  </div>
+                  <div className="py-6">
+                    <button
+                      onClick={() => {
+                        setMobileMenuOpen(false);
+                        handleLogin();
+                      }}
+                      className="-mx-3 block rounded-lg px-3 py-2.5 text-base font-semibold leading-7 text-gray-900 hover:bg-gray-50 w-full text-left"
+                    >
+                      Logg inn
+                    </button>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </>
+        )}
+      </header>
+
+      {/* Hero section */}
+      <div className="relative isolate pt-14">
+        {/* Background pattern */}
+        <svg
+          aria-hidden="true"
+          className="absolute inset-0 -z-10 h-full w-full stroke-gray-200 [mask-image:radial-gradient(100%_100%_at_top_right,white,transparent)]"
+        >
+          <defs>
+            <pattern
+              x="50%"
+              y={-1}
+              id="hero-pattern"
+              width={200}
+              height={200}
+              patternUnits="userSpaceOnUse"
+            >
+              <path d="M100 200V.5M.5 .5H200" fill="none" />
+            </pattern>
+          </defs>
+          <svg x="50%" y={-1} className="overflow-visible fill-gray-50">
+            <path
+              d="M-100.5 0h201v201h-201Z M699.5 0h201v201h-201Z M499.5 400h201v201h-201Z M-300.5 600h201v201h-201Z"
+              strokeWidth={0}
+            />
+          </svg>
+          <rect fill="url(#hero-pattern)" width="100%" height="100%" strokeWidth={0} />
+        </svg>
+
+        <div className="mx-auto max-w-7xl px-6 py-24 sm:py-32 lg:flex lg:items-center lg:gap-x-10 lg:px-8 lg:py-40">
+          {/* Left content */}
+          <div className="mx-auto max-w-2xl lg:mx-0 lg:flex-auto">
+            {/* Badge */}
+            <div className="flex">
+              <div className="relative flex items-center gap-x-4 rounded-full bg-white px-4 py-1 text-sm leading-6 text-gray-600 ring-1 ring-gray-900/10 hover:ring-gray-900/20">
+                <span className="font-semibold text-[#10456A]">Nyhet</span>
+                <span aria-hidden="true" className="h-4 w-px bg-gray-900/10" />
+                <a href="#features" className="flex items-center gap-x-1">
+                  <span className="absolute inset-0" />
+                  AI-drevet treningsanalyse
+                  <ChevronRight size={16} className="-mr-2 text-gray-400" aria-hidden="true" />
+                </a>
+              </div>
+            </div>
+
+            {/* Headline */}
+            <h1 className="mt-10 text-5xl font-semibold tracking-tight text-gray-900 sm:text-7xl" style={{ textWrap: 'balance' }}>
+              Utvikle ditt{' '}
+              <span className="text-[#10456A]">golfspill</span>{' '}
+              systematisk
+            </h1>
+
+            {/* Description */}
+            <p className="mt-8 text-lg font-medium text-gray-500 sm:text-xl leading-8" style={{ textWrap: 'pretty' }}>
+              AK Golf IUP gir deg verktøyene for å spore fremgang, følge treningsplaner og nå dine golfmål.
+              Fra kategori D til A – vi er med deg hele veien.
+            </p>
+
+            {/* CTAs */}
+            <div className="mt-10 flex items-center gap-x-6">
+              <button
+                onClick={handleGetStarted}
+                className="rounded-md bg-[#10456A] px-4 py-3 text-sm font-semibold text-white shadow-sm hover:bg-[#0d3a5a] focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#10456A] transition-colors"
+              >
+                Kom i gang
+              </button>
+              <a
+                href="#features"
+                className="text-sm font-semibold leading-6 text-gray-900 hover:text-[#10456A] transition-colors"
+              >
+                Les mer <span aria-hidden="true">→</span>
+              </a>
+            </div>
+          </div>
+
+          {/* Right content - App mockup */}
+          <div className="mt-16 sm:mt-24 lg:mt-0 lg:shrink-0 lg:grow">
+            <svg role="img" viewBox="0 0 366 729" className="mx-auto w-[22.875rem] max-w-full drop-shadow-xl">
+              <title>App skjermbilde</title>
+              <defs>
+                <clipPath id="app-clip">
+                  <rect rx={36} width={316} height={684} />
+                </clipPath>
+              </defs>
+              <path
+                d="M363.315 64.213C363.315 22.99 341.312 1 300.092 1H66.751C25.53 1 3.528 22.99 3.528 64.213v44.68l-.857.143A2 2 0 0 0 1 111.009v24.611a2 2 0 0 0 1.671 1.973l.95.158a2.26 2.26 0 0 1-.093.236v26.173c.212.1.398.296.541.643l-1.398.233A2 2 0 0 0 1 167.009v47.611a2 2 0 0 0 1.671 1.973l1.368.228c-.139.319-.314.533-.511.653v16.637c.221.104.414.313.56.689l-1.417.236A2 2 0 0 0 1 237.009v47.611a2 2 0 0 0 1.671 1.973l1.347.225c-.135.294-.302.493-.49.607v377.681c0 41.213 22 63.208 63.223 63.208h95.074c.947-.504 2.717-.843 4.745-.843l.141.001h.194l.086-.001 33.704.005c1.849.043 3.442.37 4.323.838h95.074c41.222 0 63.223-21.999 63.223-63.212v-394.63c-.259-.275-.48-.796-.63-1.47l-.011-.133 1.655-.276A2 2 0 0 0 366 266.62v-77.611a2 2 0 0 0-1.671-1.973l-1.712-.285c.148-.839.396-1.491.698-1.811V64.213Z"
+                fill="#10456A"
+              />
+              <path
+                d="M16 59c0-23.748 19.252-43 43-43h246c23.748 0 43 19.252 43 43v615c0 23.196-18.804 42-42 42H58c-23.196 0-42-18.804-42-42V59Z"
+                fill="#1a5a8a"
+              />
+              <foreignObject
+                width={316}
+                height={684}
+                clipPath="url(#app-clip)"
+                transform="translate(24 24)"
+              >
+                <div className="h-full w-full bg-gradient-to-b from-[#FAFAF8] to-[#F4F3EF] p-4">
+                  {/* Mock app content */}
+                  <div className="bg-white rounded-2xl p-4 shadow-sm mb-4">
+                    <div className="flex items-center gap-3 mb-4">
+                      <div className="w-12 h-12 rounded-full bg-[#10456A]/10 flex items-center justify-center">
+                        <AKLogo size={24} color="#10456A" />
+                      </div>
+                      <div>
+                        <div className="font-semibold text-gray-900">God morgen!</div>
+                        <div className="text-sm text-gray-500">Kategori C • HCP 12.4</div>
+                      </div>
+                    </div>
+                    <div className="bg-[#10456A]/5 rounded-xl p-3">
+                      <div className="text-xs text-[#10456A] font-medium mb-1">Dagens mål</div>
+                      <div className="text-sm text-gray-700">30 min putting-trening</div>
+                    </div>
+                  </div>
+                  <div className="bg-white rounded-2xl p-4 shadow-sm mb-4">
+                    <div className="text-sm font-medium text-gray-900 mb-3">Ukens fremgang</div>
+                    <div className="flex gap-2">
+                      {[60, 80, 45, 90, 70, 0, 0].map((h, i) => (
+                        <div key={i} className="flex-1 flex flex-col items-center gap-1">
+                          <div className="w-full bg-gray-100 rounded-full h-20 flex flex-col-reverse overflow-hidden">
+                            <div
+                              className="bg-[#1F7A5C] rounded-full transition-all"
+                              style={{ height: `${h}%` }}
+                            />
+                          </div>
+                          <span className="text-[10px] text-gray-400">
+                            {['M', 'T', 'O', 'T', 'F', 'L', 'S'][i]}
+                          </span>
+                        </div>
+                      ))}
+                    </div>
+                  </div>
+                  <div className="bg-white rounded-2xl p-4 shadow-sm">
+                    <div className="text-sm font-medium text-gray-900 mb-3">Neste økt</div>
+                    <div className="flex items-center gap-3">
+                      <div className="w-10 h-10 rounded-lg bg-[#1F7A5C]/10 flex items-center justify-center">
+                        <span className="text-[#1F7A5C] text-lg">🏌️</span>
+                      </div>
+                      <div className="flex-1">
+                        <div className="text-sm font-medium">Driving Range</div>
+                        <div className="text-xs text-gray-500">I dag kl. 14:00</div>
+                      </div>
+                      <div className="text-[#10456A] text-sm font-medium">Start →</div>
+                    </div>
+                  </div>
+                </div>
+              </foreignObject>
+            </svg>
           </div>
         </div>
       </div>
 
-      {/* Right panel - Features */}
-      <div style={styles.rightPanel} id="features" className="split-screen-right">
-        <div style={styles.rightContent}>
-          <div style={styles.rightHeader}>
-            <SectionTitle style={styles.rightTitle}>Alt du trenger</SectionTitle>
-            <p style={styles.rightSubtitle}>
-              Verktøy og funksjoner for systematisk golfutvikling
+      {/* Features section */}
+      <div id="features" className="bg-gray-50 py-24 sm:py-32">
+        <div className="mx-auto max-w-7xl px-6 lg:px-8">
+          <div className="mx-auto max-w-2xl lg:text-center">
+            <h2 className="text-base font-semibold leading-7 text-[#10456A]">Alt du trenger</h2>
+            <p className="mt-2 text-4xl font-semibold tracking-tight text-gray-900 sm:text-5xl" style={{ textWrap: 'balance' }}>
+              Verktøy for systematisk golfutvikling
+            </p>
+            <p className="mt-6 text-lg leading-8 text-gray-600">
+              Fra treningsplanlegging til fremgangsanalyse – AK Golf IUP gir deg alt du trenger for å bli en bedre golfspiller.
             </p>
           </div>
-
-          <dl style={styles.featureList}>
-            {features.map((feature) => (
-              <div key={feature.name} style={styles.featureItem}>
-                <dt style={styles.featureHeader}>
-                  <div style={styles.featureIcon}>
-                    {feature.icon}
-                  </div>
-                  <span style={styles.featureName}>{feature.name}</span>
-                </dt>
-                <dd style={styles.featureDescription}>
-                  {feature.description}
-                </dd>
-              </div>
-            ))}
-          </dl>
-
-          {/* Secondary CTA in features section */}
-          <div style={styles.featuresCta}>
-            <button
-              style={styles.featureButton}
-              onClick={() => {
-                triggerHaptic.tap();
-                navigate('/login?signup=true');
-              }}
-              onMouseEnter={(e) => {
-                e.currentTarget.style.backgroundColor = 'var(--accent)';
-                e.currentTarget.style.color = 'var(--text-inverse)';
-              }}
-              onMouseLeave={(e) => {
-                e.currentTarget.style.backgroundColor = 'transparent';
-                e.currentTarget.style.color = 'var(--accent)';
-              }}
-            >
-              Sign up today →
-            </button>
+          <div className="mx-auto mt-16 max-w-2xl sm:mt-20 lg:mt-24 lg:max-w-none">
+            <dl className="grid max-w-xl grid-cols-1 gap-x-8 gap-y-16 lg:max-w-none lg:grid-cols-3">
+              {[
+                {
+                  name: 'Treningsplanlegging',
+                  description: 'Personlige treningsplaner tilpasset ditt nivå og mål. Følg strukturerte programmer designet for å maksimere fremgangen.',
+                  icon: '📅',
+                },
+                {
+                  name: 'Fremgangsanalyse',
+                  description: 'Se din utvikling med tydelige statistikker og grafer. Spor alle aspekter av spillet ditt over tid.',
+                  icon: '📈',
+                },
+                {
+                  name: 'Kategorisystem',
+                  description: 'Tydelig nivåinndeling fra D til A med klare krav. Vet alltid hva som kreves for neste nivå.',
+                  icon: '🏆',
+                },
+              ].map((feature) => (
+                <div key={feature.name} className="flex flex-col">
+                  <dt className="flex items-center gap-x-3 text-base font-semibold leading-7 text-gray-900">
+                    <span className="text-2xl">{feature.icon}</span>
+                    {feature.name}
+                  </dt>
+                  <dd className="mt-4 flex flex-auto flex-col text-base leading-7 text-gray-600">
+                    <p className="flex-auto">{feature.description}</p>
+                  </dd>
+                </div>
+              ))}
+            </dl>
           </div>
         </div>
       </div>
+
+      {/* CTA section */}
+      <div className="bg-[#10456A]">
+        <div className="px-6 py-24 sm:px-6 sm:py-32 lg:px-8">
+          <div className="mx-auto max-w-2xl text-center">
+            <h2 className="text-4xl font-semibold tracking-tight text-white sm:text-5xl" style={{ textWrap: 'balance' }}>
+              Klar for å ta golfspillet ditt til neste nivå?
+            </h2>
+            <p className="mx-auto mt-6 max-w-xl text-lg leading-8 text-blue-100">
+              Bli med i AK Golf Academy og start din reise mot bedre golf i dag.
+            </p>
+            <div className="mt-10 flex items-center justify-center gap-x-6">
+              <button
+                onClick={handleGetStarted}
+                className="rounded-md bg-white px-4 py-3 text-sm font-semibold text-[#10456A] shadow-sm hover:bg-blue-50 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-white transition-colors"
+              >
+                Kom i gang gratis
+              </button>
+              <button
+                onClick={handleLogin}
+                className="text-sm font-semibold leading-6 text-white hover:text-blue-100 transition-colors"
+              >
+                Logg inn <span aria-hidden="true">→</span>
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      {/* Footer */}
+      <footer className="bg-white border-t border-gray-100">
+        <div className="mx-auto max-w-7xl px-6 py-12 lg:px-8">
+          <div className="flex items-center justify-between">
+            <div className="flex items-center gap-3">
+              <AKLogo size={28} color="#10456A" />
+              <span className="text-sm text-gray-500">© 2025 AK Golf Academy</span>
+            </div>
+            <div className="flex gap-6">
+              <a href="#" className="text-sm text-gray-500 hover:text-gray-900">Personvern</a>
+              <a href="#" className="text-sm text-gray-500 hover:text-gray-900">Vilkår</a>
+            </div>
+          </div>
+        </div>
+      </footer>
     </div>
   );
 }
-
-const styles = {
-  container: {
-    display: 'flex',
-    minHeight: '100vh',
-  },
-
-  // Left panel
-  leftPanel: {
-    flex: 1,
-    display: 'flex',
-    alignItems: 'center',
-    justifyContent: 'center',
-    padding: '48px',
-    backgroundColor: 'var(--background-white)',
-  },
-  leftContent: {
-    maxWidth: '480px',
-    width: '100%',
-  },
-  logoContainer: {
-    display: 'flex',
-    alignItems: 'center',
-    gap: '12px',
-    marginBottom: '32px',
-  },
-  logoText: {
-    fontSize: '20px',
-    fontWeight: 700,
-    color: 'var(--text-primary)',
-    letterSpacing: '-0.01em',
-  },
-  tagline: {
-    display: 'flex',
-    alignItems: 'center',
-    gap: '8px',
-    marginBottom: '16px',
-    fontSize: '14px',
-    fontWeight: 500,
-    color: 'var(--accent)',
-    textTransform: 'uppercase',
-    letterSpacing: '0.05em',
-  },
-  taglineDot: {
-    width: '8px',
-    height: '8px',
-    borderRadius: '50%',
-    backgroundColor: 'var(--accent)',
-  },
-  headline: {
-    margin: '0 0 20px 0',
-    fontSize: '48px',
-    fontWeight: 700,
-    color: 'var(--text-primary)',
-    lineHeight: 1.1,
-    letterSpacing: '-0.02em',
-  },
-  headlineAccent: {
-    color: 'var(--accent)',
-  },
-  description: {
-    margin: '0 0 32px 0',
-    fontSize: '18px',
-    lineHeight: 1.6,
-    color: 'var(--text-secondary)',
-  },
-  ctas: {
-    display: 'flex',
-    alignItems: 'center',
-    gap: '16px',
-    marginBottom: '40px',
-  },
-  primaryButton: {
-    display: 'inline-flex',
-    alignItems: 'center',
-    justifyContent: 'center',
-    padding: '14px 28px',
-    backgroundColor: 'var(--accent)',
-    color: 'var(--text-inverse)',
-    border: 'none',
-    borderRadius: '8px',
-    fontSize: '16px',
-    fontWeight: 600,
-    cursor: 'pointer',
-    transition: 'all 0.15s ease',
-    boxShadow: '0 1px 3px rgba(0, 0, 0, 0.1)',
-  },
-  secondaryButton: {
-    display: 'inline-flex',
-    alignItems: 'center',
-    justifyContent: 'center',
-    gap: '8px',
-    padding: '14px 20px',
-    backgroundColor: 'transparent',
-    color: 'var(--text-secondary)',
-    border: 'none',
-    borderRadius: '8px',
-    fontSize: '16px',
-    fontWeight: 500,
-    cursor: 'pointer',
-    transition: 'color 0.15s ease',
-  },
-  trustSection: {
-    paddingTop: '24px',
-    borderTop: '1px solid var(--border-subtle)',
-  },
-  trustText: {
-    margin: 0,
-    fontSize: '14px',
-    color: 'var(--text-tertiary)',
-  },
-
-  // Right panel
-  rightPanel: {
-    flex: 1,
-    display: 'flex',
-    alignItems: 'center',
-    justifyContent: 'center',
-    padding: '48px',
-    backgroundColor: 'var(--background-surface)',
-    borderLeft: '1px solid var(--border-subtle)',
-  },
-  rightContent: {
-    maxWidth: '480px',
-    width: '100%',
-  },
-  rightHeader: {
-    marginBottom: '40px',
-  },
-  rightTitle: {
-    margin: '0 0 8px 0',
-    fontSize: '24px',
-    fontWeight: 700,
-    color: 'var(--text-primary)',
-    letterSpacing: '-0.01em',
-  },
-  rightSubtitle: {
-    margin: 0,
-    fontSize: '16px',
-    color: 'var(--text-secondary)',
-  },
-  featureList: {
-    display: 'flex',
-    flexDirection: 'column',
-    gap: '24px',
-    margin: 0,
-    padding: 0,
-  },
-  featureItem: {
-    display: 'flex',
-    flexDirection: 'column',
-    gap: '8px',
-  },
-  featureHeader: {
-    display: 'flex',
-    alignItems: 'center',
-    gap: '12px',
-    margin: 0,
-  },
-  featureIcon: {
-    display: 'flex',
-    alignItems: 'center',
-    justifyContent: 'center',
-    width: '40px',
-    height: '40px',
-    backgroundColor: 'var(--accent-muted)',
-    color: 'var(--accent)',
-    borderRadius: '10px',
-    flexShrink: 0,
-  },
-  featureName: {
-    fontSize: '16px',
-    fontWeight: 600,
-    color: 'var(--text-primary)',
-  },
-  featureDescription: {
-    margin: '0 0 0 52px',
-    fontSize: '14px',
-    lineHeight: 1.5,
-    color: 'var(--text-secondary)',
-  },
-  featuresCta: {
-    marginTop: '40px',
-    paddingTop: '24px',
-    borderTop: '1px solid var(--border-default)',
-  },
-  featureButton: {
-    display: 'inline-flex',
-    alignItems: 'center',
-    justifyContent: 'center',
-    padding: '12px 24px',
-    backgroundColor: 'transparent',
-    color: 'var(--accent)',
-    border: '2px solid var(--accent)',
-    borderRadius: '8px',
-    fontSize: '15px',
-    fontWeight: 600,
-    cursor: 'pointer',
-    transition: 'all 0.15s ease',
-  },
-};
-
-// Add responsive styles via CSS-in-JS media query helper
-// Note: For production, consider using CSS modules or a media query hook
 
 export default SplitScreenLanding;

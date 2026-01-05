@@ -30,7 +30,7 @@ function RatingScale({ label, value, onChange, icons, labels }) {
             key={rating}
             onClick={() => onChange(rating)}
             className={`flex flex-col items-center p-2 border-none rounded cursor-pointer min-w-12 ${
-              value === rating ? 'bg-ak-brand-primary' : 'bg-transparent'
+              value === rating ? 'bg-ak-primary' : 'bg-transparent'
             }`}
           >
             <span className="text-2xl">{icons[rating - 1]}</span>
@@ -88,7 +88,7 @@ export default function BlockRatingModal({ block, duration, reps, onComplete, on
 
         {/* Block summary */}
         <div className="bg-ak-surface-subtle rounded-lg p-4 mb-6">
-          <div className="text-[15px] font-medium text-ak-brand-primary">
+          <div className="text-[15px] font-medium text-ak-primary">
             {block.exercise}: {block.focus}
           </div>
           <div className="text-base text-ak-text-secondary">
@@ -135,7 +135,7 @@ export default function BlockRatingModal({ block, duration, reps, onComplete, on
             value={note}
             onChange={(e) => setNote(e.target.value)}
             placeholder="Følte god kontakt på de siste 100 slagene..."
-            className="w-full min-h-[80px] p-4 bg-ak-surface-subtle border-none rounded-lg resize-y text-base text-ak-text-primary outline-none focus:ring-1 focus:ring-ak-brand-primary"
+            className="w-full min-h-[80px] p-4 bg-ak-surface-subtle border-none rounded-lg resize-y text-base text-ak-text-primary outline-none focus:ring-1 focus:ring-ak-primary"
           />
         </div>
 

@@ -146,7 +146,7 @@ const LandingHero: React.FC<LandingHeroProps> = ({
           <nav className="flex items-center justify-between max-w-[1536px] mx-auto w-full">
             {/* Logo area */}
             <div className="shrink-0">
-              <span className="text-xl font-bold text-ak-brand-primary tracking-tight">AK Golf</span>
+              <span className="text-xl font-bold text-ak-primary tracking-tight">AK Golf</span>
             </div>
 
             {/* Navigation links */}
@@ -157,7 +157,7 @@ const LandingHero: React.FC<LandingHeroProps> = ({
                     key={index}
                     className={`inline-flex items-center h-11 px-4 text-sm font-medium bg-transparent border-none rounded cursor-pointer transition-colors ${
                       item.isActive
-                        ? 'text-ak-brand-primary bg-ak-brand-primary/10'
+                        ? 'text-ak-primary bg-ak-primary/10'
                         : 'text-ak-text-secondary hover:text-ak-text-primary hover:bg-ak-surface-subtle'
                     }`}
                     onClick={item.onClick}
@@ -180,7 +180,7 @@ const LandingHero: React.FC<LandingHeroProps> = ({
         <div className="flex-1 max-w-[640px]">
           {/* Tagline */}
           {tagline && (
-            <p className="text-sm font-semibold text-ak-brand-primary uppercase tracking-widest mb-3">{tagline}</p>
+            <p className="text-sm font-semibold text-ak-primary uppercase tracking-widest mb-3">{tagline}</p>
           )}
 
           {/* Headline */}
@@ -188,7 +188,7 @@ const LandingHero: React.FC<LandingHeroProps> = ({
             {headlineHighlight ? (
               <>
                 {headline.split(headlineHighlight)[0]}
-                <span className="text-ak-brand-primary">{headlineHighlight}</span>
+                <span className="text-ak-primary">{headlineHighlight}</span>
                 {headline.split(headlineHighlight)[1]}
               </>
             ) : (
@@ -207,7 +207,7 @@ const LandingHero: React.FC<LandingHeroProps> = ({
               {primaryAction && (
                 <button
                   onClick={primaryAction.onClick}
-                  className="inline-flex items-center justify-center h-12 px-6 bg-ak-brand-primary text-white border-none rounded font-semibold cursor-pointer transition-all shadow-sm hover:opacity-90 active:scale-[0.98]"
+                  className="inline-flex items-center justify-center h-12 px-6 bg-ak-primary text-white border-none rounded font-semibold cursor-pointer transition-all shadow-sm hover:opacity-90 active:scale-[0.98]"
                 >
                   {primaryAction.label}
                 </button>
@@ -215,7 +215,7 @@ const LandingHero: React.FC<LandingHeroProps> = ({
               {secondaryAction && (
                 <button
                   onClick={secondaryAction.onClick}
-                  className="inline-flex items-center justify-center h-12 px-4 bg-transparent text-ak-brand-primary border-none rounded font-semibold cursor-pointer transition-colors gap-2 hover:bg-ak-surface-subtle"
+                  className="inline-flex items-center justify-center h-12 px-4 bg-transparent text-ak-primary border-none rounded font-semibold cursor-pointer transition-colors gap-2 hover:bg-ak-surface-subtle"
                 >
                   {secondaryAction.label}
                   <span className="text-sm" aria-hidden="true">→</span>
@@ -255,7 +255,7 @@ const LandingHero: React.FC<LandingHeroProps> = ({
                 <div key={index} className="bg-white rounded-xl p-6 shadow-sm transition-all hover:shadow-md hover:-translate-y-0.5">
                   {/* Icon */}
                   {feature.icon && (
-                    <div className="flex items-center justify-center w-12 h-12 bg-ak-brand-primary/10 rounded-lg text-ak-brand-primary mb-4">
+                    <div className="flex items-center justify-center w-12 h-12 bg-ak-primary/10 rounded-lg text-ak-primary mb-4">
                       {feature.icon}
                     </div>
                   )}
@@ -271,7 +271,7 @@ const LandingHero: React.FC<LandingHeroProps> = ({
 
       {/* Footer */}
       {footer && (
-        <footer className="bg-ak-brand-primary text-white py-10 px-6 pb-6">
+        <footer className="bg-ak-primary text-white py-10 px-6 pb-6">
           <div className="max-w-[1536px] mx-auto">
             {/* Main footer content */}
             <div className="grid grid-cols-[repeat(auto-fit,minmax(200px,1fr))] gap-8 mb-8">
@@ -290,7 +290,7 @@ const LandingHero: React.FC<LandingHeroProps> = ({
                         href={item.href}
                         target="_blank"
                         rel="noopener noreferrer"
-                        className="flex items-center justify-center w-10 h-10 bg-white text-ak-brand-primary rounded-full transition-all hover:scale-105 hover:opacity-90"
+                        className="flex items-center justify-center w-10 h-10 bg-white text-ak-primary rounded-full transition-all hover:scale-105 hover:opacity-90"
                         aria-label={item.platform}
                       >
                         {getSocialIcon(item.platform)}

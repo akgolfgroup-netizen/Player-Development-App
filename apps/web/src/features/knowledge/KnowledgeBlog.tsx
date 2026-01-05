@@ -162,7 +162,7 @@ export function KnowledgeBlog() {
               placeholder="Søk i artikler..."
               value={searchQuery}
               onChange={(e) => setSearchQuery(e.target.value)}
-              className="w-full py-3 pr-3.5 pl-11 text-[15px] border border-ak-border-default rounded-[10px] bg-ak-surface-base text-ak-text-primary outline-none focus:border-ak-brand-primary"
+              className="w-full py-3 pr-3.5 pl-11 text-[15px] border border-ak-border-default rounded-[10px] bg-ak-surface-base text-ak-text-primary outline-none focus:border-ak-primary"
             />
           </div>
 
@@ -174,8 +174,8 @@ export function KnowledgeBlog() {
                 onClick={() => setActiveCategory(category.id)}
                 className={`px-4 py-2 text-sm font-medium rounded-full cursor-pointer transition-all border ${
                   activeCategory === category.id
-                    ? 'bg-ak-brand-primary border-ak-brand-primary text-white'
-                    : 'bg-ak-surface-subtle border-ak-border-subtle text-ak-text-secondary hover:border-ak-brand-primary'
+                    ? 'bg-ak-primary border-ak-primary text-white'
+                    : 'bg-ak-surface-subtle border-ak-border-subtle text-ak-text-secondary hover:border-ak-primary'
                 }`}
               >
                 {category.title}
@@ -207,7 +207,7 @@ export function KnowledgeBlog() {
                   <a
                     href={`/ressurser/${article.id}`}
                     onClick={(e) => { e.preventDefault(); navigate(`/ressurser/${article.id}`); }}
-                    className="text-inherit no-underline hover:text-ak-brand-primary"
+                    className="text-inherit no-underline hover:text-ak-primary"
                   >
                     {article.title}
                   </a>
@@ -222,7 +222,7 @@ export function KnowledgeBlog() {
 
               {/* Author */}
               <div className="flex items-center gap-3 pt-4 border-t border-ak-border-subtle">
-                <div className="w-10 h-10 rounded-full bg-ak-brand-primary/10 text-ak-brand-primary flex items-center justify-center text-sm font-semibold">
+                <div className="w-10 h-10 rounded-full bg-ak-primary/10 text-ak-primary flex items-center justify-center text-sm font-semibold">
                   {getInitials(article.author.name)}
                 </div>
                 <div className="flex flex-col gap-0.5">

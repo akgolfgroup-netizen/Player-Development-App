@@ -1,106 +1,222 @@
+/**
+ * Dialog Component - shadcn API compatible wrapper for Catalyst Dialog
+ *
+ * NOW POWERED BY CATALYST UI
+ *
+ * Note: Catalyst Dialog is a controlled component (uses open/onClose props).
+ * Some shadcn features like DialogTrigger require parent state management.
+ */
+
 import * as React from "react"
-import * as DialogPrimitive from "@radix-ui/react-dialog"
-import { X } from "lucide-react"
+import {
+  Dialog as CatalystDialog,
+  DialogTitle as CatalystDialogTitle,
+  DialogDescription as CatalystDialogDescription,
+  DialogBody as CatalystDialogBody,
+  DialogActions as CatalystDialogActions,
+} from "../catalyst/dialog"
 import { cn } from "lib/utils"
 
-const Dialog = DialogPrimitive.Root
-const DialogTrigger = DialogPrimitive.Trigger
-const DialogPortal = DialogPrimitive.Portal
-const DialogClose = DialogPrimitive.Close
+// Re-export Catalyst Dialog directly for new code
+export {
+  CatalystDialog,
+  CatalystDialogTitle,
+  CatalystDialogDescription,
+  CatalystDialogBody,
+  CatalystDialogActions,
+}
 
-const DialogOverlay = React.forwardRef<
-  React.ElementRef<typeof DialogPrimitive.Overlay>,
-  React.ComponentPropsWithoutRef<typeof DialogPrimitive.Overlay>
->(({ className, ...props }, ref) => (
-  <DialogPrimitive.Overlay
-    ref={ref}
-    className={cn(
-      "fixed inset-0 z-50 bg-black/80 data-[state=open]:animate-in data-[state=closed]:animate-out data-[state=closed]:fade-out-0 data-[state=open]:fade-in-0",
-      className
-    )}
-    {...props}
-  />
-))
-DialogOverlay.displayName = DialogPrimitive.Overlay.displayName
+// Context for Dialog state (for backward compatibility)
+interface DialogContextValue {
+  open: boolean
+  setOpen: (open: boolean) => void
+}
 
-const DialogContent = React.forwardRef<
-  React.ElementRef<typeof DialogPrimitive.Content>,
-  React.ComponentPropsWithoutRef<typeof DialogPrimitive.Content>
->(({ className, children, ...props }, ref) => (
-  <DialogPortal>
-    <DialogOverlay />
-    <DialogPrimitive.Content
-      ref={ref}
-      className={cn(
-        "fixed left-[50%] top-[50%] z-50 grid w-full max-w-lg translate-x-[-50%] translate-y-[-50%] gap-4 border border-border-subtle bg-white p-6 shadow-lg duration-200 data-[state=open]:animate-in data-[state=closed]:animate-out data-[state=closed]:fade-out-0 data-[state=open]:fade-in-0 data-[state=closed]:zoom-out-95 data-[state=open]:zoom-in-95 data-[state=closed]:slide-out-to-left-1/2 data-[state=closed]:slide-out-to-top-[48%] data-[state=open]:slide-in-from-left-1/2 data-[state=open]:slide-in-from-top-[48%] sm:rounded-xl",
-        className
-      )}
-      {...props}
+const DialogContext = React.createContext<DialogContextValue | null>(null)
+
+/**
+ * Dialog Root - Wrapper that provides open state
+ * For Catalyst: pass open and onClose directly to Dialog
+ */
+interface DialogProps {
+  children: React.ReactNode
+  open?: boolean
+  onOpenChange?: (open: boolean) => void
+  defaultOpen?: boolean
+}
+
+const Dialog: React.FC<DialogProps> = ({
+  children,
+  open: controlledOpen,
+  onOpenChange,
+  defaultOpen = false,
+}) => {
+  const [internalOpen, setInternalOpen] = React.useState(defaultOpen)
+  const isControlled = controlledOpen !== undefined
+  const open = isControlled ? controlledOpen : internalOpen
+
+  const setOpen = React.useCallback((value: boolean) => {
+    if (!isControlled) {
+      setInternalOpen(value)
+    }
+    onOpenChange?.(value)
+  }, [isControlled, onOpenChange])
+
+  return (
+    <DialogContext.Provider value={{ open, setOpen }}>
+      {children}
+    </DialogContext.Provider>
+  )
+}
+
+/**
+ * DialogTrigger - Opens the dialog when clicked
+ */
+interface DialogTriggerProps {
+  children: React.ReactNode
+  asChild?: boolean
+}
+
+const DialogTrigger = React.forwardRef<HTMLButtonElement, DialogTriggerProps>(
+  ({ children, asChild, ...props }, ref) => {
+    const context = React.useContext(DialogContext)
+
+    const handleClick = () => {
+      context?.setOpen(true)
+    }
+
+    if (asChild && React.isValidElement(children)) {
+      return React.cloneElement(children as React.ReactElement<any>, {
+        onClick: handleClick,
+      })
+    }
+
+    return (
+      <button ref={ref} onClick={handleClick} {...props}>
+        {children}
+      </button>
+    )
+  }
+)
+DialogTrigger.displayName = "DialogTrigger"
+
+/**
+ * DialogClose - Closes the dialog when clicked
+ */
+const DialogClose = React.forwardRef<
+  HTMLButtonElement,
+  React.ButtonHTMLAttributes<HTMLButtonElement> & { asChild?: boolean }
+>(({ children, asChild, onClick, ...props }, ref) => {
+  const context = React.useContext(DialogContext)
+
+  const handleClick = (e: React.MouseEvent<HTMLButtonElement>) => {
+    context?.setOpen(false)
+    onClick?.(e)
+  }
+
+  if (asChild && React.isValidElement(children)) {
+    return React.cloneElement(children as React.ReactElement<any>, {
+      onClick: handleClick,
+    })
+  }
+
+  return (
+    <button ref={ref} onClick={handleClick} {...props}>
+      {children}
+    </button>
+  )
+})
+DialogClose.displayName = "DialogClose"
+
+/**
+ * DialogContent - The actual dialog panel using Catalyst
+ */
+interface DialogContentProps {
+  children: React.ReactNode
+  className?: string
+  size?: "xs" | "sm" | "md" | "lg" | "xl" | "2xl" | "3xl" | "4xl" | "5xl"
+}
+
+const DialogContent: React.FC<DialogContentProps> = ({
+  children,
+  className,
+  size = "lg",
+}) => {
+  const context = React.useContext(DialogContext)
+
+  if (!context) {
+    console.warn("DialogContent must be used within a Dialog")
+    return null
+  }
+
+  return (
+    <CatalystDialog
+      open={context.open}
+      onClose={() => context.setOpen(false)}
+      size={size}
+      className={className}
     >
       {children}
-      <DialogPrimitive.Close className="absolute right-4 top-4 rounded-sm opacity-70 ring-offset-white transition-opacity hover:opacity-100 focus:outline-none focus:ring-2 focus:ring-ak-primary focus:ring-offset-2 disabled:pointer-events-none data-[state=open]:bg-ak-snow data-[state=open]:text-text-secondary">
-        <X className="h-4 w-4" />
-        <span className="sr-only">Lukk</span>
-      </DialogPrimitive.Close>
-    </DialogPrimitive.Content>
-  </DialogPortal>
-))
-DialogContent.displayName = DialogPrimitive.Content.displayName
+    </CatalystDialog>
+  )
+}
+DialogContent.displayName = "DialogContent"
 
+/**
+ * DialogHeader - Wrapper for title section
+ */
 const DialogHeader = ({
   className,
   ...props
 }: React.HTMLAttributes<HTMLDivElement>) => (
   <div
-    className={cn(
-      "flex flex-col space-y-1.5 text-center sm:text-left",
-      className
-    )}
+    className={cn("flex flex-col space-y-1.5", className)}
     {...props}
   />
 )
 DialogHeader.displayName = "DialogHeader"
 
+/**
+ * DialogFooter - Use DialogActions from Catalyst
+ */
 const DialogFooter = ({
   className,
   ...props
 }: React.HTMLAttributes<HTMLDivElement>) => (
-  <div
-    className={cn(
-      "flex flex-col-reverse sm:flex-row sm:justify-end sm:space-x-2",
-      className
-    )}
-    {...props}
-  />
+  <CatalystDialogActions className={className} {...props} />
 )
 DialogFooter.displayName = "DialogFooter"
 
+/**
+ * DialogTitle - Uses Catalyst DialogTitle
+ */
 const DialogTitle = React.forwardRef<
-  React.ElementRef<typeof DialogPrimitive.Title>,
-  React.ComponentPropsWithoutRef<typeof DialogPrimitive.Title>
+  HTMLHeadingElement,
+  React.HTMLAttributes<HTMLHeadingElement>
 >(({ className, ...props }, ref) => (
-  <DialogPrimitive.Title
-    ref={ref}
-    className={cn(
-      "text-lg font-semibold leading-none tracking-tight text-text-primary",
-      className
-    )}
-    {...props}
-  />
+  <CatalystDialogTitle className={className} {...props} />
 ))
-DialogTitle.displayName = DialogPrimitive.Title.displayName
+DialogTitle.displayName = "DialogTitle"
 
+/**
+ * DialogDescription - Uses Catalyst DialogDescription
+ */
 const DialogDescription = React.forwardRef<
-  React.ElementRef<typeof DialogPrimitive.Description>,
-  React.ComponentPropsWithoutRef<typeof DialogPrimitive.Description>
+  HTMLParagraphElement,
+  React.HTMLAttributes<HTMLParagraphElement>
 >(({ className, ...props }, ref) => (
-  <DialogPrimitive.Description
-    ref={ref}
-    className={cn("text-sm text-text-secondary", className)}
-    {...props}
-  />
+  <CatalystDialogDescription className={className} {...props} />
 ))
-DialogDescription.displayName = DialogPrimitive.Description.displayName
+DialogDescription.displayName = "DialogDescription"
+
+/**
+ * DialogBody - Alias for Catalyst DialogBody
+ */
+const DialogBody = CatalystDialogBody
+
+// Legacy exports for backward compatibility (no-ops)
+const DialogPortal: React.FC<{ children: React.ReactNode }> = ({ children }) => <>{children}</>
+const DialogOverlay: React.FC = () => null
 
 export {
   Dialog,
@@ -113,4 +229,5 @@ export {
   DialogFooter,
   DialogTitle,
   DialogDescription,
+  DialogBody,
 }

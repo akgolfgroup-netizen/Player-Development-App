@@ -133,7 +133,7 @@ export const EventDetailPanel: React.FC<EventDetailPanelProps> = ({
             </span>
           )}
           {workout.isRecommended && workout.status === 'scheduled' && (
-            <span className="inline-flex items-center gap-1 px-2.5 py-1 rounded-full text-xs font-semibold bg-ak-brand-primary/10 text-ak-brand-primary">
+            <span className="inline-flex items-center gap-1 px-2.5 py-1 rounded-full text-xs font-semibold bg-ak-primary/10 text-ak-primary">
               Anbefalt
             </span>
           )}
@@ -248,7 +248,7 @@ export const EventDetailPanel: React.FC<EventDetailPanelProps> = ({
         <div className="p-4 border-t border-ak-border-subtle flex-shrink-0 bg-ak-surface-subtle">
           <button
             onClick={onComplete}
-            className="flex items-center justify-center gap-2 w-full p-4 rounded-lg text-base font-semibold transition-colors bg-ak-brand-primary text-white hover:bg-ak-brand-primary/90"
+            className="flex items-center justify-center gap-2 w-full p-4 rounded-lg text-base font-semibold transition-colors bg-ak-primary text-white hover:bg-ak-primary/90"
             aria-label={`Marker ${workout.name} som fullført`}
           >
             <Check size={18} aria-hidden="true" />
@@ -264,7 +264,7 @@ export const EventDetailPanel: React.FC<EventDetailPanelProps> = ({
         <div className="p-4 border-t border-ak-border-subtle flex-shrink-0 bg-ak-surface-subtle">
           <button
             onClick={() => onViewContent?.(workout)}
-            className="flex items-center justify-center gap-2 flex-1 min-w-[120px] p-3 rounded-lg text-sm font-medium transition-all border border-ak-border-default text-ak-text-secondary bg-ak-surface-card hover:border-ak-brand-primary"
+            className="flex items-center justify-center gap-2 flex-1 min-w-[120px] p-3 rounded-lg text-sm font-medium transition-all border border-ak-border-default text-ak-text-secondary bg-ak-surface-card hover:border-ak-primary"
             aria-label="Se innhold i økten"
           >
             <Eye size={16} aria-hidden="true" />
@@ -279,7 +279,7 @@ export const EventDetailPanel: React.FC<EventDetailPanelProps> = ({
       <div className="p-4 border-t border-ak-border-subtle flex-shrink-0 bg-ak-surface-subtle">
         <button
           onClick={onStart}
-          className="flex items-center justify-center gap-2 w-full p-4 mb-3 rounded-lg text-base font-semibold transition-colors bg-ak-brand-primary text-white hover:bg-ak-brand-primary/90"
+          className="flex items-center justify-center gap-2 w-full p-4 mb-3 rounded-lg text-base font-semibold transition-colors bg-ak-primary text-white hover:bg-ak-primary/90"
           aria-label={`Start ${workout.name}`}
         >
           <Play size={18} aria-hidden="true" />
@@ -289,7 +289,7 @@ export const EventDetailPanel: React.FC<EventDetailPanelProps> = ({
         <div className="flex gap-2 flex-wrap">
           <button
             onClick={() => setShowReschedule(!showReschedule)}
-            className="flex items-center justify-center gap-2 flex-1 min-w-[120px] p-3 rounded-lg text-sm font-medium transition-all border border-ak-border-default text-ak-text-secondary bg-ak-surface-card hover:border-ak-brand-primary"
+            className="flex items-center justify-center gap-2 flex-1 min-w-[120px] p-3 rounded-lg text-sm font-medium transition-all border border-ak-border-default text-ak-text-secondary bg-ak-surface-card hover:border-ak-primary"
             aria-expanded={showReschedule}
             aria-haspopup="menu"
             aria-label="Utsett trening"
@@ -305,7 +305,7 @@ export const EventDetailPanel: React.FC<EventDetailPanelProps> = ({
 
           <button
             onClick={() => setShowShorten(!showShorten)}
-            className="flex items-center justify-center gap-2 flex-1 min-w-[120px] p-3 rounded-lg text-sm font-medium transition-all border border-ak-border-default text-ak-text-secondary bg-ak-surface-card hover:border-ak-brand-primary"
+            className="flex items-center justify-center gap-2 flex-1 min-w-[120px] p-3 rounded-lg text-sm font-medium transition-all border border-ak-border-default text-ak-text-secondary bg-ak-surface-card hover:border-ak-primary"
             aria-expanded={showShorten}
             aria-haspopup="menu"
             aria-label="Kort ned varighet"
@@ -365,8 +365,8 @@ export const EventDetailPanel: React.FC<EventDetailPanelProps> = ({
                 }}
                 className={`flex-1 p-3 rounded-lg text-sm font-medium text-center transition-all border ${
                   workout.duration === duration
-                    ? 'bg-ak-brand-primary/10 border-ak-brand-primary text-ak-brand-primary'
-                    : 'bg-ak-surface-card border-ak-border-default text-ak-text-secondary hover:border-ak-brand-primary'
+                    ? 'bg-ak-primary/10 border-ak-primary text-ak-primary'
+                    : 'bg-ak-surface-card border-ak-border-default text-ak-text-secondary hover:border-ak-primary'
                 }`}
                 role="radio"
                 aria-checked={workout.duration === duration}

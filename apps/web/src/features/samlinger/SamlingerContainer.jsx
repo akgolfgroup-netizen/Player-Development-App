@@ -164,7 +164,7 @@ const getStatusConfig = (status, isRegistered) => {
     case 'registration_open':
       return {
         label: 'Apen for pamelding',
-        colorClasses: { bg: 'bg-ak-brand-primary/15', text: 'text-ak-brand-primary' },
+        colorClasses: { bg: 'bg-ak-primary/15', text: 'text-ak-primary' },
         icon: Calendar,
       };
     case 'registration_closed':
@@ -193,7 +193,7 @@ const getTypeConfig = (type) => {
     case 'elite':
       return { label: 'Elite', colorClasses: { bg: 'bg-gold-500/15', text: 'text-gold-600' }, icon: Target };
     case 'intensive':
-      return { label: 'Intensiv', colorClasses: { bg: 'bg-ak-brand-primary/15', text: 'text-ak-brand-primary' }, icon: Dumbbell };
+      return { label: 'Intensiv', colorClasses: { bg: 'bg-ak-primary/15', text: 'text-ak-primary' }, icon: Dumbbell };
     case 'training':
     default:
       return { label: 'Trening', colorClasses: { bg: 'bg-ak-status-success/15', text: 'text-ak-status-success' }, icon: Tent };
@@ -254,7 +254,7 @@ const CampCard = ({ camp, onSelect }) => {
             {getDuration(camp.startDate, camp.endDate)}
           </span>
           {daysUntil > 0 && daysUntil <= 60 && (
-            <span className="text-[11px] text-ak-brand-primary bg-ak-brand-primary/10 py-0.5 px-1.5 rounded">
+            <span className="text-[11px] text-ak-primary bg-ak-primary/10 py-0.5 px-1.5 rounded">
               om {daysUntil} dager
             </span>
           )}
@@ -306,7 +306,7 @@ const CampCard = ({ camp, onSelect }) => {
             {camp.price.toLocaleString('nb-NO')} kr
           </div>
         </div>
-        <div className="flex items-center gap-1 text-ak-brand-primary text-sm font-medium">
+        <div className="flex items-center gap-1 text-ak-primary text-sm font-medium">
           Se detaljer
           <ChevronRight size={16} />
         </div>
@@ -373,7 +373,7 @@ const FilterBar = ({ activeFilter, onFilterChange }) => {
           onClick={() => onFilterChange(filter.key)}
           className={`py-2 px-4 rounded-full border-none text-[13px] font-medium cursor-pointer transition-colors whitespace-nowrap ${
             activeFilter === filter.key
-              ? 'bg-ak-brand-primary text-white shadow-none'
+              ? 'bg-ak-primary text-white shadow-none'
               : 'bg-ak-surface-base text-ak-text-primary shadow-sm hover:bg-ak-surface-subtle'
           }`}
         >
@@ -431,7 +431,7 @@ const CampDetailModal = ({ camp, onClose, onRegister }) => {
           {/* Info grid */}
           <div className="flex flex-col gap-3 mb-5">
             <div className="flex items-center gap-3">
-              <Calendar size={18} className="text-ak-brand-primary" />
+              <Calendar size={18} className="text-ak-primary" />
               <div>
                 <div className="text-sm font-medium text-ak-text-primary">
                   {formatDateRange(camp.startDate, camp.endDate)} ({getDuration(camp.startDate, camp.endDate)})
@@ -442,7 +442,7 @@ const CampDetailModal = ({ camp, onClose, onRegister }) => {
               </div>
             </div>
             <div className="flex items-center gap-3">
-              <MapPin size={18} className="text-ak-brand-primary" />
+              <MapPin size={18} className="text-ak-primary" />
               <div>
                 <div className="text-sm font-medium text-ak-text-primary">
                   {camp.location}
@@ -453,7 +453,7 @@ const CampDetailModal = ({ camp, onClose, onRegister }) => {
               </div>
             </div>
             <div className="flex items-center gap-3">
-              <Users size={18} className="text-ak-brand-primary" />
+              <Users size={18} className="text-ak-primary" />
               <div className="text-sm font-medium text-ak-text-primary">
                 {camp.currentParticipants}/{camp.maxParticipants} pameldte - Trener: {camp.coach}
               </div>
@@ -463,7 +463,7 @@ const CampDetailModal = ({ camp, onClose, onRegister }) => {
           {/* Program */}
           <div className="mb-5">
             <div className="flex items-center gap-2 mb-2">
-              <BookOpen size={16} className="text-ak-brand-primary" />
+              <BookOpen size={16} className="text-ak-primary" />
               <span className="text-sm font-semibold text-ak-text-primary">Program</span>
             </div>
             <div className="flex gap-2 flex-wrap">
@@ -572,7 +572,7 @@ const SamlingerContainer = () => {
         {/* Stats Row */}
         <div className="grid grid-cols-[repeat(auto-fit,minmax(140px,1fr))] gap-3 mb-4">
           <div className="bg-ak-surface-base rounded-xl p-4 text-center">
-            <div className="text-2xl font-bold text-ak-brand-primary">
+            <div className="text-2xl font-bold text-ak-primary">
               {camps.length}
             </div>
             <div className="text-xs text-ak-text-secondary">Kommende</div>

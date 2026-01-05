@@ -161,7 +161,7 @@ export const CoachDataGolf: React.FC = () => {
   const getCategoryClasses = (category: string) => {
     switch (category) {
       case 'A': return { bg: 'bg-ak-status-success/10', text: 'text-ak-status-success' };
-      case 'B': return { bg: 'bg-ak-brand-primary/10', text: 'text-ak-brand-primary' };
+      case 'B': return { bg: 'bg-ak-primary/10', text: 'text-ak-primary' };
       case 'C': return { bg: 'bg-ak-status-warning/10', text: 'text-ak-status-warning' };
       default: return { bg: 'bg-ak-surface-base', text: 'text-ak-text-secondary' };
     }
@@ -232,7 +232,7 @@ export const CoachDataGolf: React.FC = () => {
     <div className="p-6 bg-ak-surface-subtle min-h-screen">
       {/* Header */}
       <div className="flex items-start gap-4 mb-6">
-        <div className="w-12 h-12 rounded-xl bg-gradient-to-br from-ak-brand-primary to-ak-brand-primary/80 flex items-center justify-center flex-shrink-0">
+        <div className="w-12 h-12 rounded-xl bg-gradient-to-br from-ak-primary to-ak-primary/80 flex items-center justify-center flex-shrink-0">
           <BarChart3 size={24} className="text-white" />
         </div>
         <div className="flex-1">
@@ -257,8 +257,8 @@ export const CoachDataGolf: React.FC = () => {
       </div>
 
       {/* Info Banner */}
-      <div className="bg-ak-brand-primary/10 rounded-xl p-4 mb-6 border border-ak-brand-primary/20 flex items-center gap-3">
-        <Info size={20} className="text-ak-brand-primary" />
+      <div className="bg-ak-primary/10 rounded-xl p-4 mb-6 border border-ak-primary/20 flex items-center gap-3">
+        <Info size={20} className="text-ak-primary" />
         <div className="flex-1">
           <p className="text-sm text-ak-text-primary m-0">
             <strong>Strokes Gained</strong> estimeres basert på testresultater og sammenlignes med {selectedTour.toUpperCase()} Tour gjennomsnitt.
@@ -271,8 +271,8 @@ export const CoachDataGolf: React.FC = () => {
               onClick={() => setSelectedTour(tour)}
               className={`py-1.5 px-3 rounded-md border-none text-xs font-semibold cursor-pointer ${
                 selectedTour === tour
-                  ? 'bg-ak-brand-primary text-white'
-                  : 'bg-ak-brand-primary/20 text-ak-brand-primary'
+                  ? 'bg-ak-primary text-white'
+                  : 'bg-ak-primary/20 text-ak-primary'
               }`}
             >
               {tour.toUpperCase()}
@@ -334,7 +334,7 @@ export const CoachDataGolf: React.FC = () => {
               onClick={() => setFilterConnected(filter)}
               className={`py-2.5 px-4 rounded-[10px] border-none text-[13px] font-medium cursor-pointer transition-all ${
                 filterConnected === filter
-                  ? 'bg-ak-brand-primary text-white'
+                  ? 'bg-ak-primary text-white'
                   : 'bg-ak-surface-base text-ak-text-secondary'
               }`}
             >
@@ -356,7 +356,7 @@ export const CoachDataGolf: React.FC = () => {
             {/* Player Header */}
             <div className={`flex justify-between items-start ${player.dataGolfConnected ? 'mb-4' : ''}`}>
               <div className="flex gap-3 items-center">
-                <div className="w-12 h-12 rounded-full bg-ak-brand-primary/15 flex items-center justify-center text-lg font-semibold text-ak-brand-primary">
+                <div className="w-12 h-12 rounded-full bg-ak-primary/15 flex items-center justify-center text-lg font-semibold text-ak-primary">
                   {player.playerName.split(' ').map(n => n[0]).join('')}
                 </div>
                 <div>

@@ -128,7 +128,7 @@ const TournamentView = ({
       if (daysUntil <= 7) {
         return { label: `Om ${daysUntil} dager`, color: 'var(--ak-status-warning)' };
       }
-      return { label: 'Kommende', color: 'var(--ak-brand-primary)' };
+      return { label: 'Kommende', color: 'var(--ak-primary)' };
     }
   };
 
@@ -147,7 +147,7 @@ const TournamentView = ({
   return (
     <div className="bg-ak-surface-card rounded-xl border border-ak-border-subtle overflow-hidden">
       {/* Header */}
-      <div className="flex items-center justify-between p-4 border-b border-ak-border-subtle bg-gradient-to-r from-ak-brand-primary to-ak-brand-primary/80 text-white">
+      <div className="flex items-center justify-between p-4 border-b border-ak-border-subtle bg-gradient-to-r from-ak-primary to-ak-primary/80 text-white">
         <button
           onClick={() => onNavigate?.(-1)}
           className="p-2 hover:bg-white/20 rounded-lg transition-colors"
@@ -217,8 +217,8 @@ const TournamentView = ({
                       <div
                         key={tournament.id}
                         className={`p-4 rounded-xl border cursor-pointer transition-all hover:shadow-md ${
-                          isPast ? 'opacity-60 border-ak-border-subtle' : 'border-ak-border-subtle hover:border-ak-brand-primary/30'
-                        } ${tournament.registered ? 'bg-ak-brand-primary/5' : 'bg-ak-surface-card'}`}
+                          isPast ? 'opacity-60 border-ak-border-subtle' : 'border-ak-border-subtle hover:border-ak-primary/30'
+                        } ${tournament.registered ? 'bg-ak-primary/5' : 'bg-ak-surface-card'}`}
                         style={{
                           borderLeft: `4px solid ${categoryConfig.bg}`
                         }}
@@ -271,7 +271,7 @@ const TournamentView = ({
                           </span>
                           {!tournament.registered && !isPast && (
                             <button
-                              className="text-xs px-3 py-1 bg-ak-brand-primary text-white rounded-lg hover:bg-ak-brand-primary/90 transition-colors"
+                              className="text-xs px-3 py-1 bg-ak-primary text-white rounded-lg hover:bg-ak-primary/90 transition-colors"
                               onClick={(e) => {
                                 e.stopPropagation();
                                 // Handle registration
@@ -300,7 +300,7 @@ const TournamentView = ({
       <div className="border-t border-ak-border-subtle p-4 bg-ak-surface-subtle/30">
         <div className="grid grid-cols-3 gap-4 text-center">
           <div>
-            <div className="text-2xl font-bold text-ak-brand-primary">{totalTournaments}</div>
+            <div className="text-2xl font-bold text-ak-primary">{totalTournaments}</div>
             <div className="text-xs text-ak-text-secondary">Totalt</div>
           </div>
           <div>

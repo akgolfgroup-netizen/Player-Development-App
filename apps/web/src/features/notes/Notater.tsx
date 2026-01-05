@@ -386,7 +386,7 @@ const Notater: React.FC<NotaterProps> = ({
                 placeholder="Søk..."
                 value={searchQuery}
                 onChange={(e) => setSearchQuery(e.target.value)}
-                className="w-full pl-10 pr-4 py-2.5 bg-ak-surface-base border border-ak-border-default rounded-xl text-[13px] focus:outline-none focus:ring-2 focus:ring-ak-brand-primary/20"
+                className="w-full pl-10 pr-4 py-2.5 bg-ak-surface-base border border-ak-border-default rounded-xl text-[13px] focus:outline-none focus:ring-2 focus:ring-ak-primary/20"
               />
             </div>
 
@@ -404,7 +404,7 @@ const Notater: React.FC<NotaterProps> = ({
                     onClick={() => setSelectedTag(tag.id)}
                     className={`w-full flex items-center gap-2 px-4 py-2.5 text-left transition-colors ${
                       selectedTag === tag.id
-                        ? 'bg-ak-brand-primary/5 text-ak-brand-primary'
+                        ? 'bg-ak-primary/5 text-ak-primary'
                         : 'text-ak-text-primary hover:bg-ak-surface-subtle'
                     }`}
                   >
@@ -484,7 +484,7 @@ const Notater: React.FC<NotaterProps> = ({
                   onClick={() => setSelectedTag(tag.id)}
                   className={`flex-shrink-0 px-3 py-1.5 rounded-full text-[12px] font-medium transition-colors ${
                     selectedTag === tag.id
-                      ? 'bg-ak-brand-primary text-white'
+                      ? 'bg-ak-primary text-white'
                       : 'bg-ak-surface-base text-ak-text-primary border border-ak-border-default'
                   }`}
                 >
@@ -514,7 +514,7 @@ const Notater: React.FC<NotaterProps> = ({
                         </span>
                       )}
                       {note.sharedWithCoach && (
-                        <span className="text-ak-brand-primary" title="Delt med trener">
+                        <span className="text-ak-primary" title="Delt med trener">
                           <TeamIcon size={14} />
                         </span>
                       )}
@@ -598,7 +598,7 @@ const Notater: React.FC<NotaterProps> = ({
                   onClick={() => toggleShareWithCoach(selectedNote.id)}
                   className={`p-2 rounded-lg transition-colors ${
                     selectedNote.sharedWithCoach
-                      ? 'bg-ak-brand-primary/10 text-ak-brand-primary'
+                      ? 'bg-ak-primary/10 text-ak-primary'
                       : 'hover:bg-ak-surface-subtle text-ak-text-secondary'
                   }`}
                   title={selectedNote.sharedWithCoach ? 'Delt med trener' : 'Del med trener'}
@@ -696,7 +696,7 @@ const Notater: React.FC<NotaterProps> = ({
                   placeholder="Skriv en tittel..."
                   value={noteForm.title}
                   onChange={(e) => setNoteForm({ ...noteForm, title: e.target.value })}
-                  className="w-full px-4 py-2.5 bg-ak-surface-subtle border border-ak-border-default rounded-xl text-[14px] focus:outline-none focus:ring-2 focus:ring-ak-brand-primary/20"
+                  className="w-full px-4 py-2.5 bg-ak-surface-subtle border border-ak-border-default rounded-xl text-[14px] focus:outline-none focus:ring-2 focus:ring-ak-primary/20"
                 />
               </div>
 
@@ -708,7 +708,7 @@ const Notater: React.FC<NotaterProps> = ({
                   rows={8}
                   value={noteForm.content}
                   onChange={(e) => setNoteForm({ ...noteForm, content: e.target.value })}
-                  className="w-full px-4 py-3 bg-ak-surface-subtle border border-ak-border-default rounded-xl text-[14px] focus:outline-none focus:ring-2 focus:ring-ak-brand-primary/20 resize-none"
+                  className="w-full px-4 py-3 bg-ak-surface-subtle border border-ak-border-default rounded-xl text-[14px] focus:outline-none focus:ring-2 focus:ring-ak-primary/20 resize-none"
                 />
               </div>
 
@@ -722,7 +722,7 @@ const Notater: React.FC<NotaterProps> = ({
                       onClick={() => toggleTag(tag.id)}
                       className={`px-3 py-1.5 rounded-full text-[12px] font-medium border transition-colors ${
                         noteForm.tags.includes(tag.id)
-                          ? 'bg-ak-brand-primary text-white border-ak-brand-primary'
+                          ? 'bg-ak-primary text-white border-ak-primary'
                           : 'border-ak-border-default hover:bg-ak-surface-subtle'
                       }`}
                     >
@@ -804,7 +804,7 @@ const Notater: React.FC<NotaterProps> = ({
                   placeholder="Skriv en tittel..."
                   value={noteForm.title}
                   onChange={(e) => setNoteForm({ ...noteForm, title: e.target.value })}
-                  className="w-full px-4 py-2.5 bg-ak-surface-subtle border border-ak-border-default rounded-xl text-[14px] focus:outline-none focus:ring-2 focus:ring-ak-brand-primary/20"
+                  className="w-full px-4 py-2.5 bg-ak-surface-subtle border border-ak-border-default rounded-xl text-[14px] focus:outline-none focus:ring-2 focus:ring-ak-primary/20"
                 />
               </div>
 
@@ -816,7 +816,7 @@ const Notater: React.FC<NotaterProps> = ({
                   rows={8}
                   value={noteForm.content}
                   onChange={(e) => setNoteForm({ ...noteForm, content: e.target.value })}
-                  className="w-full px-4 py-3 bg-ak-surface-subtle border border-ak-border-default rounded-xl text-[14px] focus:outline-none focus:ring-2 focus:ring-ak-brand-primary/20 resize-none"
+                  className="w-full px-4 py-3 bg-ak-surface-subtle border border-ak-border-default rounded-xl text-[14px] focus:outline-none focus:ring-2 focus:ring-ak-primary/20 resize-none"
                 />
               </div>
 
@@ -830,7 +830,7 @@ const Notater: React.FC<NotaterProps> = ({
                       onClick={() => toggleTag(tag.id)}
                       className={`px-3 py-1.5 rounded-full text-[12px] font-medium border transition-colors ${
                         noteForm.tags.includes(tag.id)
-                          ? 'bg-ak-brand-primary text-white border-ak-brand-primary'
+                          ? 'bg-ak-primary text-white border-ak-primary'
                           : 'border-ak-border-default hover:bg-ak-surface-subtle'
                       }`}
                     >

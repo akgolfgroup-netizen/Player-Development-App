@@ -104,7 +104,7 @@ export function AICoachPanel() {
       {/* Header */}
       <div className="flex items-center justify-between px-4 py-3 bg-ak-surface-elevated border-b border-ak-border-default">
         <div className="flex items-center gap-3">
-          <Bot size={20} className="text-ak-brand-primary" />
+          <Bot size={20} className="text-ak-primary" />
           <div>
             <div className="font-semibold text-sm text-ak-text-primary">AI Golf Coach</div>
             <div className="text-xs text-ak-text-secondary">
@@ -136,7 +136,7 @@ export function AICoachPanel() {
           <div className="flex-1 overflow-y-auto p-4 flex flex-col gap-3">
             {messages.length === 0 ? (
               <div className="flex flex-col items-center justify-center text-center p-6 gap-3">
-                <Bot size={48} className="text-ak-brand-primary opacity-50" />
+                <Bot size={48} className="text-ak-primary opacity-50" />
                 <h3 className="text-base font-semibold text-ak-text-primary m-0">
                   Hei! Jeg er din AI Golf Coach
                 </h3>
@@ -148,7 +148,7 @@ export function AICoachPanel() {
                     <button
                       key={action.label}
                       onClick={() => handleQuickAction(action.message)}
-                      className="px-3 py-2 bg-ak-surface-elevated border border-ak-border-default rounded-full text-xs text-ak-text-secondary cursor-pointer transition-all hover:bg-ak-surface-subtle hover:border-ak-brand-primary disabled:opacity-50"
+                      className="px-3 py-2 bg-ak-surface-elevated border border-ak-border-default rounded-full text-xs text-ak-text-secondary cursor-pointer transition-all hover:bg-ak-surface-subtle hover:border-ak-primary disabled:opacity-50"
                       disabled={isBusy}
                     >
                       {action.label}
@@ -168,7 +168,7 @@ export function AICoachPanel() {
                     <div
                       className={`w-7 h-7 rounded-full flex items-center justify-center flex-shrink-0 ${
                         message.role === 'user'
-                          ? 'bg-ak-brand-primary text-white'
+                          ? 'bg-ak-primary text-white'
                           : 'bg-ak-surface-elevated text-ak-text-secondary'
                       }`}
                     >
@@ -177,7 +177,7 @@ export function AICoachPanel() {
                     <div
                       className={`p-3 rounded-lg text-sm leading-relaxed whitespace-pre-wrap ${
                         message.role === 'user'
-                          ? 'bg-ak-brand-primary text-white'
+                          ? 'bg-ak-primary text-white'
                           : 'bg-ak-surface-elevated text-ak-text-primary'
                       }`}
                     >
@@ -193,7 +193,7 @@ export function AICoachPanel() {
                     </div>
                     <div className="p-3 rounded-lg text-sm leading-relaxed whitespace-pre-wrap bg-ak-surface-elevated text-ak-text-primary">
                       {streamingContent}
-                      <span className="inline-block ml-0.5 text-ak-brand-primary animate-pulse">
+                      <span className="inline-block ml-0.5 text-ak-primary animate-pulse">
                         ▌
                       </span>
                     </div>
@@ -252,13 +252,13 @@ export function AICoachPanel() {
               onChange={(e) => setInputValue(e.target.value)}
               onKeyDown={handleKeyDown}
               placeholder="Skriv en melding..."
-              className="flex-1 px-3 py-2 bg-ak-surface-subtle border border-ak-border-default rounded-lg text-sm text-ak-text-primary outline-none focus:border-ak-brand-primary focus:ring-2 focus:ring-ak-brand-primary/20"
+              className="flex-1 px-3 py-2 bg-ak-surface-subtle border border-ak-border-default rounded-lg text-sm text-ak-text-primary outline-none focus:border-ak-primary focus:ring-2 focus:ring-ak-primary/20"
               disabled={isBusy || !isAvailable}
             />
             <button
               onClick={() => handleSendMessage()}
               disabled={!inputValue.trim() || isBusy}
-              className={`flex items-center justify-center w-9 h-9 bg-ak-brand-primary border-none rounded-full text-white cursor-pointer flex-shrink-0 transition-opacity ${
+              className={`flex items-center justify-center w-9 h-9 bg-ak-primary border-none rounded-full text-white cursor-pointer flex-shrink-0 transition-opacity ${
                 inputValue.trim() && !isBusy ? 'opacity-100' : 'opacity-50'
               }`}
               aria-label="Send melding"

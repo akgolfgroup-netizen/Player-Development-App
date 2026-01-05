@@ -126,7 +126,7 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
       return { success: true, user: userData };
     } catch (err) {
       const apiError = err as ApiError;
-      const errorMessage = apiError.response?.data?.message || 'Login failed. Backend may not be running.';
+      const errorMessage = apiError.response?.data?.message || 'Innlogging feilet. Backend kjører kanskje ikke.';
       setError(errorMessage);
       return { success: false, error: errorMessage };
     } finally {

@@ -189,7 +189,7 @@ export const WorkoutSelectorModal: React.FC<WorkoutSelectorModalProps> = ({
               onClick={() => setSelectedCategory(category)}
               className={`px-3 py-2 rounded-full text-xs font-medium whitespace-nowrap transition-all border ${
                 selectedCategory === category
-                  ? 'bg-ak-brand-primary border-ak-brand-primary text-white'
+                  ? 'bg-ak-primary border-ak-primary text-white'
                   : 'bg-ak-surface-subtle border-ak-border-default text-ak-text-secondary'
               }`}
             >
@@ -214,8 +214,8 @@ export const WorkoutSelectorModal: React.FC<WorkoutSelectorModalProps> = ({
                 onClick={() => handleSelect(workout)}
                 className="flex items-center gap-3 w-full px-4 py-3 text-left rounded-lg transition-colors hover:bg-ak-surface-subtle"
               >
-                <div className="w-11 h-11 rounded-lg flex-shrink-0 flex items-center justify-center bg-ak-brand-primary/10">
-                  <Target size={22} className="text-ak-brand-primary" />
+                <div className="w-11 h-11 rounded-lg flex-shrink-0 flex items-center justify-center bg-ak-primary/10">
+                  <Target size={22} className="text-ak-primary" />
                 </div>
                 <div className="flex-1 min-w-0">
                   <div className="text-base font-semibold mb-0.5 text-ak-text-primary">

@@ -98,7 +98,7 @@ function AthleteRow({
   return (
     <div
       onClick={onClick}
-      className="flex items-center gap-4 p-4 bg-ak-surface-card rounded-xl border border-ak-border-default cursor-pointer hover:border-ak-brand-primary transition-colors"
+      className="flex items-center gap-4 p-4 bg-ak-surface-card rounded-xl border border-ak-border-default cursor-pointer hover:border-ak-primary transition-colors"
       role="button"
       tabIndex={0}
       onKeyDown={(e) => e.key === 'Enter' && onClick()}

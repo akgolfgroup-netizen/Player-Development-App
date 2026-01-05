@@ -119,8 +119,8 @@ export default function CoachNotes({
         </div>
 
         <div className="flex items-center gap-3">
-          <div className="w-12 h-12 rounded-lg bg-ak-brand-primary/10 flex items-center justify-center">
-            <StickyNote size={24} className="text-ak-brand-primary" />
+          <div className="w-12 h-12 rounded-lg bg-ak-primary/10 flex items-center justify-center">
+            <StickyNote size={24} className="text-ak-primary" />
           </div>
           <div>
             <PageTitle className="m-0">
@@ -145,7 +145,7 @@ export default function CoachNotes({
             onChange={(e) => setNewNote(e.target.value)}
             placeholder="Skriv din observasjon eller tilbakemelding..."
             rows={4}
-            className="w-full p-3.5 rounded-lg border border-ak-border-default bg-ak-surface-subtle text-[15px] leading-[22px] text-ak-text-primary resize-y outline-none box-border focus:border-ak-brand-primary"
+            className="w-full p-3.5 rounded-lg border border-ak-border-default bg-ak-surface-subtle text-[15px] leading-[22px] text-ak-text-primary resize-y outline-none box-border focus:border-ak-primary"
           />
 
           <div className="flex justify-between items-center mt-4">
@@ -189,9 +189,9 @@ export default function CoachNotes({
                   className={`p-5 ${index < sortedNotes.length - 1 ? 'border-b border-ak-border-default' : ''}`}
                 >
                   <div className="flex justify-between items-start mb-3">
-                    <div className="inline-flex items-center gap-1.5 py-1 px-2.5 rounded bg-ak-brand-primary/10">
-                      <StickyNote size={14} className="text-ak-brand-primary" />
-                      <span className="text-[13px] leading-[18px] font-semibold text-ak-brand-primary">
+                    <div className="inline-flex items-center gap-1.5 py-1 px-2.5 rounded bg-ak-primary/10">
+                      <StickyNote size={14} className="text-ak-primary" />
+                      <span className="text-[13px] leading-[18px] font-semibold text-ak-primary">
                         Trenernotat
                       </span>
                     </div>

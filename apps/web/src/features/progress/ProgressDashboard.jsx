@@ -111,7 +111,7 @@ export default function ProgressDashboard({ data }) {
           {upcomingSessions.map((session, i) => (
             <div
               key={i}
-              className="flex items-center justify-between p-3 bg-ak-brand-primary/5 rounded-xl"
+              className="flex items-center justify-between p-3 bg-ak-primary/5 rounded-xl"
             >
               <div>
                 <div className="font-medium text-ak-text-primary">
@@ -126,7 +126,7 @@ export default function ProgressDashboard({ data }) {
                 </div>
               </div>
               <div className="text-right">
-                <div className="text-sm font-medium text-ak-brand-primary">
+                <div className="text-sm font-medium text-ak-primary">
                   {session.duration} min
                 </div>
                 <div className="text-xs text-ak-text-secondary">
@@ -143,7 +143,7 @@ export default function ProgressDashboard({ data }) {
 
 function StatCard({ title, value, icon, color }) {
   const colorConfig = {
-    primary: { bg: 'bg-ak-brand-primary/10', text: 'text-ak-brand-primary' },
+    primary: { bg: 'bg-ak-primary/10', text: 'text-ak-primary' },
     success: { bg: 'bg-ak-status-success/15', text: 'text-ak-status-success' },
     warning: { bg: 'bg-ak-status-warning/15', text: 'text-ak-status-warning' },
     gold: { bg: 'bg-amber-500/15', text: 'text-amber-600' },

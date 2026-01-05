@@ -15,6 +15,7 @@ import { Link, useLocation } from 'react-router-dom';
 import * as LucideIcons from 'lucide-react';
 import CoachSidebar from './CoachSidebar';
 import BackToTop from '../ui/BackToTop';
+import { AKLogo } from '../branding/AKLogo';
 import { useAuth } from '../../contexts/AuthContext';
 import { coachMobileNavItems } from '../../config/coach-navigation';
 
@@ -32,7 +33,7 @@ const skipLinkStyles: React.CSSProperties = {
   top: '-40px',
   left: '0',
   padding: '8px 16px',
-  backgroundColor: 'var(--ak-brand-primary)',
+  backgroundColor: 'var(--ak-primary)',
   color: 'var(--ak-surface-card)',
   textDecoration: 'none',
   fontWeight: 600,
@@ -68,9 +69,9 @@ function CoachBottomNav({ unreadAlerts }: { unreadAlerts: number }) {
         bottom: 0,
         left: 0,
         right: 0,
-        height: '72px',
-        backgroundColor: 'var(--ak-surface-card)',
-        borderTop: '1px solid var(--ak-border-default)',
+        height: '64px',
+        backgroundColor: 'var(--ak-primary, #1A3D2E)',
+        borderTop: '1px solid rgba(255,255,255,0.1)',
         display: 'flex',
         alignItems: 'center',
         justifyContent: 'space-around',
@@ -95,7 +96,7 @@ function CoachBottomNav({ unreadAlerts }: { unreadAlerts: number }) {
               gap: '4px',
               padding: '8px 12px',
               textDecoration: 'none',
-              color: active ? 'var(--ak-brand-primary)' : 'var(--ak-text-secondary)',
+              color: active ? '#FFFFFF' : 'rgba(255,255,255,0.6)',
               position: 'relative',
               minWidth: '56px',
             }}
@@ -143,7 +144,7 @@ function CoachBottomNav({ unreadAlerts }: { unreadAlerts: number }) {
                   width: '32px',
                   height: '3px',
                   borderRadius: '0 0 3px 3px',
-                  backgroundColor: 'var(--ak-brand-primary)',
+                  backgroundColor: 'var(--ak-achievement, #C9A227)',
                 }}
               />
             )}
@@ -169,8 +170,8 @@ function CoachMobileHeader({
         top: 0,
         left: 0,
         right: 0,
-        height: '56px',
-        backgroundColor: 'var(--ak-brand-primary)',
+        height: '60px',
+        backgroundColor: 'var(--ak-primary, #1A3D2E)',
         display: 'flex',
         alignItems: 'center',
         justifyContent: 'space-between',
@@ -178,25 +179,10 @@ function CoachMobileHeader({
         zIndex: 1001,
       }}
     >
-      <div style={{ display: 'flex', alignItems: 'center', gap: '12px' }}>
-        <div
-          style={{
-            width: 32,
-            height: 32,
-            borderRadius: '8px',
-            backgroundColor: 'var(--ak-achievement)',
-            display: 'flex',
-            alignItems: 'center',
-            justifyContent: 'center',
-            fontWeight: 700,
-            fontSize: '14px',
-            color: 'var(--ak-text-primary)',
-          }}
-        >
-          AK
-        </div>
+      <div style={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
+        <AKLogo size={32} color="#FFFFFF" />
         <span style={{ color: 'white', fontWeight: 600, fontSize: '16px' }}>
-          Coach Portal
+          AK Golf
         </span>
       </div>
 
@@ -315,11 +301,11 @@ export default function CoachAppShell({ children }: CoachAppShellProps) {
             <aside
               style={{
                 position: 'fixed',
-                top: '56px',
+                top: '60px',
                 left: 0,
-                bottom: 0,
+                bottom: '64px',
                 width: '300px',
-                backgroundColor: 'var(--ak-brand-primary)',
+                backgroundColor: 'var(--ak-primary, #1A3D2E)',
                 zIndex: 999,
                 overflowY: 'auto',
               }}
@@ -338,9 +324,9 @@ export default function CoachAppShell({ children }: CoachAppShellProps) {
         <main
           id="main-content"
           style={{
-            paddingTop: '56px',
+            paddingTop: '60px',
             paddingBottom: '80px', // Space for bottom nav
-            minHeight: 'calc(100vh - 136px)',
+            minHeight: 'calc(100vh - 140px)',
           }}
           tabIndex={-1}
         >

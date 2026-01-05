@@ -183,7 +183,7 @@ const getTypeConfig = (type) => {
     case 'video':
       return { icon: Video, colorClasses: { bg: 'bg-ak-status-error/10', text: 'text-ak-status-error' }, label: 'Video' };
     case 'article':
-      return { icon: FileText, colorClasses: { bg: 'bg-ak-brand-primary/10', text: 'text-ak-brand-primary' }, label: 'Artikkel' };
+      return { icon: FileText, colorClasses: { bg: 'bg-ak-primary/10', text: 'text-ak-primary' }, label: 'Artikkel' };
     case 'document':
       return { icon: Download, colorClasses: { bg: 'bg-ak-status-success/10', text: 'text-ak-status-success' }, label: 'Dokument' };
     case 'link':
@@ -282,11 +282,11 @@ const ResourceCard = ({ resource, onToggleSave, onOpen }) => {
               onToggleSave(resource.id);
             }}
             className={`flex items-center justify-center w-8 h-8 rounded-lg border-none cursor-pointer transition-all ${
-              resource.isSaved ? 'bg-ak-brand-primary/15' : 'bg-ak-surface-subtle'
+              resource.isSaved ? 'bg-ak-primary/15' : 'bg-ak-surface-subtle'
             }`}
           >
             {resource.isSaved ? (
-              <BookmarkCheck size={16} className="text-ak-brand-primary" />
+              <BookmarkCheck size={16} className="text-ak-primary" />
             ) : (
               <Bookmark size={16} className="text-ak-text-secondary" />
             )}
@@ -308,7 +308,7 @@ const FeaturedResource = ({ resource, onOpen }) => {
   return (
     <div
       onClick={() => onOpen(resource)}
-      className="bg-ak-brand-primary rounded-[20px] p-6 text-white cursor-pointer transition-all flex gap-5 items-center hover:scale-[1.01]"
+      className="bg-ak-primary rounded-[20px] p-6 text-white cursor-pointer transition-all flex gap-5 items-center hover:scale-[1.01]"
     >
       {/* Icon */}
       <div className="w-20 h-20 rounded-2xl bg-white/15 flex items-center justify-center flex-shrink-0">
@@ -355,7 +355,7 @@ const CategoryFilter = ({ activeCategory, onCategoryChange, resources }) => {
             onClick={() => onCategoryChange(category.key)}
             className={`flex items-center gap-2 py-2.5 px-4 rounded-xl border-none text-[13px] font-medium cursor-pointer transition-all whitespace-nowrap ${
               activeCategory === category.key
-                ? 'bg-ak-brand-primary text-white shadow-none'
+                ? 'bg-ak-primary text-white shadow-none'
                 : 'bg-ak-surface-base text-ak-text-primary shadow-sm'
             }`}
           >
@@ -391,7 +391,7 @@ const SearchBar = ({ value, onChange }) => {
         placeholder="Søk i ressurser..."
         value={value}
         onChange={(e) => onChange(e.target.value)}
-        className="w-full py-3.5 pr-4 pl-12 rounded-xl border border-ak-border-default bg-ak-surface-base text-sm text-ak-text-primary outline-none focus:border-ak-brand-primary transition-colors"
+        className="w-full py-3.5 pr-4 pl-12 rounded-xl border border-ak-border-default bg-ak-surface-base text-sm text-ak-text-primary outline-none focus:border-ak-primary transition-colors"
       />
     </div>
   );
@@ -495,7 +495,7 @@ const ResourceDetailModal = ({ resource, onClose }) => {
           {/* Action button */}
           <button
             onClick={() => window.open(resource.url, '_blank')}
-            className="w-full flex items-center justify-center gap-2 py-3.5 rounded-xl border-none bg-ak-brand-primary text-white text-[15px] font-semibold cursor-pointer transition-colors hover:bg-ak-brand-primary/90"
+            className="w-full flex items-center justify-center gap-2 py-3.5 rounded-xl border-none bg-ak-primary text-white text-[15px] font-semibold cursor-pointer transition-colors hover:bg-ak-primary/90"
           >
             {resource.type === 'video' && <><Play size={18} /> Se video</>}
             {resource.type === 'article' && <><BookOpen size={18} /> Les artikkel</>}
@@ -547,7 +547,7 @@ const RessurserContainer = () => {
         {/* Stats Row */}
         <div className="grid grid-cols-[repeat(auto-fit,minmax(120px,1fr))] gap-3 mb-6">
           <div className="bg-ak-surface-base rounded-xl p-4 text-center">
-            <div className="text-2xl font-bold text-ak-brand-primary">
+            <div className="text-2xl font-bold text-ak-primary">
               {resources.length}
             </div>
             <div className="text-xs text-ak-text-secondary">Ressurser</div>
@@ -598,7 +598,7 @@ const RessurserContainer = () => {
         {savedResources.length > 0 && category === 'all' && !searchQuery && (
           <div className="mb-8">
             <SectionTitle className="text-lg font-semibold text-ak-text-primary m-0 mb-4 flex items-center gap-2">
-              <BookmarkCheck size={20} className="text-ak-brand-primary" />
+              <BookmarkCheck size={20} className="text-ak-primary" />
               Lagrede ressurser
             </SectionTitle>
             <div className="grid grid-cols-[repeat(auto-fill,minmax(280px,1fr))] gap-4">

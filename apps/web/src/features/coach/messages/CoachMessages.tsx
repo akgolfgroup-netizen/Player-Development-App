@@ -51,7 +51,7 @@ function RecipientIcon({ type }: { type: Message['recipientType'] }) {
     case 'group':
       return <Users size={14} className="text-ak-text-secondary" />;
     case 'all':
-      return <Users size={14} className="text-ak-brand-primary" />;
+      return <Users size={14} className="text-ak-primary" />;
     default:
       return <User size={14} className="text-ak-text-secondary" />;
   }
@@ -97,7 +97,7 @@ function MessageCard({
   return (
     <div
       onClick={onClick}
-      className="p-4 bg-ak-surface-card rounded-xl border border-ak-border-default cursor-pointer hover:border-ak-brand-primary transition-colors"
+      className="p-4 bg-ak-surface-card rounded-xl border border-ak-border-default cursor-pointer hover:border-ak-primary transition-colors"
       role="button"
       tabIndex={0}
       onKeyDown={(e) => e.key === 'Enter' && onClick()}
@@ -156,7 +156,7 @@ function TabButton({
       onClick={onClick}
       className={`px-5 py-2.5 font-medium rounded-lg transition-colors flex items-center gap-2 ${
         active
-          ? 'bg-ak-brand-primary text-white'
+          ? 'bg-ak-primary text-white'
           : 'bg-ak-surface-subtle text-ak-text-secondary hover:text-ak-text-primary'
       }`}
     >
@@ -245,7 +245,7 @@ export default function CoachMessages() {
 
         <Link
           to="/coach/messages/compose"
-          className="flex items-center gap-2 px-4 py-2.5 bg-ak-brand-primary text-white rounded-lg font-medium hover:bg-ak-brand-primary/90 transition-colors"
+          className="flex items-center gap-2 px-4 py-2.5 bg-ak-primary text-white rounded-lg font-medium hover:bg-ak-primary/90 transition-colors"
         >
           <Plus size={18} />
           Ny melding
@@ -322,7 +322,7 @@ export default function CoachMessages() {
           </p>
           <Link
             to="/coach/messages/compose"
-            className="inline-flex items-center gap-2 px-4 py-2 bg-ak-brand-primary text-white rounded-lg font-medium hover:bg-ak-brand-primary/90 transition-colors"
+            className="inline-flex items-center gap-2 px-4 py-2 bg-ak-primary text-white rounded-lg font-medium hover:bg-ak-primary/90 transition-colors"
           >
             <Send size={16} />
             Skriv ny melding

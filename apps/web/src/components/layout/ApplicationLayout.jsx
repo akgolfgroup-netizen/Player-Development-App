@@ -78,8 +78,8 @@ function NavMenuItem({ item, pathname, openMenus, toggleMenu }) {
             flex w-full items-center gap-3 rounded-lg px-2 py-2.5 text-left text-sm font-medium
             transition-colors duration-150
             ${hasActiveChild
-              ? 'text-ak-text-inverse bg-ak-brand-primary-hover'
-              : 'text-white/80 hover:bg-ak-brand-primary-hover hover:text-ak-text-inverse'}
+              ? 'text-ak-text-inverse bg-ak-primary-hover'
+              : 'text-white/80 hover:bg-ak-primary-hover hover:text-ak-text-inverse'}
           `}
         >
           <Icon className="size-5 shrink-0" />
@@ -171,7 +171,7 @@ export default function ApplicationLayout({ children }) {
               <DropdownButton as={NavbarItem}>
                 <Avatar
                   initials={userInitials}
-                  className="size-8 bg-ak-brand-primary text-ak-text-inverse text-sm"
+                  className="size-8 bg-ak-primary text-ak-text-inverse text-sm"
                   square
                 />
               </DropdownButton>

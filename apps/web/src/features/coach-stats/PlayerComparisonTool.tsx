@@ -189,7 +189,7 @@ export const PlayerComparisonTool: React.FC = () => {
       case 'A':
         return { bg: 'bg-ak-status-success/10', text: 'text-ak-status-success' };
       case 'B':
-        return { bg: 'bg-ak-brand-primary/10', text: 'text-ak-brand-primary' };
+        return { bg: 'bg-ak-primary/10', text: 'text-ak-primary' };
       case 'C':
         return { bg: 'bg-ak-status-warning/10', text: 'text-ak-status-warning' };
       default:
@@ -201,7 +201,7 @@ export const PlayerComparisonTool: React.FC = () => {
     return (
       <div className="flex items-center justify-center min-h-[400px] bg-ak-surface-subtle">
         <div className="flex flex-col items-center gap-3">
-          <Loader2 size={32} className="animate-spin text-ak-brand-primary" />
+          <Loader2 size={32} className="animate-spin text-ak-primary" />
           <p className="text-sm text-ak-text-secondary">Laster spillere...</p>
         </div>
       </div>
@@ -212,7 +212,7 @@ export const PlayerComparisonTool: React.FC = () => {
     <div className="p-6 bg-ak-surface-subtle min-h-screen">
       {/* Header */}
       <div className="flex items-start gap-4 mb-6">
-        <div className="w-12 h-12 rounded-xl bg-gradient-to-br from-ak-brand-primary to-ak-brand-primary/80 flex items-center justify-center flex-shrink-0">
+        <div className="w-12 h-12 rounded-xl bg-gradient-to-br from-ak-primary to-ak-primary/80 flex items-center justify-center flex-shrink-0">
           <GitCompare size={24} className="text-white" />
         </div>
         <div className="flex-1">
@@ -228,7 +228,7 @@ export const PlayerComparisonTool: React.FC = () => {
       <div className="bg-ak-surface-base rounded-2xl p-5 mb-6 border border-ak-border-default">
         <div className="flex items-center justify-between mb-4">
           <div className="flex items-center gap-2">
-            <Users size={20} className="text-ak-brand-primary" />
+            <Users size={20} className="text-ak-primary" />
             <SectionTitle className="m-0">
               Valgte spillere ({selectedPlayers.length}/5)
             </SectionTitle>
@@ -318,7 +318,7 @@ export const PlayerComparisonTool: React.FC = () => {
                     placeholder="Søk etter spiller..."
                     value={searchQuery}
                     onChange={(e) => setSearchQuery(e.target.value)}
-                    className="w-full py-2.5 pr-3 pl-10 rounded-lg border border-ak-border-default bg-ak-surface-base text-sm text-ak-text-primary outline-none focus:border-ak-brand-primary"
+                    className="w-full py-2.5 pr-3 pl-10 rounded-lg border border-ak-border-default bg-ak-surface-base text-sm text-ak-text-primary outline-none focus:border-ak-primary"
                     autoFocus
                   />
                 </div>
@@ -333,7 +333,7 @@ export const PlayerComparisonTool: React.FC = () => {
                         onClick={() => addPlayer(athlete.id)}
                         className="w-full flex items-center gap-3 p-3 hover:bg-ak-surface-subtle rounded-xl transition-colors text-left"
                       >
-                        <div className="w-10 h-10 rounded-full bg-ak-brand-primary/15 flex items-center justify-center text-sm font-semibold text-ak-brand-primary">
+                        <div className="w-10 h-10 rounded-full bg-ak-primary/15 flex items-center justify-center text-sm font-semibold text-ak-primary">
                           {athlete.firstName[0]}{athlete.lastName[0]}
                         </div>
                         <div className="flex-1">
@@ -365,7 +365,7 @@ export const PlayerComparisonTool: React.FC = () => {
       {/* Test Selection */}
       <div className="bg-ak-surface-base rounded-2xl p-5 mb-6 border border-ak-border-default">
         <div className="flex items-center gap-2 mb-4">
-          <BarChart3 size={20} className="text-ak-brand-primary" />
+          <BarChart3 size={20} className="text-ak-primary" />
           <SectionTitle className="m-0">
             Velg tester å sammenligne
           </SectionTitle>
@@ -377,7 +377,7 @@ export const PlayerComparisonTool: React.FC = () => {
               onClick={() => toggleTest(test.number)}
               className={`py-2 px-4 rounded-lg text-sm font-medium transition-all ${
                 selectedTests.includes(test.number)
-                  ? 'bg-ak-brand-primary text-white'
+                  ? 'bg-ak-primary text-white'
                   : 'bg-ak-surface-subtle text-ak-text-secondary hover:bg-ak-surface-base border border-ak-border-default'
               }`}
             >
@@ -424,7 +424,7 @@ export const PlayerComparisonTool: React.FC = () => {
       {comparison && comparison.players.length > 0 && (
         <div className="bg-ak-surface-base rounded-2xl p-5 border border-ak-border-default">
           <div className="flex items-center gap-2 mb-6">
-            <Trophy size={20} className="text-ak-brand-primary" />
+            <Trophy size={20} className="text-ak-primary" />
             <SectionTitle className="m-0">
               Sammenligningsresultat
             </SectionTitle>
@@ -467,7 +467,7 @@ export const PlayerComparisonTool: React.FC = () => {
                     </div>
                     <div className="flex items-center justify-between py-2 px-3 bg-ak-surface-base rounded-lg">
                       <span className="text-xs text-ak-text-secondary">Total score</span>
-                      <span className="text-lg font-bold text-ak-brand-primary">
+                      <span className="text-lg font-bold text-ak-primary">
                         {player.overallScore.toFixed(1)}
                       </span>
                     </div>

@@ -41,30 +41,30 @@ export default function ProgressWidget({ planId }) {
         <SubSectionTitle>Your Progress</SubSectionTitle>
         <button
           onClick={() => navigate('/progress')}
-          className="text-sm text-ak-brand-primary font-medium bg-transparent border-none cursor-pointer hover:underline"
+          className="text-sm text-ak-primary font-medium bg-transparent border-none cursor-pointer hover:underline"
         >
           View Details
         </button>
       </div>
 
       <div className="grid grid-cols-2 gap-4 mb-4">
-        <div className="text-center p-3 bg-ak-brand-primary/10 rounded-lg">
-          <div className="text-[32px] font-bold text-ak-brand-primary">
+        <div className="text-center p-3 bg-ak-primary/10 rounded-lg">
+          <div className="text-[32px] font-bold text-ak-primary">
             {overview.completionRate}%
           </div>
-          <div className="text-sm text-ak-text-secondary mt-1">Completion</div>
+          <div className="text-sm text-ak-text-secondary mt-1">Fullført</div>
         </div>
         <div className="text-center p-3 bg-ak-status-warning/10 rounded-lg">
           <div className="text-[32px] font-bold text-ak-status-warning">
             {overview.currentStreak}
           </div>
-          <div className="text-sm text-ak-text-secondary mt-1">Day Streak</div>
+          <div className="text-sm text-ak-text-secondary mt-1">Dager på rad</div>
         </div>
       </div>
 
       <div className="flex justify-between text-sm text-ak-text-secondary">
-        <span>{overview.totalSessionsCompleted} sessions completed</span>
-        <span>{overview.totalHoursCompleted}h trained</span>
+        <span>{overview.totalSessionsCompleted} økter fullført</span>
+        <span>{overview.totalHoursCompleted}t trent</span>
       </div>
     </div>
   );

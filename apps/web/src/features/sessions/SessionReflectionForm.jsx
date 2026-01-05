@@ -36,7 +36,7 @@ function RatingScale({ label, description, value, onChange, icons, labels }) {
             key={rating}
             onClick={() => onChange(rating)}
             className={`flex flex-col items-center p-2 border-none rounded cursor-pointer min-w-[48px] ${
-              value === rating ? 'bg-ak-brand-primary' : 'bg-transparent'
+              value === rating ? 'bg-ak-primary' : 'bg-transparent'
             }`}
           >
             <span className="text-2xl">{icons[rating - 1]}</span>
@@ -78,7 +78,7 @@ function SleepDurationSelector({ value, onChange }) {
             onClick={() => onChange(option)}
             className={`py-2 px-4 border-none rounded-lg cursor-pointer text-[15px] font-medium ${
               value === option
-                ? 'bg-ak-brand-primary text-white'
+                ? 'bg-ak-primary text-white'
                 : 'bg-ak-surface-subtle text-ak-text-primary'
             }`}
           >
@@ -169,7 +169,7 @@ export default function SessionReflectionForm({ session, totalDuration, blocksCo
             Økt fullført!
           </span>
         </div>
-        <div className="h-0.5 bg-ak-brand-primary mb-4" />
+        <div className="h-0.5 bg-ak-primary mb-4" />
         <div className="text-base text-ak-text-secondary">
           {session?.date} • {formatTime(totalDuration)}
         </div>

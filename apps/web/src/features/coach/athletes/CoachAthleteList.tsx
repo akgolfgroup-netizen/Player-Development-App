@@ -18,7 +18,7 @@ import { athleteList, type Athlete } from '../../../lib/coachMockData';
 import { athleteStatusOptions } from '../../../config/coach-navigation';
 
 // Avatar component with consistent colors
-const AVATAR_COLORS = ['bg-ak-brand-primary', 'bg-ak-status-success', 'bg-ak-status-warning', 'bg-ak-status-info'];
+const AVATAR_COLORS = ['bg-ak-primary', 'bg-ak-status-success', 'bg-ak-status-warning', 'bg-ak-status-info'];
 
 function Avatar({ name, size = 44 }: { name: string; size?: number }) {
   const initials = name.split(',')[0]?.substring(0, 2).toUpperCase() || 'XX';

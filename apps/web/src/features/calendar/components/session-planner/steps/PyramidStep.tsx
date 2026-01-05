@@ -49,14 +49,14 @@ export const PyramidStep: React.FC<PyramidStepProps> = ({ planner }) => {
                 onClick={() => setPyramid(key)}
                 className={`flex flex-col items-center p-4 rounded-xl transition-all duration-200 border-2 ${
                   isSelected
-                    ? 'bg-ak-brand-primary/10 border-ak-brand-primary'
+                    ? 'bg-ak-primary/10 border-ak-primary'
                     : 'bg-ak-surface-subtle border-transparent'
                 }`}
               >
                 <span className="text-2xl mb-2">{value.icon}</span>
                 <span
                   className={`font-medium text-sm ${
-                    isSelected ? 'text-ak-brand-primary' : 'text-ak-text-primary'
+                    isSelected ? 'text-ak-primary' : 'text-ak-text-primary'
                   }`}
                 >
                   {value.label}
@@ -89,13 +89,13 @@ export const PyramidStep: React.FC<PyramidStepProps> = ({ planner }) => {
                     onClick={() => setPhysicalFocus(key)}
                     className={`flex flex-col items-start p-3 rounded-lg transition-all duration-200 border-2 ${
                       isSelected
-                        ? 'bg-ak-brand-primary/10 border-ak-brand-primary'
+                        ? 'bg-ak-primary/10 border-ak-primary'
                         : 'bg-ak-surface-subtle border-transparent'
                     }`}
                   >
                     <span
                       className={`font-medium text-sm ${
-                        isSelected ? 'text-ak-brand-primary' : 'text-ak-text-primary'
+                        isSelected ? 'text-ak-primary' : 'text-ak-text-primary'
                       }`}
                     >
                       {value.label}
@@ -130,14 +130,14 @@ export const PyramidStep: React.FC<PyramidStepProps> = ({ planner }) => {
                     onClick={() => setTournamentType(key)}
                     className={`w-full flex items-center p-3 rounded-lg transition-all duration-200 border-2 ${
                       isSelected
-                        ? 'bg-ak-brand-primary/10 border-ak-brand-primary'
+                        ? 'bg-ak-primary/10 border-ak-primary'
                         : 'bg-ak-surface-subtle border-transparent'
                     }`}
                   >
                     <div className="flex-1 text-left">
                       <span
                         className={`font-medium text-sm block ${
-                          isSelected ? 'text-ak-brand-primary' : 'text-ak-text-primary'
+                          isSelected ? 'text-ak-primary' : 'text-ak-text-primary'
                         }`}
                       >
                         {value.label}

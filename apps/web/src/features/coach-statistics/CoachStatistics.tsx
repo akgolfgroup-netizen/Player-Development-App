@@ -58,7 +58,7 @@ interface PlayerSummary {
 const getVariantClasses = (variant: 'primary' | 'success' | 'warning' | 'gold') => {
   switch (variant) {
     case 'primary':
-      return { text: 'text-ak-brand-primary', bg: 'bg-ak-brand-primary/10' };
+      return { text: 'text-ak-primary', bg: 'bg-ak-primary/10' };
     case 'success':
       return { text: 'text-ak-status-success', bg: 'bg-ak-status-success/10' };
     case 'warning':
@@ -66,7 +66,7 @@ const getVariantClasses = (variant: 'primary' | 'success' | 'warning' | 'gold') 
     case 'gold':
       return { text: 'text-amber-500', bg: 'bg-amber-500/10' };
     default:
-      return { text: 'text-ak-brand-primary', bg: 'bg-ak-brand-primary/10' };
+      return { text: 'text-ak-primary', bg: 'bg-ak-primary/10' };
   }
 };
 
@@ -111,7 +111,7 @@ const StatCard: React.FC<{
 const ProgressBar: React.FC<{ value: number; max?: number; colorClass?: string }> = ({
   value,
   max = 100,
-  colorClass = 'bg-ak-brand-primary',
+  colorClass = 'bg-ak-primary',
 }) => (
   <div className="w-full h-2 bg-ak-surface-muted rounded overflow-hidden">
     <div
@@ -128,8 +128,8 @@ const CategoryChart: React.FC<{ data: Record<string, number> }> = ({ data }) => 
 
   const getCategoryColorClass = (cat: string) => {
     const colors: Record<string, string> = {
-      A: 'bg-ak-brand-primary',
-      B: 'bg-ak-brand-primary/70',
+      A: 'bg-ak-primary',
+      B: 'bg-ak-primary/70',
       C: 'bg-ak-status-success',
       D: 'bg-amber-500',
       E: 'bg-orange-500',
@@ -396,7 +396,7 @@ export default function CoachStatistics() {
             {/* Time range selector */}
             <select
               value={timeRange}
-              onChange={(e) => setTimeRange(e.target.value as any)}
+              onChange={(e) => setTimeRange(e.target.value as 'week' | 'month' | 'quarter' | 'year')}
               className="py-2.5 px-4 rounded-lg border border-ak-border-default bg-ak-surface-base text-[15px] leading-[22px] cursor-pointer"
             >
               <option value="week">Siste uke</option>
@@ -514,8 +514,8 @@ export default function CoachStatistics() {
                     </p>
                   </div>
                 </div>
-                <div className="flex items-start gap-3 p-3.5 bg-ak-brand-primary/10 rounded-lg">
-                  <Award size={20} className="text-ak-brand-primary" />
+                <div className="flex items-start gap-3 p-3.5 bg-ak-primary/10 rounded-lg">
+                  <Award size={20} className="text-ak-primary" />
                   <div>
                     <p className="text-[15px] leading-[22px] font-medium m-0">
                       Kategoriopprykksklar
@@ -538,21 +538,21 @@ export default function CoachStatistics() {
                   onClick={() => window.open('/api/v1/export/test-results', '_blank')}
                   className="flex items-center gap-3 p-3 bg-ak-surface-subtle border-none rounded-lg cursor-pointer w-full text-left hover:bg-ak-surface-muted transition-colors"
                 >
-                  <Download size={18} className="text-ak-brand-primary" />
+                  <Download size={18} className="text-ak-primary" />
                   <span className="text-[15px] leading-[22px]">Testresultater (Excel)</span>
                 </button>
                 <button
                   onClick={() => window.open('/api/v1/export/training-sessions', '_blank')}
                   className="flex items-center gap-3 p-3 bg-ak-surface-subtle border-none rounded-lg cursor-pointer w-full text-left hover:bg-ak-surface-muted transition-colors"
                 >
-                  <Download size={18} className="text-ak-brand-primary" />
+                  <Download size={18} className="text-ak-primary" />
                   <span className="text-[15px] leading-[22px]">Treningsokter (Excel)</span>
                 </button>
                 <button
                   onClick={() => window.open('/api/v1/export/statistics', '_blank')}
                   className="flex items-center gap-3 p-3 bg-ak-surface-subtle border-none rounded-lg cursor-pointer w-full text-left hover:bg-ak-surface-muted transition-colors"
                 >
-                  <Download size={18} className="text-ak-brand-primary" />
+                  <Download size={18} className="text-ak-primary" />
                   <span className="text-[15px] leading-[22px]">Full statistikk (Excel)</span>
                 </button>
               </div>

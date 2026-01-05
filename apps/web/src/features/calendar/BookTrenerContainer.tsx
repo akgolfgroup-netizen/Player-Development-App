@@ -128,11 +128,11 @@ const CoachCard: React.FC<CoachCardProps> = ({ coach, selected, onSelect }) => (
     className={`
       bg-ak-surface-base rounded-xl p-3.5 cursor-pointer transition-all shadow-sm
       hover:-translate-y-0.5 border-2
-      ${selected ? 'border-ak-brand-primary' : 'border-transparent'}
+      ${selected ? 'border-ak-primary' : 'border-transparent'}
     `}
   >
     <div className="flex items-center gap-3">
-      <div className="w-12 h-12 rounded-full bg-ak-brand-primary flex items-center justify-center text-white text-lg font-semibold">
+      <div className="w-12 h-12 rounded-full bg-ak-primary flex items-center justify-center text-white text-lg font-semibold">
         {coach.name.split(' ').map((n) => n[0]).join('')}
       </div>
       <div className="flex-1">
@@ -153,7 +153,7 @@ const CoachCard: React.FC<CoachCardProps> = ({ coach, selected, onSelect }) => (
         </div>
       </div>
       {selected && (
-        <div className="w-6 h-6 rounded-full bg-ak-brand-primary flex items-center justify-center">
+        <div className="w-6 h-6 rounded-full bg-ak-primary flex items-center justify-center">
           <Check size={14} className="text-white" />
         </div>
       )}
@@ -232,7 +232,7 @@ const DateSelector: React.FC<DateSelectorProps> = ({ selectedDate, onSelectDate 
               disabled={isPast}
               className={`
                 flex flex-col items-center py-2.5 px-1 rounded-[10px] border-2 cursor-pointer
-                ${isSelected ? 'border-ak-brand-primary bg-ak-brand-primary/15' : 'border-transparent'}
+                ${isSelected ? 'border-ak-primary bg-ak-primary/15' : 'border-transparent'}
                 ${!isSelected && isToday ? 'bg-ak-surface-subtle' : ''}
                 ${isPast ? 'cursor-not-allowed opacity-40' : ''}
               `}
@@ -242,7 +242,7 @@ const DateSelector: React.FC<DateSelectorProps> = ({ selectedDate, onSelectDate 
               </span>
               <span className={`
                 text-base font-semibold my-1
-                ${isSelected ? 'text-ak-brand-primary' : 'text-ak-text-primary'}
+                ${isSelected ? 'text-ak-primary' : 'text-ak-text-primary'}
               `}>
                 {date.getDate()}
               </span>
@@ -299,7 +299,7 @@ const TimeSlots: React.FC<TimeSlotsProps> = ({ date, selectedSlot, onSelectSlot 
                 ${!slot.available
                   ? 'bg-ak-border-default text-ak-text-secondary cursor-not-allowed line-through border-transparent'
                   : selectedSlot?.time === slot.time
-                    ? 'border-ak-brand-primary bg-ak-brand-primary/15 text-ak-text-primary cursor-pointer'
+                    ? 'border-ak-primary bg-ak-primary/15 text-ak-text-primary cursor-pointer'
                     : 'bg-ak-surface-subtle text-ak-text-primary cursor-pointer border-transparent'
                 }
               `}
@@ -339,13 +339,13 @@ const SessionTypeSelector: React.FC<SessionTypeSelectorProps> = ({ selected, onS
           className={`
             flex items-center justify-between py-3 px-3.5 rounded-[10px] cursor-pointer
             ${selected?.id === type.id
-              ? 'border-2 border-ak-brand-primary bg-ak-brand-primary/10'
+              ? 'border-2 border-ak-primary bg-ak-primary/10'
               : 'border border-ak-border-default bg-ak-surface-base'
             }
           `}
         >
           <div className="flex items-center gap-2.5">
-            {type.id === 'online' ? <Video size={18} className="text-ak-brand-primary" /> :
+            {type.id === 'online' ? <Video size={18} className="text-ak-primary" /> :
              type.id === 'on_course' ? <MapPin size={18} className="text-ak-status-success" /> :
              <User size={18} className="text-ak-text-primary" />}
             <div className="text-left">
@@ -357,7 +357,7 @@ const SessionTypeSelector: React.FC<SessionTypeSelectorProps> = ({ selected, onS
               </div>
             </div>
           </div>
-          <div className="text-sm font-semibold text-ak-brand-primary">
+          <div className="text-sm font-semibold text-ak-primary">
             {type.price} kr
           </div>
         </button>

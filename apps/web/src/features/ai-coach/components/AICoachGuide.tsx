@@ -73,13 +73,13 @@ export function AICoachGuide({
 
   if (variant === 'compact') {
     return (
-      <div className={`bg-ak-brand-primary/10 rounded-lg py-2 px-3 ${className}`}>
+      <div className={`bg-ak-primary/10 rounded-lg py-2 px-3 ${className}`}>
         <div className="flex items-center gap-2">
-          <Bot size={16} className="text-ak-brand-primary shrink-0" />
+          <Bot size={16} className="text-ak-primary shrink-0" />
           <span className="flex-1 text-xs text-ak-text-secondary">{config.description}</span>
           <button
             onClick={handleOpenChat}
-            className="inline-flex items-center gap-1 py-1 px-2 bg-ak-brand-primary border-none rounded text-xs text-white cursor-pointer font-medium"
+            className="inline-flex items-center gap-1 py-1 px-2 bg-ak-primary border-none rounded text-xs text-white cursor-pointer font-medium"
             aria-label="Spør AI Coach"
           >
             <MessageCircle size={14} />
@@ -101,7 +101,7 @@ export function AICoachGuide({
     return (
       <div className={`bg-ak-surface-subtle border-b border-ak-border-subtle py-3 px-4 ${className}`}>
         <div className="flex items-center gap-3 max-w-[1200px] mx-auto max-sm:flex-wrap">
-          <div className="w-9 h-9 rounded-full bg-ak-brand-primary/10 text-ak-brand-primary flex items-center justify-center shrink-0">
+          <div className="w-9 h-9 rounded-full bg-ak-primary/10 text-ak-primary flex items-center justify-center shrink-0">
             <Bot size={24} />
           </div>
           <div className="flex-1 text-sm text-ak-text-primary">
@@ -112,7 +112,7 @@ export function AICoachGuide({
               <button
                 key={suggestion}
                 onClick={() => handleSuggestionClick(suggestion)}
-                className="py-1 px-3 bg-ak-brand-primary border-none rounded-full text-xs text-white cursor-pointer font-medium whitespace-nowrap hover:opacity-90"
+                className="py-1 px-3 bg-ak-primary border-none rounded-full text-xs text-white cursor-pointer font-medium whitespace-nowrap hover:opacity-90"
               >
                 {suggestion}
               </button>
@@ -132,16 +132,16 @@ export function AICoachGuide({
 
   // Default variant (card style)
   return (
-    <div className={`bg-ak-surface-base border border-ak-brand-primary/20 rounded-xl p-4 mb-4 ${className}`}>
+    <div className={`bg-ak-surface-base border border-ak-primary/20 rounded-xl p-4 mb-4 ${className}`}>
       {/* Header */}
       <div className="flex items-start justify-between mb-3">
         <div className="flex items-center gap-3">
-          <div className="w-10 h-10 rounded-full bg-ak-brand-primary/10 text-ak-brand-primary flex items-center justify-center">
+          <div className="w-10 h-10 rounded-full bg-ak-primary/10 text-ak-primary flex items-center justify-center">
             <Bot size={20} />
           </div>
           <div>
             <h3 className="text-base font-semibold text-ak-text-primary m-0 mb-0.5">{config.title}</h3>
-            <span className="text-xs text-ak-brand-primary font-medium">AI Coach</span>
+            <span className="text-xs text-ak-primary font-medium">AI Coach</span>
           </div>
         </div>
         <button
@@ -163,7 +163,7 @@ export function AICoachGuide({
           <button
             key={suggestion}
             onClick={() => handleSuggestionClick(suggestion)}
-            className="inline-flex items-center gap-2 py-2 px-3 bg-ak-surface-subtle border border-ak-border-default rounded-full text-xs text-ak-text-secondary cursor-pointer transition-all hover:bg-ak-surface-base hover:border-ak-brand-primary hover:text-ak-text-primary"
+            className="inline-flex items-center gap-2 py-2 px-3 bg-ak-surface-subtle border border-ak-border-default rounded-full text-xs text-ak-text-secondary cursor-pointer transition-all hover:bg-ak-surface-base hover:border-ak-primary hover:text-ak-text-primary"
           >
             <MessageCircle size={14} />
             {suggestion}

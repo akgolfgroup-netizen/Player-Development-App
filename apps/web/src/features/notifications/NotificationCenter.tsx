@@ -128,7 +128,7 @@ export default function NotificationCenter({ userId }: NotificationCenterProps) 
   if (loading) {
     return (
       <div className="p-6 text-center">
-        <div className="w-10 h-10 border-[3px] border-ak-border-default border-t-ak-brand-primary rounded-full mx-auto mb-4 animate-spin" />
+        <div className="w-10 h-10 border-[3px] border-ak-border-default border-t-ak-primary rounded-full mx-auto mb-4 animate-spin" />
         <p className="text-ak-text-secondary">Laster varsler...</p>
       </div>
     );
@@ -169,7 +169,7 @@ export default function NotificationCenter({ userId }: NotificationCenterProps) 
         ].map((filter) => (
           <button
             key={filter.key}
-            onClick={() => setFilterType(filter.key as any)}
+            onClick={() => setFilterType(filter.key as 'all' | 'unread')}
             className={`px-4 py-2 border-none rounded-md text-sm font-medium cursor-pointer transition-all ${
               filterType === filter.key
                 ? 'bg-ak-surface-base text-ak-text-primary shadow-sm'
@@ -209,7 +209,7 @@ export default function NotificationCenter({ userId }: NotificationCenterProps) 
                   index < filteredNotifications.length - 1
                     ? 'border-b border-ak-surface-subtle'
                     : ''
-                } ${isRead ? 'bg-transparent' : 'bg-ak-brand-primary/5'}`}
+                } ${isRead ? 'bg-transparent' : 'bg-ak-primary/5'}`}
               >
                 {/* Icon */}
                 <div
@@ -234,7 +234,7 @@ export default function NotificationCenter({ userId }: NotificationCenterProps) 
                         {formatTime(notification.createdAt)}
                       </span>
                       {!isRead && (
-                        <div className="w-2 h-2 rounded-full bg-ak-brand-primary" />
+                        <div className="w-2 h-2 rounded-full bg-ak-primary" />
                       )}
                     </div>
                   </div>
@@ -249,7 +249,7 @@ export default function NotificationCenter({ userId }: NotificationCenterProps) 
                       <Link
                         to={link}
                         onClick={() => markAsRead(notification.id)}
-                        className="text-[13px] leading-[18px] text-ak-brand-primary font-medium no-underline hover:underline"
+                        className="text-[13px] leading-[18px] text-ak-primary font-medium no-underline hover:underline"
                       >
                         {linkLabel}
                       </Link>

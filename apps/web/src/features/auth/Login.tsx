@@ -40,8 +40,13 @@ const Login: React.FC = () => {
     }, 3000);
   };
 
-  // Get redirect path based on user role
-  const getRedirectPath = (role: string) => {
+  // Get redirect path based on user role and onboarding status
+  const getRedirectPath = (role: string, onboardingComplete?: boolean) => {
+    // Players who haven't completed onboarding go to onboarding
+    if (role === 'player' && onboardingComplete === false) {
+      return '/onboarding';
+    }
+
     switch (role) {
       case 'admin':
         return '/admin';
@@ -64,7 +69,7 @@ const Login: React.FC = () => {
       const userData = localStorage.getItem('userData');
       if (userData) {
         const user = JSON.parse(userData);
-        navigate(getRedirectPath(user.role));
+        navigate(getRedirectPath(user.role, user.onboardingComplete));
       } else {
         navigate('/dashboard');
       }
@@ -92,9 +97,9 @@ const Login: React.FC = () => {
       const userData = localStorage.getItem('userData');
       if (userData) {
         const user = JSON.parse(userData);
-        navigate(getRedirectPath(user.role));
+        navigate(getRedirectPath(user.role, user.onboardingComplete));
       } else {
-        navigate(getRedirectPath(role));
+        navigate(getRedirectPath(role, true)); // Demo users have completed onboarding
       }
     } else {
       setError(result.error ?? 'Innlogging feilet');
@@ -104,8 +109,8 @@ const Login: React.FC = () => {
 
   return (
     <AuthPage state={loading ? 'loading' : 'idle'} maxWidth="sm">
-      <AuthPage.Logo title="AK Golf Academy" subtitle="Individual Development Plan">
-        <AKLogo size={60} className="text-ak-brand-primary" />
+      <AuthPage.Logo title="AK Golf Academy" subtitle="Individuell Utviklingsplan">
+        <AKLogo size={60} className="text-ak-primary" />
       </AuthPage.Logo>
 
       <AuthPage.Card title="Logg Inn">
@@ -153,7 +158,7 @@ const Login: React.FC = () => {
             <button
               type="button"
               onClick={() => setShowForgotPassword(true)}
-              className="text-sm text-ak-brand-primary hover:underline bg-transparent border-none cursor-pointer"
+              className="text-sm text-ak-primary hover:underline bg-transparent border-none cursor-pointer"
             >
               Glemt passord?
             </button>

@@ -50,7 +50,7 @@ export default function BackToTop({ scrollThreshold = 300, targetId = 'main-cont
         width: '48px',
         height: '48px',
         borderRadius: '50%',
-        backgroundColor: 'var(--ak-brand-primary)',
+        backgroundColor: 'var(--ak-primary)',
         color: 'var(--ak-surface-card)',
         border: 'none',
         cursor: 'pointer',
@@ -65,11 +65,11 @@ export default function BackToTop({ scrollThreshold = 300, targetId = 'main-cont
         zIndex: 1000,
       }}
       onMouseEnter={(e) => {
-        e.currentTarget.style.backgroundColor = 'var(--ak-brand-primary-light)';
+        e.currentTarget.style.backgroundColor = 'var(--ak-primary-light)';
         e.currentTarget.style.transform = isVisible ? 'translateY(-2px)' : 'translateY(20px)';
       }}
       onMouseLeave={(e) => {
-        e.currentTarget.style.backgroundColor = 'var(--ak-brand-primary)';
+        e.currentTarget.style.backgroundColor = 'var(--ak-primary)';
         e.currentTarget.style.transform = isVisible ? 'translateY(0)' : 'translateY(20px)';
       }}
       aria-label="Tilbake til toppen"

@@ -131,6 +131,7 @@ const NotificationCenter = lazy(() => import('./features/notifications/Notificat
 
 // Kunnskap
 const BevisContainer = lazy(() => import('./features/bevis/BevisContainer'));
+const TrainingCategorySystemPage = lazy(() => import('./features/knowledge/TrainingCategorySystemPage'));
 
 // Skole
 const SkoleoppgaverContainer = lazy(() => import('./features/school/SkoleoppgaverContainer'));
@@ -435,6 +436,13 @@ function App() {
               </PlayerLayout>
             </ProtectedRoute>
           } />
+          <Route path="/trening/kategorisystem" element={
+            <ProtectedRoute>
+              <PlayerLayout>
+                <TrainingCategorySystemPage />
+              </PlayerLayout>
+            </ProtectedRoute>
+          } />
 
           {/* Utvikling Hub (Blue) */}
           <Route path="/utvikling" element={
@@ -602,6 +610,7 @@ function App() {
               </PlayerLayout>
             </ProtectedRoute>
           } />
+          {/* Training Category System page moved to /trening */}
           <Route path="/mer/notater" element={
             <ProtectedRoute>
               <PlayerLayout>

@@ -80,7 +80,7 @@ export default function AppLayout({ children, userRole = 'player', user }) {
                 <Avatar
                   src={user?.avatar}
                   initials={user?.name?.charAt(0) || 'U'}
-                  className="size-8 bg-ak-brand-primary text-ak-text-inverse"
+                  className="size-8 bg-ak-primary text-ak-text-inverse"
                 />
                 <span className="ml-2 hidden sm:inline text-ak-text-primary dark:text-ak-text-inverse">
                   {user?.name || 'Bruker'}
@@ -110,7 +110,7 @@ export default function AppLayout({ children, userRole = 'player', user }) {
         <Sidebar className="bg-ak-surface-card dark:bg-ak-surface-dark-base">
           <SidebarHeader>
             <div className="flex items-center gap-3 px-2">
-              <div className="flex h-10 w-10 items-center justify-center rounded-lg bg-ak-brand-primary">
+              <div className="flex h-10 w-10 items-center justify-center rounded-lg bg-ak-primary">
                 <span className="font-logo text-lg font-bold text-ak-text-inverse">AK</span>
               </div>
               <div>

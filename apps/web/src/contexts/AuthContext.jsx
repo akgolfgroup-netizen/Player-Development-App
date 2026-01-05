@@ -54,7 +54,7 @@ export const AuthProvider = ({ children }) => {
       setUser(userData);
       return { success: true };
     } catch (err) {
-      const errorMessage = err.response?.data?.message || 'Login failed. Backend may not be running.';
+      const errorMessage = err.response?.data?.message || 'Innlogging feilet. Backend kjører kanskje ikke.';
       setError(errorMessage);
       return { success: false, error: errorMessage };
     } finally {

@@ -213,6 +213,7 @@ model Player {
   weeklyTrainingHours  Int?      @default(10) @map("weekly_training_hours")
   seasonStartDate      DateTime? @map("season_start_date") @db.Date
   status               String    @default("active") @db.VarChar(20)
+  onboardingComplete   Boolean   @default(false) @map("onboarding_complete")
   profileImageUrl      String?   @map("profile_image_url") @db.VarChar(500)
   avatar               String?   @db.VarChar(500)
   emergencyContact     Json?     @map("emergency_contact") @db.JsonB
@@ -478,15 +479,24 @@ model TrainingSession {
   sessionType         String   @map("session_type") @db.VarChar(50)
   sessionDate         DateTime @map("session_date") @db.Timestamptz(6)
   duration            Int      // minutes
-  learningPhase       String?  @map("learning_phase") @db.VarChar(10) // L1-L5
-  clubSpeed           String?  @map("club_speed") @db.VarChar(10) // CS20-CS100
-  setting             String?  @db.VarChar(10) // S1-S10
+  learningPhase       String?  @map("learning_phase") @db.VarChar(10) // L-KROPP, L-ARM, L-KØLLE, L-BALL, L-AUTO
+  clubSpeed           String?  @map("club_speed") @db.VarChar(10) // CS0-CS100
+  setting             String?  @db.VarChar(10) // Legacy field, use environment instead
   surface             String?  @db.VarChar(50)
   focusArea           String?  @map("focus_area") @db.VarChar(100)
   drillIds            Json?    @map("drill_ids") @db.JsonB
   period              String?  @db.VarChar(1) // E/G/S/T
   intensity           Int?     // 1-5
   notes               String?  @db.Text
+
+  // AK Golf Kategori Hierarki v2.0 felter
+  akFormula           String?  @map("ak_formula") @db.VarChar(500) // Komplett formel f.eks. TEK_TEE_L-BALL_CS50_M2_PR2_P6.0-P7.0
+  environment         String?  @db.VarChar(2) // M0-M5 (Miljø)
+  pressure            String?  @db.VarChar(3) // PR1-PR5 (Psykologisk belastning)
+  positionStart       String?  @map("position_start") @db.VarChar(5) // P1.0-P10.0 (Svingposisjon start)
+  positionEnd         String?  @map("position_end") @db.VarChar(5) // P1.0-P10.0 (Svingposisjon slutt)
+  puttingFocus        String?  @map("putting_focus") @db.VarChar(10) // GREEN, SIKTE, TEKN, BALL, SPEED
+  puttingPhases       String?  @map("putting_phases") @db.VarChar(10) // S, B, I, F eller kombinasjoner (S-F, B-I, etc)
 
   // Training Plan Integration
   dailyAssignmentId   String?  @map("daily_assignment_id") @db.Uuid
@@ -528,6 +538,9 @@ model TrainingSession {
   @@index([coachId])
   @@index([sessionDate])
   @@index([dailyAssignmentId])
+  @@index([environment])
+  @@index([pressure])
+  @@index([learningPhase])
   @@map("training_sessions")
 }
 
@@ -714,6 +727,15 @@ model SessionTemplate {
   successCriteria String?  @map("success_criteria") @db.Text
   // Domain mapping for session selection algorithm
   primaryDomain   String?  @map("primary_domain") @db.VarChar(10) // TEE, INN50, INN100, INN150, INN200, ARG, PUTT, PHYS
+
+  // AK Golf Kategori Hierarki v2.0 felter
+  environment         String?  @db.VarChar(2) // M0-M5 (Miljø)
+  pressure            String?  @db.VarChar(3) // PR1-PR5 (Psykologisk belastning)
+  positionStart       String?  @map("position_start") @db.VarChar(5) // P1.0-P10.0
+  positionEnd         String?  @map("position_end") @db.VarChar(5) // P1.0-P10.0
+  puttingFocus        String?  @map("putting_focus") @db.VarChar(10) // GREEN, SIKTE, TEKN, BALL, SPEED
+  puttingPhases       String?  @map("putting_phases") @db.VarChar(10) // S, B, I, F kombinasjoner
+
   usageCount      Int      @default(0) @map("usage_count")
   isActive        Boolean  @default(true) @map("is_active")
   createdAt       DateTime @default(now()) @map("created_at") @db.Timestamptz(6)
@@ -1754,6 +1776,10 @@ model DailyTrainingAssignment {
   learningPhase         String?  @map("learning_phase") @db.VarChar(10)
   clubSpeed             String?  @map("club_speed") @db.VarChar(10)
   intensity             Int?
+
+  // AK Golf Kategori Hierarki v2.0 felter
+  environment           String?  @db.VarChar(2) // M0-M5 (Miljø)
+  pressure              String?  @db.VarChar(3) // PR1-PR5 (Psykologisk belastning)
 
   // Flexibility and adaptation
   isRestDay             Boolean  @default(false) @map("is_rest_day")

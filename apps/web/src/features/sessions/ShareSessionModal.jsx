@@ -22,7 +22,7 @@ import { SectionTitle } from '../../components/typography';
 const getCategoryClasses = (category) => {
   const classes = {
     A: 'text-amber-500',
-    B: 'text-ak-brand-primary/70',
+    B: 'text-ak-primary/70',
     C: 'text-ak-status-success',
     Junior: 'text-ak-status-warning',
   };
@@ -38,7 +38,7 @@ const FriendCard = ({ friend, selected, onToggle }) => {
       onClick={() => onToggle(friend.id)}
       className={`flex items-center gap-3 p-3 rounded-lg cursor-pointer w-full text-left transition-all duration-150 border ${
         selected
-          ? 'bg-ak-brand-primary/10 border-ak-brand-primary'
+          ? 'bg-ak-primary/10 border-ak-primary'
           : 'bg-ak-surface-base border-ak-border-default'
       }`}
     >
@@ -46,7 +46,7 @@ const FriendCard = ({ friend, selected, onToggle }) => {
       <div
         className={`w-5 h-5 rounded border-2 flex items-center justify-center shrink-0 ${
           selected
-            ? 'border-ak-brand-primary bg-ak-brand-primary'
+            ? 'border-ak-primary bg-ak-primary'
             : 'border-ak-text-secondary bg-transparent'
         }`}
       >
@@ -108,7 +108,7 @@ const CheckboxOption = ({ checked, onChange, label, description }) => {
       <div
         className={`w-5 h-5 rounded border-2 flex items-center justify-center shrink-0 mt-0.5 ${
           checked
-            ? 'border-ak-brand-primary bg-ak-brand-primary'
+            ? 'border-ak-primary bg-ak-primary'
             : 'border-ak-text-secondary bg-transparent'
         }`}
       >

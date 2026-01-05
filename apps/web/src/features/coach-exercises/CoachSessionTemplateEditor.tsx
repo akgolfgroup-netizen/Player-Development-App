@@ -406,7 +406,7 @@ export default function CoachSessionTemplateEditor() {
                 <select
                   value={template.difficulty}
                   onChange={(e) =>
-                    setTemplate({ ...template, difficulty: e.target.value as any })
+                    setTemplate({ ...template, difficulty: e.target.value as 'beginner' | 'intermediate' | 'advanced' })
                   }
                   style={{
                     padding: '10px 14px',

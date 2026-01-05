@@ -131,7 +131,7 @@ export const CalendarOversiktWidget: React.FC<CalendarOversiktWidgetProps> = ({
                 onClick={() => handleDayClick(date)}
                 className={`flex-1 flex flex-col items-center py-2 px-1 rounded-ak-sm transition-colors duration-ak-fast ${
                   isToday
-                    ? 'bg-ak-brand-primary-muted'
+                    ? 'bg-ak-primary-muted'
                     : 'bg-transparent hover:bg-ak-surface-subtle'
                 }`}
               >
@@ -144,7 +144,7 @@ export const CalendarOversiktWidget: React.FC<CalendarOversiktWidgetProps> = ({
                 <span
                   className={`text-subhead font-semibold ${
                     isToday
-                      ? 'w-6 h-6 flex items-center justify-center rounded-full bg-ak-brand-primary text-ak-text-inverse'
+                      ? 'w-6 h-6 flex items-center justify-center rounded-full bg-ak-primary text-ak-text-inverse'
                       : 'text-ak-text-primary'
                   }`}
                 >

@@ -99,7 +99,7 @@ const NotionWeekView: React.FC<NotionWeekViewProps> = ({
       training: 'var(--ak-session-spill)',
       tournament: 'var(--ak-status-warning)',
       test: 'var(--ak-session-test)',
-      session: 'var(--ak-brand-primary)',
+      session: 'var(--ak-primary)',
       teknikk: 'var(--ak-session-teknikk)',
       golfslag: 'var(--ak-session-golfslag)',
       spill: 'var(--ak-session-spill)',

@@ -103,7 +103,7 @@ export const DecisionAnchor: React.FC<DecisionAnchorProps> = ({
                 {formatElapsedTime(elapsedTime || 0)}
               </div>
               <button
-                className="inline-flex items-center justify-center gap-2 py-3 px-5 bg-ak-brand-primary text-white rounded-lg text-base font-semibold cursor-pointer transition-all min-h-[44px] hover:bg-ak-brand-primary/90"
+                className="inline-flex items-center justify-center gap-2 py-3 px-5 bg-ak-primary text-white rounded-lg text-base font-semibold cursor-pointer transition-all min-h-[44px] hover:bg-ak-primary/90"
                 onClick={onComplete}
                 aria-label="Fullfør trening"
               >
@@ -167,7 +167,7 @@ export const DecisionAnchor: React.FC<DecisionAnchorProps> = ({
             </div>
             <div className="flex items-center gap-3 flex-wrap">
               <button
-                className="inline-flex items-center justify-center gap-2 py-3 px-5 bg-ak-brand-primary text-white rounded-lg text-base font-semibold cursor-pointer transition-all min-h-[44px] hover:bg-ak-brand-primary/90"
+                className="inline-flex items-center justify-center gap-2 py-3 px-5 bg-ak-primary text-white rounded-lg text-base font-semibold cursor-pointer transition-all min-h-[44px] hover:bg-ak-primary/90"
                 onClick={() => onReschedule({ type: 'delay', minutes: 30 })}
               >
                 Flytt 30 min
@@ -188,7 +188,7 @@ export const DecisionAnchor: React.FC<DecisionAnchorProps> = ({
             </div>
             <div className="flex items-center gap-3 flex-wrap">
               <button
-                className="inline-flex items-center justify-center gap-2 py-3 px-5 bg-ak-brand-primary text-white rounded-lg text-base font-semibold cursor-pointer transition-all min-h-[44px] hover:bg-ak-brand-primary/90"
+                className="inline-flex items-center justify-center gap-2 py-3 px-5 bg-ak-primary text-white rounded-lg text-base font-semibold cursor-pointer transition-all min-h-[44px] hover:bg-ak-primary/90"
                 onClick={onStartWorkout}
                 aria-label="Start en rask 15 minutters terskeløkt"
               >
@@ -211,7 +211,7 @@ export const DecisionAnchor: React.FC<DecisionAnchorProps> = ({
           <>
             <div className="text-xs text-ak-text-tertiary mb-1 font-medium">I dag: {weeklyFocus}</div>
             <div className="text-base text-ak-text-primary font-semibold mb-3 flex items-center gap-2 flex-wrap">
-              <span className="inline-flex items-center gap-1 px-2 py-0.5 rounded-full text-xs font-medium bg-ak-brand-primary/10 text-ak-brand-primary">Anbefalt</span>
+              <span className="inline-flex items-center gap-1 px-2 py-0.5 rounded-full text-xs font-medium bg-ak-primary/10 text-ak-primary">Anbefalt</span>
               <span>
                 {recommendedWorkout?.name} · {formatDuration(recommendedWorkout?.duration || 0)} ·{' '}
                 {translateCategory(recommendedWorkout?.category || '')}
@@ -219,7 +219,7 @@ export const DecisionAnchor: React.FC<DecisionAnchorProps> = ({
             </div>
             <div className="flex items-center gap-3 flex-wrap">
               <button
-                className="inline-flex items-center justify-center gap-2 py-3 px-5 bg-ak-brand-primary text-white rounded-lg text-base font-semibold cursor-pointer transition-all min-h-[44px] hover:bg-ak-brand-primary/90"
+                className="inline-flex items-center justify-center gap-2 py-3 px-5 bg-ak-primary text-white rounded-lg text-base font-semibold cursor-pointer transition-all min-h-[44px] hover:bg-ak-primary/90"
                 onClick={onStartWorkout}
                 aria-label={`Start ${recommendedWorkout?.name} nå`}
               >
@@ -269,7 +269,7 @@ export const DecisionAnchor: React.FC<DecisionAnchorProps> = ({
           <>
             <div className="text-xs text-ak-text-tertiary mb-1 font-medium">I dag: {weeklyFocus}</div>
             <div className="text-base text-ak-text-primary font-semibold mb-3 flex items-center gap-2 flex-wrap">
-              <span className="inline-flex items-center gap-1 px-2 py-0.5 rounded-full text-xs font-medium bg-ak-brand-primary/10 text-ak-brand-primary">Anbefalt</span>
+              <span className="inline-flex items-center gap-1 px-2 py-0.5 rounded-full text-xs font-medium bg-ak-primary/10 text-ak-primary">Anbefalt</span>
               <span>
                 {recommendedWorkout?.name} · {formatDuration(recommendedWorkout?.duration || 0)} ·{' '}
                 {translateCategory(recommendedWorkout?.category || '')}
@@ -277,7 +277,7 @@ export const DecisionAnchor: React.FC<DecisionAnchorProps> = ({
             </div>
             <div className="flex items-center gap-3 flex-wrap">
               <button
-                className="inline-flex items-center justify-center gap-2 py-3 px-5 bg-ak-brand-primary text-white rounded-lg text-base font-semibold cursor-pointer transition-all min-h-[44px] hover:bg-ak-brand-primary/90"
+                className="inline-flex items-center justify-center gap-2 py-3 px-5 bg-ak-primary text-white rounded-lg text-base font-semibold cursor-pointer transition-all min-h-[44px] hover:bg-ak-primary/90"
                 onClick={onStartWorkout}
                 aria-label={`Start ${recommendedWorkout?.name} nå`}
               >

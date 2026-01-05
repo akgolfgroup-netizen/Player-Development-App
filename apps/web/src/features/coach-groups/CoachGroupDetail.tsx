@@ -404,7 +404,7 @@ export default function CoachGroupDetail() {
   if (loading) {
     return (
       <div className="min-h-screen bg-ak-surface-subtle flex items-center justify-center">
-        <div className="w-12 h-12 border-4 border-ak-border-default border-t-ak-brand-primary rounded-full animate-spin" />
+        <div className="w-12 h-12 border-4 border-ak-border-default border-t-ak-primary rounded-full animate-spin" />
       </div>
     );
   }
@@ -477,7 +477,7 @@ export default function CoachGroupDetail() {
       <div className="py-4 px-6 bg-ak-surface-base">
         <div className="grid grid-cols-4 gap-4">
           <div className="text-center">
-            <p className="text-2xl font-bold text-ak-brand-primary m-0">
+            <p className="text-2xl font-bold text-ak-primary m-0">
               {group.members.length}
             </p>
             <p className="text-[13px] leading-[18px] text-ak-text-secondary mt-1 mb-0">
@@ -501,7 +501,7 @@ export default function CoachGroupDetail() {
             </p>
           </div>
           <div className="text-center">
-            <p className="text-2xl font-bold text-ak-brand-primary m-0">
+            <p className="text-2xl font-bold text-ak-primary m-0">
               {group.stats.avgSessionsPerWeek}
             </p>
             <p className="text-[13px] leading-[18px] text-ak-text-secondary mt-1 mb-0">
@@ -521,10 +521,10 @@ export default function CoachGroupDetail() {
         ].map((tab) => (
           <button
             key={tab.key}
-            onClick={() => setActiveTab(tab.key as any)}
+            onClick={() => setActiveTab(tab.key as 'members' | 'sessions' | 'plan' | 'stats')}
             className={`flex items-center gap-2 py-2.5 px-[18px] border-none rounded-lg text-sm font-medium cursor-pointer ${
               activeTab === tab.key
-                ? 'bg-ak-brand-primary text-white'
+                ? 'bg-ak-primary text-white'
                 : 'bg-transparent text-ak-text-primary'
             }`}
           >
@@ -545,7 +545,7 @@ export default function CoachGroupDetail() {
               </SectionTitle>
               <button
                 onClick={() => navigate(`/coach/groups/${groupId}/members/add`)}
-                className="flex items-center gap-1.5 py-2 px-3.5 bg-ak-brand-primary text-white border-none rounded-lg text-[13px] font-semibold cursor-pointer"
+                className="flex items-center gap-1.5 py-2 px-3.5 bg-ak-primary text-white border-none rounded-lg text-[13px] font-semibold cursor-pointer"
               >
                 <Plus size={16} />
                 Legg til medlem
@@ -644,9 +644,9 @@ export default function CoachGroupDetail() {
                   {group.upcomingSessions.map((session) => (
                     <div
                       key={session.id}
-                      className="flex items-center gap-3.5 py-3.5 px-4 bg-ak-surface-base rounded-lg shadow-sm border-l-[3px] border-l-ak-brand-primary"
+                      className="flex items-center gap-3.5 py-3.5 px-4 bg-ak-surface-base rounded-lg shadow-sm border-l-[3px] border-l-ak-primary"
                     >
-                      <div className="w-12 h-12 rounded-lg bg-ak-brand-primary flex flex-col items-center justify-center text-white">
+                      <div className="w-12 h-12 rounded-lg bg-ak-primary flex flex-col items-center justify-center text-white">
                         <span className="text-sm font-bold">{session.time}</span>
                       </div>
                       <div className="flex-1">
@@ -734,7 +734,7 @@ export default function CoachGroupDetail() {
                 </button>
                 <button
                   onClick={() => setShowAddSessionModal(true)}
-                  className="flex items-center gap-1.5 py-2 px-3.5 bg-ak-brand-primary text-white border-none rounded-lg text-[13px] font-semibold cursor-pointer"
+                  className="flex items-center gap-1.5 py-2 px-3.5 bg-ak-primary text-white border-none rounded-lg text-[13px] font-semibold cursor-pointer"
                 >
                   <Plus size={16} />
                   Legg til økt
@@ -793,9 +793,9 @@ export default function CoachGroupDetail() {
                 <>
                   {/* Week theme/focus */}
                   {(currentWeek.theme || currentWeek.focus) && (
-                    <div className="py-4 px-5 bg-ak-brand-primary/10 rounded-xl mb-4 border-l-4 border-l-ak-brand-primary">
+                    <div className="py-4 px-5 bg-ak-primary/10 rounded-xl mb-4 border-l-4 border-l-ak-primary">
                       {currentWeek.theme && (
-                        <p className="text-[17px] leading-[22px] font-semibold text-ak-brand-primary m-0">
+                        <p className="text-[17px] leading-[22px] font-semibold text-ak-primary m-0">
                           {currentWeek.theme}
                         </p>
                       )}
@@ -821,13 +821,13 @@ export default function CoachGroupDetail() {
                         <div
                           key={day}
                           className={`bg-ak-surface-base rounded-lg overflow-hidden shadow-sm ${
-                            isToday ? 'border-2 border-ak-brand-primary' : ''
+                            isToday ? 'border-2 border-ak-primary' : ''
                           }`}
                         >
                           {/* Day header */}
                           <div
                             className={`py-2.5 px-3 border-b border-ak-border-default ${
-                              isToday ? 'bg-ak-brand-primary' : 'bg-ak-surface-subtle'
+                              isToday ? 'bg-ak-primary' : 'bg-ak-surface-subtle'
                             }`}
                           >
                             <p
@@ -856,7 +856,7 @@ export default function CoachGroupDetail() {
                               sessionsForDay.map((session) => (
                                 <div
                                   key={session.id}
-                                  className="p-2 bg-ak-brand-primary/5 rounded mb-1.5 cursor-pointer border-l-[3px] border-l-ak-brand-primary"
+                                  className="p-2 bg-ak-primary/5 rounded mb-1.5 cursor-pointer border-l-[3px] border-l-ak-primary"
                                   onClick={() => setEditingSession(session.id)}
                                 >
                                   <p className="text-[13px] leading-[18px] font-semibold text-ak-text-primary m-0">
@@ -900,7 +900,7 @@ export default function CoachGroupDetail() {
 
                     return (
                       <div className="mt-6 bg-ak-surface-base rounded-xl shadow-sm overflow-hidden">
-                        <div className="py-4 px-5 bg-ak-brand-primary flex items-center justify-between">
+                        <div className="py-4 px-5 bg-ak-primary flex items-center justify-between">
                           <div>
                             <SubSectionTitle className="text-[17px] leading-[22px] font-semibold text-white m-0">
                               {session.title}
@@ -932,7 +932,7 @@ export default function CoachGroupDetail() {
                                     key={exercise.id}
                                     className="flex items-center gap-3 py-3 px-3.5 bg-ak-surface-subtle rounded-lg"
                                   >
-                                    <div className="w-7 h-7 rounded-full bg-ak-brand-primary text-white flex items-center justify-center text-xs font-semibold shrink-0">
+                                    <div className="w-7 h-7 rounded-full bg-ak-primary text-white flex items-center justify-center text-xs font-semibold shrink-0">
                                       {index + 1}
                                     </div>
                                     <div className="flex-1">
@@ -958,7 +958,7 @@ export default function CoachGroupDetail() {
                           </div>
 
                           <div className="flex gap-2.5 mt-4 pt-4 border-t border-ak-border-default">
-                            <button className="flex items-center gap-1.5 py-2 px-3.5 bg-ak-brand-primary text-white border-none rounded-lg text-[13px] font-medium cursor-pointer">
+                            <button className="flex items-center gap-1.5 py-2 px-3.5 bg-ak-primary text-white border-none rounded-lg text-[13px] font-medium cursor-pointer">
                               <Play size={16} />
                               Start økt
                             </button>
@@ -995,7 +995,7 @@ export default function CoachGroupDetail() {
                 </p>
                 <button
                   onClick={() => navigate(`/coach/groups/${groupId}/plan/create`)}
-                  className="inline-flex items-center gap-2 py-3 px-5 bg-ak-brand-primary text-white border-none rounded-lg text-sm font-semibold cursor-pointer"
+                  className="inline-flex items-center gap-2 py-3 px-5 bg-ak-primary text-white border-none rounded-lg text-sm font-semibold cursor-pointer"
                 >
                   <Plus size={18} />
                   Opprett treningsplan
@@ -1039,7 +1039,7 @@ export default function CoachGroupDetail() {
 
               <div className="p-5 bg-ak-surface-base rounded-xl shadow-sm">
                 <div className="flex items-center gap-2.5 mb-3">
-                  <Clock size={20} className="text-ak-brand-primary" />
+                  <Clock size={20} className="text-ak-primary" />
                   <span className="text-[15px] leading-5 text-ak-text-secondary">
                     Økter per uke (snitt)
                   </span>
@@ -1051,7 +1051,7 @@ export default function CoachGroupDetail() {
 
               <div className="p-5 bg-ak-surface-base rounded-xl shadow-sm">
                 <div className="flex items-center gap-2.5 mb-3">
-                  <Calendar size={20} className="text-ak-brand-primary" />
+                  <Calendar size={20} className="text-ak-primary" />
                   <span className="text-[15px] leading-5 text-ak-text-secondary">
                     Totalt antall økter
                   </span>

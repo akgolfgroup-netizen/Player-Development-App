@@ -53,7 +53,7 @@ function Avatar({ name, size = 'md' }: { name: string; size?: 'sm' | 'md' | 'lg'
     <div
       className={`
         ${sizeClasses[size]}
-        rounded-full bg-ak-brand-primary text-white
+        rounded-full bg-ak-primary text-white
         flex items-center justify-center font-semibold flex-shrink-0
       `}
     >

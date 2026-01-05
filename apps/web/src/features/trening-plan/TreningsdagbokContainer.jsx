@@ -22,8 +22,8 @@ import { SubSectionTitle } from '../../components/typography';
 
 const TYPE_CLASSES = {
   technical: {
-    text: 'text-ak-brand-primary',
-    bg: 'bg-ak-brand-primary/15',
+    text: 'text-ak-primary',
+    bg: 'bg-ak-primary/15',
     icon: Target,
     label: 'Teknikk',
     variant: 'accent',
@@ -265,7 +265,7 @@ const DiaryEntryCard = ({ entry, onClick }) => {
 const StatsOverview = ({ stats }) => (
   <div className="grid grid-cols-[repeat(auto-fit,minmax(100px,1fr))] gap-2 mb-6">
     <Card variant="default" padding="sm" className="text-center">
-      <div className="text-[22px] font-bold text-ak-brand-primary">
+      <div className="text-[22px] font-bold text-ak-primary">
         {stats.totalEntries}
       </div>
       <div className="text-[11px] text-ak-text-secondary">Totalt</div>

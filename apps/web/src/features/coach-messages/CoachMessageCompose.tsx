@@ -161,7 +161,7 @@ export const CoachMessageCompose: React.FC = () => {
                       className={`inline-flex items-center gap-1.5 py-1.5 px-3 rounded-full text-[13px] font-medium ${
                         recipient.type === 'group'
                           ? 'bg-ak-status-warning/15 text-ak-status-warning'
-                          : 'bg-ak-brand-primary/10 text-ak-brand-primary'
+                          : 'bg-ak-primary/10 text-ak-primary'
                       }`}
                     >
                       {recipient.type === 'group' ? <Users size={14} /> : <User size={14} />}
@@ -217,12 +217,12 @@ export const CoachMessageCompose: React.FC = () => {
                               className={`w-8 h-8 rounded-full flex items-center justify-center ${
                                 recipient.type === 'group'
                                   ? 'bg-ak-status-warning/15'
-                                  : 'bg-ak-brand-primary/10'
+                                  : 'bg-ak-primary/10'
                               }`}
                             >
                               {recipient.type === 'group'
                                 ? <Users size={14} className="text-ak-status-warning" />
-                                : <User size={14} className="text-ak-brand-primary" />
+                                : <User size={14} className="text-ak-primary" />
                               }
                             </div>
                             <div>

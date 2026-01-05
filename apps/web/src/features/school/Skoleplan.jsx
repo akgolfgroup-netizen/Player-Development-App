@@ -159,7 +159,7 @@ const FagModal = ({ isOpen, onClose, fag, onSave, onDelete }) => {
             value={form.navn}
             onChange={e => setForm({ ...form, navn: e.target.value })}
             placeholder="f.eks. Matematikk"
-            className="w-full py-2.5 px-3 border border-ak-border-default rounded-lg text-[15px] box-border focus:outline-none focus:border-ak-brand-primary"
+            className="w-full py-2.5 px-3 border border-ak-border-default rounded-lg text-[15px] box-border focus:outline-none focus:border-ak-primary"
             required
           />
         </div>
@@ -173,7 +173,7 @@ const FagModal = ({ isOpen, onClose, fag, onSave, onDelete }) => {
             value={form.larer}
             onChange={e => setForm({ ...form, larer: e.target.value })}
             placeholder="Larerens navn"
-            className="w-full py-2.5 px-3 border border-ak-border-default rounded-lg text-[15px] box-border focus:outline-none focus:border-ak-brand-primary"
+            className="w-full py-2.5 px-3 border border-ak-border-default rounded-lg text-[15px] box-border focus:outline-none focus:border-ak-primary"
           />
         </div>
 
@@ -186,7 +186,7 @@ const FagModal = ({ isOpen, onClose, fag, onSave, onDelete }) => {
             value={form.rom}
             onChange={e => setForm({ ...form, rom: e.target.value })}
             placeholder="f.eks. A101"
-            className="w-full py-2.5 px-3 border border-ak-border-default rounded-lg text-[15px] box-border focus:outline-none focus:border-ak-brand-primary"
+            className="w-full py-2.5 px-3 border border-ak-border-default rounded-lg text-[15px] box-border focus:outline-none focus:border-ak-primary"
           />
         </div>
 
@@ -318,7 +318,7 @@ const TimeModal = ({ isOpen, onClose, time, fag, allFag, onSave, onDelete }) => 
           <select
             value={form.fagId}
             onChange={e => setForm({ ...form, fagId: e.target.value })}
-            className="w-full py-2.5 px-3 border border-ak-border-default rounded-lg text-[15px] box-border bg-white focus:outline-none focus:border-ak-brand-primary"
+            className="w-full py-2.5 px-3 border border-ak-border-default rounded-lg text-[15px] box-border bg-white focus:outline-none focus:border-ak-primary"
             required
           >
             {allFag.map(f => (
@@ -334,7 +334,7 @@ const TimeModal = ({ isOpen, onClose, time, fag, allFag, onSave, onDelete }) => 
           <select
             value={form.ukedag}
             onChange={e => setForm({ ...form, ukedag: e.target.value })}
-            className="w-full py-2.5 px-3 border border-ak-border-default rounded-lg text-[15px] box-border bg-white focus:outline-none focus:border-ak-brand-primary"
+            className="w-full py-2.5 px-3 border border-ak-border-default rounded-lg text-[15px] box-border bg-white focus:outline-none focus:border-ak-primary"
             required
           >
             {UKEDAGER.map(dag => (
@@ -354,7 +354,7 @@ const TimeModal = ({ isOpen, onClose, time, fag, allFag, onSave, onDelete }) => 
               type="time"
               value={form.startTid}
               onChange={e => setForm({ ...form, startTid: e.target.value })}
-              className="w-full py-2.5 px-3 border border-ak-border-default rounded-lg text-[15px] box-border focus:outline-none focus:border-ak-brand-primary"
+              className="w-full py-2.5 px-3 border border-ak-border-default rounded-lg text-[15px] box-border focus:outline-none focus:border-ak-primary"
               required
             />
           </div>
@@ -366,7 +366,7 @@ const TimeModal = ({ isOpen, onClose, time, fag, allFag, onSave, onDelete }) => 
               type="time"
               value={form.sluttTid}
               onChange={e => setForm({ ...form, sluttTid: e.target.value })}
-              className="w-full py-2.5 px-3 border border-ak-border-default rounded-lg text-[15px] box-border focus:outline-none focus:border-ak-brand-primary"
+              className="w-full py-2.5 px-3 border border-ak-border-default rounded-lg text-[15px] box-border focus:outline-none focus:border-ak-primary"
               required
             />
           </div>
@@ -482,7 +482,7 @@ const OppgaveModal = ({ isOpen, onClose, oppgave, allFag, onSave, onDelete }) =>
           <select
             value={form.fagId}
             onChange={e => setForm({ ...form, fagId: e.target.value })}
-            className="w-full py-2.5 px-3 border border-ak-border-default rounded-lg text-[15px] box-border bg-white focus:outline-none focus:border-ak-brand-primary"
+            className="w-full py-2.5 px-3 border border-ak-border-default rounded-lg text-[15px] box-border bg-white focus:outline-none focus:border-ak-primary"
             required
           >
             {allFag.map(f => (
@@ -500,7 +500,7 @@ const OppgaveModal = ({ isOpen, onClose, oppgave, allFag, onSave, onDelete }) =>
             value={form.tittel}
             onChange={e => setForm({ ...form, tittel: e.target.value })}
             placeholder="Hva skal gjores?"
-            className="w-full py-2.5 px-3 border border-ak-border-default rounded-lg text-[15px] box-border focus:outline-none focus:border-ak-brand-primary"
+            className="w-full py-2.5 px-3 border border-ak-border-default rounded-lg text-[15px] box-border focus:outline-none focus:border-ak-primary"
             required
           />
         </div>
@@ -514,7 +514,7 @@ const OppgaveModal = ({ isOpen, onClose, oppgave, allFag, onSave, onDelete }) =>
             onChange={e => setForm({ ...form, beskrivelse: e.target.value })}
             placeholder="Mer detaljer..."
             rows={3}
-            className="w-full py-2.5 px-3 border border-ak-border-default rounded-lg text-[15px] box-border resize-y focus:outline-none focus:border-ak-brand-primary"
+            className="w-full py-2.5 px-3 border border-ak-border-default rounded-lg text-[15px] box-border resize-y focus:outline-none focus:border-ak-primary"
           />
         </div>
 
@@ -527,7 +527,7 @@ const OppgaveModal = ({ isOpen, onClose, oppgave, allFag, onSave, onDelete }) =>
               type="date"
               value={form.frist}
               onChange={e => setForm({ ...form, frist: e.target.value })}
-              className="w-full py-2.5 px-3 border border-ak-border-default rounded-lg text-[15px] box-border focus:outline-none focus:border-ak-brand-primary"
+              className="w-full py-2.5 px-3 border border-ak-border-default rounded-lg text-[15px] box-border focus:outline-none focus:border-ak-primary"
               required
             />
           </div>
@@ -538,7 +538,7 @@ const OppgaveModal = ({ isOpen, onClose, oppgave, allFag, onSave, onDelete }) =>
             <select
               value={form.prioritet}
               onChange={e => setForm({ ...form, prioritet: e.target.value })}
-              className="w-full py-2.5 px-3 border border-ak-border-default rounded-lg text-[15px] box-border bg-white focus:outline-none focus:border-ak-brand-primary"
+              className="w-full py-2.5 px-3 border border-ak-border-default rounded-lg text-[15px] box-border bg-white focus:outline-none focus:border-ak-primary"
             >
               <option value="low">Lav</option>
               <option value="medium">Medium</option>
@@ -607,7 +607,7 @@ const Timeplan = ({ timer, fag, onAddTime, onEditTime }) => {
     <div className="bg-white rounded-xl border border-ak-border-default overflow-hidden">
       <div className="flex justify-between items-center p-4 px-5 border-b border-ak-border-default">
         <div className="flex items-center gap-2.5">
-          <Clock size={20} className="text-ak-brand-primary" />
+          <Clock size={20} className="text-ak-primary" />
           <SubSectionTitle className="text-base font-semibold text-ak-text-primary m-0">
             Timeplan
           </SubSectionTitle>
@@ -700,12 +700,12 @@ const OppgaveListe = ({ oppgaver, fag, onToggleStatus, onEdit, onAdd }) => {
     <div className="bg-white rounded-xl border border-ak-border-default overflow-hidden">
       <div className="flex justify-between items-center p-4 px-5 border-b border-ak-border-default flex-wrap gap-3">
         <div className="flex items-center gap-2.5">
-          <BookOpen size={20} className="text-ak-brand-primary" />
+          <BookOpen size={20} className="text-ak-primary" />
           <SubSectionTitle className="text-base font-semibold text-ak-text-primary m-0">
             Oppgaver
           </SubSectionTitle>
           {pendingCount > 0 && (
-            <span className="py-0.5 px-2 bg-ak-brand-primary text-white rounded-xl text-xs font-medium">
+            <span className="py-0.5 px-2 bg-ak-primary text-white rounded-xl text-xs font-medium">
               {pendingCount}
             </span>
           )}
@@ -853,7 +853,7 @@ const FagListe = ({ fag, onEdit, onAdd }) => {
     <div className="bg-white rounded-xl border border-ak-border-default overflow-hidden">
       <div className="flex justify-between items-center p-4 px-5 border-b border-ak-border-default">
         <div className="flex items-center gap-2.5">
-          <GraduationCap size={20} className="text-ak-brand-primary" />
+          <GraduationCap size={20} className="text-ak-primary" />
           <SubSectionTitle className="text-base font-semibold text-ak-text-primary m-0">
             Fag
           </SubSectionTitle>

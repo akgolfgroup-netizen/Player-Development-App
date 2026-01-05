@@ -182,7 +182,7 @@ export const CoachStatsRegression: React.FC = () => {
   const getCategoryClasses = (category: string) => {
     switch (category) {
       case 'A': return { bg: 'bg-ak-status-success/10', text: 'text-ak-status-success' };
-      case 'B': return { bg: 'bg-ak-brand-primary/10', text: 'text-ak-brand-primary' };
+      case 'B': return { bg: 'bg-ak-primary/10', text: 'text-ak-primary' };
       case 'C': return { bg: 'bg-ak-status-warning/10', text: 'text-ak-status-warning' };
       default: return { bg: 'bg-ak-surface-base', text: 'text-ak-text-secondary' };
     }

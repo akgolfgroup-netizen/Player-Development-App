@@ -210,7 +210,7 @@ const DevelopmentAreaCard = ({ area, onClick }) => (
           alignItems: 'center',
           justifyContent: 'center',
         }}>
-          <Target size={20} color={getStatusColor(area.status)} />
+          <Target size={20} style={{ color: getStatusColor(area.status) }} />
         </div>
         <div>
           <div style={{
@@ -246,7 +246,7 @@ const DevelopmentAreaCard = ({ area, onClick }) => (
         }}>
           {area.score}
         </div>
-        <ChevronRight size={18} color="var(--text-tertiary)" />
+        <ChevronRight size={18} style={{ color: 'var(--text-tertiary)' }} />
       </div>
     </div>
   </Card>
@@ -274,7 +274,7 @@ const QuickLinkCard = ({ icon: Icon, title, description, href, color }) => (
           justifyContent: 'center',
           flexShrink: 0,
         }}>
-          <Icon size={22} color={color} />
+          <Icon size={22} style={{ color }} />
         </div>
         <div style={{ flex: 1 }}>
           <div style={{
@@ -292,7 +292,7 @@ const QuickLinkCard = ({ icon: Icon, title, description, href, color }) => (
             {description}
           </div>
         </div>
-        <ChevronRight size={18} color="var(--text-tertiary)" />
+        <ChevronRight size={18} style={{ color: 'var(--text-tertiary)' }} />
       </div>
     </Card>
   </a>
@@ -406,7 +406,7 @@ const UtviklingsOversiktContainer = () => {
                   alignItems: 'center',
                   justifyContent: 'center',
                 }}>
-                  <Star size={16} color="var(--warning)" />
+                  <Star size={16} style={{ color: 'var(--warning)' }} />
                 </div>
                 <div style={{ flex: 1 }}>
                   <div style={{ fontSize: '13px', fontWeight: 500, color: 'var(--text-primary)' }}>

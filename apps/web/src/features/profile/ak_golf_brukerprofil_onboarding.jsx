@@ -21,16 +21,16 @@ import { PageTitle, SectionTitle, SubSectionTitle, CardTitle } from '../../compo
 // ============================================================
 const colors = {
   // Primary colors
-  primary: 'var(--ak-brand-primary)',
-  primaryLight: 'var(--ak-brand-primary-light)',
+  primary: 'var(--ak-primary)',
+  primaryLight: 'var(--ak-primary-light)',
   snow: 'var(--ak-surface-subtle)',
   surface: 'var(--ak-surface-card)',
   white: 'var(--ak-surface-card)',
 
   // Legacy aliases (kept for backwards compatibility)
-  forest: 'var(--ak-brand-primary)',
-  forestLight: 'var(--ak-brand-primary-light)',
-  forestDark: 'var(--ak-brand-primary)',
+  forest: 'var(--ak-primary)',
+  forestLight: 'var(--ak-primary-light)',
+  forestDark: 'var(--ak-primary)',
   foam: 'var(--ak-surface-subtle)',
   ivory: 'var(--ak-surface-card)',
 
@@ -44,7 +44,7 @@ const colors = {
   success: 'var(--ak-status-success)',
   warning: 'var(--ak-status-warning)',
   error: 'var(--ak-status-error)',
-  info: 'var(--ak-brand-primary-light)',
+  info: 'var(--ak-primary-light)',
 
   // Border colors
   borderLight: 'var(--ak-border-default)',

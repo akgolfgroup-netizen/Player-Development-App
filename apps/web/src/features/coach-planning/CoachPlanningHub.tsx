@@ -17,6 +17,7 @@ import {
 } from 'lucide-react';
 import { useNavigate } from 'react-router-dom';
 import { coachesAPI } from '../../services/api';
+import { useToast } from '../../components/shadcn/use-toast';
 import PageHeader from '../../ui/raw-blocks/PageHeader.raw';
 import Button from '../../ui/primitives/Button';
 import { SubSectionTitle } from '../../components/typography';
@@ -27,7 +28,7 @@ import { SubSectionTitle } from '../../components/typography';
 
 const CATEGORY_CLASSES = {
   A: { bg: 'bg-ak-status-success/15', text: 'text-ak-status-success' },
-  B: { bg: 'bg-ak-brand-primary/15', text: 'text-ak-brand-primary' },
+  B: { bg: 'bg-ak-primary/15', text: 'text-ak-primary' },
   C: { bg: 'bg-ak-status-warning/15', text: 'text-ak-status-warning' },
 };
 
@@ -52,19 +53,22 @@ interface Group {
 
 export const CoachPlanningHub: React.FC = () => {
   const navigate = useNavigate();
+  const { toast } = useToast();
   const [activeTab, setActiveTab] = useState<'players' | 'groups'>('players');
   const [searchQuery, setSearchQuery] = useState('');
   const [filterPlan, setFilterPlan] = useState<'all' | 'with' | 'without'>('all');
   const [players, setPlayers] = useState<Player[]>([]);
   const [groups, setGroups] = useState<Group[]>([]);
   const [loading, setLoading] = useState(true);
+  const [error, setError] = useState<string | null>(null);
 
   // Fetch players and groups from API
   const fetchData = useCallback(async () => {
     setLoading(true);
+    setError(null);
     try {
       // Fetch coach's players with their plan status
-      const playersRes = await coachesAPI.getAthletes().catch(() => ({ data: null }));
+      const playersRes = await coachesAPI.getAthletes();
       const playersData = playersRes.data?.data || playersRes.data || [];
 
       if (Array.isArray(playersData)) {
@@ -84,12 +88,18 @@ export const CoachPlanningHub: React.FC = () => {
       // Groups feature is planned but not yet implemented
       // Show empty state until groups API is available
       setGroups([]);
-    } catch (error) {
-      console.error('Error fetching planning data:', error);
+    } catch (err) {
+      console.error('Error fetching planning data:', err);
+      setError('Kunne ikke laste spillere');
+      toast({
+        title: 'Feil ved lasting av data',
+        description: 'Kunne ikke hente spillerliste. Prøv igjen senere.',
+        variant: 'destructive',
+      });
     } finally {
       setLoading(false);
     }
-  }, []);
+  }, [toast]);
 
   useEffect(() => {
     fetchData();
@@ -151,7 +161,7 @@ export const CoachPlanningHub: React.FC = () => {
   if (loading) {
     return (
       <div className="min-h-screen bg-ak-surface-subtle flex items-center justify-center">
-        <Loader2 size={40} className="text-ak-brand-primary animate-spin" />
+        <Loader2 size={40} className="text-ak-primary animate-spin" />
       </div>
     );
   }
@@ -179,10 +189,10 @@ export const CoachPlanningHub: React.FC = () => {
       <div className="grid grid-cols-4 gap-3 mb-6">
         <div className="bg-ak-surface-base rounded-xl p-4 border border-ak-border-default">
           <div className="flex items-center gap-2 mb-2">
-            <User size={16} className="text-ak-brand-primary" />
+            <User size={16} className="text-ak-primary" />
             <span className="text-xs text-ak-text-secondary">Spillere med plan</span>
           </div>
-          <p className="text-2xl font-bold text-ak-brand-primary m-0">
+          <p className="text-2xl font-bold text-ak-primary m-0">
             {stats.playersWithPlan}
           </p>
         </div>
@@ -253,7 +263,7 @@ export const CoachPlanningHub: React.FC = () => {
             placeholder={activeTab === 'players' ? 'Søk etter spiller...' : 'Søk etter gruppe...'}
             value={searchQuery}
             onChange={(e) => setSearchQuery(e.target.value)}
-            className="w-full py-3 pl-10 pr-3 rounded-[10px] border border-ak-border-default bg-ak-surface-base text-sm text-ak-text-primary outline-none focus:border-ak-brand-primary"
+            className="w-full py-3 pl-10 pr-3 rounded-[10px] border border-ak-border-default bg-ak-surface-base text-sm text-ak-text-primary outline-none focus:border-ak-primary"
           />
         </div>
         <div className="flex gap-2">
@@ -267,7 +277,7 @@ export const CoachPlanningHub: React.FC = () => {
               onClick={() => setFilterPlan(filter.key as typeof filterPlan)}
               className={`py-2.5 px-4 rounded-[10px] border-none text-[13px] font-medium cursor-pointer transition-colors ${
                 filterPlan === filter.key
-                  ? 'bg-ak-brand-primary text-white'
+                  ? 'bg-ak-primary text-white'
                   : 'bg-ak-surface-base text-ak-text-secondary hover:bg-ak-surface-subtle'
               }`}
             >

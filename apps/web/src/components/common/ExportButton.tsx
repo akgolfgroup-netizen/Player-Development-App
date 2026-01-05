@@ -33,7 +33,7 @@ const typeConfig: Record<ExportType, { label: string; icon: typeof FileText; for
 };
 
 const variantStyles: Record<string, string> = {
-  primary: 'bg-ak-brand-primary text-white hover:bg-ak-brand-primary/90',
+  primary: 'bg-ak-primary text-white hover:bg-ak-primary/90',
   secondary: 'bg-ak-surface-elevated text-ak-text-primary border border-ak-border-default hover:bg-ak-surface-card',
   ghost: 'text-ak-text-secondary hover:text-ak-text-primary hover:bg-ak-surface-elevated',
 };

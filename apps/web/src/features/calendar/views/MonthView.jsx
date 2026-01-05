@@ -157,7 +157,7 @@ const MonthView = ({
               <button
                 type="button"
                 onClick={onAddEvent}
-                className="ml-6 rounded-lg bg-ak-brand-primary px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-ak-brand-primary/90 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-ak-brand-primary"
+                className="ml-6 rounded-lg bg-ak-primary px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-ak-primary/90 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-ak-primary"
               >
                 Ny hendelse
               </button>
@@ -195,9 +195,9 @@ const MonthView = ({
                   dateTime={dayInfo.date}
                   className={classNames(
                     dayInfo.isToday
-                      ? 'flex h-6 w-6 items-center justify-center rounded-full bg-ak-brand-primary font-semibold text-white'
+                      ? 'flex h-6 w-6 items-center justify-center rounded-full bg-ak-primary font-semibold text-white'
                       : dayInfo.isSelected
-                      ? 'flex h-6 w-6 items-center justify-center rounded-full bg-ak-brand-primary/10 font-semibold text-ak-brand-primary'
+                      ? 'flex h-6 w-6 items-center justify-center rounded-full bg-ak-primary/10 font-semibold text-ak-primary'
                       : dayInfo.isCurrentMonth
                       ? 'text-ak-text-primary'
                       : 'text-ak-text-tertiary',
@@ -256,7 +256,7 @@ const MonthView = ({
                   dayInfo.isCurrentMonth ? 'bg-ak-surface-card' : 'bg-ak-surface-subtle/50',
                   (dayInfo.isSelected || dayInfo.isToday) && 'font-semibold',
                   dayInfo.isSelected && 'text-white',
-                  !dayInfo.isSelected && dayInfo.isToday && 'text-ak-brand-primary',
+                  !dayInfo.isSelected && dayInfo.isToday && 'text-ak-primary',
                   !dayInfo.isSelected && dayInfo.isCurrentMonth && !dayInfo.isToday && 'text-ak-text-primary',
                   !dayInfo.isSelected && !dayInfo.isCurrentMonth && !dayInfo.isToday && 'text-ak-text-tertiary',
                   'group relative flex h-14 flex-col px-3 py-2 hover:bg-ak-surface-subtle focus:z-10'
@@ -266,7 +266,7 @@ const MonthView = ({
                   dateTime={dayInfo.date}
                   className={classNames(
                     dayInfo.isSelected && 'flex h-6 w-6 items-center justify-center rounded-full',
-                    dayInfo.isSelected && dayInfo.isToday && 'bg-ak-brand-primary',
+                    dayInfo.isSelected && dayInfo.isToday && 'bg-ak-primary',
                     dayInfo.isSelected && !dayInfo.isToday && 'bg-ak-text-primary',
                     'ml-auto'
                   )}

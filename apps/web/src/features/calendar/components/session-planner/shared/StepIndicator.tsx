@@ -56,7 +56,7 @@ export const StepIndicator: React.FC<StepIndicatorProps> = ({
                 transition-all duration-200 border-2
                 ${isClickable ? 'cursor-pointer' : 'cursor-default'}
                 ${isActive
-                  ? 'bg-ak-brand-primary text-white border-ak-brand-primary'
+                  ? 'bg-ak-primary text-white border-ak-primary'
                   : isCompleted
                   ? 'bg-ak-status-success text-white border-ak-status-success'
                   : 'bg-ak-surface-subtle text-ak-text-tertiary border-ak-border-default'
@@ -107,7 +107,7 @@ export const StepIndicatorCompact: React.FC<StepIndicatorProps> = ({
               isActive ? 'w-6' : 'w-1.5'
             } ${
               isActive
-                ? 'bg-ak-brand-primary'
+                ? 'bg-ak-primary'
                 : isPast
                 ? 'bg-ak-status-success'
                 : 'bg-ak-border-default'
@@ -138,7 +138,7 @@ export const StepIndicatorWithLabels: React.FC<StepIndicatorProps> = ({
 
         {/* Progress fill - needs inline style for dynamic width */}
         <div
-          className="absolute top-1/2 left-0 h-0.5 -translate-y-1/2 transition-all duration-300 bg-ak-brand-primary"
+          className="absolute top-1/2 left-0 h-0.5 -translate-y-1/2 transition-all duration-300 bg-ak-primary"
           style={{ width: `${(currentStepIndex / (steps.length - 1)) * 100}%` }}
         />
 
@@ -161,7 +161,7 @@ export const StepIndicatorWithLabels: React.FC<StepIndicatorProps> = ({
                   transition-all duration-200 border-2
                   ${isClickable ? 'cursor-pointer hover:scale-110' : 'cursor-default'}
                   ${isActive || isCompleted
-                    ? 'bg-ak-brand-primary text-white border-ak-brand-primary'
+                    ? 'bg-ak-primary text-white border-ak-primary'
                     : 'bg-white text-ak-text-tertiary border-ak-border-default'
                   }
                 `}
@@ -182,7 +182,7 @@ export const StepIndicatorWithLabels: React.FC<StepIndicatorProps> = ({
             <span
               key={step}
               className={`text-xs text-center ${
-                isActive ? 'text-ak-brand-primary font-semibold' : 'text-ak-text-tertiary'
+                isActive ? 'text-ak-primary font-semibold' : 'text-ak-text-tertiary'
               }`}
               style={{ width: `${100 / steps.length}%` }}
             >

@@ -22,7 +22,7 @@ function RatingScale({ label, description, value, onChange, icon: Icon, lowLabel
   return (
     <div className="mb-6">
       <div className="flex items-center gap-2 mb-1">
-        {Icon && <Icon size={18} className="text-ak-brand-primary" />}
+        {Icon && <Icon size={18} className="text-ak-primary" />}
         <span className="text-[17px] font-semibold text-ak-text-primary">
           {label}
         </span>
@@ -39,7 +39,7 @@ function RatingScale({ label, description, value, onChange, icon: Icon, lowLabel
             onClick={() => onChange(rating)}
             className={`flex-1 py-2 border-none rounded cursor-pointer text-xs transition-all duration-150 ${
               value === rating
-                ? 'bg-ak-brand-primary text-white font-semibold'
+                ? 'bg-ak-primary text-white font-semibold'
                 : 'bg-transparent text-ak-text-primary font-medium'
             }`}
           >
@@ -133,7 +133,7 @@ function PreShotRoutineSelector({ value, onChange, shotCount, totalShots, onShot
       {/* Percentage display */}
       {totalShots > 0 && shotCount >= 0 && (
         <div className="mt-2 text-center">
-          <span className="text-[17px] font-semibold text-ak-brand-primary">
+          <span className="text-[17px] font-semibold text-ak-primary">
             {Math.round((shotCount / totalShots) * 100)}%
           </span>
           <span className="text-xs text-ak-text-secondary ml-1">
@@ -167,7 +167,7 @@ function TechnicalCuesSelector({ cues, selectedCues, onToggle, customCue, onCust
               onClick={() => onToggle(cue)}
               className={`py-1 px-4 border-none rounded-full cursor-pointer text-xs font-medium flex items-center gap-1 transition-all duration-150 ${
                 isSelected
-                  ? 'bg-ak-brand-primary text-white'
+                  ? 'bg-ak-primary text-white'
                   : 'bg-ak-surface-subtle text-ak-text-primary'
               }`}
             >
@@ -327,7 +327,7 @@ export default function SessionEvaluationForm({
   return (
     <div className="bg-ak-surface-base min-h-screen font-sans">
       {/* Header */}
-      <div className="bg-ak-brand-primary text-white p-6 sticky top-0 z-10">
+      <div className="bg-ak-primary text-white p-6 sticky top-0 z-10">
         <div className="flex items-center justify-between">
           <Button variant="ghost" onClick={onCancel} className="text-white p-1">
             <ChevronLeft size={24} />

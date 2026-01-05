@@ -198,7 +198,7 @@ export function SwingTimeline({
 
       {/* Selection info */}
       {selectedVideos.length > 0 && (
-        <div className="flex items-center gap-2 px-3 py-2 bg-ak-brand-primary/10 rounded-lg text-xs text-ak-text-secondary">
+        <div className="flex items-center gap-2 px-3 py-2 bg-ak-primary/10 rounded-lg text-xs text-ak-text-secondary">
           <span>
             {selectedVideos.length === 1
               ? `1 video valgt - velg 1 til for å sammenligne`
@@ -224,7 +224,7 @@ export function SwingTimeline({
                 <div
                   className={`w-20 h-[60px] bg-ak-surface-subtle rounded-lg overflow-hidden border-2 transition-all ${
                     isSelected(video.id)
-                      ? 'border-ak-brand-primary shadow-[0_0_0_2px_rgba(99,102,241,0.3)]'
+                      ? 'border-ak-primary shadow-[0_0_0_2px_rgba(99,102,241,0.3)]'
                       : 'border-transparent'
                   }`}
                 >
@@ -263,7 +263,7 @@ export function SwingTimeline({
                 <div
                   className={`w-[60px] h-[45px] bg-ak-surface-subtle rounded overflow-hidden mb-2 border-2 transition-all ${
                     isSelected(video.id)
-                      ? 'border-ak-brand-primary shadow-[0_0_0_2px_rgba(99,102,241,0.3)]'
+                      ? 'border-ak-primary shadow-[0_0_0_2px_rgba(99,102,241,0.3)]'
                       : 'border-transparent'
                   }`}
                 >
@@ -279,7 +279,7 @@ export function SwingTimeline({
                     </div>
                   )}
                 </div>
-                <div className="absolute bottom-5 left-1/2 -translate-x-1/2 w-2.5 h-2.5 bg-ak-brand-primary rounded-full border-2 border-ak-surface-elevated" />
+                <div className="absolute bottom-5 left-1/2 -translate-x-1/2 w-2.5 h-2.5 bg-ak-primary rounded-full border-2 border-ak-surface-elevated" />
                 <span className="absolute bottom-0 left-1/2 -translate-x-1/2 text-[10px] text-ak-text-tertiary whitespace-nowrap font-mono">
                   {formatDate(video.createdAt)}
                 </span>

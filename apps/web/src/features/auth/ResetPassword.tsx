@@ -129,7 +129,7 @@ const ResetPassword: React.FC = () => {
     return (
       <AuthPage state="error" maxWidth="md">
         <AuthPage.Logo>
-          <AKLogo size={60} className="text-ak-brand-primary" />
+          <AKLogo size={60} className="text-ak-primary" />
         </AuthPage.Logo>
 
         <AuthPage.Card>
@@ -143,7 +143,7 @@ const ResetPassword: React.FC = () => {
             </Text>
             <Link
               to="/forgot-password"
-              className="inline-block px-6 py-3 bg-ak-brand-primary text-white rounded-lg font-semibold no-underline hover:bg-ak-brand-hover transition-colors"
+              className="inline-block px-6 py-3 bg-ak-primary text-white rounded-lg font-semibold no-underline hover:bg-ak-brand-hover transition-colors"
             >
               Be om ny lenke
             </Link>
@@ -156,7 +156,7 @@ const ResetPassword: React.FC = () => {
   return (
     <AuthPage state={loading ? 'loading' : success ? 'success' : 'idle'} maxWidth="md">
       <AuthPage.Logo title="Opprett nytt passord" subtitle={`Velg et sterkt passord for ${email}`}>
-        <AKLogo size={60} className="text-ak-brand-primary" />
+        <AKLogo size={60} className="text-ak-primary" />
       </AuthPage.Logo>
 
       <AuthPage.Card>
@@ -176,7 +176,7 @@ const ResetPassword: React.FC = () => {
             </Text>
 
             <div className="inline-flex items-center gap-2 text-ak-text-secondary">
-              <div className="w-4 h-4 border-2 border-ak-brand-primary border-t-transparent rounded-full animate-spin" />
+              <div className="w-4 h-4 border-2 border-ak-primary border-t-transparent rounded-full animate-spin" />
               <Text variant="body">Videresender...</Text>
             </div>
           </div>
@@ -281,7 +281,7 @@ const ResetPassword: React.FC = () => {
       {!success && (
         <AuthPage.Footer>
           Trenger du hjelp? Kontakt{' '}
-          <a href="mailto:support@akgolf.no" className="text-ak-brand-primary no-underline">
+          <a href="mailto:support@akgolf.no" className="text-ak-primary no-underline">
             support@akgolf.no
           </a>
         </AuthPage.Footer>

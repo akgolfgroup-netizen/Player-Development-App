@@ -2,6 +2,8 @@
  * AK Golf Academy - Badge/Tag Component
  * Premium Light System: Stone × Midnight Blue × Emerald × Soft Gold
  *
+ * NOW POWERED BY CATALYST UI
+ *
  * Rules:
  * - Default badges are neutral (stone)
  * - Prestige = gold only for achievement contexts
@@ -9,6 +11,8 @@
  */
 
 import React from "react";
+// @ts-expect-error - Catalyst components are JS without type definitions
+import { Badge as CatalystBadge } from "../../components/catalyst/badge";
 
 export type BadgeVariant =
   | "neutral"
@@ -35,20 +39,22 @@ interface BadgeProps {
   dot?: boolean;
 }
 
-const sizeClasses: Record<BadgeSize, string> = {
-  sm: "px-1.5 py-[2px] text-[11px] leading-[13px] rounded-lg",
-  md: "px-2.5 py-1 text-[13px] leading-[18px] rounded-lg",
+// Map our variants to Catalyst colors
+const variantToCatalystColor: Record<BadgeVariant, string> = {
+  neutral: "surface",
+  default: "surface",
+  accent: "primary",
+  primary: "primary",
+  success: "success",
+  warning: "warning",
+  error: "error",
+  achievement: "gold",
 };
 
-const variantClasses: Record<BadgeVariant, string> = {
-  neutral: "bg-ak-surface-border text-ak-text-body",
-  default: "bg-ak-surface-border text-ak-text-body", // alias for neutral
-  accent: "bg-ak-action-active/10 text-ak-action-active",
-  primary: "bg-ak-action-active/10 text-ak-action-active", // alias for accent
-  success: "bg-ak-status-success/10 text-ak-status-success",
-  warning: "bg-ak-status-warning/10 text-ak-status-warning",
-  error: "bg-ak-status-error/10 text-ak-status-error",
-  achievement: "bg-ak-prestige/10 text-ak-prestige",
+// Size-specific classes to add
+const sizeClasses: Record<BadgeSize, string> = {
+  sm: "!text-[11px] !px-1.5 !py-[2px]",
+  md: "", // Default Catalyst size
 };
 
 export const Badge: React.FC<BadgeProps> = ({
@@ -61,22 +67,23 @@ export const Badge: React.FC<BadgeProps> = ({
   pill = false,
   dot = false,
 }) => {
-  const classes = [
-    "inline-flex items-center gap-1 whitespace-nowrap font-semibold",
+  const color = variantToCatalystColor[variant];
+  const combinedClassName = [
     sizeClasses[size],
-    variantClasses[variant],
-    pill ? "rounded-full" : "",
+    pill ? "!rounded-full" : "",
     className ?? "",
-  ]
-    .filter(Boolean)
-    .join(" ");
+  ].filter(Boolean).join(" ");
 
   return (
-    <span className={classes} style={style}>
-      {dot ? <span className="w-1.5 h-1.5 rounded-full bg-current" /> : null}
-      {icon ? <span className="inline-flex">{icon}</span> : null}
+    <CatalystBadge
+      color={color as any}
+      className={combinedClassName}
+      style={style}
+    >
+      {dot && <span className="w-1.5 h-1.5 rounded-full bg-current" />}
+      {icon && <span className="inline-flex">{icon}</span>}
       {children}
-    </span>
+    </CatalystBadge>
   );
 };
 

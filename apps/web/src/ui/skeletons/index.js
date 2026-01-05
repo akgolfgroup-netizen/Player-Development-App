@@ -8,3 +8,5 @@ export {
   SessionsSkeleton,
 } from './WidgetSkeleton';
 export { DashboardSkeleton, DashboardSkeletonCompact } from './DashboardSkeleton';
+export { CalendarSkeleton } from './CalendarSkeleton';
+export { TrainingPlanSkeleton } from './TrainingPlanSkeleton';

@@ -220,7 +220,7 @@ export default function CoachGroupList() {
   if (loading) {
     return (
       <div className="min-h-screen bg-ak-surface-subtle flex items-center justify-center">
-        <div className="w-12 h-12 border-4 border-ak-border-default border-t-ak-brand-primary rounded-full animate-spin" />
+        <div className="w-12 h-12 border-4 border-ak-border-default border-t-ak-primary rounded-full animate-spin" />
       </div>
     );
   }
@@ -247,7 +247,7 @@ export default function CoachGroupList() {
         {/* Quick stats */}
         <div className="grid grid-cols-3 gap-3 mb-5">
           {[
-            { label: 'Totalt grupper', value: groups.length, colorClass: 'text-ak-brand-primary' },
+            { label: 'Totalt grupper', value: groups.length, colorClass: 'text-ak-primary' },
             { label: 'Spillere', value: totalMembers, colorClass: 'text-ak-status-success' },
             { label: 'Med treningsplan', value: groupsWithPlans, colorClass: 'text-ak-status-warning' },
           ].map((stat, index) => (
@@ -278,7 +278,7 @@ export default function CoachGroupList() {
               placeholder="Søk i grupper..."
               value={searchQuery}
               onChange={(e) => setSearchQuery(e.target.value)}
-              className="w-full py-2.5 pl-10 pr-3 bg-ak-surface-base border border-ak-border-default rounded-lg text-sm outline-none focus:border-ak-brand-primary"
+              className="w-full py-2.5 pl-10 pr-3 bg-ak-surface-base border border-ak-border-default rounded-lg text-sm outline-none focus:border-ak-primary"
             />
           </div>
 
@@ -292,10 +292,10 @@ export default function CoachGroupList() {
             ].map((filter) => (
               <button
                 key={filter.key}
-                onClick={() => setFilterType(filter.key as any)}
+                onClick={() => setFilterType(filter.key as 'all' | 'wang' | 'team_norway' | 'custom')}
                 className={`py-2 px-3.5 rounded text-[13px] font-medium cursor-pointer whitespace-nowrap ${
                   filterType === filter.key
-                    ? 'bg-ak-brand-primary text-white border border-ak-brand-primary'
+                    ? 'bg-ak-primary text-white border border-ak-primary'
                     : 'bg-ak-surface-base text-ak-text-primary border border-ak-border-default'
                 }`}
               >
@@ -322,7 +322,7 @@ export default function CoachGroupList() {
             {!searchQuery && (
               <button
                 onClick={() => navigate('/coach/groups/create')}
-                className="inline-flex items-center gap-2 py-2.5 px-5 bg-ak-brand-primary text-white border-none rounded-lg text-sm font-semibold cursor-pointer"
+                className="inline-flex items-center gap-2 py-2.5 px-5 bg-ak-primary text-white border-none rounded-lg text-sm font-semibold cursor-pointer"
               >
                 <Plus size={18} />
                 Opprett gruppe
@@ -388,7 +388,7 @@ export default function CoachGroupList() {
                         )}
 
                         {nextSession && (
-                          <span className="flex items-center gap-1 text-xs leading-4 text-ak-brand-primary">
+                          <span className="flex items-center gap-1 text-xs leading-4 text-ak-primary">
                             <Calendar size={14} />
                             Neste: {nextSession}
                           </span>
@@ -402,7 +402,7 @@ export default function CoachGroupList() {
                         <div
                           key={member.id}
                           title={member.name}
-                          className={`w-8 h-8 rounded-full bg-ak-brand-primary text-white flex items-center justify-center text-[11px] font-semibold border-2 border-ak-surface-base ${index > 0 ? '-ml-2.5' : ''}`}
+                          className={`w-8 h-8 rounded-full bg-ak-primary text-white flex items-center justify-center text-[11px] font-semibold border-2 border-ak-surface-base ${index > 0 ? '-ml-2.5' : ''}`}
                         >
                           {member.avatarInitials}
                         </div>

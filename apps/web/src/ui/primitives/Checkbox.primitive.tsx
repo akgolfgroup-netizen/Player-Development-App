@@ -1,13 +1,19 @@
 import React from 'react';
+// @ts-expect-error - Catalyst components are JS without type definitions
+import { Checkbox as CatalystCheckbox, CheckboxField } from '../../components/catalyst/checkbox';
+// @ts-expect-error - Catalyst components are JS without type definitions
+import { Label, Description } from '../../components/catalyst/fieldset';
 
 /**
  * Checkbox Primitive
  * Checkbox input with custom styling
+ *
+ * NOW POWERED BY CATALYST UI
  */
 
 type CheckboxSize = 'sm' | 'md' | 'lg';
 
-interface CheckboxProps extends Omit<React.InputHTMLAttributes<HTMLInputElement>, 'size'> {
+interface CheckboxProps {
   /** Checkbox label */
   label?: string;
   /** Size variant */
@@ -18,183 +24,87 @@ interface CheckboxProps extends Omit<React.InputHTMLAttributes<HTMLInputElement>
   error?: boolean;
   /** Helper text */
   helperText?: string;
+  /** Checked state */
+  checked?: boolean;
+  /** Default checked state (uncontrolled) */
+  defaultChecked?: boolean;
+  /** Change handler */
+  onChange?: (checked: boolean) => void;
+  /** Disabled state */
+  disabled?: boolean;
+  /** Name attribute */
+  name?: string;
+  /** Additional className */
+  className?: string;
+  /** ID attribute */
+  id?: string;
 }
 
-const Checkbox = React.forwardRef<HTMLInputElement, CheckboxProps>(({
+const Checkbox: React.FC<CheckboxProps> = ({
   label,
   size = 'md',
   indeterminate = false,
   error = false,
   helperText,
-  className = '',
+  checked,
+  defaultChecked,
+  onChange,
   disabled,
-  ...props
-}, ref) => {
-  const inputRef = React.useRef<HTMLInputElement>(null);
+  name,
+  className = '',
+  id,
+}) => {
+  const [internalChecked, setInternalChecked] = React.useState(defaultChecked || false);
+  const isControlled = checked !== undefined;
+  const isChecked = isControlled ? checked : internalChecked;
 
-  React.useEffect(() => {
-    if (inputRef.current) {
-      inputRef.current.indeterminate = indeterminate;
+  const handleChange = (newChecked: boolean) => {
+    if (!isControlled) {
+      setInternalChecked(newChecked);
     }
-  }, [indeterminate]);
-
-  // Combine refs
-  React.useImperativeHandle(ref, () => inputRef.current!);
-
-  const checkboxId = props.id || `checkbox-${Math.random().toString(36).substr(2, 9)}`;
-  const sizeConfig = sizeConfigs[size];
-
-  const checkboxStyle: React.CSSProperties = {
-    ...styles.checkbox,
-    width: sizeConfig.size,
-    height: sizeConfig.size,
-    ...(error && styles.error),
-    ...(disabled && styles.disabled),
+    onChange?.(newChecked);
   };
 
-  const iconSize = parseInt(sizeConfig.size) - 8;
+  // Catalyst uses blue as default, which matches AK Golf primary
+  const color = error ? 'red' : 'blue';
 
-  return (
-    <div style={styles.container}>
-      <div style={styles.checkboxWrapper}>
-        <input
-          ref={inputRef}
-          id={checkboxId}
-          type="checkbox"
-          style={styles.input}
+  // If we have a label, use CheckboxField for proper layout
+  if (label) {
+    return (
+      <CheckboxField className={className}>
+        <CatalystCheckbox
+          name={name}
+          checked={isChecked}
+          onChange={handleChange}
           disabled={disabled}
-          className={className}
-          {...props}
+          color={color}
+          indeterminate={indeterminate}
+          className=""
         />
-        <label htmlFor={checkboxId} style={styles.customCheckbox}>
-          <span style={checkboxStyle}>
-            {(props.checked || indeterminate) && (
-              <svg
-                width={iconSize}
-                height={iconSize}
-                viewBox="0 0 16 16"
-                fill="none"
-                stroke="currentColor"
-                strokeWidth="2"
-                strokeLinecap="round"
-                strokeLinejoin="round"
-              >
-                {indeterminate ? (
-                  <line x1="3" y1="8" x2="13" y2="8" />
-                ) : (
-                  <polyline points="3 8 7 12 13 4" />
-                )}
-              </svg>
-            )}
-          </span>
-          {label && (
-            <span
-              style={{
-                ...styles.label,
-                fontSize: size === 'sm' ? 'var(--font-size-footnote)' : 'var(--font-size-body)',
-              }}
-            >
-              {label}
-            </span>
-          )}
-        </label>
-      </div>
+        <Label className="">{label}</Label>
+        {helperText && (
+          <Description className={error ? 'text-ak-status-error' : ''}>
+            {helperText}
+          </Description>
+        )}
+      </CheckboxField>
+    );
+  }
 
-      {helperText && (
-        <div
-          style={{
-            ...styles.helperText,
-            ...(error && styles.errorText),
-          }}
-        >
-          {helperText}
-        </div>
-      )}
-    </div>
+  // Simple checkbox without label
+  return (
+    <CatalystCheckbox
+      name={name}
+      checked={isChecked}
+      onChange={handleChange}
+      disabled={disabled}
+      color={color}
+      className={className}
+      indeterminate={indeterminate}
+    />
   );
-});
+};
 
 Checkbox.displayName = 'Checkbox';
-
-const sizeConfigs = {
-  sm: { size: '16px' },
-  md: { size: '20px' },
-  lg: { size: '24px' },
-};
-
-const styles: Record<string, React.CSSProperties> = {
-  container: {
-    display: 'flex',
-    flexDirection: 'column',
-    gap: 'var(--spacing-1)',
-  },
-  checkboxWrapper: {
-    display: 'inline-flex',
-  },
-  input: {
-    position: 'absolute',
-    opacity: 0,
-    width: 0,
-    height: 0,
-  },
-  customCheckbox: {
-    display: 'flex',
-    alignItems: 'center',
-    gap: 'var(--spacing-2)',
-    cursor: 'pointer',
-    userSelect: 'none',
-  },
-  checkbox: {
-    display: 'inline-flex',
-    alignItems: 'center',
-    justifyContent: 'center',
-    flexShrink: 0,
-    border: '2px solid var(--border-default)',
-    borderRadius: 'var(--radius-sm)',
-    backgroundColor: 'var(--background-white)',
-    color: 'var(--text-inverse)',
-    transition: 'all 0.15s ease',
-  },
-  label: {
-    fontFamily: 'var(--font-family)',
-    color: 'var(--text-primary)',
-  },
-  error: {
-    borderColor: 'var(--error)',
-  },
-  disabled: {
-    opacity: 0.5,
-    cursor: 'not-allowed',
-  },
-  helperText: {
-    fontSize: 'var(--font-size-caption1)',
-    color: 'var(--text-secondary)',
-    marginLeft: 'var(--spacing-6)',
-  },
-  errorText: {
-    color: 'var(--error)',
-  },
-};
-
-// Add checked state styles via CSS
-const styleSheet = document.createElement('style');
-styleSheet.textContent = `
-  input[type="checkbox"]:checked + label span:first-child {
-    background-color: var(--accent);
-    border-color: var(--accent);
-  }
-  input[type="checkbox"]:indeterminate + label span:first-child {
-    background-color: var(--accent);
-    border-color: var(--accent);
-  }
-  input[type="checkbox"]:focus-visible + label span:first-child {
-    outline: 2px solid var(--accent);
-    outline-offset: 2px;
-  }
-`;
-if (typeof document !== 'undefined' && !document.querySelector('#checkbox-styles')) {
-  styleSheet.id = 'checkbox-styles';
-  document.head.appendChild(styleSheet);
-}
 
 export default Checkbox;

@@ -78,10 +78,23 @@ const CoachAthleteDetailContainer: React.FC = () => {
     return <LoadingState message="Laster spillerdetaljer..." />;
   }
 
-  if (state === 'error') {
+  // Guard: playerId must exist
+  if (!playerId) {
     return (
       <ErrorState
-        errorType={(error as any)?.type}
+        message="Spiller-ID mangler"
+        onRetry={() => navigate('/coach/athletes')}
+      />
+    );
+  }
+
+  if (state === 'error') {
+    const errorType = error && typeof error === 'object' && 'type' in error
+      ? (error as { type?: string }).type
+      : undefined;
+    return (
+      <ErrorState
+        errorType={errorType}
         message={error?.message || 'Kunne ikke laste spillerdetaljer'}
         onRetry={fetchAthleteDetail}
       />
@@ -94,7 +107,7 @@ const CoachAthleteDetailContainer: React.FC = () => {
 
   return (
     <CoachAthleteDetail
-      athleteId={playerId!}
+      athleteId={playerId}
       athleteName={athleteName}
       onBack={handleBack}
       onViewProof={handleViewProof}

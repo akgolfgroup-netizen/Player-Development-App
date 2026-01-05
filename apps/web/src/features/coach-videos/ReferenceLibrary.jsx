@@ -470,7 +470,7 @@ export function ReferenceLibrary({
     return (
       <div className={`flex flex-col gap-4 p-4 ${className || ''}`}>
         <div className="flex items-center justify-center p-12">
-          <div className="w-8 h-8 border-[3px] border-ak-border-default border-t-ak-brand-primary rounded-full animate-spin" />
+          <div className="w-8 h-8 border-[3px] border-ak-border-default border-t-ak-primary rounded-full animate-spin" />
         </div>
       </div>
     );
@@ -612,7 +612,7 @@ export function ReferenceLibrary({
                 <div
                   className={`p-6 border-2 border-dashed rounded-xl flex flex-col items-center justify-center gap-3 cursor-pointer transition-all ${
                     isDragging
-                      ? 'border-ak-brand-primary bg-ak-brand-primary/10'
+                      ? 'border-ak-primary bg-ak-primary/10'
                       : 'border-ak-border-default'
                   }`}
                   onDragOver={(e) => { e.preventDefault(); setIsDragging(true); }}
@@ -637,7 +637,7 @@ export function ReferenceLibrary({
                 </div>
               ) : (
                 <div className="flex items-center gap-3 p-3 bg-ak-surface-subtle rounded-lg">
-                  <div className="w-10 h-10 rounded-lg bg-ak-brand-primary flex items-center justify-center text-white">
+                  <div className="w-10 h-10 rounded-lg bg-ak-primary flex items-center justify-center text-white">
                     <Video size={20} />
                   </div>
                   <div className="flex-1 min-w-0">
@@ -776,12 +776,12 @@ export function ReferenceLibrary({
                       key={player.id}
                       className={`flex items-center gap-3 p-3 rounded-lg cursor-pointer transition-colors ${
                         isSelected
-                          ? 'bg-ak-brand-primary/20 outline outline-1 outline-ak-brand-primary'
+                          ? 'bg-ak-primary/20 outline outline-1 outline-ak-primary'
                           : 'bg-ak-surface-subtle'
                       }`}
                       onClick={() => handlePlayerToggle(player.id)}
                     >
-                      <div className="w-9 h-9 rounded-full bg-ak-brand-primary flex items-center justify-center text-sm font-semibold text-white">
+                      <div className="w-9 h-9 rounded-full bg-ak-primary flex items-center justify-center text-sm font-semibold text-white">
                         {player.initials}
                       </div>
                       <div className="flex-1">
@@ -795,7 +795,7 @@ export function ReferenceLibrary({
                       <div
                         className={`w-5 h-5 rounded border-2 flex items-center justify-center transition-all ${
                           isSelected
-                            ? 'bg-ak-brand-primary border-ak-brand-primary'
+                            ? 'bg-ak-primary border-ak-primary'
                             : 'bg-transparent border-ak-border-default'
                         }`}
                       >

@@ -96,6 +96,14 @@ export class SessionService {
         completionStatus: 'in_progress',
         technicalCues: [],
         mediaUrls: [],
+        // AK Golf Kategori Hierarki v2.0 felter
+        akFormula: input.akFormula,
+        environment: input.environment,
+        pressure: input.pressure,
+        positionStart: input.positionStart,
+        positionEnd: input.positionEnd,
+        puttingFocus: input.puttingFocus,
+        puttingPhases: input.puttingPhases,
       },
     });
 
@@ -185,6 +193,9 @@ export class SessionService {
     if (query.period) where.period = query.period;
     if (query.learningPhase) where.learningPhase = query.learningPhase;
     if (query.completionStatus) where.completionStatus = query.completionStatus;
+    // AK Golf Kategori Hierarki v2.0 filtere
+    if (query.environment) where.environment = query.environment;
+    if (query.pressure) where.pressure = query.pressure;
 
     if (query.fromDate || query.toDate) {
       where.sessionDate = {};
@@ -286,6 +297,14 @@ export class SessionService {
         ...(input.period !== undefined && { period: input.period }),
         ...(input.intensity !== undefined && { intensity: input.intensity }),
         ...(input.notes !== undefined && { notes: input.notes }),
+        // AK Golf Kategori Hierarki v2.0 felter
+        ...(input.akFormula !== undefined && { akFormula: input.akFormula }),
+        ...(input.environment !== undefined && { environment: input.environment }),
+        ...(input.pressure !== undefined && { pressure: input.pressure }),
+        ...(input.positionStart !== undefined && { positionStart: input.positionStart }),
+        ...(input.positionEnd !== undefined && { positionEnd: input.positionEnd }),
+        ...(input.puttingFocus !== undefined && { puttingFocus: input.puttingFocus }),
+        ...(input.puttingPhases !== undefined && { puttingPhases: input.puttingPhases }),
       },
     });
   }

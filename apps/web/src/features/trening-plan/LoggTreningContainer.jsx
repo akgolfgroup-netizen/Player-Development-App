@@ -2,12 +2,13 @@
  * LoggTreningContainer.jsx
  * Design System v3.0 - Premium Light
  *
- * MIGRATED TO PAGE ARCHITECTURE - Zero inline styles
+ * Basert på AK-formel hierarki v2.0
+ * Pyramide: FYS → TEK → SLAG → SPILL → TURN
  */
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import {
-  Plus, Clock, Target, Dumbbell, Brain,
+  Plus, Clock, Target, Dumbbell, Brain, Trophy,
   Star, Save, CheckCircle, AlertCircle
 } from 'lucide-react';
 import Button from '../../ui/primitives/Button';
@@ -15,49 +16,55 @@ import { sessionsAPI } from '../../services/api';
 import { SubSectionTitle } from '../../components/typography';
 
 // ============================================================================
-// CLASS MAPPINGS
+// AK-FORMEL CLASS MAPPINGS
 // ============================================================================
 
+// Treningspyramiden: FYS → TEK → SLAG → SPILL → TURN
 const SESSION_TYPE_CLASSES = {
-  technical: {
-    text: 'text-ak-brand-primary',
-    bg: 'bg-ak-brand-primary/15',
-    activeBg: 'bg-ak-brand-primary',
-    border: 'border-ak-brand-primary',
-    icon: Target,
-    label: 'Teknikk',
-  },
-  short_game: {
-    text: 'text-ak-status-success',
-    bg: 'bg-ak-status-success/15',
-    activeBg: 'bg-ak-status-success',
-    border: 'border-ak-status-success',
-    icon: Target,
-    label: 'Kortspill',
-  },
-  physical: {
-    text: 'text-ak-status-error',
-    bg: 'bg-ak-status-error/15',
-    activeBg: 'bg-ak-status-error',
-    border: 'border-ak-status-error',
+  FYS: {
+    text: 'text-[#D97644]',
+    bg: 'bg-[#D97644]/15',
+    activeBg: 'bg-[#D97644]',
+    border: 'border-[#D97644]',
     icon: Dumbbell,
     label: 'Fysisk',
+    description: 'Styrke, power, mobilitet',
   },
-  mental: {
-    text: 'text-gold-500',
-    bg: 'bg-gold-500/15',
-    activeBg: 'bg-gold-500',
-    border: 'border-gold-500',
-    icon: Brain,
-    label: 'Mental',
-  },
-  round: {
-    text: 'text-ak-text-primary',
-    bg: 'bg-ak-surface-subtle',
-    activeBg: 'bg-ak-text-primary',
-    border: 'border-ak-text-primary',
+  TEK: {
+    text: 'text-[#8B6E9D]',
+    bg: 'bg-[#8B6E9D]/15',
+    activeBg: 'bg-[#8B6E9D]',
+    border: 'border-[#8B6E9D]',
     icon: Target,
-    label: 'Runde',
+    label: 'Teknikk',
+    description: 'Bevegelsesmønster, posisjoner',
+  },
+  SLAG: {
+    text: 'text-[#4A8C7C]',
+    bg: 'bg-[#4A8C7C]/15',
+    activeBg: 'bg-[#4A8C7C]',
+    border: 'border-[#4A8C7C]',
+    icon: Target,
+    label: 'Golfslag',
+    description: 'Slagkvalitet, nøyaktighet',
+  },
+  SPILL: {
+    text: 'text-[#4A7C59]',
+    bg: 'bg-[#4A7C59]/15',
+    activeBg: 'bg-[#4A7C59]',
+    border: 'border-[#4A7C59]',
+    icon: Target,
+    label: 'Spill',
+    description: 'Strategi, banehåndtering',
+  },
+  TURN: {
+    text: 'text-[#C9A227]',
+    bg: 'bg-[#C9A227]/15',
+    activeBg: 'bg-[#C9A227]',
+    border: 'border-[#C9A227]',
+    icon: Trophy,
+    label: 'Turnering',
+    description: 'Mental prestasjon, press',
   },
 };
 
@@ -72,38 +79,49 @@ const SESSION_TYPES = Object.entries(SESSION_TYPE_CLASSES).map(([id, config]) =>
 }));
 
 const QUICK_EXERCISES = [
-  { id: 'driver', name: 'Driver-trening', type: 'technical', duration: 45 },
-  { id: 'irons', name: 'Jernspill', type: 'technical', duration: 45 },
-  { id: 'chipping', name: 'Chipping', type: 'short_game', duration: 30 },
-  { id: 'bunker', name: 'Bunker', type: 'short_game', duration: 30 },
-  { id: 'putting', name: 'Putting', type: 'short_game', duration: 30 },
-  { id: 'gym', name: 'Styrketrening', type: 'physical', duration: 60 },
-  { id: 'flexibility', name: 'Mobilitet', type: 'physical', duration: 30 },
-  { id: 'visualization', name: 'Visualisering', type: 'mental', duration: 20 },
+  // FYS - Fysisk
+  { id: 'gym', name: 'Styrketrening', type: 'FYS', duration: 60 },
+  { id: 'flexibility', name: 'Mobilitet', type: 'FYS', duration: 30 },
+  { id: 'power', name: 'Power', type: 'FYS', duration: 45 },
+  // TEK - Teknikk
+  { id: 'swing', name: 'Svingteknikk', type: 'TEK', duration: 45 },
+  { id: 'positions', name: 'P-Posisjoner', type: 'TEK', duration: 30 },
+  // SLAG - Golfslag
+  { id: 'tee', name: 'Tee (Driver)', type: 'SLAG', duration: 45 },
+  { id: 'inn100', name: 'Innspill 100-150m', type: 'SLAG', duration: 45 },
+  { id: 'chip', name: 'Chip/Pitch', type: 'SLAG', duration: 30 },
+  { id: 'putting', name: 'Putting', type: 'SLAG', duration: 30 },
+  { id: 'bunker', name: 'Bunker', type: 'SLAG', duration: 30 },
+  // SPILL - Spill
+  { id: 'course', name: 'Banetrening', type: 'SPILL', duration: 120 },
+  { id: 'strategy', name: 'Strategi', type: 'SPILL', duration: 60 },
+  // TURN - Turnering
+  { id: 'competition', name: 'Konkurransetrening', type: 'TURN', duration: 90 },
+  { id: 'pressure', name: 'Presstrening', type: 'TURN', duration: 60 },
 ];
 
 const RECENT_LOGS = [
   {
     id: 'r1',
     date: '2025-01-18',
-    type: 'technical',
-    name: 'Driver-trening',
+    type: 'SLAG',
+    name: 'TEE og INN150 trening',
     duration: 90,
     rating: 4,
   },
   {
     id: 'r2',
     date: '2025-01-17',
-    type: 'short_game',
-    name: 'Kortspill og putting',
+    type: 'SLAG',
+    name: 'Chip og putting',
     duration: 75,
     rating: 5,
   },
   {
     id: 'r3',
     date: '2025-01-15',
-    type: 'physical',
-    name: 'Styrketrening',
+    type: 'FYS',
+    name: 'Styrke og power',
     duration: 60,
     rating: 4,
   },
@@ -219,7 +237,7 @@ const LogForm = ({ sessionType, onSubmit, saving = false }) => {
           value={formData.name}
           onChange={(e) => setFormData({ ...formData, name: e.target.value })}
           placeholder="F.eks. Driver-trening pa range"
-          className="w-full py-3 px-3 rounded-lg border border-ak-border-default text-sm outline-none focus:border-ak-brand-primary"
+          className="w-full py-3 px-3 rounded-lg border border-ak-border-default text-sm outline-none focus:border-ak-primary"
         />
       </div>
 
@@ -237,7 +255,7 @@ const LogForm = ({ sessionType, onSubmit, saving = false }) => {
               onChange={(e) => setFormData({ ...formData, duration: parseInt(e.target.value) || 0 })}
               min="5"
               max="300"
-              className="flex-1 py-3 px-3 rounded-lg border border-ak-border-default text-sm outline-none focus:border-ak-brand-primary"
+              className="flex-1 py-3 px-3 rounded-lg border border-ak-border-default text-sm outline-none focus:border-ak-primary"
             />
           </div>
         </div>
@@ -278,7 +296,7 @@ const LogForm = ({ sessionType, onSubmit, saving = false }) => {
               onClick={() => setFormData({ ...formData, energyLevel: level })}
               className={`flex-1 py-2 rounded-lg text-sm font-medium cursor-pointer transition-all ${
                 formData.energyLevel === level
-                  ? 'border-2 border-ak-brand-primary bg-ak-brand-primary/15 text-ak-brand-primary'
+                  ? 'border-2 border-ak-primary bg-ak-primary/15 text-ak-primary'
                   : 'border border-ak-border-default bg-ak-surface-base text-ak-text-primary'
               }`}
             >
@@ -302,7 +320,7 @@ const LogForm = ({ sessionType, onSubmit, saving = false }) => {
           onChange={(e) => setFormData({ ...formData, notes: e.target.value })}
           placeholder="Hva jobbet du med? Hvordan gikk det?"
           rows={3}
-          className="w-full py-3 px-3 rounded-lg border border-ak-border-default text-sm outline-none resize-y font-inherit focus:border-ak-brand-primary"
+          className="w-full py-3 px-3 rounded-lg border border-ak-border-default text-sm outline-none resize-y font-inherit focus:border-ak-primary"
         />
       </div>
 
@@ -316,7 +334,7 @@ const LogForm = ({ sessionType, onSubmit, saving = false }) => {
           value={formData.achievements}
           onChange={(e) => setFormData({ ...formData, achievements: e.target.value })}
           placeholder="F.eks. Ny toppfart, PR i ovelse"
-          className="w-full py-3 px-3 rounded-lg border border-ak-border-default text-sm outline-none focus:border-ak-brand-primary"
+          className="w-full py-3 px-3 rounded-lg border border-ak-border-default text-sm outline-none focus:border-ak-primary"
         />
       </div>
 
@@ -342,11 +360,11 @@ const LogForm = ({ sessionType, onSubmit, saving = false }) => {
 const RecentLogs = ({ logs }) => (
   <div className="bg-ak-surface-base rounded-[14px] p-4">
     <SubSectionTitle className="text-sm m-0 mb-3">
-      Siste loggforinger
+      Siste loggføringer
     </SubSectionTitle>
     <div className="flex flex-col gap-2">
       {logs.map((log) => {
-        const typeConfig = SESSION_TYPE_CLASSES[log.type] || SESSION_TYPE_CLASSES.technical;
+        const typeConfig = SESSION_TYPE_CLASSES[log.type] || SESSION_TYPE_CLASSES.TEK;
         const Icon = typeConfig.icon;
 
         return (
@@ -405,20 +423,17 @@ const LoggTreningContainer = () => {
     setErrorMessage('');
 
     try {
-      // Map form data to session API format
+      // Map form data to session API format (AK Golf Kategori Hierarki v2.0)
       const sessionData = {
-        title: formData.name || `${formData.type} økt`,
-        type: formData.type,
-        plannedDuration: formData.duration,
-        date: formData.date,
-        status: 'completed',
+        sessionType: formData.type, // FYS, TEK, SLAG, SPILL, TURN
+        sessionDate: new Date(formData.date).toISOString(),
+        duration: formData.duration,
         notes: formData.notes,
-        evaluation: {
-          rating: formData.rating,
-          energyLevel: formData.energyLevel,
-          achievements: formData.achievements,
-          improvements: formData.improvements,
-        },
+        // Generer enkel AK-formel basert på type
+        akFormula: formData.type,
+        // Evaluering lagres i separate felter
+        evaluationEnergy: formData.energyLevel,
+        evaluationFocus: formData.rating,
       };
 
       await sessionsAPI.create(sessionData);
@@ -426,7 +441,7 @@ const LoggTreningContainer = () => {
 
       // Navigate to sessions list after short delay
       setTimeout(() => {
-        navigate('/treningsokter');
+        navigate('/trening/dagbok');
       }, 1500);
     } catch (err) {
       setSaveStatus('error');

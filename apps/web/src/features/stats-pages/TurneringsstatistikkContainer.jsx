@@ -14,7 +14,7 @@ import { SectionTitle, SubSectionTitle } from '../../components/typography';
 
 // Color class mapping
 const COLOR_CLASSES = {
-  brand: { text: 'text-ak-brand-primary', bg: 'bg-ak-brand-primary/15' },
+  brand: { text: 'text-ak-primary', bg: 'bg-ak-primary/15' },
   success: { text: 'text-ak-status-success', bg: 'bg-ak-status-success/15' },
   warning: { text: 'text-ak-status-warning', bg: 'bg-ak-status-warning/15' },
   error: { text: 'text-ak-status-error', bg: 'bg-ak-status-error/15' },
@@ -138,7 +138,7 @@ const StatCard = ({ label, value, subValue, icon: Icon, colorKey }) => {
       </div>
       <div className="text-xs text-ak-text-secondary">{label}</div>
       {subValue && (
-        <div className="text-[11px] text-ak-brand-primary mt-1">
+        <div className="text-[11px] text-ak-primary mt-1">
           {subValue}
         </div>
       )}
@@ -277,7 +277,7 @@ const CategoryStatsCard = ({ title, stats, fields }) => (
       ))}
       <div className="flex items-center justify-between pt-2 border-t border-ak-border-default">
         <span className="text-xs text-ak-text-secondary">Tour-ranking</span>
-        <span className="text-[13px] font-semibold text-ak-brand-primary">
+        <span className="text-[13px] font-semibold text-ak-primary">
           #{stats.ranking}
         </span>
       </div>
@@ -309,7 +309,7 @@ const TurneringsstatistikkContainer = () => {
               onClick={() => setSelectedSeason(year)}
               className={`py-2 px-4 rounded-lg border-none text-[13px] font-medium cursor-pointer ${
                 selectedSeason === year
-                  ? 'bg-ak-brand-primary text-white'
+                  ? 'bg-ak-primary text-white'
                   : 'bg-ak-surface-base text-ak-text-primary'
               }`}
             >

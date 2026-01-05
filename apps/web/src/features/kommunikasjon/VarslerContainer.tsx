@@ -117,13 +117,13 @@ const NOTIFICATIONS: Notification[] = [
 const getNotificationConfig = (type: string) => {
   switch (type) {
     case 'training':
-      return { icon: Calendar, colorClass: 'text-ak-brand-primary bg-ak-brand-primary/15' };
+      return { icon: Calendar, colorClass: 'text-ak-primary bg-ak-primary/15' };
     case 'tournament':
       return { icon: Trophy, colorClass: 'text-ak-status-warning bg-ak-status-warning/15' };
     case 'achievement':
       return { icon: Award, colorClass: 'text-ak-status-success bg-ak-status-success/15' };
     case 'message':
-      return { icon: MessageSquare, colorClass: 'text-ak-brand-primary bg-ak-brand-primary/15' };
+      return { icon: MessageSquare, colorClass: 'text-ak-primary bg-ak-primary/15' };
     case 'reminder':
       return { icon: Clock, colorClass: 'text-ak-status-warning bg-ak-status-warning/15' };
     case 'test':
@@ -173,7 +173,7 @@ const NotificationCard: React.FC<NotificationCardProps> = ({
     <div
       className={`
         flex items-start gap-3.5 p-3.5 rounded-xl shadow-sm cursor-pointer transition-all
-        ${notification.read ? 'bg-ak-surface-base' : 'bg-ak-brand-primary/5 border-l-[3px] border-ak-brand-primary'}
+        ${notification.read ? 'bg-ak-surface-base' : 'bg-ak-primary/5 border-l-[3px] border-ak-primary'}
         hover:bg-ak-surface-subtle
       `}
       onClick={() => {
@@ -363,7 +363,7 @@ const VarslerContainer: React.FC = () => {
     return (
       <div className="min-h-screen bg-ak-surface-subtle flex items-center justify-center">
         <div className="text-center">
-          <Loader2 size={32} className="text-ak-brand-primary animate-spin mx-auto" />
+          <Loader2 size={32} className="text-ak-primary animate-spin mx-auto" />
           <p className="mt-4 text-ak-text-secondary">Laster varsler...</p>
         </div>
       </div>
@@ -389,7 +389,7 @@ const VarslerContainer: React.FC = () => {
                 className={`
                   px-3.5 py-2 rounded-lg border-none text-[13px] font-medium cursor-pointer whitespace-nowrap
                   ${filter === f.key
-                    ? 'bg-ak-brand-primary text-white'
+                    ? 'bg-ak-primary text-white'
                     : 'bg-ak-surface-base text-ak-text-primary'
                   }
                 `}

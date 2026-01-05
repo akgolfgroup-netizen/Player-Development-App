@@ -1,40 +1,94 @@
+/**
+ * Table Component - shadcn API compatible wrapper for Catalyst Table
+ *
+ * NOW POWERED BY CATALYST UI
+ *
+ * Note: Catalyst Table has different naming conventions:
+ * - shadcn TableHeader (thead) = Catalyst TableHead
+ * - shadcn TableHead (th) = Catalyst TableHeader
+ */
+
 import * as React from "react"
+// @ts-expect-error - Catalyst components are JS without type definitions
+import {
+  Table as CatalystTable,
+  TableHead as CatalystTableHead,
+  TableBody as CatalystTableBody,
+  TableRow as CatalystTableRow,
+  TableHeader as CatalystTableHeader,
+  TableCell as CatalystTableCell,
+} from "../catalyst/table"
 import { cn } from "lib/utils"
 
-const Table = React.forwardRef<
-  HTMLTableElement,
-  React.HTMLAttributes<HTMLTableElement>
->(({ className, ...props }, ref) => (
-  <div className="relative w-full overflow-auto">
-    <table
-      ref={ref}
-      className={cn("w-full caption-bottom text-sm", className)}
+// Re-export Catalyst components directly for new code
+export {
+  CatalystTable,
+  CatalystTableHead,
+  CatalystTableBody,
+  CatalystTableRow,
+  CatalystTableHeader,
+  CatalystTableCell,
+}
+
+/**
+ * Table - Root table component using Catalyst
+ */
+interface TableProps extends React.HTMLAttributes<HTMLTableElement> {
+  /** Allow table to bleed to edges */
+  bleed?: boolean
+  /** Dense/compact row spacing */
+  dense?: boolean
+  /** Show grid lines between cells */
+  grid?: boolean
+  /** Striped rows */
+  striped?: boolean
+}
+
+const Table = React.forwardRef<HTMLTableElement, TableProps>(
+  ({ className, bleed, dense, grid, striped, children, ...props }, ref) => (
+    <CatalystTable
+      bleed={bleed}
+      dense={dense}
+      grid={grid}
+      striped={striped}
+      className={className}
       {...props}
-    />
-  </div>
-))
+    >
+      {children}
+    </CatalystTable>
+  )
+)
 Table.displayName = "Table"
 
+/**
+ * TableHeader - thead element (maps to Catalyst TableHead)
+ */
 const TableHeader = React.forwardRef<
   HTMLTableSectionElement,
   React.HTMLAttributes<HTMLTableSectionElement>
->(({ className, ...props }, ref) => (
-  <thead ref={ref} className={cn("[&_tr]:border-b", className)} {...props} />
+>(({ className, children, ...props }, ref) => (
+  <CatalystTableHead className={className} {...props}>
+    {children}
+  </CatalystTableHead>
 ))
 TableHeader.displayName = "TableHeader"
 
+/**
+ * TableBody - tbody element
+ */
 const TableBody = React.forwardRef<
   HTMLTableSectionElement,
   React.HTMLAttributes<HTMLTableSectionElement>
->(({ className, ...props }, ref) => (
-  <tbody
-    ref={ref}
-    className={cn("[&_tr:last-child]:border-0", className)}
-    {...props}
-  />
+>(({ className, children, ...props }, ref) => (
+  <CatalystTableBody className={className} {...props}>
+    {children}
+  </CatalystTableBody>
 ))
 TableBody.displayName = "TableBody"
 
+/**
+ * TableFooter - tfoot element (not in Catalyst, keep custom)
+ */
 const TableFooter = React.forwardRef<
   HTMLTableSectionElement,
   React.HTMLAttributes<HTMLTableSectionElement>
@@ -42,7 +96,7 @@ const TableFooter = React.forwardRef<
   <tfoot
     ref={ref}
     className={cn(
-      "border-t border-border-subtle bg-ak-snow/50 font-medium [&>tr]:last:border-b-0",
+      "border-t border-zinc-950/10 bg-zinc-50 font-medium dark:border-white/10 dark:bg-zinc-900 [&>tr]:last:border-b-0",
       className
     )}
     {...props}
@@ -50,58 +104,66 @@ const TableFooter = React.forwardRef<
 ))
 TableFooter.displayName = "TableFooter"
 
-const TableRow = React.forwardRef<
-  HTMLTableRowElement,
-  React.HTMLAttributes<HTMLTableRowElement>
->(({ className, ...props }, ref) => (
-  <tr
-    ref={ref}
-    className={cn(
-      "border-b border-border-subtle transition-colors hover:bg-ak-snow/50 data-[state=selected]:bg-ak-snow",
-      className
-    )}
-    {...props}
-  />
-))
+/**
+ * TableRow - tr element
+ */
+interface TableRowProps extends React.HTMLAttributes<HTMLTableRowElement> {
+  href?: string
+  target?: string
+  title?: string
+}
+
+const TableRow = React.forwardRef<HTMLTableRowElement, TableRowProps>(
+  ({ className, href, target, title, children, ...props }, ref) => (
+    <CatalystTableRow
+      href={href}
+      target={target}
+      title={title}
+      className={className}
+      {...props}
+    >
+      {children}
+    </CatalystTableRow>
+  )
+)
 TableRow.displayName = "TableRow"
 
+/**
+ * TableHead - th element (maps to Catalyst TableHeader)
+ */
 const TableHead = React.forwardRef<
   HTMLTableCellElement,
   React.ThHTMLAttributes<HTMLTableCellElement>
->(({ className, ...props }, ref) => (
-  <th
-    ref={ref}
-    className={cn(
-      "h-10 px-4 text-left align-middle font-medium text-text-secondary [&:has([role=checkbox])]:pr-0 [&>[role=checkbox]]:translate-y-[2px]",
-      className
-    )}
-    {...props}
-  />
+>(({ className, children, ...props }, ref) => (
+  <CatalystTableHeader className={className} {...props}>
+    {children}
+  </CatalystTableHeader>
 ))
 TableHead.displayName = "TableHead"
 
+/**
+ * TableCell - td element
+ */
 const TableCell = React.forwardRef<
   HTMLTableCellElement,
   React.TdHTMLAttributes<HTMLTableCellElement>
->(({ className, ...props }, ref) => (
-  <td
-    ref={ref}
-    className={cn(
-      "p-4 align-middle text-text-primary [&:has([role=checkbox])]:pr-0 [&>[role=checkbox]]:translate-y-[2px]",
-      className
-    )}
-    {...props}
-  />
+>(({ className, children, ...props }, ref) => (
+  <CatalystTableCell className={className} {...props}>
+    {children}
+  </CatalystTableCell>
 ))
 TableCell.displayName = "TableCell"
 
+/**
+ * TableCaption - caption element (not in Catalyst, keep custom)
+ */
 const TableCaption = React.forwardRef<
   HTMLTableCaptionElement,
   React.HTMLAttributes<HTMLTableCaptionElement>
 >(({ className, ...props }, ref) => (
   <caption
     ref={ref}
-    className={cn("mt-4 text-sm text-text-secondary", className)}
+    className={cn("mt-4 text-sm text-zinc-500 dark:text-zinc-400", className)}
     {...props}
   />
 ))

@@ -262,7 +262,7 @@ export default function StatsPage() {
     const base = 'mt-2.5 py-2 px-3 rounded-lg text-[13px] flex items-center gap-1.5';
     const types = {
       loading: `${base} bg-ak-surface-subtle text-ak-text-secondary`,
-      info: `${base} bg-ak-surface-subtle text-ak-brand-primary`,
+      info: `${base} bg-ak-surface-subtle text-ak-primary`,
       ok: `${base} bg-ak-status-success/15 text-ak-status-success`,
     };
     return types[type] || types.loading;

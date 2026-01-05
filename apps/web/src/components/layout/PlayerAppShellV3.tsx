@@ -142,7 +142,7 @@ export default function PlayerAppShellV3({ children }: PlayerAppShellV3Props) {
               borderRadius: '12px',
               padding: '12px 16px',
               color: isAreaActive ? '#FFFFFF' : 'rgba(255, 255, 255, 0.75)',
-              backgroundColor: isAreaActive ? areaColors.primary : 'transparent',
+              backgroundColor: isAreaActive ? 'rgba(255, 255, 255, 0.15)' : 'transparent',
               transition: 'all 0.2s',
               fontSize: '15px',
               fontWeight: 600,
@@ -156,7 +156,7 @@ export default function PlayerAppShellV3({ children }: PlayerAppShellV3Props) {
                 width: 32,
                 height: 32,
                 borderRadius: '8px',
-                backgroundColor: isAreaActive ? 'rgba(255,255,255,0.2)' : `${areaColors.primary}20`,
+                backgroundColor: isAreaActive ? 'rgba(255,255,255,0.25)' : 'rgba(255,255,255,0.1)',
                 display: 'flex',
                 alignItems: 'center',
                 justifyContent: 'center',
@@ -251,7 +251,7 @@ export default function PlayerAppShellV3({ children }: PlayerAppShellV3Props) {
         left: 0,
         right: 0,
         height: bottomNavConfig.height,
-        backgroundColor: '#1C1C1E',
+        backgroundColor: 'var(--ak-primary, #1A3D2E)',
         display: 'flex',
         alignItems: 'center',
         justifyContent: 'space-around',
@@ -355,7 +355,7 @@ export default function PlayerAppShellV3({ children }: PlayerAppShellV3Props) {
               display: 'flex',
               alignItems: 'center',
               justifyContent: 'center',
-              color: '#1C1C1E',
+              color: 'var(--ak-primary, #1A3D2E)',
               fontWeight: 700,
               fontSize: '16px',
             }}
@@ -421,7 +421,7 @@ export default function PlayerAppShellV3({ children }: PlayerAppShellV3Props) {
             to="/dashboard"
             style={{ display: 'flex', alignItems: 'center', gap: '10px', textDecoration: 'none' }}
           >
-            <AKLogo size={32} />
+            <AKLogo size={32} color="#FFFFFF" />
             <span style={{ color: '#FFFFFF', fontWeight: 600, fontSize: '16px' }}>
               AK Golf
             </span>
@@ -460,7 +460,7 @@ export default function PlayerAppShellV3({ children }: PlayerAppShellV3Props) {
                 left: 0,
                 bottom: bottomNavConfig.height,
                 width: '300px',
-                backgroundColor: '#1C1C1E',
+                backgroundColor: 'var(--ak-primary, #1A3D2E)',
                 color: '#FFFFFF',
                 display: 'flex',
                 flexDirection: 'column',
@@ -507,7 +507,7 @@ export default function PlayerAppShellV3({ children }: PlayerAppShellV3Props) {
         style={{
           width: sidebarConfig.width.expanded,
           height: '100vh',
-          backgroundColor: '#1C1C1E',
+          backgroundColor: 'var(--ak-primary, #1A3D2E)',
           color: '#FFFFFF',
           display: 'flex',
           flexDirection: 'column',
@@ -533,7 +533,7 @@ export default function PlayerAppShellV3({ children }: PlayerAppShellV3Props) {
               textDecoration: 'none',
             }}
           >
-            <AKLogo size={40} />
+            <AKLogo size={40} color="#FFFFFF" />
             <div>
               <div style={{ color: '#FFFFFF', fontWeight: 600, fontSize: '16px' }}>
                 AK Golf

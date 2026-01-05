@@ -523,14 +523,20 @@ const Testresultater: React.FC<TestresultaterProps> = ({
               </CardHeader>
               <CardContent>
                 <div className="flex flex-wrap justify-center gap-4">
-                  {radarData.map((item) => (
-                    <CategoryProgressRing
-                      key={item.category}
-                      category={item.category.toLowerCase() as any}
-                      value={item.value}
-                      size="sm"
-                    />
-                  ))}
+                  {radarData.map((item) => {
+                    const categoryKey = item.category?.toLowerCase() ?? 'unknown';
+                    // Valid categories for CategoryProgressRing
+                    const validCategories = ['golf', 'teknikk', 'fysisk', 'mental', 'strategisk', 'unknown'];
+                    const safeCategory = validCategories.includes(categoryKey) ? categoryKey : 'unknown';
+                    return (
+                      <CategoryProgressRing
+                        key={item.category}
+                        category={safeCategory as 'golf' | 'teknikk' | 'fysisk' | 'mental' | 'strategisk' | 'unknown'}
+                        value={item.value}
+                        size="sm"
+                      />
+                    );
+                  })}
                 </div>
               </CardContent>
             </Card>

@@ -110,7 +110,7 @@ export const CategoryProgressionPage: React.FC = () => {
       case 'excellent':
         return <TrendingUp size={18} className="text-ak-status-success" />;
       case 'on_track':
-        return <CheckCircle2 size={18} className="text-ak-brand-primary" />;
+        return <CheckCircle2 size={18} className="text-ak-primary" />;
       case 'needs_attention':
         return <AlertCircle size={18} className="text-ak-status-warning" />;
       default:
@@ -136,7 +136,7 @@ export const CategoryProgressionPage: React.FC = () => {
       case 'excellent':
         return 'bg-ak-status-success/10 text-ak-status-success';
       case 'on_track':
-        return 'bg-ak-brand-primary/10 text-ak-brand-primary';
+        return 'bg-ak-primary/10 text-ak-primary';
       case 'needs_attention':
         return 'bg-ak-status-warning/10 text-ak-status-warning';
       default:
@@ -146,14 +146,14 @@ export const CategoryProgressionPage: React.FC = () => {
 
   const getReadinessColor = (readiness: number) => {
     if (readiness >= 80) return 'text-ak-status-success';
-    if (readiness >= 50) return 'text-ak-brand-primary';
+    if (readiness >= 50) return 'text-ak-primary';
     if (readiness >= 25) return 'text-ak-status-warning';
     return 'text-ak-status-error';
   };
 
   const getProgressBarColor = (readiness: number) => {
     if (readiness >= 80) return 'bg-ak-status-success';
-    if (readiness >= 50) return 'bg-ak-brand-primary';
+    if (readiness >= 50) return 'bg-ak-primary';
     if (readiness >= 25) return 'bg-ak-status-warning';
     return 'bg-ak-status-error';
   };
@@ -162,7 +162,7 @@ export const CategoryProgressionPage: React.FC = () => {
     return (
       <div className="flex items-center justify-center min-h-[400px] bg-ak-surface-subtle">
         <div className="flex flex-col items-center gap-3">
-          <Loader2 size={32} className="animate-spin text-ak-brand-primary" />
+          <Loader2 size={32} className="animate-spin text-ak-primary" />
           <p className="text-sm text-ak-text-secondary">Laster kategoridata...</p>
         </div>
       </div>
@@ -206,7 +206,7 @@ export const CategoryProgressionPage: React.FC = () => {
       {/* Header */}
       <div className="flex items-start justify-between mb-6">
         <div className="flex items-start gap-4">
-          <div className="w-12 h-12 rounded-xl bg-gradient-to-br from-ak-brand-primary to-ak-brand-primary/80 flex items-center justify-center flex-shrink-0">
+          <div className="w-12 h-12 rounded-xl bg-gradient-to-br from-ak-primary to-ak-primary/80 flex items-center justify-center flex-shrink-0">
             <Target size={24} className="text-white" />
           </div>
           <div>
@@ -248,8 +248,8 @@ export const CategoryProgressionPage: React.FC = () => {
             {/* Next Category */}
             <div className="flex flex-col items-center">
               <span className="text-xs text-ak-text-tertiary mb-1">Neste mål</span>
-              <div className="w-14 h-14 rounded-xl bg-ak-brand-primary/10 border-2 border-ak-brand-primary flex items-center justify-center">
-                <span className="text-2xl font-bold text-ak-brand-primary">
+              <div className="w-14 h-14 rounded-xl bg-ak-primary/10 border-2 border-ak-primary flex items-center justify-center">
+                <span className="text-2xl font-bold text-ak-primary">
                   {progression.nextCategory}
                 </span>
               </div>

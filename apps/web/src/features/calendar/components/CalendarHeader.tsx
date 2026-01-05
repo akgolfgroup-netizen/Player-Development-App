@@ -127,7 +127,7 @@ export const CalendarHeader: React.FC<CalendarHeaderProps> = ({
 
         <button
           onClick={onNewSession}
-          className="flex items-center gap-1.5 px-3 py-1.5 text-sm font-medium rounded-lg transition-colors bg-ak-brand-primary text-white hover:bg-ak-brand-primary/90"
+          className="flex items-center gap-1.5 px-3 py-1.5 text-sm font-medium rounded-lg transition-colors bg-ak-primary text-white hover:bg-ak-primary/90"
         >
           <Plus size={16} />
           Ny økt

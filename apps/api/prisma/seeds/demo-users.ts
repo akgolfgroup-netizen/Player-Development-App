@@ -75,6 +75,7 @@ export async function seedDemoUsers() {
       coach = await prisma.coach.create({
         data: {
           tenantId: tenant.id,
+          userId: coachUser.id, // Link coach to user
           firstName: 'Anders',
           lastName: 'Kristiansen',
           email: 'coach@demo.com',
@@ -92,7 +93,16 @@ export async function seedDemoUsers() {
       });
       console.log('   ✅ Created coach user: coach@demo.com / coach123');
     } else {
-      console.log('   ⚠️  Coach already exists, skipping');
+      // Ensure existing coach is linked to user
+      if (!coach.userId) {
+        await prisma.coach.update({
+          where: { id: coach.id },
+          data: { userId: coachUser.id },
+        });
+        console.log('   ✅ Linked existing coach to user');
+      } else {
+        console.log('   ⚠️  Coach already exists and is linked');
+      }
     }
 
     // Create Player User

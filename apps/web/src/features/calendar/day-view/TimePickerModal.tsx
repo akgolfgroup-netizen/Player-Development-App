@@ -131,8 +131,8 @@ export const TimePickerModal: React.FC<TimePickerModalProps> = ({
                 onClick={() => handleQuickSelect(option.time)}
                 className={`p-3 rounded-lg text-sm font-medium text-center transition-all border ${
                   displayTime === option.time
-                    ? 'bg-ak-brand-primary/10 border-ak-brand-primary text-ak-brand-primary'
-                    : 'bg-ak-surface-subtle border-ak-border-default text-ak-text-secondary hover:border-ak-brand-primary'
+                    ? 'bg-ak-primary/10 border-ak-primary text-ak-primary'
+                    : 'bg-ak-surface-subtle border-ak-border-default text-ak-text-secondary hover:border-ak-primary'
                 }`}
               >
                 {option.label}
@@ -154,7 +154,7 @@ export const TimePickerModal: React.FC<TimePickerModalProps> = ({
                     onClick={() => setSelectedHour(hour)}
                     className={`flex items-center justify-center w-full p-3 text-base font-medium transition-all ${
                       selectedHour === hour
-                        ? 'bg-ak-brand-primary text-white'
+                        ? 'bg-ak-primary text-white'
                         : 'text-ak-text-secondary hover:bg-ak-surface-subtle'
                     }`}
                   >
@@ -176,7 +176,7 @@ export const TimePickerModal: React.FC<TimePickerModalProps> = ({
                     onClick={() => setSelectedMinute(minute)}
                     className={`flex items-center justify-center w-full p-3 text-base font-medium transition-all ${
                       selectedMinute === minute
-                        ? 'bg-ak-brand-primary text-white'
+                        ? 'bg-ak-primary text-white'
                         : 'text-ak-text-secondary hover:bg-ak-surface-subtle'
                     }`}
                   >
@@ -192,13 +192,13 @@ export const TimePickerModal: React.FC<TimePickerModalProps> = ({
         <div className="flex gap-3 p-4 border-t border-ak-border-subtle">
           <button
             onClick={onClose}
-            className="flex-1 p-3 rounded-lg text-base font-medium transition-all border border-ak-border-default text-ak-text-secondary hover:border-ak-brand-primary"
+            className="flex-1 p-3 rounded-lg text-base font-medium transition-all border border-ak-border-default text-ak-text-secondary hover:border-ak-primary"
           >
             Avbryt
           </button>
           <button
             onClick={handleConfirm}
-            className="flex-1 flex items-center justify-center gap-2 p-3 rounded-lg text-base font-semibold transition-colors bg-ak-brand-primary text-white hover:bg-ak-brand-primary/90"
+            className="flex-1 flex items-center justify-center gap-2 p-3 rounded-lg text-base font-semibold transition-colors bg-ak-primary text-white hover:bg-ak-primary/90"
           >
             <Check size={18} />
             Bekreft

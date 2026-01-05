@@ -76,8 +76,8 @@ const VerifyResetToken: React.FC = () => {
       case 'verifying':
         return (
           <div className="text-center">
-            <div className="w-20 h-20 mx-auto mb-6 rounded-full bg-ak-brand-primary/15 flex items-center justify-center">
-              <Loader size={40} className="text-ak-brand-primary animate-spin" />
+            <div className="w-20 h-20 mx-auto mb-6 rounded-full bg-ak-primary/15 flex items-center justify-center">
+              <Loader size={40} className="text-ak-primary animate-spin" />
             </div>
 
             <Text variant="title2" color="primary" className="mb-3">
@@ -130,7 +130,7 @@ const VerifyResetToken: React.FC = () => {
 
             <Link
               to="/forgot-password"
-              className="inline-block px-6 py-3 bg-ak-brand-primary text-white rounded-lg font-semibold no-underline hover:bg-ak-brand-hover transition-colors"
+              className="inline-block px-6 py-3 bg-ak-primary text-white rounded-lg font-semibold no-underline hover:bg-ak-brand-hover transition-colors"
             >
               Be om ny lenke
             </Link>
@@ -155,14 +155,14 @@ const VerifyResetToken: React.FC = () => {
             <div className="flex gap-3 justify-center">
               <Link
                 to="/forgot-password"
-                className="inline-block px-6 py-3 bg-ak-brand-primary text-white rounded-lg font-semibold no-underline hover:bg-ak-brand-hover transition-colors"
+                className="inline-block px-6 py-3 bg-ak-primary text-white rounded-lg font-semibold no-underline hover:bg-ak-brand-hover transition-colors"
               >
                 Be om ny lenke
               </Link>
 
               <Link
                 to="/login"
-                className="inline-block px-6 py-3 bg-ak-surface-subtle text-ak-brand-primary rounded-lg font-semibold no-underline border border-ak-border-default hover:bg-ak-surface-subtle/80 transition-colors"
+                className="inline-block px-6 py-3 bg-ak-surface-subtle text-ak-primary rounded-lg font-semibold no-underline border border-ak-border-default hover:bg-ak-surface-subtle/80 transition-colors"
               >
                 Tilbake til innlogging
               </Link>
@@ -181,14 +181,14 @@ const VerifyResetToken: React.FC = () => {
       maxWidth="md"
     >
       <AuthPage.Logo>
-        <AKLogo size={60} className="text-ak-brand-primary" />
+        <AKLogo size={60} className="text-ak-primary" />
       </AuthPage.Logo>
 
       <AuthPage.Card>{renderContent()}</AuthPage.Card>
 
       <AuthPage.Footer>
         Trenger du hjelp? Kontakt{' '}
-        <a href="mailto:support@akgolf.no" className="text-ak-brand-primary no-underline">
+        <a href="mailto:support@akgolf.no" className="text-ak-primary no-underline">
           support@akgolf.no
         </a>
       </AuthPage.Footer>

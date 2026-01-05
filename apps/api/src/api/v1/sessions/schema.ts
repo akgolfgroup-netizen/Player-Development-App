@@ -7,11 +7,19 @@ import { z } from 'zod';
 /**
  * Create training session schema
  */
+// AK Golf Kategori Hierarki v2.0 enum values
+const environmentValues = ['M0', 'M1', 'M2', 'M3', 'M4', 'M5'] as const;
+const pressureValues = ['PR1', 'PR2', 'PR3', 'PR4', 'PR5'] as const;
+const positionValues = ['P1.0', 'P2.0', 'P3.0', 'P4.0', 'P5.0', 'P6.0', 'P7.0', 'P8.0', 'P9.0', 'P10.0'] as const;
+const puttingFocusValues = ['GREEN', 'SIKTE', 'TEKN', 'BALL', 'SPEED'] as const;
+// L-faser med norske navn for API-kompatibilitet
+const learningPhaseValues = ['L-KROPP', 'L-ARM', 'L-KØLLE', 'L-BALL', 'L-AUTO', 'L1', 'L2', 'L3', 'L4', 'L5'] as const;
+
 export const createSessionSchema = z.object({
   sessionType: z.string().min(1).max(50),
   sessionDate: z.string().datetime(),
   duration: z.number().int().min(1),
-  learningPhase: z.enum(['L1', 'L2', 'L3', 'L4', 'L5']).optional(),
+  learningPhase: z.enum(learningPhaseValues).optional(),
   clubSpeed: z.string().max(10).optional(),
   setting: z.string().max(10).optional(),
   surface: z.string().max(50).optional(),
@@ -21,6 +29,15 @@ export const createSessionSchema = z.object({
   intensity: z.number().int().min(1).max(10).optional(),
   notes: z.string().optional(),
   dailyAssignmentId: z.string().uuid().optional(),
+
+  // AK Golf Kategori Hierarki v2.0 felter
+  akFormula: z.string().max(500).optional(), // Komplett formel f.eks. TEK_TEE_L-BALL_CS50_M2_PR2_P6.0-P7.0
+  environment: z.enum(environmentValues).optional(), // M0-M5 (Miljø)
+  pressure: z.enum(pressureValues).optional(), // PR1-PR5 (Psykologisk belastning)
+  positionStart: z.enum(positionValues).optional(), // P1.0-P10.0 (Svingposisjon start)
+  positionEnd: z.enum(positionValues).optional(), // P1.0-P10.0 (Svingposisjon slutt)
+  puttingFocus: z.enum(puttingFocusValues).optional(), // GREEN, SIKTE, TEKN, BALL, SPEED
+  puttingPhases: z.string().max(10).optional(), // S, B, I, F eller kombinasjoner (S-F, B-I, etc)
 });
 
 export type CreateSessionInput = z.infer<typeof createSessionSchema>;
@@ -106,12 +123,15 @@ export const listSessionsQuerySchema = z.object({
   playerId: z.string().uuid().optional(),
   sessionType: z.string().optional(),
   period: z.enum(['E', 'G', 'S', 'T']).optional(),
-  learningPhase: z.enum(['L1', 'L2', 'L3', 'L4', 'L5']).optional(),
+  learningPhase: z.enum(learningPhaseValues).optional(),
   completionStatus: z.enum(['in_progress', 'completed', 'auto_completed', 'abandoned']).optional(),
   fromDate: z.string().optional(),
   toDate: z.string().optional(),
   sortBy: z.enum(['sessionDate', 'createdAt', 'duration']).default('sessionDate'),
   sortOrder: z.enum(['asc', 'desc']).default('desc'),
+  // AK Golf Kategori Hierarki v2.0 filter felter
+  environment: z.enum(environmentValues).optional(),
+  pressure: z.enum(pressureValues).optional(),
 });
 
 export type ListSessionsQuery = z.infer<typeof listSessionsQuerySchema>;
@@ -149,3 +169,19 @@ export const PREDEFINED_TECHNICAL_CUES = [
 ] as const;
 
 export type PredefinedTechnicalCue = typeof PREDEFINED_TECHNICAL_CUES[number];
+
+// ============================================================================
+// AK GOLF KATEGORI HIERARKI v2.0 - Eksporter for frontend
+// ============================================================================
+
+export const ENVIRONMENT_VALUES = environmentValues;
+export const PRESSURE_VALUES = pressureValues;
+export const POSITION_VALUES = positionValues;
+export const PUTTING_FOCUS_VALUES = puttingFocusValues;
+export const LEARNING_PHASE_VALUES = learningPhaseValues;
+
+export type Environment = typeof environmentValues[number];
+export type Pressure = typeof pressureValues[number];
+export type Position = typeof positionValues[number];
+export type PuttingFocus = typeof puttingFocusValues[number];
+export type LearningPhase = typeof learningPhaseValues[number];

@@ -19,7 +19,7 @@ import { SectionTitle, SubSectionTitle, CardTitle } from '../../components/typog
 
 // Color class mapping for categories
 const COLOR_CLASSES = {
-  brand: { text: 'text-ak-brand-primary', bg: 'bg-ak-brand-primary/15' },
+  brand: { text: 'text-ak-primary', bg: 'bg-ak-primary/15' },
   success: { text: 'text-ak-status-success', bg: 'bg-ak-status-success/15' },
   warning: { text: 'text-ak-status-warning', bg: 'bg-ak-status-warning/15' },
   error: { text: 'text-ak-status-error', bg: 'bg-ak-status-error/15' },
@@ -221,7 +221,7 @@ const IntroSection = () => {
         Din golfutvikling - målt og analysert
       </GuideSectionTitle>
 
-      <Card className="mb-6 bg-ak-brand-primary/10 border border-ak-brand-primary/20">
+      <Card className="mb-6 bg-ak-primary/10 border border-ak-primary/20">
         <p className="text-[15px] text-ak-text-primary m-0 leading-relaxed">
           AK Golf Academy bruker <strong>Team Norway Golf Testing Protocol</strong> for å måle alle aspekter
           av golfspillet ditt. Basert på dine testresultater tilpasser vi treningsplanen automatisk til
@@ -276,7 +276,7 @@ const IntroSection = () => {
       <div className="flex gap-3 flex-wrap">
         <button
           onClick={() => navigate('/testresultater')}
-          className="flex items-center gap-2 py-3 px-5 bg-ak-brand-primary text-white border-none rounded-[10px] text-sm font-medium cursor-pointer"
+          className="flex items-center gap-2 py-3 px-5 bg-ak-primary text-white border-none rounded-[10px] text-sm font-medium cursor-pointer"
         >
           Se mine tester
           <ChevronRight size={16} />
@@ -304,7 +304,7 @@ const TestCategoryCard = ({ category, isExpanded, onToggle }) => {
   return (
     <Card
       onClick={onToggle}
-      className={`cursor-pointer border-2 ${isExpanded ? 'border-ak-brand-primary' : 'border-transparent'}`}
+      className={`cursor-pointer border-2 ${isExpanded ? 'border-ak-primary' : 'border-transparent'}`}
     >
       <div className="flex items-center justify-between">
         <div className="flex items-center gap-3">
@@ -367,7 +367,7 @@ const TestsSection = () => {
 
       <Card className="mb-6 bg-ak-surface-subtle">
         <div className="flex items-start gap-3">
-          <Info size={20} className="text-ak-brand-primary shrink-0 mt-0.5" />
+          <Info size={20} className="text-ak-primary shrink-0 mt-0.5" />
           <p className="text-sm text-ak-text-primary m-0 leading-snug">
             Hver test har klare krav for hver spillerkategori, så du alltid vet hva du jobber mot.
             Klikk på en kategori for å se alle testene.
@@ -448,7 +448,7 @@ const CategoriesSection = () => {
 
       <Card className="bg-ak-surface-subtle">
         <div className="flex items-start gap-3">
-          <HelpCircle size={20} className="text-ak-brand-primary shrink-0 mt-0.5" />
+          <HelpCircle size={20} className="text-ak-primary shrink-0 mt-0.5" />
           <div>
             <p className="text-sm text-ak-text-primary m-0 leading-snug">
               <strong>Hvordan fungerer det?</strong><br />
@@ -457,7 +457,7 @@ const CategoriesSection = () => {
             </p>
             <button
               onClick={() => navigate('/testresultater')}
-              className="mt-3 flex items-center gap-1.5 py-2 px-3.5 bg-ak-brand-primary text-white border-none rounded-lg text-[13px] font-medium cursor-pointer"
+              className="mt-3 flex items-center gap-1.5 py-2 px-3.5 bg-ak-primary text-white border-none rounded-lg text-[13px] font-medium cursor-pointer"
             >
               Se mine kategorikrav
               <ChevronRight size={14} />
@@ -480,9 +480,9 @@ const StrokesGainedSection = () => {
         Strokes Gained Forklaring
       </GuideSectionTitle>
 
-      <Card className="mb-6 bg-ak-brand-primary/10 border border-ak-brand-primary/20">
+      <Card className="mb-6 bg-ak-primary/10 border border-ak-primary/20">
         <div className="flex items-start gap-3">
-          <BarChart2 size={24} className="text-ak-brand-primary shrink-0 mt-0.5" />
+          <BarChart2 size={24} className="text-ak-primary shrink-0 mt-0.5" />
           <div>
             <SubSectionTitle className="m-0 mb-2">
               Enkelt forklart
@@ -643,7 +643,7 @@ const HowItWorksSection = () => {
       <div className="flex gap-3 flex-wrap">
         <button
           onClick={() => navigate('/testresultater')}
-          className="flex items-center gap-2 py-3 px-5 bg-ak-brand-primary text-white border-none rounded-[10px] text-sm font-medium cursor-pointer"
+          className="flex items-center gap-2 py-3 px-5 bg-ak-primary text-white border-none rounded-[10px] text-sm font-medium cursor-pointer"
         >
           Se mine tester
           <ChevronRight size={16} />
@@ -698,7 +698,7 @@ const StatsGuidePage = () => {
                 onClick={() => setActiveTab(tab.id)}
                 className={`flex items-center gap-1.5 py-2.5 px-4 border-none rounded-[10px] text-[13px] font-medium cursor-pointer whitespace-nowrap transition-all duration-200 ${
                   isActive
-                    ? 'bg-ak-brand-primary text-white shadow-md'
+                    ? 'bg-ak-primary text-white shadow-md'
                     : 'bg-ak-surface-base text-ak-text-primary'
                 }`}
               >

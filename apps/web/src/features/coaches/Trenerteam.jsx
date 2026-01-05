@@ -30,12 +30,12 @@ const Avatar = ({ name, size = 'md', role }) => {
 
   const getRoleClasses = (roleType) => {
     switch (roleType) {
-      case 'hovedtrener': return 'bg-ak-brand-primary';
-      case 'teknisk': return 'bg-ak-brand-primary/80';
+      case 'hovedtrener': return 'bg-ak-primary';
+      case 'teknisk': return 'bg-ak-primary/80';
       case 'fysisk': return 'bg-ak-status-success';
       case 'mental': return 'bg-amber-500';
       case 'strategi': return 'bg-ak-status-warning';
-      default: return 'bg-ak-brand-primary';
+      default: return 'bg-ak-primary';
     }
   };
 
@@ -63,7 +63,7 @@ const TrainerCard = ({ trainer, isSelected, onSelect }) => {
 
   return (
     <Card
-      className={`p-4 cursor-pointer transition-all ${isSelected ? 'ring-2 ring-ak-brand-primary border-ak-brand-primary' : 'hover:shadow-md'}`}
+      className={`p-4 cursor-pointer transition-all ${isSelected ? 'ring-2 ring-ak-primary border-ak-primary' : 'hover:shadow-md'}`}
       onClick={() => onSelect(trainer.id)}
     >
       <div className="flex items-start gap-4">
@@ -150,13 +150,13 @@ const TrainerDetail = ({ trainer, onClose, onMessage, onSchedule }) => {
             <div className="space-y-2">
               <div className="flex items-center gap-3 text-sm">
                 <span>📧</span>
-                <a href={`mailto:${trainer.email}`} className="text-ak-brand-primary">
+                <a href={`mailto:${trainer.email}`} className="text-ak-primary">
                   {trainer.email}
                 </a>
               </div>
               <div className="flex items-center gap-3 text-sm">
                 <span>📱</span>
-                <a href={`tel:${trainer.phone}`} className="text-ak-brand-primary">
+                <a href={`tel:${trainer.phone}`} className="text-ak-primary">
                   {trainer.phone}
                 </a>
               </div>
@@ -203,19 +203,19 @@ const TrainerDetail = ({ trainer, onClose, onMessage, onSchedule }) => {
           {/* Statistikk */}
           <div className="grid grid-cols-3 gap-3">
             <div className="text-center p-3 rounded-xl bg-ak-surface-subtle">
-              <div className="font-bold text-lg text-ak-brand-primary">
+              <div className="font-bold text-lg text-ak-primary">
                 {trainer.sessionsTotal}
               </div>
               <div className="text-xs text-ak-text-secondary">Økter totalt</div>
             </div>
             <div className="text-center p-3 rounded-xl bg-ak-surface-subtle">
-              <div className="font-bold text-lg text-ak-brand-primary">
+              <div className="font-bold text-lg text-ak-primary">
                 {trainer.sessionsMonth}
               </div>
               <div className="text-xs text-ak-text-secondary">Denne måned</div>
             </div>
             <div className="text-center p-3 rounded-xl bg-ak-surface-subtle">
-              <div className="font-bold text-lg text-ak-brand-primary">
+              <div className="font-bold text-lg text-ak-primary">
                 {trainer.startYear}
               </div>
               <div className="text-xs text-ak-text-secondary">Siden år</div>
@@ -240,12 +240,12 @@ const TrainerDetail = ({ trainer, onClose, onMessage, onSchedule }) => {
 const UpcomingSession = ({ session }) => {
   const getTypeClasses = (type) => {
     switch (type) {
-      case 'teknisk': return 'bg-ak-brand-primary/80';
+      case 'teknisk': return 'bg-ak-primary/80';
       case 'fysisk': return 'bg-ak-status-success';
       case 'mental': return 'bg-amber-500';
       case 'strategi': return 'bg-ak-status-warning';
-      case 'evaluering': return 'bg-ak-brand-primary';
-      default: return 'bg-ak-brand-primary';
+      case 'evaluering': return 'bg-ak-primary';
+      default: return 'bg-ak-primary';
     }
   };
 
@@ -266,7 +266,7 @@ const UpcomingSession = ({ session }) => {
           med {session.trainer}
         </p>
         <div className="flex items-center gap-2 mt-2">
-          <span className="text-xs text-ak-brand-primary">
+          <span className="text-xs text-ak-primary">
             {session.date} • {session.time}
           </span>
         </div>
@@ -299,7 +299,7 @@ const MessagePreview = ({ message, onView }) => (
     </div>
 
     {message.unread && (
-      <div className="w-2 h-2 rounded-full mt-2 bg-ak-brand-primary" />
+      <div className="w-2 h-2 rounded-full mt-2 bg-ak-primary" />
     )}
   </div>
 );
@@ -421,7 +421,7 @@ const Trenerteam = ({ trainers: apiTrainers = null, sessions: apiSessions = null
               onClick={() => setActiveTab(tab.id)}
               className={`flex-1 py-2.5 px-4 rounded-xl text-sm font-medium flex items-center justify-center gap-2 border-none cursor-pointer transition-colors ${
                 activeTab === tab.id
-                  ? 'bg-ak-brand-primary text-white'
+                  ? 'bg-ak-primary text-white'
                   : 'bg-ak-surface-base text-ak-text-primary'
               }`}
             >
@@ -491,19 +491,19 @@ const Trenerteam = ({ trainers: apiTrainers = null, sessions: apiSessions = null
                 </SubSectionTitle>
                 <div className="grid grid-cols-3 gap-4">
                   <div className="text-center">
-                    <div className="text-2xl font-bold text-ak-brand-primary">
+                    <div className="text-2xl font-bold text-ak-primary">
                       {trainers.reduce((sum, t) => sum + t.sessionsTotal, 0)}
                     </div>
                     <div className="text-xs mt-1 text-ak-text-secondary">Økter totalt</div>
                   </div>
                   <div className="text-center">
-                    <div className="text-2xl font-bold text-ak-brand-primary">
+                    <div className="text-2xl font-bold text-ak-primary">
                       {trainers.reduce((sum, t) => sum + t.sessionsMonth, 0)}
                     </div>
                     <div className="text-xs mt-1 text-ak-text-secondary">Denne måned</div>
                   </div>
                   <div className="text-center">
-                    <div className="text-2xl font-bold text-ak-brand-primary">
+                    <div className="text-2xl font-bold text-ak-primary">
                       {trainers.length}
                     </div>
                     <div className="text-xs mt-1 text-ak-text-secondary">Spesialister</div>

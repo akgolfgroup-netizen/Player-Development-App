@@ -276,7 +276,10 @@ function SessionCard({ session, onClick }: SessionCardProps) {
           <div className="flex-1 space-y-2">
             {/* Session type and status */}
             <div className="flex items-center gap-2 flex-wrap">
-              <TrainingCategoryBadge category={category as any} size="sm" />
+              <TrainingCategoryBadge
+                category={(['teknikk', 'slag', 'spill', 'fysisk', 'mental', 'turnering'].includes(category) ? category : 'teknikk') as 'teknikk' | 'slag' | 'spill' | 'fysisk' | 'mental' | 'turnering'}
+                size="sm"
+              />
               <span className="text-lg font-semibold text-text-primary">
                 {SESSION_TYPE_LABELS[session.sessionType] || session.sessionType}
               </span>

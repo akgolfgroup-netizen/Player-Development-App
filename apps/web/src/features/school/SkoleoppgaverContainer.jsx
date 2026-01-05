@@ -100,7 +100,7 @@ const SUBJECTS = ['Alle', 'Matematikk', 'Norsk', 'Engelsk', 'Naturfag', 'Samfunn
 const getSubjectConfig = (subject) => {
   switch (subject) {
     case 'Matematikk':
-      return { colorClasses: { bg: 'bg-ak-brand-primary/15', text: 'text-ak-brand-primary', border: 'border-ak-brand-primary' } };
+      return { colorClasses: { bg: 'bg-ak-primary/15', text: 'text-ak-primary', border: 'border-ak-primary' } };
     case 'Norsk':
       return { colorClasses: { bg: 'bg-ak-status-error/15', text: 'text-ak-status-error', border: 'border-ak-status-error' } };
     case 'Engelsk':
@@ -266,7 +266,7 @@ const SkoleoppgaverContainer = () => {
         {/* Stats */}
         <div className="grid grid-cols-3 gap-2.5 mb-6">
           <div className="bg-ak-surface-base rounded-xl p-3.5 text-center">
-            <div className="text-2xl font-bold text-ak-brand-primary">
+            <div className="text-2xl font-bold text-ak-primary">
               {stats.total}
             </div>
             <div className="text-[11px] text-ak-text-secondary">Aktive</div>
@@ -295,7 +295,7 @@ const SkoleoppgaverContainer = () => {
                   onClick={() => setStatusFilter(f.key)}
                   className={`py-2 px-3.5 rounded-lg border-none text-[13px] font-medium cursor-pointer transition-colors ${
                     statusFilter === f.key
-                      ? 'bg-ak-brand-primary text-white'
+                      ? 'bg-ak-primary text-white'
                       : 'bg-ak-surface-base text-ak-text-primary hover:bg-ak-surface-subtle'
                   }`}
                 >

@@ -34,7 +34,7 @@ export default function MobileShell() {
         right: 0,
         height: '56px',
         paddingTop: 'env(safe-area-inset-top, 0px)',
-        backgroundColor: 'var(--ak-brand-primary)',
+        backgroundColor: 'var(--ak-primary)',
         borderBottom: '1px solid var(--ak-brand-secondary)',
         display: 'flex',
         alignItems: 'center',
@@ -93,7 +93,7 @@ export default function MobileShell() {
             gap: '4px',
             padding: '8px',
             textDecoration: 'none',
-            color: isActive ? 'var(--ak-brand-primary)' : 'var(--ak-text-secondary)',
+            color: isActive ? 'var(--ak-primary)' : 'var(--ak-text-secondary)',
           })}>
             {({ isActive }) => (<>
               <Icon size={24} strokeWidth={isActive ? 2 : 1.5} />

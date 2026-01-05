@@ -139,7 +139,7 @@ export default function Breadcrumbs({ customItems, showHome = true }) {
                     gap: '4px',
                     transition: 'color 0.2s',
                   }}
-                  onMouseEnter={(e) => (e.currentTarget.style.color = 'var(--ak-brand-primary)')}
+                  onMouseEnter={(e) => (e.currentTarget.style.color = 'var(--ak-primary)')}
                   onMouseLeave={(e) => (e.currentTarget.style.color = 'var(--ak-text-secondary)')}
                 >
                   {Icon && <Icon size={14} />}

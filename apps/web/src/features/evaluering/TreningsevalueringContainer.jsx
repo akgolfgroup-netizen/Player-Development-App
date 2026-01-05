@@ -104,7 +104,7 @@ const STATS = {
 const getSessionTypeConfig = (type) => {
   switch (type) {
     case 'technical':
-      return { label: 'Teknikk', colorClasses: { bg: 'bg-ak-brand-primary/15', text: 'text-ak-brand-primary' }, icon: Target };
+      return { label: 'Teknikk', colorClasses: { bg: 'bg-ak-primary/15', text: 'text-ak-primary' }, icon: Target };
     case 'short_game':
       return { label: 'Kortspill', colorClasses: { bg: 'bg-ak-status-success/15', text: 'text-ak-status-success' }, icon: Flag };
     case 'physical':
@@ -201,8 +201,8 @@ const TrainingEvaluationCard = ({ evaluation, onClick }) => {
 
           {/* Coach Feedback Indicator */}
           {evaluation.coachFeedback && (
-            <div className="mt-2.5 text-xs text-ak-brand-primary flex items-center gap-1.5">
-              <div className="w-1.5 h-1.5 rounded-full bg-ak-brand-primary" />
+            <div className="mt-2.5 text-xs text-ak-primary flex items-center gap-1.5">
+              <div className="w-1.5 h-1.5 rounded-full bg-ak-primary" />
               Trener-feedback tilgjengelig
             </div>
           )}
@@ -221,7 +221,7 @@ const TrainingEvaluationCard = ({ evaluation, onClick }) => {
 const StatsOverview = ({ stats }) => (
   <div className="grid grid-cols-[repeat(auto-fit,minmax(100px,1fr))] gap-2.5 mb-6">
     <div className="bg-ak-surface-base rounded-xl p-3.5 text-center">
-      <div className="text-[22px] font-bold text-ak-brand-primary">
+      <div className="text-[22px] font-bold text-ak-primary">
         {stats.totalSessions}
       </div>
       <div className="text-[11px] text-ak-text-secondary">Totalt</div>
@@ -296,7 +296,7 @@ const TreningsevalueringContainer = () => {
                 onClick={() => setFilter(f.key)}
                 className={`py-2 px-3.5 rounded-lg border-none text-[13px] font-medium cursor-pointer whitespace-nowrap transition-colors ${
                   filter === f.key
-                    ? 'bg-ak-brand-primary text-white'
+                    ? 'bg-ak-primary text-white'
                     : 'bg-ak-surface-base text-ak-text-primary hover:bg-ak-surface-subtle'
                 }`}
               >

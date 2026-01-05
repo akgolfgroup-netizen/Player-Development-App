@@ -53,7 +53,7 @@ export const LPhaseStep: React.FC<LPhaseStepProps> = ({ planner }) => {
               onClick={() => setLPhase(key)}
               className={`w-full flex items-center gap-3 p-4 rounded-xl transition-all duration-200 border-2 ${
                 isSelected
-                  ? 'bg-ak-brand-primary/10 border-ak-brand-primary'
+                  ? 'bg-ak-primary/10 border-ak-primary'
                   : 'bg-ak-surface-subtle border-transparent'
               }`}
             >
@@ -64,7 +64,7 @@ export const LPhaseStep: React.FC<LPhaseStepProps> = ({ planner }) => {
               <div className="flex-1 text-left">
                 <span
                   className={`font-medium text-sm block ${
-                    isSelected ? 'text-ak-brand-primary' : 'text-ak-text-primary'
+                    isSelected ? 'text-ak-primary' : 'text-ak-text-primary'
                   }`}
                 >
                   {value.label}

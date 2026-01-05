@@ -501,11 +501,11 @@ export async function dataGolfRoutes(app: FastifyInstance): Promise<void> {
       const query = validate(coachDashboardQuerySchema, request.query);
       const season = query.season || new Date().getFullYear();
 
-      // Get coach ID from authenticated user
-      let coachId = request.user?.id;
+      // Get coach ID - prefer coachId from token (added for Data Golf stats fix)
+      let coachId = (request.user as { coachId?: string })?.coachId;
 
-      // If user is a coach, look up their coach record
-      if (request.user?.role === 'coach') {
+      // If coachId not in token, try to look it up
+      if (!coachId && request.user?.role === 'coach') {
         const coach = await prisma.coach.findFirst({
           where: { userId: request.user.id },
           select: { id: true },
@@ -525,6 +525,8 @@ export async function dataGolfRoutes(app: FastifyInstance): Promise<void> {
         query.tour,
         season
       );
+      console.log('[DataGolf ROUTE DEBUG] Dashboard received:', typeof dashboard, dashboard ? Object.keys(dashboard) : 'null');
+      console.log('[DataGolf ROUTE DEBUG] Dashboard players:', dashboard?.players?.length);
       return reply.send({ success: true, data: dashboard });
     }
   );

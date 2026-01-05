@@ -249,7 +249,7 @@ const TournamentEvaluationCard = ({ evaluation, onClick }) => {
           {/* Rating Breakdown */}
           <div className="flex gap-4 mb-3">
             <div className="flex items-center gap-1.5">
-              <Target size={14} className="text-ak-brand-primary" />
+              <Target size={14} className="text-ak-primary" />
               <span className="text-xs text-ak-text-secondary">Teknikk:</span>
               <span className="text-xs font-semibold text-ak-text-primary">
                 {evaluation.technicalRating}/5
@@ -300,7 +300,7 @@ const TournamentEvaluationCard = ({ evaluation, onClick }) => {
 const StatsOverview = ({ stats }) => (
   <div className="grid grid-cols-[repeat(auto-fit,minmax(100px,1fr))] gap-2.5 mb-6">
     <div className="bg-ak-surface-base rounded-xl p-3.5 text-center">
-      <div className="text-[22px] font-bold text-ak-brand-primary">
+      <div className="text-[22px] font-bold text-ak-primary">
         {stats.tournaments}
       </div>
       <div className="text-[11px] text-ak-text-secondary">Turneringer</div>
@@ -380,7 +380,7 @@ const TurneringsevalueringContainer = () => {
                 onClick={() => setSortBy(option.key)}
                 className={`py-1.5 px-3 rounded-md border-none text-xs font-medium cursor-pointer transition-colors ${
                   sortBy === option.key
-                    ? 'bg-ak-brand-primary text-white'
+                    ? 'bg-ak-primary text-white'
                     : 'bg-ak-surface-base text-ak-text-primary hover:bg-ak-surface-subtle'
                 }`}
               >

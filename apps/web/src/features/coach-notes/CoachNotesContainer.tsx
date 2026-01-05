@@ -4,6 +4,7 @@ import React, { useState, useEffect, useCallback } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import { useAuth } from '../../contexts/AuthContext';
 import { notesAPI, playersAPI } from '../../services/api';
+import { useToast } from '../../components/shadcn/use-toast';
 import LoadingState from '../../components/ui/LoadingState';
 import ErrorState from '../../components/ui/ErrorState';
 import CoachNotes from './CoachNotes';
@@ -23,6 +24,7 @@ const CoachNotesContainer: React.FC = () => {
   const { playerId } = useParams<{ playerId: string }>();
   const navigate = useNavigate();
   const { user } = useAuth();
+  const { toast } = useToast();
   const [state, setState] = useState<'loading' | 'idle' | 'error'>('loading');
   const [error, setError] = useState<Error | null>(null);
   const [notes, setNotes] = useState<CoachNote[]>([]);
@@ -83,10 +85,22 @@ const CoachNotesContainer: React.FC = () => {
         content,
       });
 
+      toast({
+        title: 'Notat lagret',
+        description: 'Notatet er sendt til spilleren.',
+      });
+
       // Refresh notes
       await fetchData();
     } catch (err: any) {
       console.error('Error adding note:', err);
+
+      toast({
+        title: 'Kunne ikke lagre notat',
+        description: 'Notatet er lagret lokalt og vil synkroniseres senere.',
+        variant: 'destructive',
+      });
+
       // Optimistic update on failure - add to local state
       const newNote: CoachNote = {
         id: `temp-${Date.now()}`,
@@ -102,14 +116,27 @@ const CoachNotesContainer: React.FC = () => {
     navigate(-1);
   };
 
+  // Guard: playerId must exist
+  if (!playerId) {
+    return (
+      <ErrorState
+        message="Spiller-ID mangler"
+        onRetry={() => navigate('/coach/athletes')}
+      />
+    );
+  }
+
   if (state === 'loading') {
     return <LoadingState message="Laster notater..." />;
   }
 
   if (state === 'error') {
+    const errorType = error && typeof error === 'object' && 'type' in error
+      ? (error as { type?: string }).type
+      : undefined;
     return (
       <ErrorState
-        errorType={(error as any)?.type}
+        errorType={errorType}
         message={error?.message || 'Kunne ikke laste notater'}
         onRetry={fetchData}
       />
@@ -118,7 +145,7 @@ const CoachNotesContainer: React.FC = () => {
 
   return (
     <CoachNotes
-      athleteId={playerId!}
+      athleteId={playerId}
       athleteName={athleteName}
       notes={notes.length > 0 ? notes : undefined}
       onAddNote={handleAddNote}

@@ -98,7 +98,7 @@ const SessionPreviewModal = ({
           <div className="space-y-3 mb-5">
             {/* Time & Duration */}
             <div className="flex items-center gap-3 p-3 bg-ak-surface-subtle rounded-xl">
-              <Clock size={18} className="text-ak-brand-primary" />
+              <Clock size={18} className="text-ak-primary" />
               <div>
                 <p className="text-sm font-medium text-ak-text-primary">
                   {session.time}
@@ -114,7 +114,7 @@ const SessionPreviewModal = ({
             {/* Location */}
             {session.location && (
               <div className="flex items-center gap-3 p-3 bg-ak-surface-subtle rounded-xl">
-                <MapPin size={18} className="text-ak-brand-primary" />
+                <MapPin size={18} className="text-ak-primary" />
                 <div>
                   <p className="text-sm font-medium text-ak-text-primary">
                     {session.location}
@@ -139,9 +139,9 @@ const SessionPreviewModal = ({
 
             {/* Assigned by coach */}
             {session.assignedByCoach && (
-              <div className="flex items-center gap-2 p-3 bg-ak-brand-primary/5 rounded-xl">
-                <User size={16} className="text-ak-brand-primary" />
-                <span className="text-sm text-ak-brand-primary">
+              <div className="flex items-center gap-2 p-3 bg-ak-primary/5 rounded-xl">
+                <User size={16} className="text-ak-primary" />
+                <span className="text-sm text-ak-primary">
                   Tildelt av trener
                 </span>
               </div>
@@ -194,7 +194,7 @@ const SessionPreviewModal = ({
             {session.status === 'upcoming' && (
               <button
                 onClick={() => onStart?.(session)}
-                className="flex-1 flex items-center justify-center gap-2 py-3 bg-ak-brand-primary text-white rounded-xl font-medium hover:bg-ak-brand-primary/90 transition-colors"
+                className="flex-1 flex items-center justify-center gap-2 py-3 bg-ak-primary text-white rounded-xl font-medium hover:bg-ak-primary/90 transition-colors"
               >
                 <Play size={18} />
                 Start økt

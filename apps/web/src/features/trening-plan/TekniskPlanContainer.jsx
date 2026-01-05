@@ -24,9 +24,9 @@ const STATUS_CLASSES = {
     label: 'Fullfort',
   },
   in_progress: {
-    text: 'text-ak-brand-primary',
-    bg: 'bg-ak-brand-primary/15',
-    activeBg: 'bg-ak-brand-primary',
+    text: 'text-ak-primary',
+    bg: 'bg-ak-primary/15',
+    activeBg: 'bg-ak-primary',
     icon: Play,
     label: 'Pagar',
   },
@@ -137,7 +137,7 @@ const AreaCard = ({ area }) => {
 
   return (
     <div className={`bg-ak-surface-base rounded-2xl overflow-hidden shadow-sm ${
-      area.status === 'in_progress' ? 'border-2 border-ak-brand-primary' : 'border-2 border-transparent'
+      area.status === 'in_progress' ? 'border-2 border-ak-primary' : 'border-2 border-transparent'
     }`}>
       {/* Header */}
       <div
@@ -235,7 +235,7 @@ const AreaCard = ({ area }) => {
                   key={idx}
                   className="flex items-center gap-2 py-2 px-3 bg-ak-surface-subtle rounded-lg cursor-pointer"
                 >
-                  <Video size={14} className="text-ak-brand-primary" />
+                  <Video size={14} className="text-ak-primary" />
                   <span className="text-xs text-ak-text-primary">
                     {drill.name}
                   </span>
@@ -249,10 +249,10 @@ const AreaCard = ({ area }) => {
 
           {/* Coach Feedback */}
           {area.coachFeedback && (
-            <div className="mt-4 p-3 bg-ak-brand-primary/10 rounded-[10px] border-l-[3px] border-ak-brand-primary">
+            <div className="mt-4 p-3 bg-ak-primary/10 rounded-[10px] border-l-[3px] border-ak-primary">
               <div className="flex items-center gap-1.5 mb-1.5">
-                <MessageCircle size={14} className="text-ak-brand-primary" />
-                <span className="text-xs font-semibold text-ak-brand-primary">
+                <MessageCircle size={14} className="text-ak-primary" />
+                <span className="text-xs font-semibold text-ak-primary">
                   Trener-feedback
                 </span>
               </div>
@@ -313,7 +313,7 @@ const MetricsCard = ({ metrics }) => {
               <div
                 className={`h-full rounded-sm ${
                   metric.progress >= 80 ? 'bg-ak-status-success' :
-                  metric.progress >= 50 ? 'bg-ak-brand-primary' : 'bg-ak-status-warning'
+                  metric.progress >= 50 ? 'bg-ak-primary' : 'bg-ak-status-warning'
                 }`}
                 style={{ width: `${metric.progress}%` }}
               />
@@ -334,7 +334,7 @@ const RecentVideosCard = ({ videos }) => {
     <div className="bg-ak-surface-base rounded-2xl p-5 shadow-sm">
       <div className="flex items-center justify-between mb-4">
         <div className="flex items-center gap-2">
-          <Camera size={16} className="text-ak-brand-primary" />
+          <Camera size={16} className="text-ak-primary" />
           <SubSectionTitle className="text-sm">
             Siste videoer
           </SubSectionTitle>
@@ -398,7 +398,7 @@ const TekniskPlanContainer = () => {
             </div>
             <div className="flex items-center gap-4">
               <div className="text-right">
-                <div className="text-2xl font-bold text-ak-brand-primary">
+                <div className="text-2xl font-bold text-ak-primary">
                   {plan.progress}%
                 </div>
                 <div className="text-[11px] text-ak-text-secondary">total fremgang</div>
@@ -408,7 +408,7 @@ const TekniskPlanContainer = () => {
 
           <div className="h-2 bg-ak-surface-subtle rounded overflow-hidden">
             <div
-              className="h-full bg-ak-brand-primary rounded"
+              className="h-full bg-ak-primary rounded"
               style={{ width: `${plan.progress}%` }}
             />
           </div>

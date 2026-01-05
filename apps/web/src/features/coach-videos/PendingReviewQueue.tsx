@@ -232,7 +232,7 @@ export function PendingReviewQueue({
                   <div
                     className={`absolute inset-0 flex items-center justify-center bg-black/40 transition-opacity ${isHovered ? 'opacity-100' : 'opacity-0'}`}
                   >
-                    <div className="w-9 h-9 rounded-full bg-ak-brand-primary flex items-center justify-center text-white">
+                    <div className="w-9 h-9 rounded-full bg-ak-primary flex items-center justify-center text-white">
                       <Play size={16} />
                     </div>
                   </div>

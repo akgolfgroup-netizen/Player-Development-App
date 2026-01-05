@@ -91,7 +91,7 @@ export default function NewConversation({ userId }: NewConversationProps) {
             name: 'Erik Hansen',
             role: 'coach',
             avatarInitials: 'EH',
-            avatarColor: 'var(--ak-brand-primary)',
+            avatarColor: 'var(--ak-primary)',
           },
           {
             id: '3',
@@ -172,7 +172,7 @@ export default function NewConversation({ userId }: NewConversationProps) {
                 placeholder="Søk etter kontakt..."
                 value={searchQuery}
                 onChange={(e) => setSearchQuery(e.target.value)}
-                className="w-full py-2.5 pr-3 pl-10 bg-ak-surface-subtle border-none rounded-lg text-sm text-ak-text-primary outline-none focus:ring-2 focus:ring-ak-brand-primary/30"
+                className="w-full py-2.5 pr-3 pl-10 bg-ak-surface-subtle border-none rounded-lg text-sm text-ak-text-primary outline-none focus:ring-2 focus:ring-ak-primary/30"
               />
             </div>
           </div>
@@ -180,7 +180,7 @@ export default function NewConversation({ userId }: NewConversationProps) {
           {/* Contact list */}
           {loading ? (
             <div className="py-8 text-center">
-              <div className="w-8 h-8 border-[3px] border-ak-border-default border-t-ak-brand-primary rounded-full mx-auto animate-spin" />
+              <div className="w-8 h-8 border-[3px] border-ak-border-default border-t-ak-primary rounded-full mx-auto animate-spin" />
             </div>
           ) : filteredContacts.length === 0 ? (
             <div className="py-8 text-center">
@@ -247,7 +247,7 @@ export default function NewConversation({ userId }: NewConversationProps) {
               placeholder="Skriv din melding..."
               value={message}
               onChange={(e) => setMessage(e.target.value)}
-              className="w-full min-h-[120px] p-3 bg-ak-surface-subtle border-none rounded-lg text-sm leading-relaxed resize-y outline-none font-[inherit] text-ak-text-primary focus:ring-2 focus:ring-ak-brand-primary/30"
+              className="w-full min-h-[120px] p-3 bg-ak-surface-subtle border-none rounded-lg text-sm leading-relaxed resize-y outline-none font-[inherit] text-ak-text-primary focus:ring-2 focus:ring-ak-primary/30"
             />
           </div>
 

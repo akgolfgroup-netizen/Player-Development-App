@@ -228,7 +228,7 @@ export const CalendarWeekView: React.FC<CalendarWeekViewProps> = ({
               <span
                 className={`text-lg font-semibold mt-0.5 ${
                   isToday
-                    ? 'w-8 h-8 flex items-center justify-center rounded-full bg-ak-brand-primary text-white'
+                    ? 'w-8 h-8 flex items-center justify-center rounded-full bg-ak-primary text-white'
                     : isWeekend
                     ? 'text-ak-text-secondary'
                     : 'text-ak-text-primary'
@@ -272,7 +272,7 @@ export const CalendarWeekView: React.FC<CalendarWeekViewProps> = ({
               key={dateKey}
               className={`flex-1 min-w-[120px] border-r border-ak-border-default last:border-r-0 relative ${
                 isToday
-                  ? 'bg-ak-brand-primary/5'
+                  ? 'bg-ak-primary/5'
                   : isWeekend
                   ? 'bg-ak-surface-subtle'
                   : ''
@@ -346,7 +346,7 @@ export const CalendarWeekView: React.FC<CalendarWeekViewProps> = ({
                         <div className="flex gap-1 mt-1 flex-wrap">
                           {event.badges.slice(0, 2).map((badge) => {
                             const badgeClasses =
-                              badge === 'Anbefalt' ? 'bg-ak-brand-primary/10 text-ak-brand-primary' :
+                              badge === 'Anbefalt' ? 'bg-ak-primary/10 text-ak-primary' :
                               badge === 'Fullført' ? 'bg-ak-status-success/10 text-ak-status-success' :
                               badge === 'Pågår' ? 'bg-ak-status-warning/10 text-ak-status-warning' :
                               'bg-ak-surface-subtle text-ak-text-secondary';

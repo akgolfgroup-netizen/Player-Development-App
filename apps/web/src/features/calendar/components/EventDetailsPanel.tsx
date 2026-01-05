@@ -277,7 +277,7 @@ const PanelContent: React.FC<PanelContentProps> = ({
         {event.status === 'recommended' || event.status === 'planned' ? (
           <button
             onClick={() => onStart(event)}
-            className="w-full flex items-center justify-center gap-2 px-4 py-2 rounded-lg font-medium text-sm transition-colors bg-ak-brand-primary text-white"
+            className="w-full flex items-center justify-center gap-2 px-4 py-2 rounded-lg font-medium text-sm transition-colors bg-ak-primary text-white"
           >
             <Play size={16} />
             Start økt

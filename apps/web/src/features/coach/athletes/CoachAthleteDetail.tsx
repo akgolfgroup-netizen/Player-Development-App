@@ -25,7 +25,7 @@ const iconMap = {
 };
 
 // Avatar component
-const AVATAR_COLORS = ['bg-ak-brand-primary', 'bg-ak-status-success', 'bg-ak-status-warning', 'bg-ak-status-info'];
+const AVATAR_COLORS = ['bg-ak-primary', 'bg-ak-status-success', 'bg-ak-status-warning', 'bg-ak-status-info'];
 
 function Avatar({ name, size = 72 }: { name: string; size?: number }) {
   const initials = name.split(',')[0]?.substring(0, 2).toUpperCase() || 'XX';
@@ -81,10 +81,10 @@ function ActionTile({
   return (
     <Link
       to={href}
-      className="flex flex-col items-center gap-3 p-6 bg-ak-surface-card rounded-xl border border-ak-border-default hover:border-ak-brand-primary hover:shadow-md transition-all group"
+      className="flex flex-col items-center gap-3 p-6 bg-ak-surface-card rounded-xl border border-ak-border-default hover:border-ak-primary hover:shadow-md transition-all group"
     >
-      <div className="w-14 h-14 rounded-xl bg-ak-brand-primary/10 flex items-center justify-center group-hover:bg-ak-brand-primary/20 transition-colors">
-        <Icon size={28} className="text-ak-brand-primary" />
+      <div className="w-14 h-14 rounded-xl bg-ak-primary/10 flex items-center justify-center group-hover:bg-ak-primary/20 transition-colors">
+        <Icon size={28} className="text-ak-primary" />
       </div>
       <div className="text-center">
         <div className="font-semibold text-ak-text-primary mb-1">{label}</div>
@@ -109,7 +109,7 @@ function AthleteNotFound() {
       </p>
       <button
         onClick={() => navigate('/coach/athletes')}
-        className="px-6 py-3 bg-ak-brand-primary text-white rounded-lg font-medium hover:bg-ak-brand-primary/90 transition-colors"
+        className="px-6 py-3 bg-ak-primary text-white rounded-lg font-medium hover:bg-ak-primary/90 transition-colors"
       >
         Tilbake til spillerlisten
       </button>

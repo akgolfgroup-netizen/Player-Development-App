@@ -95,7 +95,7 @@ export const FocusStep: React.FC<FocusStepProps> = ({ planner }) => {
           {/* Selected range highlight */}
           {startIndex >= 0 && (
             <div
-              className="absolute top-0 h-2 rounded-full bg-ak-brand-primary"
+              className="absolute top-0 h-2 rounded-full bg-ak-primary"
               style={{
                 left: `${(startIndex / (mainPositions.length - 1)) * 100}%`,
                 width: `${((endIndex - startIndex) / (mainPositions.length - 1)) * 100}%`,
@@ -116,7 +116,7 @@ export const FocusStep: React.FC<FocusStepProps> = ({ planner }) => {
                   onClick={() => handlePositionClick(pos, index)}
                   className={`w-4 h-4 rounded-full transition-all duration-200 hover:scale-125 border-2 ${
                     isInRange
-                      ? 'bg-ak-brand-primary border-ak-brand-primary'
+                      ? 'bg-ak-primary border-ak-primary'
                       : 'bg-ak-surface-card border-ak-border-default'
                   } ${isEndpoint ? 'scale-125' : ''}`}
                 />
@@ -136,7 +136,7 @@ export const FocusStep: React.FC<FocusStepProps> = ({ planner }) => {
               <div key={pos} className="text-xs">
                 <span
                   className={`block font-medium ${
-                    isSelected ? 'text-ak-brand-primary' : 'text-ak-text-secondary'
+                    isSelected ? 'text-ak-primary' : 'text-ak-text-secondary'
                   }`}
                 >
                   {pos.replace('P', '')}
@@ -154,8 +154,8 @@ export const FocusStep: React.FC<FocusStepProps> = ({ planner }) => {
 
         {/* Selected range display */}
         {formState.positionStart && (
-          <div className="mt-4 p-3 rounded-lg text-center bg-ak-brand-primary/10">
-            <span className="text-sm font-medium text-ak-brand-primary">
+          <div className="mt-4 p-3 rounded-lg text-center bg-ak-primary/10">
+            <span className="text-sm font-medium text-ak-primary">
               {formState.positionStart === formState.positionEnd
                 ? `${POSITIONS[formState.positionStart].label}`
                 : `${POSITIONS[formState.positionStart].label} → ${POSITIONS[formState.positionEnd!].label}`}
@@ -189,13 +189,13 @@ export const FocusStep: React.FC<FocusStepProps> = ({ planner }) => {
                   onClick={() => setPuttingFocus(key)}
                   className={`flex flex-col items-start p-3 rounded-lg transition-all duration-200 border-2 ${
                     isSelected
-                      ? 'bg-ak-brand-primary/10 border-ak-brand-primary'
+                      ? 'bg-ak-primary/10 border-ak-primary'
                       : 'bg-ak-surface-subtle border-transparent'
                   }`}
                 >
                   <span
                     className={`font-medium text-sm ${
-                      isSelected ? 'text-ak-brand-primary' : 'text-ak-text-primary'
+                      isSelected ? 'text-ak-primary' : 'text-ak-text-primary'
                     }`}
                   >
                     {value.label}
@@ -227,7 +227,7 @@ export const FocusStep: React.FC<FocusStepProps> = ({ planner }) => {
                   onClick={() => setPuttingPhases(combo)}
                   className={`px-4 py-2 rounded-lg font-medium text-sm transition-all duration-200 ${
                     isSelected
-                      ? 'bg-ak-brand-primary text-white'
+                      ? 'bg-ak-primary text-white'
                       : 'bg-ak-surface-subtle text-ak-text-secondary'
                   }`}
                 >
@@ -262,14 +262,14 @@ export const FocusStep: React.FC<FocusStepProps> = ({ planner }) => {
                 onClick={() => setPlayFocus(key)}
                 className={`w-full flex items-center p-3 rounded-lg transition-all duration-200 border-2 ${
                   isSelected
-                    ? 'bg-ak-brand-primary/10 border-ak-brand-primary'
+                    ? 'bg-ak-primary/10 border-ak-primary'
                     : 'bg-ak-surface-subtle border-transparent'
                 }`}
               >
                 <div className="text-left">
                   <span
                     className={`font-medium text-sm block ${
-                      isSelected ? 'text-ak-brand-primary' : 'text-ak-text-primary'
+                      isSelected ? 'text-ak-primary' : 'text-ak-text-primary'
                     }`}
                   >
                     {value.label}

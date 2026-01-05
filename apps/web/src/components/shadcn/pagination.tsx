@@ -1,108 +1,147 @@
+/**
+ * Pagination Component - shadcn API compatible wrapper for Catalyst Pagination
+ *
+ * NOW POWERED BY CATALYST UI
+ */
+
 import * as React from "react";
-import { ChevronLeft, ChevronRight, MoreHorizontal } from "lucide-react";
-
+import {
+  Pagination as CatalystPagination,
+  PaginationPrevious as CatalystPaginationPrevious,
+  PaginationNext as CatalystPaginationNext,
+  PaginationList as CatalystPaginationList,
+  PaginationPage as CatalystPaginationPage,
+  PaginationGap as CatalystPaginationGap,
+} from "../catalyst/pagination";
 import { cn } from "lib/utils";
-import { ButtonProps, buttonVariants } from "./button";
 
-const Pagination = ({ className, ...props }: React.ComponentProps<"nav">) => (
-  <nav
-    role="navigation"
-    aria-label="pagination"
-    className={cn("mx-auto flex w-full justify-center", className)}
-    {...props}
-  />
+// Re-export Catalyst components directly for new code
+export {
+  CatalystPagination,
+  CatalystPaginationPrevious,
+  CatalystPaginationNext,
+  CatalystPaginationList,
+  CatalystPaginationPage,
+  CatalystPaginationGap,
+};
+
+/**
+ * Pagination - Root nav component
+ */
+interface PaginationProps {
+  className?: string;
+  children?: React.ReactNode;
+  "aria-label"?: string;
+}
+
+const Pagination = ({ className, children, ...props }: PaginationProps) => (
+  <CatalystPagination className={cn("mx-auto flex w-full justify-center", className)} {...props}>
+    {children}
+  </CatalystPagination>
 );
 Pagination.displayName = "Pagination";
 
-const PaginationContent = React.forwardRef<
-  HTMLUListElement,
-  React.ComponentProps<"ul">
->(({ className, ...props }, ref) => (
-  <ul
-    ref={ref}
-    className={cn("flex flex-row items-center gap-1", className)}
-    {...props}
-  />
-));
+/**
+ * PaginationContent - List wrapper (maps to Catalyst PaginationList)
+ */
+interface PaginationContentProps {
+  className?: string;
+  children?: React.ReactNode;
+}
+
+const PaginationContent = ({ className, children }: PaginationContentProps) => (
+  <CatalystPaginationList className={cn("flex flex-row items-center gap-1", className)}>
+    {children}
+  </CatalystPaginationList>
+);
 PaginationContent.displayName = "PaginationContent";
 
+/**
+ * PaginationItem - Wrapper for pagination items (pass-through for compatibility)
+ */
 const PaginationItem = React.forwardRef<
-  HTMLLIElement,
-  React.ComponentProps<"li">
+  HTMLSpanElement,
+  React.ComponentProps<"span">
 >(({ className, ...props }, ref) => (
-  <li ref={ref} className={cn("", className)} {...props} />
+  <span ref={ref} className={className} {...props} />
 ));
 PaginationItem.displayName = "PaginationItem";
 
-type PaginationLinkProps = {
+/**
+ * PaginationLink - Page link (maps to Catalyst PaginationPage)
+ */
+interface PaginationLinkProps {
   isActive?: boolean;
-} & Pick<ButtonProps, "size"> &
-  React.ComponentProps<"a">;
+  href?: string;
+  className?: string;
+  children?: React.ReactNode;
+}
 
 const PaginationLink = ({
   className,
   isActive,
-  size = "icon",
-  ...props
+  href,
+  children,
 }: PaginationLinkProps) => (
-  <a
-    aria-current={isActive ? "page" : undefined}
-    className={cn(
-      buttonVariants({
-        variant: isActive ? "outline" : "ghost",
-        size,
-      }),
-      className
-    )}
-    {...props}
-  />
+  <CatalystPaginationPage
+    href={href}
+    current={isActive}
+    className={className}
+  >
+    {children}
+  </CatalystPaginationPage>
 );
 PaginationLink.displayName = "PaginationLink";
 
+/**
+ * PaginationPrevious - Previous page button
+ */
+interface PaginationPreviousProps {
+  className?: string;
+  href?: string | null;
+  children?: React.ReactNode;
+}
+
 const PaginationPrevious = ({
   className,
-  ...props
-}: React.ComponentProps<typeof PaginationLink>) => (
-  <PaginationLink
-    aria-label="Go to previous page"
-    size="default"
-    className={cn("gap-1 pl-2.5", className)}
-    {...props}
-  >
-    <ChevronLeft className="h-4 w-4" />
-    <span>Forrige</span>
-  </PaginationLink>
+  href,
+  children = "Forrige",
+}: PaginationPreviousProps) => (
+  <CatalystPaginationPrevious href={href === undefined ? null : href} className={className}>
+    {children}
+  </CatalystPaginationPrevious>
 );
 PaginationPrevious.displayName = "PaginationPrevious";
 
+/**
+ * PaginationNext - Next page button
+ */
+interface PaginationNextProps {
+  className?: string;
+  href?: string | null;
+  children?: React.ReactNode;
+}
+
 const PaginationNext = ({
   className,
-  ...props
-}: React.ComponentProps<typeof PaginationLink>) => (
-  <PaginationLink
-    aria-label="Go to next page"
-    size="default"
-    className={cn("gap-1 pr-2.5", className)}
-    {...props}
-  >
-    <span>Neste</span>
-    <ChevronRight className="h-4 w-4" />
-  </PaginationLink>
+  href,
+  children = "Neste",
+}: PaginationNextProps) => (
+  <CatalystPaginationNext href={href === undefined ? null : href} className={className}>
+    {children}
+  </CatalystPaginationNext>
 );
 PaginationNext.displayName = "PaginationNext";
 
-const PaginationEllipsis = ({
-  className,
-  ...props
-}: React.ComponentProps<"span">) => (
-  <span
-    aria-hidden
-    className={cn("flex h-9 w-9 items-center justify-center", className)}
-    {...props}
-  >
-    <MoreHorizontal className="h-4 w-4" />
-    <span className="sr-only">More pages</span>
-  </span>
+/**
+ * PaginationEllipsis - Gap indicator (maps to Catalyst PaginationGap)
+ */
+interface PaginationEllipsisProps {
+  className?: string;
+}
+
+const PaginationEllipsis = ({ className }: PaginationEllipsisProps) => (
+  <CatalystPaginationGap className={className} />
 );
 PaginationEllipsis.displayName = "PaginationEllipsis";
 

@@ -49,17 +49,21 @@ const UtviklingStatistikk = lazy(() => import('../features/stats/StatsPage'));
 const UtviklingHistorikk = lazy(() => Promise.resolve({ default: () => <PlaceholderPage title="Historikk" /> }));
 const UtviklingTestresultater = lazy(() => Promise.resolve({ default: () => <PlaceholderPage title="Testresultater" /> }));
 const UtviklingKrav = lazy(() => Promise.resolve({ default: () => <PlaceholderPage title="Kategori-krav" /> }));
-const UtviklingBadges = lazy(() => Promise.resolve({ default: () => <PlaceholderPage title="Badges" /> }));
+const UtviklingBadges = lazy(() => Promise.resolve({ default: () => <PlaceholderPage title="Merker" /> }));
 const UtviklingAchievements = lazy(() => Promise.resolve({ default: () => <PlaceholderPage title="Oppnåelser" /> }));
 
 // Plan area
 const PlanKalender = lazy(() => import('../features/calendar/CalendarPage'));
+const NotionKalender = lazy(() => import('../features/calendar/NotionCalendarPage'));
 const PlanUkeplan = lazy(() => Promise.resolve({ default: () => <PlaceholderPage title="Ukeplan" /> }));
 const PlanBooking = lazy(() => Promise.resolve({ default: () => <PlaceholderPage title="Booking" /> }));
 const PlanMaal = lazy(() => import('../features/goals/GoalsPage'));
 const PlanAarsplan = lazy(() => Promise.resolve({ default: () => <PlaceholderPage title="Årsplan" /> }));
 const PlanTurneringer = lazy(() => Promise.resolve({ default: () => <PlaceholderPage title="Turneringskalender" /> }));
 const PlanMineTurneringer = lazy(() => Promise.resolve({ default: () => <PlaceholderPage title="Mine turneringer" /> }));
+
+// Onboarding
+const OnboardingPage = lazy(() => import('../features/onboarding/OnboardingPage'));
 
 // Mer area
 const MerProfil = lazy(() => Promise.resolve({ default: () => <PlaceholderPage title="Min profil" /> }));
@@ -196,7 +200,8 @@ export function getPlayerRoutesV3() {
 
       {/* Plan */}
       <Route path="/plan" element={<SuspenseWrapper><PlanHub /></SuspenseWrapper>} />
-      <Route path="/plan/kalender" element={<SuspenseWrapper><PlanKalender /></SuspenseWrapper>} />
+      <Route path="/plan/kalender" element={<SuspenseWrapper><NotionKalender /></SuspenseWrapper>} />
+      <Route path="/plan/kalender-old" element={<SuspenseWrapper><PlanKalender /></SuspenseWrapper>} />
       <Route path="/plan/ukeplan" element={<SuspenseWrapper><PlanUkeplan /></SuspenseWrapper>} />
       <Route path="/plan/booking" element={<SuspenseWrapper><PlanBooking /></SuspenseWrapper>} />
       <Route path="/plan/maal" element={<SuspenseWrapper><PlanMaal /></SuspenseWrapper>} />
@@ -216,6 +221,9 @@ export function getPlayerRoutesV3() {
       <Route path="/mer/innstillinger" element={<SuspenseWrapper><MerInnstillinger /></SuspenseWrapper>} />
       <Route path="/mer/varsler" element={<SuspenseWrapper><MerVarsler /></SuspenseWrapper>} />
       <Route path="/mer/kalibrering" element={<SuspenseWrapper><MerKalibrering /></SuspenseWrapper>} />
+
+      {/* Onboarding */}
+      <Route path="/onboarding" element={<SuspenseWrapper><OnboardingPage /></SuspenseWrapper>} />
 
       {/* Redirects from old routes */}
       <Route path="/" element={<Navigate to="/dashboard" replace />} />

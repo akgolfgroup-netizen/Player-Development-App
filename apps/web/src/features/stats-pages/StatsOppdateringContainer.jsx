@@ -14,7 +14,7 @@ import { SectionTitle, SubSectionTitle } from '../../components/typography/Headi
 
 // Color class mapping for categories
 const COLOR_CLASSES = {
-  brand: { text: 'text-ak-brand-primary', bg: 'bg-ak-brand-primary/15' },
+  brand: { text: 'text-ak-primary', bg: 'bg-ak-primary/15' },
   success: { text: 'text-ak-status-success', bg: 'bg-ak-status-success/15' },
   warning: { text: 'text-ak-status-warning', bg: 'bg-ak-status-warning/15' },
   error: { text: 'text-ak-status-error', bg: 'bg-ak-status-error/15' },
@@ -142,7 +142,7 @@ const CategoryCard = ({ category, values, onChange, isExpanded, onToggle }) => {
                       className="w-[60px] py-2.5 px-3 rounded-lg border border-ak-border-default text-sm text-center"
                     />
                     {values[field.id]?.numerator && values[field.id]?.denominator && (
-                      <span className="text-[13px] text-ak-brand-primary ml-2">
+                      <span className="text-[13px] text-ak-primary ml-2">
                         = {Math.round((values[field.id].numerator / values[field.id].denominator) * 100)}%
                       </span>
                     )}
@@ -333,7 +333,7 @@ const StatsOppdateringContainer = () => {
           </button>
           <button
             onClick={handleSave}
-            className="py-3 px-6 rounded-[10px] border-none bg-ak-brand-primary text-white text-sm font-semibold cursor-pointer flex items-center gap-2"
+            className="py-3 px-6 rounded-[10px] border-none bg-ak-primary text-white text-sm font-semibold cursor-pointer flex items-center gap-2"
           >
             <Save size={16} />
             Lagre statistikk
@@ -353,7 +353,7 @@ const StatsOppdateringContainer = () => {
                 className="bg-ak-surface-base rounded-xl py-3.5 px-4 flex items-center gap-3"
               >
                 <div className="w-9 h-9 rounded-lg bg-ak-surface-subtle flex items-center justify-center">
-                  <BarChart2 size={18} className="text-ak-brand-primary" />
+                  <BarChart2 size={18} className="text-ak-primary" />
                 </div>
                 <div className="flex-1">
                   <div className="text-sm font-medium text-ak-text-primary">

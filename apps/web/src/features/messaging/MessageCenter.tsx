@@ -140,7 +140,7 @@ export default function MessageCenter({ userId, filterType: initialFilterType }:
             name: 'WANG Toppidrett',
             groupType: 'team',
             avatarInitials: 'WT',
-            avatarColor: 'var(--ak-brand-primary)',
+            avatarColor: 'var(--ak-primary)',
             lastMessage: {
               content: 'Samling på lørdag kl 10:00',
               senderName: 'Trener',
@@ -216,7 +216,7 @@ export default function MessageCenter({ userId, filterType: initialFilterType }:
             name: 'Sofie Andersen',
             email: 'sofie@demo.no',
             avatarInitials: 'SA',
-            avatarColor: 'var(--ak-brand-primary)',
+            avatarColor: 'var(--ak-primary)',
             category: 'Kat. A',
             type: 'player',
             isOnline: true,
@@ -236,7 +236,7 @@ export default function MessageCenter({ userId, filterType: initialFilterType }:
             name: 'Emma Berg',
             email: 'emma@demo.no',
             avatarInitials: 'EB',
-            avatarColor: 'var(--ak-brand-primary)',
+            avatarColor: 'var(--ak-primary)',
             category: 'Kat. B',
             type: 'player',
             lastSeen: '3t siden',
@@ -274,7 +274,7 @@ export default function MessageCenter({ userId, filterType: initialFilterType }:
   if (loading) {
     return (
       <div className="p-6 text-center">
-        <div className="w-10 h-10 border-[3px] border-ak-border-default border-t-ak-brand-primary rounded-full mx-auto mb-4 animate-spin" />
+        <div className="w-10 h-10 border-[3px] border-ak-border-default border-t-ak-primary rounded-full mx-auto mb-4 animate-spin" />
         <p className="text-ak-text-secondary">Laster meldinger...</p>
       </div>
     );
@@ -295,7 +295,7 @@ export default function MessageCenter({ userId, filterType: initialFilterType }:
             placeholder="Søk i samtaler..."
             value={searchQuery}
             onChange={(e) => setSearchQuery(e.target.value)}
-            className="w-full py-2.5 pr-3 pl-10 bg-ak-surface-base border border-ak-border-default rounded-lg text-sm text-ak-text-primary outline-none focus:border-ak-brand-primary"
+            className="w-full py-2.5 pr-3 pl-10 bg-ak-surface-base border border-ak-border-default rounded-lg text-sm text-ak-text-primary outline-none focus:border-ak-primary"
           />
         </div>
 
@@ -308,11 +308,11 @@ export default function MessageCenter({ userId, filterType: initialFilterType }:
           ].map((filter) => (
             <button
               key={filter.key}
-              onClick={() => setFilterType(filter.key as any)}
+              onClick={() => setFilterType(filter.key as 'all' | 'unread' | 'coach')}
               className={`px-3.5 py-2 text-[13px] font-medium rounded cursor-pointer border transition-colors ${
                 filterType === filter.key
-                  ? 'bg-ak-brand-primary text-white border-ak-brand-primary'
-                  : 'bg-ak-surface-base text-ak-text-primary border-ak-border-default hover:border-ak-brand-primary'
+                  ? 'bg-ak-primary text-white border-ak-primary'
+                  : 'bg-ak-surface-base text-ak-text-primary border-ak-border-default hover:border-ak-primary'
               }`}
             >
               {filter.label}
@@ -342,12 +342,12 @@ export default function MessageCenter({ userId, filterType: initialFilterType }:
               to={`/meldinger/${conversation.id}`}
               className={`flex items-center gap-3.5 p-4 no-underline transition-colors hover:bg-ak-surface-subtle ${
                 index < filteredConversations.length - 1 ? 'border-b border-ak-surface-subtle' : ''
-              } ${conversation.unreadCount > 0 ? 'bg-ak-brand-primary/5' : 'bg-transparent'}`}
+              } ${conversation.unreadCount > 0 ? 'bg-ak-primary/5' : 'bg-transparent'}`}
             >
               {/* Avatar */}
               <div
                 className="w-12 h-12 rounded-lg flex items-center justify-center text-white font-bold text-base flex-shrink-0"
-                style={{ backgroundColor: conversation.avatarColor || 'var(--ak-brand-primary)' }}
+                style={{ backgroundColor: conversation.avatarColor || 'var(--ak-primary)' }}
               >
                 {conversation.avatarInitials}
               </div>
@@ -384,12 +384,12 @@ export default function MessageCenter({ userId, filterType: initialFilterType }:
               {/* Time and unread badge */}
               <div className="flex flex-col items-end gap-1.5 flex-shrink-0">
                 {conversation.lastMessage && (
-                  <span className={`text-xs leading-4 ${conversation.unreadCount > 0 ? 'text-ak-brand-primary' : 'text-ak-text-secondary'}`}>
+                  <span className={`text-xs leading-4 ${conversation.unreadCount > 0 ? 'text-ak-primary' : 'text-ak-text-secondary'}`}>
                     {formatTime(conversation.lastMessage.sentAt)}
                   </span>
                 )}
                 {conversation.unreadCount > 0 && (
-                  <span className="min-w-[20px] h-5 rounded-full bg-ak-brand-primary text-white text-[11px] font-bold flex items-center justify-center px-1.5">
+                  <span className="min-w-[20px] h-5 rounded-full bg-ak-primary text-white text-[11px] font-bold flex items-center justify-center px-1.5">
                     {conversation.unreadCount}
                   </span>
                 )}
@@ -408,7 +408,7 @@ export default function MessageCenter({ userId, filterType: initialFilterType }:
           }`}
         >
           <div className="flex items-center gap-3">
-            <div className="w-10 h-10 rounded-full bg-ak-brand-primary flex items-center justify-center">
+            <div className="w-10 h-10 rounded-full bg-ak-primary flex items-center justify-center">
               <Users size={20} color="white" />
             </div>
             <div>

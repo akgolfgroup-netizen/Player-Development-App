@@ -237,7 +237,7 @@ export const DayViewExecution: React.FC<DayViewProps> = ({ date: initialDate, on
         <div className="flex items-center gap-1">
           <button
             onClick={() => handleNavigate(-1)}
-            className="flex items-center justify-center w-9 h-9 rounded-lg border transition-all border-ak-border-default text-ak-text-secondary hover:border-ak-brand-primary hover:text-ak-brand-primary"
+            className="flex items-center justify-center w-9 h-9 rounded-lg border transition-all border-ak-border-default text-ak-text-secondary hover:border-ak-primary hover:text-ak-primary"
           >
             <ChevronLeft size={18} />
           </button>
@@ -246,7 +246,7 @@ export const DayViewExecution: React.FC<DayViewProps> = ({ date: initialDate, on
             <div className="text-lg font-semibold text-ak-text-primary">
               {dayNames[currentDate.getDay()]} {currentDate.getDate()}
               {isToday && (
-                <span className="inline-flex items-center ml-2 px-2 py-0.5 rounded-full text-[10px] font-semibold bg-ak-brand-primary text-white">
+                <span className="inline-flex items-center ml-2 px-2 py-0.5 rounded-full text-[10px] font-semibold bg-ak-primary text-white">
                   I dag
                 </span>
               )}
@@ -258,7 +258,7 @@ export const DayViewExecution: React.FC<DayViewProps> = ({ date: initialDate, on
 
           <button
             onClick={() => handleNavigate(1)}
-            className="flex items-center justify-center w-9 h-9 rounded-lg border transition-all border-ak-border-default text-ak-text-secondary hover:border-ak-brand-primary hover:text-ak-brand-primary"
+            className="flex items-center justify-center w-9 h-9 rounded-lg border transition-all border-ak-border-default text-ak-text-secondary hover:border-ak-primary hover:text-ak-primary"
           >
             <ChevronRight size={18} />
           </button>
@@ -266,7 +266,7 @@ export const DayViewExecution: React.FC<DayViewProps> = ({ date: initialDate, on
           {!isToday && (
             <button
               onClick={() => handleNavigate(0, true)}
-              className="h-9 px-3 rounded-lg text-sm font-medium border transition-all border-ak-border-default text-ak-text-secondary hover:border-ak-brand-primary hover:bg-ak-brand-primary/10 hover:text-ak-brand-primary"
+              className="h-9 px-3 rounded-lg text-sm font-medium border transition-all border-ak-border-default text-ak-text-secondary hover:border-ak-primary hover:bg-ak-primary/10 hover:text-ak-primary"
             >
               I dag
             </button>

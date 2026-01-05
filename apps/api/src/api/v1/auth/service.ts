@@ -19,6 +19,7 @@ export interface AuthResponse {
     lastName: string;
     role: string;
     tenantId: string;
+    onboardingComplete?: boolean;
   };
 }
 
@@ -34,6 +35,7 @@ interface UserWithOptionalPlayerId {
   tenantId: string;
   playerId?: string;
   coachId?: string;
+  onboardingComplete?: boolean;
 }
 
 export class AuthService {
@@ -154,14 +156,16 @@ export class AuthService {
       data: { lastLoginAt: new Date() },
     });
 
-    // If user is a player, look up their player ID
+    // If user is a player, look up their player ID and onboarding status
     let playerId: string | undefined;
+    let onboardingComplete: boolean | undefined;
     if (user.role === 'player') {
       const player = await this.prisma.player.findFirst({
         where: { email: user.email },
-        select: { id: true },
+        select: { id: true, onboardingComplete: true },
       });
       playerId = player?.id;
+      onboardingComplete = player?.onboardingComplete ?? false;
     }
 
     // If user is a coach, look up their coach ID
@@ -174,8 +178,9 @@ export class AuthService {
       coachId = coach?.id;
     }
 
-    // Generate tokens with playerId/coachId if available
-    return this.generateAuthResponse({ ...user, playerId, coachId });
+    // Generate tokens with playerId/coachId/onboardingComplete if available
+    const userWithExtra = { ...user, playerId, coachId, onboardingComplete };
+    return this.generateAuthResponse(userWithExtra);
   }
 
   /**
@@ -342,7 +347,7 @@ export class AuthService {
       // Ignore errors
     });
 
-    return {
+    const response = {
       accessToken,
       refreshToken,
       expiresIn: 900, // 15 minutes in seconds
@@ -353,8 +358,10 @@ export class AuthService {
         lastName: user.lastName,
         role: user.role,
         tenantId: user.tenantId,
+        onboardingComplete: user.onboardingComplete,
       },
     };
+    return response;
   }
 
   /**

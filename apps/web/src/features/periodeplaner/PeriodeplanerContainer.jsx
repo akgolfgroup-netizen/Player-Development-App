@@ -228,7 +228,7 @@ const getPhaseConfig = (phase) => {
     case 'off-season':
       return {
         label: 'Off-season',
-        colorClasses: { bg: 'bg-ak-brand-primary/15', text: 'text-ak-brand-primary', fill: 'bg-ak-brand-primary' },
+        colorClasses: { bg: 'bg-ak-primary/15', text: 'text-ak-primary', fill: 'bg-ak-primary' },
         icon: Snowflake,
         description: 'Grunnlagsperiode',
       };
@@ -270,7 +270,7 @@ const getStatusConfig = (status) => {
     case 'upcoming':
       return { label: 'Kommende', colorClasses: { bg: 'bg-ak-surface-subtle', text: 'text-ak-text-secondary' }, icon: Clock };
     case 'completed':
-      return { label: 'Fullfort', colorClasses: { bg: 'bg-ak-brand-primary/15', text: 'text-ak-brand-primary' }, icon: CheckCircle };
+      return { label: 'Fullfort', colorClasses: { bg: 'bg-ak-primary/15', text: 'text-ak-primary' }, icon: CheckCircle };
     default:
       return { label: status, colorClasses: { bg: 'bg-ak-surface-subtle', text: 'text-ak-text-secondary' }, icon: Clock };
   }
@@ -282,7 +282,7 @@ const getSessionTypeConfig = (type) => {
       return { colorClasses: { bg: 'bg-ak-status-error/15', text: 'text-ak-status-error' }, icon: Dumbbell };
     case 'Simulator':
     case 'Teknikk':
-      return { colorClasses: { bg: 'bg-ak-brand-primary/15', text: 'text-ak-brand-primary' }, icon: Target };
+      return { colorClasses: { bg: 'bg-ak-primary/15', text: 'text-ak-primary' }, icon: Target };
     case 'Mental':
       return { colorClasses: { bg: 'bg-amber-500/15', text: 'text-amber-600' }, icon: Brain };
     case 'Hvile':
@@ -337,7 +337,7 @@ const PeriodCard = ({ period, isExpanded, onToggle }) => {
         <div className="flex items-center gap-4">
           {period.status === 'active' && (
             <div className="text-right">
-              <div className="text-xl font-bold text-ak-brand-primary">
+              <div className="text-xl font-bold text-ak-primary">
                 {period.progress}%
               </div>
               <div className="text-[11px] text-ak-text-secondary">fullfort</div>
@@ -414,7 +414,7 @@ const PeriodCard = ({ period, isExpanded, onToggle }) => {
                     {goal.text}
                   </span>
                   {goal.current !== undefined && !goal.completed && (
-                    <span className="text-[11px] text-ak-brand-primary bg-ak-brand-primary/10 py-0.5 px-2 rounded">
+                    <span className="text-[11px] text-ak-primary bg-ak-primary/10 py-0.5 px-2 rounded">
                       {goal.current} av mal
                     </span>
                   )}
@@ -429,8 +429,8 @@ const PeriodCard = ({ period, isExpanded, onToggle }) => {
               Ukentlig treningstid
             </div>
             <div className="flex gap-3">
-              <div className="flex-1 bg-ak-brand-primary/10 p-3 rounded-[10px] text-center">
-                <div className="text-xl font-bold text-ak-brand-primary">
+              <div className="flex-1 bg-ak-primary/10 p-3 rounded-[10px] text-center">
+                <div className="text-xl font-bold text-ak-primary">
                   {period.weeklyHours.technical}t
                 </div>
                 <div className="text-[11px] text-ak-text-secondary">Teknisk</div>
@@ -453,7 +453,7 @@ const PeriodCard = ({ period, isExpanded, onToggle }) => {
           {/* Coach Note */}
           {period.notes && (
             <div className={`mt-4 p-3 bg-ak-surface-subtle rounded-[10px] border-l-[3px] ${
-              phaseConfig.colorClasses.text === 'text-ak-brand-primary' ? 'border-l-ak-brand-primary' :
+              phaseConfig.colorClasses.text === 'text-ak-primary' ? 'border-l-ak-primary' :
               phaseConfig.colorClasses.text === 'text-ak-status-success' ? 'border-l-ak-status-success' :
               phaseConfig.colorClasses.text === 'text-amber-600' ? 'border-l-amber-500' :
               'border-l-ak-status-warning'
@@ -759,7 +759,7 @@ const PeriodeplanerContainer = () => {
             <div className="text-xs text-ak-text-secondary">Aktiv periode</div>
           </div>
           <div className="bg-ak-surface-base rounded-xl p-4 text-center">
-            <div className="text-2xl font-bold text-ak-brand-primary">
+            <div className="text-2xl font-bold text-ak-primary">
               {activePeriod?.progress || 0}%
             </div>
             <div className="text-xs text-ak-text-secondary">Fullfort</div>

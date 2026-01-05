@@ -29,6 +29,7 @@ import {
 import PageHeader from '../../ui/raw-blocks/PageHeader.raw';
 import { useAuth } from '../../contexts/AuthContext';
 import { coachesAPI } from '../../services/api';
+import { useToast } from '../../components/shadcn/use-toast';
 
 // ============================================================================
 // TYPES
@@ -126,7 +127,7 @@ const getAlertConfig = (type: Alert['type']) => {
     case 'note_request':
       return {
         icon: AlertCircle,
-        colorClass: 'text-ak-brand-primary bg-ak-brand-primary/15',
+        colorClass: 'text-ak-primary bg-ak-primary/15',
         label: 'Tilbakemelding',
       };
     case 'milestone':
@@ -158,6 +159,7 @@ export default function CoachAlertsPage({
   onAlertClick,
 }: CoachAlertsPageProps = {}) {
   const { user } = useAuth();
+  const { toast } = useToast();
   const [alerts, setAlerts] = useState<Alert[]>(apiAlerts || []);
   const [filter, setFilter] = useState<AlertFilter>('all');
   const [loading, setLoading] = useState(!apiAlerts);
@@ -211,10 +213,15 @@ export default function CoachAlertsPage({
     } catch (err) {
       console.error('Error fetching alerts:', err);
       setAlerts(MOCK_ALERTS);
+      toast({
+        title: 'Kunne ikke laste varsler',
+        description: 'Viser demodata. Prøv å laste siden på nytt.',
+        variant: 'destructive',
+      });
     } finally {
       setLoading(false);
     }
-  }, []);
+  }, [toast]);
 
   useEffect(() => {
     if (!apiAlerts && user) {
@@ -244,24 +251,21 @@ export default function CoachAlertsPage({
       aria-label="Coach alerts"
       className="min-h-screen bg-ak-surface-subtle font-sans"
     >
-      {/* Header */}
-      <div className="flex items-start gap-4 p-6 pb-0">
-        <div className="relative w-12 h-12 rounded-lg bg-ak-brand-primary/10 flex items-center justify-center flex-shrink-0">
-          <Bell size={24} className="text-ak-brand-primary" />
-          {unreadCount > 0 && (
-            <div className="absolute -top-1 -right-1 w-5 h-5 rounded-full bg-ak-status-error text-white text-[11px] font-bold flex items-center justify-center">
-              {unreadCount}
+      {/* Header - Standardized layout matching other coach pages */}
+      <PageHeader
+        title="Varsler"
+        subtitle={`${unreadCount} uleste av ${alerts.length} totalt`}
+        actions={
+          unreadCount > 0 && (
+            <div className="flex items-center gap-2 py-2 px-4 bg-ak-status-error/15 rounded-lg">
+              <Bell size={18} className="text-ak-status-error" />
+              <span className="text-sm font-semibold text-ak-status-error">
+                {unreadCount} uleste
+              </span>
             </div>
-          )}
-        </div>
-        <div className="flex-1">
-          <PageHeader
-            title="Varsler"
-            subtitle={`${unreadCount} uleste av ${alerts.length} totalt`}
-            divider={false}
-          />
-        </div>
-      </div>
+          )
+        }
+      />
 
       {/* Filter */}
       <div className="px-6 pb-4">
@@ -271,7 +275,7 @@ export default function CoachAlertsPage({
             className={`
               flex items-center gap-1.5 px-4 py-2.5 rounded-lg border-none cursor-pointer shadow-sm text-[15px] font-medium
               ${filter === 'all'
-                ? 'bg-ak-brand-primary text-white'
+                ? 'bg-ak-primary text-white'
                 : 'bg-ak-surface-base text-ak-text-primary'
               }
             `}
@@ -284,7 +288,7 @@ export default function CoachAlertsPage({
             className={`
               flex items-center gap-1.5 px-4 py-2.5 rounded-lg border-none cursor-pointer shadow-sm text-[15px] font-medium
               ${filter === 'unread'
-                ? 'bg-ak-brand-primary text-white'
+                ? 'bg-ak-primary text-white'
                 : 'bg-ak-surface-base text-ak-text-primary'
               }
             `}
@@ -333,7 +337,7 @@ export default function CoachAlertsPage({
                   onClick={() => handleAlertClick(alert)}
                   className={`
                     w-full flex items-center gap-4 px-5 py-4 border-none cursor-pointer text-left transition-colors
-                    ${alert.read ? 'bg-transparent' : 'bg-ak-brand-primary/5'}
+                    ${alert.read ? 'bg-transparent' : 'bg-ak-primary/5'}
                     ${index < filteredAlerts.length - 1 ? 'border-b border-ak-border-default' : ''}
                     hover:bg-ak-surface-subtle
                   `}
@@ -370,7 +374,7 @@ export default function CoachAlertsPage({
                       {formatTimeAgo(alert.createdAt)}
                     </span>
                     {!alert.read && (
-                      <div className="w-2 h-2 rounded-full bg-ak-brand-primary" />
+                      <div className="w-2 h-2 rounded-full bg-ak-primary" />
                     )}
                     <ChevronRight size={18} className="text-ak-text-secondary" />
                   </div>

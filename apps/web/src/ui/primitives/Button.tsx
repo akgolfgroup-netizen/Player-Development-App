@@ -2,6 +2,8 @@
  * AK Golf Academy - Button Component
  * Premium Light System: Stone × Midnight Blue × Emerald × Soft Gold
  *
+ * NOW POWERED BY CATALYST UI
+ *
  * Rules:
  * - Primary action = ak.action (blue)
  * - Progress (emerald) is NOT allowed for buttons
@@ -9,6 +11,8 @@
  */
 
 import React from "react";
+// @ts-expect-error - Catalyst components are JS without type definitions
+import { Button as CatalystButton } from "../../components/catalyst/button";
 
 export type ButtonVariant =
   | "primary"
@@ -22,7 +26,7 @@ export type ButtonVariant =
 
 export type ButtonSize = "sm" | "md" | "lg";
 
-interface ButtonProps extends React.ButtonHTMLAttributes<HTMLButtonElement> {
+interface ButtonProps extends Omit<React.ButtonHTMLAttributes<HTMLButtonElement>, 'color'> {
   variant?: ButtonVariant;
   size?: ButtonSize;
   fullWidth?: boolean;
@@ -34,32 +38,26 @@ interface ButtonProps extends React.ButtonHTMLAttributes<HTMLButtonElement> {
   /** @deprecated Use icon with iconPosition="right" instead */
   rightIcon?: React.ReactNode;
   children: React.ReactNode;
+  href?: string;
 }
 
-const sizeClasses: Record<ButtonSize, string> = {
-  sm: "px-4 py-2 text-[13px] leading-[18px] rounded-lg",
-  md: "px-6 py-3 text-[15px] leading-[20px] rounded-xl",
-  lg: "px-8 py-4 text-[17px] leading-[22px] rounded-xl",
+// Map our variants to Catalyst colors
+const variantToCatalyst: Record<ButtonVariant, { color?: string; outline?: boolean; plain?: boolean }> = {
+  primary: { color: "primary" },
+  secondary: { outline: true },
+  outline: { outline: true },
+  ghost: { plain: true },
+  danger: { color: "error" },
+  destructive: { color: "error" },
+  success: { color: "success" },
+  premium: { color: "gold" },
 };
 
-const variantClasses: Record<ButtonVariant, string> = {
-  primary:
-    "bg-ak-action-primary hover:bg-ak-action-hover active:bg-ak-action-active text-white",
-  secondary:
-    "bg-transparent border-2 border-ak-action-active text-ak-action-active hover:bg-ak-action-active/10",
-  outline:
-    "bg-transparent border-2 border-ak-action-active text-ak-action-active hover:bg-ak-action-active/10", // alias for secondary
-  ghost:
-    "bg-transparent text-ak-text-body hover:bg-ak-surface-card active:bg-ak-surface-border",
-  danger:
-    "bg-ak-status-error hover:opacity-90 active:opacity-95 text-white",
-  destructive:
-    "bg-ak-status-error hover:opacity-90 active:opacity-95 text-white", // alias for danger
-  // Keep success for confirmations, NOT as a primary CTA color.
-  success:
-    "bg-ak-status-success hover:opacity-90 active:opacity-95 text-white",
-  premium:
-    "bg-ak-prestige hover:opacity-90 active:opacity-95 text-ak-text-primary",
+// Size-specific classes to add
+const sizeClasses: Record<ButtonSize, string> = {
+  sm: "!text-xs !py-1.5 !px-3",
+  md: "", // Default Catalyst size
+  lg: "!text-base !py-3 !px-6",
 };
 
 export const Button: React.FC<ButtonProps> = ({
@@ -74,38 +72,40 @@ export const Button: React.FC<ButtonProps> = ({
   children,
   disabled,
   className,
+  href,
   ...props
 }) => {
   const isDisabled = Boolean(disabled || loading);
-  // Backwards compat: leftIcon/rightIcon take precedence
   const resolvedLeftIcon = leftIcon ?? (iconPosition === "left" ? icon : undefined);
   const resolvedRightIcon = rightIcon ?? (iconPosition === "right" ? icon : undefined);
 
-  const classes = [
-    "inline-flex items-center justify-center gap-2 font-semibold select-none",
-    "transition-all duration-200",
-    "focus:outline-none focus-visible:ring-2 focus-visible:ring-ak-action-active/30 focus-visible:ring-offset-2 focus-visible:ring-offset-ak-surface-base",
+  const catalystProps = variantToCatalyst[variant];
+  const combinedClassName = [
     sizeClasses[size],
-    variantClasses[variant],
     fullWidth ? "w-full" : "",
-    isDisabled ? "opacity-50 cursor-not-allowed" : "cursor-pointer",
     className ?? "",
-  ]
-    .filter(Boolean)
-    .join(" ");
+  ].filter(Boolean).join(" ");
 
   return (
-    <button className={classes} disabled={isDisabled} {...props}>
+    <CatalystButton
+      color={catalystProps.color}
+      outline={catalystProps.outline}
+      plain={catalystProps.plain}
+      disabled={isDisabled}
+      className={combinedClassName}
+      href={href}
+      {...props}
+    >
       {loading ? (
         <span className="opacity-80">Laster...</span>
       ) : (
         <>
-          {resolvedLeftIcon}
+          {resolvedLeftIcon && <span data-slot="icon">{resolvedLeftIcon}</span>}
           {children}
-          {resolvedRightIcon}
+          {resolvedRightIcon && <span data-slot="icon">{resolvedRightIcon}</span>}
         </>
       )}
-    </button>
+    </CatalystButton>
   );
 };
 

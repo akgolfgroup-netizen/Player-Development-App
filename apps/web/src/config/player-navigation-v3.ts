@@ -158,6 +158,13 @@ export const playerNavigationV3: NavArea[] = [
           { href: '/trening/testing/registrer', label: 'Registrer test', icon: 'PlusCircle', description: 'Ny testresultat' },
         ],
       },
+      {
+        id: 'kunnskap',
+        label: 'Kunnskap',
+        items: [
+          { href: '/trening/kategorisystem', label: 'Kategorisystem', icon: 'BookOpen', description: 'Forstå treningssystemet' },
+        ],
+      },
     ],
   },
 

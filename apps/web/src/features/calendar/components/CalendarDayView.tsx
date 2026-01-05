@@ -212,7 +212,7 @@ export const CalendarDayView: React.FC<CalendarDayViewProps> = ({
           primaryCta = (
             <button
               onClick={() => onStartSession(recommendedEvent)}
-              className="flex items-center gap-1.5 px-4 py-2 rounded-lg font-medium text-sm transition-colors bg-ak-brand-primary text-white"
+              className="flex items-center gap-1.5 px-4 py-2 rounded-lg font-medium text-sm transition-colors bg-ak-primary text-white"
             >
               <Play size={16} />
               Start nå
@@ -242,7 +242,7 @@ export const CalendarDayView: React.FC<CalendarDayViewProps> = ({
         primaryCta = (
           <button
             onClick={() => onAddSession(date, '09:00')}
-            className="flex items-center gap-1.5 px-4 py-2 rounded-lg font-medium text-sm transition-colors bg-ak-brand-primary text-white"
+            className="flex items-center gap-1.5 px-4 py-2 rounded-lg font-medium text-sm transition-colors bg-ak-primary text-white"
           >
             <Clock size={16} />
             Start 15 min terskeløkt
@@ -400,7 +400,7 @@ export const CalendarDayView: React.FC<CalendarDayViewProps> = ({
                     <Check size={18} className="text-ak-status-success" />
                   )}
                   {event.status === 'in_progress' && (
-                    <div className="w-2 h-2 rounded-full animate-pulse bg-ak-brand-primary" />
+                    <div className="w-2 h-2 rounded-full animate-pulse bg-ak-primary" />
                   )}
                 </div>
 
@@ -409,7 +409,7 @@ export const CalendarDayView: React.FC<CalendarDayViewProps> = ({
                   <div className="flex gap-1 mt-2 flex-wrap">
                     {event.badges.slice(0, 2).map((badge) => {
                       const badgeClasses =
-                        badge === 'Anbefalt' ? 'bg-ak-brand-primary/10 text-ak-brand-primary' :
+                        badge === 'Anbefalt' ? 'bg-ak-primary/10 text-ak-primary' :
                         badge === 'Fullført' ? 'bg-ak-status-success/10 text-ak-status-success' :
                         badge === 'Pågår' ? 'bg-ak-status-warning/10 text-ak-status-warning' :
                         'bg-ak-surface-subtle text-ak-text-secondary';

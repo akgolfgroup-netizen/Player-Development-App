@@ -417,7 +417,7 @@ const StatsSummary = ({ stats }) => {
           </span>
         </div>
         <p style={{ fontSize: '10px', color: 'var(--text-tertiary)', margin: 0 }}>
-          Streak
+          Serie
         </p>
       </div>
     </div>

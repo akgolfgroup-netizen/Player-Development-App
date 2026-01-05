@@ -164,7 +164,7 @@ export const CoachScheduledMessages: React.FC = () => {
   const getCategoryBadgeClasses = (category: string) => {
     switch (category) {
       case 'training':
-        return { bg: 'bg-ak-brand-primary/15', text: 'text-ak-brand-primary', label: 'Trening' };
+        return { bg: 'bg-ak-primary/15', text: 'text-ak-primary', label: 'Trening' };
       case 'tournament':
         return { bg: 'bg-ak-status-warning/15', text: 'text-ak-status-warning', label: 'Turnering' };
       case 'urgent':
@@ -189,9 +189,9 @@ export const CoachScheduledMessages: React.FC = () => {
       };
     }
     return {
-      circle: 'bg-ak-brand-primary/15 border-2 border-ak-brand-primary',
-      icon: 'text-ak-brand-primary',
-      badge: 'bg-ak-brand-primary/15 text-ak-brand-primary'
+      circle: 'bg-ak-primary/15 border-2 border-ak-primary',
+      icon: 'text-ak-primary',
+      badge: 'bg-ak-primary/15 text-ak-primary'
     };
   };
 
@@ -260,7 +260,7 @@ export const CoachScheduledMessages: React.FC = () => {
           placeholder="Søk i planlagte beskjeder..."
           value={searchQuery}
           onChange={(e) => setSearchQuery(e.target.value)}
-          className="w-full max-w-[400px] py-3 pr-3 pl-10 rounded-[10px] border border-ak-border-default bg-ak-surface-base text-sm text-ak-text-primary outline-none focus:border-ak-brand-primary"
+          className="w-full max-w-[400px] py-3 pr-3 pl-10 rounded-[10px] border border-ak-border-default bg-ak-surface-base text-sm text-ak-text-primary outline-none focus:border-ak-primary"
         />
       </div>
 
@@ -284,7 +284,7 @@ export const CoachScheduledMessages: React.FC = () => {
               </div>
 
               {/* Message Card */}
-              <div className="flex-1 bg-ak-surface-base rounded-xl p-4 px-5 border border-ak-border-default cursor-pointer transition-colors hover:border-ak-brand-primary/50">
+              <div className="flex-1 bg-ak-surface-base rounded-xl p-4 px-5 border border-ak-border-default cursor-pointer transition-colors hover:border-ak-primary/50">
                 {/* Scheduled time badge */}
                 <div className={`inline-flex items-center gap-1.5 py-1 px-2.5 rounded-md mb-3 ${timelineStyle.badge}`}>
                   <Calendar size={12} />
@@ -362,7 +362,7 @@ export const CoachScheduledMessages: React.FC = () => {
           {!searchQuery && (
             <button
               onClick={() => navigate('/coach/messages/compose')}
-              className="inline-flex items-center gap-2 py-2.5 px-5 rounded-[10px] border-none bg-ak-brand-primary text-white text-sm font-medium cursor-pointer hover:bg-ak-brand-primary/90"
+              className="inline-flex items-center gap-2 py-2.5 px-5 rounded-[10px] border-none bg-ak-primary text-white text-sm font-medium cursor-pointer hover:bg-ak-primary/90"
             >
               <Plus size={16} />
               Planlegg første beskjed

@@ -229,7 +229,7 @@ export default function CoachAthleteList({ onSelectAthlete, athletes: propAthlet
           onClick={toggleSelectMode}
           className={`flex items-center gap-2 px-4 py-2.5 rounded-lg text-sm font-medium cursor-pointer transition-colors ${
             isSelectMode
-              ? 'bg-ak-brand-primary text-white border-none'
+              ? 'bg-ak-primary text-white border-none'
               : 'bg-ak-surface-base text-ak-text-primary border border-ak-border-default'
           }`}
         >
@@ -291,14 +291,14 @@ export default function CoachAthleteList({ onSelectAthlete, athletes: propAthlet
                 }}
                 className={`w-full flex items-center gap-3.5 px-5 py-4 border-none cursor-pointer text-left transition-colors ${
                   selectedIds.has(athlete.id)
-                    ? 'bg-ak-brand-primary/10'
+                    ? 'bg-ak-primary/10'
                     : 'bg-transparent hover:bg-ak-surface-subtle'
                 } ${index < filteredAthletes.length - 1 ? 'border-b border-ak-border-default' : ''}`}
               >
                 {isSelectMode && (
                   <div className="flex-shrink-0">
                     {selectedIds.has(athlete.id) ? (
-                      <CheckSquare size={22} className="text-ak-brand-primary" />
+                      <CheckSquare size={22} className="text-ak-primary" />
                     ) : (
                       <Square size={22} className="text-ak-text-secondary" />
                     )}

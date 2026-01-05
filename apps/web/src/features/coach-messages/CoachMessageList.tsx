@@ -171,7 +171,7 @@ const getCategoryConfig = (category: string): { label: string; variant: 'accent'
 const getRecipientIconBgClass = (type: string): string => {
   switch (type) {
     case 'player':
-      return 'bg-ak-brand-primary/15 text-ak-brand-primary';
+      return 'bg-ak-primary/15 text-ak-primary';
     case 'group':
       return 'bg-ak-status-warning/15 text-ak-status-warning';
     default:
@@ -321,7 +321,7 @@ export const CoachMessageList: React.FC = () => {
                 variant="default"
                 padding="md"
                 onClick={() => navigate(`/coach/messages/${message.id}`)}
-                className="cursor-pointer hover:border-ak-brand-primary/50 transition-colors"
+                className="cursor-pointer hover:border-ak-primary/50 transition-colors"
               >
                 <div className="flex items-center gap-4">
                   {/* Left - Icon */}

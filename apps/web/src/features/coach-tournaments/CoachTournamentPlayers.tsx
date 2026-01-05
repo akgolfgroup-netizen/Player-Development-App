@@ -102,7 +102,7 @@ export default function CoachTournamentPlayers() {
         id: 'p1',
         name: 'Anders Hansen',
         initials: 'AH',
-        avatarColor: 'rgb(var(--ak-brand-primary-rgb))',
+        avatarColor: 'rgb(var(--ak-primary-rgb))',
         category: 'A',
         upcomingTournaments: [
           { id: 'e1', tournamentId: 't1', tournamentName: 'NM Junior 2025', date: '2025-06-15', location: 'Oslo GK', status: 'registered', category: 'junior' },
@@ -268,7 +268,7 @@ export default function CoachTournamentPlayers() {
   if (loading) {
     return (
       <div className="min-h-screen bg-ak-surface-subtle flex items-center justify-center">
-        <div className="w-12 h-12 border-4 border-ak-border-default border-t-ak-brand-primary rounded-full animate-spin" />
+        <div className="w-12 h-12 border-4 border-ak-border-default border-t-ak-primary rounded-full animate-spin" />
       </div>
     );
   }
@@ -300,8 +300,8 @@ export default function CoachTournamentPlayers() {
               </span>
             </div>
           )}
-          <div className="flex items-center gap-2 py-2 px-3.5 bg-ak-brand-primary/10 rounded-lg">
-            <Users size={16} className="text-ak-brand-primary" />
+          <div className="flex items-center gap-2 py-2 px-3.5 bg-ak-primary/10 rounded-lg">
+            <Users size={16} className="text-ak-primary" />
             <span className="text-[13px] text-ak-text-primary">
               <strong>{stats.playersWithTournaments}</strong> av {players.length} spillere
             </span>
@@ -353,7 +353,7 @@ export default function CoachTournamentPlayers() {
                       {player.name}
                     </SubSectionTitle>
                     <div className="flex items-center gap-2 mt-0.5">
-                      <span className="text-[11px] font-semibold text-ak-brand-primary bg-ak-brand-primary/15 py-0.5 px-2 rounded">
+                      <span className="text-[11px] font-semibold text-ak-primary bg-ak-primary/15 py-0.5 px-2 rounded">
                         Kategori {player.category}
                       </span>
                       <span className="text-xs text-ak-text-secondary">

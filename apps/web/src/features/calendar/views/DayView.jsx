@@ -131,7 +131,7 @@ const DayView = ({
               <button
                 type="button"
                 onClick={onAddEvent}
-                className="ml-6 rounded-lg bg-ak-brand-primary px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-ak-brand-primary/90"
+                className="ml-6 rounded-lg bg-ak-primary px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-ak-primary/90"
               >
                 Ny hendelse
               </button>
@@ -142,7 +142,7 @@ const DayView = ({
 
       {/* Today indicator badge */}
       {isToday && (
-        <div className="flex-none bg-ak-brand-primary text-white px-6 py-2 text-sm font-medium">
+        <div className="flex-none bg-ak-primary text-white px-6 py-2 text-sm font-medium">
           I dag
         </div>
       )}
@@ -195,8 +195,8 @@ const DayView = ({
                   className="absolute left-0 right-0 z-20 flex items-center"
                   style={{ top: getCurrentTimePosition() }}
                 >
-                  <div className="h-3 w-3 rounded-full bg-ak-brand-primary -ml-1.5" />
-                  <div className="flex-auto h-0.5 bg-ak-brand-primary" />
+                  <div className="h-3 w-3 rounded-full bg-ak-primary -ml-1.5" />
+                  <div className="flex-auto h-0.5 bg-ak-primary" />
                 </div>
               )}
 
@@ -262,7 +262,7 @@ const DayView = ({
                               e.stopPropagation();
                               onStartSession?.(session);
                             }}
-                            className="flex h-8 w-8 items-center justify-center rounded-full bg-ak-brand-primary hover:bg-ak-brand-primary/90 transition-colors"
+                            className="flex h-8 w-8 items-center justify-center rounded-full bg-ak-primary hover:bg-ak-primary/90 transition-colors"
                           >
                             <Play className="h-4 w-4 text-white ml-0.5" />
                           </button>
@@ -342,7 +342,7 @@ const DayView = ({
           {onAddEvent && (
             <button
               onClick={onAddEvent}
-              className="rounded-lg bg-ak-brand-primary px-4 py-2 text-sm font-semibold text-white shadow-sm hover:bg-ak-brand-primary/90"
+              className="rounded-lg bg-ak-primary px-4 py-2 text-sm font-semibold text-white shadow-sm hover:bg-ak-primary/90"
             >
               Legg til hendelse
             </button>

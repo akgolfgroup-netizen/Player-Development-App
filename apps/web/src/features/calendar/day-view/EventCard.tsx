@@ -40,7 +40,7 @@ const getCardClasses = (
   isRecommended?: boolean
 ): string => {
   if (isGhost) {
-    return `${baseCardClasses} border-2 border-dashed border-ak-brand-primary opacity-60`;
+    return `${baseCardClasses} border-2 border-dashed border-ak-primary opacity-60`;
   }
   if (!isAKWorkout) {
     return `${baseCardClasses} bg-ak-surface-subtle border-l-4 border-ak-border-default hover:shadow-md`;
@@ -53,7 +53,7 @@ const getCardClasses = (
       return `${baseCardClasses} bg-ak-surface-subtle border-l-4 border-ak-status-success opacity-70 hover:shadow-lg hover:-translate-y-px`;
     default:
       if (isRecommended) {
-        return `${baseCardClasses} bg-ak-brand-primary/10 border-l-4 border-ak-brand-primary hover:shadow-lg hover:-translate-y-px`;
+        return `${baseCardClasses} bg-ak-primary/10 border-l-4 border-ak-primary hover:shadow-lg hover:-translate-y-px`;
       }
       return `${baseCardClasses} bg-ak-surface-subtle border-l-4 border-ak-border-default hover:shadow-lg hover:-translate-y-px`;
   }
@@ -91,7 +91,7 @@ export const EventCard: React.FC<EventCardProps> = ({ event, isGhost = false, on
 
     if (isGhost) {
       return (
-        <span className={`${baseBadgeClasses} bg-ak-brand-primary/10 text-ak-brand-primary border border-dashed border-ak-brand-primary`}>
+        <span className={`${baseBadgeClasses} bg-ak-primary/10 text-ak-primary border border-dashed border-ak-primary`}>
           Foreslått
         </span>
       );
@@ -99,7 +99,7 @@ export const EventCard: React.FC<EventCardProps> = ({ event, isGhost = false, on
 
     if (workout?.isRecommended) {
       return (
-        <span className={`${baseBadgeClasses} bg-ak-brand-primary text-white`}>
+        <span className={`${baseBadgeClasses} bg-ak-primary text-white`}>
           Anbefalt
         </span>
       );
@@ -142,7 +142,7 @@ export const EventCard: React.FC<EventCardProps> = ({ event, isGhost = false, on
               )}
               {workout.status !== 'completed' && workout.status !== 'in_progress' && onStart && (
                 <button
-                  className="flex items-center justify-center w-7 h-7 rounded-full bg-ak-brand-primary text-white flex-shrink-0 transition-colors hover:bg-ak-brand-primary/90"
+                  className="flex items-center justify-center w-7 h-7 rounded-full bg-ak-primary text-white flex-shrink-0 transition-colors hover:bg-ak-primary/90"
                   onClick={(e) => {
                     e.stopPropagation();
                     onStart();

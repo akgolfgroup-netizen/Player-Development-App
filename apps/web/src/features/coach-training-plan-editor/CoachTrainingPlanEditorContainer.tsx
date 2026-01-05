@@ -188,14 +188,27 @@ const CoachTrainingPlanEditorContainer: React.FC = () => {
     }
   };
 
+  // Guard: playerId must exist
+  if (!playerId) {
+    return (
+      <ErrorState
+        message="Spiller-ID mangler"
+        onRetry={() => navigate('/coach/athletes')}
+      />
+    );
+  }
+
   if (state === 'loading') {
     return <LoadingState message="Laster treningsplan..." />;
   }
 
   if (state === 'error') {
+    const errorType = error && typeof error === 'object' && 'type' in error
+      ? (error as { type?: string }).type
+      : undefined;
     return (
       <ErrorState
-        errorType={(error as any)?.type}
+        errorType={errorType}
         message={error?.message || 'Kunne ikke laste treningsplan'}
         onRetry={fetchTrainingPlan}
       />
@@ -204,7 +217,7 @@ const CoachTrainingPlanEditorContainer: React.FC = () => {
 
   return (
     <CoachTrainingPlanEditor
-      athleteId={playerId!}
+      athleteId={playerId}
       athleteName={data.athleteName}
       blocks={data.blocks.length > 0 ? data.blocks : undefined}
       onAddBlock={handleAddBlock}

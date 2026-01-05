@@ -114,6 +114,18 @@ const SamlingDetail: React.FC = () => {
   const [selectedPlayerIds, setSelectedPlayerIds] = useState<string[]>([]);
   const [publishing, setPublishing] = useState(false);
 
+  // Session form state
+  const [sessionForm, setSessionForm] = useState({
+    title: '',
+    sessionDate: '',
+    startTime: '09:00',
+    duration: 60,
+    sessionType: 'teknikk',
+    location: '',
+    description: '',
+  });
+  const [creatingSession, setCreatingSession] = useState(false);
+
   useEffect(() => {
     if (id) {
       fetchSamling();
@@ -187,6 +199,38 @@ const SamlingDetail: React.FC = () => {
       fetchSamling();
     } catch (error) {
       console.error('Error removing participant:', error);
+    }
+  };
+
+  const handleCreateSession = async () => {
+    if (!sessionForm.title || !sessionForm.sessionDate || !sessionForm.startTime) return;
+
+    try {
+      setCreatingSession(true);
+      await api.post(`/samling/${id}/sessions`, {
+        title: sessionForm.title,
+        sessionDate: sessionForm.sessionDate,
+        startTime: sessionForm.startTime,
+        duration: sessionForm.duration,
+        sessionType: sessionForm.sessionType,
+        location: sessionForm.location || undefined,
+        description: sessionForm.description || undefined,
+      });
+      setShowAddSession(false);
+      setSessionForm({
+        title: '',
+        sessionDate: '',
+        startTime: '09:00',
+        duration: 60,
+        sessionType: 'teknikk',
+        location: '',
+        description: '',
+      });
+      fetchSamling();
+    } catch (error) {
+      console.error('Error creating session:', error);
+    } finally {
+      setCreatingSession(false);
     }
   };
 
@@ -891,6 +935,281 @@ const SamlingDetail: React.FC = () => {
                   </div>
                 </div>
               ))}
+            </div>
+          )}
+
+          {/* Add session modal */}
+          {showAddSession && (
+            <div style={{
+              position: 'fixed',
+              top: 0,
+              left: 0,
+              right: 0,
+              bottom: 0,
+              backgroundColor: 'rgba(0,0,0,0.5)',
+              display: 'flex',
+              alignItems: 'center',
+              justifyContent: 'center',
+              zIndex: 1000,
+            }}>
+              <div style={{
+                backgroundColor: 'var(--bg-primary)',
+                borderRadius: '12px',
+                padding: '24px',
+                width: '90%',
+                maxWidth: '500px',
+                maxHeight: '90vh',
+                overflow: 'auto',
+              }}>
+                <div style={{
+                  display: 'flex',
+                  justifyContent: 'space-between',
+                  alignItems: 'center',
+                  marginBottom: '20px',
+                }}>
+                  <h2 style={{ margin: 0, fontSize: '18px', fontWeight: 600, color: 'var(--text-primary)' }}>
+                    Legg til treningsokt
+                  </h2>
+                  <button
+                    onClick={() => {
+                      setShowAddSession(false);
+                      setSessionForm({
+                        title: '',
+                        sessionDate: '',
+                        startTime: '09:00',
+                        duration: 60,
+                        sessionType: 'teknikk',
+                        location: '',
+                        description: '',
+                      });
+                    }}
+                    style={{
+                      padding: '4px',
+                      backgroundColor: 'transparent',
+                      border: 'none',
+                      cursor: 'pointer',
+                      color: 'var(--text-secondary)',
+                    }}
+                  >
+                    <X size={20} />
+                  </button>
+                </div>
+
+                <div style={{ display: 'flex', flexDirection: 'column', gap: '16px' }}>
+                  {/* Title */}
+                  <div>
+                    <label style={{ display: 'block', fontSize: '13px', fontWeight: 500, color: 'var(--text-primary)', marginBottom: '6px' }}>
+                      Tittel *
+                    </label>
+                    <input
+                      type="text"
+                      value={sessionForm.title}
+                      onChange={(e) => setSessionForm({ ...sessionForm, title: e.target.value })}
+                      placeholder="F.eks. Putting trening"
+                      style={{
+                        width: '100%',
+                        padding: '10px 12px',
+                        borderRadius: '8px',
+                        border: '1px solid var(--border-secondary)',
+                        backgroundColor: 'var(--bg-secondary)',
+                        color: 'var(--text-primary)',
+                        fontSize: '14px',
+                      }}
+                    />
+                  </div>
+
+                  {/* Date */}
+                  <div>
+                    <label style={{ display: 'block', fontSize: '13px', fontWeight: 500, color: 'var(--text-primary)', marginBottom: '6px' }}>
+                      Dato *
+                    </label>
+                    <input
+                      type="date"
+                      value={sessionForm.sessionDate}
+                      onChange={(e) => setSessionForm({ ...sessionForm, sessionDate: e.target.value })}
+                      min={samling.startDate.split('T')[0]}
+                      max={samling.endDate.split('T')[0]}
+                      style={{
+                        width: '100%',
+                        padding: '10px 12px',
+                        borderRadius: '8px',
+                        border: '1px solid var(--border-secondary)',
+                        backgroundColor: 'var(--bg-secondary)',
+                        color: 'var(--text-primary)',
+                        fontSize: '14px',
+                      }}
+                    />
+                  </div>
+
+                  {/* Time and Duration row */}
+                  <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '12px' }}>
+                    <div>
+                      <label style={{ display: 'block', fontSize: '13px', fontWeight: 500, color: 'var(--text-primary)', marginBottom: '6px' }}>
+                        Starttid *
+                      </label>
+                      <input
+                        type="time"
+                        value={sessionForm.startTime}
+                        onChange={(e) => setSessionForm({ ...sessionForm, startTime: e.target.value })}
+                        style={{
+                          width: '100%',
+                          padding: '10px 12px',
+                          borderRadius: '8px',
+                          border: '1px solid var(--border-secondary)',
+                          backgroundColor: 'var(--bg-secondary)',
+                          color: 'var(--text-primary)',
+                          fontSize: '14px',
+                        }}
+                      />
+                    </div>
+                    <div>
+                      <label style={{ display: 'block', fontSize: '13px', fontWeight: 500, color: 'var(--text-primary)', marginBottom: '6px' }}>
+                        Varighet (min)
+                      </label>
+                      <input
+                        type="number"
+                        value={sessionForm.duration}
+                        onChange={(e) => setSessionForm({ ...sessionForm, duration: parseInt(e.target.value) || 60 })}
+                        min="15"
+                        step="15"
+                        style={{
+                          width: '100%',
+                          padding: '10px 12px',
+                          borderRadius: '8px',
+                          border: '1px solid var(--border-secondary)',
+                          backgroundColor: 'var(--bg-secondary)',
+                          color: 'var(--text-primary)',
+                          fontSize: '14px',
+                        }}
+                      />
+                    </div>
+                  </div>
+
+                  {/* Session Type */}
+                  <div>
+                    <label style={{ display: 'block', fontSize: '13px', fontWeight: 500, color: 'var(--text-primary)', marginBottom: '6px' }}>
+                      Type okt
+                    </label>
+                    <select
+                      value={sessionForm.sessionType}
+                      onChange={(e) => setSessionForm({ ...sessionForm, sessionType: e.target.value })}
+                      style={{
+                        width: '100%',
+                        padding: '10px 12px',
+                        borderRadius: '8px',
+                        border: '1px solid var(--border-secondary)',
+                        backgroundColor: 'var(--bg-secondary)',
+                        color: 'var(--text-primary)',
+                        fontSize: '14px',
+                      }}
+                    >
+                      <option value="teknikk">Teknikk</option>
+                      <option value="putting">Putting</option>
+                      <option value="driving">Driving</option>
+                      <option value="kort_spill">Kort spill</option>
+                      <option value="banespill">Banespill</option>
+                      <option value="fysisk">Fysisk trening</option>
+                      <option value="mental">Mental trening</option>
+                      <option value="video">Videoanalyse</option>
+                      <option value="annet">Annet</option>
+                    </select>
+                  </div>
+
+                  {/* Location */}
+                  <div>
+                    <label style={{ display: 'block', fontSize: '13px', fontWeight: 500, color: 'var(--text-primary)', marginBottom: '6px' }}>
+                      Sted (valgfritt)
+                    </label>
+                    <input
+                      type="text"
+                      value={sessionForm.location}
+                      onChange={(e) => setSessionForm({ ...sessionForm, location: e.target.value })}
+                      placeholder="F.eks. Driving range"
+                      style={{
+                        width: '100%',
+                        padding: '10px 12px',
+                        borderRadius: '8px',
+                        border: '1px solid var(--border-secondary)',
+                        backgroundColor: 'var(--bg-secondary)',
+                        color: 'var(--text-primary)',
+                        fontSize: '14px',
+                      }}
+                    />
+                  </div>
+
+                  {/* Description */}
+                  <div>
+                    <label style={{ display: 'block', fontSize: '13px', fontWeight: 500, color: 'var(--text-primary)', marginBottom: '6px' }}>
+                      Beskrivelse (valgfritt)
+                    </label>
+                    <textarea
+                      value={sessionForm.description}
+                      onChange={(e) => setSessionForm({ ...sessionForm, description: e.target.value })}
+                      placeholder="Kort beskrivelse av okten..."
+                      rows={3}
+                      style={{
+                        width: '100%',
+                        padding: '10px 12px',
+                        borderRadius: '8px',
+                        border: '1px solid var(--border-secondary)',
+                        backgroundColor: 'var(--bg-secondary)',
+                        color: 'var(--text-primary)',
+                        fontSize: '14px',
+                        resize: 'vertical',
+                      }}
+                    />
+                  </div>
+                </div>
+
+                <div style={{ display: 'flex', gap: '12px', justifyContent: 'flex-end', marginTop: '24px' }}>
+                  <button
+                    onClick={() => {
+                      setShowAddSession(false);
+                      setSessionForm({
+                        title: '',
+                        sessionDate: '',
+                        startTime: '09:00',
+                        duration: 60,
+                        sessionType: 'teknikk',
+                        location: '',
+                        description: '',
+                      });
+                    }}
+                    style={{
+                      padding: '10px 16px',
+                      backgroundColor: 'var(--bg-tertiary)',
+                      color: 'var(--text-primary)',
+                      border: 'none',
+                      borderRadius: '8px',
+                      fontSize: '14px',
+                      cursor: 'pointer',
+                    }}
+                  >
+                    Avbryt
+                  </button>
+                  <button
+                    onClick={handleCreateSession}
+                    disabled={!sessionForm.title || !sessionForm.sessionDate || !sessionForm.startTime || creatingSession}
+                    style={{
+                      padding: '10px 16px',
+                      backgroundColor: (!sessionForm.title || !sessionForm.sessionDate || !sessionForm.startTime || creatingSession)
+                        ? 'var(--bg-tertiary)'
+                        : 'var(--accent)',
+                      color: (!sessionForm.title || !sessionForm.sessionDate || !sessionForm.startTime || creatingSession)
+                        ? 'var(--text-secondary)'
+                        : 'white',
+                      border: 'none',
+                      borderRadius: '8px',
+                      fontSize: '14px',
+                      cursor: (!sessionForm.title || !sessionForm.sessionDate || !sessionForm.startTime || creatingSession)
+                        ? 'not-allowed'
+                        : 'pointer',
+                    }}
+                  >
+                    {creatingSession ? 'Oppretter...' : 'Legg til okt'}
+                  </button>
+                </div>
+              </div>
             </div>
           )}
         </div>

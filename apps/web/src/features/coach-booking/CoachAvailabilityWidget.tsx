@@ -141,7 +141,7 @@ export const CoachAvailabilityWidget: React.FC<CoachAvailabilityWidgetProps> = (
     return (
       <div className="bg-ak-surface-base rounded-2xl p-5 border border-ak-border-default">
         <div className="flex items-center justify-center py-8">
-          <Loader2 size={24} className="animate-spin text-ak-brand-primary" />
+          <Loader2 size={24} className="animate-spin text-ak-primary" />
         </div>
       </div>
     );
@@ -164,7 +164,7 @@ export const CoachAvailabilityWidget: React.FC<CoachAvailabilityWidgetProps> = (
       <div className="bg-ak-surface-base rounded-2xl p-4 border border-ak-border-default">
         <div className="flex items-center justify-between mb-3">
           <div className="flex items-center gap-2">
-            <Calendar size={18} className="text-ak-brand-primary" />
+            <Calendar size={18} className="text-ak-primary" />
             <span className="text-sm font-semibold text-ak-text-primary">
               Tilgjengelighet
             </span>
@@ -209,7 +209,7 @@ export const CoachAvailabilityWidget: React.FC<CoachAvailabilityWidgetProps> = (
                     className={`flex-1 text-center py-2 rounded-lg text-xs font-medium ${
                       hasSlots
                         ? isToday
-                          ? 'bg-ak-brand-primary text-white'
+                          ? 'bg-ak-primary text-white'
                           : 'bg-ak-status-success/10 text-ak-status-success'
                         : 'bg-ak-surface-subtle text-ak-text-tertiary'
                     }`}
@@ -224,7 +224,7 @@ export const CoachAvailabilityWidget: React.FC<CoachAvailabilityWidgetProps> = (
 
         <button
           onClick={() => navigate('/coach/booking')}
-          className="flex items-center justify-center gap-1 w-full mt-3 py-2 text-sm text-ak-brand-primary hover:bg-ak-brand-primary/5 rounded-lg transition-colors"
+          className="flex items-center justify-center gap-1 w-full mt-3 py-2 text-sm text-ak-primary hover:bg-ak-primary/5 rounded-lg transition-colors"
         >
           Se kalender
           <ChevronRight size={16} />
@@ -238,7 +238,7 @@ export const CoachAvailabilityWidget: React.FC<CoachAvailabilityWidgetProps> = (
     <div className="bg-ak-surface-base rounded-2xl p-5 border border-ak-border-default">
       <div className="flex items-center justify-between mb-4">
         <div className="flex items-center gap-2">
-          <Calendar size={20} className="text-ak-brand-primary" />
+          <Calendar size={20} className="text-ak-primary" />
           <h3 className="text-base font-semibold text-ak-text-primary">
             Ukens tilgjengelighet
           </h3>
@@ -264,13 +264,13 @@ export const CoachAvailabilityWidget: React.FC<CoachAvailabilityWidgetProps> = (
           {/* Summary */}
           <div className="grid grid-cols-2 gap-3 mb-4">
             <div className="bg-ak-surface-subtle rounded-xl p-3 text-center">
-              <span className="text-2xl font-bold text-ak-brand-primary">
+              <span className="text-2xl font-bold text-ak-primary">
                 {totalHours}
               </span>
               <p className="text-xs text-ak-text-secondary">Timer tilgjengelig</p>
             </div>
             <div className="bg-ak-surface-subtle rounded-xl p-3 text-center">
-              <span className="text-2xl font-bold text-ak-brand-primary">
+              <span className="text-2xl font-bold text-ak-primary">
                 {Object.keys(availabilityByDay).length}
               </span>
               <p className="text-xs text-ak-text-secondary">Dager med timer</p>
@@ -287,13 +287,13 @@ export const CoachAvailabilityWidget: React.FC<CoachAvailabilityWidgetProps> = (
                 <div
                   key={day}
                   className={`flex items-center gap-3 py-2 px-3 rounded-xl ${
-                    isToday ? 'bg-ak-brand-primary/5 border border-ak-brand-primary/20' : ''
+                    isToday ? 'bg-ak-primary/5 border border-ak-primary/20' : ''
                   }`}
                 >
                   <div className="w-16">
                     <span
                       className={`text-sm font-medium ${
-                        isToday ? 'text-ak-brand-primary' : 'text-ak-text-primary'
+                        isToday ? 'text-ak-primary' : 'text-ak-text-primary'
                       }`}
                     >
                       {FULL_DAY_NAMES[day]}

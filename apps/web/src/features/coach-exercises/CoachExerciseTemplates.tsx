@@ -31,7 +31,7 @@ import { PageTitle, SubSectionTitle, CardTitle } from '../../components/typograp
 
 const CATEGORY_CLASSES = {
   putting: { bg: 'bg-red-500/15', text: 'text-red-500' },
-  fullspill: { bg: 'bg-ak-brand-primary/15', text: 'text-ak-brand-primary' },
+  fullspill: { bg: 'bg-ak-primary/15', text: 'text-ak-primary' },
   kortspill: { bg: 'bg-amber-500/15', text: 'text-amber-500' },
   fysisk: { bg: 'bg-pink-500/15', text: 'text-pink-500' },
   mental: { bg: 'bg-purple-500/15', text: 'text-purple-500' },
@@ -244,7 +244,7 @@ export const CoachExerciseTemplates: React.FC = () => {
         </div>
         <button
           onClick={() => navigate('/coach/exercises/templates/create')}
-          className="flex items-center gap-2 py-3 px-5 rounded-[10px] border-none bg-ak-brand-primary text-white text-sm font-semibold cursor-pointer"
+          className="flex items-center gap-2 py-3 px-5 rounded-[10px] border-none bg-ak-primary text-white text-sm font-semibold cursor-pointer"
         >
           <Plus size={18} />
           Ny treningsplan
@@ -279,7 +279,7 @@ export const CoachExerciseTemplates: React.FC = () => {
               onClick={() => setCategoryFilter(cat.key)}
               className={`py-2.5 px-4 rounded-[10px] border-none text-[13px] font-medium cursor-pointer ${
                 categoryFilter === cat.key
-                  ? 'bg-ak-brand-primary text-white'
+                  ? 'bg-ak-primary text-white'
                   : 'bg-ak-surface-base text-ak-text-secondary'
               }`}
             >
@@ -375,7 +375,7 @@ export const CoachExerciseTemplates: React.FC = () => {
                       className={`transition-transform ${isExpanded ? 'rotate-90' : ''}`}
                     />
                   </button>
-                  <button className="py-2.5 px-4 rounded-lg border-none bg-ak-brand-primary text-white text-[13px] font-medium cursor-pointer flex items-center gap-1.5">
+                  <button className="py-2.5 px-4 rounded-lg border-none bg-ak-primary text-white text-[13px] font-medium cursor-pointer flex items-center gap-1.5">
                     <Play size={14} />
                     Bruk
                   </button>
@@ -427,7 +427,7 @@ export const CoachExerciseTemplates: React.FC = () => {
                         key={idx}
                         className="flex items-center gap-3 py-2.5 px-3.5 bg-ak-surface-subtle rounded-lg"
                       >
-                        <span className="w-6 h-6 rounded-full bg-ak-brand-primary/15 text-ak-brand-primary flex items-center justify-center text-xs font-semibold">
+                        <span className="w-6 h-6 rounded-full bg-ak-primary/15 text-ak-primary flex items-center justify-center text-xs font-semibold">
                           {idx + 1}
                         </span>
                         <span className="flex-1 text-sm text-ak-text-primary">
@@ -455,7 +455,7 @@ export const CoachExerciseTemplates: React.FC = () => {
           {!searchQuery && (
             <button
               onClick={() => navigate('/coach/exercises/templates/create')}
-              className="inline-flex items-center gap-2 py-2.5 px-5 rounded-[10px] border-none bg-ak-brand-primary text-white text-sm font-medium cursor-pointer"
+              className="inline-flex items-center gap-2 py-2.5 px-5 rounded-[10px] border-none bg-ak-primary text-white text-sm font-medium cursor-pointer"
             >
               <Plus size={16} />
               Opprett første treningsplan

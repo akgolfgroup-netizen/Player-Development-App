@@ -42,7 +42,7 @@ const ToggleSwitch: React.FC<ToggleSwitchProps> = ({ enabled, onToggle }) => (
   <button
     onClick={onToggle}
     className={`w-12 h-[26px] rounded-[13px] border-none relative cursor-pointer transition-colors ${
-      enabled ? 'bg-ak-brand-primary' : 'bg-ak-border-default'
+      enabled ? 'bg-ak-primary' : 'bg-ak-border-default'
     }`}
   >
     <div
@@ -226,15 +226,15 @@ export const CoachSettings: React.FC = () => {
                     onClick={() => setActiveTab(tab.key as typeof activeTab)}
                     className={`w-full py-3.5 px-4 border-none flex items-center gap-3 cursor-pointer transition-all ${
                       isActive
-                        ? 'bg-ak-brand-primary/10 border-l-[3px] border-l-ak-brand-primary'
+                        ? 'bg-ak-primary/10 border-l-[3px] border-l-ak-primary'
                         : 'bg-transparent border-l-[3px] border-l-transparent'
                     }`}
                   >
                     <Icon
                       size={18}
-                      className={isActive ? 'text-ak-brand-primary' : 'text-ak-text-secondary'}
+                      className={isActive ? 'text-ak-primary' : 'text-ak-text-secondary'}
                     />
-                    <span className={`text-sm ${isActive ? 'font-semibold text-ak-brand-primary' : 'font-medium text-ak-text-secondary'}`}>
+                    <span className={`text-sm ${isActive ? 'font-semibold text-ak-primary' : 'font-medium text-ak-text-secondary'}`}>
                       {tab.label}
                     </span>
                     <ChevronRight
@@ -260,7 +260,7 @@ export const CoachSettings: React.FC = () => {
                 {/* Avatar */}
                 <div className="mb-6">
                   <div className="flex items-center gap-4">
-                    <div className="w-20 h-20 rounded-full bg-ak-brand-primary/15 flex items-center justify-center text-[28px] font-semibold text-ak-brand-primary">
+                    <div className="w-20 h-20 rounded-full bg-ak-primary/15 flex items-center justify-center text-[28px] font-semibold text-ak-primary">
                       {profile.name.split(' ').map(n => n[0]).join('')}
                     </div>
                     <div>
@@ -431,15 +431,15 @@ export const CoachSettings: React.FC = () => {
                           onClick={() => setDisplay({ ...display, theme: option.key as DisplaySettings['theme'] })}
                           className={`flex-1 p-4 rounded-xl flex flex-col items-center gap-2 cursor-pointer ${
                             isSelected
-                              ? 'border-2 border-ak-brand-primary bg-ak-brand-primary/10'
+                              ? 'border-2 border-ak-primary bg-ak-primary/10'
                               : 'border border-ak-border-default bg-transparent'
                           }`}
                         >
                           <option.icon
                             size={24}
-                            className={isSelected ? 'text-ak-brand-primary' : 'text-ak-text-secondary'}
+                            className={isSelected ? 'text-ak-primary' : 'text-ak-text-secondary'}
                           />
-                          <span className={`text-sm ${isSelected ? 'font-semibold text-ak-brand-primary' : 'font-medium text-ak-text-secondary'}`}>
+                          <span className={`text-sm ${isSelected ? 'font-semibold text-ak-primary' : 'font-medium text-ak-text-secondary'}`}>
                             {option.label}
                           </span>
                         </button>
@@ -500,10 +500,10 @@ export const CoachSettings: React.FC = () => {
                   Personvern og sikkerhet
                 </SectionTitle>
 
-                <div className="p-4 bg-ak-brand-primary/10 rounded-xl mb-6">
+                <div className="p-4 bg-ak-primary/10 rounded-xl mb-6">
                   <div className="flex items-center gap-3 mb-2">
-                    <Shield size={20} className="text-ak-brand-primary" />
-                    <span className="text-sm font-semibold text-ak-brand-primary">
+                    <Shield size={20} className="text-ak-primary" />
+                    <span className="text-sm font-semibold text-ak-primary">
                       Din konto er beskyttet
                     </span>
                   </div>

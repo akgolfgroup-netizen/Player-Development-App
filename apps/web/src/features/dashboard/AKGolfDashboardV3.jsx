@@ -128,7 +128,7 @@ const FocusCard = ({ focus, loading }) => {
     return (
       <div style={styles.focusCard}>
         <div style={styles.focusCardHeader}>
-          <Crosshair size={16} style={{ color: 'var(--ak-brand-primary)' }} />
+          <Crosshair size={16} style={{ color: 'var(--ak-primary)' }} />
           <span style={styles.focusCardLabel}>Ukens fokus</span>
         </div>
         <SubSectionTitle style={styles.focusCardTitle}>Start din første økt</SubSectionTitle>
@@ -139,7 +139,7 @@ const FocusCard = ({ focus, loading }) => {
     );
   }
 
-  const focusColor = COMPONENT_COLORS[focus.focusComponent] || 'var(--ak-brand-primary)';
+  const focusColor = COMPONENT_COLORS[focus.focusComponent] || 'var(--ak-primary)';
   const focusLabel = COMPONENT_LABELS[focus.focusComponent] || focus.focusComponent;
   const sessionsCompleted = focus.sessionsCompleted || 0;
   const sessionsTarget = focus.sessionsTarget || 4;
@@ -410,7 +410,7 @@ const WeekAtGlanceCard = ({ stats, loading }) => {
 };
 
 /**
- * BadgesScoreCard - "Badges & Score" module
+ * BadgesScoreCard - "Merker & Poeng" module
  * Shows rank, XP, level progress, and recent badges
  */
 const BadgesScoreCard = ({ xp, totalXp, level, nextLevelXp, achievements, loading }) => {
@@ -419,7 +419,7 @@ const BadgesScoreCard = ({ xp, totalXp, level, nextLevelXp, achievements, loadin
       <div style={badgeStyles.card}>
         <div style={badgeStyles.cardHeader}>
           <Award size={18} style={{ color: 'var(--accent)' }} />
-          <span style={badgeStyles.cardTitle}>Badges & Score</span>
+          <span style={badgeStyles.cardTitle}>Merker & Poeng</span>
         </div>
         <div style={badgeStyles.loadingContent}>
           <div style={weekStyles.loadingPulse} />
@@ -446,7 +446,7 @@ const BadgesScoreCard = ({ xp, totalXp, level, nextLevelXp, achievements, loadin
     <div style={badgeStyles.card}>
       <div style={badgeStyles.cardHeader}>
         <Award size={18} style={{ color: 'var(--accent)' }} />
-        <span style={badgeStyles.cardTitle}>Badges & Score</span>
+        <span style={badgeStyles.cardTitle}>Merker & Poeng</span>
       </div>
 
       <div style={badgeStyles.content}>
@@ -484,7 +484,7 @@ const BadgesScoreCard = ({ xp, totalXp, level, nextLevelXp, achievements, loadin
         <div style={badgeStyles.badgesSection}>
           <div style={badgeStyles.badgesStat}>
             <span style={badgeStyles.badgesCount}>{badgeCount}</span>
-            <span style={badgeStyles.badgesLabel}>badges opptjent</span>
+            <span style={badgeStyles.badgesLabel}>merker opptjent</span>
           </div>
           {badgeCount > 0 && achievements?.slice(0, 3).map((badge, idx) => (
             <span key={badge.id || idx} style={badgeStyles.badgeEmoji}>
@@ -736,7 +736,7 @@ const ProgressStrip = ({ sessions, hours, streak }) => {
           <div style={{
             ...styles.progressStripFill,
             width: `${sessionsPercent}%`,
-            backgroundColor: sessionsPercent >= 100 ? 'var(--ak-status-success)' : 'var(--ak-brand-primary)',
+            backgroundColor: sessionsPercent >= 100 ? 'var(--ak-status-success)' : 'var(--ak-primary)',
           }} />
         </div>
       </div>
@@ -1066,7 +1066,7 @@ const styles = {
     backgroundColor: 'var(--ak-surface-card)',
     borderRadius: '16px',
     border: '1px solid var(--ak-border-muted)',
-    borderLeft: '4px solid var(--ak-brand-primary)',
+    borderLeft: '4px solid var(--ak-primary)',
     boxShadow: '0 2px 8px rgba(0, 0, 0, 0.04)',
   },
   focusCardLoading: {
@@ -1373,8 +1373,8 @@ const styles = {
     padding: '4px 10px',
     fontSize: '12px',
     fontWeight: 600,
-    color: 'var(--ak-brand-primary)',
-    backgroundColor: 'var(--ak-brand-primaryMuted)',
+    color: 'var(--ak-primary)',
+    backgroundColor: 'var(--ak-primaryMuted)',
     border: 'none',
     borderRadius: '6px',
     cursor: 'pointer',
@@ -1385,8 +1385,8 @@ const styles = {
   notificationBadge: {
     fontSize: '11px',
     fontWeight: 600,
-    color: 'var(--ak-brand-primary)',
-    backgroundColor: 'var(--ak-brand-primaryMuted)',
+    color: 'var(--ak-primary)',
+    backgroundColor: 'var(--ak-primaryMuted)',
     padding: '2px 8px',
     borderRadius: '10px',
   },
@@ -1405,7 +1405,7 @@ const styles = {
     width: '8px',
     height: '8px',
     borderRadius: '50%',
-    backgroundColor: 'var(--ak-brand-primary)',
+    backgroundColor: 'var(--ak-primary)',
     marginTop: '6px',
     flexShrink: 0,
   },

@@ -189,7 +189,7 @@ export const CoachStatsProgress: React.FC = () => {
   const getCategoryClasses = (category: string) => {
     switch (category) {
       case 'A': return { bg: 'bg-ak-status-success/10', text: 'text-ak-status-success' };
-      case 'B': return { bg: 'bg-ak-brand-primary/10', text: 'text-ak-brand-primary' };
+      case 'B': return { bg: 'bg-ak-primary/10', text: 'text-ak-primary' };
       case 'C': return { bg: 'bg-ak-status-warning/10', text: 'text-ak-status-warning' };
       default: return { bg: 'bg-ak-surface-base', text: 'text-ak-text-secondary' };
     }
@@ -199,7 +199,7 @@ export const CoachStatsProgress: React.FC = () => {
     <div className="p-6 bg-ak-surface-base min-h-screen">
       {/* Header with icon */}
       <div className="flex items-start gap-4 mb-6">
-        <div className="w-12 h-12 rounded-xl bg-gradient-to-br from-ak-brand-primary to-ak-brand-primary/80 flex items-center justify-center flex-shrink-0">
+        <div className="w-12 h-12 rounded-xl bg-gradient-to-br from-ak-primary to-ak-primary/80 flex items-center justify-center flex-shrink-0">
           <TrendingUp size={24} className="text-white" />
         </div>
         <div className="flex-1">
@@ -214,7 +214,7 @@ export const CoachStatsProgress: React.FC = () => {
       {/* Top Performers */}
       <div className="bg-ak-surface-base rounded-2xl p-5 mb-6 border border-ak-border-default">
         <div className="flex items-center gap-2 mb-4">
-          <Award size={20} className="text-ak-brand-primary" />
+          <Award size={20} className="text-ak-primary" />
           <SectionTitle className="m-0">
             Månedens stjerner
           </SectionTitle>
@@ -232,7 +232,7 @@ export const CoachStatsProgress: React.FC = () => {
                 </div>
               )}
               <div className="flex items-center gap-3 mb-3">
-                <div className="w-10 h-10 rounded-full bg-ak-brand-primary/15 flex items-center justify-center text-base font-semibold text-ak-brand-primary">
+                <div className="w-10 h-10 rounded-full bg-ak-primary/15 flex items-center justify-center text-base font-semibold text-ak-primary">
                   {player.name.split(' ').map(n => n[0]).join('')}
                 </div>
                 <div>
@@ -300,7 +300,7 @@ export const CoachStatsProgress: React.FC = () => {
             <div className="flex justify-between items-start">
               {/* Left side - Player info */}
               <div className="flex gap-4 flex-1">
-                <div className="w-14 h-14 rounded-full bg-ak-brand-primary/15 flex items-center justify-center text-xl font-semibold text-ak-brand-primary">
+                <div className="w-14 h-14 rounded-full bg-ak-primary/15 flex items-center justify-center text-xl font-semibold text-ak-primary">
                   {player.name.split(' ').map(n => n[0]).join('')}
                 </div>
                 <div className="flex-1">
@@ -357,13 +357,13 @@ export const CoachStatsProgress: React.FC = () => {
                           <span className="text-xs text-ak-text-secondary">
                             {goal.current}
                           </span>
-                          <span className="text-xs font-medium text-ak-brand-primary">
+                          <span className="text-xs font-medium text-ak-primary">
                             {goal.progress}%
                           </span>
                         </div>
                         <div className="h-1.5 bg-ak-border-default rounded-sm overflow-hidden">
                           <div
-                            className="h-full bg-ak-brand-primary rounded-sm transition-all"
+                            className="h-full bg-ak-primary rounded-sm transition-all"
                             style={{ width: `${goal.progress}%` }}
                           />
                         </div>

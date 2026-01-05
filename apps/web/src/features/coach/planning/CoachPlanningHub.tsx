@@ -20,7 +20,7 @@ type TabType = 'players' | 'groups';
 type FilterType = 'all' | 'with_plan' | 'without_plan';
 
 // Avatar component
-const AVATAR_COLORS = ['bg-ak-brand-primary', 'bg-ak-status-success', 'bg-ak-status-warning', 'bg-ak-status-info'];
+const AVATAR_COLORS = ['bg-ak-primary', 'bg-ak-status-success', 'bg-ak-status-warning', 'bg-ak-status-info'];
 
 function Avatar({ name, size = 40 }: { name: string; size?: number }) {
   const initials = name.split(',')[0]?.substring(0, 2).toUpperCase() || 'XX';
@@ -74,7 +74,7 @@ function TabButton({
       onClick={onClick}
       className={`px-6 py-3 font-medium rounded-lg transition-colors ${
         active
-          ? 'bg-ak-brand-primary text-white'
+          ? 'bg-ak-primary text-white'
           : 'bg-ak-surface-subtle text-ak-text-secondary hover:text-ak-text-primary'
       }`}
     >
@@ -112,7 +112,7 @@ function AthleteCard({ athlete, onClick }: { athlete: Athlete; onClick: () => vo
   return (
     <div
       onClick={onClick}
-      className="flex items-center gap-4 p-4 bg-ak-surface-card rounded-xl border border-ak-border-default cursor-pointer hover:border-ak-brand-primary transition-colors"
+      className="flex items-center gap-4 p-4 bg-ak-surface-card rounded-xl border border-ak-border-default cursor-pointer hover:border-ak-primary transition-colors"
       role="button"
       tabIndex={0}
       onKeyDown={(e) => e.key === 'Enter' && onClick()}
@@ -140,13 +140,13 @@ function GroupCard({ group, onClick }: { group: Group; onClick: () => void }) {
   return (
     <div
       onClick={onClick}
-      className="flex items-center gap-4 p-4 bg-ak-surface-card rounded-xl border border-ak-border-default cursor-pointer hover:border-ak-brand-primary transition-colors"
+      className="flex items-center gap-4 p-4 bg-ak-surface-card rounded-xl border border-ak-border-default cursor-pointer hover:border-ak-primary transition-colors"
       role="button"
       tabIndex={0}
       onKeyDown={(e) => e.key === 'Enter' && onClick()}
     >
-      <div className="w-10 h-10 rounded-full bg-ak-brand-primary/10 flex items-center justify-center">
-        <Users size={20} className="text-ak-brand-primary" />
+      <div className="w-10 h-10 rounded-full bg-ak-primary/10 flex items-center justify-center">
+        <Users size={20} className="text-ak-primary" />
       </div>
 
       <div className="flex-1 min-w-0">
@@ -252,7 +252,7 @@ export default function CoachPlanningHub() {
       {/* Quick stats */}
       <div className="grid grid-cols-2 md:grid-cols-4 gap-4 mb-6">
         <div className="bg-ak-surface-card rounded-xl border border-ak-border-default p-4">
-          <div className="text-2xl font-bold text-ak-brand-primary">{stats.athletes.withPlan}</div>
+          <div className="text-2xl font-bold text-ak-primary">{stats.athletes.withPlan}</div>
           <div className="text-sm text-ak-text-secondary">Spillere med plan</div>
         </div>
         <div className="bg-ak-surface-card rounded-xl border border-ak-border-default p-4">
@@ -260,7 +260,7 @@ export default function CoachPlanningHub() {
           <div className="text-sm text-ak-text-secondary">Spillere uten plan</div>
         </div>
         <div className="bg-ak-surface-card rounded-xl border border-ak-border-default p-4">
-          <div className="text-2xl font-bold text-ak-brand-primary">{stats.groups.withPlan}</div>
+          <div className="text-2xl font-bold text-ak-primary">{stats.groups.withPlan}</div>
           <div className="text-sm text-ak-text-secondary">Grupper med plan</div>
         </div>
         <div className="bg-ak-surface-card rounded-xl border border-ak-border-default p-4">

@@ -20,8 +20,8 @@ import { SectionTitle, SubSectionTitle, CardTitle } from '../../components/typog
 
 const SESSION_CATEGORY_CLASSES = {
   teknikk: {
-    text: 'text-ak-brand-primary',
-    bg: 'bg-ak-brand-primary/15',
+    text: 'text-ak-primary',
+    bg: 'bg-ak-primary/15',
   },
   golfslag: {
     text: 'text-ak-status-success',
@@ -50,7 +50,7 @@ const LEVEL_CLASSES = {
   L2: { bg: 'bg-ak-border-default', text: 'text-ak-text-primary', label: 'L2 · Fundamentals' },
   L3: { bg: 'bg-ak-status-success/20', text: 'text-ak-status-success', label: 'L3 · Variasjon' },
   L4: { bg: 'bg-ak-status-success', text: 'text-white', label: 'L4 · Timing' },
-  L5: { bg: 'bg-ak-brand-primary', text: 'text-white', label: 'L5 · Automatikk' },
+  L5: { bg: 'bg-ak-primary', text: 'text-white', label: 'L5 · Automatikk' },
 };
 
 const SPEED_CLASSES = {
@@ -59,8 +59,8 @@ const SPEED_CLASSES = {
   CS40: { bg: 'bg-ak-border-default', text: 'text-ak-text-primary', label: 'CS40 · 40%' },
   CS60: { bg: 'bg-ak-status-success/20', text: 'text-ak-status-success', label: 'CS60 · 60%' },
   CS70: { bg: 'bg-ak-status-success', text: 'text-white', label: 'CS70 · 70%' },
-  CS80: { bg: 'bg-ak-brand-primary/80', text: 'text-white', label: 'CS80 · 80%' },
-  CS100: { bg: 'bg-ak-brand-primary', text: 'text-white', label: 'CS100 · Maks' },
+  CS80: { bg: 'bg-ak-primary/80', text: 'text-white', label: 'CS80 · 80%' },
+  CS100: { bg: 'bg-ak-primary', text: 'text-white', label: 'CS100 · Maks' },
 };
 
 // ===== ICONS =====

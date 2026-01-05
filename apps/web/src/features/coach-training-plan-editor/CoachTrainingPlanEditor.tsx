@@ -165,7 +165,7 @@ export default function CoachTrainingPlanEditor({
       <div className="bg-ak-surface-base border-b border-ak-border-default py-4 px-6">
         <button
           onClick={onBack}
-          className="flex items-center gap-2 bg-transparent border-none text-ak-brand-primary cursor-pointer p-0 mb-4 text-[15px] leading-5"
+          className="flex items-center gap-2 bg-transparent border-none text-ak-primary cursor-pointer p-0 mb-4 text-[15px] leading-5"
         >
           <ArrowLeft size={20} />
           <span>Tilbake</span>
@@ -173,8 +173,8 @@ export default function CoachTrainingPlanEditor({
 
         <div className="flex items-center justify-between">
           <div className="flex items-center gap-3">
-            <div className="w-12 h-12 rounded-lg bg-ak-brand-primary/10 flex items-center justify-center">
-              <ClipboardList size={24} className="text-ak-brand-primary" />
+            <div className="w-12 h-12 rounded-lg bg-ak-primary/10 flex items-center justify-center">
+              <ClipboardList size={24} className="text-ak-primary" />
             </div>
             <div>
               <PageTitle className="text-[28px] leading-[34px] font-bold text-ak-text-primary m-0">
@@ -190,10 +190,10 @@ export default function CoachTrainingPlanEditor({
             <button
               type="button"
               onClick={() => setShowAIPanel(!showAIPanel)}
-              className={`flex items-center gap-2 py-3 px-5 rounded-lg text-ak-brand-primary cursor-pointer text-[15px] leading-5 font-semibold ${
+              className={`flex items-center gap-2 py-3 px-5 rounded-lg text-ak-primary cursor-pointer text-[15px] leading-5 font-semibold ${
                 showAIPanel
-                  ? 'border-none bg-ak-brand-primary/10'
-                  : 'border border-ak-brand-primary bg-transparent'
+                  ? 'border-none bg-ak-primary/10'
+                  : 'border border-ak-primary bg-transparent'
               }`}
             >
               {showAIPanel ? <X size={18} /> : <Sparkles size={18} />}
@@ -202,7 +202,7 @@ export default function CoachTrainingPlanEditor({
             <button
               type="button"
               onClick={() => setShowAddForm(!showAddForm)}
-              className="flex items-center gap-2 py-3 px-5 rounded-lg border-none bg-ak-brand-primary text-ak-surface-base cursor-pointer text-[15px] leading-5 font-semibold"
+              className="flex items-center gap-2 py-3 px-5 rounded-lg border-none bg-ak-primary text-ak-surface-base cursor-pointer text-[15px] leading-5 font-semibold"
             >
               <Plus size={18} />
               Ny økt
@@ -216,7 +216,7 @@ export default function CoachTrainingPlanEditor({
         <div>
         {/* Add Block Form */}
         {showAddForm && (
-          <div className="bg-ak-surface-base rounded-2xl shadow-ak-card p-5 mb-6 border-2 border-ak-brand-primary">
+          <div className="bg-ak-surface-base rounded-2xl shadow-ak-card p-5 mb-6 border-2 border-ak-primary">
             <SectionTitle className="text-[17px] leading-[22px] font-semibold text-ak-text-primary m-0 mb-5">
               Legg til ny økt
             </SectionTitle>
@@ -290,7 +290,7 @@ export default function CoachTrainingPlanEditor({
                 disabled={!newName.trim() || !newDate}
                 className={`py-3 px-5 rounded-lg border-none text-[15px] leading-5 font-semibold ${
                   newName.trim() && newDate
-                    ? 'bg-ak-brand-primary text-ak-surface-base cursor-pointer'
+                    ? 'bg-ak-primary text-ak-surface-base cursor-pointer'
                     : 'bg-ak-border-default text-ak-text-secondary cursor-not-allowed'
                 }`}
               >
@@ -324,7 +324,7 @@ export default function CoachTrainingPlanEditor({
                     index < futureBlocks.length - 1 ? 'border-b border-ak-border-default' : ''
                   }`}
                 >
-                  <div className="w-14 py-2 rounded-lg bg-ak-brand-primary text-ak-surface-base text-center">
+                  <div className="w-14 py-2 rounded-lg bg-ak-primary text-ak-surface-base text-center">
                     <div className="text-xs leading-4 font-semibold uppercase">
                       {formatDate(block.date).split(' ')[0]}
                     </div>

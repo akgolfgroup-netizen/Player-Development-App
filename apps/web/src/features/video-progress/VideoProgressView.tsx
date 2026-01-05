@@ -189,8 +189,8 @@ export function VideoProgressView({
             key={cat.id}
             className={`px-4 py-2 rounded-lg text-[13px] font-medium cursor-pointer transition-all border ${
               activeCategory === cat.id
-                ? 'bg-ak-brand-primary border-ak-brand-primary text-white'
-                : 'bg-ak-surface-elevated border-ak-border-default text-ak-text-secondary hover:border-ak-brand-primary'
+                ? 'bg-ak-primary border-ak-primary text-white'
+                : 'bg-ak-surface-elevated border-ak-border-default text-ak-text-secondary hover:border-ak-primary'
             }`}
             onClick={() => handleCategoryChange(cat.id)}
           >

@@ -34,7 +34,7 @@ const colors = {
   steel: 'var(--ak-text-secondary)',
   success: 'var(--ak-status-success)',
   warning: 'var(--ak-status-warning)',
-  primary: 'var(--ak-brand-primary)',
+  primary: 'var(--ak-primary)',
   snow: 'var(--ak-surface-subtle)',
 };
 

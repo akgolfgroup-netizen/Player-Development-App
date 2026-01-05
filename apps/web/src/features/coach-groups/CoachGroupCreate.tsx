@@ -204,7 +204,7 @@ export default function CoachGroupCreate() {
                 value={formData.name}
                 onChange={(e) => setFormData({ ...formData, name: e.target.value })}
                 placeholder="F.eks. WANG Toppidrett 2025"
-                className="w-full py-3 px-3.5 bg-ak-surface-subtle border border-ak-border-default rounded-lg text-sm outline-none focus:border-ak-brand-primary"
+                className="w-full py-3 px-3.5 bg-ak-surface-subtle border border-ak-border-default rounded-lg text-sm outline-none focus:border-ak-primary"
               />
             </div>
 
@@ -218,7 +218,7 @@ export default function CoachGroupCreate() {
                 onChange={(e) => setFormData({ ...formData, description: e.target.value })}
                 placeholder="Kort beskrivelse av gruppen..."
                 rows={3}
-                className="w-full py-3 px-3.5 bg-ak-surface-subtle border border-ak-border-default rounded-lg text-sm outline-none resize-y font-inherit focus:border-ak-brand-primary"
+                className="w-full py-3 px-3.5 bg-ak-surface-subtle border border-ak-border-default rounded-lg text-sm outline-none resize-y font-inherit focus:border-ak-primary"
               />
             </div>
 
@@ -236,10 +236,10 @@ export default function CoachGroupCreate() {
                   <button
                     key={type.key}
                     type="button"
-                    onClick={() => setFormData({ ...formData, type: type.key as any })}
+                    onClick={() => setFormData({ ...formData, type: type.key as 'wang' | 'team_norway' | 'custom' })}
                     className={`py-2.5 px-[18px] rounded-lg text-sm font-medium cursor-pointer ${
                       formData.type === type.key
-                        ? 'bg-ak-brand-primary text-white border border-ak-brand-primary'
+                        ? 'bg-ak-primary text-white border border-ak-primary'
                         : 'bg-ak-surface-subtle text-ak-text-primary border border-ak-border-default'
                     }`}
                   >
@@ -266,7 +266,7 @@ export default function CoachGroupCreate() {
                     }`}
                     style={{
                       backgroundColor: color.value,
-                      ...(formData.color === color.value && { '--tw-ring-color': color.value } as any)
+                      ...(formData.color === color.value && { '--tw-ring-color': color.value } as React.CSSProperties)
                     }}
                   >
                     {formData.color === color.value && (
@@ -308,14 +308,14 @@ export default function CoachGroupCreate() {
               <SectionTitle className="m-0">
                 Velg medlemmer *
               </SectionTitle>
-              <span className="text-[15px] leading-5 text-ak-brand-primary">
+              <span className="text-[15px] leading-5 text-ak-primary">
                 {formData.memberIds.length} valgt
               </span>
             </div>
 
             {/* Selected members */}
             {selectedPlayers.length > 0 && (
-              <div className="flex flex-wrap gap-2 mb-4 p-3 bg-ak-brand-primary/5 rounded-lg">
+              <div className="flex flex-wrap gap-2 mb-4 p-3 bg-ak-primary/5 rounded-lg">
                 {selectedPlayers.map((player) => (
                   <div
                     key={player.id}
@@ -352,7 +352,7 @@ export default function CoachGroupCreate() {
             {/* Player list */}
             {loadingPlayers ? (
               <div className="text-center p-5">
-                <div className="w-8 h-8 border-[3px] border-ak-border-default border-t-ak-brand-primary rounded-full mx-auto animate-spin" />
+                <div className="w-8 h-8 border-[3px] border-ak-border-default border-t-ak-primary rounded-full mx-auto animate-spin" />
               </div>
             ) : (
               <div className="max-h-[300px] overflow-y-auto flex flex-col gap-1.5">
@@ -365,11 +365,11 @@ export default function CoachGroupCreate() {
                       onClick={() => toggleMember(player.id)}
                       className={`flex items-center gap-3 py-2.5 px-3.5 rounded-lg cursor-pointer text-left w-full ${
                         isSelected
-                          ? 'bg-ak-brand-primary/10 border border-ak-brand-primary'
+                          ? 'bg-ak-primary/10 border border-ak-primary'
                           : 'bg-ak-surface-subtle border border-ak-border-default'
                       }`}
                     >
-                      <div className="w-9 h-9 rounded-full bg-ak-brand-primary flex items-center justify-center text-white text-xs font-semibold">
+                      <div className="w-9 h-9 rounded-full bg-ak-primary flex items-center justify-center text-white text-xs font-semibold">
                         {player.avatarInitials}
                       </div>
 
@@ -386,7 +386,7 @@ export default function CoachGroupCreate() {
 
                       <div
                         className={`w-6 h-6 rounded-full flex items-center justify-center ${
-                          isSelected ? 'bg-ak-brand-primary' : 'bg-ak-border-default'
+                          isSelected ? 'bg-ak-primary' : 'bg-ak-border-default'
                         }`}
                       >
                         {isSelected && <Check size={14} color="white" />}
@@ -410,7 +410,7 @@ export default function CoachGroupCreate() {
             <button
               type="submit"
               disabled={loading}
-              className={`flex items-center gap-2 py-3 px-6 bg-ak-brand-primary text-white border-none rounded-lg text-sm font-semibold ${
+              className={`flex items-center gap-2 py-3 px-6 bg-ak-primary text-white border-none rounded-lg text-sm font-semibold ${
                 loading ? 'cursor-not-allowed opacity-70' : 'cursor-pointer'
               }`}
             >
