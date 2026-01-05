@@ -873,8 +873,6 @@ export class DataGolfService {
     tour: string = 'pga',
     season: number = new Date().getFullYear()
   ): Promise<CoachDataGolfDashboard> {
-    console.log('[DataGolf DEBUG] Query params:', { tenantId, coachId, tour, season });
-
     // Get all players for this coach
     const players = await this.prisma.player.findMany({
       where: {
@@ -903,14 +901,8 @@ export class DataGolfService {
       }>;
     }>;
 
-    console.log('[DataGolf DEBUG] Found players:', players.length);
-    players.forEach(p => {
-      console.log('[DataGolf DEBUG] Player:', p.id, p.firstName, p.lastName, 'testResults:', p.testResults?.length || 0);
-    });
-
     // Get tour averages for comparison
     const tourAverages = await this.getTourAverages(tour, season);
-    console.log('[DataGolf DEBUG] Tour averages:', tourAverages ? 'found' : 'null');
 
     // Get last sync time
     const lastSync = await this.prisma.dataGolfPlayer.findFirst({
@@ -960,12 +952,7 @@ export class DataGolfService {
     const connectedPlayers = playerStats.filter(p => p.dataGolfConnected).length;
     const totalRoundsTracked = playerStats.reduce((sum, p) => sum + p.roundsTracked, 0);
 
-    console.log('[DataGolf DEBUG] PlayerStats count:', playerStats.length);
-    playerStats.forEach(ps => {
-      console.log('[DataGolf DEBUG] PlayerStat:', ps.playerId, ps.playerName, 'rounds:', ps.roundsTracked);
-    });
-
-    const result = {
+    return {
       players: playerStats,
       summary: {
         totalPlayers: playerStats.length,
@@ -975,11 +962,6 @@ export class DataGolfService {
       },
       tourAverages,
     };
-
-    console.log('[DataGolf DEBUG] Final result keys:', Object.keys(result));
-    console.log('[DataGolf DEBUG] Final result summary:', result.summary);
-
-    return result;
   }
 
   /**

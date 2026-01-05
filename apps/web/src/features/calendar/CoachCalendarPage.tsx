@@ -244,7 +244,7 @@ export default function CoachCalendarPage() {
     return new Date();
   });
 
-  const [selectedDate, setSelectedDate] = useState<Date | null>(null);
+  const [selectedDate, setSelectedDate] = useState<Date | undefined>(undefined);
   const [selectedSession, setSelectedSession] = useState<CoachSession | null>(null);
   const [sessions, setSessions] = useState<CoachSession[]>([]);
   const [bookingRequests, setBookingRequests] = useState<BookingRequest[]>([]);

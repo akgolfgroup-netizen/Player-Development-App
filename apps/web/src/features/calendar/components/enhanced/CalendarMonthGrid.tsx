@@ -22,6 +22,7 @@ export interface CalendarEvent {
   date: string; // YYYY-MM-DD
   start: string; // HH:MM
   end: string; // HH:MM
+  location?: string;
   category?: 'trening' | 'testing' | 'mental' | 'turnering' | 'coach';
   status?: 'planned' | 'recommended' | 'in_progress' | 'completed' | 'cancelled';
   color?: 'blue' | 'green' | 'pink' | 'purple' | 'amber' | 'gray';

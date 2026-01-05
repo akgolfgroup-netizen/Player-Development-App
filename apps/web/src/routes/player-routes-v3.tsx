@@ -55,6 +55,7 @@ const UtviklingAchievements = lazy(() => Promise.resolve({ default: () => <Place
 // Plan area
 const PlanKalender = lazy(() => import('../features/calendar/CalendarPage'));
 const NotionKalender = lazy(() => import('../features/calendar/NotionCalendarPage'));
+const PlayerCalendarPage = lazy(() => import('../features/calendar/PlayerCalendarPage'));
 const PlanUkeplan = lazy(() => Promise.resolve({ default: () => <PlaceholderPage title="Ukeplan" /> }));
 const PlanBooking = lazy(() => Promise.resolve({ default: () => <PlaceholderPage title="Booking" /> }));
 const PlanMaal = lazy(() => import('../features/goals/GoalsPage'));
@@ -201,6 +202,7 @@ export function getPlayerRoutesV3() {
       {/* Plan */}
       <Route path="/plan" element={<SuspenseWrapper><PlanHub /></SuspenseWrapper>} />
       <Route path="/plan/kalender" element={<SuspenseWrapper><NotionKalender /></SuspenseWrapper>} />
+      <Route path="/plan/kalender-v3" element={<SuspenseWrapper><PlayerCalendarPage /></SuspenseWrapper>} />
       <Route path="/plan/kalender-old" element={<SuspenseWrapper><PlanKalender /></SuspenseWrapper>} />
       <Route path="/plan/ukeplan" element={<SuspenseWrapper><PlanUkeplan /></SuspenseWrapper>} />
       <Route path="/plan/booking" element={<SuspenseWrapper><PlanBooking /></SuspenseWrapper>} />

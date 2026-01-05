@@ -525,8 +525,6 @@ export async function dataGolfRoutes(app: FastifyInstance): Promise<void> {
         query.tour,
         season
       );
-      console.log('[DataGolf ROUTE DEBUG] Dashboard received:', typeof dashboard, dashboard ? Object.keys(dashboard) : 'null');
-      console.log('[DataGolf ROUTE DEBUG] Dashboard players:', dashboard?.players?.length);
       return reply.send({ success: true, data: dashboard });
     }
   );

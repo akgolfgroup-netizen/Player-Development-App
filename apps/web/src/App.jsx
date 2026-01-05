@@ -260,6 +260,9 @@ const NotFoundPage = lazy(() => import('./features/not-found/NotFoundPage').then
 // Landing page (lazy-loaded)
 const SplitScreenLanding = lazy(() => import('./features/landing/SplitScreenLanding'));
 
+// Onboarding (lazy-loaded)
+const OnboardingPage = lazy(() => import('./features/onboarding/OnboardingPage'));
+
 // V3 Hub Pages (lazy-loaded)
 const DashboardHub = lazy(() => import('./features/hub-pages/DashboardHub'));
 const TreningHub = lazy(() => import('./features/hub-pages/TreningHub'));
@@ -327,6 +330,13 @@ function App() {
           {/* Public routes */}
           <Route path="/login" element={<Login />} />
           <Route path="/welcome" element={<SplitScreenLanding />} />
+
+          {/* Onboarding - protected route for new players */}
+          <Route path="/onboarding" element={
+            <ProtectedRoute>
+              <OnboardingPage />
+            </ProtectedRoute>
+          } />
 
           {/* Landing page - redirects to dashboard if logged in */}
           <Route path="/" element={
