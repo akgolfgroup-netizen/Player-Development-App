@@ -48,10 +48,10 @@ const BenchmarkContent: React.FC = () => {
   };
 
   const getSGColor = (value: number) => {
-    if (value >= 0.5) return 'var(--success)';
-    if (value >= 0) return 'var(--accent)';
-    if (value >= -0.5) return 'var(--warning)';
-    return 'var(--error)';
+    if (value >= 0.5) return 'var(--ak-success)';
+    if (value >= 0) return 'var(--ak-primary)';
+    if (value >= -0.5) return 'var(--ak-warning)';
+    return 'var(--ak-error)';
   };
 
   const getGapToElite = (category: 'total' | 'approach' | 'putting' | 'aroundGreen') => {
@@ -137,7 +137,7 @@ const BenchmarkContent: React.FC = () => {
                       const gap = getGapToElite('total');
                       if (!gap) return '-';
                       return (
-                        <span style={{ color: gap.gap >= 0 ? 'var(--success)' : 'var(--error)' }}>
+                        <span style={{ color: gap.gap >= 0 ? 'var(--ak-success)' : 'var(--ak-error)' }}>
                           {formatSG(gap.gap)}
                         </span>
                       );
@@ -147,7 +147,7 @@ const BenchmarkContent: React.FC = () => {
                 <div style={styles.gapIndicator}>
                   <span style={styles.gapLabel}>PGA Elite</span>
                   <div style={styles.gapValue}>
-                    <span style={{ color: 'var(--success)' }}>
+                    <span style={{ color: 'var(--ak-success)' }}>
                       {formatSG(eliteBenchmarks?.top10.total)}
                     </span>
                   </div>
@@ -171,8 +171,8 @@ const BenchmarkContent: React.FC = () => {
                   }}
                 />
                 <div style={{ ...styles.progressMarker, left: '40%' }} title="Tour Average" />
-                <div style={{ ...styles.progressMarker, left: '70%', backgroundColor: 'var(--warning)' }} title="Top 50" />
-                <div style={{ ...styles.progressMarker, left: '100%', backgroundColor: 'var(--success)' }} title="Top 10" />
+                <div style={{ ...styles.progressMarker, left: '70%', backgroundColor: 'var(--ak-warning)' }} title="Top 50" />
+                <div style={{ ...styles.progressMarker, left: '100%', backgroundColor: 'var(--ak-success)' }} title="Top 10" />
               </div>
               <div style={styles.progressLabels}>
                 <span>Scratch</span>
@@ -239,7 +239,7 @@ const BenchmarkContent: React.FC = () => {
                 <div style={styles.categoryCard}>
                   <div style={styles.categoryCardHeader}>
                     <div style={styles.categoryCardIcon}>
-                      <Icon size={20} color="var(--accent)" />
+                      <Icon size={20} color="var(--ak-primary)" />
                     </div>
                     <div>
                       <SubSectionTitle style={{ margin: 0 }}>{cat.label}</SubSectionTitle>
@@ -260,7 +260,7 @@ const BenchmarkContent: React.FC = () => {
                     <div style={styles.categoryCardDivider} />
                     <div style={styles.categoryCardStat}>
                       <span style={styles.statLabel}>Elite</span>
-                      <span style={{ ...styles.statValue, color: 'var(--success)' }}>
+                      <span style={{ ...styles.statValue, color: 'var(--ak-success)' }}>
                         {formatSG(gap?.eliteValue)}
                       </span>
                     </div>
@@ -269,7 +269,7 @@ const BenchmarkContent: React.FC = () => {
                       <span style={styles.statLabel}>Gap</span>
                       <span style={{
                         ...styles.statValue,
-                        color: (gap?.gap || 0) >= 0 ? 'var(--success)' : 'var(--error)',
+                        color: (gap?.gap || 0) >= 0 ? 'var(--ak-success)' : 'var(--ak-error)',
                       }}>
                         {formatSG(gap?.gap)}
                       </span>
@@ -324,7 +324,7 @@ const BenchmarkContent: React.FC = () => {
             {topPlayers.map((player, index) => (
               <div key={player.name} style={styles.playerRow}>
                 <div style={styles.playerRank}>
-                  {index === 0 && <Trophy size={16} color="var(--achievement)" />}
+                  {index === 0 && <Trophy size={16} color="var(--ak-achievement)" />}
                   {index > 0 && <span style={styles.rankNumber}>{index + 1}</span>}
                 </div>
                 <div style={styles.playerInfo}>
@@ -358,7 +358,7 @@ const BenchmarkContent: React.FC = () => {
           <Card padding="md">
             <div style={styles.wagrCard}>
               <div style={styles.wagrHeader}>
-                <Users size={18} color="var(--accent)" />
+                <Users size={18} color="var(--ak-primary)" />
                 <SubSectionTitle style={{ margin: 0 }}>Menn</SubSectionTitle>
               </div>
               <div style={styles.wagrList}>
@@ -366,7 +366,7 @@ const BenchmarkContent: React.FC = () => {
                   <div key={player.name} style={styles.wagrRow}>
                     <div style={styles.wagrRank}>
                       {index === 0 ? (
-                        <Star size={14} color="var(--achievement)" fill="var(--achievement)" />
+                        <Star size={14} color="var(--ak-achievement)" fill="var(--ak-achievement)" />
                       ) : (
                         <span>{player.rank}</span>
                       )}
@@ -387,7 +387,7 @@ const BenchmarkContent: React.FC = () => {
           <Card padding="md">
             <div style={styles.wagrCard}>
               <div style={styles.wagrHeader}>
-                <Users size={18} color="var(--accent)" />
+                <Users size={18} color="var(--ak-primary)" />
                 <SubSectionTitle style={{ margin: 0 }}>Kvinner</SubSectionTitle>
               </div>
               <div style={styles.wagrList}>
@@ -395,7 +395,7 @@ const BenchmarkContent: React.FC = () => {
                   <div key={player.name} style={styles.wagrRow}>
                     <div style={styles.wagrRank}>
                       {index === 0 ? (
-                        <Star size={14} color="var(--achievement)" fill="var(--achievement)" />
+                        <Star size={14} color="var(--ak-achievement)" fill="var(--ak-achievement)" />
                       ) : (
                         <span>{player.rank}</span>
                       )}
@@ -418,7 +418,7 @@ const BenchmarkContent: React.FC = () => {
       {/* Inspiration Quote */}
       <Card variant="flat" padding="spacious">
         <div style={styles.quoteCard}>
-          <Zap size={24} color="var(--accent)" />
+          <Zap size={24} color="var(--ak-primary)" />
           <blockquote style={styles.quote}>
             "The most important shot in golf is the next one."
           </blockquote>
@@ -432,10 +432,10 @@ const BenchmarkContent: React.FC = () => {
 // Approach Distance Card
 const ApproachDistanceCard: React.FC<{ skill: ApproachSkillData; index: number }> = ({ skill, index }) => {
   const gradients = [
-    'linear-gradient(135deg, var(--ak-status-success-light) 0%, var(--ak-status-success) 100%)',
-    'linear-gradient(135deg, var(--ak-status-info-light) 0%, var(--ak-status-info) 100%)',
-    'linear-gradient(135deg, var(--ak-primary-light) 0%, var(--ak-primary) 100%)',
-    'linear-gradient(135deg, var(--ak-status-warning-light) 0%, var(--ak-status-warning) 100%)',
+    'linear-gradient(135deg, rgba(5, 150, 105, 0.8) 0%, var(--ak-success) 100%)',
+    'linear-gradient(135deg, rgba(2, 132, 199, 0.8) 0%, var(--ak-info) 100%)',
+    'linear-gradient(135deg, rgba(16, 69, 106, 0.8) 0%, var(--ak-primary) 100%)',
+    'linear-gradient(135deg, rgba(217, 119, 6, 0.8) 0%, var(--ak-warning) 100%)',
   ];
 
   return (
@@ -462,7 +462,7 @@ const ApproachDistanceCard: React.FC<{ skill: ApproachSkillData; index: number }
         </div>
         <div style={styles.approachDivider} />
         <div style={styles.approachLieRow}>
-          <span style={{ ...styles.approachLieLabel, color: 'var(--warning)' }}>Rough</span>
+          <span style={{ ...styles.approachLieLabel, color: 'var(--ak-warning)' }}>Rough</span>
           <div style={styles.approachLieStats}>
             <div style={styles.approachLieStat}>
               <span style={styles.approachLieValue}>
@@ -509,11 +509,11 @@ const styles: Record<string, React.CSSProperties> = {
     width: '56px',
     height: '56px',
     borderRadius: 'var(--radius-lg)',
-    background: 'linear-gradient(135deg, var(--accent) 0%, var(--accent-dark, var(--accent)) 100%)',
+    background: 'linear-gradient(135deg, var(--ak-primary) 0%, var(--ak-primary-dark) 100%)',
     display: 'flex',
     alignItems: 'center',
     justifyContent: 'center',
-    boxShadow: '0 4px 12px rgba(99, 102, 241, 0.25)',
+    boxShadow: '0 4px 12px rgba(16, 69, 106, 0.25)',
   },
   heroTitle: {
     fontSize: 'var(--font-size-title2)',
@@ -590,7 +590,7 @@ const styles: Record<string, React.CSSProperties> = {
   },
   progressPercent: {
     fontWeight: 600,
-    color: 'var(--accent)',
+    color: 'var(--ak-primary)',
   },
   progressTrack: {
     position: 'relative',
@@ -604,7 +604,7 @@ const styles: Record<string, React.CSSProperties> = {
     left: 0,
     top: 0,
     height: '100%',
-    background: 'linear-gradient(90deg, var(--accent) 0%, var(--success) 100%)',
+    background: 'linear-gradient(90deg, var(--ak-primary) 0%, var(--ak-success) 100%)',
     borderRadius: '6px',
     transition: 'width 0.5s ease-out',
   },
@@ -643,7 +643,7 @@ const styles: Record<string, React.CSSProperties> = {
     width: '40px',
     height: '40px',
     borderRadius: 'var(--radius-md)',
-    backgroundColor: 'rgba(99, 102, 241, 0.1)',
+    backgroundColor: 'rgba(16, 69, 106, 0.1)',
     display: 'flex',
     alignItems: 'center',
     justifyContent: 'center',
@@ -735,7 +735,7 @@ const styles: Record<string, React.CSSProperties> = {
   approachLieLabel: {
     fontSize: 'var(--font-size-caption1)',
     fontWeight: 500,
-    color: 'var(--success)',
+    color: 'var(--ak-success)',
     minWidth: '50px',
   },
   approachLieStats: {
@@ -864,7 +864,7 @@ const styles: Record<string, React.CSSProperties> = {
   wagrPoints: {
     fontSize: 'var(--font-size-caption1)',
     fontWeight: 600,
-    color: 'var(--accent)',
+    color: 'var(--ak-primary)',
     fontVariantNumeric: 'tabular-nums',
   },
   quoteCard: {
