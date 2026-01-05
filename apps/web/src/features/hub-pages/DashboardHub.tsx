@@ -13,7 +13,7 @@ import { useAuth } from '../../contexts/AuthContext';
 
 const {
   Plus, Target, Calendar, TrendingUp,
-  Dumbbell, Award, Clock, ChevronRight,
+  Dumbbell, Award, Clock, ChevronRight, BookOpen,
 } = LucideIcons;
 
 interface DashboardHubProps {
@@ -179,6 +179,13 @@ export default function DashboardHub({
           href="/plan"
           icon={<Calendar size={24} />}
           color={navigationColors.plan}
+        />
+        <NavigationCard
+          title="Kunnskap"
+          description="Artikler, guider og tips for å forbedre spillet ditt"
+          href="/kunnskap"
+          icon={<BookOpen size={24} />}
+          color={navigationColors.mer}
         />
       </div>
 
