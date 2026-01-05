@@ -62,14 +62,20 @@ const styles = {
   pyramidButton: (isActive: boolean) => ({
     backgroundColor: isActive ? 'var(--accent)' : 'var(--background-white)',
     color: isActive ? 'var(--text-inverse)' : 'var(--text-secondary)',
-    padding: 'var(--spacing-2) var(--spacing-4)',
+    padding: '8px 16px',
     borderRadius: 'var(--radius-full)',
-    fontSize: 'var(--font-size-footnote)',
+    fontSize: '12px',
     fontWeight: 500,
     border: isActive ? 'none' : '1px solid var(--border-default)',
     cursor: 'pointer',
     transition: 'all 150ms ease',
     whiteSpace: 'nowrap' as const,
+    display: 'flex',
+    flexDirection: 'column' as const,
+    alignItems: 'center',
+    justifyContent: 'center',
+    gap: '2px',
+    minWidth: '60px',
   }),
   periodNav: {
     display: 'flex',
@@ -281,8 +287,8 @@ export const DagbokFilterBar: React.FC<DagbokFilterBarProps> = ({
                   opt.value === 'all' ? state.pyramid === null : state.pyramid === opt.value
                 )}
               >
-                {PyramidIcon && <PyramidIcon size={14} style={{ marginRight: '4px' }} />}
-                {opt.label}
+                {PyramidIcon && <PyramidIcon size={16} />}
+                <span>{opt.label}</span>
               </button>
             );
           })}

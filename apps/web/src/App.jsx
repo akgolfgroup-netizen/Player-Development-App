@@ -220,6 +220,7 @@ const CoachStatsProgress = lazy(() => import('./features/coach-stats').then(m =>
 const CoachStatsRegression = lazy(() => import('./features/coach-stats').then(m => ({ default: m.CoachStatsRegression })));
 const CoachDataGolf = lazy(() => import('./features/coach-stats').then(m => ({ default: m.CoachDataGolf })));
 const PlayerComparisonTool = lazy(() => import('./features/coach-stats').then(m => ({ default: m.PlayerComparisonTool })));
+const TeamAnalyticsDashboard = lazy(() => import('./features/coach-stats').then(m => ({ default: m.TeamAnalyticsDashboard })));
 
 // Coach messages (lazy-loaded)
 const CoachMessageList = lazy(() => import('./features/coach-messages').then(m => ({ default: m.CoachMessageList })));
@@ -1594,6 +1595,13 @@ function App() {
             <ProtectedRoute requiredRole="coach">
               <CoachLayout>
                 <PlayerComparisonTool />
+              </CoachLayout>
+            </ProtectedRoute>
+          } />
+          <Route path="/coach/stats/team" element={
+            <ProtectedRoute requiredRole="coach">
+              <CoachLayout>
+                <TeamAnalyticsDashboard />
               </CoachLayout>
             </ProtectedRoute>
           } />

@@ -84,7 +84,7 @@ const DetailTemplate: React.FC<DetailTemplateProps> = ({
   const [deleteModalOpen, setDeleteModalOpen] = React.useState(false);
 
   const formatTimestamp = (timestamp: string) => {
-    return new Date(timestamp).toLocaleString('en-US', {
+    return new Date(timestamp).toLocaleString('nb-NO', {
       year: 'numeric',
       month: 'short',
       day: 'numeric',
@@ -210,12 +210,12 @@ const DetailTemplate: React.FC<DetailTemplateProps> = ({
               <div style={styles.timestamps}>
                 {createdAt && (
                   <Text variant="caption1" color="tertiary">
-                    Created: {formatTimestamp(createdAt)}
+                    Opprettet: {formatTimestamp(createdAt)}
                   </Text>
                 )}
                 {updatedAt && (
                   <Text variant="caption1" color="tertiary">
-                    Last updated: {formatTimestamp(updatedAt)}
+                    Sist oppdatert: {formatTimestamp(updatedAt)}
                   </Text>
                 )}
               </div>

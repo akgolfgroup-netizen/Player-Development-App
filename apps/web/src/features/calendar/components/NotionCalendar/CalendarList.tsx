@@ -10,7 +10,7 @@
 
 import React, { useState } from 'react';
 import { ChevronRight, Plus } from 'lucide-react';
-import { CALENDAR_COLORS, type CalendarSource, type CalendarColorKey } from './NotionCalendar';
+import { CALENDAR_COLORS, type CalendarSource, type CalendarColorKey } from './types';
 
 interface CalendarListProps {
   calendars: CalendarSource[];

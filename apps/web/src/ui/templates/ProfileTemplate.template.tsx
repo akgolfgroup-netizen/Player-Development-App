@@ -75,7 +75,7 @@ const ProfileTemplate: React.FC<ProfileTemplateProps> = ({
 
   const formatDate = (dateString?: string) => {
     if (!dateString) return '';
-    return new Date(dateString).toLocaleDateString('en-US', {
+    return new Date(dateString).toLocaleDateString('nb-NO', {
       year: 'numeric',
       month: 'long',
     });
@@ -164,7 +164,7 @@ const ProfileTemplate: React.FC<ProfileTemplateProps> = ({
                       <path d="M6 2v3M10 2v3M3 7h10" strokeWidth="1.5" strokeLinecap="round" />
                     </svg>
                     <Text variant="footnote" color="secondary">
-                      Joined {formatDate(profile.joinDate)}
+                      Medlem siden {formatDate(profile.joinDate)}
                     </Text>
                   </div>
                 )}
@@ -175,12 +175,12 @@ const ProfileTemplate: React.FC<ProfileTemplateProps> = ({
           <div style={styles.profileActions}>
             {editable && onEdit && (
               <Button variant="outline" onClick={onEdit}>
-                Edit Profile
+                Rediger profil
               </Button>
             )}
             {showSettings && onSettings && (
               <Button variant="ghost" onClick={onSettings}>
-                Settings
+                Innstillinger
               </Button>
             )}
             {actions}
@@ -212,7 +212,7 @@ const ProfileTemplate: React.FC<ProfileTemplateProps> = ({
           <CardSimple padding="lg">
             <div style={styles.emptyState}>
               <Text variant="title3" color="secondary">
-                No additional information available
+                Ingen tilleggsinformasjon tilgjengelig
               </Text>
             </div>
           </CardSimple>

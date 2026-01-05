@@ -82,13 +82,13 @@ export default function PlanPreview() {
       if (err.status === 404 || err.status === 403) {
         setError({
           code: err.details?.code || 'PLAN_NOT_FOUND',
-          message: err.message || 'Training plan not found'
+          message: err.message || 'Treningsplan ikke funnet'
         });
         setState('error_not_found');
       } else {
         setError({
           code: 'SYSTEM_ERROR',
-          message: 'Failed to load training plan. Please try again.'
+          message: 'Kunne ikke laste treningsplanen. Vennligst prøv igjen.'
         });
         setState('error_system');
       }
@@ -109,10 +109,10 @@ export default function PlanPreview() {
       }
     } catch (err) {
       if (err.status === 400) {
-        alert(err.message || 'Cannot accept plan in current status');
+        alert(err.message || 'Kan ikke godkjenne plan i nåværende status');
         setState('viewing');
       } else {
-        alert('Failed to accept plan. Please try again.');
+        alert('Kunne ikke godkjenne planen. Vennligst prøv igjen.');
         setState('viewing');
       }
     }
@@ -132,7 +132,7 @@ export default function PlanPreview() {
         setShowModificationModal(false);
       }
     } catch (err) {
-      alert('Failed to submit modification request. Please try again.');
+      alert('Kunne ikke sende endringsforespørsel. Vennligst prøv igjen.');
       setState('viewing');
     }
   };
@@ -152,7 +152,7 @@ export default function PlanPreview() {
         navigate('/intake-form');
       }
     } catch (err) {
-      alert('Failed to reject plan. Please try again.');
+      alert('Kunne ikke avvise planen. Vennligst prøv igjen.');
       setState('viewing');
       setShowRejectModal(false);
     }
@@ -164,7 +164,7 @@ export default function PlanPreview() {
       <div className="min-h-screen bg-gray-50 flex items-center justify-center">
         <div className="text-center">
           <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-green-600 mx-auto mb-4"></div>
-          <p className="text-gray-600">Loading your training plan...</p>
+          <p className="text-gray-600">Laster din treningsplan...</p>
         </div>
       </div>
     );
@@ -201,13 +201,13 @@ export default function PlanPreview() {
               variant="primary"
               onClick={loadPlan}
             >
-              Retry
+              Prøv igjen
             </Button>
             <Button
               variant="secondary"
               onClick={() => navigate('/dashboard')}
             >
-              Return to Dashboard
+              Tilbake til dashboard
             </Button>
           </div>
         </div>
@@ -221,7 +221,7 @@ export default function PlanPreview() {
       <div className="min-h-screen bg-gray-50 flex items-center justify-center">
         <div className="text-center">
           <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-green-600 mx-auto mb-4"></div>
-          <p className="text-gray-600">Activating your training plan...</p>
+          <p className="text-gray-600">Aktiverer treningsplanen din...</p>
         </div>
       </div>
     );
@@ -233,15 +233,15 @@ export default function PlanPreview() {
       <div className="min-h-screen bg-gray-50 flex items-center justify-center p-4">
         <div className="bg-white rounded-lg shadow-lg p-8 max-w-md w-full text-center">
           <div className="text-green-500 text-5xl mb-4">✅</div>
-          <PageTitle className="text-2xl font-bold text-gray-900 mb-2">Plan Activated!</PageTitle>
+          <PageTitle className="text-2xl font-bold text-gray-900 mb-2">Plan aktivert!</PageTitle>
           <p className="text-gray-600 mb-6">
-            Your training plan is now active. Redirecting to dashboard...
+            Treningsplanen din er nå aktiv. Omdirigerer til dashboard...
           </p>
           <Button
             variant="primary"
             onClick={() => navigate('/dashboard')}
           >
-            Go to Dashboard Now
+            Gå til dashboard nå
           </Button>
         </div>
       </div>
@@ -254,15 +254,15 @@ export default function PlanPreview() {
       <div className="min-h-screen bg-gray-50 flex items-center justify-center p-4">
         <div className="bg-white rounded-lg shadow-lg p-8 max-w-md w-full text-center">
           <div className="text-blue-500 text-5xl mb-4">📝</div>
-          <PageTitle className="text-2xl font-bold text-gray-900 mb-2">Request Submitted</PageTitle>
+          <PageTitle className="text-2xl font-bold text-gray-900 mb-2">Forespørsel sendt</PageTitle>
           <p className="text-gray-600 mb-6">
-            Your coach will review your request within 24-48 hours.
+            Treneren din vil gjennomgå forespørselen innen 24-48 timer.
           </p>
           <Button
             variant="primary"
             onClick={() => navigate('/dashboard')}
           >
-            Return to Dashboard
+            Tilbake til dashboard
           </Button>
         </div>
       </div>
@@ -276,7 +276,7 @@ export default function PlanPreview() {
       <div className="bg-white border-b border-gray-200">
         <div className="max-w-7xl mx-auto px-4 py-6">
           <PageTitle className="text-3xl font-bold text-gray-900">
-            {planData?.annualPlan.planName || '12-Month Training Plan'}
+            {planData?.annualPlan.planName || '12-måneders treningsplan'}
           </PageTitle>
           <p className="text-gray-600 mt-1">
             {new Date(planData?.annualPlan.startDate).toLocaleDateString()} - {new Date(planData?.annualPlan.endDate).toLocaleDateString()}
@@ -320,14 +320,14 @@ export default function PlanPreview() {
             size="md"
             onClick={handleAcceptPlan}
           >
-            Accept Training Plan
+            Godkjenn treningsplan
           </Button>
           <Button
             variant="secondary"
             size="md"
             onClick={() => setShowModificationModal(true)}
           >
-            Request Modifications
+            Be om endringer
           </Button>
           <Button
             variant="ghost"
@@ -335,7 +335,7 @@ export default function PlanPreview() {
             onClick={() => setShowRejectModal(true)}
             style={{ color: 'var(--color-status-error)' }}
           >
-            Reject Plan
+            Avvis plan
           </Button>
         </div>
       </div>
@@ -343,13 +343,13 @@ export default function PlanPreview() {
       {/* Modification Request Modal */}
       {showModificationModal && (
         <Modal onClose={() => setShowModificationModal(false)}>
-          <SectionTitle className="text-2xl font-bold mb-4">Request Modifications</SectionTitle>
+          <SectionTitle className="text-2xl font-bold mb-4">Be om endringer</SectionTitle>
           <div className="space-y-4">
             <div>
               <label className="block text-sm font-medium text-gray-700 mb-2">
-                What concerns do you have? (Select all that apply)
+                Hvilke bekymringer har du? (Velg alle som gjelder)
               </label>
-              {['Too many sessions per week', 'Too few rest days', 'Tournament dates conflict', 'Session types not suitable', 'Weekly hours too high'].map(concern => (
+              {['For mange økter per uke', 'For få hviledager', 'Turneringsdatoer kolliderer', 'Økttyper passer ikke', 'Ukentlige timer for høyt'].map(concern => (
                 <label key={concern} className="flex items-center gap-2 mb-2">
                   <input
                     type="checkbox"
@@ -375,28 +375,28 @@ export default function PlanPreview() {
             </div>
             <div>
               <label className="block text-sm font-medium text-gray-700 mb-2">
-                Additional Notes (optional)
+                Tilleggsnotater (valgfritt)
               </label>
               <textarea
                 value={modificationForm.notes}
                 onChange={(e) => setModificationForm(prev => ({ ...prev, notes: e.target.value }))}
                 className="w-full p-3 border border-gray-300 rounded-lg"
                 rows="4"
-                placeholder="Provide more context about your concerns..."
+                placeholder="Gi mer kontekst om dine bekymringer..."
               />
             </div>
             <div>
               <label className="block text-sm font-medium text-gray-700 mb-2">
-                Urgency
+                Haster
               </label>
               <select
                 value={modificationForm.urgency}
                 onChange={(e) => setModificationForm(prev => ({ ...prev, urgency: e.target.value }))}
                 className="w-full p-3 border border-gray-300 rounded-lg"
               >
-                <option value="low">Low</option>
+                <option value="low">Lav</option>
                 <option value="medium">Medium</option>
-                <option value="high">High</option>
+                <option value="high">Høy</option>
               </select>
             </div>
             <div className="flex gap-3 justify-end mt-6">
@@ -404,14 +404,14 @@ export default function PlanPreview() {
                 variant="secondary"
                 onClick={() => setShowModificationModal(false)}
               >
-                Cancel
+                Avbryt
               </Button>
               <Button
                 variant="primary"
                 onClick={handleRequestModifications}
                 disabled={modificationForm.concerns.length === 0}
               >
-                Submit Request
+                Send forespørsel
               </Button>
             </div>
           </div>
@@ -421,21 +421,21 @@ export default function PlanPreview() {
       {/* Reject Plan Modal */}
       {showRejectModal && (
         <Modal onClose={() => setShowRejectModal(false)}>
-          <SectionTitle className="text-2xl font-bold mb-4 text-red-600">Reject Training Plan</SectionTitle>
+          <SectionTitle className="text-2xl font-bold mb-4 text-red-600">Avvis treningsplan</SectionTitle>
           <p className="text-gray-600 mb-4">
-            Are you sure? This will archive this plan and you'll need to create a new intake form.
+            Er du sikker? Dette vil arkivere planen og du må opprette et nytt kartleggingsskjema.
           </p>
           <div className="space-y-4">
             <div>
               <label className="block text-sm font-medium text-gray-700 mb-2">
-                Reason for rejection (required, min 10 characters)
+                Årsak til avvisning (påkrevd, min 10 tegn)
               </label>
               <textarea
                 value={rejectForm.reason}
                 onChange={(e) => setRejectForm(prev => ({ ...prev, reason: e.target.value }))}
                 className="w-full p-3 border border-gray-300 rounded-lg"
                 rows="4"
-                placeholder="Please explain why you're rejecting this plan..."
+                placeholder="Vennligst forklar hvorfor du avviser denne planen..."
               />
             </div>
             <label className="flex items-center gap-2">
@@ -445,14 +445,14 @@ export default function PlanPreview() {
                 onChange={(e) => setRejectForm(prev => ({ ...prev, willCreateNewIntake: e.target.checked }))}
                 className="rounded"
               />
-              <span className="text-sm">I will create a new intake form</span>
+              <span className="text-sm">Jeg vil opprette et nytt kartleggingsskjema</span>
             </label>
             <div className="flex gap-3 justify-end mt-6">
               <Button
                 variant="secondary"
                 onClick={() => setShowRejectModal(false)}
               >
-                Cancel
+                Avbryt
               </Button>
               <Button
                 variant="primary"
@@ -460,7 +460,7 @@ export default function PlanPreview() {
                 disabled={rejectForm.reason.length < 10}
                 style={{ backgroundColor: 'var(--color-status-error)' }}
               >
-                Confirm Rejection
+                Bekreft avvisning
               </Button>
             </div>
           </div>
@@ -480,17 +480,17 @@ function OverviewView({ data }) {
     <div className="space-y-6">
       {/* Plan Summary */}
       <div className="bg-white rounded-lg shadow p-6">
-        <SectionTitle className="text-xl font-bold mb-4">Plan Summary</SectionTitle>
+        <SectionTitle className="text-xl font-bold mb-4">Plansammendrag</SectionTitle>
         <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-          <StatCard label="Total Rest Days" value={statistics.totalRestDays} />
-          <StatCard label="Avg Session (min)" value={Math.round(statistics.averageSessionDuration)} />
-          <StatCard label="Weeks" value={periodizations.length} />
+          <StatCard label="Totale hviledager" value={statistics.totalRestDays} />
+          <StatCard label="Gj.snitt økt (min)" value={Math.round(statistics.averageSessionDuration)} />
+          <StatCard label="Uker" value={periodizations.length} />
         </div>
       </div>
 
       {/* Period Breakdown */}
       <div className="bg-white rounded-lg shadow p-6">
-        <SectionTitle className="text-xl font-bold mb-4">Training Periods</SectionTitle>
+        <SectionTitle className="text-xl font-bold mb-4">Treningsperioder</SectionTitle>
         <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
           <PeriodCard label="Base (E)" count={statistics.periodBreakdown.E || 0} color="bg-blue-100 text-blue-800" />
           <PeriodCard label="General (G)" count={statistics.periodBreakdown.G || 0} color="bg-green-100 text-green-800" />
@@ -501,7 +501,7 @@ function OverviewView({ data }) {
 
       {/* Tournaments */}
       <div className="bg-white rounded-lg shadow p-6">
-        <SectionTitle className="text-xl font-bold mb-4">Scheduled Tournaments ({tournaments.length})</SectionTitle>
+        <SectionTitle className="text-xl font-bold mb-4">Planlagte turneringer ({tournaments.length})</SectionTitle>
         <div className="space-y-2">
           {tournaments.map(t => (
             <div key={t.id} className="flex justify-between items-center p-3 bg-gray-50 rounded">
@@ -513,7 +513,7 @@ function OverviewView({ data }) {
                   t.importance === 'B' ? 'bg-orange-100 text-orange-800' :
                   'bg-yellow-100 text-yellow-800'
                 }`}>
-                  {t.importance}-Priority
+                  {t.importance}-prioritet
                 </span>
               </div>
             </div>
@@ -553,9 +553,9 @@ function CalendarView({ data }) {
 
   return (
     <div className="bg-white rounded-lg shadow p-6">
-      <SectionTitle className="text-xl font-bold mb-4">365-Day Calendar</SectionTitle>
+      <SectionTitle className="text-xl font-bold mb-4">365-dagers kalender</SectionTitle>
       <p className="text-sm text-gray-500 mb-4">
-        Total assignments: {data.dailyAssignments.length}
+        Totalt antall tilordninger: {data.dailyAssignments.length}
       </p>
 
       <div className="space-y-6">

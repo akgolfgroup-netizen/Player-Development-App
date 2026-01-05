@@ -51,7 +51,7 @@ function DataTable<T extends Record<string, any>>({
   onSelectionChange,
   onRowClick,
   loading = false,
-  emptyMessage = 'No data available',
+  emptyMessage = 'Ingen data tilgjengelig',
   compact = false,
   striped = false,
   hoverable = true,
@@ -121,7 +121,7 @@ function DataTable<T extends Record<string, any>>({
   if (loading) {
     return (
       <div style={styles.loadingContainer}>
-        <div style={styles.spinner}>Loading...</div>
+        <div style={styles.spinner}>Laster...</div>
       </div>
     );
   }
@@ -148,7 +148,7 @@ function DataTable<T extends Record<string, any>>({
                     checked={selectedRows.length === data.length}
                     onChange={handleSelectAll}
                     style={styles.checkbox}
-                    aria-label="Select all rows"
+                    aria-label="Velg alle rader"
                   />
                 </th>
               )}
@@ -207,7 +207,7 @@ function DataTable<T extends Record<string, any>>({
                         onChange={() => handleSelectRow(rowId)}
                         onClick={(e) => e.stopPropagation()}
                         style={styles.checkbox}
-                        aria-label={`Select row ${rowIndex + 1}`}
+                        aria-label={`Velg rad ${rowIndex + 1}`}
                       />
                     </td>
                   )}

@@ -527,9 +527,11 @@ export class CoachService {
     const injuries: PlayerInjury[] = [];
 
     for (const player of players) {
+      // Notes linked to player via linkedEntityType/linkedEntityId
       const injuryNotes = await this.prisma.note.findMany({
         where: {
-          playerId: player.id,
+          linkedEntityType: 'player',
+          linkedEntityId: player.id,
           OR: [
             { title: { contains: 'skade', mode: 'insensitive' } },
             { title: { contains: 'injury', mode: 'insensitive' } },

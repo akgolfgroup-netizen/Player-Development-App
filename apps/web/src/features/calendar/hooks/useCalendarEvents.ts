@@ -291,6 +291,10 @@ export function useCalendarEvents(
     setIsLoading(true);
     setError(null);
 
+    // Create date objects from the string keys to avoid dependency on rangeStart/rangeEnd objects
+    const start = new Date(startDateStr);
+    const end = new Date(endDateStr);
+
     try {
       const response = await apiGet<{ events: ApiCalendarEvent[] }>('/calendar/events', {
         startDate: startDateStr,
@@ -301,7 +305,7 @@ export function useCalendarEvents(
 
       // If API returns empty OR we're in dev mode with empty data, use seed data
       if (apiEvents.length === 0 || IS_DEV) {
-        const seedEvents = generateSeedEvents(rangeStart, rangeEnd);
+        const seedEvents = generateSeedEvents(start, end);
         // In dev mode, merge API events with seed events (API takes precedence)
         if (IS_DEV && apiEvents.length > 0) {
           setEvents(apiEvents);
@@ -319,13 +323,15 @@ export function useCalendarEvents(
       setError(message);
 
       // Fall back to seed data on error
-      const seedEvents = generateSeedEvents(rangeStart, rangeEnd);
+      const seedEvents = generateSeedEvents(start, end);
       setEvents(seedEvents);
       setIsSeedData(true);
     } finally {
       setIsLoading(false);
     }
-  }, [startDateStr, endDateStr, rangeStart, rangeEnd]);
+    // Note: rangeStart/rangeEnd are intentionally excluded - using string keys for stable deps
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [startDateStr, endDateStr]);
 
   useEffect(() => {
     fetchData();

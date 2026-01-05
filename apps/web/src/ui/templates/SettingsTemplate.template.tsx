@@ -45,8 +45,8 @@ interface SettingsTemplateProps {
 }
 
 const SettingsTemplate: React.FC<SettingsTemplateProps> = ({
-  title = 'Settings',
-  subtitle = 'Manage your preferences and configuration',
+  title = 'Innstillinger',
+  subtitle = 'Administrer dine preferanser og konfigurasjon',
   tabs,
   showSave = true,
   onSave,
@@ -80,7 +80,7 @@ const SettingsTemplate: React.FC<SettingsTemplateProps> = ({
   const handleCancel = () => {
     if (hasUnsavedChanges) {
       const confirmed = window.confirm(
-        'You have unsaved changes. Are you sure you want to cancel?'
+        'Du har ulagrede endringer. Er du sikker på at du vil avbryte?'
       );
       if (!confirmed) return;
     }
@@ -118,7 +118,7 @@ const SettingsTemplate: React.FC<SettingsTemplateProps> = ({
             <div style={styles.footerContent}>
               {hasUnsavedChanges && (
                 <Text variant="footnote" color="warning">
-                  You have unsaved changes
+                  Du har ulagrede endringer
                 </Text>
               )}
 
@@ -129,7 +129,7 @@ const SettingsTemplate: React.FC<SettingsTemplateProps> = ({
                     onClick={() => setResetModalOpen(true)}
                     disabled={loading || saving}
                   >
-                    Reset to Defaults
+                    Tilbakestill til standard
                   </Button>
                 )}
 
@@ -140,7 +140,7 @@ const SettingsTemplate: React.FC<SettingsTemplateProps> = ({
                       onClick={handleCancel}
                       disabled={loading || saving}
                     >
-                      Cancel
+                      Avbryt
                     </Button>
                   )}
 
@@ -151,7 +151,7 @@ const SettingsTemplate: React.FC<SettingsTemplateProps> = ({
                       loading={saving}
                       disabled={loading || !hasUnsavedChanges}
                     >
-                      Save Changes
+                      Lagre endringer
                     </Button>
                   )}
                 </div>
@@ -165,7 +165,7 @@ const SettingsTemplate: React.FC<SettingsTemplateProps> = ({
       <Modal
         isOpen={resetModalOpen}
         onClose={() => setResetModalOpen(false)}
-        title="Reset to Defaults"
+        title="Tilbakestill til standard"
         size="sm"
         footer={
           <>
@@ -173,20 +173,20 @@ const SettingsTemplate: React.FC<SettingsTemplateProps> = ({
               variant="ghost"
               onClick={() => setResetModalOpen(false)}
             >
-              Cancel
+              Avbryt
             </Button>
             <Button
               variant="danger"
               onClick={handleReset}
             >
-              Reset
+              Tilbakestill
             </Button>
           </>
         }
       >
         <Text>
-          Are you sure you want to reset all settings to their default values?
-          This action cannot be undone.
+          Er du sikker på at du vil tilbakestille alle innstillinger til standardverdier?
+          Denne handlingen kan ikke angres.
         </Text>
       </Modal>
     </AppShell>

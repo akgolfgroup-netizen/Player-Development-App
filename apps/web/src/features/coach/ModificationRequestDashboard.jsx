@@ -46,7 +46,7 @@ export default function ModificationRequestDashboard() {
       setResponse('');
       loadRequests();
     } catch (err) {
-      alert('Failed to send response: ' + (err.message || 'Unknown error'));
+      alert('Kunne ikke sende svar: ' + (err.message || 'Ukjent feil'));
     }
   };
 
@@ -57,19 +57,19 @@ export default function ModificationRequestDashboard() {
   };
 
   const statusBadge = {
-    pending: { bg: 'var(--ak-status-warning-light)', text: 'var(--ak-status-warning)', label: 'Pending' },
-    under_review: { bg: 'var(--ak-primary-light)', text: 'var(--ak-primary)', label: 'Under Review' },
-    resolved: { bg: 'var(--ak-status-success-light)', text: 'var(--ak-status-success)', label: 'Resolved' },
-    rejected: { bg: 'var(--ak-status-error-light)', text: 'var(--ak-status-error)', label: 'Rejected' },
+    pending: { bg: 'var(--ak-status-warning-light)', text: 'var(--ak-status-warning)', label: 'Venter' },
+    under_review: { bg: 'var(--ak-primary-light)', text: 'var(--ak-primary)', label: 'Under behandling' },
+    resolved: { bg: 'var(--ak-status-success-light)', text: 'var(--ak-status-success)', label: 'Løst' },
+    rejected: { bg: 'var(--ak-status-error-light)', text: 'var(--ak-status-error)', label: 'Avvist' },
   };
 
-  if (loading) return <div className="p-8">Loading requests...</div>;
+  if (loading) return <div className="p-8">Laster forespørsler...</div>;
 
   return (
     <div className="p-8">
       <div className="mb-6">
-        <PageTitle className="mb-2">Modification Requests</PageTitle>
-        <p className="text-gray-600">Review and respond to player modification requests</p>
+        <PageTitle className="mb-2">Endringsforespørsler</PageTitle>
+        <p className="text-gray-600">Gjennomgå og svar på spillernes endringsforespørsler</p>
       </div>
 
       {/* Filters */}
@@ -92,7 +92,7 @@ export default function ModificationRequestDashboard() {
       {/* Requests List */}
       {requests.length === 0 ? (
         <div className="bg-white rounded-lg shadow p-8 text-center text-gray-500">
-          No {filter} requests found
+          Ingen {filter.replace('_', ' ')} forespørsler funnet
         </div>
       ) : (
         <div className="space-y-4">
@@ -124,7 +124,7 @@ export default function ModificationRequestDashboard() {
               </div>
 
               <div className="bg-amber-50 border-l-4 border-amber-500 p-4 mb-4">
-                <CardTitle className="text-amber-900 mb-2">Concerns:</CardTitle>
+                <CardTitle className="text-amber-900 mb-2">Bekymringer:</CardTitle>
                 <ul className="list-disc list-inside space-y-1">
                   {req.concerns.map((concern, i) => (
                     <li key={i} className="text-amber-800">{concern}</li>
@@ -132,16 +132,16 @@ export default function ModificationRequestDashboard() {
                 </ul>
                 {req.notes && (
                   <div className="mt-3">
-                    <p className="font-bold text-amber-900">Additional Notes:</p>
+                    <p className="font-bold text-amber-900">Tilleggsnotater:</p>
                     <p className="text-amber-800">{req.notes}</p>
                   </div>
                 )}
               </div>
 
               <div className="flex justify-between items-center text-sm text-gray-500">
-                <span>Created: {new Date(req.createdAt).toLocaleString()}</span>
+                <span>Opprettet: {new Date(req.createdAt).toLocaleString('nb-NO')}</span>
                 {req.reviewedAt && (
-                  <span>Reviewed: {new Date(req.reviewedAt).toLocaleString()}</span>
+                  <span>Gjennomgått: {new Date(req.reviewedAt).toLocaleString('nb-NO')}</span>
                 )}
               </div>
 
@@ -152,7 +152,7 @@ export default function ModificationRequestDashboard() {
                       <textarea
                         value={response}
                         onChange={(e) => setResponse(e.target.value)}
-                        placeholder="Your response to the player..."
+                        placeholder="Ditt svar til spilleren..."
                         className="w-full p-3 border rounded-lg mb-3"
                         rows="4"
                       />
@@ -165,7 +165,7 @@ export default function ModificationRequestDashboard() {
                             checked={responseStatus === 'resolved'}
                             onChange={(e) => setResponseStatus(e.target.value)}
                           />
-                          <span className="text-green-700 font-medium">Resolved</span>
+                          <span className="text-green-700 font-medium">Løst</span>
                         </label>
                         <label className="flex items-center gap-2">
                           <input
@@ -175,7 +175,7 @@ export default function ModificationRequestDashboard() {
                             checked={responseStatus === 'rejected'}
                             onChange={(e) => setResponseStatus(e.target.value)}
                           />
-                          <span className="text-red-700 font-medium">Rejected</span>
+                          <span className="text-red-700 font-medium">Avvist</span>
                         </label>
                       </div>
                       <div className="flex gap-2">
@@ -184,7 +184,7 @@ export default function ModificationRequestDashboard() {
                           onClick={() => handleRespond(req.id)}
                           disabled={response.length < 10}
                         >
-                          Send Response
+                          Send svar
                         </Button>
                         <Button
                           variant="secondary"
@@ -193,7 +193,7 @@ export default function ModificationRequestDashboard() {
                             setResponse('');
                           }}
                         >
-                          Cancel
+                          Avbryt
                         </Button>
                       </div>
                     </div>
@@ -202,7 +202,7 @@ export default function ModificationRequestDashboard() {
                       variant="primary"
                       onClick={() => setRespondingTo(req.id)}
                     >
-                      Respond
+                      Svar
                     </Button>
                   )}
                 </div>

@@ -269,7 +269,10 @@ export function useDagbokSessions(state: DagbokState): UseDagbokSessionsResult {
     };
 
     fetchSessions();
-  }, [queryParams, fetchKey, state]);
+    // Note: state is intentionally excluded - queryParams already derives from state
+    // Including state would cause infinite re-renders since state object changes each render
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [queryParams, fetchKey]);
 
   // Compute stats
   const stats = useMemo(() => computeStats(sessions), [sessions]);

@@ -11,10 +11,11 @@ export { default as NotionWeekGrid } from './NotionWeekGrid';
 export { default as NotionDayGrid } from './NotionDayGrid';
 export { default as NotionMonthGrid } from './NotionMonthGrid';
 
+// Export types from types.ts
 export type {
   CalendarSource,
   CalendarColorKey,
   ViewType,
-} from './NotionCalendar';
+} from './types';
 
-export { CALENDAR_COLORS } from './NotionCalendar';
+export { CALENDAR_COLORS } from './types';

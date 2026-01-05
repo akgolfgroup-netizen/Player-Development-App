@@ -1,95 +1,12 @@
 import React, { useState } from 'react';
 import {
   Target, ChevronRight, Plus, CheckCircle, Clock,
-  AlertTriangle, Calendar, Video
+  AlertTriangle, Calendar, Video, Loader
 } from 'lucide-react';
 import { SubSectionTitle } from '../../components/typography';
 import Button from '../../ui/primitives/Button';
 import Card from '../../ui/primitives/Card';
-
-// ============================================================================
-// MOCK DATA
-// ============================================================================
-
-const BREAKING_POINTS = [
-  {
-    id: 'bp1',
-    area: 'Driving',
-    title: 'Sving tempo',
-    description: 'For rask overgang fra toppen. Mister kraft og presisjon.',
-    status: 'working',
-    priority: 'high',
-    identifiedDate: '2025-01-05',
-    targetDate: '2025-02-15',
-    progress: 65,
-    drills: ['Tempo drill 1-2-3', 'Pause pa toppen', 'Sakte nedsving'],
-    coachNotes: 'Fokuser pa a fole tyngden i klubben pa toppen for du starter nedsvingen.',
-    videos: 2,
-    sessions: 8,
-  },
-  {
-    id: 'bp2',
-    area: 'Putting',
-    title: 'Lesing av greener',
-    description: 'Feilvurderer ofte break, spesielt pa nedoverbakker.',
-    status: 'identified',
-    priority: 'medium',
-    identifiedDate: '2025-01-12',
-    targetDate: '2025-03-01',
-    progress: 20,
-    drills: ['Lesesirkelen', 'Opp-og-ned drill', 'Forkant fokus'],
-    coachNotes: 'Vi ma jobbe med a lese greenen fra alle vinkler for du putter.',
-    videos: 1,
-    sessions: 3,
-  },
-  {
-    id: 'bp3',
-    area: 'Jernspill',
-    title: 'Konsistent treff',
-    description: 'Varierende treffpunkt gir inkonsistent avstand og retning.',
-    status: 'working',
-    priority: 'high',
-    identifiedDate: '2024-12-20',
-    targetDate: '2025-02-01',
-    progress: 80,
-    drills: ['Gate drill', 'Tee foran ball', 'Halve sving'],
-    coachNotes: 'Naesten i mal! Hold fokus pa a holde hodet stille gjennom impact.',
-    videos: 4,
-    sessions: 12,
-  },
-  {
-    id: 'bp4',
-    area: 'Mental',
-    title: 'Fokus etter feilslag',
-    description: 'Mister fokus og gjor flere feil etter et darlig slag.',
-    status: 'identified',
-    priority: 'low',
-    identifiedDate: '2025-01-15',
-    targetDate: '2025-04-01',
-    progress: 10,
-    drills: ['Pusteovelse', 'Reset-rutine', '10-sekunders regel'],
-    coachNotes: null,
-    videos: 0,
-    sessions: 1,
-  },
-];
-
-const RESOLVED_POINTS = [
-  {
-    id: 'r1',
-    area: 'Kortspill',
-    title: 'Bunker konsistens',
-    resolvedDate: '2024-12-15',
-    duration: '6 uker',
-  },
-  {
-    id: 'r2',
-    area: 'Driving',
-    title: 'Slice tendens',
-    resolvedDate: '2024-11-20',
-    duration: '8 uker',
-  },
-];
+import { useBreakingPoints } from '../../hooks/useBreakingPoints';
 
 // ============================================================================
 // HELPERS
@@ -268,7 +185,7 @@ const BreakingPointCard = ({ point, onClick }) => {
             color: 'var(--text-secondary)',
           }}>
             <Target size={12} />
-            {point.drills.length} ovelser
+            {(point.drills || []).length} ovelser
           </div>
         </div>
       </div>
@@ -320,6 +237,7 @@ const ResolvedCard = ({ point }) => (
 
 const BreakingPointsContainer = () => {
   const [filter, setFilter] = useState('all');
+  const { data, loading, error } = useBreakingPoints(filter);
 
   const filters = [
     { key: 'all', label: 'Alle' },
@@ -327,9 +245,28 @@ const BreakingPointsContainer = () => {
     { key: 'identified', label: 'Identifisert' },
   ];
 
-  const filteredPoints = BREAKING_POINTS.filter(
-    (p) => filter === 'all' || p.status === filter
-  );
+  // Loading state
+  if (loading) {
+    return (
+      <div style={{
+        display: 'flex',
+        alignItems: 'center',
+        justifyContent: 'center',
+        minHeight: '300px',
+        color: 'var(--text-secondary)',
+      }}>
+        <Loader size={24} style={{ animation: 'spin 1s linear infinite' }} />
+        <span style={{ marginLeft: 'var(--spacing-2)' }}>Laster breaking points...</span>
+      </div>
+    );
+  }
+
+  // Error state - log but still show UI
+  if (error) {
+    console.warn('BreakingPoints error:', error);
+  }
+
+  const { breakingPoints, resolvedPoints, stats } = data;
 
   return (
     <div style={{ width: '100%' }}>
@@ -343,7 +280,7 @@ const BreakingPointsContainer = () => {
           <Card variant="default" padding="none">
             <div style={{ padding: 'var(--spacing-3)', textAlign: 'center' }}>
               <div style={{ fontSize: '32px', fontWeight: 700, color: 'var(--accent)' }}>
-                {BREAKING_POINTS.length}
+                {stats.active}
               </div>
               <div style={{ fontSize: 'var(--font-size-footnote)', color: 'var(--text-secondary)' }}>Aktive</div>
             </div>
@@ -351,7 +288,7 @@ const BreakingPointsContainer = () => {
           <Card variant="default" padding="none">
             <div style={{ padding: 'var(--spacing-3)', textAlign: 'center' }}>
               <div style={{ fontSize: '32px', fontWeight: 700, color: 'var(--error)' }}>
-                {BREAKING_POINTS.filter((p) => p.priority === 'high').length}
+                {stats.highPriority}
               </div>
               <div style={{ fontSize: 'var(--font-size-footnote)', color: 'var(--text-secondary)' }}>Hoy prioritet</div>
             </div>
@@ -359,7 +296,7 @@ const BreakingPointsContainer = () => {
           <Card variant="default" padding="none">
             <div style={{ padding: 'var(--spacing-3)', textAlign: 'center' }}>
               <div style={{ fontSize: '32px', fontWeight: 700, color: 'var(--success)' }}>
-                {RESOLVED_POINTS.length}
+                {stats.resolved}
               </div>
               <div style={{ fontSize: 'var(--font-size-footnote)', color: 'var(--text-secondary)' }}>Lost</div>
             </div>
@@ -397,26 +334,42 @@ const BreakingPointsContainer = () => {
 
         {/* Breaking Points List */}
         <div style={{ display: 'flex', flexDirection: 'column', gap: 'var(--spacing-3)', marginBottom: 'var(--spacing-8)' }}>
-          {filteredPoints.map((point) => (
-            <BreakingPointCard
-              key={point.id}
-              point={point}
-              onClick={() => {/* View point details */}}
-            />
-          ))}
+          {breakingPoints.length > 0 ? (
+            breakingPoints.map((point) => (
+              <BreakingPointCard
+                key={point.id}
+                point={point}
+                onClick={() => {/* View point details */}}
+              />
+            ))
+          ) : (
+            <div style={{
+              padding: 'var(--spacing-6)',
+              textAlign: 'center',
+              color: 'var(--text-secondary)',
+            }}>
+              <Target size={32} style={{ marginBottom: 'var(--spacing-2)', opacity: 0.5 }} />
+              <div>Ingen breaking points funnet</div>
+              <div style={{ fontSize: '13px', marginTop: 'var(--spacing-1)' }}>
+                Legg til ditt forste fokusomrade
+              </div>
+            </div>
+          )}
         </div>
 
         {/* Resolved Section */}
-        <div>
-          <SubSectionTitle style={{ marginBottom: 'var(--spacing-3)' }}>
-            Loste Breaking Points
-          </SubSectionTitle>
-          <div style={{ display: 'flex', flexDirection: 'column', gap: 'var(--spacing-2)' }}>
-            {RESOLVED_POINTS.map((point) => (
-              <ResolvedCard key={point.id} point={point} />
-            ))}
+        {resolvedPoints.length > 0 && (
+          <div>
+            <SubSectionTitle style={{ marginBottom: 'var(--spacing-3)' }}>
+              Loste Breaking Points
+            </SubSectionTitle>
+            <div style={{ display: 'flex', flexDirection: 'column', gap: 'var(--spacing-2)' }}>
+              {resolvedPoints.map((point) => (
+                <ResolvedCard key={point.id} point={point} />
+              ))}
+            </div>
           </div>
-        </div>
+        )}
     </div>
   );
 };

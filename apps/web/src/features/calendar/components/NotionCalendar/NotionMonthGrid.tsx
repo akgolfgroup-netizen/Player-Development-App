@@ -11,7 +11,7 @@
 
 import React, { useMemo } from 'react';
 import type { CalendarEvent } from '../../hooks/useCalendarEvents';
-import { CALENDAR_COLORS, type CalendarSource, type CalendarColorKey } from './NotionCalendar';
+import { CALENDAR_COLORS, type CalendarSource, type CalendarColorKey } from './types';
 
 interface NotionMonthGridProps {
   currentDate: Date;

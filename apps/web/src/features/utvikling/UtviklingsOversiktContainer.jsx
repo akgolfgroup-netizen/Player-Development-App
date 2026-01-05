@@ -2,91 +2,12 @@ import React from 'react';
 import { useNavigate } from 'react-router-dom';
 import {
   TrendingUp, Target, Award, ChevronRight, Star,
-  Zap, ArrowUp, ArrowDown, Minus
+  Zap, ArrowUp, ArrowDown, Minus, Loader
 } from 'lucide-react';
 import { SectionTitle, SubSectionTitle } from '../../components/typography';
 import Card from '../../ui/primitives/Card';
 import Badge from '../../ui/primitives/Badge.primitive';
-
-// ============================================================================
-// MOCK DATA
-// ============================================================================
-
-const CURRENT_CATEGORY = {
-  level: 'C',
-  points: 847,
-  nextLevel: 'B',
-  pointsNeeded: 153,
-  percentToNext: 85,
-};
-
-const DEVELOPMENT_AREAS = [
-  {
-    id: 'driving',
-    name: 'Driving',
-    score: 78,
-    trend: 'up',
-    change: '+5',
-    lastUpdated: '2025-01-18',
-    status: 'improving',
-  },
-  {
-    id: 'iron_play',
-    name: 'Jernspill',
-    score: 72,
-    trend: 'up',
-    change: '+3',
-    lastUpdated: '2025-01-18',
-    status: 'improving',
-  },
-  {
-    id: 'short_game',
-    name: 'Kortspill',
-    score: 81,
-    trend: 'stable',
-    change: '0',
-    lastUpdated: '2025-01-15',
-    status: 'stable',
-  },
-  {
-    id: 'putting',
-    name: 'Putting',
-    score: 68,
-    trend: 'down',
-    change: '-2',
-    lastUpdated: '2025-01-18',
-    status: 'needs_attention',
-  },
-  {
-    id: 'mental',
-    name: 'Mental',
-    score: 75,
-    trend: 'up',
-    change: '+4',
-    lastUpdated: '2025-01-12',
-    status: 'improving',
-  },
-  {
-    id: 'physical',
-    name: 'Fysisk',
-    score: 82,
-    trend: 'stable',
-    change: '+1',
-    lastUpdated: '2025-01-10',
-    status: 'stable',
-  },
-];
-
-const RECENT_ACHIEVEMENTS = [
-  { id: 1, title: 'Driver over 250m', date: '2025-01-15', type: 'milestone' },
-  { id: 2, title: '10 treninger denne mnd', date: '2025-01-12', type: 'streak' },
-  { id: 3, title: 'Ny personlig rekord i squat', date: '2025-01-10', type: 'pr' },
-];
-
-const BREAKING_POINTS = [
-  { id: 1, area: 'Driving', description: 'Sving tempo', status: 'working', priority: 'high' },
-  { id: 2, area: 'Putting', description: 'Lesing av greener', status: 'identified', priority: 'medium' },
-];
+import { useUtviklingsData } from '../../hooks/useUtviklingsData';
 
 // ============================================================================
 // HELPER COMPONENTS
@@ -304,16 +225,44 @@ const QuickLinkCard = ({ icon: Icon, title, description, href, color }) => (
 
 const UtviklingsOversiktContainer = () => {
   const navigate = useNavigate();
+  const { data, loading, error } = useUtviklingsData();
 
   const handleAreaClick = (areaId) => {
     // Navigate to benchmark page with area filter
     navigate(`/utvikling/benchmark?area=${areaId}`);
   };
 
+  // Loading state
+  if (loading) {
+    return (
+      <div style={{
+        display: 'flex',
+        alignItems: 'center',
+        justifyContent: 'center',
+        minHeight: '300px',
+        color: 'var(--text-secondary)',
+      }}>
+        <Loader size={24} style={{ animation: 'spin 1s linear infinite' }} />
+        <span style={{ marginLeft: 'var(--spacing-2)' }}>Laster data...</span>
+      </div>
+    );
+  }
+
+  // Error state (still show UI with fallback data)
+  if (error) {
+    console.warn('UtviklingsOversikt error:', error);
+  }
+
+  // Extract data from hook
+  const category = data?.category || { level: 'C', points: 0, nextLevel: 'B', pointsNeeded: 1000, percentToNext: 0 };
+  const developmentAreas = data?.developmentAreas || [];
+  const achievements = data?.achievements || [];
+  const breakingPointsCount = data?.breakingPointsCount || 0;
+
   return (
     <div style={{ width: '100%' }}>
         {/* Category Progress */}
-        <CategoryProgressCard category={CURRENT_CATEGORY} />
+        <CategoryProgressCard category={category} />
 
         {/* Quick Links */}
         <div style={{
@@ -325,7 +274,7 @@ const UtviklingsOversiktContainer = () => {
           <QuickLinkCard
             icon={Zap}
             title="Breaking Points"
-            description={`${BREAKING_POINTS.length} aktive fokusområder`}
+            description={`${breakingPointsCount} aktive fokusområder`}
             href="/utvikling/breaking-points"
             color="var(--error)"
           />
@@ -355,7 +304,7 @@ const UtviklingsOversiktContainer = () => {
             gridTemplateColumns: 'repeat(auto-fit, minmax(280px, 1fr))',
             gap: 'var(--spacing-2)',
           }}>
-            {DEVELOPMENT_AREAS.map((area) => (
+            {developmentAreas.map((area) => (
               <DevelopmentAreaCard
                 key={area.id}
                 area={area}
@@ -385,39 +334,50 @@ const UtviklingsOversiktContainer = () => {
             </a>
           </div>
           <div style={{ display: 'flex', flexDirection: 'column', gap: '10px' }}>
-            {RECENT_ACHIEVEMENTS.map((achievement) => (
-              <div
-                key={achievement.id}
-                style={{
-                  display: 'flex',
-                  alignItems: 'center',
-                  gap: 'var(--spacing-3)',
-                  padding: 'var(--spacing-2)',
-                  backgroundColor: 'var(--bg-secondary)',
-                  borderRadius: 'var(--radius-sm)',
-                }}
-              >
-                <div style={{
-                  width: '32px',
-                  height: '32px',
-                  borderRadius: 'var(--radius-sm)',
-                  backgroundColor: 'color-mix(in srgb, var(--warning) 15%, transparent)',
-                  display: 'flex',
-                  alignItems: 'center',
-                  justifyContent: 'center',
-                }}>
-                  <Star size={16} style={{ color: 'var(--warning)' }} />
-                </div>
-                <div style={{ flex: 1 }}>
-                  <div style={{ fontSize: '13px', fontWeight: 500, color: 'var(--text-primary)' }}>
-                    {achievement.title}
+            {achievements.length > 0 ? (
+              achievements.map((achievement) => (
+                <div
+                  key={achievement.id}
+                  style={{
+                    display: 'flex',
+                    alignItems: 'center',
+                    gap: 'var(--spacing-3)',
+                    padding: 'var(--spacing-2)',
+                    backgroundColor: 'var(--bg-secondary)',
+                    borderRadius: 'var(--radius-sm)',
+                  }}
+                >
+                  <div style={{
+                    width: '32px',
+                    height: '32px',
+                    borderRadius: 'var(--radius-sm)',
+                    backgroundColor: 'color-mix(in srgb, var(--warning) 15%, transparent)',
+                    display: 'flex',
+                    alignItems: 'center',
+                    justifyContent: 'center',
+                  }}>
+                    <Star size={16} style={{ color: 'var(--warning)' }} />
                   </div>
-                  <div style={{ fontSize: '11px', color: 'var(--text-secondary)' }}>
-                    {new Date(achievement.date).toLocaleDateString('nb-NO')}
+                  <div style={{ flex: 1 }}>
+                    <div style={{ fontSize: '13px', fontWeight: 500, color: 'var(--text-primary)' }}>
+                      {achievement.title}
+                    </div>
+                    <div style={{ fontSize: '11px', color: 'var(--text-secondary)' }}>
+                      {achievement.date ? new Date(achievement.date).toLocaleDateString('nb-NO') : ''}
+                    </div>
                   </div>
                 </div>
+              ))
+            ) : (
+              <div style={{
+                padding: 'var(--spacing-4)',
+                textAlign: 'center',
+                color: 'var(--text-secondary)',
+                fontSize: '13px',
+              }}>
+                Ingen prestasjoner ennå
               </div>
-            ))}
+            )}
           </div>
         </Card>
     </div>
