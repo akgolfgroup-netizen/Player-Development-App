@@ -20,7 +20,6 @@ import CommandPalette from './features/command-palette';
 import BuildInfo from './components/BuildInfo';
 
 // Shared components (NOT lazy - needed immediately)
-import PlayerAppShell from './components/layout/PlayerAppShell';
 import PlayerAppShellV3 from './components/layout/PlayerAppShellV3';
 import CoachAppShell from './components/layout/CoachAppShell';
 import AdminAppShell from './components/layout/AdminAppShell';
@@ -267,20 +266,8 @@ const UtviklingHub = lazy(() => import('./features/hub-pages/UtviklingHub'));
 const PlanHub = lazy(() => import('./features/hub-pages/PlanHub'));
 const MerHub = lazy(() => import('./features/hub-pages/MerHub'));
 
-// Layout component for authenticated pages using Sidebar (Player)
-const AuthenticatedLayout = ({ children }) => (
-  <PlayerAppShell>
-    {children}
-  </PlayerAppShell>
-);
-
-// Dashboard layout - uses Sidebar
-const DashboardLayout = ({ children }) => (
-  <PlayerAppShell>{children}</PlayerAppShell>
-);
-
-// V3 Layout - uses PlayerAppShellV3 with color-coded navigation
-const PlayerLayoutV3 = ({ children }) => (
+// Player Layout - uses PlayerAppShellV3 with color-coded navigation
+const PlayerLayout = ({ children }) => (
   <PlayerAppShellV3>{children}</PlayerAppShellV3>
 );
 
@@ -357,473 +344,290 @@ function App() {
           </Route>
 
           {/* ════════════════════════════════════════════════════════════════
-              V2 PLAYER ROUTES - Ny 5-modus navigasjon
-              Hjem, Tren, Planlegg, Analyser, Samhandle
-              ════════════════════════════════════════════════════════════════ */}
-
-          {/* Hjem */}
-          <Route path="/hjem" element={
-            <ProtectedRoute>
-              <DashboardLayout>
-                <DashboardV5 />
-              </DashboardLayout>
-            </ProtectedRoute>
-          } />
-
-          {/* Tren */}
-          <Route path="/tren" element={
-            <ProtectedRoute>
-              <AuthenticatedLayout title="Trening" subtitle="Din treningsoversikt">
-                <SessionsListContainer />
-              </AuthenticatedLayout>
-            </ProtectedRoute>
-          } />
-          <Route path="/tren/logg" element={
-            <ProtectedRoute>
-              <AuthenticatedLayout title="Logg trening" subtitle="Registrer ny økt">
-                <LoggTreningContainer />
-              </AuthenticatedLayout>
-            </ProtectedRoute>
-          } />
-          <Route path="/tren/okter" element={
-            <ProtectedRoute>
-              <AuthenticatedLayout title="Mine økter" subtitle="Oversikt over dine treningsøkter">
-                <SessionsListContainer />
-              </AuthenticatedLayout>
-            </ProtectedRoute>
-          } />
-          <Route path="/tren/ovelser" element={
-            <ProtectedRoute>
-              <AuthenticatedLayout title="Øvelsesbank" subtitle="Finn og velg øvelser">
-                <ExerciseLibraryContainer />
-              </AuthenticatedLayout>
-            </ProtectedRoute>
-          } />
-          <Route path="/tren/testing" element={
-            <ProtectedRoute>
-              <AuthenticatedLayout title="Testing" subtitle="Testprotokoll og resultater">
-                <TestprotokollContainer />
-              </AuthenticatedLayout>
-            </ProtectedRoute>
-          } />
-          <Route path="/tren/testing/registrer" element={
-            <ProtectedRoute>
-              <AuthenticatedLayout title="Registrer test" subtitle="Logg testresultat">
-                <RegistrerTestContainer />
-              </AuthenticatedLayout>
-            </ProtectedRoute>
-          } />
-          <Route path="/tren/testing/resultater" element={
-            <ProtectedRoute>
-              <AuthenticatedLayout title="Testresultater" subtitle="Se dine resultater">
-                <TestresultaterContainer />
-              </AuthenticatedLayout>
-            </ProtectedRoute>
-          } />
-          <Route path="/tren/testing/krav" element={
-            <ProtectedRoute>
-              <AuthenticatedLayout title="Kategorikrav" subtitle="Krav for hver kategori">
-                <KategoriKravContainer />
-              </AuthenticatedLayout>
-            </ProtectedRoute>
-          } />
-
-          {/* Planlegg */}
-          <Route path="/planlegg" element={
-            <ProtectedRoute>
-              <AuthenticatedLayout title="Planlegging" subtitle="Din ukeplan og kalender">
-                <CalendarPage />
-              </AuthenticatedLayout>
-            </ProtectedRoute>
-          } />
-          <Route path="/planlegg/ukeplan" element={
-            <ProtectedRoute>
-              <AuthenticatedLayout title="Ukeplan" subtitle="Din plan for denne uken">
-                <UkensTreningsplanContainer />
-              </AuthenticatedLayout>
-            </ProtectedRoute>
-          } />
-          <Route path="/planlegg/kalender" element={
-            <ProtectedRoute>
-              <AuthenticatedLayout title="Kalender" subtitle="Planlegg og se dine aktiviteter">
-                <CalendarPage />
-              </AuthenticatedLayout>
-            </ProtectedRoute>
-          } />
-          <Route path="/planlegg/turneringer/kalender" element={
-            <ProtectedRoute>
-              <AuthenticatedLayout title="Turneringskalender" subtitle="Finn og planlegg turneringer">
-                <TournamentCalendarPage />
-              </AuthenticatedLayout>
-            </ProtectedRoute>
-          } />
-          <Route path="/planlegg/turneringer/mine" element={
-            <ProtectedRoute>
-              <AuthenticatedLayout title="Mine turneringer" subtitle="Dine påmeldte turneringer">
-                <MineTurneringerContainer />
-              </AuthenticatedLayout>
-            </ProtectedRoute>
-          } />
-
-          {/* Analyser */}
-          <Route path="/analyser" element={
-            <ProtectedRoute>
-              <AuthenticatedLayout title="Analyse" subtitle="Følg din fremgang">
-                <UtviklingsOversiktContainer />
-              </AuthenticatedLayout>
-            </ProtectedRoute>
-          } />
-          <Route path="/analyser/utvikling" element={
-            <ProtectedRoute>
-              <AuthenticatedLayout title="Min utvikling" subtitle="Følg din fremgang">
-                <UtviklingsOversiktContainer />
-              </AuthenticatedLayout>
-            </ProtectedRoute>
-          } />
-          <Route path="/analyser/statistikk" element={
-            <ProtectedRoute>
-              <DashboardLayout>
-                <StatistikkHub />
-              </DashboardLayout>
-            </ProtectedRoute>
-          } />
-          <Route path="/analyser/mal" element={
-            <ProtectedRoute>
-              <AuthenticatedLayout title="Målsetninger" subtitle="Sett og følg opp dine mål">
-                <MaalsetningerContainer />
-              </AuthenticatedLayout>
-            </ProtectedRoute>
-          } />
-          <Route path="/analyser/historikk" element={
-            <ProtectedRoute>
-              <AuthenticatedLayout title="Historikk" subtitle="Se din utvikling over tid">
-                <ProgressDashboardContainer />
-              </AuthenticatedLayout>
-            </ProtectedRoute>
-          } />
-
-          {/* Samhandle */}
-          <Route path="/samhandle" element={
-            <ProtectedRoute>
-              <AuthenticatedLayout title="Samhandling" subtitle="Kommuniser med trenere">
-                <MessageCenter />
-              </AuthenticatedLayout>
-            </ProtectedRoute>
-          } />
-          <Route path="/samhandle/meldinger" element={
-            <ProtectedRoute>
-              <AuthenticatedLayout title="Meldinger" subtitle="Kommuniser med trenere">
-                <MessageCenter />
-              </AuthenticatedLayout>
-            </ProtectedRoute>
-          } />
-          <Route path="/samhandle/feedback" element={
-            <ProtectedRoute>
-              <AuthenticatedLayout title="Trenerfeedback" subtitle="Meldinger fra trenere">
-                <MessageCenter filterType="coach" />
-              </AuthenticatedLayout>
-            </ProtectedRoute>
-          } />
-          <Route path="/samhandle/kunnskap" element={
-            <ProtectedRoute>
-              <AuthenticatedLayout title="Ressurser" subtitle="Læringsmateriell og videoer">
-                <RessurserContainer />
-              </AuthenticatedLayout>
-            </ProtectedRoute>
-          } />
-          <Route path="/samhandle/skole" element={
-            <ProtectedRoute>
-              <AuthenticatedLayout title="Skole" subtitle="Balanse mellom skole og golf">
-                <SkoleplanContainer />
-              </AuthenticatedLayout>
-            </ProtectedRoute>
-          } />
-
-          {/* ════════════════════════════════════════════════════════════════
-              V3 PLAYER ROUTES - Ny 5-område navigasjon med fargekodet design
+              PLAYER ROUTES - 5-område navigasjon med fargekodet design
               Dashboard, Trening (grønn), Utvikling (blå), Plan (amber), Mer (lilla)
               ════════════════════════════════════════════════════════════════ */}
 
           {/* Dashboard Hub */}
           <Route path="/dashboard" element={
             <ProtectedRoute>
-              <PlayerLayoutV3>
+              <PlayerLayout>
                 <DashboardHub />
-              </PlayerLayoutV3>
+              </PlayerLayout>
             </ProtectedRoute>
           } />
           <Route path="/dashboard/aktivitet" element={
             <ProtectedRoute>
-              <PlayerLayoutV3>
+              <PlayerLayout>
                 <ProgressDashboardContainer />
-              </PlayerLayoutV3>
+              </PlayerLayout>
             </ProtectedRoute>
           } />
           <Route path="/dashboard/varsler" element={
             <ProtectedRoute>
-              <PlayerLayoutV3>
+              <PlayerLayout>
                 <NotificationCenter />
-              </PlayerLayoutV3>
+              </PlayerLayout>
             </ProtectedRoute>
           } />
 
           {/* Trening Hub (Green) */}
           <Route path="/trening" element={
             <ProtectedRoute>
-              <PlayerLayoutV3>
+              <PlayerLayout>
                 <TreningHub />
-              </PlayerLayoutV3>
+              </PlayerLayout>
             </ProtectedRoute>
           } />
           <Route path="/trening/logg" element={
             <ProtectedRoute>
-              <PlayerLayoutV3>
+              <PlayerLayout>
                 <LoggTreningContainer />
-              </PlayerLayoutV3>
+              </PlayerLayout>
             </ProtectedRoute>
           } />
           <Route path="/trening/dagbok" element={
             <ProtectedRoute>
-              <PlayerLayoutV3>
+              <PlayerLayout>
                 <TreningsdagbokContainer />
-              </PlayerLayoutV3>
+              </PlayerLayout>
             </ProtectedRoute>
           } />
           <Route path="/trening/okter" element={
             <ProtectedRoute>
-              <PlayerLayoutV3>
+              <PlayerLayout>
                 <SessionsListContainer />
-              </PlayerLayoutV3>
+              </PlayerLayout>
             </ProtectedRoute>
           } />
           <Route path="/trening/plan" element={
             <ProtectedRoute>
-              <PlayerLayoutV3>
+              <PlayerLayout>
                 <UkensTreningsplanContainer />
-              </PlayerLayoutV3>
+              </PlayerLayout>
             </ProtectedRoute>
           } />
           <Route path="/trening/ovelser" element={
             <ProtectedRoute>
-              <PlayerLayoutV3>
+              <PlayerLayout>
                 <ExerciseLibraryContainer />
-              </PlayerLayoutV3>
+              </PlayerLayout>
             </ProtectedRoute>
           } />
           <Route path="/trening/videoer" element={
             <ProtectedRoute>
-              <PlayerLayoutV3>
+              <PlayerLayout>
                 <VideoLibraryPage />
-              </PlayerLayoutV3>
+              </PlayerLayout>
             </ProtectedRoute>
           } />
           <Route path="/trening/testing" element={
             <ProtectedRoute>
-              <PlayerLayoutV3>
+              <PlayerLayout>
                 <TestprotokollContainer />
-              </PlayerLayoutV3>
+              </PlayerLayout>
             </ProtectedRoute>
           } />
           <Route path="/trening/testing/registrer" element={
             <ProtectedRoute>
-              <PlayerLayoutV3>
+              <PlayerLayout>
                 <RegistrerTestContainer />
-              </PlayerLayoutV3>
+              </PlayerLayout>
             </ProtectedRoute>
           } />
 
           {/* Utvikling Hub (Blue) */}
           <Route path="/utvikling" element={
             <ProtectedRoute>
-              <PlayerLayoutV3>
+              <PlayerLayout>
                 <UtviklingHub />
-              </PlayerLayoutV3>
+              </PlayerLayout>
             </ProtectedRoute>
           } />
           <Route path="/utvikling/oversikt" element={
             <ProtectedRoute>
-              <PlayerLayoutV3>
+              <PlayerLayout>
                 <UtviklingsOversiktContainer />
-              </PlayerLayoutV3>
+              </PlayerLayout>
             </ProtectedRoute>
           } />
           <Route path="/utvikling/statistikk" element={
             <ProtectedRoute>
-              <PlayerLayoutV3>
+              <PlayerLayout>
                 <StatistikkHub />
-              </PlayerLayoutV3>
+              </PlayerLayout>
             </ProtectedRoute>
           } />
           <Route path="/utvikling/historikk" element={
             <ProtectedRoute>
-              <PlayerLayoutV3>
+              <PlayerLayout>
                 <ProgressDashboardContainer />
-              </PlayerLayoutV3>
+              </PlayerLayout>
             </ProtectedRoute>
           } />
           <Route path="/utvikling/testresultater" element={
             <ProtectedRoute>
-              <PlayerLayoutV3>
+              <PlayerLayout>
                 <TestresultaterContainer />
-              </PlayerLayoutV3>
+              </PlayerLayout>
             </ProtectedRoute>
           } />
           <Route path="/utvikling/krav" element={
             <ProtectedRoute>
-              <PlayerLayoutV3>
+              <PlayerLayout>
                 <KategoriKravContainer />
-              </PlayerLayoutV3>
+              </PlayerLayout>
             </ProtectedRoute>
           } />
           <Route path="/utvikling/badges" element={
             <ProtectedRoute>
-              <PlayerLayoutV3>
+              <PlayerLayout>
                 <BadgesContainer />
-              </PlayerLayoutV3>
+              </PlayerLayout>
             </ProtectedRoute>
           } />
           <Route path="/utvikling/achievements" element={
             <ProtectedRoute>
-              <PlayerLayoutV3>
+              <PlayerLayout>
                 <AchievementsDashboardContainer />
-              </PlayerLayoutV3>
+              </PlayerLayout>
             </ProtectedRoute>
           } />
 
           {/* Plan Hub (Amber) */}
           <Route path="/plan" element={
             <ProtectedRoute>
-              <PlayerLayoutV3>
+              <PlayerLayout>
                 <PlanHub />
-              </PlayerLayoutV3>
+              </PlayerLayout>
             </ProtectedRoute>
           } />
           <Route path="/plan/kalender" element={
             <ProtectedRoute>
-              <PlayerLayoutV3>
+              <PlayerLayout>
                 <CalendarPage />
-              </PlayerLayoutV3>
+              </PlayerLayout>
             </ProtectedRoute>
           } />
           <Route path="/plan/ukeplan" element={
             <ProtectedRoute>
-              <PlayerLayoutV3>
+              <PlayerLayout>
                 <UkensTreningsplanContainer />
-              </PlayerLayoutV3>
+              </PlayerLayout>
             </ProtectedRoute>
           } />
           <Route path="/plan/booking" element={
             <ProtectedRoute>
-              <PlayerLayoutV3>
+              <PlayerLayout>
                 <BookTrenerContainer />
-              </PlayerLayoutV3>
+              </PlayerLayout>
             </ProtectedRoute>
           } />
           <Route path="/plan/maal" element={
             <ProtectedRoute>
-              <PlayerLayoutV3>
+              <PlayerLayout>
                 <MaalsetningerContainer />
-              </PlayerLayoutV3>
+              </PlayerLayout>
             </ProtectedRoute>
           } />
           <Route path="/plan/aarsplan" element={
             <ProtectedRoute>
-              <PlayerLayoutV3>
+              <PlayerLayout>
                 <AarsplanContainer />
-              </PlayerLayoutV3>
+              </PlayerLayout>
             </ProtectedRoute>
           } />
           <Route path="/plan/turneringer" element={
             <ProtectedRoute>
-              <PlayerLayoutV3>
+              <PlayerLayout>
                 <TournamentCalendarPage />
-              </PlayerLayoutV3>
+              </PlayerLayout>
             </ProtectedRoute>
           } />
           <Route path="/plan/turneringer/mine" element={
             <ProtectedRoute>
-              <PlayerLayoutV3>
+              <PlayerLayout>
                 <MineTurneringerContainer />
-              </PlayerLayoutV3>
+              </PlayerLayout>
             </ProtectedRoute>
           } />
 
           {/* Mer Hub (Purple) */}
           <Route path="/mer" element={
             <ProtectedRoute>
-              <PlayerLayoutV3>
+              <PlayerLayout>
                 <MerHub />
-              </PlayerLayoutV3>
+              </PlayerLayout>
             </ProtectedRoute>
           } />
           <Route path="/mer/profil" element={
             <ProtectedRoute>
-              <PlayerLayoutV3>
+              <PlayerLayout>
                 <BrukerprofilContainer />
-              </PlayerLayoutV3>
+              </PlayerLayout>
             </ProtectedRoute>
           } />
           <Route path="/mer/profil/rediger" element={
             <ProtectedRoute>
-              <PlayerLayoutV3>
+              <PlayerLayout>
                 <BrukerprofilContainer forceOnboarding />
-              </PlayerLayoutV3>
+              </PlayerLayout>
             </ProtectedRoute>
           } />
           <Route path="/mer/trenerteam" element={
             <ProtectedRoute>
-              <PlayerLayoutV3>
+              <PlayerLayout>
                 <TrenerteamContainer />
-              </PlayerLayoutV3>
+              </PlayerLayout>
             </ProtectedRoute>
           } />
           <Route path="/mer/meldinger" element={
             <ProtectedRoute>
-              <PlayerLayoutV3>
+              <PlayerLayout>
                 <MessageCenter />
-              </PlayerLayoutV3>
+              </PlayerLayout>
             </ProtectedRoute>
           } />
           <Route path="/mer/feedback" element={
             <ProtectedRoute>
-              <PlayerLayoutV3>
+              <PlayerLayout>
                 <MessageCenter filterType="coach" />
-              </PlayerLayoutV3>
+              </PlayerLayout>
             </ProtectedRoute>
           } />
           <Route path="/mer/kunnskap" element={
             <ProtectedRoute>
-              <PlayerLayoutV3>
+              <PlayerLayout>
                 <RessurserContainer />
-              </PlayerLayoutV3>
+              </PlayerLayout>
             </ProtectedRoute>
           } />
           <Route path="/mer/notater" element={
             <ProtectedRoute>
-              <PlayerLayoutV3>
+              <PlayerLayout>
                 <NotaterContainer />
-              </PlayerLayoutV3>
+              </PlayerLayout>
             </ProtectedRoute>
           } />
           <Route path="/mer/innstillinger" element={
             <ProtectedRoute>
-              <PlayerLayoutV3>
+              <PlayerLayout>
                 <VarselinnstillingerContainer />
-              </PlayerLayoutV3>
+              </PlayerLayout>
             </ProtectedRoute>
           } />
           <Route path="/mer/varsler" element={
             <ProtectedRoute>
-              <PlayerLayoutV3>
+              <PlayerLayout>
                 <VarselinnstillingerContainer />
-              </PlayerLayoutV3>
+              </PlayerLayout>
             </ProtectedRoute>
           } />
           <Route path="/mer/kalibrering" element={
             <ProtectedRoute>
-              <PlayerLayoutV3>
+              <PlayerLayout>
                 <KalibreringsContainer />
-              </PlayerLayoutV3>
+              </PlayerLayout>
             </ProtectedRoute>
           } />
 
@@ -832,55 +636,63 @@ function App() {
               ════════════════════════════════════════════════════════════════ */}
           <Route path="/" element={<Navigate to="/dashboard" replace />} />
           <Route path="/hjem" element={<Navigate to="/dashboard" replace />} />
+          <Route path="/tren" element={<Navigate to="/trening" replace />} />
+          <Route path="/tren/*" element={<Navigate to="/trening" replace />} />
+          <Route path="/planlegg" element={<Navigate to="/plan" replace />} />
+          <Route path="/planlegg/*" element={<Navigate to="/plan" replace />} />
+          <Route path="/analyser" element={<Navigate to="/utvikling" replace />} />
+          <Route path="/analyser/*" element={<Navigate to="/utvikling" replace />} />
+          <Route path="/samhandle" element={<Navigate to="/mer/meldinger" replace />} />
+          <Route path="/samhandle/*" element={<Navigate to="/mer/meldinger" replace />} />
 
           {/* Desktop protected routes - Legacy (backward compatibility) */}
           <Route path="/profil" element={
             <ProtectedRoute>
-              <AuthenticatedLayout title="Min profil" subtitle="Administrer kontoen din">
+              <PlayerLayout title="Min profil" subtitle="Administrer kontoen din">
                 <BrukerprofilContainer />
-              </AuthenticatedLayout>
+              </PlayerLayout>
             </ProtectedRoute>
           } />
           <Route path="/profil/oppdater" element={
             <ProtectedRoute>
-              <AuthenticatedLayout title="Oppdater profil" subtitle="Rediger din spillerprofil">
+              <PlayerLayout title="Oppdater profil" subtitle="Rediger din spillerprofil">
                 <BrukerprofilContainer forceOnboarding />
-              </AuthenticatedLayout>
+              </PlayerLayout>
             </ProtectedRoute>
           } />
           <Route path="/trenerteam" element={
             <ProtectedRoute>
-              <AuthenticatedLayout title="Trenerteam" subtitle="Dine trenere og støtteapparat">
+              <PlayerLayout title="Trenerteam" subtitle="Dine trenere og støtteapparat">
                 <TrenerteamContainer />
-              </AuthenticatedLayout>
+              </PlayerLayout>
             </ProtectedRoute>
           } />
           <Route path="/maalsetninger" element={
             <ProtectedRoute>
-              <AuthenticatedLayout title="Målsetninger" subtitle="Sett og følg opp dine mål">
+              <PlayerLayout title="Målsetninger" subtitle="Sett og følg opp dine mål">
                 <MaalsetningerContainer />
-              </AuthenticatedLayout>
+              </PlayerLayout>
             </ProtectedRoute>
           } />
           <Route path="/aarsplan" element={
             <ProtectedRoute>
-              <AuthenticatedLayout title="Årsplan" subtitle="Din treningsplan for sesongen">
+              <PlayerLayout title="Årsplan" subtitle="Din treningsplan for sesongen">
                 <AarsplanContainer />
-              </AuthenticatedLayout>
+              </PlayerLayout>
             </ProtectedRoute>
           } />
           <Route path="/aarsplan/perioder" element={
             <ProtectedRoute>
-              <AuthenticatedLayout title="Periodisering" subtitle="Periodeoversikt med fokusområder">
+              <PlayerLayout title="Periodisering" subtitle="Periodeoversikt med fokusområder">
                 <AarsplanContainer view="periods" />
-              </AuthenticatedLayout>
+              </PlayerLayout>
             </ProtectedRoute>
           } />
           <Route path="/aarsplan/fokus" element={
             <ProtectedRoute>
-              <AuthenticatedLayout title="Fokusområder" subtitle="Målsetninger for perioder">
+              <PlayerLayout title="Fokusområder" subtitle="Målsetninger for perioder">
                 <AarsplanContainer view="focus" />
-              </AuthenticatedLayout>
+              </PlayerLayout>
             </ProtectedRoute>
           } />
           <Route path="/aarsplan/ny" element={
@@ -890,37 +702,37 @@ function App() {
           } />
           <Route path="/testprotokoll" element={
             <ProtectedRoute>
-              <AuthenticatedLayout title="Testprotokoll" subtitle="Gjennomfør tester">
+              <PlayerLayout title="Testprotokoll" subtitle="Gjennomfør tester">
                 <TestprotokollContainer />
-              </AuthenticatedLayout>
+              </PlayerLayout>
             </ProtectedRoute>
           } />
           <Route path="/testresultater" element={
             <ProtectedRoute>
-              <AuthenticatedLayout title="Testresultater" subtitle="Se dine resultater og fremgang">
+              <PlayerLayout title="Testresultater" subtitle="Se dine resultater og fremgang">
                 <TestresultaterContainer />
-              </AuthenticatedLayout>
+              </PlayerLayout>
             </ProtectedRoute>
           } />
           <Route path="/treningsprotokoll" element={
             <ProtectedRoute>
-              <AuthenticatedLayout title="Treningsprotokoll" subtitle="Logg din trening">
+              <PlayerLayout title="Treningsprotokoll" subtitle="Logg din trening">
                 <TreningsprotokollContainer />
-              </AuthenticatedLayout>
+              </PlayerLayout>
             </ProtectedRoute>
           } />
           <Route path="/treningsstatistikk" element={
             <ProtectedRoute>
-              <AuthenticatedLayout title="Treningsstatistikk" subtitle="Analyse av din trening">
+              <PlayerLayout title="Treningsstatistikk" subtitle="Analyse av din trening">
                 <TreningsstatistikkContainer />
-              </AuthenticatedLayout>
+              </PlayerLayout>
             </ProtectedRoute>
           } />
           <Route path="/stats" element={
             <ProtectedRoute>
-              <DashboardLayout>
+              <PlayerLayout>
                 <StatsPageV2 />
-              </DashboardLayout>
+              </PlayerLayout>
             </ProtectedRoute>
           } />
           {/* UI Lab Routes - DEV ONLY */}
@@ -928,222 +740,222 @@ function App() {
             <>
               <Route path="/ui-lab" element={
                 <ProtectedRoute>
-                  <AuthenticatedLayout title="UI Lab" subtitle="Komponentbibliotek">
+                  <PlayerLayout title="UI Lab" subtitle="Komponentbibliotek">
                     <UILabContainer />
-                  </AuthenticatedLayout>
+                  </PlayerLayout>
                 </ProtectedRoute>
               } />
               <Route path="/stats-lab" element={
                 <ProtectedRoute>
-                  <AuthenticatedLayout title="Stats Lab" subtitle="StatsGridTemplate demo">
+                  <PlayerLayout title="Stats Lab" subtitle="StatsGridTemplate demo">
                     <StatsLab />
-                  </AuthenticatedLayout>
+                  </PlayerLayout>
                 </ProtectedRoute>
               } />
               <Route path="/appshell-lab" element={
                 <ProtectedRoute>
-                  <AuthenticatedLayout title="AppShell Lab" subtitle="AppShellTemplate demo">
+                  <PlayerLayout title="AppShell Lab" subtitle="AppShellTemplate demo">
                     <AppShellLab />
-                  </AuthenticatedLayout>
+                  </PlayerLayout>
                 </ProtectedRoute>
               } />
               <Route path="/calendar-lab" element={
                 <ProtectedRoute>
-                  <AuthenticatedLayout title="Calendar Lab" subtitle="CalendarTemplate demo">
+                  <PlayerLayout title="Calendar Lab" subtitle="CalendarTemplate demo">
                     <CalendarLab />
-                  </AuthenticatedLayout>
+                  </PlayerLayout>
                 </ProtectedRoute>
               } />
               <Route path="/ui-canon" element={
                 <ProtectedRoute>
-                  <AuthenticatedLayout title="UI Canon" subtitle="Single source of truth for visual style">
+                  <PlayerLayout title="UI Canon" subtitle="Single source of truth for visual style">
                     <UiCanonPage />
-                  </AuthenticatedLayout>
+                  </PlayerLayout>
                 </ProtectedRoute>
               } />
             </>
           )}
           <Route path="/dashboard-v2" element={
             <ProtectedRoute>
-              <DashboardLayout>
+              <PlayerLayout>
                 <DashboardPage />
-              </DashboardLayout>
+              </PlayerLayout>
             </ProtectedRoute>
           } />
           <Route path="/goals" element={
             <ProtectedRoute>
-              <DashboardLayout>
+              <PlayerLayout>
                 <GoalsPage />
-              </DashboardLayout>
+              </PlayerLayout>
             </ProtectedRoute>
           } />
           <Route path="/oevelser" element={
             <ProtectedRoute>
-              <AuthenticatedLayout title="Øvelser" subtitle="Øvelsesbibliotek">
+              <PlayerLayout title="Øvelser" subtitle="Øvelsesbibliotek">
                 <OevelserContainer />
-              </AuthenticatedLayout>
+              </PlayerLayout>
             </ProtectedRoute>
           } />
           <Route path="/notater" element={
             <ProtectedRoute>
-              <AuthenticatedLayout title="Notater" subtitle="Dine notater og refleksjoner">
+              <PlayerLayout title="Notater" subtitle="Dine notater og refleksjoner">
                 <NotaterContainer />
-              </AuthenticatedLayout>
+              </PlayerLayout>
             </ProtectedRoute>
           } />
           <Route path="/arkiv" element={
             <ProtectedRoute>
-              <AuthenticatedLayout title="Arkiv" subtitle="Historiske data">
+              <PlayerLayout title="Arkiv" subtitle="Historiske data">
                 <ArkivContainer />
-              </AuthenticatedLayout>
+              </PlayerLayout>
             </ProtectedRoute>
           } />
           <Route path="/kalender" element={
             <ProtectedRoute>
-              <AuthenticatedLayout title="Kalender" subtitle="Planlegg og se dine aktiviteter">
+              <PlayerLayout title="Kalender" subtitle="Planlegg og se dine aktiviteter">
                 <CalendarPage />
-              </AuthenticatedLayout>
+              </PlayerLayout>
             </ProtectedRoute>
           } />
           <Route path="/kalender/dag" element={
             <ProtectedRoute>
-              <AuthenticatedLayout title="Dagsoversikt" subtitle="Dagens aktiviteter">
+              <PlayerLayout title="Dagsoversikt" subtitle="Dagens aktiviteter">
                 <DayViewPage />
-              </AuthenticatedLayout>
+              </PlayerLayout>
             </ProtectedRoute>
           } />
           <Route path="/kalender/oversikt" element={
             <ProtectedRoute>
-              <AuthenticatedLayout title="Kalenderoversikt" subtitle="Se hele planen din">
+              <PlayerLayout title="Kalenderoversikt" subtitle="Se hele planen din">
                 <CalendarOversiktPage />
-              </AuthenticatedLayout>
+              </PlayerLayout>
             </ProtectedRoute>
           } />
           <Route path="/plan-preview/:planId" element={
             <ProtectedRoute>
-              <AuthenticatedLayout title="Planforhåndsvisning" subtitle="Se din plan">
+              <PlayerLayout title="Planforhåndsvisning" subtitle="Se din plan">
                 <PlanPreviewContainer />
-              </AuthenticatedLayout>
+              </PlayerLayout>
             </ProtectedRoute>
           } />
           <Route path="/coach/modification-requests" element={
             <ProtectedRoute>
-              <AuthenticatedLayout title="Endringsforespørsler" subtitle="Håndter spillerforespørsler">
+              <PlayerLayout title="Endringsforespørsler" subtitle="Håndter spillerforespørsler">
                 <ModificationRequestDashboardContainer />
-              </AuthenticatedLayout>
+              </PlayerLayout>
             </ProtectedRoute>
           } />
           <Route path="/progress" element={
             <ProtectedRoute>
-              <AuthenticatedLayout title="Fremgang" subtitle="Se din utvikling over tid">
+              <PlayerLayout title="Fremgang" subtitle="Se din utvikling over tid">
                 <ProgressDashboardContainer />
-              </AuthenticatedLayout>
+              </PlayerLayout>
             </ProtectedRoute>
           } />
           <Route path="/achievements" element={
             <ProtectedRoute>
-              <AuthenticatedLayout title="Prestasjoner" subtitle="Dine prestasjoner">
+              <PlayerLayout title="Prestasjoner" subtitle="Dine prestasjoner">
                 <AchievementsDashboardContainer />
-              </AuthenticatedLayout>
+              </PlayerLayout>
             </ProtectedRoute>
           } />
           <Route path="/badges" element={
             <ProtectedRoute>
-              <AuthenticatedLayout title="Merker" subtitle="Saml merker og vis frem">
+              <PlayerLayout title="Merker" subtitle="Saml merker og vis frem">
                 <BadgesContainer />
-              </AuthenticatedLayout>
+              </PlayerLayout>
             </ProtectedRoute>
           } />
           <Route path="/turneringskalender" element={
             <ProtectedRoute>
-              <AuthenticatedLayout title="Turneringskalender" subtitle="Finn og planlegg turneringer">
+              <PlayerLayout title="Turneringskalender" subtitle="Finn og planlegg turneringer">
                 <TournamentCalendarPage />
-              </AuthenticatedLayout>
+              </PlayerLayout>
             </ProtectedRoute>
           } />
           <Route path="/turneringer/planlegger" element={
             <ProtectedRoute>
-              <AuthenticatedLayout title="Turneringsplanlegger" subtitle="Min turneringsplan">
+              <PlayerLayout title="Turneringsplanlegger" subtitle="Min turneringsplan">
                 <TournamentPlannerPage />
-              </AuthenticatedLayout>
+              </PlayerLayout>
             </ProtectedRoute>
           } />
           {/* Legacy route - keep for backwards compatibility */}
           <Route path="/turneringskalender-old" element={
             <ProtectedRoute>
-              <AuthenticatedLayout title="Turneringskalender" subtitle="Kommende turneringer">
+              <PlayerLayout title="Turneringskalender" subtitle="Kommende turneringer">
                 <TurneringskalenderContainer />
-              </AuthenticatedLayout>
+              </PlayerLayout>
             </ProtectedRoute>
           } />
           <Route path="/mine-turneringer" element={
             <ProtectedRoute>
-              <AuthenticatedLayout title="Mine turneringer" subtitle="Dine påmeldte turneringer">
+              <PlayerLayout title="Mine turneringer" subtitle="Dine påmeldte turneringer">
                 <MineTurneringerContainer />
-              </AuthenticatedLayout>
+              </PlayerLayout>
             </ProtectedRoute>
           } />
           <Route path="/ressurser" element={
             <ProtectedRoute>
-              <AuthenticatedLayout title="Ressurser" subtitle="Læringsmateriell og videoer">
+              <PlayerLayout title="Ressurser" subtitle="Læringsmateriell og videoer">
                 <RessurserContainer />
-              </AuthenticatedLayout>
+              </PlayerLayout>
             </ProtectedRoute>
           } />
           <Route path="/skoleplan" element={
             <ProtectedRoute>
-              <AuthenticatedLayout title="Skoleplan" subtitle="Balanse mellom skole og golf">
+              <PlayerLayout title="Skoleplan" subtitle="Balanse mellom skole og golf">
                 <SkoleplanContainer />
-              </AuthenticatedLayout>
+              </PlayerLayout>
             </ProtectedRoute>
           } />
 
           {/* Session routes (APP_FUNCTIONALITY.md Section 6-12) */}
           <Route path="/session/new" element={
             <ProtectedRoute>
-              <AuthenticatedLayout title="Ny økt" subtitle="Opprett treningsøkt">
+              <PlayerLayout title="Ny økt" subtitle="Opprett treningsøkt">
                 <SessionCreateFormContainer />
-              </AuthenticatedLayout>
+              </PlayerLayout>
             </ProtectedRoute>
           } />
           <Route path="/session/:sessionId" element={
             <ProtectedRoute>
-              <AuthenticatedLayout title="Øktdetaljer" subtitle="Se og rediger økten">
+              <PlayerLayout title="Øktdetaljer" subtitle="Se og rediger økten">
                 <SessionDetailViewContainer />
-              </AuthenticatedLayout>
+              </PlayerLayout>
             </ProtectedRoute>
           } />
           <Route path="/session/:sessionId/active" element={
             <ProtectedRoute>
-              <AuthenticatedLayout title="Aktiv økt" subtitle="Gjennomfør treningsøkt">
+              <PlayerLayout title="Aktiv økt" subtitle="Gjennomfør treningsøkt">
                 <ActiveSessionViewContainer />
-              </AuthenticatedLayout>
+              </PlayerLayout>
             </ProtectedRoute>
           } />
           <Route path="/session/:sessionId/reflection" element={
             <ProtectedRoute>
-              <AuthenticatedLayout title="Refleksjon" subtitle="Reflekter over økten">
+              <PlayerLayout title="Refleksjon" subtitle="Reflekter over økten">
                 <SessionReflectionFormContainer />
-              </AuthenticatedLayout>
+              </PlayerLayout>
             </ProtectedRoute>
           } />
           <Route path="/session/:sessionId/evaluate" element={
             <ProtectedRoute>
-              <AuthenticatedLayout title="Evaluering" subtitle="Evaluer økten">
+              <PlayerLayout title="Evaluering" subtitle="Evaluer økten">
                 <SessionEvaluationFormContainer />
-              </AuthenticatedLayout>
+              </PlayerLayout>
             </ProtectedRoute>
           } />
           <Route path="/session/stats" element={
             <ProtectedRoute>
-              <AuthenticatedLayout title="Øktstatistikk" subtitle="Analyse av dine økter">
+              <PlayerLayout title="Øktstatistikk" subtitle="Analyse av dine økter">
                 <EvaluationStatsDashboardContainer />
-              </AuthenticatedLayout>
+              </PlayerLayout>
             </ProtectedRoute>
           } />
           <Route path="/sessions" element={
             <ProtectedRoute>
-              <AuthenticatedLayout
+              <PlayerLayout
                 title="Alle økter"
                 subtitle="Oversikt over dine treningsøkter"
                 actions={
@@ -1156,14 +968,14 @@ function App() {
                 }
               >
                 <SessionsListContainer />
-              </AuthenticatedLayout>
+              </PlayerLayout>
             </ProtectedRoute>
           } />
           <Route path="/ovelsesbibliotek" element={
             <ProtectedRoute>
-              <AuthenticatedLayout title="Øvelsesbibliotek" subtitle="Finn og velg øvelser">
+              <PlayerLayout title="Øvelsesbibliotek" subtitle="Finn og velg øvelser">
                 <ExerciseLibraryContainer />
-              </AuthenticatedLayout>
+              </PlayerLayout>
             </ProtectedRoute>
           } />
 
@@ -1171,179 +983,179 @@ function App() {
           {/* Planlegger */}
           <Route path="/periodeplaner" element={
             <ProtectedRoute>
-              <AuthenticatedLayout title="Periodeplaner" subtitle="Langsiktig treningsplanlegging">
+              <PlayerLayout title="Periodeplaner" subtitle="Langsiktig treningsplanlegging">
                 <PeriodeplanerContainer />
-              </AuthenticatedLayout>
+              </PlayerLayout>
             </ProtectedRoute>
           } />
           <Route path="/samlinger" element={
             <ProtectedRoute>
-              <AuthenticatedLayout title="Samlinger" subtitle="Deltakelse og oppmøte">
+              <PlayerLayout title="Samlinger" subtitle="Deltakelse og oppmøte">
                 <SamlingerContainer />
-              </AuthenticatedLayout>
+              </PlayerLayout>
             </ProtectedRoute>
           } />
 
           {/* Trening */}
           <Route path="/trening/dagens" element={
             <ProtectedRoute>
-              <AuthenticatedLayout title="Dagens treningsplan" subtitle="Din plan for i dag">
+              <PlayerLayout title="Dagens treningsplan" subtitle="Din plan for i dag">
                 <DagensTreningsplanContainer />
-              </AuthenticatedLayout>
+              </PlayerLayout>
             </ProtectedRoute>
           } />
           <Route path="/trening/ukens" element={
             <ProtectedRoute>
-              <AuthenticatedLayout title="Ukens treningsplan" subtitle="Din plan for denne uken">
+              <PlayerLayout title="Ukens treningsplan" subtitle="Din plan for denne uken">
                 <UkensTreningsplanContainer />
-              </AuthenticatedLayout>
+              </PlayerLayout>
             </ProtectedRoute>
           } />
           <Route path="/trening/teknisk" element={
             <ProtectedRoute>
-              <AuthenticatedLayout title="Teknisk plan" subtitle="Fokusområder og teknikk">
+              <PlayerLayout title="Teknisk plan" subtitle="Fokusområder og teknikk">
                 <TekniskPlanContainer />
-              </AuthenticatedLayout>
+              </PlayerLayout>
             </ProtectedRoute>
           } />
 
           {/* Stats */}
           <Route path="/stats/ny" element={
             <ProtectedRoute>
-              <AuthenticatedLayout title="Ny statistikk" subtitle="Registrer nye data">
+              <PlayerLayout title="Ny statistikk" subtitle="Registrer nye data">
                 <StatsOppdateringContainer />
-              </AuthenticatedLayout>
+              </PlayerLayout>
             </ProtectedRoute>
           } />
           <Route path="/stats/turnering" element={
             <ProtectedRoute>
-              <AuthenticatedLayout title="Turneringsstatistikk" subtitle="Resultater fra turneringer">
+              <PlayerLayout title="Turneringsstatistikk" subtitle="Resultater fra turneringer">
                 <TurneringsstatistikkContainer />
-              </AuthenticatedLayout>
+              </PlayerLayout>
             </ProtectedRoute>
           } />
           <Route path="/stats/verktoy" element={
             <ProtectedRoute>
-              <AuthenticatedLayout title="Statistikkverktøy" subtitle="Analyseverktøy">
+              <PlayerLayout title="Statistikkverktøy" subtitle="Analyseverktøy">
                 <StatsVerktoyContainer />
-              </AuthenticatedLayout>
+              </PlayerLayout>
             </ProtectedRoute>
           } />
           <Route path="/stats/guide" element={
             <ProtectedRoute>
-              <AuthenticatedLayout title="Statistikk & Testing" subtitle="Slik fungerer det">
+              <PlayerLayout title="Statistikk & Testing" subtitle="Slik fungerer det">
                 <StatsGuidePage />
-              </AuthenticatedLayout>
+              </PlayerLayout>
             </ProtectedRoute>
           } />
 
           {/* Statistikk Hub - Unified tab navigation for all statistics */}
           <Route path="/statistikk" element={
             <ProtectedRoute>
-              <DashboardLayout>
+              <PlayerLayout>
                 <StatistikkHub />
-              </DashboardLayout>
+              </PlayerLayout>
             </ProtectedRoute>
           } />
 
           {/* Evaluering */}
           <Route path="/evaluering" element={
             <ProtectedRoute>
-              <AuthenticatedLayout title="Evaluering" subtitle="Vurder din innsats">
+              <PlayerLayout title="Evaluering" subtitle="Vurder din innsats">
                 <EvalueringContainer />
-              </AuthenticatedLayout>
+              </PlayerLayout>
             </ProtectedRoute>
           } />
           <Route path="/evaluering/trening" element={
             <ProtectedRoute>
-              <AuthenticatedLayout title="Treningsevaluering" subtitle="Evaluer dine treningsøkter">
+              <PlayerLayout title="Treningsevaluering" subtitle="Evaluer dine treningsøkter">
                 <TreningsevalueringContainer />
-              </AuthenticatedLayout>
+              </PlayerLayout>
             </ProtectedRoute>
           } />
           <Route path="/evaluering/turnering" element={
             <ProtectedRoute>
-              <AuthenticatedLayout title="Turneringsevaluering" subtitle="Evaluer dine turneringer">
+              <PlayerLayout title="Turneringsevaluering" subtitle="Evaluer dine turneringer">
                 <TurneringsevalueringContainer />
-              </AuthenticatedLayout>
+              </PlayerLayout>
             </ProtectedRoute>
           } />
 
           {/* Min utvikling */}
           <Route path="/utvikling" element={
             <ProtectedRoute>
-              <AuthenticatedLayout title="Min utvikling" subtitle="Følg din fremgang">
+              <PlayerLayout title="Min utvikling" subtitle="Følg din fremgang">
                 <UtviklingsOversiktContainer />
-              </AuthenticatedLayout>
+              </PlayerLayout>
             </ProtectedRoute>
           } />
           <Route path="/utvikling/breaking-points" element={
             <ProtectedRoute>
-              <AuthenticatedLayout title="Breaking Points" subtitle="Viktige milepæler">
+              <PlayerLayout title="Breaking Points" subtitle="Viktige milepæler">
                 <BreakingPointsContainer />
-              </AuthenticatedLayout>
+              </PlayerLayout>
             </ProtectedRoute>
           } />
           <Route path="/utvikling/kategori" element={
             <ProtectedRoute>
-              <AuthenticatedLayout title="Kategoriframgang" subtitle="Fremgang per kategori A-K">
+              <PlayerLayout title="Kategoriframgang" subtitle="Fremgang per kategori A-K">
                 <KategoriFremgangContainer />
-              </AuthenticatedLayout>
+              </PlayerLayout>
             </ProtectedRoute>
           } />
           <Route path="/utvikling/benchmark" element={
             <ProtectedRoute>
-              <AuthenticatedLayout title="Benchmark-historikk" subtitle="Sammenlign med andre">
+              <PlayerLayout title="Benchmark-historikk" subtitle="Sammenlign med andre">
                 <BenchmarkHistorikkContainer />
-              </AuthenticatedLayout>
+              </PlayerLayout>
             </ProtectedRoute>
           } />
 
           {/* Trening */}
           <Route path="/trening/dagbok" element={
             <ProtectedRoute>
-              <AuthenticatedLayout title="Treningsdagbok" subtitle="Din personlige logg">
+              <PlayerLayout title="Treningsdagbok" subtitle="Din personlige logg">
                 <TreningsdagbokContainer />
-              </AuthenticatedLayout>
+              </PlayerLayout>
             </ProtectedRoute>
           } />
           <Route path="/trening/logg" element={
             <ProtectedRoute>
-              <AuthenticatedLayout title="Logg trening" subtitle="Registrer ny økt">
+              <PlayerLayout title="Logg trening" subtitle="Registrer ny økt">
                 <LoggTreningContainer />
-              </AuthenticatedLayout>
+              </PlayerLayout>
             </ProtectedRoute>
           } />
 
           {/* Kalender */}
           <Route path="/kalender/booking" element={
             <ProtectedRoute>
-              <AuthenticatedLayout title="Book trener" subtitle="Bestill trenertimer">
+              <PlayerLayout title="Book trener" subtitle="Bestill trenertimer">
                 <BookTrenerContainer />
-              </AuthenticatedLayout>
+              </PlayerLayout>
             </ProtectedRoute>
           } />
 
           {/* Testing */}
           <Route path="/testing/krav" element={
             <ProtectedRoute>
-              <AuthenticatedLayout title="Kategorikrav" subtitle="Krav for hver kategori">
+              <PlayerLayout title="Kategorikrav" subtitle="Krav for hver kategori">
                 <KategoriKravContainer />
-              </AuthenticatedLayout>
+              </PlayerLayout>
             </ProtectedRoute>
           } />
           <Route path="/testing/registrer" element={
             <ProtectedRoute>
-              <AuthenticatedLayout title="Registrer test" subtitle="Logg testresultat">
+              <PlayerLayout title="Registrer test" subtitle="Logg testresultat">
                 <RegistrerTestContainer />
-              </AuthenticatedLayout>
+              </PlayerLayout>
             </ProtectedRoute>
           } />
           <Route path="/testing/pei-bane" element={
             <ProtectedRoute>
-              <AuthenticatedLayout title="PEI Test - Bane" subtitle="Test din presisjon på banen">
+              <PlayerLayout title="PEI Test - Bane" subtitle="Test din presisjon på banen">
                 <PEIBaneTestPage />
-              </AuthenticatedLayout>
+              </PlayerLayout>
             </ProtectedRoute>
           } />
           <Route path="/testing/:testId" element={
@@ -1355,123 +1167,123 @@ function App() {
           {/* Turneringer */}
           <Route path="/turneringer/resultater" element={
             <ProtectedRoute>
-              <AuthenticatedLayout title="Turneringsresultater" subtitle="Dine resultater">
+              <PlayerLayout title="Turneringsresultater" subtitle="Dine resultater">
                 <TurneringsResultaterContainer />
-              </AuthenticatedLayout>
+              </PlayerLayout>
             </ProtectedRoute>
           } />
           <Route path="/turneringer/registrer" element={
             <ProtectedRoute>
-              <AuthenticatedLayout title="Registrer resultat" subtitle="Logg turneringsresultat">
+              <PlayerLayout title="Registrer resultat" subtitle="Logg turneringsresultat">
                 <RegistrerTurneringsResultatContainer />
-              </AuthenticatedLayout>
+              </PlayerLayout>
             </ProtectedRoute>
           } />
 
           {/* Kommunikasjon (Messaging & Notifications) */}
           <Route path="/meldinger" element={
             <ProtectedRoute>
-              <AuthenticatedLayout title="Meldinger" subtitle="Kommuniser med trenere">
+              <PlayerLayout title="Meldinger" subtitle="Kommuniser med trenere">
                 <MessageCenter />
-              </AuthenticatedLayout>
+              </PlayerLayout>
             </ProtectedRoute>
           } />
           <Route path="/meldinger/ny" element={
             <ProtectedRoute>
-              <AuthenticatedLayout title="Ny melding" subtitle="Start en samtale">
+              <PlayerLayout title="Ny melding" subtitle="Start en samtale">
                 <NewConversation />
-              </AuthenticatedLayout>
+              </PlayerLayout>
             </ProtectedRoute>
           } />
           <Route path="/meldinger/trener" element={
             <ProtectedRoute>
-              <AuthenticatedLayout title="Trenermeldinger" subtitle="Meldinger fra trenere">
+              <PlayerLayout title="Trenermeldinger" subtitle="Meldinger fra trenere">
                 <MessageCenter filterType="coach" />
-              </AuthenticatedLayout>
+              </PlayerLayout>
             </ProtectedRoute>
           } />
           <Route path="/meldinger/:conversationId" element={
             <ProtectedRoute>
-              <AuthenticatedLayout title="Samtale" subtitle="Les og svar på meldinger">
+              <PlayerLayout title="Samtale" subtitle="Les og svar på meldinger">
                 <ConversationView />
-              </AuthenticatedLayout>
+              </PlayerLayout>
             </ProtectedRoute>
           } />
           <Route path="/varsler" element={
             <ProtectedRoute>
-              <AuthenticatedLayout title="Varsler" subtitle="Dine varslinger">
+              <PlayerLayout title="Varsler" subtitle="Dine varslinger">
                 <NotificationCenter />
-              </AuthenticatedLayout>
+              </PlayerLayout>
             </ProtectedRoute>
           } />
 
           {/* Kunnskap */}
           <Route path="/bevis" element={
             <ProtectedRoute>
-              <AuthenticatedLayout title="Bevis" subtitle="Dokumenter fremgang">
+              <PlayerLayout title="Bevis" subtitle="Dokumenter fremgang">
                 <BevisContainer />
-              </AuthenticatedLayout>
+              </PlayerLayout>
             </ProtectedRoute>
           } />
 
           {/* Video Library for Players */}
           <Route path="/videos" element={
             <ProtectedRoute>
-              <AuthenticatedLayout title="Videoer" subtitle="Dine sving-videoer">
+              <PlayerLayout title="Videoer" subtitle="Dine sving-videoer">
                 <VideoLibraryPage />
-              </AuthenticatedLayout>
+              </PlayerLayout>
             </ProtectedRoute>
           } />
 
           {/* Video Analysis */}
           <Route path="/videos/:videoId/analyze" element={
             <ProtectedRoute>
-              <AuthenticatedLayout title="Videoanalyse" subtitle="Analyser din video">
+              <PlayerLayout title="Videoanalyse" subtitle="Analyser din video">
                 <VideoAnalysisPage />
-              </AuthenticatedLayout>
+              </PlayerLayout>
             </ProtectedRoute>
           } />
 
           {/* Video Comparison */}
           <Route path="/videos/compare" element={
             <ProtectedRoute>
-              <AuthenticatedLayout title="Videosammenligning" subtitle="Sammenlign videoer side om side">
+              <PlayerLayout title="Videosammenligning" subtitle="Sammenlign videoer side om side">
                 <VideoComparisonPage />
-              </AuthenticatedLayout>
+              </PlayerLayout>
             </ProtectedRoute>
           } />
 
           {/* Video Progress */}
           <Route path="/videos/progress" element={
             <ProtectedRoute>
-              <AuthenticatedLayout title="Videofremgang" subtitle="Spor din utvikling over tid">
+              <PlayerLayout title="Videofremgang" subtitle="Spor din utvikling over tid">
                 <VideoProgressView />
-              </AuthenticatedLayout>
+              </PlayerLayout>
             </ProtectedRoute>
           } />
 
           {/* Skole */}
           <Route path="/skole/oppgaver" element={
             <ProtectedRoute>
-              <AuthenticatedLayout title="Skoleoppgaver" subtitle="Balanse mellom skole og golf">
+              <PlayerLayout title="Skoleoppgaver" subtitle="Balanse mellom skole og golf">
                 <SkoleoppgaverContainer />
-              </AuthenticatedLayout>
+              </PlayerLayout>
             </ProtectedRoute>
           } />
 
           {/* Innstillinger */}
           <Route path="/kalibrering" element={
             <ProtectedRoute>
-              <AuthenticatedLayout title="Kalibrering" subtitle="Kalibrer dine innstillinger">
+              <PlayerLayout title="Kalibrering" subtitle="Kalibrer dine innstillinger">
                 <KalibreringsContainer />
-              </AuthenticatedLayout>
+              </PlayerLayout>
             </ProtectedRoute>
           } />
           <Route path="/innstillinger/varsler" element={
             <ProtectedRoute>
-              <AuthenticatedLayout title="Varselinnstillinger" subtitle="Administrer varsler">
+              <PlayerLayout title="Varselinnstillinger" subtitle="Administrer varsler">
                 <VarselinnstillingerContainer />
-              </AuthenticatedLayout>
+              </PlayerLayout>
             </ProtectedRoute>
           } />
 
