@@ -129,7 +129,7 @@ export const coachNavigationConfig: NavItem[] = [
 
   // ────────────────────────────────────────────────────────────
   // 7. BIBLIOTEK (Exercises & Templates)
-  // Coaching library with 7 categories
+  // Coaching library with exercises, templates, and training system
   // ────────────────────────────────────────────────────────────
   {
     label: 'Library',
@@ -139,6 +139,8 @@ export const coachNavigationConfig: NavItem[] = [
       { href: '/coach/exercises', label: 'Exercise Library', labelNO: 'Øvelser' },
       { href: '/coach/exercises/mine', label: 'My Exercises', labelNO: 'Mine øvelser' },
       { href: '/coach/exercises/templates', label: 'Templates', labelNO: 'Maler' },
+      { href: '/coach/training-system', label: 'Training System', labelNO: 'Treningssystem' },
+      { href: '/coach/training-areas', label: 'Training Areas', labelNO: 'Treningsområder' },
     ],
   },
 

@@ -1666,6 +1666,22 @@ function App() {
             </ProtectedRoute>
           } />
 
+          {/* Coach Training System & Areas */}
+          <Route path="/coach/training-system" element={
+            <ProtectedRoute requiredRole="coach">
+              <CoachLayout>
+                <TrainingCategorySystemPage />
+              </CoachLayout>
+            </ProtectedRoute>
+          } />
+          <Route path="/coach/training-areas" element={
+            <ProtectedRoute requiredRole="coach">
+              <CoachLayout>
+                <TrainingCategorySystemPage />
+              </CoachLayout>
+            </ProtectedRoute>
+          } />
+
           {/* Coach Planning */}
           <Route path="/coach/planning" element={
             <ProtectedRoute requiredRole="coach">
