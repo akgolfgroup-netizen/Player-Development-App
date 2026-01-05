@@ -239,7 +239,7 @@ const DetailTemplate: React.FC<DetailTemplateProps> = ({
       <Modal
         isOpen={deleteModalOpen}
         onClose={() => setDeleteModalOpen(false)}
-        title="Confirm Deletion"
+        title="Bekreft sletting"
         size="sm"
         footer={
           <>
@@ -247,7 +247,7 @@ const DetailTemplate: React.FC<DetailTemplateProps> = ({
               variant="ghost"
               onClick={() => setDeleteModalOpen(false)}
             >
-              Cancel
+              Avbryt
             </Button>
             <Button
               variant="danger"
@@ -256,13 +256,13 @@ const DetailTemplate: React.FC<DetailTemplateProps> = ({
                 setDeleteModalOpen(false);
               }}
             >
-              Delete
+              Slett
             </Button>
           </>
         }
       >
         <Text>
-          Are you sure you want to delete this item? This action cannot be undone.
+          Er du sikker på at du vil slette dette elementet? Denne handlingen kan ikke angres.
         </Text>
       </Modal>
     </AppShell>

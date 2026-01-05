@@ -171,17 +171,20 @@ export class CoachService {
     startOfMonth.setDate(1);
     startOfMonth.setHours(0, 0, 0, 0);
 
-    const sessionCounts = await this.prisma.session.groupBy({
+    const sessionCounts = await this.prisma.trainingSession.groupBy({
       by: ['playerId'],
       where: {
-        tenantId,
         playerId: { in: players.map(p => p.id) },
         sessionDate: { gte: startOfMonth },
       },
       _count: { id: true },
     });
 
-    const sessionCountMap = new Map(sessionCounts.map(s => [s.playerId, s._count.id]));
+    const sessionCountMap = new Map(
+      sessionCounts
+        .filter(s => s.playerId !== null)
+        .map(s => [s.playerId!, s._count.id])
+    );
 
     // Calculate category distribution
     const categoryCount: Record<string, number> = {};
@@ -253,9 +256,8 @@ export class CoachService {
       },
     });
 
-    const sessionsLastWeek = await this.prisma.session.count({
+    const sessionsLastWeek = await this.prisma.trainingSession.count({
       where: {
-        tenantId,
         playerId: { in: players.map(p => p.id) },
         sessionDate: { gte: oneWeekAgo },
       },
@@ -313,7 +315,7 @@ export class CoachService {
           t => t.testDate >= startDate && t.testDate <= endDate
         );
 
-        const sessionsInPeriod = await this.prisma.session.count({
+        const sessionsInPeriod = await this.prisma.trainingSession.count({
           where: {
             playerId: player.id,
             sessionDate: { gte: startDate, lte: endDate },

@@ -159,7 +159,7 @@ const Modal: React.FC<ModalProps> = ({
               <button
                 onClick={onClose}
                 style={styles.closeButton}
-                aria-label="Close modal"
+                aria-label="Lukk modal"
               >
                 <svg
                   width="24"

@@ -183,7 +183,7 @@ const ToastItem: React.FC<ToastItemProps> = ({
       <button
         onClick={() => onClose(id)}
         style={styles.closeButton}
-        aria-label="Close notification"
+        aria-label="Lukk varsling"
       >
         <svg width="16" height="16" viewBox="0 0 16 16" fill="none" stroke="currentColor" strokeWidth="2">
           <path d="M12 4L4 12M4 4l8 8" strokeLinecap="round" />

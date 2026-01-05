@@ -50,7 +50,7 @@ function MobileSidebar({ open, close, children }) {
         <div className="flex h-full flex-col rounded-lg bg-ak-primary shadow-lg ring-1 ring-white/10">
           <div className="-mb-3 px-4 pt-3 flex items-center justify-between">
             <AKLogo size={32} color={SURFACE_COLOR} />
-            <Headless.CloseButton as={NavbarItem} aria-label="Close navigation" className="text-white">
+            <Headless.CloseButton as={NavbarItem} aria-label="Lukk navigasjon" className="text-white">
               <CloseMenuIcon />
             </Headless.CloseButton>
           </div>

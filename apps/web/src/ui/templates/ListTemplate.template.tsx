@@ -71,7 +71,7 @@ function ListTemplate<T extends Record<string, any>>({
   columns,
   data,
   getRowId,
-  createLabel = 'Create New',
+  createLabel = 'Opprett ny',
   onCreate,
   onRowClick,
   onSearch,
@@ -86,7 +86,7 @@ function ListTemplate<T extends Record<string, any>>({
   totalPages = 1,
   onPageChange,
   loading = false,
-  emptyMessage = 'No items found',
+  emptyMessage = 'Ingen elementer funnet',
   totalCount,
 }: ListTemplateProps<T>) {
   const [searchQuery, setSearchQuery] = React.useState('');
@@ -130,7 +130,7 @@ function ListTemplate<T extends Record<string, any>>({
           {onSearch && (
             <div style={styles.searchContainer}>
               <Input
-                placeholder="Search..."
+                placeholder="Søk..."
                 value={searchQuery}
                 onChange={handleSearch}
                 leftAddon={
@@ -227,12 +227,12 @@ function ListTemplate<T extends Record<string, any>>({
       <Modal
         isOpen={deleteModalOpen}
         onClose={() => setDeleteModalOpen(false)}
-        title="Confirm Deletion"
+        title="Bekreft sletting"
         size="sm"
         footer={
           <>
             <Button variant="ghost" onClick={() => setDeleteModalOpen(false)}>
-              Cancel
+              Avbryt
             </Button>
             <Button
               variant="danger"
@@ -241,14 +241,14 @@ function ListTemplate<T extends Record<string, any>>({
                 setDeleteModalOpen(false);
               }}
             >
-              Delete
+              Slett
             </Button>
           </>
         }
       >
         <Text>
-          Are you sure you want to delete {selectedRows.length}{' '}
-          {selectedRows.length === 1 ? 'item' : 'items'}? This action cannot be undone.
+          Er du sikker på at du vil slette {selectedRows.length}{' '}
+          {selectedRows.length === 1 ? 'element' : 'elementer'}? Denne handlingen kan ikke angres.
         </Text>
       </Modal>
     </AppShell>

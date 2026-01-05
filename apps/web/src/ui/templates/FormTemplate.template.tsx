@@ -56,9 +56,9 @@ const FormTemplate: React.FC<FormTemplateProps> = ({
   title,
   subtitle,
   sections,
-  submitLabel = 'Submit',
+  submitLabel = 'Lagre',
   onSubmit,
-  cancelLabel = 'Cancel',
+  cancelLabel = 'Avbryt',
   onCancel,
   showCancel = true,
   isValid = true,
@@ -141,7 +141,7 @@ const FormTemplate: React.FC<FormTemplateProps> = ({
                 />
               </div>
               <Text variant="caption1" color="secondary">
-                Step {currentStep} of {totalSteps}
+                Steg {currentStep} av {totalSteps}
               </Text>
             </div>
           )}
@@ -183,7 +183,7 @@ const FormTemplate: React.FC<FormTemplateProps> = ({
               }}
             >
               <Text variant="footnote" weight={600} color="error">
-                Please fix the following errors:
+                Vennligst rett følgende feil:
               </Text>
               <ul style={styles.errorList}>
                 {Object.entries(errors).map(([key, message]) => (
@@ -235,7 +235,7 @@ const FormTemplate: React.FC<FormTemplateProps> = ({
                   onClick={handlePreviousStep}
                   disabled={submitting}
                 >
-                  Previous
+                  Forrige
                 </Button>
               )}
 
@@ -246,7 +246,7 @@ const FormTemplate: React.FC<FormTemplateProps> = ({
                   onClick={handleNextStep}
                   disabled={!isValid || submitting}
                 >
-                  Next
+                  Neste
                 </Button>
               ) : (
                 <Button
@@ -267,7 +267,7 @@ const FormTemplate: React.FC<FormTemplateProps> = ({
       <Modal
         isOpen={cancelModalOpen}
         onClose={() => setCancelModalOpen(false)}
-        title="Discard Changes?"
+        title="Forkast endringer?"
         size="sm"
         footer={
           <>
@@ -275,16 +275,16 @@ const FormTemplate: React.FC<FormTemplateProps> = ({
               variant="ghost"
               onClick={() => setCancelModalOpen(false)}
             >
-              Continue Editing
+              Fortsett redigering
             </Button>
             <Button variant="danger" onClick={confirmCancel}>
-              Discard
+              Forkast
             </Button>
           </>
         }
       >
         <Text>
-          You have unsaved changes. Are you sure you want to discard them?
+          Du har ulagrede endringer. Er du sikker på at du vil forkaste dem?
         </Text>
       </Modal>
     </AppShell>

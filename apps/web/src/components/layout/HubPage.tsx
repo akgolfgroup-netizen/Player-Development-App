@@ -53,110 +53,154 @@ export default function HubPage({
 
   return (
     <div style={{ maxWidth: 1200, margin: '0 auto' }}>
-      {/* Header */}
-      <header style={{ marginBottom: 32 }}>
-        <div style={{ display: 'flex', alignItems: 'center', gap: 16, marginBottom: 8 }}>
+      {/* Hero Header Section */}
+      <header
+        style={{
+          background: `linear-gradient(135deg, ${colors.surface} 0%, #FFFFFF 100%)`,
+          borderRadius: 20,
+          padding: '32px 32px 24px',
+          marginBottom: 32,
+          border: `1px solid ${colors.primary}15`,
+          boxShadow: '0 4px 20px rgba(0, 0, 0, 0.04)',
+        }}
+      >
+        {/* Title Row */}
+        <div style={{ display: 'flex', alignItems: 'center', gap: 16, marginBottom: 24 }}>
           <span
             style={{
-              width: 48,
-              height: 48,
-              borderRadius: 12,
-              backgroundColor: colors.surface,
+              width: 56,
+              height: 56,
+              borderRadius: 16,
+              background: `linear-gradient(135deg, ${colors.primary} 0%, ${colors.primary}CC 100%)`,
               display: 'flex',
               alignItems: 'center',
               justifyContent: 'center',
-              color: colors.primary,
+              color: '#FFFFFF',
+              boxShadow: `0 8px 20px ${colors.primary}30`,
             }}
           >
-            <AreaIcon size={24} />
+            <AreaIcon size={28} />
           </span>
           <div>
             <h1
               style={{
-                fontSize: 28,
+                fontSize: 32,
                 fontWeight: 700,
                 color: '#111827',
                 margin: 0,
+                letterSpacing: '-0.5px',
               }}
             >
               {title || area.label}
             </h1>
             {subtitle && (
-              <p style={{ fontSize: 15, color: '#6B7280', margin: '4px 0 0' }}>
+              <p style={{ fontSize: 16, color: '#6B7280', margin: '6px 0 0' }}>
                 {subtitle}
               </p>
             )}
           </div>
         </div>
-      </header>
 
-      {/* Quick Stats */}
-      {quickStats && quickStats.length > 0 && (
-        <div
-          style={{
-            display: 'grid',
-            gridTemplateColumns: 'repeat(auto-fit, minmax(150px, 1fr))',
-            gap: 16,
-            marginBottom: 32,
-          }}
-        >
-          {quickStats.map((stat, index) => {
-            const StatIcon = stat.icon ? getIcon(stat.icon) : null;
-            return (
-              <div
-                key={index}
-                style={{
-                  backgroundColor: '#FFFFFF',
-                  borderRadius: 12,
-                  padding: 16,
-                  border: '1px solid #E5E7EB',
-                }}
-              >
-                <div style={{ display: 'flex', alignItems: 'center', gap: 8, marginBottom: 8 }}>
-                  {StatIcon && (
-                    <StatIcon size={16} />
-                  )}
-                  <span style={{ fontSize: 13, color: '#6B7280' }}>{stat.label}</span>
-                </div>
+        {/* Quick Stats Row - Inside Hero */}
+        {quickStats && quickStats.length > 0 && (
+          <div
+            style={{
+              display: 'grid',
+              gridTemplateColumns: 'repeat(auto-fit, minmax(180px, 1fr))',
+              gap: 16,
+            }}
+          >
+            {quickStats.map((stat, index) => {
+              const StatIcon = stat.icon ? getIcon(stat.icon) : null;
+              const statColor = stat.color || colors.primary;
+              return (
                 <div
+                  key={index}
                   style={{
-                    fontSize: 24,
-                    fontWeight: 700,
-                    color: stat.color || colors.primary,
+                    backgroundColor: '#FFFFFF',
+                    borderRadius: 14,
+                    padding: '18px 20px',
+                    border: '1px solid rgba(0, 0, 0, 0.06)',
+                    boxShadow: '0 2px 8px rgba(0, 0, 0, 0.04)',
+                    display: 'flex',
+                    alignItems: 'center',
+                    gap: 14,
                   }}
                 >
-                  {stat.value}
+                  {StatIcon && (
+                    <span
+                      style={{
+                        width: 44,
+                        height: 44,
+                        borderRadius: 12,
+                        backgroundColor: `${statColor}12`,
+                        display: 'flex',
+                        alignItems: 'center',
+                        justifyContent: 'center',
+                        color: statColor,
+                        flexShrink: 0,
+                      }}
+                    >
+                      <StatIcon size={22} />
+                    </span>
+                  )}
+                  <div style={{ minWidth: 0 }}>
+                    <div
+                      style={{
+                        fontSize: 26,
+                        fontWeight: 700,
+                        color: statColor,
+                        lineHeight: 1.1,
+                        letterSpacing: '-0.5px',
+                      }}
+                    >
+                      {stat.value}
+                    </div>
+                    <div
+                      style={{
+                        fontSize: 13,
+                        color: '#6B7280',
+                        marginTop: 2,
+                        whiteSpace: 'nowrap',
+                        overflow: 'hidden',
+                        textOverflow: 'ellipsis',
+                      }}
+                    >
+                      {stat.label}
+                    </div>
+                  </div>
                 </div>
-              </div>
-            );
-          })}
-        </div>
-      )}
+              );
+            })}
+          </div>
+        )}
 
-      {/* Featured Action */}
-      {featuredAction && (
-        <Link
-          to={featuredAction.href}
-          style={{
-            display: 'inline-flex',
-            alignItems: 'center',
-            gap: 8,
-            padding: '12px 24px',
-            borderRadius: 10,
-            backgroundColor: featuredAction.variant === 'secondary' ? '#FFFFFF' : colors.primary,
-            color: featuredAction.variant === 'secondary' ? colors.primary : '#FFFFFF',
-            border: featuredAction.variant === 'secondary' ? `2px solid ${colors.primary}` : 'none',
-            fontSize: 15,
-            fontWeight: 600,
-            textDecoration: 'none',
-            marginBottom: 32,
-            transition: 'all 0.2s',
-          }}
-        >
-          {featuredAction.icon && React.createElement(getIcon(featuredAction.icon), { size: 18 })}
-          {featuredAction.label}
-        </Link>
-      )}
+        {/* Featured Action - Inside Hero */}
+        {featuredAction && (
+          <Link
+            to={featuredAction.href}
+            style={{
+              display: 'inline-flex',
+              alignItems: 'center',
+              gap: 10,
+              padding: '14px 28px',
+              borderRadius: 12,
+              backgroundColor: featuredAction.variant === 'secondary' ? '#FFFFFF' : colors.primary,
+              color: featuredAction.variant === 'secondary' ? colors.primary : '#FFFFFF',
+              border: featuredAction.variant === 'secondary' ? `2px solid ${colors.primary}` : 'none',
+              fontSize: 15,
+              fontWeight: 600,
+              textDecoration: 'none',
+              marginTop: 24,
+              transition: 'all 0.2s',
+              boxShadow: featuredAction.variant === 'secondary' ? 'none' : `0 4px 14px ${colors.primary}40`,
+            }}
+          >
+            {featuredAction.icon && React.createElement(getIcon(featuredAction.icon), { size: 18 })}
+            {featuredAction.label}
+          </Link>
+        )}
+      </header>
 
       {/* Sections Grid */}
       {area.sections && area.sections.length > 0 && (
