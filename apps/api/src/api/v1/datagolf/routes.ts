@@ -491,7 +491,7 @@ export async function dataGolfRoutes(app: FastifyInstance): Promise<void> {
             type: 'object',
             properties: {
               success: { type: 'boolean', example: true },
-              data: { type: 'object' },
+              data: { type: 'object', additionalProperties: true },
             },
           },
         },

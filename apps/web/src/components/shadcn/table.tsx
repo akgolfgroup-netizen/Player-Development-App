@@ -9,7 +9,6 @@
  */
 
 import * as React from "react"
-// @ts-expect-error - Catalyst components are JS without type definitions
 import {
   Table as CatalystTable,
   TableHead as CatalystTableHead,
