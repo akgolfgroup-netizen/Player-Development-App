@@ -82,7 +82,9 @@ export const CategoryProgressionPage: React.FC = () => {
       }
 
       if (progressionRes?.data?.data) {
-        setProgression(progressionRes.data.data);
+        // Type assertion needed as API returns generic Record type
+        const data = progressionRes.data.data as unknown as CategoryProgression;
+        setProgression(data);
       } else {
         setError('Kunne ikke hente kategoridata');
       }

@@ -74,6 +74,8 @@ export interface Coach {
   specializations: string[];
   status: string;
   tenantId: string;
+  maxPlayersPerSession?: number;
+  active?: boolean;
 }
 
 export interface CoachAlert {

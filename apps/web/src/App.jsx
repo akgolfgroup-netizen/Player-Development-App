@@ -249,6 +249,7 @@ const CoachSessionEvaluations = lazy(() => import('./features/coach-session-eval
 // Admin feature components (lazy-loaded)
 const AdminSystemOverview = lazy(() => import('./features/admin-system-overview').then(m => ({ default: m.AdminSystemOverview })));
 const AdminCoachManagement = lazy(() => import('./features/admin-coach-management').then(m => ({ default: m.AdminCoachManagement })));
+const CoachDetailView = lazy(() => import('./features/admin-coach-management').then(m => ({ default: m.CoachDetailView })));
 const AdminTierManagement = lazy(() => import('./features/admin-tier-management').then(m => ({ default: m.AdminTierManagement })));
 const AdminFeatureFlagsEditor = lazy(() => import('./features/admin-feature-flags').then(m => ({ default: m.AdminFeatureFlagsEditor })));
 const AdminEscalationSupport = lazy(() => import('./features/admin-escalation').then(m => ({ default: m.AdminEscalationSupport })));
@@ -548,6 +549,20 @@ function App() {
             <ProtectedRoute>
               <PlayerLayoutV3>
                 <DashboardHub />
+              </PlayerLayoutV3>
+            </ProtectedRoute>
+          } />
+          <Route path="/dashboard/aktivitet" element={
+            <ProtectedRoute>
+              <PlayerLayoutV3>
+                <ProgressDashboardContainer />
+              </PlayerLayoutV3>
+            </ProtectedRoute>
+          } />
+          <Route path="/dashboard/varsler" element={
+            <ProtectedRoute>
+              <PlayerLayoutV3>
+                <NotificationCenter />
               </PlayerLayoutV3>
             </ProtectedRoute>
           } />
@@ -1856,6 +1871,13 @@ function App() {
             <ProtectedRoute requiredRole="admin">
               <AdminLayout>
                 <AdminCoachManagement />
+              </AdminLayout>
+            </ProtectedRoute>
+          } />
+          <Route path="/admin/users/coaches/:coachId" element={
+            <ProtectedRoute requiredRole="admin">
+              <AdminLayout>
+                <CoachDetailView />
               </AdminLayout>
             </ProtectedRoute>
           } />

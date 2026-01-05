@@ -22,7 +22,7 @@ import {
   BarChart3,
   Trophy,
 } from 'lucide-react';
-import { analyticsAPI, V1 } from '../../services/api';
+import { analyticsAPI, coachesAPI } from '../../services/api';
 import PageHeader from '../../ui/raw-blocks/PageHeader.raw';
 import StateCard from '../../ui/composites/StateCard';
 import Button from '../../ui/primitives/Button';
@@ -100,7 +100,7 @@ export const PlayerComparisonTool: React.FC = () => {
   useEffect(() => {
     const fetchAthletes = async () => {
       try {
-        const response = await V1.getAthletes();
+        const response = await coachesAPI.getAthletes();
         if (response?.data?.data) {
           setAthletes(response.data.data);
         }
@@ -169,7 +169,9 @@ export const PlayerComparisonTool: React.FC = () => {
     try {
       const response = await analyticsAPI.comparePlayers(selectedPlayers);
       if (response?.data?.data) {
-        setComparison(response.data.data);
+        // Type assertion needed as API returns generic Record type
+        const data = response.data.data as unknown as MultiPlayerComparison;
+        setComparison(data);
       } else {
         setError('Ingen data mottatt');
       }
