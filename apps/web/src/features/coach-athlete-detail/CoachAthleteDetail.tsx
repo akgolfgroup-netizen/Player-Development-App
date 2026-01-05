@@ -46,9 +46,9 @@ type Props = {
 
 // Static order - no reordering based on importance
 const navigationItems = [
-  { id: 'proof', label: 'Se dokumentasjon', description: 'Video og bilder fra okter', icon: FileText },
+  { id: 'proof', label: 'Se dokumentasjon', description: 'Video og bilder fra økter', icon: FileText },
   { id: 'trajectory', label: 'Se utvikling', description: 'Oversikt over fremgang', icon: TrendingUp },
-  { id: 'plan', label: 'Treningsplan', description: 'Rediger og planlegg okter', icon: ClipboardList },
+  { id: 'plan', label: 'Treningsplan', description: 'Rediger og planlegg økter', icon: ClipboardList },
   { id: 'notes', label: 'Notater', description: 'Dine notater om spilleren', icon: StickyNote },
 ];
 

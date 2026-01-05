@@ -410,7 +410,7 @@ const MeldingerContainer = () => {
             <Search size={18} className="text-ak-text-secondary" />
             <input
               type="text"
-              placeholder="Sok i samtaler..."
+              placeholder="Søk i samtaler..."
               value={searchQuery}
               onChange={(e) => setSearchQuery(e.target.value)}
               className="flex-1 border-none outline-none text-sm text-ak-text-primary bg-transparent"

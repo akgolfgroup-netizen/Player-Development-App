@@ -254,7 +254,7 @@ const TrendsContent: React.FC = () => {
                     />
                   </div>
                   <div style={styles.periodStats}>
-                    <span>{period.Fullfort} av {period.Planlagt} okter</span>
+                    <span>{period.Fullfort} av {period.Planlagt} økter</span>
                   </div>
                 </div>
               ))}
@@ -270,7 +270,7 @@ const TrendsContent: React.FC = () => {
             <BarChart3 size={48} style={{ opacity: 0.3, marginBottom: 16, color: 'var(--text-tertiary)' }} />
             <h3 style={styles.emptyTitle}>Ikke nok data enna</h3>
             <p style={styles.emptyText}>
-              Fullfør flere treningsokter og tester for å se din utvikling over tid.
+              Fullfør flere treningsøkter og tester for å se din utvikling over tid.
               Vi trenger minst 2 ukers data for å vise trender.
             </p>
           </div>

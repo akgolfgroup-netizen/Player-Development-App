@@ -119,7 +119,7 @@ export const PeerGroupSelector: React.FC<PeerGroupSelectorProps> = ({
         className="mb-4"
       >
         <Filter size={16} />
-        Sok etter peers
+        Søk etter peers
       </Button>
 
       {/* Results */}

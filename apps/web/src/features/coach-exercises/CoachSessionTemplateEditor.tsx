@@ -959,7 +959,7 @@ export default function CoachSessionTemplateEditor() {
                 <Search size={18} color={'var(--text-secondary)'} />
                 <input
                   type="text"
-                  placeholder="Sok etter ovelse..."
+                  placeholder="Søk etter øvelse..."
                   value={exerciseSearch}
                   onChange={(e) => setExerciseSearch(e.target.value)}
                   style={{

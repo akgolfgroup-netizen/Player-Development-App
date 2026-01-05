@@ -181,7 +181,7 @@ const NotionWeekView: React.FC<NotionWeekViewProps> = ({
               className="flex items-center gap-1.5 px-3 py-1.5 bg-ak-primary text-white text-sm font-medium rounded-lg hover:bg-ak-primary-light transition-colors"
             >
               <Plus size={16} />
-              Ny okt
+              Ny økt
             </button>
           )}
         </div>

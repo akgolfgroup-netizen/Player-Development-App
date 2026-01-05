@@ -94,7 +94,7 @@ export const WeeklySummaryWidget: React.FC<WeeklySummaryWidgetProps> = ({
         )}
         <div className="flex gap-4 text-sm">
           <span className="text-ak-text-secondary">
-            <span className="font-semibold text-ak-text-primary">{summary.sessionsCompleted}</span> okter
+            <span className="font-semibold text-ak-text-primary">{summary.sessionsCompleted}</span> økter
           </span>
           <span className="text-ak-text-secondary">
             <span className="font-semibold text-ak-text-primary">{summary.totalMinutes}</span> min

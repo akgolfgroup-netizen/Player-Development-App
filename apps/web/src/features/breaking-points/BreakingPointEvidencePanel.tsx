@@ -58,7 +58,7 @@ export const BreakingPointEvidencePanel: React.FC<BreakingPointEvidencePanelProp
   const fetchEvidence = async () => {
     try {
       const response = await breakingPointsAPI.getEvidence(breakingPointId);
-      setEvidence(response.data.data);
+      setEvidence(response.data.data as EvidenceData);
     } catch (error) {
       console.error('Could not fetch evidence:', error);
     } finally {

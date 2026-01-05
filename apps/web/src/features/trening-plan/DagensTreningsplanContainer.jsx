@@ -476,7 +476,7 @@ const DagensTreningsplanContainer = () => {
         leftIcon={<Plus size={18} />}
         className="w-full mt-4 justify-center border-2 border-dashed border-ak-border-default !bg-transparent"
       >
-        Legg til egen okt
+        Legg til egen økt
       </Button>
     </div>
   );

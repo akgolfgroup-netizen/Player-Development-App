@@ -224,13 +224,13 @@ const LogForm = ({ sessionType, onSubmit, saving = false }) => {
   return (
     <form onSubmit={handleSubmit} className="bg-ak-surface-base rounded-[14px] p-5 mb-5">
       <SubSectionTitle className="text-[15px] m-0 mb-4">
-        Logg okt
+        Logg økt
       </SubSectionTitle>
 
       {/* Session Name */}
       <div className="mb-4">
         <label className="block text-[13px] font-medium text-ak-text-primary mb-1">
-          Navn pa okten
+          Navn på økten
         </label>
         <input
           type="text"
@@ -456,7 +456,7 @@ const LoggTreningContainer = () => {
       {/* Session Type Selector */}
       <div className="bg-ak-surface-base rounded-[14px] p-4 mb-5">
         <SubSectionTitle className="text-sm m-0 mb-3">
-          Velg type okt
+          Velg type økt
         </SubSectionTitle>
         <SessionTypeSelector selected={selectedType} onSelect={setSelectedType} />
       </div>

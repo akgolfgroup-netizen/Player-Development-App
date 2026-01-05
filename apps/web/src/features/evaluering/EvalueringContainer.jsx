@@ -285,7 +285,7 @@ const EvalueringContainer = () => {
               type="text"
               value={searchQuery}
               onChange={(e) => setSearchQuery(e.target.value)}
-              placeholder="Sok i evalueringer..."
+              placeholder="Søk i evalueringer..."
               className="w-full py-2.5 pr-3 pl-9 rounded-lg border border-ak-border-default text-[13px] bg-ak-surface-base text-ak-text-primary outline-none focus:border-ak-primary"
             />
           </div>

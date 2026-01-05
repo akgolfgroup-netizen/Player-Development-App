@@ -34,7 +34,7 @@ export const SessionStatsWidget: React.FC<SessionStatsWidgetProps> = ({
           playerId,
           ...dateRange,
         });
-        setStats(response.data.data as EvaluationStats);
+        setStats(response.data.data as unknown as EvaluationStats);
       } catch (error) {
         // Demo data on error
         setStats({
@@ -75,7 +75,7 @@ export const SessionStatsWidget: React.FC<SessionStatsWidgetProps> = ({
   if (!stats) return null;
 
   const ratingToStars = (rating: number) => {
-    const stars = [];
+    const stars: React.ReactNode[] = [];
     for (let i = 1; i <= 5; i++) {
       stars.push(
         <Star
@@ -90,19 +90,19 @@ export const SessionStatsWidget: React.FC<SessionStatsWidgetProps> = ({
 
   return (
     <Card variant="default" padding="md">
-      <SubSectionTitle className="mb-4">Okt-statistikk</SubSectionTitle>
+      <SubSectionTitle className="mb-4">Økt-statistikk</SubSectionTitle>
 
       {/* Overview Stats */}
       <div className="grid grid-cols-4 gap-3 mb-4">
         <div className="text-center p-3 bg-ak-surface-subtle rounded-lg">
           <BarChart3 size={20} className="mx-auto mb-1 text-ak-primary" />
           <p className="text-lg font-bold text-ak-text-primary">{stats.totalSessions}</p>
-          <p className="text-xs text-ak-text-secondary">Totalt okter</p>
+          <p className="text-xs text-ak-text-secondary">Totalt økter</p>
         </div>
         <div className="text-center p-3 bg-ak-surface-subtle rounded-lg">
           <Target size={20} className="mx-auto mb-1 text-ak-success" />
           <p className="text-lg font-bold text-ak-text-primary">{stats.completionRate}%</p>
-          <p className="text-xs text-ak-text-secondary">Fullfort</p>
+          <p className="text-xs text-ak-text-secondary">Fullført</p>
         </div>
         <div className="text-center p-3 bg-ak-surface-subtle rounded-lg">
           <TrendingUp size={20} className="mx-auto mb-1 text-ak-primary" />

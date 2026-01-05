@@ -68,7 +68,7 @@ export const ActiveSessionWidget: React.FC<ActiveSessionWidgetProps> = ({
     <Card variant="default" padding="md" className="border-l-4 border-ak-success">
       <div className="flex items-center gap-2 mb-3">
         <div className="w-2 h-2 rounded-full bg-ak-success animate-pulse" />
-        <SubSectionTitle>Aktive okter</SubSectionTitle>
+        <SubSectionTitle>Aktive økter</SubSectionTitle>
       </div>
 
       <div className="space-y-2">
@@ -83,7 +83,7 @@ export const ActiveSessionWidget: React.FC<ActiveSessionWidgetProps> = ({
             </div>
             <div className="flex-1 min-w-0">
               <p className="font-medium text-ak-text-primary truncate">
-                {session.sessionType || 'Treningsokt'}
+                {session.sessionType || 'Treningsøkt'}
               </p>
               <div className="flex items-center gap-2 text-xs text-ak-text-secondary">
                 <Clock size={12} />
@@ -97,7 +97,7 @@ export const ActiveSessionWidget: React.FC<ActiveSessionWidgetProps> = ({
 
       {activeSessions.length > 0 && (
         <p className="text-xs text-ak-success font-medium mt-2 text-center">
-          {activeSessions.length} aktiv{activeSessions.length > 1 ? 'e' : ''} okt{activeSessions.length > 1 ? 'er' : ''}
+          {activeSessions.length} aktiv{activeSessions.length > 1 ? 'e' : ''} økt{activeSessions.length > 1 ? 'er' : ''}
         </p>
       )}
     </Card>

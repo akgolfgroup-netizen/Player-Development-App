@@ -42,7 +42,7 @@ export default function AdminFeatureFlagsEditor() {
   return (
     <Page state={pageState} maxWidth="xl">
       <Page.Header
-        title="Feature Flags"
+        title="Funksjonsflagg"
         subtitle={featureFlags.length > 0 ? `${enabledCount} av ${featureFlags.length} funksjoner aktivert` : undefined}
       />
 

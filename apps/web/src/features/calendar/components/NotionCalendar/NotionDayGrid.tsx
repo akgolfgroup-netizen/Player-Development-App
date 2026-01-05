@@ -152,7 +152,7 @@ const NotionDayGrid: React.FC<NotionDayGridProps> = ({
   }, [nowLineTop]);
 
   // Format date for header
-  const dayName = date.toLocaleDateString('en-US', { weekday: 'long' });
+  const dayName = date.toLocaleDateString('nb-NO', { weekday: 'long' });
   const dateNum = date.getDate();
 
   return (

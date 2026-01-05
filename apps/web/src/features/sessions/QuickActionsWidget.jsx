@@ -53,7 +53,7 @@ export default function QuickActionsWidget({ planId }) {
       );
       loadToday();
     } catch (err) {
-      alert('Action failed: ' + (err.response?.data?.error?.message || err.message));
+      alert('Handling feilet: ' + (err.response?.data?.error?.message || err.message));
     } finally {
       setLoading(false);
     }
@@ -70,7 +70,7 @@ export default function QuickActionsWidget({ planId }) {
       setAlternatives(data.data.alternatives);
       setShowSubstitute(true);
     } catch (err) {
-      alert('Cannot substitute: ' + (err.message || 'Unknown error'));
+      alert('Kan ikke bytte: ' + (err.message || 'Ukjent feil'));
     } finally {
       setLoading(false);
     }
@@ -79,14 +79,14 @@ export default function QuickActionsWidget({ planId }) {
   if (!assignment) {
     return (
       <div className="bg-ak-surface-base rounded-lg shadow p-6">
-        <SubSectionTitle className="mb-2">Today's Training</SubSectionTitle>
-        <p className="text-ak-text-secondary mb-4">No session scheduled for today</p>
+        <SubSectionTitle className="mb-2">Dagens trening</SubSectionTitle>
+        <p className="text-ak-text-secondary mb-4">Ingen økt planlagt for i dag</p>
         <Button
           variant="primary"
           onClick={() => navigate('/session/new')}
           className="w-full"
         >
-          + Opprett treningsokt
+          + Opprett treningsøkt
         </Button>
       </div>
     );
@@ -95,8 +95,8 @@ export default function QuickActionsWidget({ planId }) {
   if (assignment.isRestDay) {
     return (
       <div className="bg-ak-primary/10 rounded-lg shadow p-6 border-2 border-ak-primary/30">
-        <SubSectionTitle className="mb-2">Rest Day</SubSectionTitle>
-        <p className="text-ak-text-primary">Recovery is important! Enjoy your rest day.</p>
+        <SubSectionTitle className="mb-2">Hviledag</SubSectionTitle>
+        <p className="text-ak-text-primary">Restitusjon er viktig! Nyt hviledagen din.</p>
       </div>
     );
   }
@@ -112,30 +112,30 @@ export default function QuickActionsWidget({ planId }) {
     <div className="bg-ak-surface-base rounded-lg shadow p-6">
       <div className="flex justify-between items-start mb-4">
         <div>
-          <SubSectionTitle>Today's Training</SubSectionTitle>
+          <SubSectionTitle>Dagens trening</SubSectionTitle>
           <span className={`inline-block px-2 py-1 rounded text-sm font-medium mt-1 ${statusColors[assignment.status]}`}>
             {assignment.status.replace('_', ' ').toUpperCase()}
           </span>
         </div>
-        <span className="text-sm text-ak-text-secondary">{assignment.period} Period</span>
+        <span className="text-sm text-ak-text-secondary">{assignment.period} periode</span>
       </div>
 
       <div className="mb-4">
         <CardTitle>{assignment.type}</CardTitle>
-        <p className="text-ak-text-secondary text-sm">Duration: {assignment.duration} minutes</p>
+        <p className="text-ak-text-secondary text-sm">Varighet: {assignment.duration} minutter</p>
         {assignment.sessionTemplate?.description && (
           <p className="text-ak-text-secondary text-sm mt-2">{assignment.sessionTemplate.description}</p>
         )}
         {assignment.notes && (
           <div className="mt-2 p-2 bg-amber-50 rounded text-sm">
-            <strong>Coach notes:</strong> {assignment.notes}
+            <strong>Trenernotater:</strong> {assignment.notes}
           </div>
         )}
       </div>
 
       {showSubstitute ? (
         <div className="border-t border-ak-border-default pt-4">
-          <CardTitle className="mb-3">Alternative Sessions:</CardTitle>
+          <CardTitle className="mb-3">Alternative økter:</CardTitle>
           <div className="space-y-2 max-h-64 overflow-y-auto">
             {alternatives.map(alt => (
               <div key={alt.id} className="p-3 bg-ak-surface-subtle rounded hover:bg-ak-surface-base cursor-pointer">
@@ -153,7 +153,7 @@ export default function QuickActionsWidget({ planId }) {
             onClick={() => setShowSubstitute(false)}
             className="mt-3"
           >
-            ← Back
+            ← Tilbake
           </Button>
         </div>
       ) : (
@@ -174,7 +174,7 @@ export default function QuickActionsWidget({ planId }) {
                 disabled={loading}
                 className="flex-1 bg-ak-status-success hover:bg-ak-status-success/90"
               >
-                ✅ Complete
+                ✅ Fullfør
               </Button>
             </>
           )}
@@ -194,7 +194,7 @@ export default function QuickActionsWidget({ planId }) {
                 disabled={loading}
                 className="flex-1"
               >
-                ✅ Complete
+                ✅ Fullfør
               </Button>
             </>
           )}
@@ -204,7 +204,7 @@ export default function QuickActionsWidget({ planId }) {
               onClick={() => handleQuickAction('skip')}
               disabled={loading}
             >
-              Skip
+              Hopp over
             </Button>
           )}
           {assignment.canBeSubstituted && assignment.status === 'planned' && (
@@ -214,7 +214,7 @@ export default function QuickActionsWidget({ planId }) {
               disabled={loading}
               className="bg-orange-400/20 text-orange-700 hover:bg-orange-400/30"
             >
-              🔄 Substitute
+              🔄 Bytt økt
             </Button>
           )}
         </div>

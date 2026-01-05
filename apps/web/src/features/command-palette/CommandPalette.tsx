@@ -155,7 +155,7 @@ const CommandPalette: React.FC<CommandPaletteProps> = ({
 
   return (
     <CommandDialog open={open} onOpenChange={setOpen}>
-      <CommandInput placeholder="Sok etter sider, funksjoner..." />
+      <CommandInput placeholder="Søk etter sider, funksjoner..." />
       <CommandList>
         <CommandEmpty>Ingen resultater funnet.</CommandEmpty>
 

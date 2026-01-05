@@ -169,7 +169,7 @@ const SamlingList: React.FC = () => {
           />
           <input
             type="text"
-            placeholder="Sok etter samling..."
+            placeholder="Søk etter samling..."
             value={searchQuery}
             onChange={(e) => setSearchQuery(e.target.value)}
             style={{

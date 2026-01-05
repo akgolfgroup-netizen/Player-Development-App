@@ -289,7 +289,7 @@ const StatsOverview = ({ stats }) => (
       <div className="text-[22px] font-bold text-ak-text-primary">
         {stats.avgDuration}
       </div>
-      <div className="text-[11px] text-ak-text-secondary">Min/okt</div>
+      <div className="text-[11px] text-ak-text-secondary">Min/økt</div>
     </Card>
     <Card variant="default" padding="sm" className="text-center">
       <div className="text-[22px] font-bold text-ak-status-error flex items-center justify-center gap-1">
@@ -374,7 +374,7 @@ const TreningsdagbokContainer = () => {
               <Search size={18} className="text-ak-text-secondary" />
               <input
                 type="text"
-                placeholder="Sok i dagboken..."
+                placeholder="Søk i dagboken..."
                 value={searchQuery}
                 onChange={(e) => setSearchQuery(e.target.value)}
                 className="flex-1 border-none outline-none text-sm text-ak-text-primary bg-transparent"

@@ -56,7 +56,7 @@ const UILabContainer = () => {
     <div style={styles.container}>
       <PageHeader
         title="UI Lab"
-        subtitle="Component Showcase"
+        subtitle="Komponentutstilling"
         showBackButton={false}
       />
 

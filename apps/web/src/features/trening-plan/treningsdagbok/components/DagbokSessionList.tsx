@@ -220,7 +220,7 @@ export const DagbokSessionList: React.FC<DagbokSessionListProps> = ({
   sessions,
   isLoading = false,
   onSessionClick,
-  emptyMessage = 'Ingen treningsokter funnet for valgt periode',
+  emptyMessage = 'Ingen treningsøkter funnet for valgt periode',
   className = '',
 }) => {
   const containerRef = useRef<HTMLDivElement>(null);

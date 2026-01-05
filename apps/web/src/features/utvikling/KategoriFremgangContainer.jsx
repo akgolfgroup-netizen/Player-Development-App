@@ -35,24 +35,24 @@ const CURRENT_STATUS = {
 
 const CATEGORY_REQUIREMENTS = [
   {
-    id: 'driving',
-    name: 'Driving',
+    id: 'tee_total',
+    name: 'Tee Total',
     currentScore: 78,
     requiredScore: 75,
     met: true,
     trend: 'up',
   },
   {
-    id: 'iron_play',
-    name: 'Jernspill',
+    id: 'innspill',
+    name: 'Innspill',
     currentScore: 72,
     requiredScore: 70,
     met: true,
     trend: 'up',
   },
   {
-    id: 'short_game',
-    name: 'Kortspill',
+    id: 'naerspill',
+    name: 'Nærspill',
     currentScore: 81,
     requiredScore: 80,
     met: true,
@@ -65,22 +65,6 @@ const CATEGORY_REQUIREMENTS = [
     requiredScore: 75,
     met: false,
     trend: 'down',
-  },
-  {
-    id: 'mental',
-    name: 'Mental',
-    currentScore: 75,
-    requiredScore: 70,
-    met: true,
-    trend: 'up',
-  },
-  {
-    id: 'physical',
-    name: 'Fysisk',
-    currentScore: 82,
-    requiredScore: 75,
-    met: true,
-    trend: 'stable',
   },
 ];
 

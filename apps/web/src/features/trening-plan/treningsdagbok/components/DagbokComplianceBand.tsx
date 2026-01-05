@@ -199,11 +199,11 @@ export const DagbokComplianceBand: React.FC<DagbokComplianceBandProps> = ({
       <div style={styles.stats}>
         <div style={styles.statItem}>
           <span style={styles.statValue}>{plannedSessions}</span>
-          <span style={styles.statLabel}>Planlagte okter</span>
+          <span style={styles.statLabel}>Planlagte økter</span>
         </div>
         <div style={styles.statItem}>
           <span style={styles.statValue}>{actualSessions}</span>
-          <span style={styles.statLabel}>Gjennomforte</span>
+          <span style={styles.statLabel}>Gjennomførte</span>
         </div>
         <div style={styles.statItem}>
           <span style={{

@@ -4,7 +4,8 @@
  * Nøytral forklaring av kategorihierarkiet for golftrening.
  * Beskriver systemet, hvordan det fungerer, og hvordan det påvirker treningen.
  *
- * Bruker grønn fargeskala (Trening-området) for konsistent design.
+ * Bruker Midnight Blue (primary action) for konsistent design.
+ * Grønn/emerald er KUN for progress/success indikatorer.
  */
 
 import React, { useState } from 'react';
@@ -27,19 +28,19 @@ import {
   GraduationCap,
 } from 'lucide-react';
 
-// Colors from Trening area (green)
+// Colors - Using Midnight Blue (primary action), NOT green
 const COLORS = {
-  primary: '#059669',
-  primaryLight: '#10B981',
-  primaryDark: '#047857',
-  surface: '#ECFDF5',
-  surfaceHover: '#D1FAE5',
-  text: '#064E3B',
-  textMuted: '#6B7280',
-  textDark: '#111827',
+  primary: '#10456A',        // Midnight Blue - primary action
+  primaryLight: '#1A5A8A',   // Lighter blue
+  primaryDark: '#0D3A58',    // Darker blue
+  surface: '#EDF4F8',        // Light blue surface
+  surfaceHover: '#DCE9F1',   // Hover state
+  text: '#10456A',           // Text on light surfaces
+  textMuted: '#6B7280',      // Muted text
+  textDark: '#111827',       // Dark text
   white: '#FFFFFF',
-  border: '#D1FAE5',
-  gold: '#B8860B',
+  border: '#D1E3ED',         // Light blue border
+  gold: '#B8860B',           // Gold for prestige
 };
 
 interface SectionProps {

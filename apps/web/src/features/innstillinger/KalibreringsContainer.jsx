@@ -26,9 +26,6 @@ const DEFAULT_CALIBRATION = {
   driving: {
     clubSpeed: { value: 108, unit: 'mph', lastUpdated: null },
     ballSpeed: { value: 158, unit: 'mph', lastUpdated: null },
-    launchAngle: { value: 11.5, unit: '°', lastUpdated: null },
-    spinRate: { value: 2400, unit: 'rpm', lastUpdated: null },
-    carryDistance: { value: 255, unit: 'm', lastUpdated: null },
   },
   irons: {
     '7iron_carry': { value: 160, unit: 'm', lastUpdated: null },
@@ -42,20 +39,20 @@ const DEFAULT_CALIBRATION = {
   },
 };
 
-const DEFAULT_CLUB_DISTANCES = [
-  { club: 'Driver', carry: 255, total: 270 },
-  { club: '3-wood', carry: 230, total: 242 },
-  { club: '5-wood', carry: 215, total: 225 },
-  { club: '4-hybrid', carry: 200, total: 210 },
-  { club: '5-iron', carry: 185, total: 195 },
-  { club: '6-iron', carry: 172, total: 180 },
-  { club: '7-iron', carry: 160, total: 168 },
-  { club: '8-iron', carry: 148, total: 154 },
-  { club: '9-iron', carry: 135, total: 140 },
-  { club: 'PW', carry: 120, total: 125 },
-  { club: 'GW', carry: 105, total: 110 },
-  { club: 'SW', carry: 90, total: 92 },
-  { club: 'LW', carry: 75, total: 77 },
+const DEFAULT_CLUB_SPEEDS = [
+  { club: 'Driver', clubSpeed: 108 },
+  { club: '3-wood', clubSpeed: 102 },
+  { club: '5-wood', clubSpeed: 98 },
+  { club: '4-hybrid', clubSpeed: 94 },
+  { club: '5-iron', clubSpeed: 90 },
+  { club: '6-iron', clubSpeed: 87 },
+  { club: '7-iron', clubSpeed: 84 },
+  { club: '8-iron', clubSpeed: 81 },
+  { club: '9-iron', clubSpeed: 78 },
+  { club: 'PW', clubSpeed: 75 },
+  { club: 'GW', clubSpeed: 72 },
+  { club: 'SW', clubSpeed: 68 },
+  { club: 'LW', clubSpeed: 64 },
 ];
 
 // Load calibration from localStorage
@@ -113,26 +110,21 @@ const CalibrationInput = ({ label, value, unit, lastUpdated, onChange }) => (
 );
 
 // ============================================================================
-// CLUB DISTANCE ROW
+// CLUB SPEED ROW
 // ============================================================================
 
-const ClubDistanceRow = ({ club, carry, total, onChange }) => (
-  <div className="grid grid-cols-[80px_1fr_1fr] gap-3 items-center py-2.5 border-b border-ak-border-default">
+const ClubSpeedRow = ({ club, clubSpeed, onChange }) => (
+  <div className="grid grid-cols-[100px_1fr_60px] gap-3 items-center py-2.5 border-b border-ak-border-default">
     <span className="text-[13px] font-medium text-ak-text-primary">
       {club}
     </span>
     <input
       type="number"
-      value={carry}
-      onChange={(e) => onChange('carry', parseInt(e.target.value))}
+      value={clubSpeed}
+      onChange={(e) => onChange(parseInt(e.target.value))}
       className="py-2 px-3 rounded-md border border-ak-border-default text-sm text-center outline-none focus:border-ak-primary bg-ak-surface-base"
     />
-    <input
-      type="number"
-      value={total}
-      onChange={(e) => onChange('total', parseInt(e.target.value))}
-      className="py-2 px-3 rounded-md border border-ak-border-default text-sm text-center outline-none focus:border-ak-primary bg-ak-surface-base"
-    />
+    <span className="text-[13px] text-ak-text-secondary">mph</span>
   </div>
 );
 
@@ -146,7 +138,7 @@ const KalibreringsContainer = () => {
   const [drivingSettings, setDrivingSettings] = useState(DEFAULT_CALIBRATION.driving);
   const [ironsSettings, setIronsSettings] = useState(DEFAULT_CALIBRATION.irons);
   const [physicalSettings, setPhysicalSettings] = useState(DEFAULT_CALIBRATION.physical);
-  const [clubDistances, setClubDistances] = useState(DEFAULT_CLUB_DISTANCES);
+  const [clubSpeeds, setClubSpeeds] = useState(DEFAULT_CLUB_SPEEDS);
   const [hasChanges, setHasChanges] = useState(false);
   const [saving, setSaving] = useState(false);
   const [error, setError] = useState(null);
@@ -160,7 +152,7 @@ const KalibreringsContainer = () => {
         if (saved.driving) setDrivingSettings(saved.driving);
         if (saved.irons) setIronsSettings(saved.irons);
         if (saved.physical) setPhysicalSettings(saved.physical);
-        if (saved.clubDistances) setClubDistances(saved.clubDistances);
+        if (saved.clubSpeeds) setClubSpeeds(saved.clubSpeeds);
       }
       setLoading(false);
     }
@@ -192,7 +184,7 @@ const KalibreringsContainer = () => {
       driving: updatedDriving,
       irons: ironsSettings,
       physical: updatedPhysical,
-      clubDistances,
+      clubSpeeds,
       savedAt: new Date().toISOString(),
     };
 
@@ -212,13 +204,13 @@ const KalibreringsContainer = () => {
     } finally {
       setSaving(false);
     }
-  }, [user?.id, drivingSettings, ironsSettings, physicalSettings, clubDistances]);
+  }, [user?.id, drivingSettings, ironsSettings, physicalSettings, clubSpeeds]);
 
   const handleReset = () => {
     setDrivingSettings(DEFAULT_CALIBRATION.driving);
     setIronsSettings(DEFAULT_CALIBRATION.irons);
     setPhysicalSettings(DEFAULT_CALIBRATION.physical);
-    setClubDistances(DEFAULT_CLUB_DISTANCES);
+    setClubSpeeds(DEFAULT_CLUB_SPEEDS);
     setHasChanges(true);
   };
 
@@ -306,55 +298,34 @@ const KalibreringsContainer = () => {
               setHasChanges(true);
             }}
           />
-          <CalibrationInput
-            label="Launch angle"
-            value={drivingSettings.launchAngle.value}
-            unit={drivingSettings.launchAngle.unit}
-            lastUpdated={drivingSettings.launchAngle.lastUpdated}
-            onChange={(val) => {
-              setDrivingSettings({ ...drivingSettings, launchAngle: { ...drivingSettings.launchAngle, value: val } });
-              setHasChanges(true);
-            }}
-          />
-          <CalibrationInput
-            label="Carry-avstand"
-            value={drivingSettings.carryDistance.value}
-            unit={drivingSettings.carryDistance.unit}
-            lastUpdated={drivingSettings.carryDistance.lastUpdated}
-            onChange={(val) => {
-              setDrivingSettings({ ...drivingSettings, carryDistance: { ...drivingSettings.carryDistance, value: val } });
-              setHasChanges(true);
-            }}
-          />
         </div>
 
-        {/* Club Distances */}
+        {/* Club Speeds */}
         <div className="bg-ak-surface-base rounded-[14px] p-4 mb-5">
           <div className="flex items-center gap-2.5 mb-3.5">
             <div className="w-9 h-9 rounded-lg bg-ak-status-success/15 flex items-center justify-center">
-              <Target size={18} className="text-ak-status-success" />
+              <Gauge size={18} className="text-ak-status-success" />
             </div>
             <SubSectionTitle className="text-[15px] font-semibold text-ak-text-primary m-0">
-              Klubbavstander
+              Klubbfart per kølle
             </SubSectionTitle>
           </div>
 
-          <div className="grid grid-cols-[80px_1fr_1fr] gap-3 py-2 border-b-2 border-ak-border-default mb-2">
+          <div className="grid grid-cols-[100px_1fr_60px] gap-3 py-2 border-b-2 border-ak-border-default mb-2">
             <span className="text-xs font-semibold text-ak-text-secondary">Klubb</span>
-            <span className="text-xs font-semibold text-ak-text-secondary text-center">Carry (m)</span>
-            <span className="text-xs font-semibold text-ak-text-secondary text-center">Total (m)</span>
+            <span className="text-xs font-semibold text-ak-text-secondary text-center">Club Speed</span>
+            <span className="text-xs font-semibold text-ak-text-secondary"></span>
           </div>
 
-          {clubDistances.map((club, idx) => (
-            <ClubDistanceRow
+          {clubSpeeds.map((club, idx) => (
+            <ClubSpeedRow
               key={club.club}
               club={club.club}
-              carry={club.carry}
-              total={club.total}
-              onChange={(field, value) => {
-                const newDistances = [...clubDistances];
-                newDistances[idx] = { ...newDistances[idx], [field]: value };
-                setClubDistances(newDistances);
+              clubSpeed={club.clubSpeed}
+              onChange={(value) => {
+                const newSpeeds = [...clubSpeeds];
+                newSpeeds[idx] = { ...newSpeeds[idx], clubSpeed: value };
+                setClubSpeeds(newSpeeds);
                 setHasChanges(true);
               }}
             />

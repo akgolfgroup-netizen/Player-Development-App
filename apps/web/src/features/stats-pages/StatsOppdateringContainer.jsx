@@ -231,7 +231,7 @@ const StatsOppdateringContainer = () => {
     { value: 'round', label: 'Treningsrunde' },
     { value: 'tournament', label: 'Turnering' },
     { value: 'simulator', label: 'Simulator' },
-    { value: 'practice', label: 'Treningsokt' },
+    { value: 'practice', label: 'Treningsøkt' },
   ];
 
   return (

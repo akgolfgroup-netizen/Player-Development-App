@@ -141,7 +141,7 @@ const ErrorState: React.FC<{ error: string; onRetry: () => void }> = ({ error, o
       variant="error"
       title="Kunne ikke laste dashboard"
       description={error}
-      action={<Button variant="primary" onClick={onRetry}>Prov igjen</Button>}
+      action={<Button variant="primary" onClick={onRetry}>Prøv igjen</Button>}
     />
   </div>
 );
@@ -429,7 +429,7 @@ export default function CoachDashboard(props: CoachDashboardProps) {
               <Search size={18} className="text-ak-text-secondary" />
               <input
                 type="text"
-                placeholder="Sok etter spiller..."
+                placeholder="Søk etter spiller..."
                 value={searchTerm}
                 onChange={(e) => setSearchTerm(e.target.value)}
                 className="flex-1 border-none bg-transparent outline-none text-[15px] text-ak-text-primary"

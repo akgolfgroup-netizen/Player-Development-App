@@ -50,7 +50,7 @@ export const TeamAnalyticsDashboard: React.FC = () => {
 
       try {
         const response = await analyticsAPI.getTeamAnalytics(user.id);
-        setAnalytics(response.data.data as TeamAnalytics);
+        setAnalytics(response.data.data as unknown as TeamAnalytics);
       } catch (error) {
         toast({ title: 'Feil', description: 'Kunne ikke hente team-analyse', variant: 'destructive' });
       } finally {

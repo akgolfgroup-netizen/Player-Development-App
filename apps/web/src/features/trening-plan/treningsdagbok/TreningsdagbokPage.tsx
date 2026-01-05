@@ -105,7 +105,7 @@ export const TreningsdagbokPage: React.FC = () => {
             className="flex items-center gap-1.5 px-4 py-2 bg-ak-primary text-white border-none rounded-lg text-sm font-medium cursor-pointer"
           >
             <Plus size={18} />
-            Ny okt
+            Ny økt
           </button>
         </div>
 
@@ -145,8 +145,8 @@ export const TreningsdagbokPage: React.FC = () => {
                 onSessionClick={handleSessionClick}
                 emptyMessage={
                   activeFilterCount > 0
-                    ? 'Ingen okter matcher filtrene. Prov a justere filtrene.'
-                    : 'Ingen treningsokter registrert for denne perioden.'
+                    ? 'Ingen økter matcher filtrene. Prøv å justere filtrene.'
+                    : 'Ingen treningsøkter registrert for denne perioden.'
                 }
               />
             </div>

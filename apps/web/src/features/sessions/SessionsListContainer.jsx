@@ -85,7 +85,7 @@ export default function SessionsListContainer() {
       }));
     } catch (err) {
       console.error('Failed to fetch sessions:', err);
-      setError(err.response?.data?.message || 'Kunne ikke laste okter');
+      setError(err.response?.data?.message || 'Kunne ikke laste økter');
     } finally {
       setIsLoading(false);
     }
@@ -131,7 +131,7 @@ export default function SessionsListContainer() {
 
   // Initial loading
   if (isLoading && sessions.length === 0 && !error) {
-    return <LoadingState message="Laster treningsokter..." />;
+    return <LoadingState message="Laster treningsøkter..." />;
   }
 
   // Error state (only if no sessions loaded)

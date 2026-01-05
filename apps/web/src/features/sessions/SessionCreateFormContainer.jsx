@@ -65,7 +65,7 @@ export default function SessionCreateFormContainer() {
       <ErrorState
         message={error}
         onRetry={() => setError(null)}
-        retryLabel="Prov igjen"
+        retryLabel="Prøv igjen"
       />
     );
   }

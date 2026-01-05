@@ -392,7 +392,7 @@ export const DagbokFilterBar: React.FC<DagbokFilterBarProps> = ({
             <Search size={14} style={{ color: 'var(--text-tertiary)' }} />
             <input
               type="text"
-              placeholder="Sok i okter..."
+              placeholder="Søk i økter..."
               value={localSearch}
               onChange={handleSearchChange}
               style={styles.searchInput}

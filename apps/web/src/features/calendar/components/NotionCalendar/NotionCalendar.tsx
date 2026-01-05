@@ -263,7 +263,7 @@ const NotionCalendar: React.FC<NotionCalendarProps> = ({
               onClick={goToToday}
               className="px-3 py-1.5 text-sm font-medium text-gray-700 bg-white border border-gray-300 rounded-lg hover:bg-gray-50"
             >
-              Today
+              I dag
             </button>
 
             {/* Search */}
@@ -271,7 +271,7 @@ const NotionCalendar: React.FC<NotionCalendarProps> = ({
               <Search size={16} className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400" />
               <input
                 type="text"
-                placeholder="Search events"
+                placeholder="Søk i hendelser"
                 className="w-40 pl-9 pr-3 py-1.5 text-sm border border-gray-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
               />
             </div>
