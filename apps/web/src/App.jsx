@@ -207,6 +207,7 @@ const SamlingCreate = lazy(() => import('./features/samling').then(m => ({ defau
 const CoachBookingCalendar = lazy(() => import('./features/coach-booking').then(m => ({ default: m.CoachBookingCalendar })));
 const CoachBookingRequests = lazy(() => import('./features/coach-booking').then(m => ({ default: m.CoachBookingRequests })));
 const CoachBookingSettings = lazy(() => import('./features/coach-booking').then(m => ({ default: m.CoachBookingSettings })));
+const CoachCalendarPage = lazy(() => import('./features/calendar/CoachCalendarPage'));
 
 // Coach tournaments (lazy-loaded)
 const CoachTournamentCalendar = lazy(() => import('./features/coach-tournaments').then(m => ({ default: m.CoachTournamentCalendar })));
@@ -285,9 +286,15 @@ const AdminLayout = ({ children }) => (
   <AdminAppShell>{children}</AdminAppShell>
 );
 
-// AI Coach wrapper - only shows for authenticated players
+// AI Coach wrapper - only shows for authenticated players (not on onboarding)
 const AuthenticatedAICoach = () => {
   const { user, isAuthenticated } = useAuth();
+  const location = window.location.pathname;
+
+  // Hide on onboarding page
+  if (location === '/onboarding') {
+    return null;
+  }
 
   // Only show AI Coach for authenticated players (not coaches/admins)
   if (!isAuthenticated || !user || user.role !== 'player') {
@@ -1495,6 +1502,15 @@ function App() {
             <ProtectedRoute requiredRole="coach">
               <CoachLayout>
                 <SamlingDetail />
+              </CoachLayout>
+            </ProtectedRoute>
+          } />
+
+          {/* Coach Calendar (new enhanced) */}
+          <Route path="/coach/calendar" element={
+            <ProtectedRoute requiredRole="coach">
+              <CoachLayout>
+                <CoachCalendarPage />
               </CoachLayout>
             </ProtectedRoute>
           } />

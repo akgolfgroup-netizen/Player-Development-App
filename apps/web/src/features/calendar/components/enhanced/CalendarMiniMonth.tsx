@@ -24,11 +24,13 @@ interface CalendarMiniMonthProps {
   /** Dates that have events (show dot indicator) */
   eventDates?: string[];
   /** Navigate to previous month */
-  onPrevMonth: () => void;
+  onPrevMonth?: () => void;
   /** Navigate to next month */
-  onNextMonth: () => void;
+  onNextMonth?: () => void;
   /** Select a date */
   onSelectDate: (date: Date) => void;
+  /** Change month directly (alternative to onPrevMonth/onNextMonth) */
+  onMonthChange?: (date: Date) => void;
   /** Custom class name */
   className?: string;
 }
@@ -59,6 +61,7 @@ export const CalendarMiniMonth: React.FC<CalendarMiniMonthProps> = ({
   eventDates = [],
   onPrevMonth,
   onNextMonth,
+  onMonthChange,
   onSelectDate,
   className,
 }) => {
@@ -154,7 +157,15 @@ export const CalendarMiniMonth: React.FC<CalendarMiniMonthProps> = ({
       <div className="flex items-center text-center text-ak-text-primary">
         <button
           type="button"
-          onClick={onPrevMonth}
+          onClick={() => {
+            if (onMonthChange) {
+              const prev = new Date(currentDate);
+              prev.setMonth(prev.getMonth() - 1);
+              onMonthChange(prev);
+            } else if (onPrevMonth) {
+              onPrevMonth();
+            }
+          }}
           className="-m-1.5 flex flex-none items-center justify-center p-1.5 text-ak-text-tertiary hover:text-ak-text-secondary transition-colors"
           aria-label="Forrige måned"
         >
@@ -163,7 +174,15 @@ export const CalendarMiniMonth: React.FC<CalendarMiniMonthProps> = ({
         <div className="flex-auto text-sm font-semibold">{monthLabel}</div>
         <button
           type="button"
-          onClick={onNextMonth}
+          onClick={() => {
+            if (onMonthChange) {
+              const next = new Date(currentDate);
+              next.setMonth(next.getMonth() + 1);
+              onMonthChange(next);
+            } else if (onNextMonth) {
+              onNextMonth();
+            }
+          }}
           className="-m-1.5 flex flex-none items-center justify-center p-1.5 text-ak-text-tertiary hover:text-ak-text-secondary transition-colors"
           aria-label="Neste måned"
         >

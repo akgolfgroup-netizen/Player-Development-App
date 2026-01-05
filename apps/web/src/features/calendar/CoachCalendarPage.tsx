@@ -388,7 +388,7 @@ export default function CoachCalendarPage() {
   const subtitle = view === 'day' ? undefined : undefined;
 
   const eventDates = useMemo(() => {
-    return new Set(sessions.map((s) => s.date));
+    return [...new Set(sessions.map((s) => s.date))];
   }, [sessions]);
 
   // Map sessions to CalendarEvent format for components

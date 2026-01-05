@@ -1,7 +1,5 @@
 import React from 'react';
-// @ts-expect-error - Catalyst components are JS without type definitions
 import { Switch as CatalystSwitch, SwitchField } from '../../components/catalyst/switch';
-// @ts-expect-error - Catalyst components are JS without type definitions
 import { Label, Description } from '../../components/catalyst/fieldset';
 
 /**
