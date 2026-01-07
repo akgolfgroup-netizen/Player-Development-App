@@ -1,6 +1,6 @@
 // @ts-nocheck
 /**
- * AK Golf Academy - Kalender
+ * TIER Golf Academy - Kalender
  *
  * Archetype: C - Dashboard/Calendar Page
  * Purpose: Calendar with shadcn/ui components
@@ -143,7 +143,7 @@ const WeekView: React.FC<WeekViewProps> = ({
               key={day}
               className={cn(
                 "p-3 text-center border-r border-border-subtle last:border-r-0 cursor-pointer transition-colors",
-                isSelected && "bg-ak-primary/5",
+                isSelected && "bg-tier-navy/5",
                 !isSelected && "hover:bg-background-default"
               )}
               onClick={() => onDateSelect(date)}
@@ -151,8 +151,8 @@ const WeekView: React.FC<WeekViewProps> = ({
               <p className="text-xs text-text-secondary mb-1">{day}</p>
               <p className={cn(
                 "text-lg font-semibold",
-                isToday && "text-ak-primary",
-                isSelected && !isToday && "text-ak-primary",
+                isToday && "text-tier-navy",
+                isSelected && !isToday && "text-tier-navy",
                 !isToday && !isSelected && "text-text-primary"
               )}>
                 {date.getDate()}
@@ -161,7 +161,7 @@ const WeekView: React.FC<WeekViewProps> = ({
                 <div className="mt-1">
                   <span className={cn(
                     "text-[10px]",
-                    stats.completed === stats.total ? "text-ak-success" : "text-text-secondary"
+                    stats.completed === stats.total ? "text-tier-success" : "text-text-secondary"
                   )}>
                     {stats.completed}/{stats.total}
                   </span>
@@ -184,7 +184,7 @@ const WeekView: React.FC<WeekViewProps> = ({
               key={dayIdx}
               className={cn(
                 "border-r border-border-subtle last:border-r-0 p-2",
-                isSelected && "bg-ak-primary/5"
+                isSelected && "bg-tier-navy/5"
               )}
             >
               {daySessions.length === 0 ? (
@@ -202,7 +202,7 @@ const WeekView: React.FC<WeekViewProps> = ({
                           "p-2 cursor-pointer transition-all hover:shadow-md border-l-4",
                           session.status === 'completed' && "opacity-70"
                         )}
-                        style={{ borderLeftColor: `var(--ak-session-${session.type})` }}
+                        style={{ borderLeftColor: 'rgb(var(--status-info))' }}
                         onClick={() => onSessionClick(session, date)}
                       >
                         <span className="text-[10px] text-text-secondary block">{session.time}</span>
@@ -481,7 +481,7 @@ interface KalenderProps {
   events?: any[];
 }
 
-const AKGolfKalender: React.FC<KalenderProps> = ({ events = [] }) => {
+const TIERGolfKalender: React.FC<KalenderProps> = ({ events = [] }) => {
   const navigate = useNavigate();
   const today = new Date();
 
@@ -621,6 +621,7 @@ const AKGolfKalender: React.FC<KalenderProps> = ({ events = [] }) => {
     <div className="min-h-screen bg-background-default">
       <PageHeader
         title="Kalender"
+        helpText="Oversikt over alle dine planlagte treningsøkter, tester og avtaler. Planlegg din treningshverdag effektivt."
         actions={
           <Button onClick={() => { setEditingSession(null); setShowEditModal(true); }} className="gap-2">
             <Plus className="h-4 w-4" />
@@ -629,7 +630,7 @@ const AKGolfKalender: React.FC<KalenderProps> = ({ events = [] }) => {
         }
       />
 
-      <div className="p-6 max-w-7xl mx-auto">
+      <div className="p-6 w-full mx-auto">
         {/* Navigation Bar */}
         <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4 mb-6">
           <div className="flex items-center gap-3">
@@ -645,7 +646,7 @@ const AKGolfKalender: React.FC<KalenderProps> = ({ events = [] }) => {
               <ChevronRight className="h-4 w-4" />
             </Button>
 
-            <Button variant="ghost" onClick={goToToday} className="text-ak-primary">
+            <Button variant="ghost" onClick={goToToday} className="text-tier-navy">
               I dag
             </Button>
           </div>
@@ -717,7 +718,7 @@ const AKGolfKalender: React.FC<KalenderProps> = ({ events = [] }) => {
               {sessions[selectedDate.getDate()].map((session: any) => (
                 <Card
                   key={session.id}
-                  className="p-4 cursor-pointer hover:border-ak-primary/30 transition-all"
+                  className="p-4 cursor-pointer hover:border-tier-navy/30 transition-all"
                   onClick={() => handleSessionClick(session, selectedDate)}
                 >
                   <div className="flex items-start justify-between">
@@ -766,4 +767,4 @@ const AKGolfKalender: React.FC<KalenderProps> = ({ events = [] }) => {
   );
 };
 
-export default AKGolfKalender;
+export default TIERGolfKalender;

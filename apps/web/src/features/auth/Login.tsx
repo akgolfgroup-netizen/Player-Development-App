@@ -1,5 +1,5 @@
 /**
- * AK Golf Academy - Login Page
+ * TIER Golf Academy - Login Page
  *
  * Archetype: D - System/Auth Page
  * Purpose: User authentication
@@ -11,7 +11,7 @@ import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useAuth } from '../../contexts/AuthContext';
 import { LogIn, AlertCircle, X } from 'lucide-react';
-import { AKLogo } from '../../components/branding/AKLogo';
+import { TIERGolfFullLogo } from '../../components/branding/TIERGolfFullLogo';
 import { AuthPage } from '../../ui/components';
 import { Button, Text, Input } from '../../ui/primitives';
 
@@ -109,8 +109,8 @@ const Login: React.FC = () => {
 
   return (
     <AuthPage state={loading ? 'loading' : 'idle'} maxWidth="sm">
-      <AuthPage.Logo title="AK Golf Academy" subtitle="Individuell Utviklingsplan">
-        <AKLogo size={60} className="text-ak-primary" />
+      <AuthPage.Logo>
+        <TIERGolfFullLogo height={48} variant="dark" />
       </AuthPage.Logo>
 
       <AuthPage.Card title="Logg Inn">
@@ -119,7 +119,7 @@ const Login: React.FC = () => {
           <div
             role="alert"
             data-testid="login-error"
-            className="flex items-center gap-2 p-3 mb-6 rounded-lg bg-ak-status-error-light border border-ak-status-error/30 text-ak-status-error text-sm"
+            className="flex items-center gap-2 p-3 mb-6 rounded-lg bg-tier-error-light border border-tier-error/30 text-tier-error text-sm"
           >
             <AlertCircle size={18} />
             <span>{error}</span>
@@ -129,7 +129,7 @@ const Login: React.FC = () => {
         {/* Login Form */}
         <form onSubmit={handleSubmit}>
           <div className="mb-4">
-            <label className="block text-sm font-medium text-ak-text-primary mb-2">
+            <label className="block text-sm font-medium text-tier-navy mb-2">
               E-post
             </label>
             <Input
@@ -142,7 +142,7 @@ const Login: React.FC = () => {
           </div>
 
           <div className="mb-4">
-            <label className="block text-sm font-medium text-ak-text-primary mb-2">
+            <label className="block text-sm font-medium text-tier-navy mb-2">
               Passord
             </label>
             <Input
@@ -158,7 +158,7 @@ const Login: React.FC = () => {
             <button
               type="button"
               onClick={() => setShowForgotPassword(true)}
-              className="text-sm text-ak-primary hover:underline bg-transparent border-none cursor-pointer"
+              className="text-sm text-tier-navy hover:underline bg-transparent border-none cursor-pointer"
             >
               Glemt passord?
             </button>
@@ -170,15 +170,15 @@ const Login: React.FC = () => {
             leftIcon={<LogIn size={20} />}
             disabled={loading}
             loading={loading}
-            className="w-full justify-center"
+            className="w-full justify-center bg-tier-navy text-white hover:bg-tier-navy/90"
           >
             {loading ? 'Logger inn...' : 'Logg Inn'}
           </Button>
         </form>
 
         {/* Demo Login Buttons */}
-        <div className="mt-6 pt-6 border-t border-ak-border-default">
-          <Text variant="footnote" color="secondary" className="text-center mb-3">
+        <div className="mt-6 pt-6 border-t border-tier-border-default">
+          <Text variant="footnote" color="secondary" className="text-center mb-4">
             Demo innlogginger
           </Text>
           <div className="flex flex-col gap-2">
@@ -216,10 +216,10 @@ const Login: React.FC = () => {
       {/* Forgot Password Modal */}
       {showForgotPassword && (
         <div className="fixed inset-0 bg-black/50 flex items-center justify-center z-50">
-          <div className="bg-ak-surface-card rounded-2xl p-8 max-w-sm w-[90%] relative">
+          <div className="bg-tier-white rounded-2xl p-8 max-w-sm w-[90%] relative">
             <button
               onClick={() => setShowForgotPassword(false)}
-              className="absolute top-4 right-4 p-1 text-ak-text-secondary hover:text-ak-text-primary bg-transparent border-none cursor-pointer"
+              className="absolute top-4 right-4 p-1 text-tier-text-secondary hover:text-tier-navy bg-transparent border-none cursor-pointer"
               aria-label="Lukk"
             >
               <X size={24} />
@@ -230,7 +230,7 @@ const Login: React.FC = () => {
             </Text>
 
             {resetSuccess ? (
-              <div className="p-5 bg-ak-status-success-light rounded-lg text-center">
+              <div className="p-5 bg-tier-success-light rounded-lg text-center">
                 <div className="text-5xl mb-3">✓</div>
                 <Text variant="body" color="success">
                   En e-post med instruksjoner for å tilbakestille passord er sendt til {resetEmail}
@@ -243,7 +243,7 @@ const Login: React.FC = () => {
                 </Text>
 
                 <div className="mb-5">
-                  <label className="block text-sm font-medium text-ak-text-primary mb-2">
+                  <label className="block text-sm font-medium text-tier-navy mb-2">
                     E-post
                   </label>
                   <Input

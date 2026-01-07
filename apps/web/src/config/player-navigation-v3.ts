@@ -1,6 +1,6 @@
 /**
  * ============================================================
- * PLAYER NAVIGATION V3 - AK Golf Academy
+ * PLAYER NAVIGATION V3 - TIER Golf Academy
  * ============================================================
  *
  * Ny 5-modus navigasjonsstruktur med fargekodet områder:
@@ -52,39 +52,39 @@ export const areaColors: Record<AreaColor, {
   text: string;
 }> = {
   default: {
-    primary: '#1B4D3E', // Forest green (brand)
-    light: '#2A6B55',
-    dark: '#133629',
-    surface: '#F5F7F9',
-    text: '#111827',
+    primary: 'rgb(var(--tier-navy))', // TIER Navy (brand)
+    light: 'rgb(var(--tier-navy-light))',
+    dark: 'rgb(var(--tier-navy-dark))',
+    surface: 'rgb(var(--surface-secondary))',
+    text: 'rgb(var(--text-primary))',
   },
   green: {
-    primary: '#059669', // Emerald
-    light: '#10B981',
-    dark: '#047857',
-    surface: '#ECFDF5',
-    text: '#064E3B',
+    primary: 'rgb(var(--status-success))', // Success Green
+    light: 'rgb(var(--status-success-light))',
+    dark: 'rgb(var(--status-success-dark))',
+    surface: 'rgb(var(--surface-tertiary))',
+    text: 'rgb(var(--text-primary))',
   },
   blue: {
-    primary: '#0284C7', // Sky blue
-    light: '#0EA5E9',
-    dark: '#0369A1',
-    surface: '#F0F9FF',
-    text: '#0C4A6E',
+    primary: 'rgb(var(--status-info))', // Info Blue
+    light: 'rgb(var(--status-info-light))',
+    dark: 'rgb(var(--status-info-dark))',
+    surface: 'rgb(var(--surface-tertiary))',
+    text: 'rgb(var(--text-primary))',
   },
   amber: {
-    primary: '#D97706', // Amber
-    light: '#F59E0B',
-    dark: '#B45309',
-    surface: '#FFFBEB',
-    text: '#78350F',
+    primary: 'rgb(var(--status-warning))', // Warning Amber
+    light: 'rgb(var(--status-warning-light))',
+    dark: 'rgb(var(--status-warning-dark))',
+    surface: 'rgb(var(--surface-tertiary))',
+    text: 'rgb(var(--text-primary))',
   },
   purple: {
-    primary: '#7C3AED', // Violet
-    light: '#8B5CF6',
-    dark: '#6D28D9',
-    surface: '#F5F3FF',
-    text: '#4C1D95',
+    primary: 'rgb(var(--category-j))', // Category J Purple
+    light: 'rgb(var(--category-k))',
+    dark: 'rgb(var(--category-j))',
+    surface: 'rgb(var(--category-j-bg))',
+    text: 'rgb(var(--text-primary))',
   },
 };
 
@@ -98,7 +98,7 @@ export const playerNavigationV3: NavArea[] = [
   {
     id: 'dashboard',
     label: 'Oversikt',
-    icon: 'Home',
+    icon: 'HomeIcon',
     color: 'default',
     href: '/dashboard',
     hubPath: '/dashboard',
@@ -107,9 +107,9 @@ export const playerNavigationV3: NavArea[] = [
         id: 'overview',
         label: 'Oversikt',
         items: [
-          { href: '/dashboard', label: 'Hjem', icon: 'Home', description: 'Din personlige oversikt' },
-          { href: '/dashboard/aktivitet', label: 'Aktivitet', icon: 'Activity', description: 'Siste aktiviteter' },
-          { href: '/dashboard/varsler', label: 'Varsler', icon: 'Bell', description: 'Viktige meldinger' },
+          { href: '/dashboard', label: 'Hjem', icon: 'HomeIcon', description: 'Din personlige oversikt' },
+          { href: '/dashboard/aktivitet', label: 'Status', icon: 'StatsIcon', description: 'Siste aktiviteter' },
+          { href: '/dashboard/deling', label: 'Deling', icon: 'ShareIcon', description: 'Delingsinnstillinger' },
         ],
       },
     ],
@@ -121,48 +121,50 @@ export const playerNavigationV3: NavArea[] = [
   {
     id: 'trening',
     label: 'Trening',
-    icon: 'Dumbbell',
+    icon: 'SwingIcon',
     color: 'green',
     href: '/trening',
     hubPath: '/trening',
     sections: [
       {
-        id: 'logging',
-        label: 'Logging',
+        id: 'okter',
+        label: 'Trening',
         items: [
-          { href: '/trening/logg', label: 'Logg trening', icon: 'Plus', description: 'Registrer treningsøkt' },
-          { href: '/trening/dagbok', label: 'Dagbok', icon: 'Book', description: 'Se treningshistorikk' },
+          { href: '/trening/okter', label: 'Mine økter', icon: 'LessonsIcon', description: 'Planlagte økter' },
+          { href: '/trening/plan', label: 'Min treningsplan', icon: 'CalendarIcon', description: 'Ukentlig plan' },
         ],
       },
       {
-        id: 'okter',
-        label: 'Økter',
+        id: 'logging',
+        label: 'Logg',
         items: [
-          { href: '/trening/okter', label: 'Mine økter', icon: 'ClipboardList', description: 'Planlagte økter' },
-          { href: '/trening/plan', label: 'Treningsplan', icon: 'Calendar', description: 'Ukentlig plan' },
+          { href: '/trening/logg', label: 'Logg treningsøkt', icon: 'AddIcon', description: 'Registrer treningsøkt' },
+          { href: '/trening/dagbok', label: 'Treningsstatistikk', icon: 'ScorecardIcon', description: 'Se treningshistorikk' },
         ],
       },
       {
         id: 'ovelser',
-        label: 'Øvelser',
+        label: 'Teknisk plan',
         items: [
-          { href: '/trening/ovelser', label: 'Øvelsesbank', icon: 'Library', description: 'Alle øvelser' },
-          { href: '/trening/videoer', label: 'Videoer', icon: 'Video', description: 'Instruksjonsvideoer' },
+          { href: '/bevis', label: 'Mine teknisk plan (Bevis)', icon: 'VideoIcon', description: 'Dokumenter fremgang' },
+          { href: '/trening/ovelser', label: 'Mine øvelser', icon: 'ClubIcon', description: 'Mine øvelser' },
+          { href: '/trening/ovelser', label: 'Øvelsesbank', icon: 'ClubIcon', description: 'Alle øvelser' },
+          { href: '/trening/videoer', label: 'Video', icon: 'VideoIcon', description: 'Instruksjonsvideoer' },
         ],
       },
       {
         id: 'testing',
         label: 'Testing',
         items: [
-          { href: '/trening/testing', label: 'Testprotokoll', icon: 'Target', description: 'Oversikt tester' },
-          { href: '/trening/testing/registrer', label: 'Registrer test', icon: 'PlusCircle', description: 'Ny testresultat' },
+          { href: '/trening/testing', label: 'Testprotokoll', icon: 'TargetIcon', description: 'Oversikt tester' },
+          { href: '/trening/testing/registrer', label: 'Registrer test', icon: 'AddIcon', description: 'Ny testresultat' },
         ],
       },
       {
         id: 'kunnskap',
         label: 'Kunnskap',
         items: [
-          { href: '/trening/kategorisystem', label: 'Kategorisystem', icon: 'BookOpen', description: 'Forstå treningssystemet' },
+          { href: '/trening/kategorisystem', label: 'Kategorisystem', icon: 'LessonsIcon', description: 'Forstå treningssystemet' },
         ],
       },
     ],
@@ -174,34 +176,37 @@ export const playerNavigationV3: NavArea[] = [
   {
     id: 'utvikling',
     label: 'Min utvikling',
-    icon: 'TrendingUp',
+    icon: 'StatsIcon',
     color: 'blue',
     href: '/utvikling',
     hubPath: '/utvikling',
     sections: [
       {
         id: 'fremgang',
-        label: 'Fremgang',
+        label: 'Fremgang & Statistikk',
         items: [
-          { href: '/utvikling/oversikt', label: 'Min utvikling', icon: 'TrendingUp', description: 'Din progresjon' },
-          { href: '/utvikling/statistikk', label: 'Statistikk', icon: 'BarChart3', description: 'Detaljert statistikk' },
-          { href: '/utvikling/historikk', label: 'Historikk', icon: 'History', description: 'Tidligere resultater' },
+          { href: '/utvikling/oversikt', label: 'Min utvikling', icon: 'StatsIcon', description: 'Din progresjon' },
+          { href: '/utvikling/statistikk', label: 'Statistikk', icon: 'ScorecardIcon', description: 'Detaljert statistikk' },
+          { href: '/utvikling/treningsomrader', label: 'Treningsområder', icon: 'TargetIcon', description: 'Statistikk per treningsområde' },
+          { href: '/utvikling/datagolf', label: 'Verktøy', icon: 'TargetIcon', description: 'Avanserte analyseverktøy' },
+          { href: '/utvikling/fremgang', label: 'Fremgangsanalyse', icon: 'StatsIcon', description: 'Analyser din fremgang' },
+          { href: '/utvikling/historikk', label: 'Historikk', icon: 'RefreshIcon', description: 'Tidligere resultater' },
         ],
       },
       {
         id: 'tester',
         label: 'Tester',
         items: [
-          { href: '/utvikling/testresultater', label: 'Testresultater', icon: 'ClipboardCheck', description: 'Alle testresultater' },
-          { href: '/utvikling/krav', label: 'Kategori-krav', icon: 'Award', description: 'Krav per kategori' },
+          { href: '/utvikling/testresultater', label: 'Testresultater', icon: 'TargetIcon', description: 'Alle testresultater' },
+          { href: '/utvikling/krav', label: 'Kategori-krav', icon: 'HandicapIcon', description: 'Krav per kategori' },
         ],
       },
       {
         id: 'achievements',
         label: 'Prestasjoner',
         items: [
-          { href: '/utvikling/badges', label: 'Merker', icon: 'Award', description: 'Dine merker' },
-          { href: '/utvikling/achievements', label: 'Prestasjoner', icon: 'Trophy', description: 'Alle prestasjoner' },
+          { href: '/utvikling/badges', label: 'Merker', icon: 'HandicapIcon', description: 'Dine merker' },
+          { href: '/utvikling/achievements', label: 'Prestasjoner', icon: 'CheckIcon', description: 'Alle prestasjoner' },
         ],
       },
     ],
@@ -213,7 +218,7 @@ export const playerNavigationV3: NavArea[] = [
   {
     id: 'plan',
     label: 'Plan',
-    icon: 'Calendar',
+    icon: 'CalendarIcon',
     color: 'amber',
     href: '/plan',
     hubPath: '/plan',
@@ -222,25 +227,26 @@ export const playerNavigationV3: NavArea[] = [
         id: 'kalender',
         label: 'Kalender',
         items: [
-          { href: '/plan/kalender', label: 'Kalender', icon: 'Calendar', description: 'Din kalender' },
-          { href: '/plan/ukeplan', label: 'Ukeplan', icon: 'CalendarDays', description: 'Ukentlig oversikt' },
-          { href: '/plan/booking', label: 'Booking', icon: 'Clock', description: 'Book treningstid' },
+          { href: '/plan/kalender', label: 'Kalender', icon: 'CalendarIcon', description: 'Din kalender' },
+          { href: '/plan/ukeplan', label: 'Ukeplan', icon: 'CalendarIcon', description: 'Ukentlig oversikt' },
+          { href: '/plan/booking', label: 'Booking', icon: 'CalendarIcon', description: 'Book treningstid' },
+          { href: '/samlinger', label: 'Samlinger', icon: 'GolfFlagIcon', description: 'Treningssamlinger' },
         ],
       },
       {
         id: 'mal',
         label: 'Mål',
         items: [
-          { href: '/plan/maal', label: 'Målsetninger', icon: 'Target', description: 'Dine mål' },
-          { href: '/plan/aarsplan', label: 'Årsplan', icon: 'FileText', description: 'Langsiktig plan' },
+          { href: '/plan/maal', label: 'Målsetninger', icon: 'TargetIcon', description: 'Dine mål' },
+          { href: '/plan/aarsplan', label: 'Årsplan', icon: 'ScorecardIcon', description: 'Langsiktig plan' },
         ],
       },
       {
         id: 'turneringer',
         label: 'Turneringer',
         items: [
-          { href: '/plan/turneringer', label: 'Turneringskalender', icon: 'Trophy', description: 'Alle turneringer' },
-          { href: '/plan/turneringer/mine', label: 'Mine turneringer', icon: 'Flag', description: 'Påmeldte turneringer' },
+          { href: '/plan/turneringer', label: 'Turneringskalender', icon: 'GolfFlagIcon', description: 'Alle turneringer' },
+          { href: '/plan/turneringer/mine', label: 'Mine turneringer', icon: 'GolfFlagIcon', description: 'Påmeldte turneringer' },
         ],
       },
     ],
@@ -252,7 +258,7 @@ export const playerNavigationV3: NavArea[] = [
   {
     id: 'mer',
     label: 'Mer',
-    icon: 'MoreHorizontal',
+    icon: 'SettingsIcon',
     color: 'purple',
     href: '/mer',
     hubPath: '/mer',
@@ -262,34 +268,34 @@ export const playerNavigationV3: NavArea[] = [
         id: 'profil',
         label: 'Profil',
         items: [
-          { href: '/mer/profil', label: 'Min profil', icon: 'User', description: 'Din profil' },
-          { href: '/mer/profil/rediger', label: 'Rediger profil', icon: 'Edit', description: 'Oppdater info' },
-          { href: '/mer/trenerteam', label: 'Trenerteam', icon: 'Users', description: 'Dine trenere' },
+          { href: '/mer/profil', label: 'Min profil', icon: 'ProfileIcon', description: 'Din profil' },
+          { href: '/mer/profil/rediger', label: 'Rediger profil', icon: 'EditIcon', description: 'Oppdater info' },
+          { href: '/mer/trenerteam', label: 'Trenerteam', icon: 'ProfileIcon', description: 'Dine trenere' },
         ],
       },
       {
         id: 'kommunikasjon',
         label: 'Kommunikasjon',
         items: [
-          { href: '/mer/meldinger', label: 'Meldinger', icon: 'Mail', description: 'Innboks' },
-          { href: '/mer/feedback', label: 'Trenerfeedback', icon: 'MessageSquare', description: 'Tilbakemeldinger' },
+          { href: '/mer/meldinger', label: 'Meldinger', icon: 'ChatIcon', description: 'Innboks' },
+          { href: '/mer/feedback', label: 'Trenerfeedback', icon: 'ChatIcon', description: 'Tilbakemeldinger' },
         ],
       },
       {
         id: 'ressurser',
         label: 'Ressurser',
         items: [
-          { href: '/mer/kunnskap', label: 'Kunnskapsbase', icon: 'BookOpen', description: 'Artikler og guider' },
-          { href: '/mer/notater', label: 'Notater', icon: 'FileText', description: 'Dine notater' },
+          { href: '/mer/kunnskap', label: 'Kunnskapsbase', icon: 'LessonsIcon', description: 'Artikler og guider' },
+          { href: '/mer/notater', label: 'Notater', icon: 'ScorecardIcon', description: 'Dine notater' },
         ],
       },
       {
         id: 'innstillinger',
         label: 'Innstillinger',
         items: [
-          { href: '/mer/innstillinger', label: 'Innstillinger', icon: 'Settings', description: 'App-innstillinger' },
-          { href: '/mer/varsler', label: 'Varsler', icon: 'Bell', description: 'Varselinnstillinger' },
-          { href: '/mer/kalibrering', label: 'Kalibrering', icon: 'Sliders', description: 'Testkalibrering' },
+          { href: '/mer/innstillinger', label: 'Innstillinger', icon: 'SettingsIcon', description: 'App-innstillinger' },
+          { href: '/mer/deling', label: 'Deling', icon: 'ShareIcon', description: 'Delingsinnstillinger' },
+          { href: '/mer/kalibrering', label: 'Kalibrering', icon: 'SettingsIcon', description: 'Testkalibrering' },
         ],
       },
     ],
@@ -302,13 +308,13 @@ export const playerNavigationV3: NavArea[] = [
 export const playerQuickActionsV3 = [
   {
     label: 'Logg trening',
-    icon: 'Plus',
+    icon: 'AddIcon',
     href: '/trening/logg',
     variant: 'primary' as const,
   },
   {
     label: 'Registrer test',
-    icon: 'Target',
+    icon: 'TargetIcon',
     href: '/trening/testing/registrer',
     variant: 'secondary' as const,
   },

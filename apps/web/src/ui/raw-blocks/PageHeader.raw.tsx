@@ -1,10 +1,30 @@
-import React from 'react';
-import { PageTitle } from '../../components/typography';
-
 /**
- * PageHeader Raw Block
- * Main page header with title, breadcrumbs, and actions
+ * ============================================================
+ * PageHeader - TIER Golf Design System v1.0
+ * ============================================================
+ *
+ * Full-width page header with max-width content container.
+ * Follows TIER spacing scale (4px base unit).
+ *
+ * ARCHITECTURE:
+ * - Full-width background (bg-tier-white)
+ * - Max-width content (1200px)
+ * - Responsive padding (16/24/32px)
+ * - Sticky positioning optional
+ * - Zero inline styles (except dynamic values)
+ *
+ * ============================================================
  */
+
+import React from 'react';
+import { ChevronLeft, HelpCircle } from 'lucide-react';
+import { PageTitle } from '../../components/typography';
+import {
+  Tooltip,
+  TooltipContent,
+  TooltipProvider,
+  TooltipTrigger,
+} from '../../components/shadcn/tooltip';
 
 interface BreadcrumbItem {
   label: string;
@@ -12,226 +32,161 @@ interface BreadcrumbItem {
   onClick?: () => void;
 }
 
-interface PageHeaderProps {
-  /** Page title */
+export interface PageHeaderProps {
+  /** Page title (renders as h1) */
   title: string;
-  /** Page subtitle or description */
+  /** Optional subtitle */
   subtitle?: string;
+  /** Help text shown in tooltip when hovering over help icon */
+  helpText?: string;
   /** Breadcrumb navigation */
   breadcrumbs?: BreadcrumbItem[];
   /** Action buttons (right side) */
   actions?: React.ReactNode;
-  /** Back button */
+  /** Back button handler */
   onBack?: () => void;
-  /** Show divider at bottom */
+  /** Show bottom border */
   divider?: boolean;
   /** Sticky header */
   sticky?: boolean;
+  /** Custom className for header */
+  className?: string;
 }
 
 const PageHeader: React.FC<PageHeaderProps> = ({
   title,
   subtitle,
+  helpText,
   breadcrumbs,
   actions,
   onBack,
   divider = true,
   sticky = false,
+  className = '',
 }) => {
   return (
     <header
-      style={{
-        ...styles.header,
-        ...(divider && styles.headerWithDivider),
-        ...(sticky && styles.headerSticky),
-      }}
+      className={`
+        w-full bg-tier-white rounded-[14px]
+        ${divider ? 'border-b border-tier-border-default' : ''}
+        ${sticky ? 'sticky top-0 z-40 backdrop-blur-sm bg-tier-white/95' : ''}
+        ${className}
+      `.trim()}
     >
-      {/* Breadcrumbs */}
-      {breadcrumbs && breadcrumbs.length > 0 && (
-        <nav style={styles.breadcrumbs} aria-label="Breadcrumb">
-          {breadcrumbs.map((crumb, index) => (
-            <React.Fragment key={index}>
-              {index > 0 && (
-                <span style={styles.breadcrumbSeparator}>/</span>
-              )}
-              {crumb.href || crumb.onClick ? (
-                <a
-                  href={crumb.href}
-                  onClick={(e) => {
-                    if (crumb.onClick) {
-                      e.preventDefault();
-                      crumb.onClick();
-                    }
-                  }}
-                  style={{
-                    ...styles.breadcrumbLink,
-                    ...(index === breadcrumbs.length - 1 && styles.breadcrumbCurrent),
-                  }}
-                  aria-current={index === breadcrumbs.length - 1 ? 'page' : undefined}
-                >
-                  {crumb.label}
-                </a>
-              ) : (
-                <span style={styles.breadcrumbText}>{crumb.label}</span>
-              )}
-            </React.Fragment>
-          ))}
-        </nav>
-      )}
+      {/* Full-width container with responsive padding */}
+      <div className="w-full px-4 md:px-6 lg:px-8">
+        {/* Max-width content area */}
+        <div className="max-w-[1200px] mx-auto py-4 md:py-5">
 
-      {/* Title Section */}
-      <div style={styles.titleSection}>
-        <div style={styles.titleContent}>
-          {/* Back Button */}
-          {onBack && (
-            <button
-              onClick={onBack}
-              style={styles.backButton}
-              aria-label="Go back"
+          {/* Breadcrumbs */}
+          {breadcrumbs && breadcrumbs.length > 0 && (
+            <nav
+              className="flex items-center gap-2 mb-3 flex-wrap text-tier-footnote"
+              aria-label="Breadcrumb"
             >
-              <svg
-                width="20"
-                height="20"
-                viewBox="0 0 20 20"
-                fill="none"
-                stroke="currentColor"
-                strokeWidth="2"
-                strokeLinecap="round"
-                strokeLinejoin="round"
-              >
-                <path d="M12 5L7 10L12 15" />
-              </svg>
-            </button>
+              {breadcrumbs.map((crumb, index) => (
+                <React.Fragment key={index}>
+                  {index > 0 && (
+                    <span className="text-tier-text-tertiary mx-1">/</span>
+                  )}
+                  {crumb.href || crumb.onClick ? (
+                    <a
+                      href={crumb.href}
+                      onClick={(e) => {
+                        if (crumb.onClick) {
+                          e.preventDefault();
+                          crumb.onClick();
+                        }
+                      }}
+                      className={`
+                        text-tier-text-secondary hover:text-tier-navy
+                        transition-colors duration-150
+                        ${index === breadcrumbs.length - 1 ? 'text-tier-text-primary font-medium' : ''}
+                      `.trim()}
+                      aria-current={index === breadcrumbs.length - 1 ? 'page' : undefined}
+                    >
+                      {crumb.label}
+                    </a>
+                  ) : (
+                    <span className="text-tier-text-secondary">
+                      {crumb.label}
+                    </span>
+                  )}
+                </React.Fragment>
+              ))}
+            </nav>
           )}
 
-          {/* Title and Subtitle */}
-          <div style={styles.titleWrapper}>
-            <PageTitle style={styles.title}>{title}</PageTitle>
-            {subtitle && (
-              <p style={styles.subtitle}>{subtitle}</p>
+          {/* Title Section */}
+          <div className="flex justify-between items-start gap-4 flex-col sm:flex-row">
+            {/* Left: Back button + Title */}
+            <div className="flex items-start gap-3 flex-1 min-w-0">
+
+              {/* Back Button */}
+              {onBack && (
+                <button
+                  onClick={onBack}
+                  className="
+                    p-2 rounded-lg bg-transparent
+                    text-tier-text-secondary hover:text-tier-navy
+                    hover:bg-tier-surface-subtle
+                    transition-all duration-150
+                    flex items-center justify-center
+                    mt-1
+                  "
+                  aria-label="Go back"
+                >
+                  <ChevronLeft size={20} />
+                </button>
+              )}
+
+              {/* Title and Subtitle */}
+              <div className="flex-1 min-w-0">
+                <div className="flex items-center gap-2">
+                  <PageTitle className="text-tier-title1 md:text-[28px] font-bold text-tier-navy leading-tight m-0">
+                    {title}
+                  </PageTitle>
+                  {helpText && (
+                    <TooltipProvider delayDuration={200}>
+                      <Tooltip>
+                        <TooltipTrigger asChild>
+                          <button
+                            type="button"
+                            className="flex-shrink-0 text-tier-text-tertiary hover:text-tier-navy transition-colors duration-150"
+                            aria-label="Hjelp"
+                          >
+                            <HelpCircle size={20} />
+                          </button>
+                        </TooltipTrigger>
+                        <TooltipContent
+                          side="right"
+                          className="max-w-xs text-sm"
+                        >
+                          <p>{helpText}</p>
+                        </TooltipContent>
+                      </Tooltip>
+                    </TooltipProvider>
+                  )}
+                </div>
+                {subtitle && (
+                  <p className="text-tier-subheadline text-tier-text-secondary mt-1 leading-normal">
+                    {subtitle}
+                  </p>
+                )}
+              </div>
+            </div>
+
+            {/* Right: Actions */}
+            {actions && (
+              <div className="flex items-center gap-2 shrink-0">
+                {actions}
+              </div>
             )}
           </div>
         </div>
-
-        {/* Actions */}
-        {actions && (
-          <div style={styles.actions}>
-            {actions}
-          </div>
-        )}
       </div>
     </header>
   );
 };
-
-const styles: Record<string, React.CSSProperties> = {
-  header: {
-    backgroundColor: 'var(--background-white)',
-    padding: 'var(--spacing-4)',
-    marginBottom: 'var(--spacing-4)',
-  },
-  headerWithDivider: {
-    borderBottom: '1px solid var(--border-subtle)',
-  },
-  headerSticky: {
-    position: 'sticky',
-    top: 0,
-    zIndex: 30,
-    backdropFilter: 'blur(10px)',
-    WebkitBackdropFilter: 'blur(10px)',
-    backgroundColor: 'var(--overlay-glass)',
-  },
-  breadcrumbs: {
-    display: 'flex',
-    alignItems: 'center',
-    gap: 'var(--spacing-2)',
-    marginBottom: 'var(--spacing-3)',
-    flexWrap: 'wrap',
-  },
-  breadcrumbLink: {
-    fontSize: 'var(--font-size-footnote)',
-    color: 'var(--text-secondary)',
-    textDecoration: 'none',
-    transition: 'color 0.15s ease',
-  },
-  breadcrumbCurrent: {
-    color: 'var(--text-primary)',
-    fontWeight: 500,
-  },
-  breadcrumbText: {
-    fontSize: 'var(--font-size-footnote)',
-    color: 'var(--text-secondary)',
-  },
-  breadcrumbSeparator: {
-    fontSize: 'var(--font-size-footnote)',
-    color: 'var(--text-tertiary)',
-    margin: '0 var(--spacing-1)',
-  },
-  titleSection: {
-    display: 'flex',
-    justifyContent: 'space-between',
-    alignItems: 'flex-start',
-    gap: 'var(--spacing-4)',
-  },
-  titleContent: {
-    display: 'flex',
-    alignItems: 'flex-start',
-    gap: 'var(--spacing-3)',
-    flex: 1,
-    minWidth: 0,
-  },
-  backButton: {
-    background: 'transparent',
-    border: 'none',
-    padding: 'var(--spacing-2)',
-    borderRadius: 'var(--radius-sm)',
-    cursor: 'pointer',
-    color: 'var(--text-secondary)',
-    display: 'flex',
-    alignItems: 'center',
-    justifyContent: 'center',
-    transition: 'background-color 0.15s ease, color 0.15s ease',
-    marginTop: '2px',
-  },
-  titleWrapper: {
-    flex: 1,
-    minWidth: 0,
-  },
-  title: {
-    fontSize: 'var(--font-size-title1)',
-    fontWeight: 700,
-    color: 'var(--text-primary)',
-    margin: 0,
-    lineHeight: 1.2,
-  },
-  subtitle: {
-    fontSize: 'var(--font-size-subheadline)',
-    color: 'var(--text-secondary)',
-    margin: 'var(--spacing-1) 0 0',
-    lineHeight: 1.4,
-  },
-  actions: {
-    display: 'flex',
-    alignItems: 'center',
-    gap: 'var(--spacing-2)',
-    flexShrink: 0,
-  },
-};
-
-// Responsive adjustments
-if (typeof window !== 'undefined') {
-  const mediaQuery = window.matchMedia('(max-width: 767px)');
-  if (mediaQuery.matches) {
-    styles.titleSection = {
-      ...styles.titleSection,
-      flexDirection: 'column',
-      gap: 'var(--spacing-3)',
-    };
-    styles.title = {
-      ...styles.title,
-      fontSize: 'var(--font-size-title2)',
-    };
-  }
-}
 
 export default PageHeader;

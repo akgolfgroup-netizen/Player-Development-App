@@ -2,242 +2,317 @@
  * Testprotokoll Component
  * Design System v3.0 - Premium Light
  *
- * MIGRATED TO PAGE ARCHITECTURE - Zero inline styles
+ * REDESIGNED - Clean, consistent layout with proper visual hierarchy
  */
 
-import React, { useState } from 'react';
+import React, { useState, useMemo } from 'react';
 import { Link } from 'react-router-dom';
-import { SectionTitle, SubSectionTitle, CardTitle } from '../../components/typography';
+import { SectionTitle, SubSectionTitle } from '../../components/typography';
 import Button from '../../ui/primitives/Button';
 import StartTestModal from './StartTestModal';
+import TestRegistrationForm from './TestRegistrationForm';
 import apiClient from '../../services/apiClient';
 import {
-  HomeIcon, CalendarIcon, GolfScorecard, ChartIcon, ProfileIcon
-} from '../../components/icons';
-import {
-  Zap, Ruler, Target, Crosshair, CircleDot, Flag, Waves,
-  Circle, MapPin, Dumbbell, ArrowUp, RotateCw, RefreshCw,
-  Activity, FlagTriangleRight, Brain, Timer, Trophy
+  Zap, Ruler, Target, Flag, Circle, Dumbbell, Activity,
+  FlagTriangleRight, Brain, ChevronRight, CheckCircle,
+  AlertCircle, Clock, TrendingUp, Calendar, Search, Plus
 } from 'lucide-react';
 import { testDefinitions } from './config/testDefinitions';
 
-// Icon mapping for test icons
-const TestIconMap = {
-  'zap': Zap,
-  'ruler': Ruler,
-  'target': Target,
-  'crosshair': Crosshair,
-  'circle-dot': CircleDot,
-  'flag': Flag,
-  'waves': Waves,
-  'circle': Circle,
-  'map-pin': MapPin,
-  'dumbbell': Dumbbell,
-  'arrow-up': ArrowUp,
-  'rotate-cw': RotateCw,
-  'refresh-cw': RefreshCw,
-  'activity': Activity,
-  'flag-triangle-right': FlagTriangleRight,
-  'brain': Brain,
-  'timer': Timer,
-  'trophy': Trophy,
+// ============================================================================
+// CATEGORY CONFIGURATION
+// ============================================================================
+
+const CATEGORY_CONFIG = {
+  speed: {
+    label: 'Hastighet',
+    icon: Activity,
+    color: 'rgb(var(--tier-navy))',
+    bgColor: 'bg-blue-50',
+    borderColor: 'border-blue-200',
+  },
+  distance: {
+    label: 'Avstand',
+    icon: Ruler,
+    color: 'rgb(var(--status-info))',
+    bgColor: 'bg-teal-50',
+    borderColor: 'border-teal-200',
+  },
+  accuracy: {
+    label: 'Presisjon',
+    icon: Target,
+    color: 'rgb(var(--category-j))',
+    bgColor: 'bg-purple-50',
+    borderColor: 'border-purple-200',
+  },
+  short_game: {
+    label: 'Nærspill',
+    icon: Flag,
+    color: 'rgb(var(--status-success))',
+    bgColor: 'bg-emerald-50',
+    borderColor: 'border-emerald-200',
+  },
+  putting: {
+    label: 'Putting',
+    icon: Circle,
+    color: 'rgb(var(--tier-navy))',
+    bgColor: 'bg-blue-50',
+    borderColor: 'border-blue-200',
+  },
+  physical: {
+    label: 'Fysisk',
+    icon: Dumbbell,
+    color: 'rgb(var(--status-error))',
+    bgColor: 'bg-red-50',
+    borderColor: 'border-red-200',
+  },
+  scoring: {
+    label: 'Scoring',
+    icon: FlagTriangleRight,
+    color: 'rgb(var(--tier-gold))',
+    bgColor: 'bg-amber-50',
+    borderColor: 'border-amber-200',
+  },
+  mental: {
+    label: 'Mental',
+    icon: Brain,
+    color: 'rgb(var(--category-j))',
+    bgColor: 'bg-indigo-50',
+    borderColor: 'border-indigo-200',
+  },
 };
 
-// Render test icon component
-const TestIcon = ({ icon, size = 20, className = '' }) => {
-  const IconComponent = TestIconMap[icon];
-  if (IconComponent) {
-    return <IconComponent size={size} className={className} />;
-  }
-  // Fallback for emojis (legacy support)
-  return <span className={className}>{icon}</span>;
-};
+// Group tests by category in display order
+const CATEGORY_ORDER = ['speed', 'distance', 'accuracy', 'short_game', 'putting', 'physical', 'scoring', 'mental'];
 
-// ===== ICONS =====
-const Icons = {
-  Check: () => (
-    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="3">
-      <polyline points="20,6 9,17 4,12"/>
-    </svg>
-  ),
-  TrendingUp: () => (
-    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
-      <polyline points="23,6 13.5,15.5 8.5,10.5 1,18"/>
-      <polyline points="17,6 23,6 23,12"/>
-    </svg>
-  ),
-  TrendingDown: () => (
-    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
-      <polyline points="23,18 13.5,8.5 8.5,13.5 1,6"/>
-      <polyline points="17,18 23,18 23,12"/>
-    </svg>
-  ),
-  Minus: () => (
-    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
-      <line x1="5" y1="12" x2="19" y2="12"/>
-    </svg>
-  ),
-  Info: () => (
-    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
-      <circle cx="12" cy="12" r="10"/>
-      <line x1="12" y1="16" x2="12" y2="12"/>
-      <line x1="12" y1="8" x2="12.01" y2="8"/>
-    </svg>
-  ),
-  Calendar: () => (
-    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
-      <rect x="3" y="4" width="18" height="18" rx="2"/>
-      <line x1="16" y1="2" x2="16" y2="6"/>
-      <line x1="8" y1="2" x2="8" y2="6"/>
-      <line x1="3" y1="10" x2="21" y2="10"/>
-    </svg>
-  ),
-  Play: () => (
-    <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor">
-      <polygon points="5,3 19,12 5,21"/>
-    </svg>
-  ),
-};
+// ============================================================================
+// UI COMPONENTS
+// ============================================================================
 
-// ===== UI COMPONENTS =====
-const Card = ({ children, className = '', padding = true }) => (
-  <div className={`bg-ak-surface-card border border-ak-border-subtle rounded-xl shadow-sm ${padding ? 'p-4' : ''} ${className}`}>
-    {children}
-  </div>
-);
-
-const Badge = ({ children, variant = 'neutral', size = 'sm' }) => {
-  const variantClasses = {
-    neutral: 'bg-ak-surface-subtle text-ak-text-tertiary',
-    accent: 'bg-ak-primary/10 text-ak-primary',
-    success: 'bg-ak-status-success/10 text-ak-status-success',
-    warning: 'bg-ak-status-warning/10 text-ak-status-warning',
-    error: 'bg-ak-status-error/10 text-ak-status-error',
+const StatCard = ({ label, value, subValue, variant = 'default', icon: Icon }) => {
+  const variants = {
+    default: 'bg-white border-tier-border-default',
+    success: 'bg-emerald-50 border-emerald-200',
+    warning: 'bg-amber-50 border-amber-200',
+    error: 'bg-red-50 border-red-200',
   };
 
-  const sizes = {
-    sm: 'px-2 py-0.5 text-[11px]',
-    md: 'px-2.5 py-1 text-[13px]',
+  const textVariants = {
+    default: 'text-tier-navy',
+    success: 'text-emerald-700',
+    warning: 'text-amber-700',
+    error: 'text-red-700',
   };
 
   return (
-    <span
-      className={`inline-flex items-center rounded-full font-medium ${sizes[size]} ${variantClasses[variant] || variantClasses.neutral}`}
-    >
-      {children}
-    </span>
-  );
-};
-
-const Avatar = ({ name, size = 40 }) => {
-  const initials = name?.split(' ').map(n => n[0]).join('').slice(0, 2).toUpperCase() || 'AK';
-  return (
-    <div
-      className="rounded-full flex items-center justify-center font-medium text-white bg-ak-primary"
-      style={{
-        width: size,
-        height: size,
-        fontSize: size * 0.4
-      }}
-    >
-      {initials}
+    <div className={`rounded-xl border p-5 ${variants[variant]}`}>
+      <div className="flex items-center justify-between mb-2">
+        <span className="text-xs font-medium uppercase tracking-wider text-tier-text-tertiary">
+          {label}
+        </span>
+        {Icon && <Icon size={18} className="text-tier-text-tertiary" />}
+      </div>
+      <p className={`text-3xl font-bold ${textVariants[variant]}`}>
+        {value}
+      </p>
+      {subValue && (
+        <p className="text-sm text-tier-text-secondary mt-1">{subValue}</p>
+      )}
     </div>
   );
 };
 
-const ProgressBar = ({ value, max, color = 'var(--ak-primary)' }) => {
-  const percentage = Math.min((value / max) * 100, 100);
+const TestCard = ({ test, playerCategory = 'B', result = null }) => {
+  const config = CATEGORY_CONFIG[test.category] || CATEGORY_CONFIG.speed;
+  const CategoryIcon = config.icon;
+
+  // Determine status based on result
+  const getStatus = () => {
+    if (!result || result.currentResult === null || result.currentResult === undefined) {
+      return { type: 'pending', label: 'Ikke testet', color: 'text-tier-text-tertiary', bgColor: 'bg-tier-surface-base' };
+    }
+    // For now, simplified status - could be enhanced with actual requirement checking
+    return { type: 'completed', label: 'Fullført', color: 'text-emerald-600', bgColor: 'bg-emerald-50' };
+  };
+
+  const status = getStatus();
+
   return (
-    <div className="h-2 bg-ak-surface-muted rounded-full overflow-hidden">
-      <div
-        className="h-full rounded-full transition-all duration-500"
-        style={{ width: `${percentage}%`, backgroundColor: color }}
-      />
+    <Link
+      to={`/testing/${test.id}`}
+      className="block group"
+    >
+      <div className="bg-white rounded-xl border border-tier-border-default p-4 transition-all duration-200 hover:shadow-md hover:border-tier-navy/40 group-hover:bg-tier-surface-base/30">
+        <div className="flex items-start gap-4">
+          {/* Icon */}
+          <div
+            className="w-11 h-11 rounded-xl flex items-center justify-center flex-shrink-0"
+            style={{ backgroundColor: `${config.color}15` }}
+          >
+            <CategoryIcon size={22} style={{ color: config.color }} />
+          </div>
+
+          {/* Content */}
+          <div className="flex-1 min-w-0">
+            <div className="flex items-start justify-between gap-2">
+              <div className="min-w-0">
+                <h3 className="font-semibold text-tier-navy text-[15px] truncate group-hover:text-tier-navy transition-colors">
+                  {test.shortName}
+                </h3>
+                <p className="text-xs text-tier-text-tertiary mt-0.5">
+                  Test {test.testNumber} · {test.duration}
+                </p>
+              </div>
+
+              {/* Status Badge */}
+              <span className={`inline-flex items-center gap-1 px-2 py-1 rounded-full text-[11px] font-medium ${status.bgColor} ${status.color}`}>
+                {status.type === 'completed' ? (
+                  <CheckCircle size={12} />
+                ) : (
+                  <Clock size={12} />
+                )}
+                {status.label}
+              </span>
+            </div>
+
+            {/* Result Preview (if available) */}
+            {result && result.currentResult !== null && (
+              <div className="mt-3 pt-3 border-t border-tier-border-default">
+                <div className="flex items-center justify-between text-sm">
+                  <span className="text-tier-text-secondary">Siste resultat:</span>
+                  <span className="font-semibold text-tier-navy">
+                    {result.currentResult}{test.unit}
+                  </span>
+                </div>
+              </div>
+            )}
+          </div>
+
+          {/* Arrow */}
+          <ChevronRight size={18} className="text-tier-text-tertiary group-hover:text-tier-navy transition-colors flex-shrink-0 mt-1" />
+        </div>
+      </div>
+    </Link>
+  );
+};
+
+const CategorySection = ({ category, tests, playerCategory, results }) => {
+  const config = CATEGORY_CONFIG[category];
+  if (!config) return null;
+
+  const CategoryIcon = config.icon;
+
+  return (
+    <div className="mb-8">
+      {/* Category Header */}
+      <div className="flex items-center gap-3 mb-4">
+        <div
+          className="w-8 h-8 rounded-lg flex items-center justify-center"
+          style={{ backgroundColor: `${config.color}15` }}
+        >
+          <CategoryIcon size={18} style={{ color: config.color }} />
+        </div>
+        <h2 className="text-lg font-semibold text-tier-navy">
+          {config.label}
+        </h2>
+        <span className="text-sm text-tier-text-tertiary">
+          ({tests.length} {tests.length === 1 ? 'test' : 'tester'})
+        </span>
+      </div>
+
+      {/* Test Grid */}
+      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+        {tests.map(test => (
+          <TestCard
+            key={test.id}
+            test={test}
+            playerCategory={playerCategory}
+            result={results?.find(r => r.id === test.testNumber || r.id === test.id)}
+          />
+        ))}
+      </div>
     </div>
   );
 };
 
-// ===== HELPER FUNCTIONS =====
-const getCategoryIcon = (category) => {
-  const icons = {
-    speed: '⚡',
-    distance: '🏌️',
-    accuracy: '🎯',
-    short_game: '⛳',
-    putting: '🕳️',
-    physical: '💪',
-    mental: '🧠',
-    scoring: '📊',
-    golf: '🏌️',
-    teknikk: '⚙️',
-    fysisk: '💪',
-    strategisk: '🎲',
-  };
-  return icons[category] || '📋';
-};
+// ============================================================================
+// MAIN COMPONENT
+// ============================================================================
 
-const getTestUnit = (testType, category) => {
-  if (testType === 'speed_measurement') return 'mph';
-  if (testType === 'distance_measurement') return 'm';
-  if (testType === 'putting_test') return '%';
-  if (testType === 'accuracy_measurement') return category === 'accuracy' ? '' : '%';
-  if (testType === 'mobility_test') return '°';
-  if (testType === 'physical_test') return '';
-  return '';
-};
-
-const isLowerBetter = (testType, category) => {
-  return testType === 'accuracy_measurement' || category === 'accuracy';
-};
-
-const mapApiCategory = (apiCategory) => {
-  const mapping = {
-    speed: 'teknikk',
-    distance: 'golf',
-    accuracy: 'golf',
-    short_game: 'golf',
-    putting: 'golf',
-    physical: 'fysisk',
-    mental: 'mental',
-    scoring: 'strategisk',
-  };
-  return mapping[apiCategory] || apiCategory;
-};
-
-// Category requirements per player category
-const categoryRequirements = {
-  A: {
-    1: 120, 2: 95, 3: 280, 4: 0.04, 5: 75, 6: 80, 7: 80, 8: 5, 9: 90, 10: 70, 11: 30,
-    12: 10, 13: 65, 14: 50, 15: 50, 16: 150, 17: -4, 18: 8, 19: 90, 20: 90,
-  },
-  B: {
-    1: 112, 2: 87, 3: 260, 4: 0.05, 5: 70, 6: 70, 7: 70, 8: 8, 9: 85, 10: 55, 11: 45,
-    12: 8.5, 13: 58, 14: 45, 15: 45, 16: 120, 17: 0, 18: 7, 19: 80, 20: 85,
-  },
-  C: {
-    1: 105, 2: 80, 3: 240, 4: 0.06, 5: 65, 6: 60, 7: 60, 8: 10, 9: 80, 10: 45, 11: 55,
-    12: 7, 13: 52, 14: 40, 15: 40, 16: 90, 17: 4, 18: 6, 19: 70, 20: 80,
-  },
-  D: {
-    1: 98, 2: 75, 3: 220, 4: 0.07, 5: 60, 6: 50, 7: 50, 8: 12, 9: 75, 10: 35, 11: 65,
-    12: 6, 13: 45, 14: 35, 15: 35, 16: 60, 17: 8, 18: 5, 19: 60, 20: 75,
-  },
-};
-
-// ===== MAIN TEST PROTOCOL COMPONENT =====
-const AKGolfTestprotokoll = ({ player: apiPlayer = null, tests: apiTests = null, onRefresh = null }) => {
-  const [selectedCategory, setSelectedCategory] = useState('all');
-  const [selectedTest, setSelectedTest] = useState(null);
+const TIERGolfTestprotokoll = ({ player: apiPlayer = null, tests: apiTests = null, onRefresh = null }) => {
+  const [searchQuery, setSearchQuery] = useState('');
   const [testModalOpen, setTestModalOpen] = useState(false);
   const [testToStart, setTestToStart] = useState(null);
+  const [showNewTestModal, setShowNewTestModal] = useState(false);
+  const [selectedTestForRegistration, setSelectedTestForRegistration] = useState(null);
 
-  // Handle starting a test
-  const handleStartTest = (test) => {
-    setTestToStart(test);
-    setTestModalOpen(true);
+  // Default player profile
+  const player = apiPlayer ? {
+    name: `${apiPlayer.firstName || ''} ${apiPlayer.lastName || ''}`.trim() || 'Spiller',
+    category: apiPlayer.category || 'B',
+    age: apiPlayer.age || (apiPlayer.birthDate
+      ? Math.floor((Date.now() - new Date(apiPlayer.birthDate).getTime()) / (365.25 * 24 * 60 * 60 * 1000))
+      : null),
+  } : {
+    name: 'Ola Nordmann',
+    category: 'B',
+    age: 17,
   };
 
-  // Handle submitting test results
+  // Get initials for avatar
+  const initials = player.name?.split(' ').map(n => n[0]).join('').slice(0, 2).toUpperCase() || 'AK';
+
+  // Group tests by category
+  const testsByCategory = useMemo(() => {
+    const grouped = {};
+    CATEGORY_ORDER.forEach(cat => {
+      const categoryTests = testDefinitions.filter(t => t.category === cat);
+      if (categoryTests.length > 0) {
+        grouped[cat] = categoryTests;
+      }
+    });
+    return grouped;
+  }, []);
+
+  // Filter tests by search
+  const filteredTestsByCategory = useMemo(() => {
+    if (!searchQuery.trim()) return testsByCategory;
+
+    const query = searchQuery.toLowerCase();
+    const filtered = {};
+
+    Object.entries(testsByCategory).forEach(([cat, tests]) => {
+      const matchingTests = tests.filter(t =>
+        t.name.toLowerCase().includes(query) ||
+        t.shortName.toLowerCase().includes(query) ||
+        t.description.toLowerCase().includes(query)
+      );
+      if (matchingTests.length > 0) {
+        filtered[cat] = matchingTests;
+      }
+    });
+
+    return filtered;
+  }, [testsByCategory, searchQuery]);
+
+  // Calculate stats
+  const stats = useMemo(() => {
+    // For now, use mock stats - could be enhanced with actual API data
+    const totalTests = testDefinitions.length;
+    const completedTests = apiTests?.filter(t => t.currentResult !== null && t.currentResult !== undefined).length || 0;
+    const passedTests = 0; // Would need actual requirement checking
+    const improvedTests = 0; // Would need historical comparison
+
+    return {
+      total: totalTests,
+      completed: completedTests,
+      passed: passedTests,
+      improved: improvedTests,
+      focusAreas: totalTests - passedTests,
+    };
+  }, [apiTests]);
+
+  // Handle test submission
   const handleSubmitTestResult = async (resultData) => {
     try {
       await apiClient.post('/tests/results', {
@@ -249,7 +324,6 @@ const AKGolfTestprotokoll = ({ player: apiPlayer = null, tests: apiTests = null,
         passed: resultData.passed,
       });
 
-      // Refresh data after successful submission
       if (onRefresh) {
         await onRefresh();
       }
@@ -259,719 +333,134 @@ const AKGolfTestprotokoll = ({ player: apiPlayer = null, tests: apiTests = null,
     }
   };
 
-  // Default player profile (fallback if no API data)
-  const defaultPlayer = {
-    name: 'Ola Nordmann',
-    category: 'B',
-    gender: 'M',
-    age: 17,
-  };
-
-  // Transform API player data
-  const player = apiPlayer ? {
-    name: `${apiPlayer.firstName || ''} ${apiPlayer.lastName || ''}`.trim() || 'Spiller',
-    category: apiPlayer.category || 'B',
-    gender: apiPlayer.gender || 'M',
-    age: apiPlayer.age || apiPlayer.birthDate
-      ? Math.floor((Date.now() - new Date(apiPlayer.birthDate).getTime()) / (365.25 * 24 * 60 * 60 * 1000))
-      : null,
-  } : defaultPlayer;
-
-  // Transform API tests to component format
-  const transformApiTests = (tests) => {
-    if (!tests || tests.length === 0) return null;
-
-    return tests.map(test => {
-      const mappedCategory = mapApiCategory(test.category);
-      const testNum = test.testNumber || test.id;
-      const playerCat = player.category || 'B';
-      const requirement = categoryRequirements[playerCat]?.[testNum] || 100;
-
-      return {
-        id: test.id || testNum,
-        category: mappedCategory,
-        name: test.name,
-        description: test.description || test.protocolName || '',
-        unit: test.unit || getTestUnit(test.testType, test.category),
-        requirement: { [playerCat]: requirement },
-        currentResult: test.currentResult,
-        previousResult: test.previousResult,
-        bestResult: test.bestResult,
-        lastTested: test.lastTested,
-        icon: test.icon || getCategoryIcon(test.category),
-        lowerIsBetter: test.lowerIsBetter ?? isLowerBetter(test.testType, test.category),
-        testDetails: test.testDetails,
-      };
-    });
-  };
-
-  // Calculate category counts from tests
-  const calculateCategoryCounts = (tests) => {
-    const counts = { all: tests.length };
-    tests.forEach(t => {
-      const cat = t.category;
-      counts[cat] = (counts[cat] || 0) + 1;
-    });
-    return counts;
-  };
-
-  // Test categories with dynamic counts
-  const testCategoriesBase = [
-    { id: 'all', label: 'Alle tester' },
-    { id: 'golf', label: 'Golf Shots' },
-    { id: 'teknikk', label: 'Teknikk' },
-    { id: 'fysisk', label: 'Fysisk' },
-    { id: 'mental', label: 'Mental' },
-    { id: 'strategisk', label: 'Strategisk' },
-  ];
-
-  // Default tests with results (fallback if no API data)
-  const defaultTests = [
-    // Golf Shots (1-7)
-    {
-      id: 1,
-      category: 'golf',
-      name: 'Driver Avstand',
-      description: 'Carry-distanse med driver (gjennomsnitt 5 slag)',
-      unit: 'm',
-      requirement: { B: 260 },
-      currentResult: 255,
-      previousResult: 248,
-      bestResult: 262,
-      lastTested: '2025-12-01',
-      icon: '🏌️',
-    },
-    {
-      id: 2,
-      category: 'golf',
-      name: 'Jern 7 Avstand',
-      description: 'Carry-distanse med jern 7 (gjennomsnitt 5 slag)',
-      unit: 'm',
-      requirement: { B: 165 },
-      currentResult: 162,
-      previousResult: 158,
-      bestResult: 165,
-      lastTested: '2025-12-01',
-      icon: '🎯',
-    },
-    {
-      id: 3,
-      category: 'golf',
-      name: 'Jern 7 Nøyaktighet',
-      description: '6 slag til target, meter fra hull',
-      unit: 'm',
-      requirement: { B: 8 },
-      currentResult: 9.2,
-      previousResult: 10.5,
-      bestResult: 8.1,
-      lastTested: '2025-12-01',
-      icon: '🎯',
-      lowerIsBetter: true,
-    },
-    {
-      id: 4,
-      category: 'golf',
-      name: 'Wedge PEI',
-      description: 'Precision Efficiency Index (gjennomsnitt avstand / ideal approach)',
-      unit: '',
-      requirement: { B: 0.05 },
-      currentResult: 0.052,
-      previousResult: 0.061,
-      bestResult: 0.048,
-      lastTested: '2025-12-01',
-      icon: '📐',
-      lowerIsBetter: true,
-    },
-    {
-      id: 5,
-      category: 'golf',
-      name: 'Lag-kontroll Putting',
-      description: '9 putts fra 3, 6, 9 meter - avstand fra hull',
-      unit: 'cm',
-      requirement: { B: 45 },
-      currentResult: 52,
-      previousResult: 58,
-      bestResult: 44,
-      lastTested: '2025-12-01',
-      icon: '⛳',
-      lowerIsBetter: true,
-    },
-    {
-      id: 6,
-      category: 'golf',
-      name: 'Lesing Putting',
-      description: '6 putts fra 3m med break - hullet %',
-      unit: '%',
-      requirement: { B: 70 },
-      currentResult: 67,
-      previousResult: 60,
-      bestResult: 72,
-      lastTested: '2025-12-01',
-      icon: '👁️',
-    },
-    {
-      id: 7,
-      category: 'golf',
-      name: 'Bunker',
-      description: '10 slag fra greenside bunker - % innenfor 3m',
-      unit: '%',
-      requirement: { B: 70 },
-      currentResult: 65,
-      previousResult: 58,
-      bestResult: 72,
-      lastTested: '2025-12-01',
-      icon: '🏖️',
-    },
-    // Teknikk (8-11)
-    {
-      id: 8,
-      category: 'teknikk',
-      name: 'Klubbfart Driver',
-      description: 'Clubspeed driver (gjennomsnitt 5 slag)',
-      unit: 'mph',
-      requirement: { B: 112 },
-      currentResult: 109,
-      previousResult: 106,
-      bestResult: 111,
-      lastTested: '2025-12-01',
-      icon: '⚡',
-    },
-    {
-      id: 9,
-      category: 'teknikk',
-      name: 'Smash Factor Driver',
-      description: 'Ball speed / Club speed',
-      unit: '',
-      requirement: { B: 1.48 },
-      currentResult: 1.46,
-      previousResult: 1.44,
-      bestResult: 1.48,
-      lastTested: '2025-12-01',
-      icon: '💥',
-    },
-    {
-      id: 10,
-      category: 'teknikk',
-      name: 'Launch Angle Driver',
-      description: 'Optimal launch angle',
-      unit: '°',
-      requirement: { B: 12 },
-      currentResult: 11.5,
-      previousResult: 10.8,
-      bestResult: 12.2,
-      lastTested: '2025-12-01',
-      icon: '📐',
-    },
-    {
-      id: 11,
-      category: 'teknikk',
-      name: 'Spin Rate Driver',
-      description: 'Optimal spin rate',
-      unit: 'rpm',
-      requirement: { B: 2400 },
-      currentResult: 2650,
-      previousResult: 2800,
-      bestResult: 2450,
-      lastTested: '2025-12-01',
-      icon: '🔄',
-      lowerIsBetter: true,
-    },
-    // Fysisk (12-14)
-    {
-      id: 12,
-      category: 'fysisk',
-      name: 'Benkpress',
-      description: '1RM benkpress',
-      unit: 'kg',
-      requirement: { B: 82 },
-      currentResult: 78,
-      previousResult: 72,
-      bestResult: 80,
-      lastTested: '2025-11-15',
-      icon: '🏋️',
-    },
-    {
-      id: 13,
-      category: 'fysisk',
-      name: 'Markløft Trapbar',
-      description: '1RM markløft med trapbar',
-      unit: 'kg',
-      requirement: { B: 130 },
-      currentResult: 125,
-      previousResult: 118,
-      bestResult: 128,
-      lastTested: '2025-11-15',
-      icon: '💪',
-    },
-    {
-      id: 14,
-      category: 'fysisk',
-      name: 'Rotasjonskast 4kg',
-      description: 'Rotasjonskast med 4kg medisinball',
-      unit: 'm',
-      requirement: { B: 13 },
-      currentResult: 12.4,
-      previousResult: 11.8,
-      bestResult: 12.8,
-      lastTested: '2025-11-15',
-      icon: '🔄',
-    },
-    // Mental (15-18)
-    {
-      id: 15,
-      category: 'mental',
-      name: 'Pressure Putting',
-      description: '10 putts @ 2m eliminering (miss = ute) - % suksess',
-      unit: '%',
-      requirement: { B: 80 },
-      currentResult: 75,
-      previousResult: 68,
-      bestResult: 82,
-      lastTested: '2025-12-01',
-      icon: '🎯',
-    },
-    {
-      id: 16,
-      category: 'mental',
-      name: 'Pre-shot Rutine Konsistens',
-      description: 'Videoanalyse 18 hull - konsistens i tid og bevegelse',
-      unit: '%',
-      requirement: { B: 80 },
-      currentResult: 78,
-      previousResult: 72,
-      bestResult: 81,
-      lastTested: '2025-11-20',
-      icon: '⏱️',
-    },
-    {
-      id: 17,
-      category: 'mental',
-      name: 'Fokus Under Distraksjon',
-      description: 'Øvelse med distraksjoner - % treff vs baseline',
-      unit: '%',
-      requirement: { B: 90 },
-      currentResult: 88,
-      previousResult: 84,
-      bestResult: 92,
-      lastTested: '2025-11-20',
-      icon: '🧘',
-    },
-    {
-      id: 18,
-      category: 'mental',
-      name: 'Mental Toughness (MTQ48)',
-      description: 'Standardisert spørreskjema - score',
-      unit: 'pts',
-      requirement: { B: 55 },
-      currentResult: 52,
-      previousResult: 48,
-      bestResult: 54,
-      lastTested: '2025-11-01',
-      icon: '🧠',
-    },
-    // Strategisk (19-20)
-    {
-      id: 19,
-      category: 'strategisk',
-      name: 'Klubbvalg og Risikovurdering',
-      description: '20 scenarios - % optimale valg',
-      unit: '%',
-      requirement: { B: 75 },
-      currentResult: 72,
-      previousResult: 65,
-      bestResult: 78,
-      lastTested: '2025-11-20',
-      icon: '🎲',
-    },
-    {
-      id: 20,
-      category: 'strategisk',
-      name: 'Banestrategi-planlegging',
-      description: 'Gitt bane-layout, planlegg 18 hull - score',
-      unit: 'pts',
-      requirement: { B: 85 },
-      currentResult: 82,
-      previousResult: 76,
-      bestResult: 86,
-      lastTested: '2025-11-20',
-      icon: '🗺️',
-    },
-  ];
-
-  // Use transformed API data if available, otherwise use default
-  const tests = transformApiTests(apiTests) || defaultTests;
-
-  // Calculate dynamic category counts
-  const categoryCounts = calculateCategoryCounts(tests);
-  const testCategories = testCategoriesBase.map(cat => ({
-    ...cat,
-    count: categoryCounts[cat.id] || 0,
-  })).filter(cat => cat.id === 'all' || cat.count > 0);
-
-  // Filter tests by category
-  const filteredTests = selectedCategory === 'all'
-    ? tests
-    : tests.filter(t => t.category === selectedCategory);
-
-  // Calculate overall stats
-  const calculateStats = () => {
-    let passed = 0;
-    let improved = 0;
-
-    tests.forEach(test => {
-      if (test.currentResult === null || test.currentResult === undefined) return;
-
-      const req = test.requirement[player.category] || test.requirement.B;
-      if (req === undefined) return;
-
-      const isBetter = test.lowerIsBetter
-        ? test.currentResult <= req
-        : test.currentResult >= req;
-      if (isBetter) passed++;
-
-      if (test.previousResult !== null && test.previousResult !== undefined) {
-        const hasImproved = test.lowerIsBetter
-          ? test.currentResult < test.previousResult
-          : test.currentResult > test.previousResult;
-        if (hasImproved) improved++;
-      }
-    });
-
-    return {
-      passed,
-      total: tests.length,
-      improved,
-    };
-  };
-
-  const stats = calculateStats();
-
-  // Get result status
-  const getResultStatus = (test) => {
-    const req = test.requirement[player.category] || test.requirement.B;
-    const current = test.currentResult;
-    const previous = test.previousResult;
-
-    // Handle null/undefined values
-    if (current === null || current === undefined) {
-      return { meetsReq: false, improved: false, declined: false, noData: true };
-    }
-
-    const meetsReq = test.lowerIsBetter ? current <= req : current >= req;
-    const improved = previous !== null && previous !== undefined
-      ? (test.lowerIsBetter ? current < previous : current > previous)
-      : false;
-    const declined = previous !== null && previous !== undefined
-      ? (test.lowerIsBetter ? current > previous : current < previous)
-      : false;
-
-    return { meetsReq, improved, declined, noData: false };
-  };
-
   return (
-    <div style={{ width: '100%' }}>
-        {/* Player & Stats Summary */}
+    <div className="max-w-7xl mx-auto">
+      {/* Header Section */}
+      <div className="mb-8">
+        {/* Player Info & Stats Grid */}
         <div className="grid grid-cols-1 lg:grid-cols-4 gap-4 mb-6">
           {/* Player Card */}
-          <Card className="lg:col-span-1">
-            <div className="flex items-center gap-3 mb-4">
-              <Avatar name={player.name} size={48} />
+          <div className="bg-white rounded-xl border border-tier-border-default p-5">
+            <div className="flex items-center gap-4">
+              <div className="w-14 h-14 rounded-full bg-tier-navy flex items-center justify-center text-white font-semibold text-lg">
+                {initials}
+              </div>
               <div>
-                <SectionTitle className="text-[15px] font-semibold text-ak-text-primary">{player.name}</SectionTitle>
-                <p className="text-[12px] text-ak-text-secondary">Kategori {player.category} · {player.age} år</p>
+                <h1 className="font-semibold text-tier-navy text-lg">{player.name}</h1>
+                <p className="text-sm text-tier-text-secondary">
+                  Kategori {player.category} · {player.age} år
+                </p>
               </div>
             </div>
-            <div className="text-[12px] text-ak-text-secondary">
-              <p>Neste benchmark: <span className="text-ak-text-primary font-medium">Uke 50</span></p>
-              <p>Sist testet: <span className="text-ak-text-primary font-medium">1. des 2025</span></p>
-            </div>
-          </Card>
-
-          {/* Stats Cards */}
-          <Card className="text-center">
-            <p className="text-[11px] text-ak-text-secondary uppercase tracking-wide mb-1">Bestått</p>
-            <p className="text-[32px] font-bold text-ak-status-success">{stats.passed}/{stats.total}</p>
-            <ProgressBar value={stats.passed} max={stats.total} color={'var(--ak-status-success)'} />
-          </Card>
-
-          <Card className="text-center">
-            <p className="text-[11px] text-ak-text-secondary uppercase tracking-wide mb-1">Forbedret</p>
-            <p className="text-[32px] font-bold text-ak-primary">{stats.improved}</p>
-            <p className="text-[12px] text-ak-text-secondary">av {stats.total} tester</p>
-          </Card>
-
-          <Card className="text-center">
-            <p className="text-[11px] text-ak-text-secondary uppercase tracking-wide mb-1">Fokusområder</p>
-            <p className="text-[32px] font-bold text-ak-status-error">{stats.total - stats.passed}</p>
-            <p className="text-[12px] text-ak-text-secondary">under krav</p>
-          </Card>
-        </div>
-
-        {/* All Tests Section */}
-        <div className="mb-6">
-          <SectionTitle className="text-[17px] font-semibold text-ak-text-primary mb-4">
-            Alle 20 Tester
-          </SectionTitle>
-
-          {/* Group tests by category */}
-          {['speed', 'distance', 'accuracy', 'short_game', 'putting', 'physical', 'scoring', 'mental'].map(category => {
-            const categoryTests = testDefinitions.filter(t => t.category === category);
-            if (categoryTests.length === 0) return null;
-
-            const categoryLabels = {
-              speed: 'Hastighet',
-              distance: 'Avstand',
-              accuracy: 'Presisjon',
-              short_game: 'Kortspill',
-              putting: 'Putting',
-              physical: 'Fysisk',
-              scoring: 'Scoring',
-              mental: 'Mental',
-            };
-
-            const categoryIcons = {
-              speed: 'zap',
-              distance: 'ruler',
-              accuracy: 'target',
-              short_game: 'flag',
-              putting: 'circle',
-              physical: 'dumbbell',
-              scoring: 'flag-triangle-right',
-              mental: 'brain',
-            };
-
-            return (
-              <div key={category} className="mb-4">
-                <SubSectionTitle className="text-[14px] font-medium text-ak-text-secondary mb-2 flex items-center gap-2">
-                  <TestIcon icon={categoryIcons[category]} size={16} className="text-ak-primary" />
-                  {categoryLabels[category]}
-                </SubSectionTitle>
-                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-3">
-                  {categoryTests.map(test => (
-                    <Link
-                      key={test.id}
-                      to={`/testing/${test.id}`}
-                      style={{ textDecoration: 'none' }}
-                    >
-                      <Card className="cursor-pointer transition-all hover:shadow-md hover:border-ak-primary">
-                        <div className="flex items-center gap-3">
-                          <div className="w-10 h-10 rounded-lg flex items-center justify-center bg-ak-primary/10">
-                            <TestIcon icon={test.icon} size={20} className="text-ak-primary" />
-                          </div>
-                          <div className="flex-1 min-w-0">
-                            <SubSectionTitle className="text-[14px] font-semibold text-ak-text-primary truncate">
-                              {test.shortName}
-                            </SubSectionTitle>
-                            <p className="text-[11px] text-ak-text-secondary">
-                              Test {test.testNumber} · {test.duration}
-                            </p>
-                          </div>
-                          <div className="w-6 h-6 rounded-full bg-ak-surface-subtle flex items-center justify-center">
-                            <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" className="text-ak-text-secondary">
-                              <path d="M9 18l6-6-6-6"/>
-                            </svg>
-                          </div>
-                        </div>
-                      </Card>
-                    </Link>
-                  ))}
-                </div>
+            <div className="mt-4 pt-4 border-t border-tier-border-default text-sm text-tier-text-secondary">
+              <div className="flex items-center gap-2 mb-1">
+                <Calendar size={14} />
+                <span>Neste benchmark: <span className="font-medium text-tier-navy">Uke 50</span></span>
               </div>
-            );
-          })}
-        </div>
-
-        {/* Category Filter */}
-        <div className="flex gap-2 mb-6 overflow-x-auto pb-2">
-          {testCategories.map(cat => (
-            <Button
-              key={cat.id}
-              variant={selectedCategory === cat.id ? 'primary' : 'secondary'}
-              size="sm"
-              onClick={() => setSelectedCategory(cat.id)}
-              style={{
-                borderRadius: 'var(--radius-full)',
-                whiteSpace: 'nowrap',
-              }}
-            >
-              {cat.label} ({cat.count})
-            </Button>
-          ))}
-        </div>
-
-        {/* Tests Grid */}
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-          {filteredTests.map(test => {
-            const status = getResultStatus(test);
-
-            return (
-              <Card
-                key={test.id}
-                className={`cursor-pointer transition-all hover:shadow-md ${
-                  selectedTest === test.id ? 'ring-2 ring-ak-primary' : ''
-                }`}
-                onClick={() => setSelectedTest(selectedTest === test.id ? null : test.id)}
-              >
-                <div className="flex items-start justify-between mb-3">
-                  <div className="flex items-center gap-3">
-                    <div className="w-10 h-10 rounded-lg bg-ak-primary/10 flex items-center justify-center">
-                      <TestIcon icon={test.icon} size={20} className="text-ak-primary" />
-                    </div>
-                    <div>
-                      <SubSectionTitle className="text-[15px] font-semibold text-ak-text-primary">{test.name}</SubSectionTitle>
-                      <p className="text-[11px] text-ak-text-secondary">Test {test.id}</p>
-                    </div>
-                  </div>
-
-                  <div className="flex items-center gap-2">
-                    {status.noData ? (
-                      <Badge variant="neutral">Ikke testet</Badge>
-                    ) : status.meetsReq ? (
-                      <Badge variant="success">Oppfylt</Badge>
-                    ) : (
-                      <Badge variant="error">Under krav</Badge>
-                    )}
-                  </div>
-                </div>
-
-                {/* Results */}
-                <div className="grid grid-cols-3 gap-3 mb-3">
-                  <div className="bg-ak-surface-subtle rounded-lg p-2 text-center">
-                    <p className="text-[10px] text-ak-text-secondary uppercase">Nåværende</p>
-                    <p className={`text-[16px] font-bold ${status.noData ? 'text-ak-text-secondary' : status.meetsReq ? 'text-ak-status-success' : 'text-ak-status-error'}`}>
-                      {status.noData ? '–' : `${test.currentResult}${test.unit}`}
-                    </p>
-                  </div>
-                  <div className="bg-ak-surface-subtle rounded-lg p-2 text-center">
-                    <p className="text-[10px] text-ak-text-secondary uppercase">Krav ({player.category})</p>
-                    <p className="text-[16px] font-bold text-ak-text-primary">
-                      {test.lowerIsBetter ? '≤' : '≥'}{test.requirement[player.category] || test.requirement.B}{test.unit}
-                    </p>
-                  </div>
-                  <div className="bg-ak-surface-subtle rounded-lg p-2 text-center">
-                    <p className="text-[10px] text-ak-text-secondary uppercase">Beste</p>
-                    <p className="text-[16px] font-bold text-ak-primary">
-                      {test.bestResult !== null ? `${test.bestResult}${test.unit}` : '–'}
-                    </p>
-                  </div>
-                </div>
-
-                {/* Trend Indicator */}
-                <div className="flex items-center justify-between pt-3 border-t border-ak-border-subtle">
-                  <div className="flex items-center gap-2">
-                    {status.noData ? (
-                      <span className="flex items-center gap-1 text-[12px] text-ak-text-secondary">
-                        <Icons.Info /> Ingen data
-                      </span>
-                    ) : status.improved ? (
-                      <span className="flex items-center gap-1 text-[12px] text-ak-status-success">
-                        <Icons.TrendingUp /> Forbedret
-                      </span>
-                    ) : status.declined ? (
-                      <span className="flex items-center gap-1 text-[12px] text-ak-status-error">
-                        <Icons.TrendingDown /> Tilbakegang
-                      </span>
-                    ) : (
-                      <span className="flex items-center gap-1 text-[12px] text-ak-text-secondary">
-                        <Icons.Minus /> Uendret
-                      </span>
-                    )}
-                    {!status.noData && test.previousResult !== null && (
-                      <span className="text-[11px] text-ak-text-secondary">
-                        (forrige: {test.previousResult}{test.unit})
-                      </span>
-                    )}
-                  </div>
-                  {test.lastTested && (
-                    <span className="text-[11px] text-ak-text-secondary flex items-center gap-1">
-                      <Icons.Calendar /> {test.lastTested}
-                    </span>
-                  )}
-                </div>
-
-                {/* Expanded Details */}
-                {selectedTest === test.id && (
-                  <div className="mt-4 pt-4 border-t border-ak-border-subtle">
-                    <p className="text-[13px] text-ak-text-primary mb-3">{test.description}</p>
-
-                    {/* Progress to requirement */}
-                    {!status.noData && (
-                      <div className="mb-3">
-                        <div className="flex items-center justify-between mb-1">
-                          <span className="text-[11px] text-ak-text-secondary">Progresjon mot krav</span>
-                          <span className="text-[11px] font-medium text-ak-text-primary">
-                            {Math.round((test.currentResult / (test.requirement[player.category] || test.requirement.B)) * 100)}%
-                          </span>
-                        </div>
-                        <ProgressBar
-                          value={test.currentResult}
-                          max={test.requirement[player.category] || test.requirement.B}
-                          color={status.meetsReq ? 'var(--ak-status-success)' : 'var(--ak-status-error)'}
-                        />
-                      </div>
-                    )}
-
-                    <div className="flex gap-2">
-                      <Button
-                        variant="primary"
-                        className="flex-1"
-                        onClick={(e) => { e.stopPropagation(); handleStartTest(test); }}
-                      >
-                        Start test
-                      </Button>
-                      <Button variant="secondary">
-                        Historikk
-                      </Button>
-                    </div>
-                  </div>
-                )}
-              </Card>
-            );
-          })}
-        </div>
-
-        {/* Info Card */}
-        <Card className="mt-6 bg-ak-primary/5 border-ak-primary/20">
-          <div className="flex items-start gap-3">
-            <Icons.Info />
-            <div>
-              <CardTitle className="text-[14px] font-semibold text-ak-text-primary mb-1">Om testprotokollen</CardTitle>
-              <p className="text-[13px] text-ak-text-primary">
-                Testprotokollen inneholder 20 offisielle tester basert på Team Norway standarder.
-                14 teknisk/fysiske tester pluss 6 mental/strategiske tester. Benchmark gjennomføres hver 3. uke
-                (uke 3, 6, 9, 12, osv.). For kategori {player.category} kreves at minimum 4 av 7 golf-tester er bestått
-                for opprykk.
-              </p>
+              <div className="flex items-center gap-2">
+                <Clock size={14} />
+                <span>Sist testet: <span className="font-medium text-tier-navy">1. des 2025</span></span>
+              </div>
             </div>
           </div>
-        </Card>
 
-      {/* Bottom Navigation (Mobile) */}
-      <nav className="fixed bottom-0 left-0 right-0 bg-white border-t border-ak-border-subtle z-50 lg:hidden">
-        <div className="max-w-lg mx-auto flex items-center justify-around py-2">
-          {[
-            { id: 'dashboard', Icon: HomeIcon, label: 'Hjem' },
-            { id: 'calendar', Icon: CalendarIcon, label: 'Kalender' },
-            { id: 'tests', Icon: GolfScorecard, label: 'Tester', active: true },
-            { id: 'stats', Icon: ChartIcon, label: 'Statistikk' },
-            { id: 'profile', Icon: ProfileIcon, label: 'Profil' },
-          ].map(tab => (
-            <button
-              key={tab.id}
-              className={`flex flex-col items-center py-2 px-4 rounded-xl transition-all ${
-                tab.active
-                  ? 'text-ak-primary'
-                  : 'text-ak-text-secondary hover:text-ak-text-primary'
-              }`}
-            >
-              <span className="mb-1">{tab.Icon && <tab.Icon size={20} />}</span>
-              <span className={`text-[11px] font-medium ${
-                tab.active ? 'text-ak-primary' : 'text-ak-text-secondary'
-              }`}>{tab.label}</span>
-            </button>
-          ))}
+          {/* Stats Cards */}
+          <StatCard
+            label="Bestått"
+            value={`${stats.passed}/${stats.total}`}
+            subValue="tester oppfylt"
+            variant="success"
+            icon={CheckCircle}
+          />
+
+          <StatCard
+            label="Forbedret"
+            value={stats.improved}
+            subValue={`av ${stats.total} tester`}
+            variant="default"
+            icon={TrendingUp}
+          />
+
+          <StatCard
+            label="Fokusområder"
+            value={stats.focusAreas}
+            subValue="under krav"
+            variant="error"
+            icon={AlertCircle}
+          />
         </div>
-      </nav>
+
+        {/* Search Bar */}
+        <div className="relative max-w-md">
+          <Search size={18} className="absolute left-3 top-1/2 -translate-y-1/2 text-tier-text-tertiary" />
+          <input
+            type="text"
+            placeholder="Søk i tester..."
+            value={searchQuery}
+            onChange={(e) => setSearchQuery(e.target.value)}
+            className="w-full pl-10 pr-4 py-2.5 rounded-xl border border-tier-border-default bg-white text-tier-navy placeholder:text-tier-text-tertiary focus:outline-none focus:ring-2 focus:ring-tier-navy/20 focus:border-tier-navy transition-all"
+          />
+        </div>
+      </div>
+
+      {/* Section Title */}
+      <div className="flex items-center justify-between mb-6">
+        <div>
+          <SectionTitle className="text-xl font-bold text-tier-navy">
+            Alle {testDefinitions.length} Tester
+          </SectionTitle>
+          <p className="text-sm text-tier-text-secondary mt-1">
+            Velg en test for å se detaljer og registrere resultater
+          </p>
+        </div>
+        <Button
+          variant="primary"
+          size="sm"
+          onClick={() => setShowNewTestModal(true)}
+          leftIcon={<Plus size={16} />}
+        >
+          Ny test
+        </Button>
+      </div>
+
+      {/* Test Categories */}
+      {Object.entries(filteredTestsByCategory).map(([category, tests]) => (
+        <CategorySection
+          key={category}
+          category={category}
+          tests={tests}
+          playerCategory={player.category}
+          results={apiTests}
+        />
+      ))}
+
+      {/* Empty State */}
+      {Object.keys(filteredTestsByCategory).length === 0 && searchQuery && (
+        <div className="text-center py-12 bg-tier-surface-base rounded-xl">
+          <Search size={48} className="mx-auto mb-4 text-tier-text-tertiary" />
+          <h3 className="font-semibold text-tier-navy mb-2">Ingen tester funnet</h3>
+          <p className="text-tier-text-secondary">
+            Prøv et annet søkeord eller fjern filteret
+          </p>
+        </div>
+      )}
+
+      {/* Info Card */}
+      <div className="mt-8 bg-tier-navy/5 border border-tier-navy/20 rounded-xl p-5">
+        <div className="flex items-start gap-4">
+          <div className="w-10 h-10 rounded-xl bg-tier-navy/10 flex items-center justify-center flex-shrink-0">
+            <Activity size={20} className="text-tier-navy" />
+          </div>
+          <div>
+            <h3 className="font-semibold text-tier-navy mb-1">Om testprotokollen</h3>
+            <p className="text-sm text-tier-text-secondary leading-relaxed">
+              Testprotokollen inneholder 20 offisielle tester basert på Team Norway standarder.
+              Benchmark gjennomføres hver 3. uke (uke 3, 6, 9, 12, osv.). For kategori {player.category} kreves
+              at minimum 4 av 7 golf-tester er bestått for opprykk.
+            </p>
+          </div>
+        </div>
+      </div>
 
       {/* Start Test Modal */}
       {testModalOpen && testToStart && (
@@ -985,8 +474,98 @@ const AKGolfTestprotokoll = ({ player: apiPlayer = null, tests: apiTests = null,
           onSubmit={handleSubmitTestResult}
         />
       )}
+
+      {/* New Test Picker Modal */}
+      {showNewTestModal && !selectedTestForRegistration && (
+        <div className="fixed inset-0 bg-black/50 z-50 flex items-center justify-center p-4">
+          <div className="bg-white rounded-2xl w-full max-w-2xl max-h-[85vh] overflow-hidden flex flex-col shadow-2xl">
+            {/* Header */}
+            <div className="flex items-center justify-between p-4 border-b border-tier-border-default">
+              <h2 className="text-lg font-semibold text-tier-navy">Velg test å registrere</h2>
+              <button
+                onClick={() => setShowNewTestModal(false)}
+                className="p-2 hover:bg-tier-surface-base rounded-lg transition-colors"
+              >
+                <AlertCircle size={20} className="text-tier-text-secondary rotate-45" />
+              </button>
+            </div>
+
+            {/* Test List */}
+            <div className="flex-1 overflow-y-auto p-4">
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
+                {testDefinitions.map(test => {
+                  const config = CATEGORY_CONFIG[test.category] || CATEGORY_CONFIG.speed;
+                  const CategoryIcon = config.icon;
+
+                  return (
+                    <button
+                      key={test.id}
+                      onClick={() => {
+                        setSelectedTestForRegistration({
+                          id: test.id,
+                          navn: test.name,
+                          beskrivelse: test.description,
+                          maling: test.unit,
+                          registrering: test.formType,
+                          slag: Array.from({ length: test.attempts || 6 }, (_, i) => ({
+                            nr: i + 1,
+                            slagType: test.shortName,
+                            målLengde: 0,
+                            resultatLengde: null,
+                            poeng: null,
+                          })),
+                        });
+                      }}
+                      className="flex items-center gap-3 p-4 rounded-xl border border-tier-border-default hover:border-tier-navy/40 hover:bg-tier-surface-base/50 transition-all text-left group"
+                    >
+                      <div
+                        className="w-10 h-10 rounded-lg flex items-center justify-center flex-shrink-0"
+                        style={{ backgroundColor: `${config.color}15` }}
+                      >
+                        <CategoryIcon size={20} style={{ color: config.color }} />
+                      </div>
+                      <div className="flex-1 min-w-0">
+                        <h3 className="font-medium text-tier-navy text-sm group-hover:text-tier-navy transition-colors">
+                          {test.shortName}
+                        </h3>
+                        <p className="text-xs text-tier-text-tertiary truncate">
+                          {config.label} · {test.attempts || 6} forsøk
+                        </p>
+                      </div>
+                      <ChevronRight size={16} className="text-tier-text-tertiary group-hover:text-tier-navy transition-colors" />
+                    </button>
+                  );
+                })}
+              </div>
+            </div>
+          </div>
+        </div>
+      )}
+
+      {/* Test Registration Form */}
+      {selectedTestForRegistration && (
+        <TestRegistrationForm
+          test={selectedTestForRegistration}
+          playerId={apiPlayer?.id}
+          kategori={CATEGORY_CONFIG[testDefinitions.find(t => t.id === selectedTestForRegistration.id)?.category]?.label?.toLowerCase() || 'presisjon'}
+          onSubmit={async (result) => {
+            await handleSubmitTestResult({
+              testId: result.testId,
+              value: result.totalPoeng,
+              results: { slag: result.slag },
+              testDate: result.dato?.toISOString() || new Date().toISOString(),
+              passed: true,
+            });
+            if (onRefresh) await onRefresh();
+          }}
+          onClose={() => {
+            setSelectedTestForRegistration(null);
+            setShowNewTestModal(false);
+          }}
+        />
+      )}
     </div>
   );
 };
 
-export default AKGolfTestprotokoll;
+export default TIERGolfTestprotokoll;

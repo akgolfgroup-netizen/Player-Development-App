@@ -81,6 +81,7 @@ const PERIOD_LABELS: Record<string, string> = {
 };
 
 // Map session type to training category for badge
+// Valid categories: 'fysisk' | 'teknikk' | 'slag' | 'spill' | 'turnering'
 const SESSION_TYPE_TO_CATEGORY: Record<string, string> = {
   driving_range: 'slag',
   putting: 'teknikk',
@@ -89,7 +90,7 @@ const SESSION_TYPE_TO_CATEGORY: Record<string, string> = {
   bunker: 'teknikk',
   course_play: 'spill',
   physical: 'fysisk',
-  mental: 'mental',
+  mental: 'teknikk', // Mental trening bruker 'teknikk' badge
 };
 
 // ============================================================================
@@ -280,7 +281,7 @@ function SessionCard({ session, onClick }: SessionCardProps) {
                 category={(['teknikk', 'slag', 'spill', 'fysisk', 'mental', 'turnering'].includes(category) ? category : 'teknikk') as 'teknikk' | 'slag' | 'spill' | 'fysisk' | 'mental' | 'turnering'}
                 size="sm"
               />
-              <span className="text-lg font-semibold text-text-primary">
+              <span className="text-lg font-semibold text-text-primary capitalize">
                 {SESSION_TYPE_LABELS[session.sessionType] || session.sessionType}
               </span>
               <Badge variant={statusConfig.variant} className="gap-1">
@@ -306,7 +307,7 @@ function SessionCard({ session, onClick }: SessionCardProps) {
             {/* Focus area */}
             {session.focusArea && (
               <div className="flex items-center gap-1.5 text-sm">
-                <Target className="h-3.5 w-3.5 text-ak-primary" />
+                <Target className="h-3.5 w-3.5 text-tier-navy" />
                 <span className="text-text-primary">{session.focusArea}</span>
               </div>
             )}
@@ -483,7 +484,9 @@ export default function SessionsListView({
   return (
     <div className="max-w-4xl mx-auto">
       {/* AI Coach contextual guide */}
-      <AICoachGuide config={GUIDE_PRESETS.sessions} variant="compact" />
+      <div className="mb-6">
+        <AICoachGuide config={GUIDE_PRESETS.sessions} variant="compact" />
+      </div>
 
       {/* Filters */}
       <FilterBar
