@@ -72,7 +72,7 @@ export default function SharingPermissions() {
       <PageHeader
         title="Deling"
         subtitle="Kontroller hvilke data du deler med trener og medlemmer"
-        helpText=""
+        helpText="Administrer hvilke data og aktiviteter som er synlige for trener, treningspartnere og andre medlemmer. Bestem selv hva du ønsker å dele."
         actions={null}
       />
 

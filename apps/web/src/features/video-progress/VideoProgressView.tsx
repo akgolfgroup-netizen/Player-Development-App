@@ -47,7 +47,7 @@ const CATEGORIES = [
   { id: 'all', label: 'Alle' },
   { id: 'swing', label: 'Full sving' },
   { id: 'putting', label: 'Putting' },
-  { id: 'short_game', label: 'Nærspill' },
+  { id: 'short_game', label: 'Naerspill' },
   { id: 'other', label: 'Annet' },
 ];
 
@@ -135,7 +135,7 @@ export function VideoProgressView({
   if (loading) {
     return (
       <div className={`flex flex-col gap-4 p-4 ${className || ''}`} style={style}>
-        <div className="flex items-center justify-center py-8 text-ak-text-tertiary">
+        <div className="flex items-center justify-center py-8 text-tier-text-tertiary">
           Laster videoer...
         </div>
       </div>
@@ -149,10 +149,11 @@ export function VideoProgressView({
         <PageHeader
           title="Videofremgang"
           subtitle="Spor din utvikling over tid"
+          helpText="Se utviklingen din gjennom videoer over tid. Sammenlign videoer fra ulike tidspunkter for å identifisere fremgang og forbedringsområder i din svingteknikk."
           divider={false}
         />
 
-        <div className="flex flex-col items-center justify-center py-8 text-ak-text-tertiary text-center bg-ak-surface-elevated rounded-xl border border-ak-border-default">
+        <div className="flex flex-col items-center justify-center py-8 text-tier-text-tertiary text-center bg-tier-white rounded-xl border border-tier-border-default">
           <div className="mb-3 opacity-50">
             <Video size={32} />
           </div>
@@ -179,6 +180,7 @@ export function VideoProgressView({
       <PageHeader
         title="Videofremgang"
         subtitle="Spor din utvikling over tid og sammenlign videoer"
+        helpText="Se utviklingen din gjennom videoer over tid. Sammenlign videoer fra ulike tidspunkter for å identifisere fremgang og forbedringsområder i din svingteknikk."
         divider={false}
       />
 
@@ -189,8 +191,8 @@ export function VideoProgressView({
             key={cat.id}
             className={`px-4 py-2 rounded-lg text-[13px] font-medium cursor-pointer transition-all border ${
               activeCategory === cat.id
-                ? 'bg-ak-primary border-ak-primary text-white'
-                : 'bg-ak-surface-elevated border-ak-border-default text-ak-text-secondary hover:border-ak-primary'
+                ? 'bg-tier-navy border-tier-navy text-white'
+                : 'bg-tier-white border-tier-border-default text-tier-text-secondary hover:border-tier-navy'
             }`}
             onClick={() => handleCategoryChange(cat.id)}
           >
@@ -201,21 +203,21 @@ export function VideoProgressView({
 
       {/* Stats */}
       <div className="grid grid-cols-2 sm:grid-cols-4 gap-3">
-        <div className="flex flex-col gap-1 p-3 bg-ak-surface-elevated rounded-xl border border-ak-border-default text-center">
-          <span className="text-2xl font-bold text-ak-text-primary">{stats.total}</span>
-          <span className="text-[11px] text-ak-text-secondary uppercase tracking-wide">Totalt</span>
+        <div className="flex flex-col gap-1 p-3 bg-tier-white rounded-xl border border-tier-border-default text-center">
+          <span className="text-2xl font-bold text-tier-navy">{stats.total}</span>
+          <span className="text-[11px] text-tier-text-secondary uppercase tracking-wide">Totalt</span>
         </div>
-        <div className="flex flex-col gap-1 p-3 bg-ak-surface-elevated rounded-xl border border-ak-border-default text-center">
-          <span className="text-2xl font-bold text-ak-text-primary">{stats.thisWeek}</span>
-          <span className="text-[11px] text-ak-text-secondary uppercase tracking-wide">Denne uken</span>
+        <div className="flex flex-col gap-1 p-3 bg-tier-white rounded-xl border border-tier-border-default text-center">
+          <span className="text-2xl font-bold text-tier-navy">{stats.thisWeek}</span>
+          <span className="text-[11px] text-tier-text-secondary uppercase tracking-wide">Denne uken</span>
         </div>
-        <div className="flex flex-col gap-1 p-3 bg-ak-surface-elevated rounded-xl border border-ak-border-default text-center">
-          <span className="text-2xl font-bold text-ak-text-primary">{stats.thisMonth}</span>
-          <span className="text-[11px] text-ak-text-secondary uppercase tracking-wide">Denne måneden</span>
+        <div className="flex flex-col gap-1 p-3 bg-tier-white rounded-xl border border-tier-border-default text-center">
+          <span className="text-2xl font-bold text-tier-navy">{stats.thisMonth}</span>
+          <span className="text-[11px] text-tier-text-secondary uppercase tracking-wide">Denne måneden</span>
         </div>
-        <div className="flex flex-col gap-1 p-3 bg-ak-surface-elevated rounded-xl border border-ak-border-default text-center">
-          <span className="text-2xl font-bold text-ak-text-primary">{stats.categories}</span>
-          <span className="text-[11px] text-ak-text-secondary uppercase tracking-wide">Kategorier</span>
+        <div className="flex flex-col gap-1 p-3 bg-tier-white rounded-xl border border-tier-border-default text-center">
+          <span className="text-2xl font-bold text-tier-navy">{stats.categories}</span>
+          <span className="text-[11px] text-tier-text-secondary uppercase tracking-wide">Kategorier</span>
         </div>
       </div>
 

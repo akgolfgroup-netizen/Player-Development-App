@@ -52,7 +52,7 @@ const CATEGORY_REQUIREMENTS = [
   },
   {
     id: 'naerspill',
-    name: 'Nærspill',
+    name: 'Naerspill',
     currentScore: 81,
     requiredScore: 80,
     met: true,
@@ -84,8 +84,8 @@ const HISTORY = [
 // ============================================================================
 
 const TrendIcon = ({ trend }) => {
-  if (trend === 'up') return <ArrowUp size={12} style={{ color: 'var(--success)' }} />;
-  if (trend === 'down') return <ArrowDown size={12} style={{ color: 'var(--error)' }} />;
+  if (trend === 'up') return <ArrowUp size={12} style={{ color: 'var(--status-success)' }} />;
+  if (trend === 'down') return <ArrowDown size={12} style={{ color: 'var(--status-error)' }} />;
   return <Minus size={12} style={{ color: 'var(--text-secondary)' }} />;
 };
 
@@ -126,7 +126,7 @@ const CategoryLadder = ({ currentCategory, currentPoints }) => {
                   height: '28px',
                   borderRadius: 'var(--radius-sm)',
                   backgroundColor: isCurrent ? 'var(--accent)' :
-                                 isPast ? 'var(--success)' : 'var(--bg-tertiary)',
+                                 isPast ? 'var(--status-success)' : 'var(--bg-tertiary)',
                   color: (isCurrent || isPast) ? 'white' : 'var(--text-secondary)',
                   display: 'flex',
                   alignItems: 'center',
@@ -158,7 +158,7 @@ const CategoryLadder = ({ currentCategory, currentPoints }) => {
                   </div>
                 )}
                 {isPast && (
-                  <CheckCircle size={14} style={{ color: 'var(--success)' }} />
+                  <CheckCircle size={14} style={{ color: 'var(--status-success)' }} />
                 )}
               </div>
             );
@@ -204,7 +204,7 @@ const RequirementsChecklist = ({ requirements, targetCategory }) => (
               width: '24px',
               height: '24px',
               borderRadius: 'var(--radius-sm)',
-              backgroundColor: req.met ? 'var(--success)' : 'var(--error)',
+              backgroundColor: req.met ? 'var(--status-success)' : 'var(--status-error)',
               display: 'flex',
               alignItems: 'center',
               justifyContent: 'center',
@@ -235,7 +235,7 @@ const RequirementsChecklist = ({ requirements, targetCategory }) => (
               <span style={{
                 fontSize: '14px',
                 fontWeight: 600,
-                color: req.met ? 'var(--success)' : 'var(--error)',
+                color: req.met ? 'var(--status-success)' : 'var(--status-error)',
               }}>
                 {req.currentScore}
               </span>
@@ -299,7 +299,7 @@ const ProgressHistory = ({ history }) => (
             <div style={{
               fontSize: '12px',
               fontWeight: 500,
-              color: entry.change.startsWith('+') ? 'var(--success)' : 'var(--error)',
+              color: entry.change.startsWith('+') ? 'var(--status-success)' : 'var(--status-error)',
             }}>
               {entry.change}
             </div>
@@ -361,7 +361,7 @@ const KategoriFremgangContainer = () => {
               <div style={{
                 fontSize: '32px',
                 fontWeight: 700,
-                color: 'var(--success)',
+                color: 'var(--status-success)',
                 display: 'flex',
                 alignItems: 'center',
                 justifyContent: 'center',
@@ -380,7 +380,7 @@ const KategoriFremgangContainer = () => {
               <div style={{
                 fontSize: '32px',
                 fontWeight: 700,
-                color: 'var(--warning)',
+                color: 'var(--status-warning)',
               }}>
                 {categoriesAdvanced > 0 ? `+${categoriesAdvanced}` : categoriesAdvanced}
               </div>

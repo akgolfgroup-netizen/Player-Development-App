@@ -308,7 +308,7 @@ function SessionCard({ session, onClick }: SessionCardProps) {
             {session.focusArea && (
               <div className="flex items-center gap-1.5 text-sm">
                 <Target className="h-3.5 w-3.5 text-tier-navy" />
-                <span className="text-text-primary">{session.focusArea}</span>
+                <span className="text-text-primary capitalize">{session.focusArea}</span>
               </div>
             )}
 
@@ -484,7 +484,7 @@ export default function SessionsListView({
   return (
     <div className="max-w-4xl mx-auto">
       {/* AI Coach contextual guide */}
-      <div className="mb-6">
+      <div className="mb-8">
         <AICoachGuide config={GUIDE_PRESETS.sessions} variant="compact" />
       </div>
 

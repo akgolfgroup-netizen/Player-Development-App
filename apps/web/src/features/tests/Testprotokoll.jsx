@@ -17,7 +17,7 @@ import {
   FlagTriangleRight, Brain, ChevronRight, CheckCircle,
   AlertCircle, Clock, TrendingUp, Calendar, Search, Plus
 } from 'lucide-react';
-import { testDefinitions } from './config/testDefinitions';
+import { testDefinitions, getScoreLevel } from './config/testDefinitions';
 
 // ============================================================================
 // CATEGORY CONFIGURATION
@@ -46,7 +46,7 @@ const CATEGORY_CONFIG = {
     borderColor: 'border-purple-200',
   },
   short_game: {
-    label: 'Nærspill',
+    label: 'Naerspill',
     icon: Flag,
     color: 'rgb(var(--status-success))',
     bgColor: 'bg-emerald-50',
@@ -137,6 +137,11 @@ const TestCard = ({ test, playerCategory = 'B', result = null }) => {
 
   const status = getStatus();
 
+  // Get score level for color coding
+  const scoreLevel = result && result.currentResult !== null
+    ? getScoreLevel(result.currentResult, test.scoring, test.lowerIsBetter)
+    : null;
+
   return (
     <Link
       to={`/testing/${test.id}`}
@@ -180,7 +185,7 @@ const TestCard = ({ test, playerCategory = 'B', result = null }) => {
               <div className="mt-3 pt-3 border-t border-tier-border-default">
                 <div className="flex items-center justify-between text-sm">
                   <span className="text-tier-text-secondary">Siste resultat:</span>
-                  <span className="font-semibold text-tier-navy">
+                  <span className="font-semibold" style={{ color: scoreLevel?.color || 'var(--tier-navy)' }}>
                     {result.currentResult}{test.unit}
                   </span>
                 </div>

@@ -26,21 +26,23 @@ import {
   Lightbulb,
   BookOpen,
   GraduationCap,
+  PlayCircle,
+  Video,
 } from 'lucide-react';
 
-// Colors - Using Midnight Blue (primary action), NOT green
+// Colors - Using TIER Golf Design System tokens
 const COLORS = {
-  primary: '#10456A',        // Midnight Blue - primary action
-  primaryLight: '#1A5A8A',   // Lighter blue
-  primaryDark: '#0D3A58',    // Darker blue
-  surface: '#EDF4F8',        // Light blue surface
-  surfaceHover: '#DCE9F1',   // Hover state
-  text: '#10456A',           // Text on light surfaces
-  textMuted: '#6B7280',      // Muted text
-  textDark: '#111827',       // Dark text
-  white: '#FFFFFF',
-  border: '#D1E3ED',         // Light blue border
-  gold: '#B8860B',           // Gold for prestige
+  primary: 'rgb(var(--tier-navy))',        // TIER Navy - primary action
+  primaryLight: 'rgb(var(--tier-navy-light))',   // Lighter navy
+  primaryDark: 'rgb(var(--tier-navy-dark))',    // Darker navy
+  surface: 'rgb(var(--tier-surface-base))',        // Surface background
+  surfaceHover: 'rgb(var(--tier-surface-hover))',   // Hover state
+  text: 'rgb(var(--tier-navy))',           // Text on light surfaces
+  textMuted: 'rgb(var(--text-tertiary))',      // Muted text
+  textDark: 'rgb(var(--text-primary))',       // Dark text
+  white: 'rgb(var(--tier-white))',
+  border: 'rgb(var(--border-default))',         // Border color
+  gold: 'rgb(var(--tier-gold))',           // Gold for prestige
 };
 
 interface SectionProps {
@@ -58,7 +60,7 @@ function CollapsibleSection({ title, icon, children, defaultOpen = false, color 
     <div
       style={{
         backgroundColor: COLORS.white,
-        borderRadius: 16,
+        borderRadius: 24,
         border: `1px solid ${COLORS.border}`,
         marginBottom: 16,
         overflow: 'hidden',
@@ -118,7 +120,7 @@ interface TableProps {
 
 function DataTable({ headers, rows }: TableProps) {
   return (
-    <div style={{ overflowX: 'auto', borderRadius: 12, border: `1px solid ${COLORS.border}` }}>
+    <div style={{ overflowX: 'auto', borderRadius: 20, border: `1px solid ${COLORS.border}` }}>
       <table
         style={{
           width: '100%',
@@ -174,19 +176,20 @@ function DataTable({ headers, rows }: TableProps) {
   );
 }
 
-function CodeBlock({ children }: { children: string }) {
+function CodeBlock({ children, centered = false }: { children: string; centered?: boolean }) {
   return (
     <pre
       style={{
         backgroundColor: COLORS.text,
         color: COLORS.surfaceHover,
-        padding: 20,
-        borderRadius: 12,
+        padding: 24,
+        borderRadius: 20,
         fontSize: 13,
         fontFamily: 'ui-monospace, monospace',
         overflowX: 'auto',
         margin: '16px 0',
         lineHeight: 1.6,
+        textAlign: centered ? 'center' : 'left',
       }}
     >
       {children}
@@ -202,13 +205,62 @@ function Paragraph({ children }: { children: React.ReactNode }) {
   );
 }
 
+// Pyramid visualization component
+// Uses design system colors from tokens.css
+// Correct pyramid: FYSISK (foundation) at bottom, TURNERING (peak) at top
+function PyramidVisualization() {
+  // Ordered from TOP (narrowest) to BOTTOM (widest) for correct visual pyramid
+  const levels = [
+    { name: 'TURNERING', abbr: '(TURN)', description: 'Prestasjon under press', color: 'rgb(var(--tier-gold))' },
+    { name: 'SPILL', abbr: '(SPILL)', description: 'Strategi, banehåndtering', color: 'rgb(var(--status-info))' },
+    { name: 'GOLFSLAG', abbr: '(SLAG)', description: 'Slagkvalitet, resultat', color: 'rgb(var(--tier-navy))' },
+    { name: 'TEKNIKK', abbr: '(TEK)', description: 'Bevegelsesmønster', color: 'rgb(var(--tier-navy-dark))' },
+    { name: 'FYSISK', abbr: '(FYS)', description: 'Styrke, power, mobilitet', color: 'rgb(var(--status-success))' },
+  ];
+
+  return (
+    <div style={{ margin: '24px 0', display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
+      {levels.map((level, index) => {
+        // Width INCREASES as we go down: 40%, 55%, 70%, 85%, 100%
+        const width = 40 + (index * 15);
+        const isTop = index === 0;
+        const isBottom = index === levels.length - 1;
+
+        return (
+          <div
+            key={level.name}
+            style={{
+              width: `${width}%`,
+              backgroundColor: level.color,
+              padding: '16px 20px',
+              margin: index === 0 ? '0 0 2px 0' : '2px 0',
+              borderRadius: isTop ? '12px 12px 0 0' : isBottom ? '0 0 12px 12px' : '0',
+              color: 'white',
+              textAlign: 'center',
+              position: 'relative',
+              boxShadow: '0 2px 4px rgba(0,0,0,0.1)',
+            }}
+          >
+            <div style={{ fontWeight: 700, fontSize: 16, marginBottom: 4 }}>
+              {level.name} {level.abbr}
+            </div>
+            <div style={{ fontSize: 13, opacity: 0.95 }}>
+              {level.description}
+            </div>
+          </div>
+        );
+      })}
+    </div>
+  );
+}
+
 function InfoBox({ title, children }: { title: string; children: React.ReactNode }) {
   return (
     <div
       style={{
         backgroundColor: COLORS.surface,
         border: `1px solid ${COLORS.primaryLight}`,
-        borderRadius: 12,
+        borderRadius: 20,
         padding: 20,
         marginTop: 20,
       }}
@@ -301,7 +353,7 @@ export default function TrainingCategorySystemPage() {
       <div
         style={{
           background: `linear-gradient(135deg, ${COLORS.primary} 0%, ${COLORS.primaryDark} 100%)`,
-          borderRadius: 20,
+          borderRadius: 28,
           padding: 28,
           marginBottom: 28,
           color: COLORS.white,
@@ -352,7 +404,7 @@ export default function TrainingCategorySystemPage() {
             key={i}
             style={{
               backgroundColor: COLORS.white,
-              borderRadius: 14,
+              borderRadius: 24,
               padding: 20,
               border: `1px solid ${COLORS.border}`,
               boxShadow: '0 1px 3px rgba(0,0,0,0.05)',
@@ -388,17 +440,7 @@ export default function TrainingCategorySystemPage() {
           turneringsprestasjon. Hvert nivå bygger på det forrige.
         </Paragraph>
 
-        <CodeBlock>{`┌─────────────────────────────────┐
-│       TURNERING (TURN)          │  Prestasjon under press
-├─────────────────────────────────┤
-│         SPILL (SPILL)           │  Strategi, banehåndtering
-├─────────────────────────────────┤
-│       GOLFSLAG (SLAG)           │  Slagkvalitet, resultat
-├─────────────────────────────────┤
-│        TEKNIKK (TEK)            │  Bevegelsesmønster
-├─────────────────────────────────┤
-│         FYSISK (FYS)            │  Styrke, power, mobilitet
-└─────────────────────────────────┘`}</CodeBlock>
+        <PyramidVisualization />
 
         <DataTable
           headers={['Kode', 'Nivå', 'Fokus']}
@@ -412,11 +454,75 @@ export default function TrainingCategorySystemPage() {
         />
       </CollapsibleSection>
 
-      <CollapsibleSection title="Treningsområder (16 områder)" icon={<MapPin size={20} />}>
+      <CollapsibleSection title="Treningsområder" icon={<MapPin size={20} />}>
         <Paragraph>
           Treningen er delt inn i 16 spesifikke områder som dekker alt fra driving til putting.
           Dette gjør det mulig å fokusere treningen på akkurat det du trenger å jobbe med.
         </Paragraph>
+
+        {/* Video boxes for training areas */}
+        <h4 style={{ fontSize: 14, fontWeight: 600, color: COLORS.textDark, marginBottom: 14, marginTop: 20 }}>
+          Forklaringsvideoer for treningsområder
+        </h4>
+        <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(150px, 1fr))', gap: 12, marginBottom: 28 }}>
+          {[
+            { code: 'TEE', name: 'Tee Total', color: 'rgb(var(--tier-navy))' },
+            { code: 'INN200', name: 'Innspill 200+', color: 'rgb(var(--tier-navy-light))' },
+            { code: 'INN150', name: 'Innspill 150-200m', color: 'rgb(var(--status-info))' },
+            { code: 'INN100', name: 'Innspill 100-150m', color: 'rgb(var(--status-info))' },
+            { code: 'INN50', name: 'Innspill 50-100m', color: 'rgb(var(--status-success))' },
+            { code: 'NÆRSPILL', name: 'Naerspill & Putting', color: 'rgb(var(--tier-gold))' },
+          ].map((area) => (
+            <button
+              key={area.code}
+              onClick={() => window.open(`/videos/areas/${area.code.toLowerCase()}`, '_blank')}
+              style={{
+                display: 'flex',
+                flexDirection: 'column',
+                alignItems: 'center',
+                gap: 8,
+                padding: 16,
+                backgroundColor: COLORS.white,
+                border: `2px solid ${area.color}20`,
+                borderRadius: 20,
+                cursor: 'pointer',
+                transition: 'all 0.2s ease',
+                textAlign: 'center',
+              }}
+              onMouseEnter={(e) => {
+                e.currentTarget.style.backgroundColor = `${area.color}10`;
+                e.currentTarget.style.borderColor = area.color;
+                e.currentTarget.style.transform = 'translateY(-2px)';
+              }}
+              onMouseLeave={(e) => {
+                e.currentTarget.style.backgroundColor = COLORS.white;
+                e.currentTarget.style.borderColor = `${area.color}20`;
+                e.currentTarget.style.transform = 'translateY(0)';
+              }}
+            >
+              <div
+                style={{
+                  width: 44,
+                  height: 44,
+                  borderRadius: 12,
+                  backgroundColor: area.color,
+                  display: 'flex',
+                  alignItems: 'center',
+                  justifyContent: 'center',
+                }}
+              >
+                <PlayCircle size={22} color={COLORS.white} />
+              </div>
+              <div style={{ fontSize: 12, fontWeight: 600, color: COLORS.textDark }}>
+                {area.name}
+              </div>
+              <div style={{ fontSize: 10, color: COLORS.primary, fontWeight: 500, display: 'flex', alignItems: 'center', gap: 3 }}>
+                <Video size={10} />
+                Se video
+              </div>
+            </button>
+          ))}
+        </div>
 
         <h4 style={{ fontSize: 14, fontWeight: 600, color: COLORS.textDark, marginBottom: 14, marginTop: 20 }}>
           Full Swing (5 områder)
@@ -449,20 +555,20 @@ export default function TrainingCategorySystemPage() {
           Putting (7 avstander)
         </h4>
         <DataTable
-          headers={['Kode', 'Avstand']}
+          headers={['Kode', 'Avstand', 'Beskrivelse']}
           rows={[
-            ['PUTT0-3', '0–3 ft (makk-putts)'],
-            ['PUTT3-5', '3–5 ft (korte)'],
-            ['PUTT5-10', '5–10 ft (mellom)'],
-            ['PUTT10-15', '10–15 ft (mellom-lange)'],
-            ['PUTT15-25', '15–25 ft (lange)'],
-            ['PUTT25-40', '25–40 ft (lag putts)'],
-            ['PUTT40+', '40+ ft (ekstra lange)'],
+            ['PUTT0-3', '0–3 ft', 'Makk-putts, tapp-ins'],
+            ['PUTT3-5', '3–5 ft', 'Korte putts, må gjøre'],
+            ['PUTT5-10', '5–10 ft', 'Mellom putts, scoring zone'],
+            ['PUTT10-15', '10–15 ft', 'Mellom-lange putts, birdie muligheter'],
+            ['PUTT15-25', '15–25 ft', 'Lange putts, to-putt fokus'],
+            ['PUTT25-40', '25–40 ft', 'Lag putts, distance control'],
+            ['PUTT40+', '40+ ft', 'Ekstra lange putts, unngå tre-putt'],
           ]}
         />
       </CollapsibleSection>
 
-      <CollapsibleSection title="L-Faser (Motorisk læring)" icon={<Brain size={20} />}>
+      <CollapsibleSection title="Læringsfaser" icon={<Brain size={20} />}>
         <Paragraph>
           L-fasene beskriver progressiv motorisk læring – fra isolert bevegelse til automatisert
           ferdighet. Når du lærer noe nytt, starter du alltid på en lav L-fase og jobber deg oppover.
@@ -479,7 +585,7 @@ export default function TrainingCategorySystemPage() {
           ]}
         />
 
-        <CodeBlock>{`L-KROPP → L-ARM → L-KØLLE → L-BALL → L-AUTO
+        <CodeBlock centered>{`L-KROPP → L-ARM → L-KØLLE → L-BALL → L-AUTO
    │         │         │         │         │
    ▼         ▼         ▼         ▼         ▼
  Isoler   Integrer   Verktøy   Resultat  Prestasjon
@@ -494,9 +600,77 @@ bevegelse  armer     inn       synlig    under press`}</CodeBlock>
             <li>L-AUTO: Gradvis øke til CS80+, varierende forhold</li>
           </ol>
         </InfoBox>
+
+        {/* Video explanation boxes for each L-phase */}
+        <h4 style={{ fontSize: 14, fontWeight: 600, color: COLORS.textDark, margin: '28px 0 16px' }}>
+          Forklaringsvideoer for L-fasene
+        </h4>
+        <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(180px, 1fr))', gap: 12 }}>
+          {[
+            { code: 'L-KROPP', name: 'Kropp', desc: 'Isolert bevegelse', color: 'rgb(var(--status-success))' },
+            { code: 'L-ARM', name: 'Arm', desc: 'Integrer armer', color: 'rgb(var(--tier-navy))' },
+            { code: 'L-KØLLE', name: 'Kølle', desc: 'Verktøy inn', color: 'rgb(var(--status-info))' },
+            { code: 'L-BALL', name: 'Ball', desc: 'Resultat synlig', color: 'rgb(var(--status-info))' },
+            { code: 'L-AUTO', name: 'Auto', desc: 'Full hastighet', color: 'rgb(var(--tier-gold))' },
+          ].map((phase) => (
+            <button
+              key={phase.code}
+              onClick={() => window.open(`/videos/l-phases/${phase.code.toLowerCase()}`, '_blank')}
+              style={{
+                display: 'flex',
+                flexDirection: 'column',
+                alignItems: 'center',
+                gap: 10,
+                padding: 20,
+                backgroundColor: COLORS.white,
+                border: `2px solid ${phase.color}20`,
+                borderRadius: 20,
+                cursor: 'pointer',
+                transition: 'all 0.2s ease',
+                textAlign: 'center',
+              }}
+              onMouseEnter={(e) => {
+                e.currentTarget.style.backgroundColor = `${phase.color}10`;
+                e.currentTarget.style.borderColor = phase.color;
+                e.currentTarget.style.transform = 'translateY(-2px)';
+              }}
+              onMouseLeave={(e) => {
+                e.currentTarget.style.backgroundColor = COLORS.white;
+                e.currentTarget.style.borderColor = `${phase.color}20`;
+                e.currentTarget.style.transform = 'translateY(0)';
+              }}
+            >
+              <div
+                style={{
+                  width: 48,
+                  height: 48,
+                  borderRadius: 14,
+                  backgroundColor: phase.color,
+                  display: 'flex',
+                  alignItems: 'center',
+                  justifyContent: 'center',
+                }}
+              >
+                <PlayCircle size={24} color={COLORS.white} />
+              </div>
+              <div>
+                <div style={{ fontSize: 13, fontWeight: 700, color: phase.color, fontFamily: 'ui-monospace, monospace' }}>
+                  {phase.code}
+                </div>
+                <div style={{ fontSize: 12, color: COLORS.textMuted, marginTop: 2 }}>
+                  {phase.desc}
+                </div>
+              </div>
+              <div style={{ fontSize: 11, color: COLORS.primary, fontWeight: 500, display: 'flex', alignItems: 'center', gap: 4 }}>
+                <Video size={12} />
+                Se video
+              </div>
+            </button>
+          ))}
+        </div>
       </CollapsibleSection>
 
-      <CollapsibleSection title="CS-Nivåer (Klubbhastighet)" icon={<Zap size={20} />}>
+      <CollapsibleSection title="Club Speed nivå" icon={<Zap size={20} />}>
         <Paragraph>
           CS (Clubspeed) angir prosentandel av din maksimale klubbhastighet. Dette brukes for å
           kontrollere intensiteten i treningen og sikre at du trener på riktig nivå for det du
@@ -524,7 +698,7 @@ bevegelse  armer     inn       synlig    under press`}</CodeBlock>
         </InfoBox>
       </CollapsibleSection>
 
-      <CollapsibleSection title="M-Miljø (Treningskontekst)" icon={<MapPin size={20} />}>
+      <CollapsibleSection title="Miljø" icon={<MapPin size={20} />}>
         <Paragraph>
           Miljøet beskriver hvor treningen foregår, fra innendørs simulator til turneringsrunde.
           Progresjon gjennom miljøene hjelper med å overføre ferdigheter til banen.
@@ -542,13 +716,13 @@ bevegelse  armer     inn       synlig    under press`}</CodeBlock>
           ]}
         />
 
-        <CodeBlock>{`M0 → M1 → M2 → M3 → M4 → M5
+        <CodeBlock centered>{`M0 → M1 → M2 → M3 → M4 → M5
 │     │     │     │     │     │
 ▼     ▼     ▼     ▼     ▼     ▼
 Gym  Sim  Range Øving Trening Turn`}</CodeBlock>
       </CollapsibleSection>
 
-      <CollapsibleSection title="PR-Press (Psykologisk belastning)" icon={<Activity size={20} />}>
+      <CollapsibleSection title="Belastning" icon={<Activity size={20} />}>
         <Paragraph>
           Pressnivået beskriver den psykologiske belastningen i treningssituasjonen. Gradvis økning
           av press hjelper deg med å prestere under turneringsforhold.
@@ -566,7 +740,7 @@ Gym  Sim  Range Øving Trening Turn`}</CodeBlock>
         />
       </CollapsibleSection>
 
-      <CollapsibleSection title="P-Posisjoner (Svingfaser)" icon={<Crosshair size={20} />}>
+      <CollapsibleSection title="Posisjoner" icon={<Crosshair size={20} />}>
         <Paragraph>
           P-posisjonssystemet definerer nøkkelposisjoner i golfsvingen. Dette gjør det mulig å
           fokusere på spesifikke deler av svingen under trening.
@@ -588,7 +762,7 @@ Gym  Sim  Range Øving Trening Turn`}</CodeBlock>
           ]}
         />
 
-        <CodeBlock>{`Backswing:    P1.0 → P2.0 → P3.0 → P4.0
+        <CodeBlock centered>{`Backswing:    P1.0 → P2.0 → P3.0 → P4.0
                                     │
 Transition:                       P4.5
                                     │
@@ -599,7 +773,7 @@ Impact:                                     P7.0
 Follow-through:               P8.0 → P9.0 → P10.0`}</CodeBlock>
       </CollapsibleSection>
 
-      <CollapsibleSection title="Formelstruktur" icon={<Target size={20} />}>
+      <CollapsibleSection title="Struktur" icon={<Target size={20} />}>
         <Paragraph>
           Alle disse elementene kombineres til en komplett formel som beskriver økten. Formelen
           følger et fast mønster avhengig av type trening.
@@ -643,7 +817,7 @@ Follow-through:               P8.0 → P9.0 → P10.0`}</CodeBlock>
               key={i}
               style={{
                 backgroundColor: COLORS.surface,
-                borderRadius: 12,
+                borderRadius: 20,
                 padding: 18,
                 border: `1px solid ${COLORS.border}`,
               }}

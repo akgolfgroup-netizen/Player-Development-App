@@ -18,7 +18,7 @@ export const VIDEO_CATEGORIES = [
   { value: '', label: 'Alle kategorier' },
   { value: 'swing', label: 'Full sving' },
   { value: 'putting', label: 'Putting' },
-  { value: 'short_game', label: 'Nærspill' },
+  { value: 'short_game', label: 'Naerspill' },
   { value: 'other', label: 'Annet' },
 ];
 
@@ -46,15 +46,15 @@ export const VIEW_MODES = {
 
 // Tailwind classes
 const tw = {
-  container: 'flex flex-col gap-3 p-4 bg-surface rounded-ak-lg border border-border',
+  container: 'flex flex-col gap-3 p-4 bg-surface rounded-xl border border-border',
   row: 'flex flex-wrap gap-3 items-center',
   searchContainer: 'flex-[1_1_250px] relative',
   searchIcon: 'absolute left-3 top-1/2 -translate-y-1/2 w-[18px] h-[18px] text-[var(--video-text-tertiary)] pointer-events-none',
-  searchInput: 'w-full py-2.5 pr-3 pl-10 text-sm text-[var(--text-inverse)] bg-[var(--ak-surface-dark-elevated)] border border-border rounded-ak-md outline-none transition-colors duration-200 focus:border-primary',
-  clearButton: 'absolute right-2 top-1/2 -translate-y-1/2 p-1 bg-transparent border-none cursor-pointer text-[var(--video-text-tertiary)] rounded-ak-sm flex items-center justify-center',
-  select: "py-2.5 pl-3 pr-9 text-sm text-[var(--text-inverse)] bg-[var(--ak-surface-dark-elevated)] border border-border rounded-ak-md outline-none cursor-pointer appearance-none bg-no-repeat bg-[right_10px_center] min-w-[150px] transition-colors duration-200 focus:border-primary",
-  viewToggle: 'flex bg-[var(--ak-surface-dark-elevated)] rounded-ak-md p-1 gap-1',
-  viewButton: 'py-2 px-3 bg-transparent border-none rounded-ak-sm cursor-pointer text-[var(--video-text-secondary)] flex items-center justify-center transition-all duration-200',
+  searchInput: 'w-full py-2.5 pr-3 pl-10 text-sm text-[var(--text-inverse)] bg-[rgb(var(--tier-navy-dark))] border border-border rounded-lg outline-none transition-colors duration-200 focus:border-primary',
+  clearButton: 'absolute right-2 top-1/2 -translate-y-1/2 p-1 bg-transparent border-none cursor-pointer text-[var(--video-text-tertiary)] rounded-md flex items-center justify-center',
+  select: "py-2.5 pl-3 pr-9 text-sm text-[var(--text-inverse)] bg-[rgb(var(--tier-navy-dark))] border border-border rounded-lg outline-none cursor-pointer appearance-none bg-no-repeat bg-[right_10px_center] min-w-[150px] transition-colors duration-200 focus:border-primary",
+  viewToggle: 'flex bg-[rgb(var(--tier-navy-dark))] rounded-lg p-1 gap-1',
+  viewButton: 'py-2 px-3 bg-transparent border-none rounded-md cursor-pointer text-[var(--video-text-secondary)] flex items-center justify-center transition-all duration-200',
   viewButtonActive: 'bg-primary text-white',
   viewIcon: 'w-[18px] h-[18px]',
   playerSelect: 'min-w-[180px]',

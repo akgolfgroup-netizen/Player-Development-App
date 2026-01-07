@@ -1,5 +1,5 @@
 /**
- * AK Golf Academy - Session Create Form
+ * TIER Golf Academy - Session Create Form
  * Design System v3.0 - Premium Light
  *
  * Basert på AK-formelsystemet fra KATEGORI_HIERARKI v2.0
@@ -47,7 +47,7 @@ const PYRAMID_CATEGORIES = [
     label: 'Fysisk',
     description: 'Styrke, power, mobilitet, stabilitet, kondisjon',
     icon: '💪',
-    color: '#D97644', // Orange
+    color: 'rgb(var(--status-warning))', // Orange
     usesCS: false,
     usesP: false,
   },
@@ -56,7 +56,7 @@ const PYRAMID_CATEGORIES = [
     label: 'Teknikk',
     description: 'Bevegelsesmønster, posisjoner, sekvens',
     icon: '🎯',
-    color: '#8B6E9D', // Purple
+    color: 'rgb(var(--category-j))', // Purple
     usesCS: true,
     usesP: true,
   },
@@ -65,7 +65,7 @@ const PYRAMID_CATEGORIES = [
     label: 'Golfslag',
     description: 'Slagkvalitet, avstand, nøyaktighet, konsistens',
     icon: '🏌️',
-    color: '#4A8C7C', // Teal
+    color: 'rgb(var(--status-info))', // Teal
     usesCS: true,
     usesP: true,
   },
@@ -74,7 +74,7 @@ const PYRAMID_CATEGORIES = [
     label: 'Spill',
     description: 'Strategi, banehåndtering, scoring, beslutninger',
     icon: '⛳',
-    color: '#4A7C59', // Green
+    color: 'rgb(var(--status-success))', // Green
     usesCS: true,
     usesP: false,
   },
@@ -83,7 +83,7 @@ const PYRAMID_CATEGORIES = [
     label: 'Turnering',
     description: 'Mental prestasjon, konkurransefokus',
     icon: '🏆',
-    color: '#C9A227', // Gold
+    color: 'rgb(var(--tier-gold))', // Gold
     usesCS: false,
     usesP: false,
   },
@@ -102,12 +102,12 @@ const TRAINING_AREAS = {
     ],
   },
   shortGame: {
-    label: 'Nærspill',
+    label: 'Naerspill',
     areas: [
       { code: 'CHIP', label: 'Chip', icon: '📐', description: 'Lav bue, mye rulle', usesCS: false },
       { code: 'PITCH', label: 'Pitch', icon: '📐', description: 'Middels bue, middels rulle', usesCS: false },
       { code: 'LOB', label: 'Lob', icon: '📐', description: 'Høy bue, lite rulle', usesCS: false },
-      { code: 'BUNKER', label: 'Bunker', icon: '🏖️', description: 'Sand, greenside', usesCS: false },
+      { code: 'BUNKER', label: 'Bunker', icon: 'umbrella', description: 'Sand, greenside', usesCS: false },
     ],
   },
   putting: {
@@ -235,21 +235,21 @@ const DURATION_OPTIONS = [15, 30, 45, 60, 90, 120, 150, 180];
 
 function FormSection({ title, icon: Icon, children, number, collapsed, onToggle, optional = false }) {
   return (
-    <div className="mb-4 bg-ak-surface-base rounded-xl border border-ak-border-default overflow-hidden">
+    <div className="mb-4 bg-tier-white rounded-xl border border-tier-border-default overflow-hidden">
       <button
         type="button"
         onClick={onToggle}
-        className="w-full flex items-center justify-between gap-3 px-4 py-3 bg-ak-surface-subtle border-b border-ak-border-default"
+        className="w-full flex items-center justify-between gap-3 px-4 py-3 bg-tier-surface-base border-b border-tier-border-default"
       >
         <div className="flex items-center gap-3">
           {number && (
-            <span className="w-6 h-6 rounded-full bg-ak-primary text-white text-xs font-bold flex items-center justify-center">
+            <span className="w-6 h-6 rounded-full bg-tier-navy text-white text-xs font-bold flex items-center justify-center">
               {number}
             </span>
           )}
-          {Icon && <Icon size={18} className="text-ak-text-secondary" />}
-          <span className="text-sm font-semibold text-ak-text-primary">{title}</span>
-          {optional && <span className="text-xs text-ak-text-tertiary">(valgfritt)</span>}
+          {Icon && <Icon size={18} className="text-tier-text-secondary" />}
+          <span className="text-sm font-semibold text-tier-navy">{title}</span>
+          {optional && <span className="text-xs text-tier-text-tertiary">(valgfritt)</span>}
         </div>
         {collapsed ? <ChevronDown size={18} /> : <ChevronUp size={18} />}
       </button>
@@ -265,7 +265,7 @@ function FormSection({ title, icon: Icon, children, number, collapsed, onToggle,
 function PyramidCategorySelector({ selected, onChange }) {
   return (
     <div className="space-y-2">
-      <div className="text-xs text-ak-text-secondary mb-3 p-3 bg-ak-surface-subtle rounded-lg">
+      <div className="text-xs text-tier-text-secondary mb-3 p-3 bg-tier-surface-base rounded-lg">
         <strong>Treningspyramiden:</strong> Bygg fundamentet først. FYS danner grunnlaget, deretter
         TEK → SLAG → SPILL → TURN.
       </div>
@@ -278,8 +278,8 @@ function PyramidCategorySelector({ selected, onChange }) {
             onClick={() => onChange(cat.code)}
             className={`w-full flex items-center gap-3 p-3 rounded-lg border-2 transition-all ${
               isSelected
-                ? 'bg-ak-primary/10 border-ak-primary'
-                : 'bg-ak-surface-subtle border-transparent hover:border-ak-border-default'
+                ? 'bg-tier-navy/10 border-tier-navy'
+                : 'bg-tier-surface-base border-transparent hover:border-tier-border-default'
             }`}
             style={isSelected ? { borderColor: cat.color } : {}}
           >
@@ -289,12 +289,12 @@ function PyramidCategorySelector({ selected, onChange }) {
                 <span className="font-mono font-bold text-sm" style={{ color: cat.color }}>
                   {cat.code}
                 </span>
-                <span className="font-medium text-ak-text-primary">{cat.label}</span>
+                <span className="font-medium text-tier-navy">{cat.label}</span>
               </div>
-              <div className="text-xs text-ak-text-secondary">{cat.description}</div>
+              <div className="text-xs text-tier-text-secondary">{cat.description}</div>
             </div>
             <div className="flex items-center gap-2">
-              <span className="text-xs text-ak-text-tertiary">Nivå {index + 1}</span>
+              <span className="text-xs text-tier-text-tertiary">Nivå {index + 1}</span>
               {isSelected && <span className="text-lg" style={{ color: cat.color }}>✓</span>}
             </div>
           </button>
@@ -311,7 +311,7 @@ function TrainingAreaSelector({ selected, onChange, pyramidCategory }) {
   if (isPhysical) {
     return (
       <div>
-        <p className="text-xs text-ak-text-secondary mb-3">
+        <p className="text-xs text-tier-text-secondary mb-3">
           For fysisk trening, velg fokusområde:
         </p>
         <div className="grid grid-cols-2 gap-2">
@@ -330,8 +330,8 @@ function TrainingAreaSelector({ selected, onChange, pyramidCategory }) {
                 }}
                 className={`flex items-center gap-2 p-3 rounded-lg border transition-all ${
                   isSelected
-                    ? 'bg-ak-primary/10 border-ak-primary'
-                    : 'bg-ak-surface-subtle border-transparent hover:border-ak-border-default'
+                    ? 'bg-tier-navy/10 border-tier-navy'
+                    : 'bg-tier-surface-base border-transparent hover:border-tier-border-default'
                 }`}
               >
                 <span className="text-xl">{focus.icon}</span>
@@ -348,7 +348,7 @@ function TrainingAreaSelector({ selected, onChange, pyramidCategory }) {
     <div className="space-y-4">
       {Object.entries(TRAINING_AREAS).map(([groupKey, group]) => (
         <div key={groupKey}>
-          <h4 className="text-xs font-semibold text-ak-text-secondary mb-2 uppercase tracking-wide">
+          <h4 className="text-xs font-semibold text-tier-text-secondary mb-2 uppercase tracking-wide">
             {group.label}
           </h4>
           <div className="grid grid-cols-3 gap-2">
@@ -367,8 +367,8 @@ function TrainingAreaSelector({ selected, onChange, pyramidCategory }) {
                   }}
                   className={`flex flex-col items-center p-2 rounded-lg border transition-all ${
                     isSelected
-                      ? 'bg-ak-primary/10 border-ak-primary'
-                      : 'bg-ak-surface-subtle border-transparent hover:border-ak-border-default'
+                      ? 'bg-tier-navy/10 border-tier-navy'
+                      : 'bg-tier-surface-base border-transparent hover:border-tier-border-default'
                   }`}
                 >
                   <span className="text-lg mb-0.5">{area.icon}</span>
@@ -386,7 +386,7 @@ function TrainingAreaSelector({ selected, onChange, pyramidCategory }) {
 function LPhaseSelector({ selected, onChange }) {
   return (
     <div className="space-y-2">
-      <div className="text-xs text-ak-text-secondary mb-3 p-3 bg-ak-surface-subtle rounded-lg">
+      <div className="text-xs text-tier-text-secondary mb-3 p-3 bg-tier-surface-base rounded-lg">
         <strong>L-Fase progresjon:</strong> L-KROPP → L-ARM → L-KØLLE → L-BALL → L-AUTO
       </div>
       {L_PHASES.map((phase) => {
@@ -398,22 +398,22 @@ function LPhaseSelector({ selected, onChange }) {
             onClick={() => onChange(isSelected ? null : phase.code)}
             className={`w-full flex items-center gap-3 p-3 rounded-lg border transition-all text-left ${
               isSelected
-                ? 'bg-ak-primary/10 border-ak-primary'
-                : 'bg-ak-surface-subtle border-transparent hover:border-ak-border-default'
+                ? 'bg-tier-navy/10 border-tier-navy'
+                : 'bg-tier-surface-base border-transparent hover:border-tier-border-default'
             }`}
           >
             <span className="text-2xl">{phase.icon}</span>
             <div className="flex-1">
               <div className="flex items-center gap-2">
-                <span className="font-mono font-bold text-sm text-ak-primary">{phase.code}</span>
+                <span className="font-mono font-bold text-sm text-tier-navy">{phase.code}</span>
                 <span className="font-medium">{phase.label}</span>
               </div>
-              <div className="text-xs text-ak-text-secondary">{phase.description}</div>
+              <div className="text-xs text-tier-text-secondary">{phase.description}</div>
             </div>
-            <span className="text-xs text-ak-text-tertiary bg-ak-surface-subtle px-2 py-1 rounded">
+            <span className="text-xs text-tier-text-tertiary bg-tier-surface-base px-2 py-1 rounded">
               {phase.csRange}
             </span>
-            {isSelected && <span className="text-ak-primary text-lg">✓</span>}
+            {isSelected && <span className="text-tier-navy text-lg">✓</span>}
           </button>
         );
       })}
@@ -432,7 +432,7 @@ function CSLevelSelector({ selected, onChange, lPhase }) {
   return (
     <div>
       {suggestedCS && (
-        <div className="text-xs text-ak-status-success mb-3 p-2 bg-ak-status-success/10 rounded-lg">
+        <div className="text-xs text-tier-success mb-3 p-2 bg-tier-success/10 rounded-lg">
           💡 Anbefalt for {lPhase}: <strong>{suggestedCS}</strong>
         </div>
       )}
@@ -446,8 +446,8 @@ function CSLevelSelector({ selected, onChange, lPhase }) {
               onClick={() => onChange(isSelected ? null : cs.code)}
               className={`flex flex-col items-center p-2 rounded-lg border transition-all ${
                 isSelected
-                  ? 'bg-ak-primary text-white border-ak-primary'
-                  : 'bg-ak-surface-subtle border-transparent hover:border-ak-border-default'
+                  ? 'bg-tier-navy text-white border-tier-navy'
+                  : 'bg-tier-surface-base border-transparent hover:border-tier-border-default'
               }`}
             >
               <span className="text-sm font-bold">{cs.label}</span>
@@ -472,19 +472,19 @@ function MEnvironmentSelector({ selected, onChange }) {
             onClick={() => onChange(isSelected ? null : env.code)}
             className={`w-full flex items-center gap-3 p-3 rounded-lg border transition-all ${
               isSelected
-                ? 'bg-ak-primary/10 border-ak-primary'
-                : 'bg-ak-surface-subtle border-transparent hover:border-ak-border-default'
+                ? 'bg-tier-navy/10 border-tier-navy'
+                : 'bg-tier-surface-base border-transparent hover:border-tier-border-default'
             }`}
           >
             <span className="text-xl">{env.icon}</span>
             <div className="flex-1 text-left">
               <div className="flex items-center gap-2">
-                <span className="font-mono font-bold text-sm text-ak-primary">{env.code}</span>
+                <span className="font-mono font-bold text-sm text-tier-navy">{env.code}</span>
                 <span className="font-medium">{env.label}</span>
               </div>
-              <div className="text-xs text-ak-text-secondary">{env.description}</div>
+              <div className="text-xs text-tier-text-secondary">{env.description}</div>
             </div>
-            {isSelected && <span className="text-ak-primary text-lg">✓</span>}
+            {isSelected && <span className="text-tier-navy text-lg">✓</span>}
           </button>
         );
       })}
@@ -504,19 +504,19 @@ function PRPressSelector({ selected, onChange }) {
             onClick={() => onChange(isSelected ? null : pr.code)}
             className={`flex items-center gap-3 p-3 rounded-lg border transition-all ${
               isSelected
-                ? 'bg-ak-primary/10 border-ak-primary'
-                : 'bg-ak-surface-subtle border-transparent hover:border-ak-border-default'
+                ? 'bg-tier-navy/10 border-tier-navy'
+                : 'bg-tier-surface-base border-transparent hover:border-tier-border-default'
             }`}
           >
             <span className="text-xl">{pr.icon}</span>
             <div className="flex-1 text-left">
               <div className="flex items-center gap-2">
-                <span className="font-mono font-bold text-sm text-ak-primary">{pr.code}</span>
+                <span className="font-mono font-bold text-sm text-tier-navy">{pr.code}</span>
                 <span className="font-medium">{pr.label}</span>
               </div>
-              <div className="text-xs text-ak-text-secondary">{pr.description}</div>
+              <div className="text-xs text-tier-text-secondary">{pr.description}</div>
             </div>
-            {isSelected && <span className="text-ak-primary text-lg">✓</span>}
+            {isSelected && <span className="text-tier-navy text-lg">✓</span>}
           </button>
         );
       })}
@@ -527,16 +527,16 @@ function PRPressSelector({ selected, onChange }) {
 function PPositionSelector({ selectedStart, selectedEnd, onChangeStart, onChangeEnd }) {
   return (
     <div className="space-y-3">
-      <div className="text-xs text-ak-text-secondary p-3 bg-ak-surface-subtle rounded-lg">
+      <div className="text-xs text-tier-text-secondary p-3 bg-tier-surface-base rounded-lg">
         <strong>Velg posisjonsfokus:</strong> Enkeltpunkt (f.eks. P7.0) eller range (f.eks. P5.0-P7.0)
       </div>
       <div className="grid grid-cols-2 gap-4">
         <div>
-          <label className="text-xs text-ak-text-secondary mb-2 block">Fra posisjon</label>
+          <label className="text-xs text-tier-text-secondary mb-2 block">Fra posisjon</label>
           <select
             value={selectedStart || ''}
             onChange={(e) => onChangeStart(e.target.value || null)}
-            className="w-full p-2 bg-ak-surface-subtle border border-ak-border-default rounded-lg text-sm"
+            className="w-full p-2 bg-tier-surface-base border border-tier-border-default rounded-lg text-sm"
           >
             <option value="">Velg...</option>
             {P_POSITIONS.map((p) => (
@@ -545,11 +545,11 @@ function PPositionSelector({ selectedStart, selectedEnd, onChangeStart, onChange
           </select>
         </div>
         <div>
-          <label className="text-xs text-ak-text-secondary mb-2 block">Til posisjon (valgfritt)</label>
+          <label className="text-xs text-tier-text-secondary mb-2 block">Til posisjon (valgfritt)</label>
           <select
             value={selectedEnd || ''}
             onChange={(e) => onChangeEnd(e.target.value || null)}
-            className="w-full p-2 bg-ak-surface-subtle border border-ak-border-default rounded-lg text-sm"
+            className="w-full p-2 bg-tier-surface-base border border-tier-border-default rounded-lg text-sm"
           >
             <option value="">Samme posisjon</option>
             {P_POSITIONS.map((p) => (
@@ -574,13 +574,13 @@ function TournamentTypeSelector({ selected, onChange }) {
             onClick={() => onChange(isSelected ? null : type.code)}
             className={`flex flex-col items-center p-3 rounded-lg border transition-all ${
               isSelected
-                ? 'bg-ak-primary/10 border-ak-primary'
-                : 'bg-ak-surface-subtle border-transparent hover:border-ak-border-default'
+                ? 'bg-tier-navy/10 border-tier-navy'
+                : 'bg-tier-surface-base border-transparent hover:border-tier-border-default'
             }`}
           >
-            <span className="font-mono font-bold text-sm text-ak-primary">{type.code}</span>
+            <span className="font-mono font-bold text-sm text-tier-navy">{type.code}</span>
             <span className="text-sm font-medium">{type.label}</span>
-            <span className="text-xs text-ak-text-secondary text-center">{type.description}</span>
+            <span className="text-xs text-tier-text-secondary text-center">{type.description}</span>
           </button>
         );
       })}
@@ -608,12 +608,12 @@ function DrillsSection({ drills, onChange }) {
   return (
     <div>
       {drills.length > 0 && (
-        <div className="mb-4 p-3 bg-ak-status-success/10 rounded-lg">
+        <div className="mb-4 p-3 bg-tier-success/10 rounded-lg">
           <div className="flex justify-between items-center">
-            <span className="text-sm font-medium text-ak-status-success">
+            <span className="text-sm font-medium text-tier-success">
               {drills.length} øvelse{drills.length !== 1 ? 'r' : ''} lagt til
             </span>
-            <span className="text-lg font-bold text-ak-status-success">
+            <span className="text-lg font-bold text-tier-success">
               Totalt: {totalReps} reps
             </span>
           </div>
@@ -622,13 +622,13 @@ function DrillsSection({ drills, onChange }) {
 
       <div className="space-y-3">
         {drills.map((drill, index) => (
-          <div key={index} className="p-3 bg-ak-surface-subtle rounded-lg border border-ak-border-default">
+          <div key={index} className="p-3 bg-tier-surface-base rounded-lg border border-tier-border-default">
             <div className="flex justify-between items-start mb-2">
-              <span className="text-xs text-ak-text-secondary">Øvelse {index + 1}</span>
+              <span className="text-xs text-tier-text-secondary">Øvelse {index + 1}</span>
               <button
                 type="button"
                 onClick={() => removeDrill(index)}
-                className="text-ak-status-error hover:bg-ak-status-error/10 p-1 rounded"
+                className="text-tier-error hover:bg-tier-error/10 p-1 rounded"
               >
                 <Minus size={16} />
               </button>
@@ -639,26 +639,26 @@ function DrillsSection({ drills, onChange }) {
               value={drill.name}
               onChange={(e) => updateDrill(index, 'name', e.target.value)}
               placeholder="Navn på øvelse/drill"
-              className="w-full p-2 mb-2 bg-ak-surface-base border border-ak-border-default rounded-lg text-sm"
+              className="w-full p-2 mb-2 bg-tier-white border border-tier-border-default rounded-lg text-sm"
             />
 
             <div className="grid grid-cols-2 gap-2">
               <div>
-                <label className="text-xs text-ak-text-secondary">Reps</label>
+                <label className="text-xs text-tier-text-secondary">Reps</label>
                 <input
                   type="number"
                   value={drill.reps}
                   onChange={(e) => updateDrill(index, 'reps', parseInt(e.target.value) || 0)}
-                  className="w-full p-2 bg-ak-surface-base border border-ak-border-default rounded-lg text-sm"
+                  className="w-full p-2 bg-tier-white border border-tier-border-default rounded-lg text-sm"
                 />
               </div>
               <div>
-                <label className="text-xs text-ak-text-secondary">Sett</label>
+                <label className="text-xs text-tier-text-secondary">Sett</label>
                 <input
                   type="number"
                   value={drill.sets}
                   onChange={(e) => updateDrill(index, 'sets', parseInt(e.target.value) || 1)}
-                  className="w-full p-2 bg-ak-surface-base border border-ak-border-default rounded-lg text-sm"
+                  className="w-full p-2 bg-tier-white border border-tier-border-default rounded-lg text-sm"
                 />
               </div>
             </div>
@@ -669,7 +669,7 @@ function DrillsSection({ drills, onChange }) {
       <button
         type="button"
         onClick={addDrill}
-        className="w-full mt-3 p-3 border-2 border-dashed border-ak-border-default rounded-lg text-ak-text-secondary hover:border-ak-primary hover:text-ak-primary transition-all flex items-center justify-center gap-2"
+        className="w-full mt-3 p-3 border-2 border-dashed border-tier-border-default rounded-lg text-tier-text-secondary hover:border-tier-navy hover:text-tier-navy transition-all flex items-center justify-center gap-2"
       >
         <Plus size={18} />
         <span>Legg til øvelse/drill</span>
@@ -831,7 +831,7 @@ export default function SessionCreateForm({
       duration: formData.duration,
       location: formData.location || undefined,
       sessionType: formData.pyramidCategory,
-      // AK Golf Kategori Hierarki v2.0 felter (mapped til API-schema)
+      // TIER Golf Kategori Hierarki v2.0 felter (mapped til API-schema)
       akFormula,
       learningPhase: formData.lPhase || undefined,
       clubSpeed: formData.csLevel || undefined,
@@ -852,20 +852,20 @@ export default function SessionCreateForm({
   }, [formData, validate, onSubmit, akFormula]);
 
   return (
-    <div className="bg-ak-surface-subtle min-h-screen">
+    <div className="bg-tier-surface-base min-h-screen">
       {/* Header */}
-      <div className="flex justify-between items-center p-4 bg-ak-surface-base border-b border-ak-border-default sticky top-0 z-10">
+      <div className="flex justify-between items-center p-4 bg-tier-white border-b border-tier-border-default sticky top-0 z-10">
         <Button variant="ghost" onClick={onCancel} leftIcon={<ChevronLeft size={20} />}>
           Avbryt
         </Button>
-        <span className="text-lg font-semibold text-ak-text-primary">Ny treningsøkt</span>
+        <span className="text-lg font-semibold text-tier-navy">Ny treningsøkt</span>
         <div className="w-[60px]" />
       </div>
 
       {/* AK-Formel Preview */}
-      <div className="mx-4 mt-4 p-3 bg-ak-surface-base border border-ak-border-default rounded-xl">
-        <div className="text-xs text-ak-text-secondary mb-1">AK-Formel:</div>
-        <div className="font-mono text-sm font-bold text-ak-primary break-all">
+      <div className="mx-4 mt-4 p-3 bg-tier-white border border-tier-border-default rounded-xl">
+        <div className="text-xs text-tier-text-secondary mb-1">AK-Formel:</div>
+        <div className="font-mono text-sm font-bold text-tier-navy break-all">
           {akFormula}
         </div>
       </div>
@@ -883,19 +883,19 @@ export default function SessionCreateForm({
         >
           <div className="space-y-4">
             <div>
-              <label className="block mb-1 text-xs font-medium text-ak-text-secondary">
+              <label className="block mb-1 text-xs font-medium text-tier-text-secondary">
                 Dato og tidspunkt *
               </label>
               <input
                 type="datetime-local"
                 value={formData.sessionDate}
                 onChange={(e) => updateField('sessionDate', e.target.value)}
-                className="w-full p-3 bg-ak-surface-subtle border border-ak-border-default rounded-lg"
+                className="w-full p-3 bg-tier-surface-base border border-tier-border-default rounded-lg"
               />
             </div>
 
             <div>
-              <label className="block mb-1 text-xs font-medium text-ak-text-secondary">
+              <label className="block mb-1 text-xs font-medium text-tier-text-secondary">
                 <Clock size={14} className="inline mr-1" />
                 Varighet
               </label>
@@ -907,8 +907,8 @@ export default function SessionCreateForm({
                     onClick={() => updateField('duration', mins)}
                     className={`py-2 px-4 rounded-lg border transition-all ${
                       formData.duration === mins
-                        ? 'bg-ak-primary text-white border-ak-primary'
-                        : 'bg-ak-surface-subtle border-ak-border-default'
+                        ? 'bg-tier-navy text-white border-tier-navy'
+                        : 'bg-tier-surface-base border-tier-border-default'
                     }`}
                   >
                     {mins} min
@@ -918,14 +918,14 @@ export default function SessionCreateForm({
             </div>
 
             <div>
-              <label className="block mb-1 text-xs font-medium text-ak-text-secondary">
+              <label className="block mb-1 text-xs font-medium text-tier-text-secondary">
                 <MapPin size={14} className="inline mr-1" />
                 Sted
               </label>
               <select
                 value={formData.location}
                 onChange={(e) => updateField('location', e.target.value)}
-                className="w-full p-3 bg-ak-surface-subtle border border-ak-border-default rounded-lg"
+                className="w-full p-3 bg-tier-surface-base border border-tier-border-default rounded-lg"
               >
                 <option value="">Velg sted...</option>
                 {LOCATIONS.map((loc) => (
@@ -956,7 +956,7 @@ export default function SessionCreateForm({
             }}
           />
           {errors.pyramidCategory && (
-            <span className="text-ak-status-error text-xs mt-2 block">{errors.pyramidCategory}</span>
+            <span className="text-tier-error text-xs mt-2 block">{errors.pyramidCategory}</span>
           )}
         </FormSection>
 
@@ -1103,7 +1103,7 @@ export default function SessionCreateForm({
             onChange={(e) => updateField('notes', e.target.value)}
             placeholder="Andre notater eller instruksjoner..."
             rows={3}
-            className="w-full p-3 bg-ak-surface-subtle border border-ak-border-default rounded-lg resize-y"
+            className="w-full p-3 bg-tier-surface-base border border-tier-border-default rounded-lg resize-y"
           />
         </FormSection>
 

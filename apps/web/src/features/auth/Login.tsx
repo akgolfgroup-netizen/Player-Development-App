@@ -170,33 +170,33 @@ const Login: React.FC = () => {
             leftIcon={<LogIn size={20} />}
             disabled={loading}
             loading={loading}
-            className="w-full justify-center bg-tier-navy text-white hover:bg-tier-navy/90"
+            fullWidth
           >
             {loading ? 'Logger inn...' : 'Logg Inn'}
           </Button>
         </form>
 
         {/* Demo Login Buttons */}
-        <div className="mt-6 pt-6 border-t border-tier-border-default">
-          <Text variant="footnote" color="secondary" className="text-center mb-4">
+        <div className="mt-8 pt-6 border-t border-tier-border-default">
+          <Text variant="footnote" color="secondary" className="text-center mb-5">
             Demo innlogginger
           </Text>
-          <div className="flex flex-col gap-2">
+          <div className="flex flex-col gap-3">
             <Button
               variant="secondary"
               size="sm"
               onClick={() => handleDemoLogin('player')}
               disabled={loading}
-              className="w-full justify-center"
+              fullWidth
             >
-              Spiller (player@demo.com)
+              DEMO Spiller (player@demo.com)
             </Button>
             <Button
               variant="secondary"
               size="sm"
               onClick={() => handleDemoLogin('coach')}
               disabled={loading}
-              className="w-full justify-center"
+              fullWidth
             >
               Trener (coach@demo.com)
             </Button>
@@ -205,7 +205,7 @@ const Login: React.FC = () => {
               size="sm"
               onClick={() => handleDemoLogin('admin')}
               disabled={loading}
-              className="w-full justify-center"
+              fullWidth
             >
               Admin (admin@demo.com)
             </Button>

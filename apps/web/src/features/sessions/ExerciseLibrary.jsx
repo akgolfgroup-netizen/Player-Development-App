@@ -1,5 +1,5 @@
 /**
- * AK Golf Academy - Exercise Library
+ * TIER Golf Academy - Exercise Library
  * Design System v3.0 - Premium Light
  *
  * Exercise library with structured training protocols.
@@ -36,7 +36,7 @@ const golfAreas = [
   { id: 'INN150', label: 'Innspill 150-200 m' },
   { id: 'INN100', label: 'Innspill 100-150 m' },
   { id: 'INN50', label: 'Innspill 50-100 m' },
-  // Nærspill (4)
+  // Naerspill (4)
   { id: 'PITCH', label: 'Pitch' },
   { id: 'BUNKER', label: 'Bunker' },
   { id: 'LOB', label: 'Lob' },
@@ -94,7 +94,7 @@ const pressLevels = [
   { id: 'PR5', label: 'PR5 Turnering' },
 ];
 
-// Demo exercises - Using full AK Golf Kategori Hierarki v2.0
+// Demo exercises - Using full TIER Golf Kategori Hierarki v2.0
 const exercises = [
   // FYSISK (FYS)
   {
@@ -280,15 +280,15 @@ const getPyramideClasses = (pyramide) => {
     case 'FYS':
       return { bar: 'bg-purple-500', text: 'text-purple-600', bg: 'bg-purple-500/15' };
     case 'TEK':
-      return { bar: 'bg-ak-primary', text: 'text-ak-primary', bg: 'bg-ak-primary/15' };
+      return { bar: 'bg-tier-navy', text: 'text-tier-navy', bg: 'bg-tier-navy/15' };
     case 'SLAG':
-      return { bar: 'bg-ak-status-success', text: 'text-ak-status-success', bg: 'bg-ak-status-success/15' };
+      return { bar: 'bg-tier-success', text: 'text-tier-success', bg: 'bg-tier-success/15' };
     case 'SPILL':
       return { bar: 'bg-amber-500', text: 'text-amber-600', bg: 'bg-amber-500/15' };
     case 'TURN':
-      return { bar: 'bg-ak-status-error', text: 'text-ak-status-error', bg: 'bg-ak-status-error/15' };
+      return { bar: 'bg-tier-error', text: 'text-tier-error', bg: 'bg-tier-error/15' };
     default:
-      return { bar: 'bg-ak-primary', text: 'text-ak-primary', bg: 'bg-ak-primary/15' };
+      return { bar: 'bg-tier-navy', text: 'text-tier-navy', bg: 'bg-tier-navy/15' };
   }
 };
 
@@ -305,7 +305,7 @@ function ExerciseCard({ exercise, onSelect, onToggleFavorite, onAddToPlan, isFav
   return (
     <div
       onClick={() => onSelect(exercise)}
-      className="bg-ak-surface-base rounded-xl overflow-hidden shadow-sm cursor-pointer transition-all hover:-translate-y-0.5 hover:shadow-md"
+      className="bg-tier-white rounded-xl overflow-hidden shadow-sm cursor-pointer transition-all hover:-translate-y-0.5 hover:shadow-md"
     >
       {/* Top color bar based on pyramide level */}
       <div className={`h-1 ${pyramideClasses.bar}`} />
@@ -320,7 +320,7 @@ function ExerciseCard({ exercise, onSelect, onToggleFavorite, onAddToPlan, isFav
             variant="ghost"
             size="sm"
             onClick={(e) => { e.stopPropagation(); onToggleFavorite(exercise.id); }}
-            className={`p-1 ${isFavorite ? 'text-ak-status-error' : 'text-ak-border-default'}`}
+            className={`p-1 ${isFavorite ? 'text-tier-error' : 'text-tier-border-default'}`}
           >
             <Heart size={18} fill={isFavorite ? 'currentColor' : 'none'} />
           </Button>
@@ -331,21 +331,21 @@ function ExerciseCard({ exercise, onSelect, onToggleFavorite, onAddToPlan, isFav
           <span className={`text-[11px] py-0.5 px-2 rounded ${pyramideClasses.bg} ${pyramideClasses.text} font-medium`}>
             {pyramideLabel}
           </span>
-          <span className="text-[11px] py-0.5 px-2 rounded bg-ak-border-default text-ak-text-primary font-medium">
+          <span className="text-[11px] py-0.5 px-2 rounded bg-tier-border-default text-tier-navy font-medium">
             {areaLabel}
           </span>
         </div>
 
         {/* Description */}
-        <p className="m-0 mb-3 text-[13px] text-ak-text-secondary leading-snug">
+        <p className="m-0 mb-3 text-[13px] text-tier-text-secondary leading-snug">
           {exercise.description}
         </p>
 
         {/* Footer row */}
-        <div className="flex justify-between items-center pt-3 border-t border-ak-border-default">
+        <div className="flex justify-between items-center pt-3 border-t border-tier-border-default">
           {/* Duration and difficulty */}
           <div className="flex items-center gap-3">
-            <span className="text-xs text-ak-text-secondary flex items-center gap-1">
+            <span className="text-xs text-tier-text-secondary flex items-center gap-1">
               <Clock size={14} />
               {exercise.duration.min}-{exercise.duration.max} min
             </span>
@@ -353,7 +353,7 @@ function ExerciseCard({ exercise, onSelect, onToggleFavorite, onAddToPlan, isFav
               {difficultyDots.map((filled, i) => (
                 <div
                   key={i}
-                  className={`w-1.5 h-1.5 rounded-full ${filled ? 'bg-amber-500' : 'bg-ak-border-default'}`}
+                  className={`w-1.5 h-1.5 rounded-full ${filled ? 'bg-amber-500' : 'bg-tier-border-default'}`}
                 />
               ))}
             </div>
@@ -383,10 +383,10 @@ function ExerciseDetailModal({ exercise, onClose, onAddToSession }) {
 
   return (
     <div className="fixed inset-0 bg-black/50 flex items-end justify-center z-[1000]">
-      <div className="bg-ak-surface-base rounded-t-xl p-6 w-full max-h-[90vh] overflow-y-auto">
+      <div className="bg-tier-white rounded-t-xl p-6 w-full max-h-[90vh] overflow-y-auto">
         {/* Header */}
         <div className="flex justify-between items-center mb-4">
-          <span className="text-[22px] font-bold text-ak-text-primary">
+          <span className="text-[22px] font-bold text-tier-navy">
             {exercise.name}
           </span>
           <Button
@@ -401,30 +401,30 @@ function ExerciseDetailModal({ exercise, onClose, onAddToSession }) {
 
         {/* Meta info */}
         <div className="flex gap-4 mb-6 flex-wrap">
-          <div className="bg-ak-surface-subtle py-2 px-4 rounded-lg">
-            <span className="text-xs text-ak-text-secondary">Kategori</span>
-            <div className="text-xs font-medium text-ak-primary">{exercise.category}</div>
+          <div className="bg-tier-surface-base py-2 px-4 rounded-lg">
+            <span className="text-xs text-tier-text-secondary">Kategori</span>
+            <div className="text-xs font-medium text-tier-navy">{exercise.category}</div>
           </div>
-          <div className="bg-ak-surface-subtle py-2 px-4 rounded-lg">
-            <span className="text-xs text-ak-text-secondary">Varighet</span>
-            <div className="text-xs font-medium text-ak-primary">
+          <div className="bg-tier-surface-base py-2 px-4 rounded-lg">
+            <span className="text-xs text-tier-text-secondary">Varighet</span>
+            <div className="text-xs font-medium text-tier-navy">
               {exercise.duration.min}-{exercise.duration.max} min
             </div>
           </div>
           {exercise.reps && (
-            <div className="bg-ak-surface-subtle py-2 px-4 rounded-lg">
-              <span className="text-xs text-ak-text-secondary">Repetisjoner</span>
-              <div className="text-xs font-medium text-ak-primary">{exercise.reps}</div>
+            <div className="bg-tier-surface-base py-2 px-4 rounded-lg">
+              <span className="text-xs text-tier-text-secondary">Repetisjoner</span>
+              <div className="text-xs font-medium text-tier-navy">{exercise.reps}</div>
             </div>
           )}
         </div>
 
         {/* Description */}
         <div className="mb-6">
-          <span className="text-xs font-medium text-ak-text-primary block mb-2">
+          <span className="text-xs font-medium text-tier-navy block mb-2">
             Beskrivelse
           </span>
-          <p className="text-[15px] text-ak-text-primary">
+          <p className="text-[15px] text-tier-navy">
             {exercise.description}
           </p>
         </div>
@@ -432,12 +432,12 @@ function ExerciseDetailModal({ exercise, onClose, onAddToSession }) {
         {/* Instructions */}
         {exercise.instructions && (
           <div className="mb-6">
-            <span className="text-xs font-medium text-ak-text-primary block mb-2">
+            <span className="text-xs font-medium text-tier-navy block mb-2">
               Instruksjoner
             </span>
             <ul className="pl-6 m-0">
               {exercise.instructions.map((instruction, i) => (
-                <li key={i} className="text-sm text-ak-text-primary mb-1">
+                <li key={i} className="text-sm text-tier-navy mb-1">
                   {instruction}
                 </li>
               ))}
@@ -448,22 +448,22 @@ function ExerciseDetailModal({ exercise, onClose, onAddToSession }) {
         {/* Variants */}
         {exercise.variants && (
           <div className="mb-6">
-            <span className="text-xs font-medium text-ak-text-primary block mb-2">
+            <span className="text-xs font-medium text-tier-navy block mb-2">
               Varianter
             </span>
             <div className="flex flex-col gap-2">
               {exercise.variants.map((variant, i) => (
-                <div key={i} className="bg-ak-surface-subtle p-2 rounded">
-                  <span className="text-xs font-medium text-ak-primary">
+                <div key={i} className="bg-tier-surface-base p-2 rounded">
+                  <span className="text-xs font-medium text-tier-navy">
                     {variant.name}
                   </span>
                   {variant.description && (
-                    <span className="text-xs text-ak-text-secondary ml-2">
+                    <span className="text-xs text-tier-text-secondary ml-2">
                       - {variant.description}
                     </span>
                   )}
                   {variant.reps && (
-                    <span className="text-xs text-ak-text-secondary ml-2">
+                    <span className="text-xs text-tier-text-secondary ml-2">
                       ({variant.reps} slag)
                     </span>
                   )}
@@ -476,14 +476,14 @@ function ExerciseDetailModal({ exercise, onClose, onAddToSession }) {
         {/* Equipment */}
         {exercise.equipment && (
           <div className="mb-6">
-            <span className="text-xs font-medium text-ak-text-primary block mb-2">
+            <span className="text-xs font-medium text-tier-navy block mb-2">
               Utstyr
             </span>
             <div className="flex gap-2 flex-wrap">
               {exercise.equipment.map((item, i) => (
                 <span
                   key={i}
-                  className="text-xs py-1 px-2.5 bg-ak-border-default rounded text-ak-text-primary"
+                  className="text-xs py-1 px-2.5 bg-tier-border-default rounded text-tier-navy"
                 >
                   {item}
                 </span>
@@ -495,14 +495,14 @@ function ExerciseDetailModal({ exercise, onClose, onAddToSession }) {
         {/* Training areas */}
         {exercise.trainingAreas && (
           <div className="mb-8">
-            <span className="text-xs font-medium text-ak-text-primary block mb-2">
+            <span className="text-xs font-medium text-tier-navy block mb-2">
               Bruksområde
             </span>
             <div className="flex gap-2 flex-wrap">
               {exercise.trainingAreas.map((area, i) => (
                 <span
                   key={i}
-                  className="text-xs py-1 px-2.5 bg-ak-primary/10 rounded text-ak-primary capitalize"
+                  className="text-xs py-1 px-2.5 bg-tier-navy/10 rounded text-tier-navy capitalize"
                 >
                   {area}
                 </span>
@@ -593,9 +593,9 @@ export default function ExerciseLibrary({ onSelectExercise, onClose }) {
   };
 
   return (
-    <div className="bg-ak-surface-subtle min-h-screen">
+    <div className="bg-tier-surface-base min-h-screen">
       {/* Compact filters */}
-      <div className="bg-ak-surface-base py-3 px-6 border-b border-ak-border-default">
+      <div className="bg-tier-white py-3 px-6 border-b border-tier-border-default">
         {/* Search and filters in one row */}
         <div className="flex gap-4 items-center flex-wrap">
           {/* Search */}
@@ -604,7 +604,7 @@ export default function ExerciseLibrary({ onSelectExercise, onClose }) {
             placeholder="Søk..."
             value={searchQuery}
             onChange={(e) => setSearchQuery(e.target.value)}
-            className="w-[200px] py-2 px-3 bg-ak-surface-subtle border-none rounded-lg text-[13px] text-ak-text-primary outline-none focus:ring-1 focus:ring-ak-primary"
+            className="w-[200px] py-2 px-3 bg-tier-surface-base border-none rounded-lg text-[13px] text-tier-navy outline-none focus:ring-1 focus:ring-tier-navy"
           />
 
           {/* Pyramide level chips */}
@@ -623,7 +623,7 @@ export default function ExerciseLibrary({ onSelectExercise, onClose }) {
           </div>
 
           {/* Divider */}
-          <div className="w-px h-6 bg-ak-border-default" />
+          <div className="w-px h-6 bg-tier-border-default" />
 
           {/* Golf area chips */}
           <div className="flex gap-1.5 flex-wrap">
@@ -660,12 +660,12 @@ export default function ExerciseLibrary({ onSelectExercise, onClose }) {
             size="sm"
             leftIcon={<Heart size={16} fill={showOnlyFavorites ? 'currentColor' : 'none'} />}
             onClick={() => setShowOnlyFavorites(!showOnlyFavorites)}
-            className={showOnlyFavorites ? 'bg-ak-status-error hover:bg-ak-status-error/90' : ''}
+            className={showOnlyFavorites ? 'bg-tier-error hover:bg-tier-error/90' : ''}
           >
             Favoritter
             {favorites.length > 0 && (
               <span className={`rounded-[10px] py-0.5 px-1.5 text-[11px] ml-1 ${
-                showOnlyFavorites ? 'bg-white/30 text-white' : 'bg-ak-text-secondary text-white'
+                showOnlyFavorites ? 'bg-white/30 text-white' : 'bg-tier-text-secondary text-white'
               }`}>
                 {favorites.length}
               </span>
@@ -675,10 +675,10 @@ export default function ExerciseLibrary({ onSelectExercise, onClose }) {
 
         {/* Advanced filters section */}
         {showAdvancedFilters && (
-          <div className="mt-3 pt-3 border-t border-ak-border-default flex flex-col gap-2.5">
+          <div className="mt-3 pt-3 border-t border-tier-border-default flex flex-col gap-2.5">
             {/* L-Faser (Clubspeed) */}
             <div className="flex items-center gap-3">
-              <span className="text-xs text-ak-text-secondary min-w-[80px] font-medium">
+              <span className="text-xs text-tier-text-secondary min-w-[80px] font-medium">
                 L-Fase (CS)
               </span>
               <div className="flex gap-1.5 flex-wrap">
@@ -698,7 +698,7 @@ export default function ExerciseLibrary({ onSelectExercise, onClose }) {
 
             {/* Miljø */}
             <div className="flex items-center gap-3">
-              <span className="text-xs text-ak-text-secondary min-w-[80px] font-medium">
+              <span className="text-xs text-tier-text-secondary min-w-[80px] font-medium">
                 Miljø
               </span>
               <div className="flex gap-1.5 flex-wrap">
@@ -718,7 +718,7 @@ export default function ExerciseLibrary({ onSelectExercise, onClose }) {
 
             {/* Belastning/Press */}
             <div className="flex items-center gap-3">
-              <span className="text-xs text-ak-text-secondary min-w-[80px] font-medium">
+              <span className="text-xs text-tier-text-secondary min-w-[80px] font-medium">
                 Belastning
               </span>
               <div className="flex gap-1.5 flex-wrap">
@@ -743,7 +743,7 @@ export default function ExerciseLibrary({ onSelectExercise, onClose }) {
       <div className="p-5 px-6">
         {/* Results count */}
         <div className="mb-4 flex justify-between items-center">
-          <span className="text-[13px] text-ak-text-secondary">
+          <span className="text-[13px] text-tier-text-secondary">
             {filteredExercises.length} øvelser
           </span>
           {hasActiveFilters && (

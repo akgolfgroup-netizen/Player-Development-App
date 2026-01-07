@@ -84,7 +84,7 @@ const MiniLineChart: React.FC<MiniLineChartProps> = ({
             y1={getY(requirement)}
             x2="100"
             y2={getY(requirement)}
-            stroke="var(--ak-error)"
+            stroke="rgb(var(--status-error))"
             strokeWidth="0.5"
             strokeDasharray="3,3"
           />
@@ -93,7 +93,7 @@ const MiniLineChart: React.FC<MiniLineChartProps> = ({
         {/* Data line */}
         <polyline
           fill="none"
-          stroke="var(--ak-primary)"
+          stroke="var(--tier-navy)"
           strokeWidth="2"
           strokeLinecap="round"
           strokeLinejoin="round"
@@ -111,7 +111,7 @@ const MiniLineChart: React.FC<MiniLineChartProps> = ({
               cy={y}
               r="2.5"
               fill="white"
-              stroke="var(--ak-primary)"
+              stroke="var(--tier-navy)"
               strokeWidth="2"
             />
           );
@@ -175,7 +175,7 @@ const TestCard: React.FC<TestCardProps> = ({ test, isExpanded, onToggle }) => {
     <Collapsible open={isExpanded} onOpenChange={onToggle}>
       <Card className={cn(
         "transition-all hover:shadow-md cursor-pointer",
-        isExpanded && "ring-2 ring-ak-primary"
+        isExpanded && "ring-2 ring-tier-navy"
       )}>
         <CollapsibleTrigger asChild>
           <CardContent className="p-4">
@@ -196,8 +196,8 @@ const TestCard: React.FC<TestCardProps> = ({ test, isExpanded, onToggle }) => {
                 <Badge
                   variant={meetsReq ? 'default' : 'destructive'}
                   style={meetsReq
-                    ? { backgroundColor: 'var(--success-muted)', color: 'var(--success)', border: '1px solid var(--success)' }
-                    : { backgroundColor: 'var(--error-muted)', color: 'var(--error)', border: '1px solid var(--error)' }
+                    ? { backgroundColor: 'var(--success-muted)', color: 'var(--status-success)', border: '1px solid var(--status-success)' }
+                    : { backgroundColor: 'var(--error-muted)', color: 'var(--status-error)', border: '1px solid var(--status-error)' }
                   }
                 >
                   {meetsReq ? 'Oppfylt' : 'Under krav'}
@@ -215,13 +215,13 @@ const TestCard: React.FC<TestCardProps> = ({ test, isExpanded, onToggle }) => {
               <div className="flex items-baseline gap-2">
                 <span className={cn(
                   "text-2xl font-bold",
-                  meetsReq ? "text-ak-success" : "text-ak-error"
+                  meetsReq ? "text-tier-success" : "text-tier-error"
                 )}>
                   {currentValue}{test.unit}
                 </span>
                 <span className={cn(
                   "flex items-center gap-1 text-xs",
-                  improved ? "text-ak-success" : "text-ak-error"
+                  improved ? "text-tier-success" : "text-tier-error"
                 )}>
                   {improved ? (
                     <TrendingUp className="h-3 w-3" />
@@ -261,7 +261,7 @@ const TestCard: React.FC<TestCardProps> = ({ test, isExpanded, onToggle }) => {
                 <p className="text-[10px] text-text-secondary uppercase">Endring</p>
                 <p className={cn(
                   "text-sm font-semibold",
-                  totalChange > 0 ? "text-ak-success" : "text-ak-error"
+                  totalChange > 0 ? "text-tier-success" : "text-tier-error"
                 )}>
                   {totalChange > 0 ? '+' : ''}{totalChange.toFixed(test.unit === '' ? 3 : 0)}{test.unit}
                 </p>
@@ -270,7 +270,7 @@ const TestCard: React.FC<TestCardProps> = ({ test, isExpanded, onToggle }) => {
                 <p className="text-[10px] text-text-secondary uppercase">Til krav</p>
                 <p className={cn(
                   "text-sm font-semibold",
-                  meetsReq ? "text-ak-success" : "text-ak-error"
+                  meetsReq ? "text-tier-success" : "text-tier-error"
                 )}>
                   {meetsReq
                     ? 'Oppfylt'
@@ -351,7 +351,7 @@ const Testresultater: React.FC<TestresultaterProps> = ({
       id: 3,
       name: 'Klubbfart Driver',
       category: 'teknikk',
-      icon: '⚡',
+      icon: 'activity',
       unit: 'mph',
       requirement: 112,
       lowerIsBetter: false,
@@ -457,6 +457,7 @@ const Testresultater: React.FC<TestresultaterProps> = ({
       <PageHeader
         title="Testresultater"
         subtitle="Historikk og fremgang"
+        helpText="Se resultater fra alle gjennomførte tester med fremgang over tid. Analyser trender, sammenlign med krav for din kategori og identifiser forbedringsområder."
         actions={
           <ExportButton
             targetId="testresultater-export"
@@ -542,21 +543,21 @@ const Testresultater: React.FC<TestresultaterProps> = ({
             </Card>
 
             {/* Legend */}
-            <Card className="bg-ak-primary/5 border-ak-primary/20">
+            <Card className="bg-tier-navy/5 border-tier-navy/20">
               <CardContent className="pt-4">
                 <div className="flex items-start gap-3">
-                  <Info className="h-5 w-5 text-ak-primary flex-shrink-0 mt-0.5" />
+                  <Info className="h-5 w-5 text-tier-navy flex-shrink-0 mt-0.5" />
                   <div>
                     <CardTitle className="text-sm font-semibold text-text-primary mb-2">
                       Slik leser du grafene
                     </CardTitle>
                     <ul className="text-xs text-text-secondary space-y-1.5">
                       <li className="flex items-center gap-2">
-                        <span className="w-4 h-0.5 bg-ak-primary rounded" />
+                        <span className="w-4 h-0.5 bg-tier-navy rounded" />
                         Faktisk resultat
                       </li>
                       <li className="flex items-center gap-2">
-                        <span className="w-4 h-0.5 border-t-2 border-dashed border-ak-error" />
+                        <span className="w-4 h-0.5 border-t-2 border-dashed border-tier-error" />
                         Krav for kategori {player.category}
                       </li>
                     </ul>

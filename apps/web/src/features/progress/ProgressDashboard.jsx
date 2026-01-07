@@ -54,7 +54,7 @@ function Tooltip({ children, text }) {
 // PROGRESS RING COMPONENT
 // ============================================================================
 
-function ProgressRing({ progress, size = 120, strokeWidth = 10, color = 'var(--tier-navy)' }) {
+function ProgressRing({ progress, size = 120, strokeWidth = 10, color = 'var(--tier-navy)', textColor = 'text-tier-navy' }) {
   const radius = (size - strokeWidth) / 2;
   const circumference = radius * 2 * Math.PI;
   const offset = circumference - (progress / 100) * circumference;
@@ -86,7 +86,7 @@ function ProgressRing({ progress, size = 120, strokeWidth = 10, color = 'var(--t
         />
       </svg>
       <div className="absolute inset-0 flex items-center justify-center">
-        <span className="text-2xl font-bold text-tier-navy">{Math.round(progress)}%</span>
+        <span className={`text-2xl font-bold ${textColor}`}>{Math.round(progress)}%</span>
       </div>
     </div>
   );
@@ -305,6 +305,7 @@ export default function ProgressDashboard({ data }) {
                 size={140}
                 strokeWidth={12}
                 color="white"
+                textColor="text-white"
               />
             </div>
             <p className="text-sm opacity-80">
@@ -457,40 +458,6 @@ export default function ProgressDashboard({ data }) {
             />
           ))}
         </div>
-      </div>
-
-      {/* Upcoming Sessions */}
-      <div className="bg-white rounded-3xl shadow-sm border border-tier-border-default p-6">
-        <div className="flex items-center justify-between mb-6">
-          <div className="flex items-center gap-3">
-            <div className="w-10 h-10 rounded-xl bg-amber-100 flex items-center justify-center">
-              <Calendar size={20} className="text-amber-600" />
-            </div>
-            <div>
-              <h3 className="font-semibold text-tier-navy">Kommende økter</h3>
-            </div>
-          </div>
-          <button className="text-sm font-medium text-tier-navy hover:underline flex items-center gap-1">
-            Se alle
-            <ChevronRight size={16} />
-          </button>
-        </div>
-
-        <div className="space-y-3">
-          {upcomingSessions.map((session, i) => (
-            <SessionItem key={i} session={session} isNext={i === 0} />
-          ))}
-        </div>
-
-        {upcomingSessions.length === 0 && (
-          <div className="text-center py-8">
-            <Calendar size={48} className="mx-auto text-tier-text-tertiary mb-3" />
-            <p className="text-tier-text-secondary">Ingen planlagte økter</p>
-            <button className="mt-3 px-4 py-2 bg-tier-navy text-white rounded-lg text-sm font-medium hover:bg-tier-navy/90 transition-colors">
-              Planlegg økt
-            </button>
-          </div>
-        )}
       </div>
 
       {/* Motivation Card */}

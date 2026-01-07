@@ -45,6 +45,7 @@ const TestprotokollContainer = lazy(() => import('./features/tests/Testprotokoll
 const TestresultaterContainer = lazy(() => import('./features/tests/TestresultaterContainer'));
 const TreningsprotokollContainer = lazy(() => import('./features/training/TreningsprotokollContainer'));
 const TreningsstatistikkContainer = lazy(() => import('./features/training/TreningsstatistikkContainer'));
+const TrainingStatsDashboard = lazy(() => import('./features/training/TrainingStatsDashboard'));
 const OevelserContainer = lazy(() => import('./features/exercises/OevelserContainer'));
 const NotaterContainer = lazy(() => import('./features/notes/NotaterContainer'));
 const ArkivContainer = lazy(() => import('./features/archive/ArkivContainer'));
@@ -106,15 +107,23 @@ const BreakingPointsContainer = lazy(() => import('./features/utvikling/Breaking
 const KategoriFremgangContainer = lazy(() => import('./features/utvikling/KategoriFremgangContainer'));
 const BenchmarkHistorikkContainer = lazy(() => import('./features/utvikling/BenchmarkHistorikkContainer'));
 
+// Training Area Performance
+const TrainingAreaPerformancePage = lazy(() => import('./features/training-area-performance').then(m => ({ default: m.TrainingAreaPerformancePage })));
+
 // Trening
 const TreningsdagbokContainer = lazy(() => import('./features/trening-plan/treningsdagbok').then(m => ({ default: m.TreningsdagbokPage })));
 const LoggTreningContainer = lazy(() => import('./features/trening-plan/LoggTreningContainer'));
+const ShotPhaseComparison = lazy(() => import('./features/trening-plan/ShotPhaseComparison'));
+const DailyTrainingCalendar = lazy(() => import('./features/sessions/DailyTrainingCalendar'));
+const DrillManagementPage = lazy(() => import('./features/drills/DrillManagementPage'));
+const TechniquePlanPage = lazy(() => import('./features/technique-plan/TechniquePlanPage'));
+const TrackmanUploadPage = lazy(() => import('./features/technique-plan/TrackmanUploadPage'));
 
 // Kalender
 const BookTrenerContainer = lazy(() => import('./features/calendar/BookTrenerContainer'));
 
 // Testing
-const KategoriKravContainer = lazy(() => import('./features/tests/KategoriKravContainer'));
+const KategoriKravContainer = lazy(() => import('./features/tests/KategoriKravContainerSG'));
 const RegistrerTestContainer = lazy(() => import('./features/tests/RegistrerTestContainer'));
 const PEIBaneTestPage = lazy(() => import('./features/tests/PEIBaneTestPage'));
 const TestDetailPage = lazy(() => import('./features/tests/pages/TestDetailPage'));
@@ -139,6 +148,7 @@ const SkoleoppgaverContainer = lazy(() => import('./features/school/Skoleoppgave
 // Innstillinger
 const KalibreringsContainer = lazy(() => import('./features/innstillinger/KalibreringsContainer'));
 const VarselinnstillingerContainer = lazy(() => import('./features/innstillinger/VarselinnstillingerContainer'));
+const SharingPermissions = lazy(() => import('./features/settings/SharingPermissions'));
 
 // Session components (lazy-loaded)
 const SessionDetailViewContainer = lazy(() => import('./features/sessions/SessionDetailViewContainer'));
@@ -154,7 +164,7 @@ const ExerciseLibraryContainer = lazy(() => import('./features/sessions/Exercise
 const MobileShell = lazy(() => import('./components/layout/MobileShell'));
 const MobileHome = lazy(() => import('./mobile/MobileHome'));
 const MobilePlan = lazy(() => import('./mobile/MobilePlan'));
-const MobileQuickLog = lazy(() => import('./mobile/MobileQuickLog'));
+const MobileSessionTemplates = lazy(() => import('./mobile/MobileSessionTemplates'));
 const MobileCalendar = lazy(() => import('./mobile/MobileCalendar'));
 const MobileCalibration = lazy(() => import('./mobile/MobileCalibration'));
 
@@ -244,6 +254,7 @@ const CoachAthleteTournaments = lazy(() => import('./features/coach-athlete-tour
 
 // Coach planning (lazy-loaded)
 const CoachPlanningHub = lazy(() => import('./features/coach-planning').then(m => ({ default: m.CoachPlanningHub })));
+const CoachAnnualPlanGenerator = lazy(() => import('./features/coach-annual-plan').then(m => ({ default: m.AnnualPlanGenerator })));
 
 // Coach session evaluations (lazy-loaded)
 const CoachSessionEvaluations = lazy(() => import('./features/coach-session-evaluations').then(m => ({ default: m.CoachSessionEvaluations })));
@@ -255,6 +266,17 @@ const CoachDetailView = lazy(() => import('./features/admin-coach-management').t
 const AdminTierManagement = lazy(() => import('./features/admin-tier-management').then(m => ({ default: m.AdminTierManagement })));
 const AdminFeatureFlagsEditor = lazy(() => import('./features/admin-feature-flags').then(m => ({ default: m.AdminFeatureFlagsEditor })));
 const AdminEscalationSupport = lazy(() => import('./features/admin-escalation').then(m => ({ default: m.AdminEscalationSupport })));
+const PendingApprovalsPage = lazy(() => import('./features/admin-user-management').then(m => ({ default: m.PendingApprovalsPage })));
+const InvitationsPage = lazy(() => import('./features/admin-user-management').then(m => ({ default: m.InvitationsPage })));
+const AuditLogPage = lazy(() => import('./features/admin-logs').then(m => ({ default: m.AuditLogPage })));
+const ErrorLogPage = lazy(() => import('./features/admin-logs').then(m => ({ default: m.ErrorLogPage })));
+const CategoryManagementPage = lazy(() => import('./features/admin-config').then(m => ({ default: m.CategoryManagementPage })));
+const TestConfigPage = lazy(() => import('./features/admin-config').then(m => ({ default: m.TestConfigPage })));
+const NotificationSettingsPage = lazy(() => import('./features/admin-config').then(m => ({ default: m.NotificationSettingsPage })));
+const TierFeaturesPage = lazy(() => import('./features/admin-tier-management').then(m => ({ default: m.TierFeaturesPage })));
+
+// Chat/Messaging (lazy-loaded)
+const ChatGroupsPage = lazy(() => import('./features/chat').then(m => ({ default: m.ChatGroupsPage })));
 
 // 404 Not Found (lazy-loaded)
 const NotFoundPage = lazy(() => import('./features/not-found/NotFoundPage').then(m => ({ default: m.NotFoundPage })));
@@ -264,6 +286,7 @@ const SplitScreenLanding = lazy(() => import('./features/landing/SplitScreenLand
 
 // Onboarding (lazy-loaded)
 const OnboardingPage = lazy(() => import('./features/onboarding/OnboardingPage'));
+const PlayerOnboardingPage = lazy(() => import('./features/onboarding/PlayerOnboardingPage'));
 
 // V3 Hub Pages (lazy-loaded)
 const DashboardHub = lazy(() => import('./features/hub-pages/DashboardHub'));
@@ -273,8 +296,21 @@ const PlanHub = lazy(() => import('./features/hub-pages/PlanHub'));
 const MerHub = lazy(() => import('./features/hub-pages/MerHub'));
 
 // Player Layout - uses PlayerAppShellV3 with color-coded navigation
-const PlayerLayout = ({ children }) => (
-  <PlayerAppShellV3>{children}</PlayerAppShellV3>
+const PlayerLayout = ({ children, title, subtitle, actions }) => (
+  <PlayerAppShellV3>
+    {(title || subtitle || actions) && (
+      <div className="mb-6">
+        <div className="flex items-start justify-between gap-4 mb-2">
+          <div>
+            {title && <h1 className="text-[26px] font-bold text-ak-text-primary leading-tight">{title}</h1>}
+            {subtitle && <p className="text-[14px] text-ak-text-secondary mt-1">{subtitle}</p>}
+          </div>
+          {actions && <div className="flex-shrink-0">{actions}</div>}
+        </div>
+      </div>
+    )}
+    {children}
+  </PlayerAppShellV3>
 );
 
 // Layout component for coach pages using CoachAppShell
@@ -339,8 +375,15 @@ function App() {
           <Route path="/login" element={<Login />} />
           <Route path="/welcome" element={<SplitScreenLanding />} />
 
-          {/* Onboarding - protected route for new players */}
+          {/* Onboarding - Single-page form for new player registration */}
           <Route path="/onboarding" element={
+            <ProtectedRoute>
+              <PlayerOnboardingPage />
+            </ProtectedRoute>
+          } />
+
+          {/* Annual plan wizard - Multi-step intake form */}
+          <Route path="/onboarding/annual-plan" element={
             <ProtectedRoute>
               <OnboardingPage />
             </ProtectedRoute>
@@ -357,7 +400,7 @@ function App() {
           <Route path="/m" element={<ProtectedRoute><MobileShell /></ProtectedRoute>}>
             <Route path="home" element={<MobileHome />} />
             <Route path="plan" element={<MobilePlan />} />
-            <Route path="log" element={<MobileQuickLog />} />
+            <Route path="templates" element={<MobileSessionTemplates />} />
             <Route path="calendar" element={<MobileCalendar />} />
             <Route path="calibration" element={<MobileCalibration />} />
           </Route>
@@ -385,7 +428,7 @@ function App() {
           <Route path="/dashboard/varsler" element={
             <ProtectedRoute>
               <PlayerLayout>
-                <NotificationCenter />
+                <SharingPermissions />
               </PlayerLayout>
             </ProtectedRoute>
           } />
@@ -409,6 +452,41 @@ function App() {
             <ProtectedRoute>
               <PlayerLayout>
                 <TreningsdagbokContainer />
+              </PlayerLayout>
+            </ProtectedRoute>
+          } />
+          <Route path="/trening/sammenlign" element={
+            <ProtectedRoute>
+              <PlayerLayout>
+                <ShotPhaseComparison />
+              </PlayerLayout>
+            </ProtectedRoute>
+          } />
+          <Route path="/trening/kalender" element={
+            <ProtectedRoute>
+              <PlayerLayout>
+                <DailyTrainingCalendar />
+              </PlayerLayout>
+            </ProtectedRoute>
+          } />
+          <Route path="/trening/ovelser" element={
+            <ProtectedRoute>
+              <PlayerLayout>
+                <DrillManagementPage />
+              </PlayerLayout>
+            </ProtectedRoute>
+          } />
+          <Route path="/trening/teknikkplan" element={
+            <ProtectedRoute>
+              <PlayerLayout>
+                <TechniquePlanPage />
+              </PlayerLayout>
+            </ProtectedRoute>
+          } />
+          <Route path="/trening/trackman-upload" element={
+            <ProtectedRoute>
+              <PlayerLayout>
+                <TrackmanUploadPage />
               </PlayerLayout>
             </ProtectedRoute>
           } />
@@ -519,6 +597,13 @@ function App() {
               </PlayerLayout>
             </ProtectedRoute>
           } />
+          <Route path="/utvikling/treningsomrader" element={
+            <ProtectedRoute>
+              <PlayerLayout>
+                <TrainingAreaPerformancePage />
+              </PlayerLayout>
+            </ProtectedRoute>
+          } />
 
           {/* Plan Hub (Amber) */}
           <Route path="/plan" element={
@@ -614,6 +699,13 @@ function App() {
               </PlayerLayout>
             </ProtectedRoute>
           } />
+          <Route path="/mer/chat" element={
+            <ProtectedRoute>
+              <PlayerLayout>
+                <ChatGroupsPage />
+              </PlayerLayout>
+            </ProtectedRoute>
+          } />
           <Route path="/mer/feedback" element={
             <ProtectedRoute>
               <PlayerLayout>
@@ -646,7 +738,7 @@ function App() {
           <Route path="/mer/varsler" element={
             <ProtectedRoute>
               <PlayerLayout>
-                <VarselinnstillingerContainer />
+                <SharingPermissions />
               </PlayerLayout>
             </ProtectedRoute>
           } />
@@ -670,6 +762,20 @@ function App() {
           <Route path="/analyser" element={<Navigate to="/utvikling" replace />} />
           <Route path="/analyser/*" element={<Navigate to="/utvikling" replace />} />
           <Route path="/samhandle" element={<Navigate to="/mer/meldinger" replace />} />
+          <Route path="/samhandle/skole" element={
+            <ProtectedRoute>
+              <PlayerLayout title="Skoleplan" subtitle="Balanse mellom skole og golf">
+                <SkoleplanContainer />
+              </PlayerLayout>
+            </ProtectedRoute>
+          } />
+          <Route path="/samhandle/skole/oppgaver" element={
+            <ProtectedRoute>
+              <PlayerLayout title="Skoleoppgaver" subtitle="Dine lekser og oppgaver">
+                <SkoleoppgaverContainer />
+              </PlayerLayout>
+            </ProtectedRoute>
+          } />
           <Route path="/samhandle/*" element={<Navigate to="/mer/meldinger" replace />} />
 
           {/* Desktop protected routes - Legacy (backward compatibility) */}
@@ -752,6 +858,13 @@ function App() {
             <ProtectedRoute>
               <PlayerLayout title="Treningsstatistikk" subtitle="Analyse av din trening">
                 <TreningsstatistikkContainer />
+              </PlayerLayout>
+            </ProtectedRoute>
+          } />
+          <Route path="/training/statistics" element={
+            <ProtectedRoute>
+              <PlayerLayout title="Treningsstatistikk" subtitle="Oversikt over dine treningstimer og fremgang">
+                <TrainingStatsDashboard />
               </PlayerLayout>
             </ProtectedRoute>
           } />
@@ -1238,8 +1351,8 @@ function App() {
           } />
           <Route path="/varsler" element={
             <ProtectedRoute>
-              <PlayerLayout title="Varsler" subtitle="Dine varslinger">
-                <NotificationCenter />
+              <PlayerLayout>
+                <SharingPermissions />
               </PlayerLayout>
             </ProtectedRoute>
           } />
@@ -1308,8 +1421,8 @@ function App() {
           } />
           <Route path="/innstillinger/varsler" element={
             <ProtectedRoute>
-              <PlayerLayout title="Varselinnstillinger" subtitle="Administrer varsler">
-                <VarselinnstillingerContainer />
+              <PlayerLayout>
+                <SharingPermissions />
               </PlayerLayout>
             </ProtectedRoute>
           } />
@@ -1591,6 +1704,8 @@ function App() {
               </CoachLayout>
             </ProtectedRoute>
           } />
+          {/* Redirect legacy udvikling route to coach/stats */}
+          <Route path="/udvikling/datagolf" element={<Navigate to="/coach/stats/datagolf" replace />} />
           <Route path="/coach/stats/compare" element={
             <ProtectedRoute requiredRole="coach">
               <CoachLayout>
@@ -1625,6 +1740,15 @@ function App() {
             <ProtectedRoute requiredRole="coach">
               <CoachLayout>
                 <CoachScheduledMessages />
+              </CoachLayout>
+            </ProtectedRoute>
+          } />
+
+          {/* Coach Notifications */}
+          <Route path="/coach/notifications" element={
+            <ProtectedRoute requiredRole="coach">
+              <CoachLayout>
+                <NotificationCenter />
               </CoachLayout>
             </ProtectedRoute>
           } />
@@ -1666,15 +1790,8 @@ function App() {
             </ProtectedRoute>
           } />
 
-          {/* Coach Training System & Areas */}
+          {/* Coach Training System */}
           <Route path="/coach/training-system" element={
-            <ProtectedRoute requiredRole="coach">
-              <CoachLayout>
-                <TrainingCategorySystemPage />
-              </CoachLayout>
-            </ProtectedRoute>
-          } />
-          <Route path="/coach/training-areas" element={
             <ProtectedRoute requiredRole="coach">
               <CoachLayout>
                 <TrainingCategorySystemPage />
@@ -1687,6 +1804,13 @@ function App() {
             <ProtectedRoute requiredRole="coach">
               <CoachLayout>
                 <CoachPlanningHub />
+              </CoachLayout>
+            </ProtectedRoute>
+          } />
+          <Route path="/coach/planning/annual-plan" element={
+            <ProtectedRoute requiredRole="coach">
+              <CoachLayout>
+                <CoachAnnualPlanGenerator />
               </CoachLayout>
             </ProtectedRoute>
           } />
@@ -1755,14 +1879,14 @@ function App() {
           <Route path="/admin/users/pending" element={
             <ProtectedRoute requiredRole="admin">
               <AdminLayout>
-                <PlaceholderPage title="Ventende godkjenninger" />
+                <PendingApprovalsPage />
               </AdminLayout>
             </ProtectedRoute>
           } />
           <Route path="/admin/users/invitations" element={
             <ProtectedRoute requiredRole="admin">
               <AdminLayout>
-                <PlaceholderPage title="Invitasjoner" />
+                <InvitationsPage />
               </AdminLayout>
             </ProtectedRoute>
           } />
@@ -1776,7 +1900,7 @@ function App() {
           <Route path="/admin/tiers/features" element={
             <ProtectedRoute requiredRole="admin">
               <AdminLayout>
-                <PlaceholderPage title="Funksjoner per nivå" />
+                <TierFeaturesPage />
               </AdminLayout>
             </ProtectedRoute>
           } />
@@ -1797,35 +1921,35 @@ function App() {
           <Route path="/admin/logs/audit" element={
             <ProtectedRoute requiredRole="admin">
               <AdminLayout>
-                <PlaceholderPage title="Audit-logg" />
+                <AuditLogPage />
               </AdminLayout>
             </ProtectedRoute>
           } />
           <Route path="/admin/logs/errors" element={
             <ProtectedRoute requiredRole="admin">
               <AdminLayout>
-                <PlaceholderPage title="Feillogg" />
+                <ErrorLogPage />
               </AdminLayout>
             </ProtectedRoute>
           } />
           <Route path="/admin/config/categories" element={
             <ProtectedRoute requiredRole="admin">
               <AdminLayout>
-                <PlaceholderPage title="Kategorier (A-K)" />
+                <CategoryManagementPage />
               </AdminLayout>
             </ProtectedRoute>
           } />
           <Route path="/admin/config/tests" element={
             <ProtectedRoute requiredRole="admin">
               <AdminLayout>
-                <PlaceholderPage title="Testkonfigurasjon" />
+                <TestConfigPage />
               </AdminLayout>
             </ProtectedRoute>
           } />
           <Route path="/admin/config/notifications" element={
             <ProtectedRoute requiredRole="admin">
               <AdminLayout>
-                <PlaceholderPage title="Varsler" />
+                <NotificationSettingsPage />
               </AdminLayout>
             </ProtectedRoute>
           } />

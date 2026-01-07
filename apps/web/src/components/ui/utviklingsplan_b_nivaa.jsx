@@ -16,13 +16,13 @@ const tokenColors = {
   primaryDark: '#10456A',
   info: '#2C5F7F',
   error: '#C45B4E',
-  gold: '#C9A227',
+  gold: 'rgb(var(--tier-gold))',
   success: '#4A7C59',
   warning: '#D4A84B',
   foam: '#EDF0F2',
   charcoal: '#1C1C1E',
   steel: '#8E8E93',
-  white: '#FFFFFF',
+  white: 'rgb(var(--tier-white))',
   gray100: '#F3F4F6',
   gray200: '#E5E7EB',
   gray300: '#D1D5DB',
@@ -54,7 +54,7 @@ const UtviklingsplanApp = () => {
   const colors = {
     primary: tokenColors.forest,       // #10456A (Forest)
     secondary: tokenColors.error,      // #C45B4E (Error red)
-    accent: tokenColors.gold,          // #C9A227 (Gold)
+    accent: tokenColors.gold,          // rgb(var(--tier-gold)) (Gold)
     success: tokenColors.success,      // #4A7C59 (Success)
     warning: tokenColors.warning,      // #D4A84B (Warning)
     light: tokenColors.foam,           // #EDF0F2 (Foam)
@@ -123,7 +123,7 @@ const UtviklingsplanApp = () => {
     ],
     onsdag: [
       { time: '07:00', duration: 45, type: 'Fu', name: 'Utholdenhet/cardio', phase: 'L1', cs: 'CS0', setting: 'S1' },
-      { time: '16:00', duration: 60, type: 'T', name: 'Nærspill teknikk', phase: 'L2', cs: 'CS40', setting: 'S2' }
+      { time: '16:00', duration: 60, type: 'T', name: 'Naerspill teknikk', phase: 'L2', cs: 'CS40', setting: 'S2' }
     ],
     torsdag: [
       { time: '07:00', duration: 30, type: 'L1-2', name: 'Hjemmetrening bevegelse', phase: 'L1', cs: 'CS20', setting: 'S1' },
@@ -328,7 +328,7 @@ const UtviklingsplanApp = () => {
         </table>
       </div>
 
-      {/* AK Golf Academy parametre */}
+      {/* TIER Golf Academy parametre */}
       <div style={{
         background: `linear-gradient(135deg, ${colors.forest} 0%, ${colors.forestLight} 100%)`,
         padding: '20px',
@@ -336,7 +336,7 @@ const UtviklingsplanApp = () => {
         color: 'white'
       }}>
         <SubSectionTitle style={{ fontSize: '14px', marginBottom: '15px', color: colors.accent }}>
-          AK GOLF ACADEMY PROGRESJON - B-NIVA
+          TIER GOLF PROGRESJON - B-NIVA
         </SubSectionTitle>
         <div style={{ display: 'grid', gridTemplateColumns: 'repeat(3, 1fr)', gap: '15px' }}>
           {Object.entries(priorities).map(([period, data]) => (
@@ -349,7 +349,7 @@ const UtviklingsplanApp = () => {
               <div style={{ fontWeight: 'bold', marginBottom: '10px', textTransform: 'capitalize' }}>{period}</div>
               <div style={{ fontSize: '11px', lineHeight: '1.6' }}>
                 <div>📚 Læringsfase: <strong>{data.læringsfase}</strong></div>
-                <div>⚡ Clubspeed: <strong>{data.clubSpeed}</strong></div>
+                <div>zap Clubspeed: <strong>{data.clubSpeed}</strong></div>
                 <div>🎯 Setting: <strong>{data.setting}</strong></div>
                 <div style={{ marginTop: '8px', color: colors.accent }}>Fokus: {data.focus}</div>
               </div>
@@ -518,7 +518,7 @@ const UtviklingsplanApp = () => {
             </div>
             <div style={{ background: 'white', padding: '15px', borderRadius: '8px' }}>
               <div style={{ fontWeight: 'bold', marginBottom: '10px', color: currentPeriod.color }}>
-                AK Golf Academy Parametre - {currentPeriod.name}
+                TIER Golf Academy Parametre - {currentPeriod.name}
               </div>
               <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '10px', fontSize: '12px' }}>
                 <div style={{ background: tokenColors.gray100, padding: '10px', borderRadius: '6px' }}>
@@ -555,7 +555,7 @@ const UtviklingsplanApp = () => {
     const monthEvents = {
       4: [{ type: 'T', name: 'Teknisk' }, { type: 'Fs', name: 'Styrke' }],
       5: [{ type: 'G', name: 'Golfslag' }],
-      6: [{ type: 'T', name: 'Nærspill' }, { type: 'Fu', name: 'Cardio' }],
+      6: [{ type: 'T', name: 'Naerspill' }, { type: 'Fu', name: 'Cardio' }],
       7: [{ type: 'G', name: 'Wedge' }],
       8: [{ type: 'T', name: 'Putting' }, { type: 'Fs', name: 'Styrke' }],
       9: [{ type: 'S', name: '9 hull spill' }],
@@ -1082,7 +1082,7 @@ const UtviklingsplanApp = () => {
                 borderRadius: '6px',
                 fontSize: '12px'
               }}>
-                AK GOLF ACADEMY
+                TIER GOLF
               </div>
             </div>
             <PageTitle style={{ margin: '15px 0 5px', fontSize: '28px' }}>
@@ -1187,7 +1187,7 @@ const UtviklingsplanApp = () => {
         justifyContent: 'space-between'
       }}>
         <div>
-          <strong>AK Golf Academy</strong> | Metodikk basert på Team Norway Golf & WANG 6-årsplan
+          <strong>TIER Golf Academy</strong> | Metodikk basert på Team Norway Golf & WANG 6-årsplan
         </div>
         <div>
           Øktformel: <span style={{ fontFamily: 'monospace', background: 'rgba(255,255,255,0.1)', padding: '2px 6px', borderRadius: '3px' }}>

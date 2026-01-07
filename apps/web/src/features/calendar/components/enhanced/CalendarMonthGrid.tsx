@@ -213,9 +213,12 @@ export const CalendarMonthGrid: React.FC<CalendarMonthGridProps> = ({
   return (
     <div className="shadow-sm ring-1 ring-black/5 dark:ring-white/5 lg:flex lg:flex-auto lg:flex-col">
       {/* Weekday headers */}
-      <div className="grid grid-cols-7 gap-px border-b border-ak-border-default bg-ak-border-subtle text-center text-xs font-semibold leading-6 text-ak-text-secondary lg:flex-none">
+      <div className="grid grid-cols-7 border-b border-tier-border-default bg-tier-border-default text-center text-xs font-semibold leading-6 text-tier-text-secondary lg:flex-none">
         {WEEKDAYS.map((day, idx) => (
-          <div key={day} className="flex justify-center bg-ak-surface-base py-2">
+          <div key={day} className={clsx(
+            "flex justify-center bg-tier-white py-2 border-r border-tier-border-default",
+            idx === 6 && "border-r-0"
+          )}>
             <span>{day}</span>
             <span className="sr-only sm:not-sr-only">{WEEKDAYS_FULL[idx].slice(1)}</span>
           </div>
@@ -223,19 +226,21 @@ export const CalendarMonthGrid: React.FC<CalendarMonthGridProps> = ({
       </div>
 
       {/* Days grid */}
-      <div className="flex bg-ak-border-subtle text-xs leading-6 text-ak-text-secondary lg:flex-auto">
+      <div className="flex bg-tier-border-default text-xs leading-6 text-tier-text-secondary lg:flex-auto">
         {/* Desktop view */}
-        <div className="hidden w-full lg:grid lg:grid-cols-7 lg:grid-rows-6 lg:gap-px">
-          {days.map((dayInfo) => (
+        <div className="hidden w-full lg:grid lg:grid-cols-7 lg:grid-rows-6">
+          {days.map((dayInfo, idx) => (
             <div
               key={dayInfo.dateKey}
               onClick={() => onDayClick(dayInfo.date)}
               className={clsx(
                 'group relative min-h-[120px] px-3 py-2 cursor-pointer transition-colors',
+                'border-r border-b border-tier-border-default',
+                (idx + 1) % 7 === 0 && 'border-r-0', // Remove right border on last column
                 dayInfo.isCurrentMonth
-                  ? 'bg-ak-surface-base'
-                  : 'bg-ak-surface-subtle/50 text-ak-text-tertiary',
-                dayInfo.isToday && 'bg-ak-primary/5',
+                  ? 'bg-tier-white'
+                  : 'bg-tier-surface-base/50 text-tier-text-tertiary',
+                dayInfo.isToday && 'bg-tier-navy/5',
               )}
             >
               {/* Day number */}
@@ -243,10 +248,10 @@ export const CalendarMonthGrid: React.FC<CalendarMonthGridProps> = ({
                 dateTime={dayInfo.dateKey}
                 className={clsx(
                   dayInfo.isToday
-                    ? 'flex h-6 w-6 items-center justify-center rounded-full bg-ak-primary font-semibold text-white'
+                    ? 'flex h-6 w-6 items-center justify-center rounded-full bg-tier-navy font-semibold text-white'
                     : dayInfo.isCurrentMonth
-                    ? 'text-ak-text-primary'
-                    : 'text-ak-text-tertiary',
+                    ? 'text-tier-navy'
+                    : 'text-tier-text-tertiary',
                 )}
               >
                 {dayInfo.day}
@@ -283,7 +288,7 @@ export const CalendarMonthGrid: React.FC<CalendarMonthGridProps> = ({
                     );
                   })}
                   {dayInfo.events.length > maxEventsPerDay && (
-                    <li className="text-ak-text-tertiary pl-1">
+                    <li className="text-tier-text-tertiary pl-1">
                       + {dayInfo.events.length - maxEventsPerDay} mer
                     </li>
                   )}
@@ -294,18 +299,20 @@ export const CalendarMonthGrid: React.FC<CalendarMonthGridProps> = ({
         </div>
 
         {/* Mobile view */}
-        <div className="isolate grid w-full grid-cols-7 grid-rows-6 gap-px lg:hidden">
-          {days.map((dayInfo) => (
+        <div className="isolate grid w-full grid-cols-7 grid-rows-6 lg:hidden">
+          {days.map((dayInfo, idx) => (
             <button
               key={dayInfo.dateKey}
               type="button"
               onClick={() => onDayClick(dayInfo.date)}
               className={clsx(
                 'group relative flex h-14 flex-col px-3 py-2',
+                'border-r border-b border-tier-border-default',
+                (idx + 1) % 7 === 0 && 'border-r-0', // Remove right border on last column
                 dayInfo.isCurrentMonth
-                  ? 'bg-ak-surface-base'
-                  : 'bg-ak-surface-subtle/50',
-                dayInfo.isToday && 'bg-ak-primary/5',
+                  ? 'bg-tier-white'
+                  : 'bg-tier-surface-base/50',
+                dayInfo.isToday && 'bg-tier-navy/5',
               )}
             >
               <time
@@ -313,10 +320,10 @@ export const CalendarMonthGrid: React.FC<CalendarMonthGridProps> = ({
                 className={clsx(
                   'ml-auto',
                   dayInfo.isToday
-                    ? 'flex h-6 w-6 items-center justify-center rounded-full bg-ak-primary font-semibold text-white'
+                    ? 'flex h-6 w-6 items-center justify-center rounded-full bg-tier-navy font-semibold text-white'
                     : dayInfo.isCurrentMonth
-                    ? 'text-ak-text-primary'
-                    : 'text-ak-text-tertiary',
+                    ? 'text-tier-navy'
+                    : 'text-tier-text-tertiary',
                 )}
               >
                 {dayInfo.day}
@@ -335,7 +342,7 @@ export const CalendarMonthGrid: React.FC<CalendarMonthGridProps> = ({
                     );
                   })}
                   {dayInfo.events.length > 3 && (
-                    <span className="text-[10px] text-ak-text-tertiary mx-0.5">
+                    <span className="text-[10px] text-tier-text-tertiary mx-0.5">
                       +{dayInfo.events.length - 3}
                     </span>
                   )}
