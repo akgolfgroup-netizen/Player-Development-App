@@ -10,6 +10,7 @@ import { Target, Clock, MapPin, CheckCircle, AlertCircle, Play, ChevronRight, In
 import { SectionTitle, SubSectionTitle } from '../../components/typography';
 import Button from '../../ui/primitives/Button';
 import PEIBaneTestForm from './PEIBaneTestForm';
+import { PageHeader } from '../../ui/raw-blocks';
 
 // ============================================================================
 // TEST INFO
@@ -119,92 +120,44 @@ const PEIBaneTestPage = () => {
   }
 
   return (
-    <div style={{ maxWidth: '900px', margin: '0 auto' }}>
-      {/* Hero Section */}
-      <div style={{
-        backgroundColor: 'var(--surface-card)',
-        borderRadius: '16px',
-        padding: '32px',
-        marginBottom: '24px',
-        boxShadow: '0 2px 8px rgba(0,0,0,0.06)',
-        background: 'linear-gradient(135deg, var(--surface-card) 0%, var(--tier-navy) 8%)',
-      }}>
-        <div style={{ display: 'flex', alignItems: 'flex-start', gap: '20px', marginBottom: '24px' }}>
-          <div style={{
-            width: '64px',
-            height: '64px',
-            borderRadius: '16px',
-            backgroundColor: 'var(--tier-navy-light)',
-            display: 'flex',
-            alignItems: 'center',
-            justifyContent: 'center',
-            flexShrink: 0,
-          }}>
-            <Target size={32} color="var(--tier-navy)" />
-          </div>
-          <div style={{ flex: 1 }}>
-            <SectionTitle style={{ margin: 0, fontSize: '24px', marginBottom: '8px' }}>
-              {TEST_INFO.name}
-            </SectionTitle>
-            <p style={{
-              margin: 0,
-              fontSize: '15px',
-              color: 'var(--text-secondary)',
-              lineHeight: 1.6,
-              maxWidth: '600px',
-            }}>
-              {TEST_INFO.description}
-            </p>
-          </div>
-        </div>
+    <div className="max-w-4xl mx-auto">
+      <PageHeader
+        title={TEST_INFO.name}
+        subtitle={TEST_INFO.description}
+        helpText="PEI (Precision Error Index) test for å måle presisjon fra ulike posisjoner. Test din evne til å komme nær flagget ved å slå 18 slag fra varierte avstander og underlag (Fairway, Rough, Tee, Bunker). Mål avstanden fra ball til hull og få beregnet PEI automatisk. Lavere PEI = bedre presisjon. Varighet: 30-45 minutter. Klikk 'Ta test' for å starte."
+        showBackButton={false}
+        actions={
+          <Button
+            variant="primary"
+            size="lg"
+            onClick={() => setShowTestForm(true)}
+            leftIcon={<Play size={20} />}
+          >
+            Ta test
+          </Button>
+        }
+      />
 
-        {/* Quick stats */}
-        <div style={{
-          display: 'flex',
-          gap: '24px',
-          flexWrap: 'wrap',
-          padding: '16px 20px',
-          backgroundColor: 'rgb(var(--gray-100))',
-          borderRadius: '12px',
-          marginBottom: '24px',
-        }}>
-          <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
-            <Clock size={18} color="var(--text-secondary)" />
-            <span style={{ fontSize: '14px', color: 'var(--tier-navy)' }}>
-              <strong>{TEST_INFO.duration}</strong>
-            </span>
-          </div>
-          <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
-            <MapPin size={18} color="var(--text-secondary)" />
-            <span style={{ fontSize: '14px', color: 'var(--tier-navy)' }}>
-              <strong>18 slag</strong> fra ulike posisjoner
-            </span>
-          </div>
-          <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
-            <Target size={18} color="var(--text-secondary)" />
-            <span style={{ fontSize: '14px', color: 'var(--tier-navy)' }}>
-              <strong>PEI</strong> = Avstand til hull / Slaglengde
-            </span>
-          </div>
+      {/* Quick stats */}
+      <div className="flex gap-6 flex-wrap p-4 bg-tier-surface-base rounded-xl mb-6">
+        <div className="flex items-center gap-2">
+          <Clock size={18} className="text-tier-text-secondary" />
+          <span className="text-sm text-tier-navy">
+            <strong>{TEST_INFO.duration}</strong>
+          </span>
         </div>
-
-        {/* CTA Button */}
-        <Button
-          variant="primary"
-          size="lg"
-          onClick={() => setShowTestForm(true)}
-          leftIcon={<Play size={20} />}
-          rightIcon={<ChevronRight size={20} />}
-          style={{
-            width: '100%',
-            maxWidth: '300px',
-            height: '56px',
-            fontSize: '16px',
-            fontWeight: 600,
-          }}
-        >
-          Ta test
-        </Button>
+        <div className="flex items-center gap-2">
+          <MapPin size={18} className="text-tier-text-secondary" />
+          <span className="text-sm text-tier-navy">
+            <strong>18 slag</strong> fra ulike posisjoner
+          </span>
+        </div>
+        <div className="flex items-center gap-2">
+          <Target size={18} className="text-tier-text-secondary" />
+          <span className="text-sm text-tier-navy">
+            <strong>PEI</strong> = Avstand til hull / Slaglengde
+          </span>
+        </div>
       </div>
 
       {/* Info Grid */}

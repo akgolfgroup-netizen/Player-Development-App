@@ -100,6 +100,12 @@ const DataExportPage = lazy(() => import('../features/export/DataExportPage'));
 const SeasonManagementPage = lazy(() => import('../features/season/SeasonManagementPage'));
 const ArchiveBrowserPage = lazy(() => import('../features/archive/ArchiveBrowserPage'));
 const PaymentManagementPage = lazy(() => import('../features/payments/PaymentManagementPage'));
+const TrackManSyncPage = lazy(() => import('../features/trackman-sync/TrackManSyncPage'));
+const FocusEnginePage = lazy(() => import('../features/focus-engine/FocusEnginePage'));
+const PerformanceComparisonsPage = lazy(() => import('../features/comparisons/PerformanceComparisonsPage'));
+const ChatSystemPage = lazy(() => import('../features/chat-system/ChatSystemPage'));
+const FeatureFlagsPage = lazy(() => import('../features/feature-flags/FeatureFlagsPage'));
+const AuditLogPage = lazy(() => import('../features/audit/AuditLogPage'));
 
 // ============================================================
 // Placeholder Component
@@ -221,6 +227,9 @@ export function getPlayerRoutesV3() {
       <Route path="/trening/testing/registrer" element={<SuspenseWrapper><TreningTestRegistrer /></SuspenseWrapper>} />
       <Route path="/trening/teknikkplan" element={<SuspenseWrapper><TreningTeknikkplan /></SuspenseWrapper>} />
       <Route path="/trening/fokus" element={<SuspenseWrapper><TreningFokus /></SuspenseWrapper>} />
+      <Route path="/trening/fokus-motor" element={<SuspenseWrapper><FocusEnginePage /></SuspenseWrapper>} />
+      <Route path="/trening/video-annotering" element={<SuspenseWrapper><VideoAnnotation /></SuspenseWrapper>} />
+      <Route path="/trening/trackman-sync" element={<SuspenseWrapper><TrackManSyncPage /></SuspenseWrapper>} />
 
       {/* Utvikling */}
       <Route path="/utvikling" element={<SuspenseWrapper><UtviklingHub /></SuspenseWrapper>} />
@@ -237,6 +246,7 @@ export function getPlayerRoutesV3() {
       <Route path="/utvikling/innsikter" element={<SuspenseWrapper><PlayerInsightsPage /></SuspenseWrapper>} />
       <Route path="/utvikling/treningsomrader" element={<SuspenseWrapper><UtviklingTreningsomrader /></SuspenseWrapper>} />
       <Route path="/utvikling/peer-sammenligning" element={<SuspenseWrapper><UtviklingPeerComparison /></SuspenseWrapper>} />
+      <Route path="/utvikling/sammenligninger" element={<SuspenseWrapper><PerformanceComparisonsPage /></SuspenseWrapper>} />
       <Route path="/utvikling/rapporter" element={<SuspenseWrapper><ProgressReportsPage /></SuspenseWrapper>} />
 
       {/* Plan */}
@@ -247,6 +257,7 @@ export function getPlayerRoutesV3() {
       <Route path="/plan/ukeplan" element={<SuspenseWrapper><PlanUkeplan /></SuspenseWrapper>} />
       <Route path="/plan/booking" element={<SuspenseWrapper><PlanBooking /></SuspenseWrapper>} />
       <Route path="/plan/skole" element={<SuspenseWrapper><PlanSkole /></SuspenseWrapper>} />
+      <Route path="/plan/intake" element={<SuspenseWrapper><IntakeFormPage /></SuspenseWrapper>} />
       <Route path="/plan/maal" element={<SuspenseWrapper><PlanMaal /></SuspenseWrapper>} />
       <Route path="/plan/aarsplan" element={<SuspenseWrapper><PlanAarsplan /></SuspenseWrapper>} />
       <Route path="/plan/sesonger" element={<SuspenseWrapper><SeasonManagementPage /></SuspenseWrapper>} />

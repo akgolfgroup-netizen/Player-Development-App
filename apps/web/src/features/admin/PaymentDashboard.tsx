@@ -29,6 +29,7 @@ import {
   Eye,
 } from 'lucide-react';
 import { Button, Text } from '../../ui/primitives';
+import { PageHeader } from '../../ui/raw-blocks';
 
 const API_URL = process.env.REACT_APP_API_URL || 'http://localhost:3000/api/v1';
 
@@ -162,15 +163,12 @@ const AdminPaymentDashboard: React.FC = () => {
 
   return (
     <div className="max-w-7xl mx-auto p-6">
-      {/* Header */}
-      <div className="mb-8">
-        <Text variant="title1" color="primary" className="mb-2">
-          Payment Dashboard
-        </Text>
-        <Text variant="body" color="secondary">
-          Real-time analytics and monitoring for subscriptions and payments
-        </Text>
-      </div>
+      <PageHeader
+        title="Payment Dashboard"
+        subtitle="Real-time analytics and monitoring for subscriptions and payments"
+        helpText="Administrator-dashboard for betalinger og abonnementer. Overvåk MRR/ARR, omsetning, vekst og churn-rate. Se total kunder, nylig registrerte, lifetime value, aktive/trialing/kansellerte abonnementer. Spor nylige transaksjoner, webhook-hendelser og mislykkede betalinger. Tabs for Overview (oversikt), Transactions (alle transaksjoner), Webhooks (event log) og Failed Payments (feilet betalinger). Auto-oppdatering hvert 30. sekund."
+        actions={null}
+      />
 
       {/* Navigation Tabs */}
       <div className="flex gap-2 mb-8 border-b border-tier-border-default">

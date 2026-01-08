@@ -15,6 +15,7 @@ import {
 } from '../../hooks/useAIConversations';
 import Card from '../../ui/primitives/Card';
 import Button from '../../ui/primitives/Button';
+import { PageHeader } from '../../ui/raw-blocks';
 
 interface ConversationStats {
   totalConversations: number;
@@ -114,14 +115,12 @@ const AIConversationsHistoryPage: React.FC = () => {
   return (
     <div className="min-h-screen bg-tier-surface-base p-6">
       <div className="max-w-7xl mx-auto">
-        {/* Header */}
-        <div className="mb-6">
-          <div className="flex items-center gap-3 mb-2">
-            <MessageCircle size={28} className="text-tier-navy" />
-            <h1 className="text-3xl font-bold text-tier-navy mb-0">AI Treningshistorikk</h1>
-          </div>
-          <p className="text-tier-text-secondary">Dine tidligere samtaler med AI-treneren</p>
-        </div>
+        <PageHeader
+          title="AI Treningshistorikk"
+          subtitle="Dine tidligere samtaler med AI-treneren"
+          helpText="Oversikt over alle samtaler med AI-treneren. Se statistikk over samtaler, meldinger og token-forbruk. Bla gjennom aktive og arkiverte samtaler, rediger titler, vis meldingsinnhold med detaljer (input/output tokens, verktøybruk). Arkiver eller slett samtaler. Klikk på en samtale for å se hele historikken."
+          actions={null}
+        />
 
         {/* Stats */}
         {!statsLoading && stats && (
