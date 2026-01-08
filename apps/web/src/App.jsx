@@ -20,7 +20,7 @@ import CommandPalette from './features/command-palette';
 import BuildInfo from './components/BuildInfo';
 
 // Shared components (NOT lazy - needed immediately)
-import PlayerAppShellV3 from './components/layout/PlayerAppShellV3';
+import PlayerAppShell from './components/layout/PlayerAppShell';
 import CoachAppShell from './components/layout/CoachAppShell';
 import AdminAppShell from './components/layout/AdminAppShell';
 import ProtectedRoute from './components/guards/ProtectedRoute';
@@ -177,6 +177,14 @@ const MobileShell = lazy(() => import('./components/layout/MobileShell'));
 const MobileHome = lazy(() => import('./mobile/MobileHome'));
 const MobilePlan = lazy(() => import('./mobile/MobilePlan'));
 const MobileSessionTemplates = lazy(() => import('./mobile/MobileSessionTemplates'));
+
+// Analyse V4 (new navigation structure)
+const AnalyseHub = lazy(() => import('./features/analyse/AnalyseHub'));
+const AnalyseStatistikkHub = lazy(() => import('./features/analyse/AnalyseStatistikkHub'));
+const AnalyseSammenligningerHub = lazy(() => import('./features/analyse/AnalyseSammenligningerHub'));
+const AnalyseRapporterHub = lazy(() => import('./features/analyse/AnalyseRapporterHub'));
+const AnalyseTesterHub = lazy(() => import('./features/analyse/AnalyseTesterHub'));
+const AnalysePrestasjoner = lazy(() => import('./features/analyse/AnalysePrestasjoner'));
 const MobileCalendar = lazy(() => import('./mobile/MobileCalendar'));
 const MobileCalibration = lazy(() => import('./mobile/MobileCalibration'));
 
@@ -307,9 +315,9 @@ const UtviklingHub = lazy(() => import('./features/hub-pages/UtviklingHub'));
 const PlanHub = lazy(() => import('./features/hub-pages/PlanHub'));
 const MerHub = lazy(() => import('./features/hub-pages/MerHub'));
 
-// Player Layout - uses PlayerAppShellV3 with color-coded navigation
+// Player Layout - uses PlayerAppShell with flat 5-item navigation (V3)
 const PlayerLayout = ({ children, title, subtitle, actions }) => (
-  <PlayerAppShellV3>
+  <PlayerAppShell>
     {(title || subtitle || actions) && (
       <div className="mb-6">
         <div className="flex items-start justify-between gap-4 mb-2">
@@ -322,7 +330,7 @@ const PlayerLayout = ({ children, title, subtitle, actions }) => (
       </div>
     )}
     {children}
-  </PlayerAppShellV3>
+  </PlayerAppShell>
 );
 
 // Layout component for coach pages using CoachAppShell
@@ -583,11 +591,92 @@ function App() {
             </ProtectedRoute>
           } />
 
-          {/* Utvikling Hub (Blue) */}
-          <Route path="/utvikling" element={
+          {/* ========================================
+              ANALYSE HUB V4 - New Navigation Structure
+              ========================================
+              Consolidates 17 /utvikling/* pages into 6 hub pages with tabs
+              All old /utvikling/* URLs redirect here (see redirects below)
+          */}
+
+          {/* Main Analyse Hub Landing Page */}
+          <Route path="/analyse" element={
             <ProtectedRoute>
               <PlayerLayout>
-                <UtviklingHub />
+                <AnalyseHub />
+              </PlayerLayout>
+            </ProtectedRoute>
+          } />
+
+          {/* Analyse Sub-Hubs */}
+          <Route path="/analyse/statistikk" element={
+            <ProtectedRoute>
+              <PlayerLayout>
+                <AnalyseStatistikkHub />
+              </PlayerLayout>
+            </ProtectedRoute>
+          } />
+
+          <Route path="/analyse/sammenligninger" element={
+            <ProtectedRoute>
+              <PlayerLayout>
+                <AnalyseSammenligningerHub />
+              </PlayerLayout>
+            </ProtectedRoute>
+          } />
+
+          <Route path="/analyse/rapporter" element={
+            <ProtectedRoute>
+              <PlayerLayout>
+                <AnalyseRapporterHub />
+              </PlayerLayout>
+            </ProtectedRoute>
+          } />
+
+          <Route path="/analyse/tester" element={
+            <ProtectedRoute>
+              <PlayerLayout>
+                <AnalyseTesterHub />
+              </PlayerLayout>
+            </ProtectedRoute>
+          } />
+
+          <Route path="/analyse/prestasjoner" element={
+            <ProtectedRoute>
+              <PlayerLayout>
+                <AnalysePrestasjoner />
+              </PlayerLayout>
+            </ProtectedRoute>
+          } />
+
+          {/* ========================================
+              V4 REDIRECTS - Old /utvikling/* to /analyse/*
+              ========================================
+              Maintains backward compatibility for bookmarks and links
+          */}
+          <Route path="/utvikling" element={<Navigate to="/analyse" replace />} />
+          <Route path="/utvikling/oversikt" element={<Navigate to="/analyse" replace />} />
+          <Route path="/utvikling/statistikk" element={<Navigate to="/analyse/statistikk" replace />} />
+          <Route path="/utvikling/strokes-gained" element={<Navigate to="/analyse/statistikk?tab=strokes-gained" replace />} />
+          <Route path="/utvikling/fremgang" element={<Navigate to="/analyse/statistikk?tab=trender" replace />} />
+          <Route path="/utvikling/vendepunkter" element={<Navigate to="/analyse/statistikk?tab=oversikt#vendepunkter" replace />} />
+          <Route path="/utvikling/treningsomrader" element={<Navigate to="/analyse/statistikk?tab=trender#treningsomrader" replace />} />
+          <Route path="/utvikling/innsikter" element={<Navigate to="/analyse/statistikk?tab=status-maal" replace />} />
+          <Route path="/utvikling/peer-sammenligning" element={<Navigate to="/analyse/sammenligninger?tab=peer" replace />} />
+          <Route path="/utvikling/sammenlign-proff" element={<Navigate to="/analyse/sammenligninger?tab=proff" replace />} />
+          <Route path="/utvikling/datagolf" element={<Navigate to="/analyse/sammenligninger?tab=proff" replace />} />
+          <Route path="/utvikling/sammenligninger" element={<Navigate to="/analyse/sammenligninger?tab=multi" replace />} />
+          <Route path="/utvikling/rapporter" element={<Navigate to="/analyse/rapporter" replace />} />
+          <Route path="/utvikling/testresultater" element={<Navigate to="/analyse/tester?tab=resultater" replace />} />
+          <Route path="/utvikling/krav" element={<Navigate to="/analyse/tester?tab=krav" replace />} />
+          <Route path="/utvikling/badges" element={<Navigate to="/analyse/prestasjoner?tab=badges" replace />} />
+          <Route path="/utvikling/achievements" element={<Navigate to="/analyse/prestasjoner?tab=achievements" replace />} />
+
+          {/* Utvikling Hub (Blue) - DEPRECATED, redirects to /analyse */}
+          {/* Keeping old routes below for any pages not yet migrated to V4 */}
+          <Route path="/utvikling/historikk" element={
+            <ProtectedRoute>
+              <PlayerLayout>
+                <ProgressDashboardContainer />
               </PlayerLayout>
             </ProtectedRoute>
           } />
@@ -688,6 +777,13 @@ function App() {
             <ProtectedRoute>
               <PlayerLayout>
                 <AarsplanContainer />
+              </PlayerLayout>
+            </ProtectedRoute>
+          } />
+          <Route path="/plan/skole" element={
+            <ProtectedRoute>
+              <PlayerLayout>
+                <SkoleplanContainer />
               </PlayerLayout>
             </ProtectedRoute>
           } />

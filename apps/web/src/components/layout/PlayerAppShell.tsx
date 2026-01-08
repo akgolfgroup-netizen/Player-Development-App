@@ -1,13 +1,13 @@
 /**
  * TIER Golf Academy - Player App Shell
- * Design System v3.0 - Forest Green (Premium Light)
+ * Design System v3.1 - Navy × Gold (Premium Light)
  *
  * Layout wrapper for player portal routes.
- * V2: Uses PlayerSidebarV2 with 5-mode navigation.
+ * V3: Uses PlayerSidebarV3 with flat 5-item navigation.
  */
 
 import React, { useState, useEffect } from 'react';
-import PlayerSidebarV2 from './PlayerSidebarV2';
+import PlayerSidebarV3 from './PlayerSidebarV3';
 import BackToTop from '../ui/BackToTop';
 import { useAuth } from '../../contexts/AuthContext';
 import { eventClient } from '../../analytics/eventClient';
@@ -112,10 +112,9 @@ export default function PlayerAppShell({ children }: PlayerAppShellProps) {
         Hopp til hovedinnhold
       </a>
 
-      <PlayerSidebarV2
+      <PlayerSidebarV3
         user={user || undefined}
         unreadMessages={unreadMessages}
-        hasSchoolAccess={true}
         onLogout={handleLogout}
       />
 

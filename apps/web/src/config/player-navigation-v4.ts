@@ -1,16 +1,21 @@
 /**
  * ============================================================
- * PLAYER NAVIGATION V3 - TIER Golf Academy
+ * PLAYER NAVIGATION V4 - TIER Golf Academy
  * ============================================================
  *
- * Ny 5-modus navigasjonsstruktur med fargekodet områder:
+ * Hub-basert navigasjonsstruktur med redusert menyompleksitet:
  *
  * HOVEDOMRÅDER:
  * 1. Dashboard (Hjem) - Oversikt og sammendrag
  * 2. Trening (Grønn)  - Logging, økter, øvelser, testing
- * 3. Analyse (Blå) - Fremgang, statistikk, sammenligninger (erstatter "Min utvikling")
+ * 3. Analyse (Blå)    - Fremgang, statistikk, sammenligninger (erstatter "Min utvikling")
  * 4. Plan (Gul/Amber) - Kalender, mål, turneringer
- * 5. Mer (Lilla) - Profil, innstillinger, ressurser
+ * 5. Mer (Lilla)      - Profil, innstillinger, ressurser
+ *
+ * VIKTIGE ENDRINGER I V4:
+ * - "Min utvikling" → "Analyse" (17 menyitems → 6 hub-items)
+ * - Hub-basert struktur med tabs istedenfor separate sider
+ * - Reduksjon på ~60% i menyitems for analyse-området
  *
  * ============================================================
  */
@@ -89,9 +94,9 @@ export const areaColors: Record<AreaColor, {
 };
 
 /**
- * Hovednavigasjon for spillerportalen (5 områder)
+ * Hovednavigasjon for spillerportalen V4 (5 områder, hub-basert)
  */
-export const playerNavigationV3: NavArea[] = [
+export const playerNavigationV4: NavArea[] = [
   // ────────────────────────────────────────────────────────────
   // 1. DASHBOARD - Oversikt og sammendrag
   // ────────────────────────────────────────────────────────────
@@ -180,8 +185,10 @@ export const playerNavigationV3: NavArea[] = [
   // ────────────────────────────────────────────────────────────
   // 3. ANALYSE - Fremgang, statistikk, sammenligninger (BLÅ)
   // ────────────────────────────────────────────────────────────
+  // VIKTIG: Dette erstatter "Min utvikling" og reduserer 17 items til 6 hubs
+  // ────────────────────────────────────────────────────────────
   {
-    id: 'utvikling',
+    id: 'analyse',
     label: 'Analyse',
     icon: 'StatsIcon',
     color: 'blue',
@@ -189,38 +196,39 @@ export const playerNavigationV3: NavArea[] = [
     hubPath: '/analyse',
     sections: [
       {
-        id: 'fremgang',
-        label: 'Fremgang & Statistikk',
+        id: 'analyse-hubs',
+        label: 'Analyse',
         items: [
-          { href: '/utvikling/oversikt', label: 'Min utvikling', icon: 'StatsIcon', description: 'Din progresjon' },
-          { href: '/utvikling/statistikk', label: 'Statistikk', icon: 'ScorecardIcon', description: 'Detaljert statistikk' },
-          { href: '/utvikling/strokes-gained', label: 'Strokes Gained', icon: 'StatsIcon', description: 'Avansert SG-analyse' },
-          { href: '/utvikling/sammenlign-proff', label: 'Sammenlign med proff', icon: 'StatsIcon', description: 'Sammenlign med tour-spillere' },
-          { href: '/utvikling/vendepunkter', label: 'Vendepunkter', icon: 'StatsIcon', description: 'Vendepunkter i prestasjonen' },
-          { href: '/utvikling/innsikter', label: 'Spillerinnsikter', icon: 'StatsIcon', description: 'SG Journey, Skill DNA og Bounty Board' },
-          { href: '/utvikling/treningsomrader', label: 'Treningsområder', icon: 'TargetIcon', description: 'Statistikk per treningsområde' },
-          { href: '/utvikling/peer-sammenligning', label: 'Peer sammenligning', icon: 'StatsIcon', description: 'Sammenlign med lignende spillere' },
-          { href: '/utvikling/sammenligninger', label: 'Prestasjonssammenligninger', icon: 'CompareIcon', description: 'Multi-spiller sammenligninger' },
-          { href: '/utvikling/rapporter', label: 'Fremdriftsrapporter', icon: 'StatsIcon', description: 'Rapporter fra trener' },
-          { href: '/utvikling/datagolf', label: 'Verktøy', icon: 'TargetIcon', description: 'Avanserte analyseverktøy' },
-          { href: '/utvikling/fremgang', label: 'Fremgangsanalyse', icon: 'StatsIcon', description: 'Analyser din fremgang' },
-          { href: '/utvikling/historikk', label: 'Historikk', icon: 'RefreshIcon', description: 'Tidligere resultater' },
-        ],
-      },
-      {
-        id: 'tester',
-        label: 'Tester',
-        items: [
-          { href: '/utvikling/testresultater', label: 'Testresultater', icon: 'TargetIcon', description: 'Alle testresultater' },
-          { href: '/utvikling/krav', label: 'Kategori-krav', icon: 'HandicapIcon', description: 'Krav per kategori' },
-        ],
-      },
-      {
-        id: 'achievements',
-        label: 'Prestasjoner',
-        items: [
-          { href: '/utvikling/badges', label: 'Merker', icon: 'HandicapIcon', description: 'Dine merker' },
-          { href: '/utvikling/achievements', label: 'Prestasjoner', icon: 'CheckIcon', description: 'Alle prestasjoner' },
+          {
+            href: '/analyse/statistikk',
+            label: 'Statistikk',
+            icon: 'ChartBarIcon',
+            description: 'Stats, fremgang, strokes gained, trender'
+          },
+          {
+            href: '/analyse/sammenligninger',
+            label: 'Sammenligninger',
+            icon: 'UsersIcon',
+            description: 'Peer, proff og multi-spiller'
+          },
+          {
+            href: '/analyse/rapporter',
+            label: 'Rapporter',
+            icon: 'DocumentIcon',
+            description: 'Fremdriftsrapporter fra trener'
+          },
+          {
+            href: '/analyse/tester',
+            label: 'Tester',
+            icon: 'ClipboardCheckIcon',
+            description: 'Testresultater og krav'
+          },
+          {
+            href: '/analyse/prestasjoner',
+            label: 'Prestasjoner',
+            icon: 'TrophyIcon',
+            description: 'Merker og achievements'
+          },
         ],
       },
     ],
@@ -346,7 +354,7 @@ export const playerNavigationV3: NavArea[] = [
 /**
  * Hurtighandlinger for dashboard
  */
-export const playerQuickActionsV3 = [
+export const playerQuickActionsV4 = [
   {
     label: 'Logg trening',
     icon: 'AddIcon',
@@ -364,7 +372,7 @@ export const playerQuickActionsV3 = [
 /**
  * Bottom navigation items (mobile)
  */
-export const bottomNavItems = playerNavigationV3.map(area => ({
+export const bottomNavItemsV4 = playerNavigationV4.map(area => ({
   id: area.id,
   label: area.label,
   icon: area.icon,
@@ -377,7 +385,7 @@ export const bottomNavItems = playerNavigationV3.map(area => ({
  * Finn område basert på path
  */
 export function getAreaByPath(path: string): NavArea | undefined {
-  return playerNavigationV3.find(area => {
+  return playerNavigationV4.find(area => {
     if (path === area.hubPath || path.startsWith(area.hubPath + '/')) return true;
     if (area.sections) {
       for (const section of area.sections) {
@@ -394,7 +402,7 @@ export function getAreaByPath(path: string): NavArea | undefined {
  * Finn område basert på ID
  */
 export function getAreaById(id: string): NavArea | undefined {
-  return playerNavigationV3.find(area => area.id === id);
+  return playerNavigationV4.find(area => area.id === id);
 }
 
 /**
@@ -403,7 +411,7 @@ export function getAreaById(id: string): NavArea | undefined {
 export function getAllNavItems(): Array<NavSubItem & { areaId: string; areaLabel: string; color: AreaColor }> {
   const items: Array<NavSubItem & { areaId: string; areaLabel: string; color: AreaColor }> = [];
 
-  for (const area of playerNavigationV3) {
+  for (const area of playerNavigationV4) {
     if (area.sections) {
       for (const section of area.sections) {
         for (const item of section.items) {
@@ -422,138 +430,93 @@ export function getAllNavItems(): Array<NavSubItem & { areaId: string; areaLabel
 }
 
 /**
- * Route redirects fra gamle til nye paths
+ * ============================================================
+ * V4 ROUTE REDIRECTS - From old "utvikling/*" to new "analyse/*"
+ * ============================================================
+ *
+ * Disse redirects sikrer at gamle lenker fortsatt fungerer:
+ * - Bokmerker
+ * - SEO
+ * - Eksterne lenker
+ *
+ * Alle /utvikling/* paths redirectes til tilsvarende /analyse/* paths
  */
-export const routeRedirectsV3: Record<string, string> = {
+export const routeRedirectsV4: Record<string, string> = {
+  // Root redirects
   '/': '/dashboard',
   '/hjem': '/dashboard',
+
+  // ===================================================================
+  // ANALYSE REDIRECTS - Gamle /utvikling/* → Nye /analyse/* structure
+  // ===================================================================
+
+  // Hub redirect
+  '/utvikling': '/analyse',
+  '/utvikling/oversikt': '/analyse',
+
+  // Statistikk hub (4 tabs: oversikt, strokes-gained, trender, status-maal)
+  '/utvikling/statistikk': '/analyse/statistikk',
+  '/utvikling/strokes-gained': '/analyse/statistikk?tab=strokes-gained',
+  '/utvikling/fremgang': '/analyse/statistikk?tab=trender',
+  '/utvikling/historikk': '/analyse/statistikk/historikk',  // Deep page
+
+  // Absorbed into StatistikkHub tabs:
+  '/utvikling/vendepunkter': '/analyse/statistikk?tab=oversikt#vendepunkter',
+  '/utvikling/innsikter': '/analyse/statistikk?tab=status-maal',
+  '/utvikling/treningsomrader': '/analyse/statistikk?tab=trender#treningsomrader',
+
+  // Sammenligninger hub (3 tabs: peer, proff, multi)
+  '/utvikling/peer-sammenligning': '/analyse/sammenligninger?tab=peer',
+  '/utvikling/sammenlign-proff': '/analyse/sammenligninger?tab=proff',
+  '/utvikling/datagolf': '/analyse/sammenligninger?tab=proff',
+  '/utvikling/sammenligninger': '/analyse/sammenligninger?tab=multi',
+
+  // Rapporter hub
+  '/utvikling/rapporter': '/analyse/rapporter',
+
+  // Tester hub (3 tabs: oversikt, resultater, krav)
+  '/utvikling/testresultater': '/analyse/tester?tab=resultater',
+  '/utvikling/krav': '/analyse/tester?tab=krav',
+
+  // Prestasjoner hub (2 tabs: badges, achievements)
+  '/utvikling/badges': '/analyse/prestasjoner?tab=badges',
+  '/utvikling/achievements': '/analyse/prestasjoner?tab=achievements',
+
+  // ===================================================================
+  // TRENING REDIRECTS - V2 → V3 (unchanged from v3)
+  // ===================================================================
+  '/tren': '/trening',
   '/tren/logg': '/trening/logg',
   '/tren/okter': '/trening/okter',
   '/tren/ovelser': '/trening/ovelser',
   '/tren/testing': '/trening/testing',
   '/tren/testing/registrer': '/trening/testing/registrer',
-  '/tren/testing/resultater': '/utvikling/testresultater',
-  '/tren/testing/krav': '/utvikling/krav',
-  '/analyser/utvikling': '/utvikling/oversikt',
-  '/analyser/statistikk': '/utvikling/statistikk',
-  '/analyser/mal': '/plan/maal',
-  '/analyser/historikk': '/utvikling/historikk',
+  '/tren/testing/resultater': '/analyse/tester?tab=resultater',
+  '/tren/testing/krav': '/analyse/tester?tab=krav',
+
+  // ===================================================================
+  // PLAN REDIRECTS - V2 → V3 (unchanged from v3)
+  // ===================================================================
+  '/planlegg': '/plan',
   '/planlegg/ukeplan': '/plan/ukeplan',
   '/planlegg/kalender': '/plan/kalender',
   '/planlegg/turneringer/kalender': '/plan/turneringer',
   '/planlegg/turneringer/mine': '/plan/turneringer/mine',
+  '/analyser/mal': '/plan/maal',
+
+  // ===================================================================
+  // MER REDIRECTS - V2 → V3 (unchanged from v3)
+  // ===================================================================
+  '/samhandle': '/mer',
   '/samhandle/meldinger': '/mer/meldinger',
   '/samhandle/feedback': '/mer/feedback',
   '/samhandle/kunnskap': '/mer/kunnskap',
   '/profil': '/mer/profil',
+  '/profil/oppdater': '/mer/profil/rediger',
   '/innstillinger': '/mer/innstillinger',
+  '/innstillinger/varsler': '/mer/varsler',
+  '/trenerteam': '/mer/trenerteam',
+  '/kalibrering': '/mer/kalibrering',
 };
 
-// ============================================================
-// FLAT NAVIGATION - Forenklet 5-modus struktur (Fase 1 UX)
-// ============================================================
-// Brukes av ny sidebar som ikke har nested menyer.
-// Undersider vises som horisontale tabs på hver hub-side.
-
-export interface FlatNavItem {
-  id: string;
-  label: string;
-  icon: string;
-  href: string;
-  color: AreaColor;
-  badge?: string;
-}
-
-/**
- * Forenklet navigasjon med kun 5 hovedelementer (ingen nesting)
- */
-export const playerNavigationFlat: FlatNavItem[] = [
-  {
-    id: 'dashboard',
-    label: 'Hjem',
-    icon: 'Home',
-    href: '/dashboard',
-    color: 'default',
-  },
-  {
-    id: 'trening',
-    label: 'Trening',
-    icon: 'Dumbbell',
-    href: '/trening',
-    color: 'green',
-  },
-  {
-    id: 'utvikling',
-    label: 'Analyse',
-    icon: 'TrendingUp',
-    href: '/analyse',
-    color: 'blue',
-  },
-  {
-    id: 'plan',
-    label: 'Plan',
-    icon: 'Calendar',
-    href: '/plan',
-    color: 'amber',
-  },
-  {
-    id: 'mer',
-    label: 'Mer',
-    icon: 'MoreHorizontal',
-    href: '/mer',
-    color: 'purple',
-    badge: 'unreadMessages',
-  },
-];
-
-/**
- * Horisontale tabs for hvert område (vises på hub-sider)
- */
-export const areaTabsConfig = {
-  trening: [
-    { href: '/trening', label: 'Oversikt', icon: 'LayoutDashboard' },
-    { href: '/trening/logg', label: 'Logg økt', icon: 'Plus' },
-    { href: '/trening/dagbok', label: 'Historikk', icon: 'History' },
-    { href: '/trening/ovelser', label: 'Øvelser', icon: 'Dumbbell' },
-    { href: '/trening/testing', label: 'Testing', icon: 'Target' },
-  ],
-  utvikling: [
-    { href: '/analyse', label: 'Oversikt', icon: 'LayoutDashboard' },
-    { href: '/analyse/statistikk', label: 'Statistikk', icon: 'BarChart3' },
-    { href: '/analyse/tester', label: 'Tester', icon: 'ClipboardList' },
-    { href: '/analyse/prestasjoner', label: 'Prestasjoner', icon: 'Award' },
-  ],
-  plan: [
-    { href: '/plan', label: 'Oversikt', icon: 'LayoutDashboard' },
-    { href: '/plan/kalender', label: 'Kalender', icon: 'Calendar' },
-    { href: '/plan/skole', label: 'Skole', icon: 'GraduationCap' },
-    { href: '/plan/maal', label: 'Mål', icon: 'Target' },
-    { href: '/plan/turneringer', label: 'Turneringer', icon: 'Trophy' },
-  ],
-  mer: [
-    { href: '/mer', label: 'Oversikt', icon: 'LayoutDashboard' },
-    { href: '/mer/profil', label: 'Profil', icon: 'User' },
-    { href: '/mer/meldinger', label: 'Meldinger', icon: 'MessageSquare' },
-    { href: '/mer/innstillinger', label: 'Innstillinger', icon: 'Settings' },
-  ],
-};
-
-/**
- * Hent tabs for et område
- */
-export function getTabsForArea(areaId: string): Array<{ href: string; label: string; icon: string }> {
-  return areaTabsConfig[areaId as keyof typeof areaTabsConfig] || [];
-}
-
-/**
- * Finn område basert på path (for flat navigasjon)
- */
-export function getFlatAreaByPath(path: string): FlatNavItem | undefined {
-  return playerNavigationFlat.find(item => {
-    if (path === item.href) return true;
-    if (item.href !== '/' && path.startsWith(item.href + '/')) return true;
-    return false;
-  });
-}
-
-export default playerNavigationV3;
+export default playerNavigationV4;
