@@ -1,5 +1,5 @@
 # BACKEND SETUP GUIDE
-**AK Golf Academy - Booking & Kalendersystem**
+**TIER Golf - Booking & Kalendersystem**
 **Dato**: 14. desember 2025
 
 ---
@@ -29,7 +29,7 @@ Sett opp en fullstendig PostgreSQL-database med Supabase for booking- og kalende
 
 ### 1.2 Opprett nytt prosjekt
 ```
-Organization: Opprett ny "AK Golf Academy"
+Organization: Opprett ny "TIER Golf"
 Project name: "ak-golf-production"
 Database Password: [Generer sterkt passord - LAGRE DETTE!]
 Region: Europe West (Stockholm) - nærmest Norge
@@ -60,7 +60,7 @@ EXPO_PUBLIC_SUPABASE_ANON_KEY=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9...
 ```
 1. I Supabase Dashboard → klikk "SQL Editor" i venstre meny
 2. Klikk "+ New query"
-3. Gi navn: "Initial Migration - AK Golf Booking System"
+3. Gi navn: "Initial Migration - TIER Golf Booking System"
 ```
 
 ### 2.2 Kjør database_setup.sql

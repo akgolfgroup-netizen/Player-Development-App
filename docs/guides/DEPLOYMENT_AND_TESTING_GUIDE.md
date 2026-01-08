@@ -128,7 +128,7 @@ SMTP_SECURE=false
 SMTP_USER=your-email@gmail.com
 SMTP_PASS=your-app-specific-password
 SMTP_FROM_EMAIL=noreply@akgolf.com
-SMTP_FROM_NAME="AK Golf IUP"
+SMTP_FROM_NAME="TIER Golf IUP"
 
 # Frontend URL for email links
 FRONTEND_URL=http://localhost:3001

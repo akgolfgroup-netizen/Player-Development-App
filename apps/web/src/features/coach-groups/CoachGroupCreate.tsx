@@ -18,7 +18,7 @@ import {
   AlertCircle,
 } from 'lucide-react';
 import PageHeader from '../../ui/raw-blocks/PageHeader.raw';
-import { SectionTitle } from '../../components/typography';
+import { SectionTitle } from '../../components/typography/Headings';
 
 interface AvailablePlayer {
   id: string;
@@ -38,9 +38,9 @@ interface GroupFormData {
 
 const GROUP_COLORS = [
   { value: 'var(--accent)', label: 'Blå' },
-  { value: 'var(--success)', label: 'Grønn' },
+  { value: 'var(--status-success)', label: 'Grønn' },
   { value: 'var(--achievement)', label: 'Gull' },
-  { value: 'var(--error)', label: 'Rød' },
+  { value: 'var(--status-error)', label: 'Rød' },
   { value: 'var(--group-lightblue)', label: 'Lys blå' },
   { value: 'var(--group-purple)', label: 'Lilla' },
   { value: 'var(--group-pink)', label: 'Rosa' },
@@ -170,11 +170,12 @@ export default function CoachGroupCreate() {
   };
 
   return (
-    <div className="min-h-screen bg-ak-surface-subtle font-sans">
+    <div className="min-h-screen bg-tier-surface-base font-sans">
       {/* Header - using PageHeader from design system */}
       <PageHeader
         title="Opprett ny gruppe"
         subtitle="Legg til spillere og konfigurer gruppen"
+        helpText="Opprett en ny treningsgruppe med spillere. Definer gruppens fokusområder og treningsopplegg."
         onBack={() => navigate('/coach/groups')}
       />
 
@@ -182,21 +183,21 @@ export default function CoachGroupCreate() {
         <div className="p-6 max-w-[800px]">
           {/* Error message */}
           {error && (
-            <div className="flex items-center gap-2.5 py-3 px-4 bg-ak-status-error/10 rounded-lg mb-5">
-              <AlertCircle size={18} className="text-ak-status-error" />
-              <span className="text-ak-status-error text-sm">{error}</span>
+            <div className="flex items-center gap-2.5 py-3 px-4 bg-tier-error/10 rounded-lg mb-5">
+              <AlertCircle size={18} className="text-tier-error" />
+              <span className="text-tier-error text-sm">{error}</span>
             </div>
           )}
 
           {/* Basic info */}
-          <div className="bg-ak-surface-base rounded-xl p-5 mb-5 shadow-sm">
+          <div className="bg-tier-white rounded-xl p-5 mb-5 shadow-sm">
             <SectionTitle className="m-0 mb-4">
               Grunnleggende informasjon
             </SectionTitle>
 
             {/* Name */}
             <div className="mb-4">
-              <label className="block text-[15px] leading-5 text-ak-text-primary mb-1.5 font-medium">
+              <label className="block text-[15px] leading-5 text-tier-navy mb-1.5 font-medium">
                 Gruppenavn *
               </label>
               <input
@@ -204,13 +205,13 @@ export default function CoachGroupCreate() {
                 value={formData.name}
                 onChange={(e) => setFormData({ ...formData, name: e.target.value })}
                 placeholder="F.eks. WANG Toppidrett 2025"
-                className="w-full py-3 px-3.5 bg-ak-surface-subtle border border-ak-border-default rounded-lg text-sm outline-none focus:border-ak-primary"
+                className="w-full py-3 px-3.5 bg-tier-surface-base border border-tier-border-default rounded-lg text-sm outline-none focus:border-tier-navy"
               />
             </div>
 
             {/* Description */}
             <div className="mb-4">
-              <label className="block text-[15px] leading-5 text-ak-text-primary mb-1.5 font-medium">
+              <label className="block text-[15px] leading-5 text-tier-navy mb-1.5 font-medium">
                 Beskrivelse
               </label>
               <textarea
@@ -218,13 +219,13 @@ export default function CoachGroupCreate() {
                 onChange={(e) => setFormData({ ...formData, description: e.target.value })}
                 placeholder="Kort beskrivelse av gruppen..."
                 rows={3}
-                className="w-full py-3 px-3.5 bg-ak-surface-subtle border border-ak-border-default rounded-lg text-sm outline-none resize-y font-inherit focus:border-ak-primary"
+                className="w-full py-3 px-3.5 bg-tier-surface-base border border-tier-border-default rounded-lg text-sm outline-none resize-y font-inherit focus:border-tier-navy"
               />
             </div>
 
             {/* Type */}
             <div className="mb-4">
-              <label className="block text-[15px] leading-5 text-ak-text-primary mb-1.5 font-medium">
+              <label className="block text-[15px] leading-5 text-tier-navy mb-1.5 font-medium">
                 Gruppetype
               </label>
               <div className="flex gap-2.5">
@@ -239,8 +240,8 @@ export default function CoachGroupCreate() {
                     onClick={() => setFormData({ ...formData, type: type.key as 'wang' | 'team_norway' | 'custom' })}
                     className={`py-2.5 px-[18px] rounded-lg text-sm font-medium cursor-pointer ${
                       formData.type === type.key
-                        ? 'bg-ak-primary text-white border border-ak-primary'
-                        : 'bg-ak-surface-subtle text-ak-text-primary border border-ak-border-default'
+                        ? 'bg-tier-navy text-white border border-tier-navy'
+                        : 'bg-tier-surface-base text-tier-navy border border-tier-border-default'
                     }`}
                   >
                     {type.label}
@@ -251,7 +252,7 @@ export default function CoachGroupCreate() {
 
             {/* Color */}
             <div>
-              <label className="block text-[15px] leading-5 text-ak-text-primary mb-1.5 font-medium">
+              <label className="block text-[15px] leading-5 text-tier-navy mb-1.5 font-medium">
                 Gruppefarge
               </label>
               <div className="flex gap-2 flex-wrap">
@@ -279,7 +280,7 @@ export default function CoachGroupCreate() {
           </div>
 
           {/* Preview */}
-          <div className="bg-ak-surface-base rounded-xl p-5 mb-5 shadow-sm">
+          <div className="bg-tier-white rounded-xl p-5 mb-5 shadow-sm">
             <SectionTitle className="m-0 mb-4">
               Forhåndsvisning
             </SectionTitle>
@@ -292,10 +293,10 @@ export default function CoachGroupCreate() {
                 {formData.name ? getInitials(formData.name) : '??'}
               </div>
               <div>
-                <p className="text-[17px] leading-[22px] font-semibold text-ak-text-primary m-0">
+                <p className="text-[17px] leading-[22px] font-semibold text-tier-navy m-0">
                   {formData.name || 'Gruppenavn'}
                 </p>
-                <p className="text-xs leading-4 text-ak-text-secondary mt-0.5 m-0">
+                <p className="text-xs leading-4 text-tier-text-secondary mt-0.5 m-0">
                   {formData.memberIds.length} medlemmer valgt
                 </p>
               </div>
@@ -303,31 +304,31 @@ export default function CoachGroupCreate() {
           </div>
 
           {/* Members selection */}
-          <div className="bg-ak-surface-base rounded-xl p-5 mb-5 shadow-sm">
+          <div className="bg-tier-white rounded-xl p-5 mb-5 shadow-sm">
             <div className="flex items-center justify-between mb-4">
               <SectionTitle className="m-0">
                 Velg medlemmer *
               </SectionTitle>
-              <span className="text-[15px] leading-5 text-ak-primary">
+              <span className="text-[15px] leading-5 text-tier-navy">
                 {formData.memberIds.length} valgt
               </span>
             </div>
 
             {/* Selected members */}
             {selectedPlayers.length > 0 && (
-              <div className="flex flex-wrap gap-2 mb-4 p-3 bg-ak-primary/5 rounded-lg">
+              <div className="flex flex-wrap gap-2 mb-4 p-3 bg-tier-navy/5 rounded-lg">
                 {selectedPlayers.map((player) => (
                   <div
                     key={player.id}
-                    className="flex items-center gap-1.5 py-1.5 px-2.5 bg-ak-surface-base rounded text-[13px]"
+                    className="flex items-center gap-1.5 py-1.5 px-2.5 bg-tier-white rounded text-[13px]"
                   >
                     <span className="font-medium">{player.name}</span>
                     <button
                       type="button"
                       onClick={() => toggleMember(player.id)}
-                      className="w-[18px] h-[18px] rounded-full bg-ak-border-default border-none flex items-center justify-center cursor-pointer"
+                      className="w-[18px] h-[18px] rounded-full bg-tier-border-default border-none flex items-center justify-center cursor-pointer"
                     >
-                      <X size={12} className="text-ak-text-secondary" />
+                      <X size={12} className="text-tier-text-secondary" />
                     </button>
                   </div>
                 ))}
@@ -338,21 +339,21 @@ export default function CoachGroupCreate() {
             <div className="relative mb-3">
               <Search
                 size={18}
-                className="absolute left-3 top-1/2 -translate-y-1/2 text-ak-text-secondary"
+                className="absolute left-3 top-1/2 -translate-y-1/2 text-tier-text-secondary"
               />
               <input
                 type="text"
                 value={searchQuery}
                 onChange={(e) => setSearchQuery(e.target.value)}
                 placeholder="Søk etter spillere..."
-                className="w-full py-2.5 pl-10 pr-3 bg-ak-surface-subtle border border-ak-border-default rounded-lg text-sm outline-none"
+                className="w-full py-2.5 pl-10 pr-3 bg-tier-surface-base border border-tier-border-default rounded-lg text-sm outline-none"
               />
             </div>
 
             {/* Player list */}
             {loadingPlayers ? (
               <div className="text-center p-5">
-                <div className="w-8 h-8 border-[3px] border-ak-border-default border-t-ak-primary rounded-full mx-auto animate-spin" />
+                <div className="w-8 h-8 border-[3px] border-tier-border-default border-t-tier-navy rounded-full mx-auto animate-spin" />
               </div>
             ) : (
               <div className="max-h-[300px] overflow-y-auto flex flex-col gap-1.5">
@@ -365,19 +366,19 @@ export default function CoachGroupCreate() {
                       onClick={() => toggleMember(player.id)}
                       className={`flex items-center gap-3 py-2.5 px-3.5 rounded-lg cursor-pointer text-left w-full ${
                         isSelected
-                          ? 'bg-ak-primary/10 border border-ak-primary'
-                          : 'bg-ak-surface-subtle border border-ak-border-default'
+                          ? 'bg-tier-navy/10 border border-tier-navy'
+                          : 'bg-tier-surface-base border border-tier-border-default'
                       }`}
                     >
-                      <div className="w-9 h-9 rounded-full bg-ak-primary flex items-center justify-center text-white text-xs font-semibold">
+                      <div className="w-9 h-9 rounded-full bg-tier-navy flex items-center justify-center text-white text-xs font-semibold">
                         {player.avatarInitials}
                       </div>
 
                       <div className="flex-1">
-                        <p className="text-[15px] leading-5 text-ak-text-primary m-0 font-medium">
+                        <p className="text-[15px] leading-5 text-tier-navy m-0 font-medium">
                           {player.name}
                         </p>
-                        <p className="text-xs leading-4 text-ak-text-secondary mt-0.5 m-0">
+                        <p className="text-xs leading-4 text-tier-text-secondary mt-0.5 m-0">
                           Kategori {player.category}
                           {player.currentGroups.length > 0 &&
                             ` · ${player.currentGroups.join(', ')}`}
@@ -386,7 +387,7 @@ export default function CoachGroupCreate() {
 
                       <div
                         className={`w-6 h-6 rounded-full flex items-center justify-center ${
-                          isSelected ? 'bg-ak-primary' : 'bg-ak-border-default'
+                          isSelected ? 'bg-tier-navy' : 'bg-tier-border-default'
                         }`}
                       >
                         {isSelected && <Check size={14} color="white" />}
@@ -403,14 +404,14 @@ export default function CoachGroupCreate() {
             <button
               type="button"
               onClick={() => navigate('/coach/groups')}
-              className="py-3 px-6 bg-transparent text-ak-text-primary border border-ak-border-default rounded-lg text-sm font-medium cursor-pointer"
+              className="py-3 px-6 bg-transparent text-tier-navy border border-tier-border-default rounded-lg text-sm font-medium cursor-pointer"
             >
               Avbryt
             </button>
             <button
               type="submit"
               disabled={loading}
-              className={`flex items-center gap-2 py-3 px-6 bg-ak-primary text-white border-none rounded-lg text-sm font-semibold ${
+              className={`flex items-center gap-2 py-3 px-6 bg-tier-navy text-white border-none rounded-lg text-sm font-semibold ${
                 loading ? 'cursor-not-allowed opacity-70' : 'cursor-pointer'
               }`}
             >

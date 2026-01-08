@@ -1,5 +1,5 @@
 /**
- * AK GOLF ACADEMY - PeerComparisonWidget
+ * TIER GOLF - PeerComparisonWidget
  *
  * Viser spillerens posisjon i forhold til peers basert på testresultater.
  * Bruker peer-comparison API for statistikk og ranking.

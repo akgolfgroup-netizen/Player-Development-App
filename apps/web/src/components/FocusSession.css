@@ -28,7 +28,7 @@
   font-size: var(--font-size-headline);
   font-weight: 600;
   color: var(--text-inverse);
-  background: linear-gradient(135deg, var(--ak-primary) 0%, var(--ak-primary-light) 100%);
+  background: linear-gradient(135deg, rgb(var(--tier-navy)) 0%, rgb(var(--tier-navy-light)) 100%);
   border: none;
   border-radius: var(--radius-md);
   cursor: pointer;
@@ -51,9 +51,9 @@
   padding: var(--spacing-3) var(--spacing-6);
   font-size: var(--font-size-body);
   font-weight: 500;
-  color: var(--ak-primary);
+  color: rgb(var(--tier-navy));
   background: var(--accent-muted);
-  border: 2px solid var(--ak-primary);
+  border: 2px solid rgb(var(--tier-navy));
   border-radius: var(--radius-md);
   cursor: pointer;
   transition: all 0.3s ease;
@@ -83,7 +83,7 @@
 .session-timer h2 {
   font-size: 48px;
   font-weight: 700;
-  color: var(--ak-primary);
+  color: rgb(var(--tier-navy));
   margin: 0;
   font-variant-numeric: tabular-nums;
   letter-spacing: -0.02em;
@@ -128,21 +128,21 @@
 
 .btn-complete {
   color: var(--text-inverse);
-  background: var(--ak-primary);
+  background: rgb(var(--tier-navy));
 }
 
 .btn-complete:hover {
-  background: var(--ak-primary-light);
+  background: rgb(var(--tier-navy-light));
 }
 
 /* Paused State */
 .focus-session-paused {
   background: var(--warning-muted);
-  border: 2px solid var(--ak-warning);
+  border: 2px solid rgb(var(--status-warning));
 }
 
 .focus-session-paused .session-timer h2 {
-  color: var(--ak-warning);
+  color: rgb(var(--status-warning));
 }
 
 /* Completed State */
@@ -151,13 +151,13 @@
   padding: var(--spacing-8);
   background: var(--success-muted);
   border-radius: var(--radius-lg);
-  border: 2px solid var(--ak-success);
+  border: 2px solid rgb(var(--status-success));
 }
 
 .focus-session-completed h3 {
   font-size: var(--font-size-title2);
   font-weight: 700;
-  color: var(--ak-success);
+  color: rgb(var(--status-success));
   margin: 0 0 var(--spacing-2) 0;
 }
 
@@ -172,7 +172,7 @@
   font-size: var(--font-size-body);
   font-weight: 600;
   color: var(--text-inverse);
-  background: var(--ak-primary);
+  background: rgb(var(--tier-navy));
   border: none;
   border-radius: var(--radius-sm);
   cursor: pointer;
@@ -180,7 +180,7 @@
 }
 
 .btn-new-session:hover {
-  background: var(--ak-primary-light);
+  background: rgb(var(--tier-navy-light));
 }
 
 /* Modal Overlay */
@@ -276,7 +276,7 @@
   font-size: var(--font-size-body);
   font-weight: 600;
   color: var(--text-inverse);
-  background: linear-gradient(135deg, var(--ak-primary) 0%, var(--ak-primary-light) 100%);
+  background: linear-gradient(135deg, rgb(var(--tier-navy)) 0%, rgb(var(--tier-navy-light)) 100%);
   border: none;
   border-radius: var(--radius-sm);
   text-align: center;
@@ -297,7 +297,7 @@
   font-size: var(--font-size-body);
   font-weight: 600;
   color: var(--text-inverse);
-  background: var(--ak-primary);
+  background: rgb(var(--tier-navy));
   border: none;
   border-radius: var(--radius-sm);
   cursor: pointer;
@@ -305,7 +305,7 @@
 }
 
 .btn-done:hover {
-  background: var(--ak-primary-light);
+  background: rgb(var(--tier-navy-light));
 }
 
 .btn-skip {
@@ -330,7 +330,7 @@
   margin-top: var(--spacing-6);
   padding: var(--spacing-4);
   background: var(--background-surface);
-  border-left: 4px solid var(--ak-primary);
+  border-left: 4px solid rgb(var(--tier-navy));
   border-radius: var(--radius-sm);
 }
 

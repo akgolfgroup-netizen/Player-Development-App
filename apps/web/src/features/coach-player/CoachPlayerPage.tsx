@@ -12,7 +12,7 @@ import Card from '../../ui/primitives/Card';
 import Button from '../../ui/primitives/Button';
 import StatsGridTemplate from '../../ui/templates/StatsGridTemplate';
 import StateCard from '../../ui/composites/StateCard';
-import { PageTitle, SectionTitle } from '../../components/typography';
+import { PageTitle, SectionTitle } from '../../components/typography/Headings';
 
 // ═══════════════════════════════════════════
 // STYLES
@@ -100,16 +100,16 @@ const styles: Record<string, React.CSSProperties> = {
     textTransform: 'uppercase' as const,
   },
   statusPending: {
-    backgroundColor: 'color-mix(in srgb, var(--warning) 15%, transparent)',
-    color: 'var(--warning)',
+    backgroundColor: 'color-mix(in srgb, var(--status-warning) 15%, transparent)',
+    color: 'var(--status-warning)',
   },
   statusReviewed: {
-    backgroundColor: 'color-mix(in srgb, var(--success) 15%, transparent)',
-    color: 'var(--success)',
+    backgroundColor: 'color-mix(in srgb, var(--status-success) 15%, transparent)',
+    color: 'var(--status-success)',
   },
   statusFollowup: {
-    backgroundColor: 'color-mix(in srgb, var(--error) 15%, transparent)',
-    color: 'var(--error)',
+    backgroundColor: 'color-mix(in srgb, var(--status-error) 15%, transparent)',
+    color: 'var(--status-error)',
   },
   progressBar: {
     display: 'flex',

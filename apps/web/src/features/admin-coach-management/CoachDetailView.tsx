@@ -1,5 +1,5 @@
 /**
- * AK Golf Academy - Coach Detail View (Admin)
+ * TIER Golf Academy - Coach Detail View (Admin)
  * Design System v3.0 - Premium Light
  *
  * Detailed view of a coach for admin users.
@@ -27,7 +27,7 @@ import { coachesAPI } from '../../services/api';
 import PageHeader from '../../ui/raw-blocks/PageHeader.raw';
 import StateCard from '../../ui/composites/StateCard';
 import Button from '../../ui/primitives/Button';
-import { SectionTitle } from '../../components/typography';
+import { SectionTitle } from '../../components/typography/Headings';
 
 // Types
 interface Coach {
@@ -111,22 +111,22 @@ export const CoachDetailView: React.FC = () => {
   const getCategoryClasses = (category: string) => {
     switch (category) {
       case 'A':
-        return { bg: 'bg-ak-status-success/10', text: 'text-ak-status-success' };
+        return { bg: 'bg-tier-success/10', text: 'text-tier-success' };
       case 'B':
-        return { bg: 'bg-ak-primary/10', text: 'text-ak-primary' };
+        return { bg: 'bg-tier-navy/10', text: 'text-tier-navy' };
       case 'C':
-        return { bg: 'bg-ak-status-warning/10', text: 'text-ak-status-warning' };
+        return { bg: 'bg-tier-warning/10', text: 'text-tier-warning' };
       default:
-        return { bg: 'bg-ak-surface-base', text: 'text-ak-text-secondary' };
+        return { bg: 'bg-tier-white', text: 'text-tier-text-secondary' };
     }
   };
 
   if (loading) {
     return (
-      <div className="flex items-center justify-center min-h-[400px] bg-ak-surface-subtle">
+      <div className="flex items-center justify-center min-h-[400px] bg-tier-surface-base">
         <div className="flex flex-col items-center gap-3">
-          <Loader2 size={32} className="animate-spin text-ak-primary" />
-          <p className="text-sm text-ak-text-secondary">Laster trenerdata...</p>
+          <Loader2 size={32} className="animate-spin text-tier-navy" />
+          <p className="text-sm text-tier-text-secondary">Laster trenerdata...</p>
         </div>
       </div>
     );
@@ -134,10 +134,10 @@ export const CoachDetailView: React.FC = () => {
 
   if (error || !coach) {
     return (
-      <div className="p-6 bg-ak-surface-subtle min-h-screen">
+      <div className="p-6 bg-tier-surface-base min-h-screen">
         <button
           onClick={() => navigate('/admin/users/coaches')}
-          className="flex items-center gap-2 text-sm text-ak-text-secondary hover:text-ak-text-primary mb-6"
+          className="flex items-center gap-2 text-sm text-tier-text-secondary hover:text-tier-navy mb-6"
         >
           <ArrowLeft size={16} />
           Tilbake til trenere
@@ -153,11 +153,11 @@ export const CoachDetailView: React.FC = () => {
   }
 
   return (
-    <div className="p-6 bg-ak-surface-subtle min-h-screen">
+    <div className="p-6 bg-tier-surface-base min-h-screen">
       {/* Back navigation */}
       <button
         onClick={() => navigate('/admin/users/coaches')}
-        className="flex items-center gap-2 text-sm text-ak-text-secondary hover:text-ak-text-primary mb-4 transition-colors"
+        className="flex items-center gap-2 text-sm text-tier-text-secondary hover:text-tier-navy mb-4 transition-colors"
       >
         <ArrowLeft size={16} />
         Tilbake til trenere
@@ -166,13 +166,14 @@ export const CoachDetailView: React.FC = () => {
       {/* Header */}
       <div className="flex items-start justify-between mb-6">
         <div className="flex items-start gap-4">
-          <div className="w-16 h-16 rounded-2xl bg-ak-primary flex items-center justify-center text-white text-xl font-semibold">
+          <div className="w-16 h-16 rounded-2xl bg-tier-navy flex items-center justify-center text-white text-xl font-semibold">
             {coach.firstName[0]}{coach.lastName[0]}
           </div>
           <div>
             <PageHeader
               title={`${coach.firstName} ${coach.lastName}`}
               subtitle={coach.status === 'active' ? 'Aktiv trener' : 'Inaktiv'}
+              helpText="Detaljert oversikt over trener med kontaktinformasjon, tildelte spillere og grupper. Administrer trenerens tilganger og status."
               divider={false}
             />
             {coach.specializations && coach.specializations.length > 0 && (
@@ -180,7 +181,7 @@ export const CoachDetailView: React.FC = () => {
                 {coach.specializations.map((spec, idx) => (
                   <span
                     key={idx}
-                    className="text-xs py-1 px-2.5 rounded-md bg-ak-primary/10 text-ak-primary font-medium"
+                    className="text-xs py-1 px-2.5 rounded-md bg-tier-navy/10 text-tier-navy font-medium"
                   >
                     {spec}
                   </span>
@@ -201,39 +202,39 @@ export const CoachDetailView: React.FC = () => {
 
       {/* Stats Cards */}
       <div className="grid grid-cols-2 lg:grid-cols-4 gap-4 mb-6">
-        <div className="bg-ak-surface-base rounded-2xl p-5 border border-ak-border-default">
-          <div className="flex items-center gap-2 text-ak-text-tertiary mb-2">
+        <div className="bg-tier-white rounded-2xl p-5 border border-tier-border-default">
+          <div className="flex items-center gap-2 text-tier-text-tertiary mb-2">
             <Users size={18} />
             <span className="text-sm">Spillere</span>
           </div>
-          <p className="text-2xl font-bold text-ak-text-primary">
+          <p className="text-2xl font-bold text-tier-navy">
             {stats?.totalPlayers ?? players.length}
           </p>
         </div>
-        <div className="bg-ak-surface-base rounded-2xl p-5 border border-ak-border-default">
-          <div className="flex items-center gap-2 text-ak-text-tertiary mb-2">
+        <div className="bg-tier-white rounded-2xl p-5 border border-tier-border-default">
+          <div className="flex items-center gap-2 text-tier-text-tertiary mb-2">
             <Calendar size={18} />
             <span className="text-sm">Økter denne mnd</span>
           </div>
-          <p className="text-2xl font-bold text-ak-text-primary">
+          <p className="text-2xl font-bold text-tier-navy">
             {stats?.sessionsThisMonth ?? '-'}
           </p>
         </div>
-        <div className="bg-ak-surface-base rounded-2xl p-5 border border-ak-border-default">
-          <div className="flex items-center gap-2 text-ak-text-tertiary mb-2">
+        <div className="bg-tier-white rounded-2xl p-5 border border-tier-border-default">
+          <div className="flex items-center gap-2 text-tier-text-tertiary mb-2">
             <BarChart3 size={18} />
             <span className="text-sm">Totale økter</span>
           </div>
-          <p className="text-2xl font-bold text-ak-text-primary">
+          <p className="text-2xl font-bold text-tier-navy">
             {stats?.totalSessions ?? '-'}
           </p>
         </div>
-        <div className="bg-ak-surface-base rounded-2xl p-5 border border-ak-border-default">
-          <div className="flex items-center gap-2 text-ak-text-tertiary mb-2">
+        <div className="bg-tier-white rounded-2xl p-5 border border-tier-border-default">
+          <div className="flex items-center gap-2 text-tier-text-tertiary mb-2">
             <Clock size={18} />
             <span className="text-sm">Maks per økt</span>
           </div>
-          <p className="text-2xl font-bold text-ak-text-primary">
+          <p className="text-2xl font-bold text-tier-navy">
             {coach.maxPlayersPerSession ?? 4}
           </p>
         </div>
@@ -241,26 +242,26 @@ export const CoachDetailView: React.FC = () => {
 
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
         {/* Contact Info */}
-        <div className="bg-ak-surface-base rounded-2xl p-5 border border-ak-border-default">
+        <div className="bg-tier-white rounded-2xl p-5 border border-tier-border-default">
           <div className="flex items-center gap-2 mb-4">
-            <User size={20} className="text-ak-primary" />
+            <User size={20} className="text-tier-navy" />
             <SectionTitle className="m-0">Kontaktinfo</SectionTitle>
           </div>
           <div className="space-y-3">
             <div className="flex items-center gap-3">
-              <Mail size={16} className="text-ak-text-tertiary" />
-              <span className="text-sm text-ak-text-primary">{coach.email}</span>
+              <Mail size={16} className="text-tier-text-tertiary" />
+              <span className="text-sm text-tier-navy">{coach.email}</span>
             </div>
             {coach.phone && (
               <div className="flex items-center gap-3">
-                <Phone size={16} className="text-ak-text-tertiary" />
-                <span className="text-sm text-ak-text-primary">{coach.phone}</span>
+                <Phone size={16} className="text-tier-text-tertiary" />
+                <span className="text-sm text-tier-navy">{coach.phone}</span>
               </div>
             )}
             {coach.yearsExperience && (
               <div className="flex items-center gap-3">
-                <Calendar size={16} className="text-ak-text-tertiary" />
-                <span className="text-sm text-ak-text-primary">
+                <Calendar size={16} className="text-tier-text-tertiary" />
+                <span className="text-sm text-tier-navy">
                   {coach.yearsExperience} års erfaring
                 </span>
               </div>
@@ -268,23 +269,23 @@ export const CoachDetailView: React.FC = () => {
           </div>
 
           {coach.bio && (
-            <div className="mt-4 pt-4 border-t border-ak-border-default">
-              <p className="text-sm text-ak-text-secondary">{coach.bio}</p>
+            <div className="mt-4 pt-4 border-t border-tier-border-default">
+              <p className="text-sm text-tier-text-secondary">{coach.bio}</p>
             </div>
           )}
 
           {coach.certifications && coach.certifications.length > 0 && (
-            <div className="mt-4 pt-4 border-t border-ak-border-default">
-              <p className="text-xs font-medium text-ak-text-tertiary mb-2">
+            <div className="mt-4 pt-4 border-t border-tier-border-default">
+              <p className="text-xs font-medium text-tier-text-tertiary mb-2">
                 Sertifiseringer
               </p>
               <div className="flex flex-wrap gap-2">
                 {coach.certifications.map((cert, idx) => (
                   <span
                     key={idx}
-                    className="flex items-center gap-1 text-xs py-1 px-2 rounded bg-ak-surface-subtle text-ak-text-secondary"
+                    className="flex items-center gap-1 text-xs py-1 px-2 rounded bg-tier-surface-base text-tier-text-secondary"
                   >
-                    <CheckCircle2 size={12} className="text-ak-status-success" />
+                    <CheckCircle2 size={12} className="text-tier-success" />
                     {cert}
                   </span>
                 ))}
@@ -294,10 +295,10 @@ export const CoachDetailView: React.FC = () => {
         </div>
 
         {/* Players List */}
-        <div className="lg:col-span-2 bg-ak-surface-base rounded-2xl p-5 border border-ak-border-default">
+        <div className="lg:col-span-2 bg-tier-white rounded-2xl p-5 border border-tier-border-default">
           <div className="flex items-center justify-between mb-4">
             <div className="flex items-center gap-2">
-              <Users size={20} className="text-ak-primary" />
+              <Users size={20} className="text-tier-navy" />
               <SectionTitle className="m-0">
                 Tilknyttede spillere ({players.length})
               </SectionTitle>
@@ -305,9 +306,9 @@ export const CoachDetailView: React.FC = () => {
           </div>
 
           {players.length === 0 ? (
-            <div className="text-center py-8 bg-ak-surface-subtle rounded-xl">
-              <Users size={32} className="mx-auto text-ak-text-tertiary mb-2" />
-              <p className="text-sm text-ak-text-secondary">
+            <div className="text-center py-8 bg-tier-surface-base rounded-xl">
+              <Users size={32} className="mx-auto text-tier-text-tertiary mb-2" />
+              <p className="text-sm text-tier-text-secondary">
                 Ingen spillere tilknyttet denne treneren
               </p>
             </div>
@@ -316,13 +317,13 @@ export const CoachDetailView: React.FC = () => {
               {players.map((player) => (
                 <div
                   key={player.id}
-                  className="flex items-center gap-3 py-3 px-4 bg-ak-surface-subtle rounded-xl hover:bg-ak-surface-base transition-colors"
+                  className="flex items-center gap-3 py-3 px-4 bg-tier-surface-base rounded-xl hover:bg-tier-white transition-colors"
                 >
-                  <div className="w-10 h-10 rounded-full bg-ak-primary/15 flex items-center justify-center text-sm font-semibold text-ak-primary">
+                  <div className="w-10 h-10 rounded-full bg-tier-navy/15 flex items-center justify-center text-sm font-semibold text-tier-navy">
                     {player.firstName[0]}{player.lastName[0]}
                   </div>
                   <div className="flex-1">
-                    <p className="text-sm font-medium text-ak-text-primary">
+                    <p className="text-sm font-medium text-tier-navy">
                       {player.firstName} {player.lastName}
                     </p>
                   </div>

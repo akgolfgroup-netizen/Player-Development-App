@@ -1,5 +1,5 @@
 /**
- * AK GOLF ACADEMY — VIDEO ANALYSIS SYSTEM
+ * TIER GOLF — VIDEO ANALYSIS SYSTEM
  * VideoPlayer Component
  *
  * Custom video player with:

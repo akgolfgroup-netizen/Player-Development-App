@@ -19,7 +19,7 @@ import { Video, Play, CheckCircle, ChevronLeft, ChevronRight, Clock } from 'luci
 import { REVIEW_STATUS } from './PlayerVideoFeed';
 import { track } from '../../analytics/track';
 import Button from '../../ui/primitives/Button';
-import { SubSectionTitle } from '../../components/typography';
+import { SubSectionTitle } from "../../ui/components/typography";
 
 // ============================================================================
 // TYPES
@@ -78,14 +78,14 @@ function formatRelativeTime(dateString?: string): string {
  * Get priority color based on wait time
  */
 function getPriorityColor(dateString?: string): string {
-  if (!dateString) return 'var(--success)';
+  if (!dateString) return 'var(--status-success)';
   const date = new Date(dateString);
   const now = new Date();
   const diffHours = (now.getTime() - date.getTime()) / (1000 * 60 * 60);
 
-  if (diffHours > 48) return 'var(--error)'; // Red - urgent
-  if (diffHours > 24) return 'var(--warning)'; // Yellow - attention
-  return 'var(--success)'; // Green - ok
+  if (diffHours > 48) return 'var(--status-error)'; // Red - urgent
+  if (diffHours > 24) return 'var(--status-warning)'; // Yellow - attention
+  return 'var(--status-success)'; // Green - ok
 }
 
 // ============================================================================
@@ -137,16 +137,16 @@ export function PendingReviewQueue({
   // Empty state
   if (pendingVideos.length === 0) {
     return (
-      <div className={`flex flex-col gap-3 p-4 bg-ak-surface-elevated rounded-xl border border-ak-border-default ${className || ''}`} style={style}>
+      <div className={`flex flex-col gap-3 p-4 bg-tier-white rounded-xl border border-tier-border-default ${className || ''}`} style={style}>
         <div className="flex items-center justify-between gap-3">
-          <SubSectionTitle className="m-0 text-base font-semibold text-ak-text-primary flex items-center gap-2">
+          <SubSectionTitle className="m-0 text-base font-semibold text-tier-navy flex items-center gap-2">
             <Clock size={16} />
             Venter på gjennomgang
           </SubSectionTitle>
         </div>
         <div className="flex flex-col items-center justify-center py-6 text-center">
-          <CheckCircle size={40} className="text-ak-status-success mb-2" />
-          <p className="text-[13px] text-ak-text-secondary m-0">
+          <CheckCircle size={40} className="text-tier-success mb-2" />
+          <p className="text-[13px] text-tier-text-secondary m-0">
             Alle videoer er gjennomgått!
           </p>
         </div>
@@ -155,13 +155,13 @@ export function PendingReviewQueue({
   }
 
   return (
-    <div className={`flex flex-col gap-3 p-4 bg-ak-surface-elevated rounded-xl border border-ak-border-default ${className || ''}`} style={style}>
+    <div className={`flex flex-col gap-3 p-4 bg-tier-white rounded-xl border border-tier-border-default ${className || ''}`} style={style}>
       {/* Header */}
       <div className="flex items-center justify-between gap-3">
-        <SubSectionTitle className="m-0 text-base font-semibold text-ak-text-primary flex items-center gap-2">
+        <SubSectionTitle className="m-0 text-base font-semibold text-tier-navy flex items-center gap-2">
           <Clock size={16} />
           Venter på gjennomgang
-          <span className="px-2 py-0.5 bg-ak-status-warning rounded-full text-xs font-bold text-white">
+          <span className="px-2 py-0.5 bg-tier-warning rounded-full text-xs font-bold text-white">
             {pendingVideos.length}
           </span>
         </SubSectionTitle>
@@ -178,14 +178,14 @@ export function PendingReviewQueue({
         {visibleVideos.length > 4 && (
           <>
             <button
-              className="absolute top-1/2 -translate-y-1/2 -left-4 w-8 h-8 rounded-full bg-ak-surface-elevated border border-ak-border-default text-ak-text-primary cursor-pointer flex items-center justify-center z-10 shadow-lg"
+              className="absolute top-1/2 -translate-y-1/2 -left-4 w-8 h-8 rounded-full bg-tier-white border border-tier-border-default text-tier-navy cursor-pointer flex items-center justify-center z-10 shadow-lg"
               onClick={() => handleScroll('left')}
               aria-label="Scroll venstre"
             >
               <ChevronLeft size={16} />
             </button>
             <button
-              className="absolute top-1/2 -translate-y-1/2 -right-4 w-8 h-8 rounded-full bg-ak-surface-elevated border border-ak-border-default text-ak-text-primary cursor-pointer flex items-center justify-center z-10 shadow-lg"
+              className="absolute top-1/2 -translate-y-1/2 -right-4 w-8 h-8 rounded-full bg-tier-white border border-tier-border-default text-tier-navy cursor-pointer flex items-center justify-center z-10 shadow-lg"
               onClick={() => handleScroll('right')}
               aria-label="Scroll høyre"
             >
@@ -197,7 +197,7 @@ export function PendingReviewQueue({
         {/* Queue items */}
         <div
           ref={scrollRef}
-          className="flex gap-3 overflow-x-auto pb-2 scrollbar-thin scrollbar-track-transparent scrollbar-thumb-ak-border-default"
+          className="flex gap-3 overflow-x-auto pb-2 scrollbar-thin scrollbar-track-transparent scrollbar-thumb-tier-border-default"
         >
           {visibleVideos.map((video) => {
             const isHovered = hoveredId === video.id;
@@ -214,7 +214,7 @@ export function PendingReviewQueue({
                 tabIndex={0}
               >
                 {/* Thumbnail */}
-                <div className="relative w-[140px] h-20 rounded-lg overflow-hidden bg-ak-surface-subtle">
+                <div className="relative w-[140px] h-20 rounded-lg overflow-hidden bg-tier-surface-base">
                   {video.thumbnailUrl ? (
                     <img
                       src={video.thumbnailUrl}
@@ -223,7 +223,7 @@ export function PendingReviewQueue({
                       loading="lazy"
                     />
                   ) : (
-                    <div className="w-full h-full flex items-center justify-center text-ak-text-tertiary">
+                    <div className="w-full h-full flex items-center justify-center text-tier-text-tertiary">
                       <Video size={24} />
                     </div>
                   )}
@@ -232,7 +232,7 @@ export function PendingReviewQueue({
                   <div
                     className={`absolute inset-0 flex items-center justify-center bg-black/40 transition-opacity ${isHovered ? 'opacity-100' : 'opacity-0'}`}
                   >
-                    <div className="w-9 h-9 rounded-full bg-ak-primary flex items-center justify-center text-white">
+                    <div className="w-9 h-9 rounded-full bg-tier-navy flex items-center justify-center text-white">
                       <Play size={16} />
                     </div>
                   </div>
@@ -254,10 +254,10 @@ export function PendingReviewQueue({
 
                 {/* Info */}
                 <div className="flex flex-col gap-0.5">
-                  <span className="text-xs font-medium text-ak-text-primary truncate">
+                  <span className="text-xs font-medium text-tier-navy truncate">
                     {video.playerName}
                   </span>
-                  <span className="text-[11px] text-ak-text-tertiary">
+                  <span className="text-[11px] text-tier-text-tertiary">
                     {formatRelativeTime(video.createdAt)} siden
                   </span>
                 </div>

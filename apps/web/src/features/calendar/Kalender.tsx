@@ -12,7 +12,7 @@ import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { ChevronLeft, ChevronRight, Plus, Clock, MapPin, Play } from 'lucide-react';
 import { PageHeader } from '../../components/layout/PageHeader';
-import { SectionTitle, SubSectionTitle, CardTitle } from '../../components/typography';
+import { SectionTitle, SubSectionTitle, CardTitle } from '../../components/typography/Headings';
 import {
   Card,
   CardContent,

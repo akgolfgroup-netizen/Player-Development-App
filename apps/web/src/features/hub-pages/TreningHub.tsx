@@ -33,6 +33,7 @@ export default function TreningHub({
       area={area}
       title="Trening"
       subtitle="Logg trening, se økter og registrer tester"
+      helpText="Logg treningsøkter, se øvelsesbibliotek og registrer tester. Hold oversikt over all din treningsaktivitet."
       quickStats={[
         { label: 'Økter denne mnd', value: stats.okterDenneMnd, icon: 'Calendar' },
         { label: 'Timer trent', value: stats.timerTrent, icon: 'Clock' },

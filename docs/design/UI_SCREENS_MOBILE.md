@@ -257,7 +257,7 @@ Content area: calc(100vh - 56px - 64px - safe-area)
 │      └──────────────┘          │
 │                                 │
 │    Velkommen til                │
-│    AK Golf IUP                  │
+│    TIER Golf IUP                  │
 │                                 │
 │  Individuell utviklingsplan     │
 │  for golfspillere               │
@@ -358,7 +358,7 @@ Content area: calc(100vh - 56px - 64px - safe-area)
 │  ┌─────────────────────────┐   │
 │  │ 09:00 - 10:00           │   │  ← Time slot
 │  │ Teknikk - Driver        │   │  ← Session title
-│  │ AK Golf Academy         │   │  ← Location
+│  │ TIER Golf         │   │  ← Location
 │  │ ●●●●●○○ 5/7             │   │  ← Difficulty dots
 │  └─────────────────────────┘   │
 │  ┌─────────────────────────┐   │
@@ -408,7 +408,7 @@ Content area: calc(100vh - 56px - 64px - safe-area)
 │ 09:00 - 10:00                │  ← Time (Label, #8E8E93)
 │                              │
 │ Teknikk - Driver             │  ← Title 3
-│ 📍 AK Golf Academy           │  ← Location (Callout)
+│ 📍 TIER Golf           │  ← Location (Callout)
 │                              │
 │ [●●●●●○○] 5/7                │  ← Difficulty dots
 │                              │  ● = filled #10456A
@@ -466,7 +466,7 @@ Content area: calc(100vh - 56px - 64px - safe-area)
 │  │                         │   │
 │  │ I dag kl. 15:00         │   │  ← Time
 │  │ Varighet: 60 min        │   │  ← Duration
-│  │ AK Golf Academy         │   │  ← Location
+│  │ TIER Golf         │   │  ← Location
 │  │                         │   │
 │  │ [●●●●●○○] 5/7           │   │  ← Difficulty
 │  └─────────────────────────┘   │
@@ -522,7 +522,7 @@ Content area: calc(100vh - 56px - 64px - safe-area)
 │                              │
 │  📅 I dag kl. 15:00          │  ← Metadata row
 │  ⏱️ Varighet: 60 min         │
-│  📍 AK Golf Academy          │
+│  📍 TIER Golf          │
 │                              │
 │  [●●●●●○○] 5/7               │  ← Difficulty indicator
 │  Krevende                    │  ← Difficulty label

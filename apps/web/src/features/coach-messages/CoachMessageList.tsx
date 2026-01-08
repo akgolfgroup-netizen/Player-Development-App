@@ -27,7 +27,7 @@ import Card from '../../ui/primitives/Card';
 import Badge from '../../ui/primitives/Badge.primitive';
 import StateCard from '../../ui/composites/StateCard';
 import PageHeader from '../../ui/raw-blocks/PageHeader.raw';
-import { SubSectionTitle } from '../../components/typography';
+import { SubSectionTitle } from "../../ui/components/typography";
 
 // ============================================================================
 // TYPES
@@ -147,11 +147,11 @@ const getRecipientIcon = (type: string) => {
 const getStatusIcon = (status: string) => {
   switch (status) {
     case 'read':
-      return <CheckCheck size={14} className="text-ak-status-success" />;
+      return <CheckCheck size={14} className="text-tier-success" />;
     case 'delivered':
-      return <Check size={14} className="text-ak-text-tertiary" />;
+      return <Check size={14} className="text-tier-text-tertiary" />;
     default:
-      return <Clock size={14} className="text-ak-text-tertiary" />;
+      return <Clock size={14} className="text-tier-text-tertiary" />;
   }
 };
 
@@ -171,11 +171,11 @@ const getCategoryConfig = (category: string): { label: string; variant: 'accent'
 const getRecipientIconBgClass = (type: string): string => {
   switch (type) {
     case 'player':
-      return 'bg-ak-primary/15 text-ak-primary';
+      return 'bg-tier-navy/15 text-tier-navy';
     case 'group':
-      return 'bg-ak-status-warning/15 text-ak-status-warning';
+      return 'bg-tier-warning/15 text-tier-warning';
     default:
-      return 'bg-ak-status-success/15 text-ak-status-success';
+      return 'bg-tier-success/15 text-tier-success';
   }
 };
 
@@ -240,7 +240,7 @@ export const CoachMessageList: React.FC = () => {
   // Loading state
   if (loading) {
     return (
-      <div className="min-h-screen flex items-center justify-center bg-ak-surface-subtle">
+      <div className="min-h-screen flex items-center justify-center bg-tier-surface-base">
         <StateCard variant="loading" title="Laster meldinger..." />
       </div>
     );
@@ -249,7 +249,7 @@ export const CoachMessageList: React.FC = () => {
   // Error state
   if (error && messages.length === 0) {
     return (
-      <div className="min-h-screen flex items-center justify-center bg-ak-surface-subtle p-6">
+      <div className="min-h-screen flex items-center justify-center bg-tier-surface-base p-6">
         <StateCard
           variant="error"
           title="Kunne ikke laste meldinger"
@@ -261,11 +261,12 @@ export const CoachMessageList: React.FC = () => {
   }
 
   return (
-    <div className="bg-ak-surface-subtle min-h-screen">
+    <div className="bg-tier-surface-base min-h-screen">
       {/* Header */}
       <PageHeader
         title="Sendte beskjeder"
         subtitle={`${stats.total} beskjeder sendt • ${stats.read} lest`}
+        helpText="Oversikt over alle meldinger til dine spillere. Send nye meldinger og følg opp kommunikasjon."
         actions={
           <Button
             variant="primary"
@@ -282,13 +283,13 @@ export const CoachMessageList: React.FC = () => {
         <div className="flex gap-4 mb-5 flex-wrap">
           <Card variant="default" padding="sm" className="flex-1 min-w-[200px]">
             <div className="flex items-center gap-2">
-              <Search size={18} className="text-ak-text-tertiary" />
+              <Search size={18} className="text-tier-text-tertiary" />
               <input
                 type="text"
                 placeholder="Søk i beskjeder..."
                 value={searchQuery}
                 onChange={(e) => setSearchQuery(e.target.value)}
-                className="flex-1 border-none bg-transparent text-sm text-ak-text-primary outline-none"
+                className="flex-1 border-none bg-transparent text-sm text-tier-navy outline-none"
               />
             </div>
           </Card>
@@ -321,7 +322,7 @@ export const CoachMessageList: React.FC = () => {
                 variant="default"
                 padding="md"
                 onClick={() => navigate(`/coach/messages/${message.id}`)}
-                className="cursor-pointer hover:border-ak-primary/50 transition-colors"
+                className="cursor-pointer hover:border-tier-navy/50 transition-colors"
               >
                 <div className="flex items-center gap-4">
                   {/* Left - Icon */}
@@ -334,18 +335,18 @@ export const CoachMessageList: React.FC = () => {
                   {/* Center - Content */}
                   <div className="flex-1 min-w-0">
                     <div className="flex items-center gap-2 mb-1">
-                      <SubSectionTitle className="text-sm font-semibold text-ak-text-primary m-0 overflow-hidden text-ellipsis whitespace-nowrap">
+                      <SubSectionTitle className="text-sm font-semibold text-tier-navy m-0 overflow-hidden text-ellipsis whitespace-nowrap">
                         {message.subject}
                       </SubSectionTitle>
                       <Badge variant={categoryConfig.variant} size="sm">
                         {categoryConfig.label}
                       </Badge>
                     </div>
-                    <p className="text-[13px] text-ak-text-secondary m-0 mb-1.5 overflow-hidden text-ellipsis whitespace-nowrap">
+                    <p className="text-[13px] text-tier-text-secondary m-0 mb-1.5 overflow-hidden text-ellipsis whitespace-nowrap">
                       {message.preview}
                     </p>
                     <div className="flex items-center gap-3">
-                      <div className="flex items-center gap-1 text-ak-text-tertiary">
+                      <div className="flex items-center gap-1 text-tier-text-tertiary">
                         {getRecipientIcon(message.recipients.type)}
                         <span className="text-xs">
                           {message.recipients.name}
@@ -353,7 +354,7 @@ export const CoachMessageList: React.FC = () => {
                         </span>
                       </div>
                       {message.hasAttachment && (
-                        <span className="text-xs text-ak-text-tertiary">
+                        <span className="text-xs text-tier-text-tertiary">
                           📎 Vedlegg
                         </span>
                       )}
@@ -362,14 +363,14 @@ export const CoachMessageList: React.FC = () => {
 
                   {/* Right - Status and time */}
                   <div className="flex flex-col items-end gap-2 flex-shrink-0">
-                    <span className="text-xs text-ak-text-tertiary">
+                    <span className="text-xs text-tier-text-tertiary">
                       {formatDate(message.sentAt)}
                     </span>
                     <div className="flex items-center gap-1">
                       {getStatusIcon(message.status)}
                       <span
                         className={`text-[11px] ${
-                          message.status === 'read' ? 'text-ak-status-success' : 'text-ak-text-tertiary'
+                          message.status === 'read' ? 'text-tier-success' : 'text-tier-text-tertiary'
                         }`}
                       >
                         {message.status === 'read' ? 'Lest' : message.status === 'delivered' ? 'Levert' : 'Sender...'}
@@ -377,7 +378,7 @@ export const CoachMessageList: React.FC = () => {
                     </div>
                   </div>
 
-                  <ChevronRight size={18} className="text-ak-text-tertiary" />
+                  <ChevronRight size={18} className="text-tier-text-tertiary" />
                 </div>
               </Card>
             );

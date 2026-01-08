@@ -1,4 +1,4 @@
-# Slides Checklist - IUP Golf Academy Demo
+# Slides Checklist - IUP Golf Demo
 
 Guide for å lage 15-slide presentasjon for demo-presentasjonen.
 
@@ -116,7 +116,7 @@ IUP GOLF ACADEMY
 - "After" comparison (elegant UI vs Excel)
 
 **Elements:**
-- [ ] Tittel: "IUP Golf Academy"
+- [ ] Tittel: "IUP Golf"
 - [ ] 5 checkmarks med key features
 - [ ] Screenshot av dashboard (preview)
 - [ ] "Production-ready" badge eller tag

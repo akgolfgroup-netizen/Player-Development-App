@@ -16,15 +16,15 @@ const COMPONENT_LABELS = {
 
 const COMPONENT_COLORS = {
   OTT: 'var(--info)',
-  APP: 'var(--success)',
-  ARG: 'var(--warning)',
-  PUTT: 'var(--ak-accent-purple)',
+  APP: 'var(--status-success)',
+  ARG: 'var(--status-warning)',
+  PUTT: 'rgb(var(--category-j))',
 };
 
 const REASON_LABELS = {
   weak_ott_test_cluster: 'Svak driving',
   weak_app_test_cluster: 'Svak approach',
-  weak_arg_test_cluster: 'Svak kortspill',
+  weak_arg_test_cluster: 'Svak nærspill',
   weak_putt_test_cluster: 'Svak putting',
   high_weight_ott: 'Driving viktig',
   high_weight_app: 'Approach viktig',

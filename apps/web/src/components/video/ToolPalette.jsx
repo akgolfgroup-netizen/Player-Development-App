@@ -1,5 +1,5 @@
 /**
- * AK GOLF ACADEMY — VIDEO ANALYSIS SYSTEM
+ * TIER GOLF — VIDEO ANALYSIS SYSTEM
  * ToolPalette Component
  *
  * Provides drawing tool selection for video annotation:

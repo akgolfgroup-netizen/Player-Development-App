@@ -1,5 +1,5 @@
 /**
- * AK Golf Academy - Coach Tournament Players
+ * TIER Golf Academy - Coach Tournament Players
  * Design System v3.0 - Premium Light
  *
  * MIGRATED TO PAGE ARCHITECTURE - Zero inline styles
@@ -21,7 +21,7 @@ import {
 } from 'lucide-react';
 import Button from '../../ui/primitives/Button';
 import PageHeader from '../../ui/raw-blocks/PageHeader.raw';
-import { SubSectionTitle, SectionTitle } from '../../components/typography';
+import { SubSectionTitle, SectionTitle } from '../../components/typography/Headings';
 
 interface TournamentEntry {
   id: string;
@@ -102,7 +102,7 @@ export default function CoachTournamentPlayers() {
         id: 'p1',
         name: 'Anders Hansen',
         initials: 'AH',
-        avatarColor: 'rgb(var(--ak-primary-rgb))',
+        avatarColor: 'rgb(var(--1,33,74))',
         category: 'A',
         upcomingTournaments: [
           { id: 'e1', tournamentId: 't1', tournamentName: 'NM Junior 2025', date: '2025-06-15', location: 'Oslo GK', status: 'registered', category: 'junior' },
@@ -116,10 +116,10 @@ export default function CoachTournamentPlayers() {
         id: 'p2',
         name: 'Sofie Andersen',
         initials: 'SA',
-        avatarColor: 'rgb(var(--ak-status-success-rgb))',
+        avatarColor: 'rgb(var(--status-success-rgb))',
         category: 'B',
         upcomingTournaments: [
-          { id: 'e4', tournamentId: 't2', tournamentName: 'AK Golf Academy Cup', date: '2025-01-20', location: 'Miklagard', status: 'registered', category: 'open' },
+          { id: 'e4', tournamentId: 't2', tournamentName: 'TIER Golf Academy Cup', date: '2025-01-20', location: 'Miklagard', status: 'registered', category: 'open' },
         ],
         totalThisYear: 5,
         lastTournament: '2025-02-28',
@@ -128,7 +128,7 @@ export default function CoachTournamentPlayers() {
         id: 'p3',
         name: 'Erik Johansen',
         initials: 'EJ',
-        avatarColor: 'rgb(var(--ak-status-warning-rgb))',
+        avatarColor: 'rgb(var(--status-warning-rgb))',
         category: 'A',
         upcomingTournaments: [
           { id: 'e5', tournamentId: 't1', tournamentName: 'NM Junior 2025', date: '2025-06-15', location: 'Oslo GK', status: 'registered', category: 'junior' },
@@ -142,10 +142,10 @@ export default function CoachTournamentPlayers() {
         id: 'p4',
         name: 'Maria Berg',
         initials: 'MB',
-        avatarColor: 'rgb(var(--ak-status-error-rgb))',
+        avatarColor: 'rgb(var(--status-error-rgb))',
         category: 'C',
         upcomingTournaments: [
-          { id: 'e8', tournamentId: 't2', tournamentName: 'AK Golf Academy Cup', date: '2025-01-20', location: 'Miklagard', status: 'registered', category: 'open' },
+          { id: 'e8', tournamentId: 't2', tournamentName: 'TIER Golf Academy Cup', date: '2025-01-20', location: 'Miklagard', status: 'registered', category: 'open' },
         ],
         totalThisYear: 3,
         lastTournament: '2025-01-15',
@@ -154,11 +154,11 @@ export default function CoachTournamentPlayers() {
         id: 'p5',
         name: 'Lars Olsen',
         initials: 'LO',
-        avatarColor: 'rgb(var(--ak-text-secondary-rgb))',
+        avatarColor: 'rgb(var(--text-secondary-rgb))',
         category: 'B',
         upcomingTournaments: [
           { id: 'e9', tournamentId: 't1', tournamentName: 'NM Junior 2025', date: '2025-06-15', location: 'Oslo GK', status: 'pending', category: 'junior' },
-          { id: 'e10', tournamentId: 't2', tournamentName: 'AK Golf Academy Cup', date: '2025-01-20', location: 'Miklagard', status: 'registered', category: 'open' },
+          { id: 'e10', tournamentId: 't2', tournamentName: 'TIER Golf Academy Cup', date: '2025-01-20', location: 'Miklagard', status: 'registered', category: 'open' },
         ],
         totalThisYear: 6,
         lastTournament: '2025-02-20',
@@ -170,7 +170,7 @@ export default function CoachTournamentPlayers() {
   const generateMockTournaments = (): Tournament[] => {
     return [
       { id: 't1', name: 'NM Junior 2025', date: '2025-06-15', location: 'Oslo GK', category: 'junior', registrationDeadline: '2025-05-30', status: 'registration_open' },
-      { id: 't2', name: 'AK Golf Academy Cup', date: '2025-01-20', location: 'Miklagard', category: 'open', registrationDeadline: '2025-01-15', status: 'registration_open' },
+      { id: 't2', name: 'TIER Golf Academy Cup', date: '2025-01-20', location: 'Miklagard', category: 'open', registrationDeadline: '2025-01-15', status: 'registration_open' },
       { id: 't3', name: 'NGF Tour - Runde 3', date: '2025-05-10', location: 'Borre GK', category: 'elite', registrationDeadline: '2025-05-01', status: 'registration_open' },
       { id: 't4', name: 'Nordisk Mesterskap', date: '2025-07-20', location: 'København', category: 'junior', registrationDeadline: '2025-06-30', status: 'registration_open' },
       { id: 't5', name: 'Sommerturneringen', date: '2025-07-05', location: 'Losby GK', category: 'open', registrationDeadline: '2025-06-28', status: 'registration_open' },
@@ -210,15 +210,15 @@ export default function CoachTournamentPlayers() {
   const getStatusConfig = (status: string) => {
     switch (status) {
       case 'registered':
-        return { label: 'Påmeldt', colorClass: 'text-ak-status-success', bgClass: 'bg-ak-status-success/15', icon: CheckCircle };
+        return { label: 'Påmeldt', colorClass: 'text-tier-success', bgClass: 'bg-tier-success/15', icon: CheckCircle };
       case 'pending':
-        return { label: 'Venter', colorClass: 'text-ak-status-warning', bgClass: 'bg-ak-status-warning/15', icon: Clock };
+        return { label: 'Venter', colorClass: 'text-tier-warning', bgClass: 'bg-tier-warning/15', icon: Clock };
       case 'interested':
         return { label: 'Interessert', colorClass: 'text-amber-500', bgClass: 'bg-amber-500/15', icon: Star };
       case 'declined':
-        return { label: 'Avslått', colorClass: 'text-ak-status-error', bgClass: 'bg-ak-status-error/15', icon: AlertCircle };
+        return { label: 'Avslått', colorClass: 'text-tier-error', bgClass: 'bg-tier-error/15', icon: AlertCircle };
       default:
-        return { label: status, colorClass: 'text-ak-text-secondary', bgClass: 'bg-ak-surface-muted', icon: Clock };
+        return { label: status, colorClass: 'text-tier-text-secondary', bgClass: 'bg-tier-surface-base', icon: Clock };
     }
   };
 
@@ -267,42 +267,43 @@ export default function CoachTournamentPlayers() {
 
   if (loading) {
     return (
-      <div className="min-h-screen bg-ak-surface-subtle flex items-center justify-center">
-        <div className="w-12 h-12 border-4 border-ak-border-default border-t-ak-primary rounded-full animate-spin" />
+      <div className="min-h-screen bg-tier-surface-base flex items-center justify-center">
+        <div className="w-12 h-12 border-4 border-tier-border-default border-t-tier-navy rounded-full animate-spin" />
       </div>
     );
   }
 
   return (
-    <div className="min-h-screen bg-ak-surface-subtle font-sans">
+    <div className="min-h-screen bg-tier-surface-base font-sans">
       {/* Header */}
-      <div className="bg-ak-surface-base border-b border-ak-border-default py-5 px-6">
+      <div className="bg-tier-white border-b border-tier-border-default py-5 px-6">
         <PageHeader
           title="Spillerdeltakelse"
           subtitle="Oversikt over spillernes turneringspåmeldinger"
+          helpText="Alfabetisk oversikt over spillernes turneringsdeltakelse. Se påmeldinger, ventende registreringer og turneringshistorikk for hver spiller."
           onBack={() => navigate('/coach/tournaments')}
           divider={false}
         />
 
         {/* Stats */}
         <div className="flex gap-4 flex-wrap">
-          <div className="flex items-center gap-2 py-2 px-3.5 bg-ak-status-success/10 rounded-lg">
-            <CheckCircle size={16} className="text-ak-status-success" />
-            <span className="text-[13px] text-ak-text-primary">
+          <div className="flex items-center gap-2 py-2 px-3.5 bg-tier-success/10 rounded-lg">
+            <CheckCircle size={16} className="text-tier-success" />
+            <span className="text-[13px] text-tier-navy">
               <strong>{stats.totalRegistrations}</strong> påmeldinger
             </span>
           </div>
           {stats.pendingRegistrations > 0 && (
-            <div className="flex items-center gap-2 py-2 px-3.5 bg-ak-status-warning/15 rounded-lg">
-              <Clock size={16} className="text-ak-status-warning" />
-              <span className="text-[13px] text-ak-text-primary">
+            <div className="flex items-center gap-2 py-2 px-3.5 bg-tier-warning/15 rounded-lg">
+              <Clock size={16} className="text-tier-warning" />
+              <span className="text-[13px] text-tier-navy">
                 <strong>{stats.pendingRegistrations}</strong> venter
               </span>
             </div>
           )}
-          <div className="flex items-center gap-2 py-2 px-3.5 bg-ak-primary/10 rounded-lg">
-            <Users size={16} className="text-ak-primary" />
-            <span className="text-[13px] text-ak-text-primary">
+          <div className="flex items-center gap-2 py-2 px-3.5 bg-tier-navy/10 rounded-lg">
+            <Users size={16} className="text-tier-navy" />
+            <span className="text-[13px] text-tier-navy">
               <strong>{stats.playersWithTournaments}</strong> av {players.length} spillere
             </span>
           </div>
@@ -310,15 +311,15 @@ export default function CoachTournamentPlayers() {
       </div>
 
       {/* Search and actions */}
-      <div className="bg-ak-surface-base py-4 px-6 border-b border-ak-border-default flex gap-3 items-center">
-        <div className="flex items-center gap-2 py-2 px-3 bg-ak-surface-muted rounded-lg flex-1 max-w-[300px]">
-          <Search size={18} className="text-ak-text-secondary" />
+      <div className="bg-tier-white py-4 px-6 border-b border-tier-border-default flex gap-3 items-center">
+        <div className="flex items-center gap-2 py-2 px-3 bg-tier-surface-base rounded-lg flex-1 max-w-[300px]">
+          <Search size={18} className="text-tier-text-secondary" />
           <input
             type="text"
             placeholder="Søk spiller..."
             value={searchQuery}
             onChange={(e) => setSearchQuery(e.target.value)}
-            className="flex-1 border-none bg-transparent text-sm text-ak-text-primary outline-none"
+            className="flex-1 border-none bg-transparent text-sm text-tier-navy outline-none"
           />
         </div>
 
@@ -337,13 +338,13 @@ export default function CoachTournamentPlayers() {
           {filteredPlayers.map((player) => (
             <div
               key={player.id}
-              className="bg-ak-surface-base rounded-xl shadow-sm overflow-hidden"
+              className="bg-tier-white rounded-xl shadow-sm overflow-hidden"
             >
               {/* Player header */}
-              <div className="p-4 px-5 flex items-center justify-between border-b border-ak-surface-muted">
+              <div className="p-4 px-5 flex items-center justify-between border-b border-tier-surface-base">
                 <div className="flex items-center gap-3">
                   <div
-                    className="w-11 h-11 rounded-full text-ak-surface-base flex items-center justify-center text-base font-semibold"
+                    className="w-11 h-11 rounded-full text-tier-white flex items-center justify-center text-base font-semibold"
                     style={{ backgroundColor: player.avatarColor }}
                   >
                     {player.initials}
@@ -353,10 +354,10 @@ export default function CoachTournamentPlayers() {
                       {player.name}
                     </SubSectionTitle>
                     <div className="flex items-center gap-2 mt-0.5">
-                      <span className="text-[11px] font-semibold text-ak-primary bg-ak-primary/15 py-0.5 px-2 rounded">
+                      <span className="text-[11px] font-semibold text-tier-navy bg-tier-navy/15 py-0.5 px-2 rounded">
                         Kategori {player.category}
                       </span>
-                      <span className="text-xs text-ak-text-secondary">
+                      <span className="text-xs text-tier-text-secondary">
                         {player.totalThisYear} turneringer i år
                       </span>
                     </div>
@@ -376,7 +377,7 @@ export default function CoachTournamentPlayers() {
               {/* Tournaments */}
               <div className="p-4 px-5">
                 {player.upcomingTournaments.length === 0 ? (
-                  <div className="flex items-center justify-center py-6 text-ak-text-secondary text-sm">
+                  <div className="flex items-center justify-center py-6 text-tier-text-secondary text-sm">
                     <Trophy size={18} className="mr-2" />
                     Ingen kommende turneringer
                   </div>
@@ -389,20 +390,20 @@ export default function CoachTournamentPlayers() {
                       return (
                         <div
                           key={entry.id}
-                          className="flex items-center justify-between p-3 px-3.5 bg-ak-surface-muted rounded-lg"
+                          className="flex items-center justify-between p-3 px-3.5 bg-tier-surface-base rounded-lg"
                         >
                           <div className="flex items-center gap-3">
                             <Trophy size={16} className="text-amber-500" />
                             <div>
-                              <div className="text-sm font-medium text-ak-text-primary">
+                              <div className="text-sm font-medium text-tier-navy">
                                 {entry.tournamentName}
                               </div>
                               <div className="flex items-center gap-2 mt-0.5">
-                                <span className="text-xs text-ak-text-secondary">
+                                <span className="text-xs text-tier-text-secondary">
                                   {formatDate(entry.date)}
                                 </span>
-                                <span className="text-xs text-ak-text-secondary">•</span>
-                                <span className="text-xs text-ak-text-secondary">
+                                <span className="text-xs text-tier-text-secondary">•</span>
+                                <span className="text-xs text-tier-text-secondary">
                                   {entry.location}
                                 </span>
                               </div>
@@ -436,20 +437,20 @@ export default function CoachTournamentPlayers() {
               setSelectedTournamentForRegister(null);
             }}
           />
-          <div className="fixed top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 bg-ak-surface-base rounded-xl p-6 w-[500px] max-w-[90vw] max-h-[80vh] overflow-auto z-[101]">
+          <div className="fixed top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 bg-tier-white rounded-xl p-6 w-[500px] max-w-[90vw] max-h-[80vh] overflow-auto z-[101]">
             <SectionTitle className="m-0 mb-5">
               Meld på spiller
             </SectionTitle>
 
             {/* Tournament selection */}
             <div className="mb-5">
-              <label className="block text-sm font-medium text-ak-text-primary mb-2">
+              <label className="block text-sm font-medium text-tier-navy mb-2">
                 Velg turnering
               </label>
               <select
                 value={selectedTournamentForRegister || ''}
                 onChange={(e) => setSelectedTournamentForRegister(e.target.value)}
-                className="w-full p-3 border border-ak-border-default rounded-lg text-sm text-ak-text-primary"
+                className="w-full p-3 border border-tier-border-default rounded-lg text-sm text-tier-navy"
               >
                 <option value="">Velg turnering...</option>
                 {tournaments
@@ -465,7 +466,7 @@ export default function CoachTournamentPlayers() {
             {/* Player selection */}
             {selectedTournamentForRegister && (
               <div>
-                <label className="block text-sm font-medium text-ak-text-primary mb-2">
+                <label className="block text-sm font-medium text-tier-navy mb-2">
                   Velg spillere
                 </label>
                 <div className="flex flex-col gap-2 max-h-[300px] overflow-auto">
@@ -477,29 +478,29 @@ export default function CoachTournamentPlayers() {
                     return (
                       <div
                         key={player.id}
-                        className={`flex items-center justify-between p-3 bg-ak-surface-muted rounded-lg ${
+                        className={`flex items-center justify-between p-3 bg-tier-surface-base rounded-lg ${
                           isAlreadyRegistered ? 'opacity-50' : ''
                         }`}
                       >
                         <div className="flex items-center gap-2.5">
                           <div
-                            className="w-8 h-8 rounded-full text-ak-surface-base flex items-center justify-center text-xs font-semibold"
+                            className="w-8 h-8 rounded-full text-tier-white flex items-center justify-center text-xs font-semibold"
                             style={{ backgroundColor: player.avatarColor }}
                           >
                             {player.initials}
                           </div>
                           <div>
-                            <div className="text-sm font-medium text-ak-text-primary">
+                            <div className="text-sm font-medium text-tier-navy">
                               {player.name}
                             </div>
-                            <div className="text-xs text-ak-text-secondary">
+                            <div className="text-xs text-tier-text-secondary">
                               Kategori {player.category}
                             </div>
                           </div>
                         </div>
 
                         {isAlreadyRegistered ? (
-                          <span className="text-xs text-ak-status-success font-medium">
+                          <span className="text-xs text-tier-success font-medium">
                             Allerede påmeldt
                           </span>
                         ) : (

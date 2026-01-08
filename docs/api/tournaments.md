@@ -1,4 +1,4 @@
-# AK Golf Academy - Coach Tournaments API
+# TIER Golf - Coach Tournaments API
 
 ## Oversikt
 

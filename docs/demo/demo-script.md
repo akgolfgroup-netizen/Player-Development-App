@@ -1,4 +1,4 @@
-# IUP Golf Academy - Demo Presentasjon
+# IUP Golf - Demo Presentasjon
 
 **Varighet:** 15-20 minutter
 **Målgruppe:** Partnere (overraskelse - de vet ikke om koding)
@@ -31,7 +31,7 @@
 ### Slide 2: "Jeg har bygget en løsning..."
 
 **The Reveal:**
-> "De siste månedene har jeg jobbet med å bygge en komplett løsning for dette problemet. La meg vise dere IUP Golf Academy - en all-in-one treningsplattform."
+> "De siste månedene har jeg jobbet med å bygge en komplett løsning for dette problemet. La meg vise dere IUP Golf - en all-in-one treningsplattform."
 
 **Innhold:**
 - Full-stack web-applikasjon (desktop + mobil)

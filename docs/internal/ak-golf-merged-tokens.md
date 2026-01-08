@@ -1,5 +1,5 @@
 # AK GOLF MERGED DESIGN TOKENS
-## Base: AK Golf Academy v2.1 + Additions from Untitled UI v2.0
+## Base: TIER Golf v2.1 + Additions from Untitled UI v2.0
 
 ---
 
@@ -7,10 +7,10 @@
 
 | Source | Kept | Added | Replaced |
 |--------|------|-------|----------|
-| **AK Golf** (base) | ✅ All brand colors | — | — |
-| **AK Golf** | ✅ All semantic colors | — | — |
-| **AK Golf** | ✅ Apple HIG typography | — | — |
-| **AK Golf** | ✅ Icon specs | — | — |
+| **TIER Golf** (base) | ✅ All brand colors | — | — |
+| **TIER Golf** | ✅ All semantic colors | — | — |
+| **TIER Golf** | ✅ Apple HIG typography | — | — |
+| **TIER Golf** | ✅ Icon specs | — | — |
 | **Untitled UI** | — | ✅ Gray scale (50-700) | — |
 | **Untitled UI** | — | ✅ Spacing system (4px base) | — |
 | **Untitled UI** | — | ✅ Shadow definitions | — |
@@ -20,7 +20,7 @@
 
 ## TOKEN LIST
 
-### 🎨 Brand Colors (AK Golf - PRESERVED)
+### 🎨 Brand Colors (TIER Golf - PRESERVED)
 
 | Token | Name | Value | Role |
 |-------|------|-------|------|
@@ -42,7 +42,7 @@
 | `gray.700` | `#414651` | Secondary text |
 | `gray.900` | `#1C1C1E` | iOS dark text |
 
-### ✅ Status Colors (AK Golf - PRESERVED)
+### ✅ Status Colors (TIER Golf - PRESERVED)
 
 | Token | Value | Usage |
 |-------|-------|-------|
@@ -52,7 +52,7 @@
 
 ---
 
-### 🔤 Typography (AK Golf Apple HIG - PRESERVED)
+### 🔤 Typography (TIER Golf Apple HIG - PRESERVED)
 
 | Style | Size | Line Height | Weight |
 |-------|------|-------------|--------|
@@ -99,7 +99,7 @@
 |-------|-------|--------|
 | `radius.sm` | 8px | Untitled UI |
 | `radius.md` | 12px | Combined |
-| `radius.lg` | 16px | AK Golf icons |
+| `radius.lg` | 16px | TIER Golf icons |
 | `radius.full` | 999px | Pills/avatars |
 
 ---
@@ -108,12 +108,12 @@
 
 | Token | Value | Source |
 |-------|-------|--------|
-| `shadow.card` | `0 2px 4px rgba(0,0,0,0.06)` | AK Golf |
+| `shadow.card` | `0 2px 4px rgba(0,0,0,0.06)` | TIER Golf |
 | `shadow.sm` | Multi-layer soft shadow | Untitled UI |
 
 ---
 
-### 🎯 Icon Specs (AK Golf - PRESERVED)
+### 🎯 Icon Specs (TIER Golf - PRESERVED)
 
 | Property | Value |
 |----------|-------|
@@ -183,7 +183,7 @@ status.error.default   → #C45B4E
 
 ```css
 :root {
-  /* AK Golf Brand Colors */
+  /* TIER Golf Brand Colors */
   --ak-jet-black: #02060D;
   --ak-current: #10456A;
   --ak-snow: #EDF0F2;
@@ -229,5 +229,5 @@ status.error.default   → #C45B4E
 
 ---
 
-*Merged: AK Golf Academy Design System v2.1 + Untitled UI v2.0*
+*Merged: TIER Golf Design System v2.1 + Untitled UI v2.0*
 *Date: 2025-12-18*

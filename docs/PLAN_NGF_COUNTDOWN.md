@@ -73,7 +73,7 @@
 
 #### 3.1 Keynote/PowerPoint (4-6 timer)
 - [ ] Konverter `PRESENTASJON_NGF_13_JANUAR.md` til slides
-- [ ] Design med AK Golf branding
+- [ ] Design med TIER Golf branding
 - [ ] Inkluder screenshots fra live app
 
 **Struktur:**

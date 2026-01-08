@@ -1,6 +1,6 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 /**
- * AK Golf Academy - Notification Center
+ * TIER Golf Academy - Notification Center
  *
  * Archetype: A - List/Index Page
  * Purpose: Display all notifications and updates for the player
@@ -27,7 +27,7 @@ import {
 } from 'lucide-react';
 import { useNotifications } from '../../hooks/useNotifications';
 import Button from '../../ui/primitives/Button';
-import { SectionTitle, SubSectionTitle } from '../../components/typography';
+import { SectionTitle, SubSectionTitle } from '../../components/typography/Headings';
 
 // ============================================================================
 // TYPES
@@ -46,21 +46,21 @@ const getNotificationIcon = (notificationType: string) => {
     case 'video_shared':
       return { icon: PlayCircle, color: 'var(--accent)' };
     case 'video_reviewed':
-      return { icon: CheckCircle, color: 'var(--success)' };
+      return { icon: CheckCircle, color: 'var(--status-success)' };
     case 'comment_created':
       return { icon: MessageSquare, color: 'var(--accent)' };
     case 'achievement':
       return { icon: Star, color: 'var(--achievement)' };
     case 'success':
-      return { icon: CheckCircle, color: 'var(--success)' };
+      return { icon: CheckCircle, color: 'var(--status-success)' };
     case 'warning':
-      return { icon: AlertCircle, color: 'var(--warning)' };
+      return { icon: AlertCircle, color: 'var(--status-warning)' };
     case 'error':
-      return { icon: AlertCircle, color: 'var(--error)' };
+      return { icon: AlertCircle, color: 'var(--status-error)' };
     case 'training':
       return { icon: TrendingUp, color: 'var(--accent)' };
     case 'test':
-      return { icon: Target, color: 'var(--success)' };
+      return { icon: Target, color: 'var(--status-success)' };
     case 'tournament':
       return { icon: Trophy, color: 'var(--achievement)' };
     case 'message':
@@ -128,8 +128,8 @@ export default function NotificationCenter({ userId }: NotificationCenterProps) 
   if (loading) {
     return (
       <div className="p-6 text-center">
-        <div className="w-10 h-10 border-[3px] border-ak-border-default border-t-ak-primary rounded-full mx-auto mb-4 animate-spin" />
-        <p className="text-ak-text-secondary">Laster varsler...</p>
+        <div className="w-10 h-10 border-[3px] border-tier-border-default border-t-tier-navy rounded-full mx-auto mb-4 animate-spin" />
+        <p className="text-tier-text-secondary">Laster varsler...</p>
       </div>
     );
   }
@@ -139,11 +139,11 @@ export default function NotificationCenter({ userId }: NotificationCenterProps) 
       {/* Header */}
       <div className="flex items-center justify-between mb-6">
         <div>
-          <SectionTitle className="text-[28px] leading-[34px] font-bold text-ak-text-primary m-0">
+          <SectionTitle className="text-[28px] leading-[34px] font-bold text-tier-navy m-0">
             Varsler
           </SectionTitle>
           {unreadCount > 0 && (
-            <p className="text-[15px] leading-5 text-ak-text-secondary mt-1 mb-0">
+            <p className="text-[15px] leading-5 text-tier-text-secondary mt-1 mb-0">
               {unreadCount} uleste {unreadCount === 1 ? 'varsel' : 'varsler'}
             </p>
           )}
@@ -162,7 +162,7 @@ export default function NotificationCenter({ userId }: NotificationCenterProps) 
       </div>
 
       {/* Filter tabs */}
-      <div className="flex gap-1 mb-5 p-1 bg-ak-surface-subtle rounded-lg w-fit">
+      <div className="flex gap-1 mb-5 p-1 bg-tier-surface-base rounded-lg w-fit">
         {[
           { key: 'all', label: 'Alle' },
           { key: 'unread', label: `Uleste (${unreadCount})` },
@@ -172,8 +172,8 @@ export default function NotificationCenter({ userId }: NotificationCenterProps) 
             onClick={() => setFilterType(filter.key as 'all' | 'unread')}
             className={`px-4 py-2 border-none rounded-md text-sm font-medium cursor-pointer transition-all ${
               filterType === filter.key
-                ? 'bg-ak-surface-base text-ak-text-primary shadow-sm'
-                : 'bg-transparent text-ak-text-secondary'
+                ? 'bg-tier-white text-tier-navy shadow-sm'
+                : 'bg-transparent text-tier-text-secondary'
             }`}
           >
             {filter.label}
@@ -182,14 +182,14 @@ export default function NotificationCenter({ userId }: NotificationCenterProps) 
       </div>
 
       {/* Notifications list */}
-      <div className="bg-ak-surface-base rounded-xl border border-ak-border-default overflow-hidden">
+      <div className="bg-tier-white rounded-xl border border-tier-border-default overflow-hidden">
         {filteredNotifications.length === 0 ? (
           <div className="py-12 px-6 text-center">
-            <Bell size={48} className="text-ak-border-default mb-4 mx-auto" />
-            <p className="text-[17px] leading-[22px] font-semibold text-ak-text-primary mb-2">
+            <Bell size={48} className="text-tier-border-default mb-4 mx-auto" />
+            <p className="text-[17px] leading-[22px] font-semibold text-tier-navy mb-2">
               Ingen varsler
             </p>
-            <p className="text-[15px] leading-5 text-ak-text-secondary m-0">
+            <p className="text-[15px] leading-5 text-tier-text-secondary m-0">
               {filterType === 'unread'
                 ? 'Du har lest alle varslene dine'
                 : 'Du har ingen varsler ennå'}
@@ -207,9 +207,9 @@ export default function NotificationCenter({ userId }: NotificationCenterProps) 
                 key={notification.id}
                 className={`flex gap-3.5 p-4 transition-colors ${
                   index < filteredNotifications.length - 1
-                    ? 'border-b border-ak-surface-subtle'
+                    ? 'border-b border-tier-surface-base'
                     : ''
-                } ${isRead ? 'bg-transparent' : 'bg-ak-primary/5'}`}
+                } ${isRead ? 'bg-transparent' : 'bg-tier-navy/5'}`}
               >
                 {/* Icon */}
                 <div
@@ -223,23 +223,23 @@ export default function NotificationCenter({ userId }: NotificationCenterProps) 
                 <div className="flex-1 min-w-0">
                   <div className="flex items-start justify-between gap-3 mb-1">
                     <SubSectionTitle
-                      className={`text-[17px] leading-[22px] text-ak-text-primary m-0 ${
+                      className={`text-[17px] leading-[22px] text-tier-navy m-0 ${
                         isRead ? 'font-medium' : 'font-semibold'
                       }`}
                     >
                       {notification.title}
                     </SubSectionTitle>
                     <div className="flex items-center gap-2">
-                      <span className="text-[13px] leading-[18px] text-ak-text-secondary whitespace-nowrap">
+                      <span className="text-[13px] leading-[18px] text-tier-text-secondary whitespace-nowrap">
                         {formatTime(notification.createdAt)}
                       </span>
                       {!isRead && (
-                        <div className="w-2 h-2 rounded-full bg-ak-primary" />
+                        <div className="w-2 h-2 rounded-full bg-tier-navy" />
                       )}
                     </div>
                   </div>
 
-                  <p className="text-[15px] leading-5 text-ak-text-secondary mb-2.5">
+                  <p className="text-[15px] leading-5 text-tier-text-secondary mb-2.5">
                     {notification.message}
                   </p>
 
@@ -249,7 +249,7 @@ export default function NotificationCenter({ userId }: NotificationCenterProps) 
                       <Link
                         to={link}
                         onClick={() => markAsRead(notification.id)}
-                        className="text-[13px] leading-[18px] text-ak-primary font-medium no-underline hover:underline"
+                        className="text-[13px] leading-[18px] text-tier-navy font-medium no-underline hover:underline"
                       >
                         {linkLabel}
                       </Link>
@@ -257,7 +257,7 @@ export default function NotificationCenter({ userId }: NotificationCenterProps) 
                     {!isRead && (
                       <button
                         onClick={() => markAsRead(notification.id)}
-                        className="flex items-center gap-1 p-0 bg-transparent border-none text-ak-text-secondary text-xs cursor-pointer hover:text-ak-text-primary"
+                        className="flex items-center gap-1 p-0 bg-transparent border-none text-tier-text-secondary text-xs cursor-pointer hover:text-tier-navy"
                       >
                         <Check size={12} />
                         Merk som lest

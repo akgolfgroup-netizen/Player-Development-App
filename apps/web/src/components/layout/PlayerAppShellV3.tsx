@@ -1,7 +1,7 @@
 /**
  * ============================================================
  * PlayerAppShellV3 - Fargekodet 5-område layout
- * AK Golf Academy Design System v3.0
+ * TIER Golf Academy Design System v3.0
  * ============================================================
  *
  * Responsiv layout med:
@@ -23,7 +23,7 @@ import { Link, useLocation, useNavigate } from 'react-router-dom';
 import * as LucideIcons from 'lucide-react';
 import { playerNavigationV3, getAreaByPath, bottomNavItems } from '../../config/player-navigation-v3';
 import { navigationColors, sidebarConfig, bottomNavConfig } from '../../config/navigation-tokens';
-import { AKLogo } from '../branding/AKLogo';
+import { TIERGolfFullLogo } from '../branding/TIERGolfFullLogo';
 import { useAuth } from '../../contexts/AuthContext';
 import BackToTop from '../ui/BackToTop';
 
@@ -141,7 +141,7 @@ export default function PlayerAppShellV3({ children }: PlayerAppShellV3Props) {
               gap: '12px',
               borderRadius: '12px',
               padding: '12px 16px',
-              color: isAreaActive ? '#FFFFFF' : 'rgba(255, 255, 255, 0.75)',
+              color: isAreaActive ? 'rgb(var(--tier-white))' : 'rgba(255, 255, 255, 0.75)',
               backgroundColor: isAreaActive ? 'rgba(255, 255, 255, 0.15)' : 'transparent',
               transition: 'all 0.2s',
               fontSize: '15px',
@@ -171,8 +171,8 @@ export default function PlayerAppShellV3({ children }: PlayerAppShellV3Props) {
                   minWidth: 20,
                   height: 20,
                   borderRadius: '10px',
-                  backgroundColor: '#DC2626',
-                  color: '#FFFFFF',
+                  backgroundColor: 'rgb(var(--status-error))',
+                  color: 'rgb(var(--tier-white))',
                   fontSize: '11px',
                   fontWeight: 700,
                   display: 'flex',
@@ -220,7 +220,7 @@ export default function PlayerAppShellV3({ children }: PlayerAppShellV3Props) {
                           borderRadius: '8px',
                           padding: '10px 12px',
                           textDecoration: 'none',
-                          color: active ? '#FFFFFF' : 'rgba(255, 255, 255, 0.65)',
+                          color: active ? 'rgb(var(--tier-white))' : 'rgba(255, 255, 255, 0.65)',
                           backgroundColor: active ? 'rgba(255, 255, 255, 0.1)' : 'transparent',
                           transition: 'all 0.2s',
                           fontSize: '14px',
@@ -251,7 +251,7 @@ export default function PlayerAppShellV3({ children }: PlayerAppShellV3Props) {
         left: 0,
         right: 0,
         height: bottomNavConfig.height,
-        backgroundColor: 'var(--ak-primary, #1A3D2E)',
+        backgroundColor: 'var(--tier-primary, #1A3D2E)',
         display: 'flex',
         alignItems: 'center',
         justifyContent: 'space-around',
@@ -306,8 +306,8 @@ export default function PlayerAppShellV3({ children }: PlayerAppShellV3Props) {
                     minWidth: 16,
                     height: 16,
                     borderRadius: '8px',
-                    backgroundColor: '#DC2626',
-                    color: '#FFFFFF',
+                    backgroundColor: 'rgb(var(--status-error))',
+                    color: 'rgb(var(--tier-white))',
                     fontSize: '10px',
                     fontWeight: 700,
                     display: 'flex',
@@ -355,7 +355,7 @@ export default function PlayerAppShellV3({ children }: PlayerAppShellV3Props) {
               display: 'flex',
               alignItems: 'center',
               justifyContent: 'center',
-              color: 'var(--ak-primary, #1A3D2E)',
+              color: 'var(--tier-primary, #1A3D2E)',
               fontWeight: 700,
               fontSize: '16px',
             }}
@@ -363,7 +363,7 @@ export default function PlayerAppShellV3({ children }: PlayerAppShellV3Props) {
             {(user?.firstName?.[0] || 'S').toUpperCase()}
           </div>
           <div>
-            <div style={{ fontSize: '14px', fontWeight: 600, color: '#FFFFFF' }}>
+            <div style={{ fontSize: '14px', fontWeight: 600, color: 'rgb(var(--tier-white))' }}>
               {user?.firstName || 'Spiller'} {user?.lastName || ''}
             </div>
             <div style={{ fontSize: '12px', color: 'rgba(255, 255, 255, 0.55)' }}>
@@ -400,7 +400,7 @@ export default function PlayerAppShellV3({ children }: PlayerAppShellV3Props) {
   // Mobile view
   if (isMobile) {
     return (
-      <div style={{ minHeight: '100vh', backgroundColor: 'var(--ak-surface-page, #F5F7F9)' }}>
+      <div style={{ minHeight: '100vh', backgroundColor: 'rgb(var(--tier-surface-page, 245 247 249))' }}>
         {/* Mobile Header */}
         <header
           style={{
@@ -419,12 +419,9 @@ export default function PlayerAppShellV3({ children }: PlayerAppShellV3Props) {
         >
           <Link
             to="/dashboard"
-            style={{ display: 'flex', alignItems: 'center', gap: '10px', textDecoration: 'none' }}
+            style={{ display: 'flex', alignItems: 'center', textDecoration: 'none' }}
           >
-            <AKLogo size={32} color="#FFFFFF" />
-            <span style={{ color: '#FFFFFF', fontWeight: 600, fontSize: '16px' }}>
-              AK Golf
-            </span>
+            <TIERGolfFullLogo height={32} variant="light" />
           </Link>
 
           <button
@@ -432,7 +429,7 @@ export default function PlayerAppShellV3({ children }: PlayerAppShellV3Props) {
             style={{
               background: 'none',
               border: 'none',
-              color: '#FFFFFF',
+              color: 'rgb(var(--tier-white))',
               cursor: 'pointer',
               padding: '8px',
             }}
@@ -460,8 +457,8 @@ export default function PlayerAppShellV3({ children }: PlayerAppShellV3Props) {
                 left: 0,
                 bottom: bottomNavConfig.height,
                 width: '300px',
-                backgroundColor: 'var(--ak-primary, #1A3D2E)',
-                color: '#FFFFFF',
+                backgroundColor: 'var(--tier-primary, #1A3D2E)',
+                color: 'rgb(var(--tier-white))',
                 display: 'flex',
                 flexDirection: 'column',
                 zIndex: 999,
@@ -501,14 +498,14 @@ export default function PlayerAppShellV3({ children }: PlayerAppShellV3Props) {
 
   // Desktop view
   return (
-    <div style={{ display: 'flex', minHeight: '100vh', backgroundColor: 'var(--ak-surface-page, #F5F7F9)' }}>
+    <div style={{ display: 'flex', minHeight: '100vh', backgroundColor: 'rgb(var(--tier-surface-page, 245 247 249))' }}>
       {/* Sidebar */}
       <aside
         style={{
           width: sidebarConfig.width.expanded,
           height: '100vh',
-          backgroundColor: 'var(--ak-primary, #1A3D2E)',
-          color: '#FFFFFF',
+          backgroundColor: 'rgb(var(--tier-primary, 10 37 64))',
+          color: 'rgb(var(--tier-white))',
           display: 'flex',
           flexDirection: 'column',
           flexShrink: 0,
@@ -529,19 +526,10 @@ export default function PlayerAppShellV3({ children }: PlayerAppShellV3Props) {
             style={{
               display: 'flex',
               alignItems: 'center',
-              gap: '12px',
               textDecoration: 'none',
             }}
           >
-            <AKLogo size={40} color="#FFFFFF" />
-            <div>
-              <div style={{ color: '#FFFFFF', fontWeight: 600, fontSize: '16px' }}>
-                AK Golf
-              </div>
-              <div style={{ color: 'rgba(255, 255, 255, 0.5)', fontSize: '12px' }}>
-                Spillerportal
-              </div>
-            </div>
+            <TIERGolfFullLogo height={36} variant="light" />
           </Link>
         </div>
 

@@ -1,5 +1,5 @@
 /**
- * AK Golf Academy - Meldinger Container
+ * TIER Golf Academy - Meldinger Container
  * Design System v3.0 - Premium Light
  *
  * Messaging system with conversations and chat view.
@@ -121,36 +121,36 @@ const ConversationCard = ({ conversation, selected, onClick }) => {
       onClick={() => onClick(conversation)}
       className={`flex items-center gap-3 py-3 px-3.5 rounded-xl cursor-pointer transition-all ${
         selected
-          ? 'bg-ak-primary/10 border-l-[3px] border-l-ak-primary'
-          : 'bg-ak-surface-base border-l-[3px] border-l-transparent hover:bg-ak-surface-subtle'
+          ? 'bg-tier-navy/10 border-l-[3px] border-l-tier-navy'
+          : 'bg-tier-white border-l-[3px] border-l-transparent hover:bg-tier-surface-base'
       }`}
     >
       <div className="relative">
-        <div className="w-12 h-12 rounded-full bg-ak-primary flex items-center justify-center text-white text-base font-semibold">
+        <div className="w-12 h-12 rounded-full bg-tier-navy flex items-center justify-center text-white text-base font-semibold">
           {contact.name.split(' ').map((n) => n[0]).join('')}
         </div>
         {isOnline && (
-          <div className="absolute bottom-0.5 right-0.5 w-3 h-3 rounded-full bg-ak-status-success border-2 border-white" />
+          <div className="absolute bottom-0.5 right-0.5 w-3 h-3 rounded-full bg-tier-success border-2 border-white" />
         )}
       </div>
 
       <div className="flex-1 min-w-0">
         <div className="flex items-center justify-between mb-0.5">
-          <CardTitle className="text-sm font-semibold text-ak-text-primary m-0">
+          <CardTitle className="text-sm font-semibold text-tier-navy m-0">
             {contact.name}
           </CardTitle>
-          <span className="text-[11px] text-ak-text-secondary">
+          <span className="text-[11px] text-tier-text-secondary">
             {timeStr}
           </span>
         </div>
         <div className="flex items-center justify-between">
           <p className={`text-[13px] m-0 overflow-hidden text-ellipsis whitespace-nowrap max-w-[200px] ${
-            unread > 0 ? 'text-ak-text-primary font-medium' : 'text-ak-text-secondary font-normal'
+            unread > 0 ? 'text-tier-navy font-medium' : 'text-tier-text-secondary font-normal'
           }`}>
             {lastMessage}
           </p>
           {unread > 0 && (
-            <div className="min-w-[20px] h-5 rounded-[10px] bg-ak-primary text-white text-[11px] font-semibold flex items-center justify-center px-1.5">
+            <div className="min-w-[20px] h-5 rounded-[10px] bg-tier-navy text-white text-[11px] font-semibold flex items-center justify-center px-1.5">
               {unread}
             </div>
           )}
@@ -171,14 +171,14 @@ const MessageBubble = ({ message, isOwn }) => {
     <div className={`flex mb-2 ${isOwn ? 'justify-end' : 'justify-start'}`}>
       <div className={`max-w-[70%] py-2.5 px-3.5 shadow-sm ${
         isOwn
-          ? 'bg-ak-primary text-white rounded-[16px_16px_4px_16px]'
-          : 'bg-ak-surface-base text-ak-text-primary rounded-[16px_16px_16px_4px]'
+          ? 'bg-tier-navy text-white rounded-[16px_16px_4px_16px]'
+          : 'bg-tier-white text-tier-navy rounded-[16px_16px_16px_4px]'
       }`}>
         <p className="text-sm m-0 leading-snug">
           {message.text}
         </p>
         <div className="flex items-center justify-end gap-1 mt-1">
-          <span className={`text-[10px] ${isOwn ? 'text-white/70' : 'text-ak-text-secondary'}`}>
+          <span className={`text-[10px] ${isOwn ? 'text-white/70' : 'text-tier-text-secondary'}`}>
             {time.toLocaleTimeString('nb-NO', { hour: '2-digit', minute: '2-digit' })}
           </span>
           {isOwn && (
@@ -219,9 +219,9 @@ const ChatView = ({ conversation, messages, onMessageSent, isLoading }) => {
 
   if (!conversation) {
     return (
-      <div className="flex-1 flex flex-col items-center justify-center bg-ak-surface-subtle rounded-[14px]">
-        <MessageSquare size={48} className="text-ak-text-secondary mb-3" />
-        <p className="text-sm text-ak-text-secondary">
+      <div className="flex-1 flex flex-col items-center justify-center bg-tier-surface-base rounded-[14px]">
+        <MessageSquare size={48} className="text-tier-text-secondary mb-3" />
+        <p className="text-sm text-tier-text-secondary">
           Velg en samtale for a starte
         </p>
       </div>
@@ -229,17 +229,17 @@ const ChatView = ({ conversation, messages, onMessageSent, isLoading }) => {
   }
 
   return (
-    <div className="flex-1 flex flex-col bg-ak-surface-subtle rounded-[14px] overflow-hidden">
+    <div className="flex-1 flex flex-col bg-tier-surface-base rounded-[14px] overflow-hidden">
       {/* Header */}
-      <div className="py-3.5 px-4 bg-ak-surface-base border-b border-ak-border-default flex items-center gap-3">
-        <div className="w-10 h-10 rounded-full bg-ak-primary flex items-center justify-center text-white text-sm font-semibold">
+      <div className="py-3.5 px-4 bg-tier-white border-b border-tier-border-default flex items-center gap-3">
+        <div className="w-10 h-10 rounded-full bg-tier-navy flex items-center justify-center text-white text-sm font-semibold">
           {conversation.contact.name.split(' ').map((n) => n[0]).join('')}
         </div>
         <div>
-          <SubSectionTitle className="text-[15px] font-semibold text-ak-text-primary m-0">
+          <SubSectionTitle className="text-[15px] font-semibold text-tier-navy m-0">
             {conversation.contact.name}
           </SubSectionTitle>
-          <p className={`text-xs m-0 ${conversation.isOnline ? 'text-ak-status-success' : 'text-ak-text-secondary'}`}>
+          <p className={`text-xs m-0 ${conversation.isOnline ? 'text-tier-success' : 'text-tier-text-secondary'}`}>
             {conversation.isOnline ? 'Online' : conversation.contact.role}
           </p>
         </div>
@@ -249,7 +249,7 @@ const ChatView = ({ conversation, messages, onMessageSent, isLoading }) => {
       <div className="flex-1 p-4 overflow-y-auto">
         {isLoading ? (
           <div className="flex justify-center p-5">
-            <Loader2 size={24} className="text-ak-primary animate-spin" />
+            <Loader2 size={24} className="text-tier-navy animate-spin" />
           </div>
         ) : (
           messages.map((message) => (
@@ -263,9 +263,9 @@ const ChatView = ({ conversation, messages, onMessageSent, isLoading }) => {
       </div>
 
       {/* Input */}
-      <div className="py-3 px-4 bg-ak-surface-base border-t border-ak-border-default flex items-center gap-2.5">
+      <div className="py-3 px-4 bg-tier-white border-t border-tier-border-default flex items-center gap-2.5">
         <button className="p-2 rounded-lg border-none bg-transparent cursor-pointer">
-          <Paperclip size={20} className="text-ak-text-secondary" />
+          <Paperclip size={20} className="text-tier-text-secondary" />
         </button>
         <input
           type="text"
@@ -273,18 +273,18 @@ const ChatView = ({ conversation, messages, onMessageSent, isLoading }) => {
           onChange={(e) => setNewMessage(e.target.value)}
           onKeyPress={(e) => e.key === 'Enter' && handleSend()}
           placeholder="Skriv en melding..."
-          className="flex-1 py-2.5 px-3.5 rounded-[20px] border border-ak-border-default text-sm outline-none bg-ak-surface-base text-ak-text-primary focus:border-ak-primary"
+          className="flex-1 py-2.5 px-3.5 rounded-[20px] border border-tier-border-default text-sm outline-none bg-tier-white text-tier-navy focus:border-tier-navy"
         />
         <button
           onClick={handleSend}
           disabled={!newMessage.trim() || isSending}
           className={`p-2.5 rounded-full border-none cursor-pointer transition-opacity ${
             newMessage.trim() && !isSending
-              ? 'bg-ak-primary'
-              : 'bg-ak-border-default cursor-not-allowed'
+              ? 'bg-tier-navy'
+              : 'bg-tier-border-default cursor-not-allowed'
           } ${isSending ? 'opacity-70' : 'opacity-100'}`}
         >
-          <Send size={18} className={newMessage.trim() && !isSending ? 'text-white' : 'text-ak-text-secondary'} />
+          <Send size={18} className={newMessage.trim() && !isSending ? 'text-white' : 'text-tier-text-secondary'} />
         </button>
       </div>
     </div>
@@ -396,24 +396,25 @@ const MeldingerContainer = () => {
     : [];
 
   return (
-    <div className="min-h-screen bg-ak-surface-subtle">
+    <div className="min-h-screen bg-tier-surface-base">
       <PageHeader
         title="Meldinger"
         subtitle="Kommuniser med trenere og administrasjon"
+        helpText="Send og motta meldinger fra trenere og administrasjon. Hold kontakten med trenerteamet og få svar på spørsmål om treningsopplegg og aktiviteter."
       />
 
       <div className="p-6 max-w-7xl mx-auto grid grid-cols-[280px_1fr] gap-5 h-[calc(100vh-140px)]">
         {/* Conversations List */}
         <div className="flex flex-col gap-3">
           {/* Search */}
-          <div className="flex items-center gap-2.5 bg-ak-surface-base rounded-[10px] py-2.5 px-3.5">
-            <Search size={18} className="text-ak-text-secondary" />
+          <div className="flex items-center gap-2.5 bg-tier-white rounded-[10px] py-2.5 px-3.5">
+            <Search size={18} className="text-tier-text-secondary" />
             <input
               type="text"
               placeholder="Søk i samtaler..."
               value={searchQuery}
               onChange={(e) => setSearchQuery(e.target.value)}
-              className="flex-1 border-none outline-none text-sm text-ak-text-primary bg-transparent"
+              className="flex-1 border-none outline-none text-sm text-tier-navy bg-transparent"
             />
           </div>
 
@@ -445,9 +446,9 @@ const MeldingerContainer = () => {
       {/* Loading overlay for initial load */}
       {loading && (
         <div className="fixed inset-0 bg-black/30 flex items-center justify-center z-[100]">
-          <div className="bg-ak-surface-base py-6 px-8 rounded-xl flex items-center gap-3">
-            <Loader2 size={24} className="text-ak-primary animate-spin" />
-            <span className="text-ak-text-primary">Laster samtaler...</span>
+          <div className="bg-tier-white py-6 px-8 rounded-xl flex items-center gap-3">
+            <Loader2 size={24} className="text-tier-navy animate-spin" />
+            <span className="text-tier-navy">Laster samtaler...</span>
           </div>
         </div>
       )}

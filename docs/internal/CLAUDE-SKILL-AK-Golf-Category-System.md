@@ -1,8 +1,8 @@
-# AK Golf Academy - Category & Badge System Skill
+# TIER Golf - Category & Badge System Skill
 
 ## System Overview
 
-This skill enables working with AK Golf Academy's player development system, including:
+This skill enables working with TIER Golf's player development system, including:
 - **20 Team Norway Tests** with category-specific requirements
 - **11 Player Categories** (A-K) from elite to beginner
 - **Badge/Achievement System** with hierarchical scaling

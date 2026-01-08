@@ -1,6 +1,6 @@
 # Schedule A: Service Description
 
-**IUP Golf Academy Platform**
+**IUP Golf Platform**
 **Version:** 1.0
 **Effective Date:** [TBD]
 **Document Status:** Draft for Review
@@ -11,7 +11,7 @@
 
 ### 1.1 Platform Description
 
-IUP Golf Academy ("Platform") is a cloud-based software-as-a-service (SaaS) application designed for systematic golf player development. The Platform follows the Team Norway IUP (Individuell UtviklingsPlan) methodology and provides tools for players, coaches, and administrators.
+IUP Golf ("Platform") is a cloud-based software-as-a-service (SaaS) application designed for systematic golf player development. The Platform follows the Team Norway IUP (Individuell UtviklingsPlan) methodology and provides tools for players, coaches, and administrators.
 
 ### 1.2 Intended Use
 
@@ -395,4 +395,4 @@ Third-party integrations via:
 
 ---
 
-*This document describes the IUP Golf Academy Platform as implemented. Specifications are based on actual codebase analysis and may be updated as the platform evolves.*
+*This document describes the IUP Golf Platform as implemented. Specifications are based on actual codebase analysis and may be updated as the platform evolves.*

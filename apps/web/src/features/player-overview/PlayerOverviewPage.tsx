@@ -8,7 +8,8 @@
  */
 
 import { useEffect, useState } from 'react';
-import { PageTitle } from '../../components/typography';
+import { PageTitle } from '../../components/typography/Headings';
+import { PageHeader } from '../../ui/raw-blocks';
 
 interface Player {
   id: string;
@@ -46,37 +47,39 @@ export function PlayerOverviewPage() {
   }, []);
 
   if (loading) {
-    return <div className="p-6 text-ak-text-primary">Laster spillere...</div>;
+    return <div className="p-6 text-tier-navy">Laster spillere...</div>;
   }
 
   if (error) {
-    return <div className="p-6 text-ak-status-error">Feil: {error}</div>;
+    return <div className="p-6 text-tier-error">Feil: {error}</div>;
   }
 
   return (
     <div className="p-6">
-      <PageTitle className="text-2xl font-bold mb-4 text-ak-text-primary">
-        Mine spillere
-      </PageTitle>
+      <PageHeader
+        title="Mine spillere"
+        subtitle="Oversikt over tildelte spillere"
+        helpText="Komplett oversikt over alle spillere du er trener for. Se navn, kategori (A-K), handicap og status for hver spiller. Klikk på en spiller for å se detaljert profil, treningsdata og fremgang."
+      />
 
       {players.length === 0 ? (
-        <p className="text-ak-text-secondary">Ingen spillere tildelt ennå.</p>
+        <p className="text-tier-text-secondary">Ingen spillere tildelt ennå.</p>
       ) : (
         <div className="flex flex-col gap-3">
           {players.map((p) => (
             <div
               key={p.id}
-              className="p-4 bg-ak-surface-subtle rounded-lg flex justify-between items-center"
+              className="p-4 bg-tier-surface-base rounded-lg flex justify-between items-center"
             >
               <div>
-                <strong className="text-base text-ak-text-primary">{p.name}</strong>
-                <div className="text-sm text-ak-text-secondary">
+                <strong className="text-base text-tier-navy">{p.name}</strong>
+                <div className="text-sm text-tier-text-secondary">
                   Kategori {p.category} • HCP {p.handicap ?? '-'}
                 </div>
               </div>
               <span
                 className={`px-2 py-1 rounded text-xs text-white ${
-                  p.status === 'active' ? 'bg-ak-status-success' : 'bg-ak-text-tertiary'
+                  p.status === 'active' ? 'bg-tier-success' : 'bg-tier-text-tertiary'
                 }`}
               >
                 {p.status === 'active' ? 'Aktiv' : p.status}

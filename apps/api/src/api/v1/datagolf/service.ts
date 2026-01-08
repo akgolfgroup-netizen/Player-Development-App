@@ -615,7 +615,14 @@ export class DataGolfService {
       .slice(0, 100);
 
     // Norwegian players
-    const norwegianNames = ['Viktor Hovland', 'Ludvig Åberg', 'Kristoffer Ventura', 'Kristian Krogh Johannessen'];
+    const norwegianNames = [
+      'Viktor Hovland',
+      'Ludvig Åberg',
+      'Kristoffer Ventura',
+      'Kristoffer Reitan',
+      'Kristian Krogh Johannessen',
+      'Kris Ventura', // Alternative name format
+    ];
     const norwegianPlayers = skillRatings.filter(p =>
       norwegianNames.some(name => p.player_name?.includes(name))
     );

@@ -23,7 +23,7 @@ import AppShellTemplate from '../../ui/templates/AppShellTemplate';
 import Card from '../../ui/primitives/Card';
 import Button from '../../ui/primitives/Button';
 import StateCard from '../../ui/composites/StateCard';
-import { SectionTitle } from '../../components/typography';
+import { SectionTitle } from '../../components/typography/Headings';
 
 import { useBreakingPoints, BreakingPoint, BpStatus } from '../../hooks/useBreakingPoints';
 import { useStrokesGained } from '../../hooks/useStrokesGained';
@@ -49,13 +49,13 @@ interface StatItem {
 function getStatusColor(status: BpStatus): string {
   switch (status) {
     case 'resolved':
-      return 'var(--success)';
+      return 'var(--status-success)';
     case 'awaiting_proof':
-      return 'var(--warning)';
+      return 'var(--status-warning)';
     case 'in_progress':
       return 'var(--accent)';
     case 'regressed':
-      return 'var(--error)';
+      return 'var(--status-error)';
     default:
       return 'var(--text-tertiary)';
   }
@@ -83,13 +83,13 @@ function getStatusLabel(status: BpStatus): string {
 function getSeverityColor(severity: string): string {
   switch (severity) {
     case 'critical':
-      return 'var(--error)';
+      return 'var(--status-error)';
     case 'high':
-      return 'var(--warning)';
+      return 'var(--status-warning)';
     case 'medium':
       return 'var(--text-secondary)';
     case 'low':
-      return 'var(--success)';
+      return 'var(--status-success)';
     default:
       return 'var(--text-tertiary)';
   }
@@ -146,7 +146,7 @@ const EffortProgressBar: React.FC<{
               style={{
                 ...styles.barFill,
                 width: `${progress}%`,
-                backgroundColor: progress >= 80 ? 'var(--success)' : progress >= 50 ? 'var(--warning)' : 'var(--error)',
+                backgroundColor: progress >= 80 ? 'var(--status-success)' : progress >= 50 ? 'var(--status-warning)' : 'var(--status-error)',
               }}
             />
           </div>
@@ -168,8 +168,8 @@ const StatCard: React.FC<StatItem> = ({ label, value, sublabel, trend, icon, col
           <span style={styles.statLabel}>{label}</span>
           {sublabel && (
             <div style={styles.statSublabel}>
-              {trend === 'up' && <TrendingUp size={12} color="var(--success)" />}
-              {trend === 'down' && <TrendingDown size={12} color="var(--error)" />}
+              {trend === 'up' && <TrendingUp size={12} color="var(--status-success)" />}
+              {trend === 'down' && <TrendingDown size={12} color="var(--status-error)" />}
               <span>{sublabel}</span>
             </div>
           )}
@@ -221,7 +221,7 @@ const BreakingPointCard: React.FC<{ bp: BreakingPoint; onClick: () => void }> = 
       )}
 
       {bp.status === 'awaiting_proof' && (
-        <div style={{ ...styles.bpFooter, color: 'var(--success)' }}>
+        <div style={{ ...styles.bpFooter, color: 'var(--status-success)' }}>
           <CheckCircle2 size={12} />
           <span style={styles.bpFooterText}>Venter på bekreftelse fra coach</span>
         </div>
@@ -256,16 +256,16 @@ const StatusProgressPage: React.FC = () => {
       label: 'Innsats-score',
       value: `${bpData?.summary.averageEffort || 0}%`,
       sublabel: 'Treningsgjennomføring',
-      icon: <Zap size={20} color="var(--warning)" />,
-      color: 'var(--warning)',
+      icon: <Zap size={20} color="var(--status-warning)" />,
+      color: 'var(--status-warning)',
     },
     {
       label: 'SG Trend',
       value: formatSG(sgData?.trend),
       sublabel: 'Siste uke',
       trend: (sgData?.trend || 0) >= 0 ? 'up' : 'down',
-      icon: <Activity size={20} color="var(--success)" />,
-      color: 'var(--success)',
+      icon: <Activity size={20} color="var(--status-success)" />,
+      color: 'var(--status-success)',
     },
     {
       label: 'Breaking Points',
@@ -372,7 +372,7 @@ const StatusProgressPage: React.FC = () => {
         {activeBreakingPoints.length === 0 ? (
           <Card>
             <div style={styles.emptyState}>
-              <CheckCircle2 size={32} color="var(--success)" />
+              <CheckCircle2 size={32} color="var(--status-success)" />
               <p>Ingen aktive breaking points!</p>
               <span style={styles.emptySubtext}>Alle dine utfordringer er løst</span>
             </div>
@@ -412,7 +412,7 @@ const StatusProgressPage: React.FC = () => {
                 <span
                   style={{
                     ...styles.sgTotalValue,
-                    color: (sgData.total || 0) >= 0 ? 'var(--success)' : 'var(--error)',
+                    color: (sgData.total || 0) >= 0 ? 'var(--status-success)' : 'var(--status-error)',
                   }}
                 >
                   {formatSG(sgData.total)}
@@ -427,7 +427,7 @@ const StatusProgressPage: React.FC = () => {
                     <span
                       style={{
                         ...styles.sgCategoryValue,
-                        color: cat.value >= 0 ? 'var(--success)' : 'var(--error)',
+                        color: cat.value >= 0 ? 'var(--status-success)' : 'var(--status-error)',
                       }}
                     >
                       {formatSG(cat.value)}
@@ -459,7 +459,7 @@ const StatusProgressPage: React.FC = () => {
           <Card>
             <div style={styles.quickLink} onClick={() => navigate('/progress')}>
               <div style={styles.quickLinkIcon}>
-                <TrendingUp size={20} color="var(--success)" />
+                <TrendingUp size={20} color="var(--status-success)" />
               </div>
               <div style={styles.quickLinkText}>
                 <span style={styles.quickLinkTitle}>Fremgangshistorikk</span>

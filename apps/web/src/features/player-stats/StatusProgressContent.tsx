@@ -13,7 +13,7 @@ import Card from '../../ui/primitives/Card';
 import Badge from '../../ui/primitives/Badge.primitive';
 import StateCard from '../../ui/composites/StateCard';
 import { useStrokesGained } from '../../hooks/useStrokesGained';
-import { SectionTitle, SubSectionTitle } from '../../components/typography';
+import { SectionTitle, SubSectionTitle } from '../../components/typography/Headings';
 
 /**
  * StatusProgressContent - Status & Goals progress
@@ -106,7 +106,7 @@ const StatusProgressContent: React.FC = () => {
                 <span style={styles.statusItemLabel}>Total SG</span>
                 <span style={{
                   ...styles.statusItemValue,
-                  color: (data?.total || 0) >= 0 ? 'var(--success)' : 'var(--error)',
+                  color: (data?.total || 0) >= 0 ? 'var(--status-success)' : 'var(--status-error)',
                 }}>
                   {formatValue(data?.total || 0)}
                 </span>
@@ -119,7 +119,7 @@ const StatusProgressContent: React.FC = () => {
                 <span style={styles.statusItemLabel}>Trend</span>
                 <span style={{
                   ...styles.statusItemValue,
-                  color: (data?.trend || 0) >= 0 ? 'var(--success)' : 'var(--error)',
+                  color: (data?.trend || 0) >= 0 ? 'var(--status-success)' : 'var(--status-error)',
                 }}>
                   {formatValue(data?.trend || 0)}
                 </span>
@@ -176,8 +176,8 @@ const StatusProgressContent: React.FC = () => {
                         style={{
                           ...styles.progressFill,
                           width: `${progress}%`,
-                          backgroundColor: progress >= 100 ? 'var(--success)' :
-                            progress >= 50 ? 'var(--accent)' : 'var(--warning)',
+                          backgroundColor: progress >= 100 ? 'var(--status-success)' :
+                            progress >= 50 ? 'var(--accent)' : 'var(--status-warning)',
                         }}
                       />
                     </div>
@@ -218,7 +218,7 @@ const StatusProgressContent: React.FC = () => {
               >
                 <div style={styles.milestoneIcon}>
                   {milestone.achieved ? (
-                    <CheckCircle2 size={20} color="var(--success)" />
+                    <CheckCircle2 size={20} color="var(--status-success)" />
                   ) : (
                     <Circle size={20} color="var(--text-tertiary)" />
                   )}
@@ -261,13 +261,13 @@ const StatusProgressContent: React.FC = () => {
               icon: TrendingUp,
               title: 'Fortsett trenden',
               description: 'Du er på rett vei med positiv utvikling',
-              color: 'var(--success)',
+              color: 'var(--status-success)',
             },
             {
               icon: Calendar,
               title: 'Test regelmessig',
               description: 'Gjennomfør tester hver uke for bedre data',
-              color: 'var(--warning)',
+              color: 'var(--status-warning)',
             },
           ].map((rec, index) => {
             const Icon = rec.icon;
@@ -319,7 +319,7 @@ const styles: Record<string, React.CSSProperties> = {
     width: '56px',
     height: '56px',
     borderRadius: 'var(--radius-lg)',
-    background: 'linear-gradient(135deg, var(--accent) 0%, var(--success) 100%)',
+    background: 'linear-gradient(135deg, var(--accent) 0%, var(--status-success) 100%)',
     display: 'flex',
     alignItems: 'center',
     justifyContent: 'center',

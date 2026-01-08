@@ -2,7 +2,7 @@
 
 ## Overview
 
-This guide provides comprehensive procedures for deploying the IUP Golf Academy platform across different environments.
+This guide provides comprehensive procedures for deploying the IUP Golf platform across different environments.
 
 ## Table of Contents
 

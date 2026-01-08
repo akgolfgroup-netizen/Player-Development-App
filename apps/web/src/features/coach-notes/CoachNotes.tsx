@@ -1,5 +1,5 @@
 /**
- * AK Golf Academy - Coach Notes
+ * TIER Golf Academy - Coach Notes
  * Design System v3.0 - Premium Light
  *
  * Purpose:
@@ -25,7 +25,7 @@ import React, { useState } from "react";
 import { ArrowLeft, StickyNote, Send, CheckCircle } from "lucide-react";
 import Button from '../../ui/primitives/Button';
 import Card from '../../ui/primitives/Card';
-import { PageTitle, SectionTitle } from '../../components/typography';
+import { PageTitle, SectionTitle } from '../../components/typography/Headings';
 
 //////////////////////////////
 // 1. TYPES
@@ -108,10 +108,10 @@ export default function CoachNotes({
   return (
     <section
       aria-label="Coach notes"
-      className="min-h-screen bg-ak-surface-subtle font-[Inter,-apple-system,BlinkMacSystemFont,system-ui,sans-serif]"
+      className="min-h-screen bg-tier-surface-base font-[Inter,-apple-system,BlinkMacSystemFont,system-ui,sans-serif]"
     >
       {/* Header */}
-      <div className="bg-ak-surface-base border-b border-ak-border-default py-4 px-6">
+      <div className="bg-tier-white border-b border-tier-border-default py-4 px-6">
         <div className="mb-4">
           <Button variant="ghost" size="sm" onClick={onBack} leftIcon={<ArrowLeft size={18} />}>
             Tilbake
@@ -119,14 +119,14 @@ export default function CoachNotes({
         </div>
 
         <div className="flex items-center gap-3">
-          <div className="w-12 h-12 rounded-lg bg-ak-primary/10 flex items-center justify-center">
-            <StickyNote size={24} className="text-ak-primary" />
+          <div className="w-12 h-12 rounded-lg bg-tier-navy/10 flex items-center justify-center">
+            <StickyNote size={24} className="text-tier-navy" />
           </div>
           <div>
             <PageTitle className="m-0">
               Notater
             </PageTitle>
-            <p className="text-[13px] leading-[18px] text-ak-text-secondary m-0 mt-1">
+            <p className="text-[13px] leading-[18px] text-tier-text-secondary m-0 mt-1">
               {athleteName} • {sortedNotes.length} notater
             </p>
           </div>
@@ -145,11 +145,11 @@ export default function CoachNotes({
             onChange={(e) => setNewNote(e.target.value)}
             placeholder="Skriv din observasjon eller tilbakemelding..."
             rows={4}
-            className="w-full p-3.5 rounded-lg border border-ak-border-default bg-ak-surface-subtle text-[15px] leading-[22px] text-ak-text-primary resize-y outline-none box-border focus:border-ak-primary"
+            className="w-full p-3.5 rounded-lg border border-tier-border-default bg-tier-surface-base text-[15px] leading-[22px] text-tier-navy resize-y outline-none box-border focus:border-tier-navy"
           />
 
           <div className="flex justify-between items-center mt-4">
-            <p className="text-[13px] leading-[18px] text-ak-text-secondary m-0">
+            <p className="text-[13px] leading-[18px] text-tier-text-secondary m-0">
               Notatet vises i spillerens "Fra din trener"-seksjon
             </p>
 
@@ -167,7 +167,7 @@ export default function CoachNotes({
 
         {/* Note History */}
         <Card variant="default" padding="none">
-          <div className="p-5 border-b border-ak-border-default">
+          <div className="p-5 border-b border-tier-border-default">
             <SectionTitle className="m-0">
               Tidligere notater
             </SectionTitle>
@@ -175,8 +175,8 @@ export default function CoachNotes({
 
           {sortedNotes.length === 0 ? (
             <div className="py-12 px-6 text-center">
-              <StickyNote size={40} className="text-ak-text-tertiary mb-3" />
-              <p className="text-[15px] leading-[22px] text-ak-text-secondary">
+              <StickyNote size={40} className="text-tier-text-tertiary mb-3" />
+              <p className="text-[15px] leading-[22px] text-tier-text-secondary">
                 Ingen notater ennå
               </p>
             </div>
@@ -186,32 +186,32 @@ export default function CoachNotes({
                 <article
                   key={note.id}
                   aria-label="Coach note"
-                  className={`p-5 ${index < sortedNotes.length - 1 ? 'border-b border-ak-border-default' : ''}`}
+                  className={`p-5 ${index < sortedNotes.length - 1 ? 'border-b border-tier-border-default' : ''}`}
                 >
                   <div className="flex justify-between items-start mb-3">
-                    <div className="inline-flex items-center gap-1.5 py-1 px-2.5 rounded bg-ak-primary/10">
-                      <StickyNote size={14} className="text-ak-primary" />
-                      <span className="text-[13px] leading-[18px] font-semibold text-ak-primary">
+                    <div className="inline-flex items-center gap-1.5 py-1 px-2.5 rounded bg-tier-navy/10">
+                      <StickyNote size={14} className="text-tier-navy" />
+                      <span className="text-[13px] leading-[18px] font-semibold text-tier-navy">
                         Trenernotat
                       </span>
                     </div>
 
                     <time
                       dateTime={note.createdAt}
-                      className="text-[13px] leading-[18px] text-ak-text-secondary"
+                      className="text-[13px] leading-[18px] text-tier-text-secondary"
                     >
                       {formatDate(note.createdAt)}
                     </time>
                   </div>
 
-                  <p className="text-[15px] leading-relaxed text-ak-text-primary m-0">
+                  <p className="text-[15px] leading-relaxed text-tier-navy m-0">
                     {note.content}
                   </p>
 
                   {note.delivered && (
                     <div className="flex items-center gap-1.5 mt-3">
-                      <CheckCircle size={14} className="text-ak-status-success" />
-                      <span className="text-[13px] leading-[18px] text-ak-status-success">
+                      <CheckCircle size={14} className="text-tier-success" />
+                      <span className="text-[13px] leading-[18px] text-tier-success">
                         Levert til spiller
                       </span>
                     </div>

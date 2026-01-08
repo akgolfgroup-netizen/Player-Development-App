@@ -36,6 +36,18 @@ import { Plus } from 'lucide-react';
 // Lazy-loaded feature components
 const Login = lazy(() => import('./features/auth/Login'));
 const DashboardContainer = lazy(() => import('./features/dashboard/DashboardContainer'));
+
+// Pricing & Checkout (lazy-loaded)
+const PricingPage = lazy(() => import('./features/pricing/PricingPage'));
+const StripeCheckout = lazy(() => import('./features/checkout/StripeCheckout'));
+const CheckoutSuccess = lazy(() => import('./features/checkout/CheckoutSuccess'));
+
+// Billing & Subscription Management
+const BillingPortal = lazy(() => import('./features/billing/BillingPortal'));
+const SubscriptionManagement = lazy(() => import('./features/subscription/SubscriptionManagement'));
+const PaymentDashboard = lazy(() => import('./features/admin/PaymentDashboard'));
+const SubscriptionAnalytics = lazy(() => import('./features/analytics/SubscriptionAnalytics'));
+
 const BrukerprofilContainer = lazy(() => import('./features/profile/BrukerprofilContainer'));
 const TrenerteamContainer = lazy(() => import('./features/coaches/TrenerteamContainer'));
 const MaalsetningerContainer = lazy(() => import('./features/goals/MaalsetningerContainer'));
@@ -374,6 +386,37 @@ function App() {
           {/* Public routes */}
           <Route path="/login" element={<Login />} />
           <Route path="/welcome" element={<SplitScreenLanding />} />
+
+          {/* Pricing & Checkout */}
+          <Route path="/pricing" element={<PricingPage />} />
+          <Route path="/checkout" element={
+            <ProtectedRoute>
+              <StripeCheckout />
+            </ProtectedRoute>
+          } />
+          <Route path="/checkout/success" element={
+            <ProtectedRoute>
+              <CheckoutSuccess />
+            </ProtectedRoute>
+          } />
+
+          {/* Billing Portal */}
+          <Route path="/billing" element={
+            <ProtectedRoute>
+              <PlayerLayout>
+                <BillingPortal />
+              </PlayerLayout>
+            </ProtectedRoute>
+          } />
+
+          {/* Subscription Management */}
+          <Route path="/innstillinger/subscription" element={
+            <ProtectedRoute>
+              <PlayerLayout>
+                <SubscriptionManagement />
+              </PlayerLayout>
+            </ProtectedRoute>
+          } />
 
           {/* Onboarding - Single-page form for new player registration */}
           <Route path="/onboarding" element={
@@ -1950,6 +1993,24 @@ function App() {
             <ProtectedRoute requiredRole="admin">
               <AdminLayout>
                 <NotificationSettingsPage />
+              </AdminLayout>
+            </ProtectedRoute>
+          } />
+
+          {/* Admin Payment Dashboard */}
+          <Route path="/admin/payments" element={
+            <ProtectedRoute requiredRole="admin">
+              <AdminLayout>
+                <PaymentDashboard />
+              </AdminLayout>
+            </ProtectedRoute>
+          } />
+
+          {/* Admin Subscription Analytics */}
+          <Route path="/admin/analytics/subscriptions" element={
+            <ProtectedRoute requiredRole="admin">
+              <AdminLayout>
+                <SubscriptionAnalytics />
               </AdminLayout>
             </ProtectedRoute>
           } />

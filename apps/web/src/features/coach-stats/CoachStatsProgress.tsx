@@ -1,5 +1,5 @@
 /**
- * AK Golf Academy - Coach Stats Progress
+ * TIER Golf Academy - Coach Stats Progress
  * Design System v3.0 - Premium Light
  *
  * Shows players who are making positive progress.
@@ -22,7 +22,7 @@ import {
 import StateCard from '../../ui/composites/StateCard';
 import Button from '../../ui/primitives/Button';
 import PageHeader from '../../ui/raw-blocks/PageHeader.raw';
-import { SectionTitle, SubSectionTitle } from '../../components/typography';
+import { SectionTitle, SubSectionTitle } from '../../components/typography/Headings';
 
 interface PlayerProgress {
   id: string;
@@ -188,72 +188,79 @@ export const CoachStatsProgress: React.FC = () => {
 
   const getCategoryClasses = (category: string) => {
     switch (category) {
-      case 'A': return { bg: 'bg-ak-status-success/10', text: 'text-ak-status-success' };
-      case 'B': return { bg: 'bg-ak-primary/10', text: 'text-ak-primary' };
-      case 'C': return { bg: 'bg-ak-status-warning/10', text: 'text-ak-status-warning' };
-      default: return { bg: 'bg-ak-surface-base', text: 'text-ak-text-secondary' };
+      case 'A': return { bg: 'bg-tier-success/10', text: 'text-tier-success' };
+      case 'B': return { bg: 'bg-tier-navy/10', text: 'text-tier-navy' };
+      case 'C': return { bg: 'bg-tier-warning/10', text: 'text-tier-warning' };
+      default: return { bg: 'bg-tier-white', text: 'text-tier-text-secondary' };
     }
   };
 
   return (
-    <div className="p-6 bg-ak-surface-base min-h-screen">
+    <div className="p-6 bg-tier-white min-h-screen">
       {/* Header with icon */}
-      <div className="flex items-start gap-4 mb-6">
-        <div className="w-12 h-12 rounded-xl bg-gradient-to-br from-ak-primary to-ak-primary/80 flex items-center justify-center flex-shrink-0">
+      <div className="flex items-center gap-4 mb-6">
+        <div className="w-12 h-12 rounded-xl bg-gradient-to-br from-tier-navy to-tier-navy/80 flex items-center justify-center flex-shrink-0">
           <TrendingUp size={24} className="text-white" />
         </div>
         <div className="flex-1">
           <PageHeader
             title="Spillere i fremgang"
             subtitle={`${filteredAndSortedPlayers.length} spillere viser positiv utvikling`}
+            helpText="Oversikt over spillere som viser positiv utvikling i handicap, treningsfrekvens eller måloppnåelse. Se månedlige stjerner, forbedringer og aktiv oppfølging av fremgang."
             divider={false}
           />
         </div>
       </div>
 
       {/* Top Performers */}
-      <div className="bg-ak-surface-base rounded-2xl p-5 mb-6 border border-ak-border-default">
+      <div className="bg-tier-white rounded-2xl p-5 mb-6 border border-tier-border-default">
         <div className="flex items-center gap-2 mb-4">
-          <Award size={20} className="text-ak-primary" />
+          <Award size={20} className="text-tier-navy" />
           <SectionTitle className="m-0">
             Månedens stjerner
           </SectionTitle>
         </div>
         <div className="grid grid-cols-3 gap-4">
-          {topPerformers.map((player, index) => (
-            <div key={player.id} className={`rounded-xl p-4 relative ${
-              index === 0
-                ? 'bg-amber-500/10 border-2 border-amber-500/30'
-                : 'bg-ak-surface-subtle border border-ak-border-default'
-            }`}>
-              {index === 0 && (
-                <div className="absolute -top-2 -right-2 w-7 h-7 rounded-full bg-amber-500 flex items-center justify-center">
-                  <Star size={14} className="text-white" fill="white" />
+          {topPerformers.map((player, index) => {
+            // Define colors for gold, silver, bronze
+            const medalColors = [
+              { bg: 'bg-amber-500/10', border: 'border-amber-500/30', badge: 'bg-amber-500', star: true }, // Gold
+              { bg: 'bg-gray-300/15', border: 'border-gray-400/40', badge: 'bg-gray-400', star: false }, // Silver
+              { bg: 'bg-orange-600/10', border: 'border-orange-700/30', badge: 'bg-orange-700', star: false }, // Bronze
+            ];
+            const colors = medalColors[index] || { bg: 'bg-tier-surface-base', border: 'border-tier-border-default', badge: '', star: false };
+
+            return (
+              <div key={player.id} className={`rounded-xl p-4 relative ${colors.bg} border-2 ${colors.border}`}>
+                {colors.star && (
+                  <div className={`absolute -top-2 -right-2 w-7 h-7 rounded-full ${colors.badge} flex items-center justify-center`}>
+                    <Star size={14} className="text-white" fill="white" />
+                  </div>
+                )}
+                <div className="flex items-center gap-3 mb-3">
+                  <div className="w-10 h-10 rounded-full bg-tier-navy/15 flex items-center justify-center text-base font-semibold text-tier-navy">
+                    {player.name.split(' ').map(n => n[0]).join('')}
+                  </div>
+                  <div>
+                    <p className="text-sm font-semibold text-tier-navy m-0 text-center">
+                      {player.name}
+                    </p>
+                    <span className={`text-[11px] font-medium py-0.5 px-1.5 rounded ${getCategoryClasses(player.category).bg} ${getCategoryClasses(player.category).text}`}>
+                      Kategori {player.category}
+                    </span>
+                  </div>
                 </div>
-              )}
-              <div className="flex items-center gap-3 mb-3">
-                <div className="w-10 h-10 rounded-full bg-ak-primary/15 flex items-center justify-center text-base font-semibold text-ak-primary">
-                  {player.name.split(' ').map(n => n[0]).join('')}
-                </div>
-                <div>
-                  <p className="text-sm font-semibold text-ak-text-primary m-0">
-                    {player.name}
-                  </p>
-                  <span className={`text-[11px] font-medium py-0.5 px-1.5 rounded ${getCategoryClasses(player.category).bg} ${getCategoryClasses(player.category).text}`}>
-                    Kategori {player.category}
+                <div className="flex items-center justify-between py-2 px-3 bg-tier-success/15 rounded-lg">
+                  <span className="text-xs text-tier-text-secondary text-center">
+                    HCP endring
+                  </span>
+                  <span className="text-lg font-bold text-tier-success text-center">
+                    {player.hcpChange}
                   </span>
                 </div>
               </div>
-              <div className="flex items-center justify-between py-2 px-3 bg-ak-status-success/15 rounded-lg">
-                <span className="text-xs text-ak-text-secondary">
-                  HCP endring
-                </span>
-                <span className="text-lg font-bold text-ak-status-success">
-                  {player.hcpChange}
-                </span>
-              </div>
-            </div>
-          ))}
+            );
+          })}
         </div>
       </div>
 
@@ -262,14 +269,14 @@ export const CoachStatsProgress: React.FC = () => {
         <div className="relative flex-1 min-w-[200px]">
           <Search
             size={18}
-            className="absolute left-3 top-1/2 -translate-y-1/2 text-ak-text-tertiary"
+            className="absolute left-3 top-1/2 -translate-y-1/2 text-tier-text-tertiary"
           />
           <input
             type="text"
             placeholder="Søk etter spiller..."
             value={searchQuery}
             onChange={(e) => setSearchQuery(e.target.value)}
-            className="w-full py-3 pr-3 pl-10 rounded-[10px] border border-ak-border-default bg-ak-surface-base text-sm text-ak-text-primary outline-none"
+            className="w-full py-3 pr-3 pl-10 rounded-[10px] border border-tier-border-default bg-tier-white text-sm text-tier-navy outline-none"
           />
         </div>
         <div className="flex gap-2">
@@ -295,12 +302,12 @@ export const CoachStatsProgress: React.FC = () => {
         {filteredAndSortedPlayers.map((player) => (
           <div
             key={player.id}
-            className="bg-ak-surface-base rounded-2xl p-5 border border-ak-border-default cursor-pointer transition-all"
+            className="bg-tier-white rounded-2xl p-5 border border-tier-border-default cursor-pointer transition-all"
           >
             <div className="flex justify-between items-start">
               {/* Left side - Player info */}
               <div className="flex gap-4 flex-1">
-                <div className="w-14 h-14 rounded-full bg-ak-primary/15 flex items-center justify-center text-xl font-semibold text-ak-primary">
+                <div className="w-14 h-14 rounded-full bg-tier-navy/15 flex items-center justify-center text-xl font-semibold text-tier-navy">
                   {player.name.split(' ').map(n => n[0]).join('')}
                 </div>
                 <div className="flex-1">
@@ -322,19 +329,19 @@ export const CoachStatsProgress: React.FC = () => {
                   {/* Stats row */}
                   <div className="flex gap-5 mb-3 flex-wrap">
                     <div className="flex items-center gap-1.5">
-                      <Target size={14} className="text-ak-text-tertiary" />
-                      <span className="text-[13px] text-ak-text-secondary">
+                      <Target size={14} className="text-tier-text-tertiary" />
+                      <span className="text-[13px] text-tier-text-secondary">
                         HCP: {player.currentHcp} (fra {player.startHcp})
                       </span>
                     </div>
                     <div className="flex items-center gap-1.5">
-                      <Calendar size={14} className="text-ak-text-tertiary" />
-                      <span className="text-[13px] text-ak-text-secondary">
+                      <Calendar size={14} className="text-tier-text-tertiary" />
+                      <span className="text-[13px] text-tier-text-secondary">
                         {player.sessionsThisMonth} økter denne mnd
                       </span>
                     </div>
                     <div className="flex items-center gap-1.5">
-                      <span className="text-[13px] text-ak-text-tertiary">
+                      <span className="text-[13px] text-tier-text-tertiary">
                         Sist: {formatDate(player.lastSession)}
                       </span>
                     </div>
@@ -343,7 +350,7 @@ export const CoachStatsProgress: React.FC = () => {
                   {/* Improvements */}
                   <div className="flex gap-2 flex-wrap mb-3">
                     {player.improvements.map((imp, idx) => (
-                      <span key={idx} className="text-[11px] py-1 px-2.5 rounded-md bg-ak-status-success/15 text-ak-status-success font-medium">
+                      <span key={idx} className="text-[11px] py-1 px-2.5 rounded-md bg-tier-success/15 text-tier-success font-medium">
                         {imp}
                       </span>
                     ))}
@@ -354,16 +361,16 @@ export const CoachStatsProgress: React.FC = () => {
                     {player.goals.map((goal, idx) => (
                       <div key={idx} className="flex-1 min-w-[150px] max-w-[250px]">
                         <div className="flex justify-between mb-1">
-                          <span className="text-xs text-ak-text-secondary">
+                          <span className="text-xs text-tier-text-secondary">
                             {goal.current}
                           </span>
-                          <span className="text-xs font-medium text-ak-primary">
+                          <span className="text-xs font-medium text-tier-navy">
                             {goal.progress}%
                           </span>
                         </div>
-                        <div className="h-1.5 bg-ak-border-default rounded-sm overflow-hidden">
+                        <div className="h-1.5 bg-tier-border-default rounded-sm overflow-hidden">
                           <div
-                            className="h-full bg-ak-primary rounded-sm transition-all"
+                            className="h-full bg-tier-navy rounded-sm transition-all"
                             style={{ width: `${goal.progress}%` }}
                           />
                         </div>
@@ -375,9 +382,9 @@ export const CoachStatsProgress: React.FC = () => {
 
               {/* Right side - HCP change */}
               <div className="flex flex-col items-end gap-2">
-                <div className="flex items-center gap-1 py-2 px-4 bg-ak-status-success/15 rounded-[10px]">
-                  <ArrowUpRight size={18} className="text-ak-status-success" />
-                  <span className="text-xl font-bold text-ak-status-success">
+                <div className="flex items-center gap-1 py-2 px-4 bg-tier-success/15 rounded-[10px]">
+                  <ArrowUpRight size={18} className="text-tier-success" />
+                  <span className="text-xl font-bold text-tier-success">
                     {player.hcpChange}
                   </span>
                 </div>

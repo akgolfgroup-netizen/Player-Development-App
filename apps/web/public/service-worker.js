@@ -1,5 +1,5 @@
 /**
- * AK Golf Academy - Service Worker
+ * TIER Golf Academy - Service Worker
  * Handles push notifications, caching, and offline support
  *
  * IMPORTANT: This service worker uses BUILD_SHA-scoped caches.
@@ -11,7 +11,7 @@
 // BUILD_SHA is injected at build time (see Dockerfile)
 // Falls back to timestamp if not replaced (dev mode)
 const BUILD_SHA = '__BUILD_SHA__'.startsWith('__') ? `dev-${Date.now()}` : '__BUILD_SHA__';
-const CACHE_NAME = `ak-golf-cache-${BUILD_SHA}`;
+const CACHE_NAME = `tier-golf-cache-${BUILD_SHA}`;
 
 // Log build info for debugging
 console.log('[SW] Service Worker Build:', BUILD_SHA);
@@ -175,7 +175,7 @@ self.addEventListener('push', (event) => {
   console.log('[SW] Push notification received');
 
   let data = {
-    title: 'AK Golf Academy',
+    title: 'TIER Golf Academy',
     body: 'Du har en ny varsling',
     icon: '/logo192.webp',
     badge: '/icons/icon-72.webp',

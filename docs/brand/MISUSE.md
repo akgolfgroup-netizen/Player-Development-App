@@ -1,4 +1,4 @@
-# AK Golf Brand Misuse
+# TIER Golf Brand Misuse
 
 ## Logo Misuse
 
@@ -177,7 +177,7 @@
 - No seasonal modifications without approval
 - No combining with other logos
 
-#### 2. Use Brand Assets for Non-AK Golf Purposes
+#### 2. Use Brand Assets for Non-TIER Golf Purposes
 - No personal projects
 - No third-party products
 - No merchandise without approval

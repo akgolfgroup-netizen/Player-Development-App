@@ -43,9 +43,9 @@ interface InfoCardProps {
   color?: string;
 }
 
-const InfoCard: React.FC<InfoCardProps> = ({ icon: Icon, title, children, color = 'var(--ak-primary)' }) => (
+const InfoCard: React.FC<InfoCardProps> = ({ icon: Icon, title, children, color = 'var(--tier-navy)' }) => (
   <div style={{
-    backgroundColor: 'var(--ak-surface-card)',
+    backgroundColor: 'var(--surface-card)',
     borderRadius: '12px',
     padding: '20px',
     boxShadow: '0 1px 3px rgba(0,0,0,0.08)',
@@ -101,10 +101,10 @@ const ScoringLegend: React.FC<ScoringLegendProps> = ({ scoring, lowerIsBetter, u
           borderRadius: '50%',
           backgroundColor: threshold.color,
         }} />
-        <span style={{ fontSize: '13px', color: 'var(--ak-text-primary)', fontWeight: 500 }}>
+        <span style={{ fontSize: '13px', color: 'var(--tier-navy)', fontWeight: 500 }}>
           {threshold.label}
         </span>
-        <span style={{ fontSize: '12px', color: 'var(--ak-text-secondary)' }}>
+        <span style={{ fontSize: '12px', color: 'var(--text-secondary)' }}>
           {lowerIsBetter ? '≤' : '≥'} {threshold.max}{unit}
         </span>
       </div>
@@ -177,12 +177,12 @@ const TestOverviewPage: React.FC<TestOverviewPageProps> = ({
     <div style={{ maxWidth: '900px', margin: '0 auto' }}>
       {/* Hero Section */}
       <div style={{
-        backgroundColor: 'var(--ak-surface-card)',
+        backgroundColor: 'var(--surface-card)',
         borderRadius: '16px',
         padding: '32px',
         marginBottom: '24px',
         boxShadow: '0 2px 8px rgba(0,0,0,0.06)',
-        background: `linear-gradient(135deg, #FFFFFF 0%, rgba(26, 61, 46, 0.05) 100%)`,
+        background: `linear-gradient(135deg, rgb(var(--tier-white)) 0%, rgba(26, 61, 46, 0.05) 100%)`,
       }}>
         <div style={{ display: 'flex', alignItems: 'flex-start', gap: '20px', marginBottom: '24px' }}>
           <div style={{
@@ -205,7 +205,7 @@ const TestOverviewPage: React.FC<TestOverviewPageProps> = ({
             <p style={{
               margin: 0,
               fontSize: '15px',
-              color: 'var(--ak-text-secondary)',
+              color: 'var(--text-secondary)',
               lineHeight: 1.6,
               maxWidth: '600px',
             }}>
@@ -220,25 +220,25 @@ const TestOverviewPage: React.FC<TestOverviewPageProps> = ({
           gap: '24px',
           flexWrap: 'wrap',
           padding: '16px 20px',
-          backgroundColor: 'var(--ak-surface-subtle)',
+          backgroundColor: 'rgb(var(--gray-100))',
           borderRadius: '12px',
           marginBottom: '24px',
         }}>
           <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
-            <Clock size={18} color="var(--ak-text-secondary)" />
-            <span style={{ fontSize: '14px', color: 'var(--ak-text-primary)' }}>
+            <Clock size={18} color="var(--text-secondary)" />
+            <span style={{ fontSize: '14px', color: 'var(--tier-navy)' }}>
               <strong>{test.duration}</strong>
             </span>
           </div>
           <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
-            <MapPin size={18} color="var(--ak-text-secondary)" />
-            <span style={{ fontSize: '14px', color: 'var(--ak-text-primary)' }}>
+            <MapPin size={18} color="var(--text-secondary)" />
+            <span style={{ fontSize: '14px', color: 'var(--tier-navy)' }}>
               <strong>{test.attempts}</strong> {test.attempts === 1 ? 'forsøk' : 'forsøk'}
             </span>
           </div>
           <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
-            <Target size={18} color="var(--ak-text-secondary)" />
-            <span style={{ fontSize: '14px', color: 'var(--ak-text-primary)' }}>
+            <Target size={18} color="var(--text-secondary)" />
+            <span style={{ fontSize: '14px', color: 'var(--tier-navy)' }}>
               Enhet: <strong>{test.unit}</strong>
             </span>
           </div>
@@ -271,11 +271,11 @@ const TestOverviewPage: React.FC<TestOverviewPageProps> = ({
         marginBottom: '24px',
       }}>
         {/* Purpose */}
-        <InfoCard icon={Info} title="Formål" color="var(--ak-primary)">
+        <InfoCard icon={Info} title="Formål" color="var(--tier-navy)">
           <p style={{
             margin: 0,
             fontSize: '14px',
-            color: 'var(--ak-text-primary)',
+            color: 'var(--tier-navy)',
             lineHeight: 1.6
           }}>
             {test.purpose}
@@ -283,17 +283,17 @@ const TestOverviewPage: React.FC<TestOverviewPageProps> = ({
         </InfoCard>
 
         {/* Equipment */}
-        <InfoCard icon={CheckCircle} title="Utstyr" color="var(--ak-status-success)">
+        <InfoCard icon={CheckCircle} title="Utstyr" color="rgb(var(--status-success))">
           <div style={{ display: 'flex', flexWrap: 'wrap', gap: '8px' }}>
             {test.equipment.map((item, i) => (
               <span
                 key={i}
                 style={{
                   padding: '6px 12px',
-                  backgroundColor: 'var(--ak-surface-subtle)',
+                  backgroundColor: 'rgb(var(--gray-100))',
                   borderRadius: '6px',
                   fontSize: '13px',
-                  color: 'var(--ak-text-primary)',
+                  color: 'var(--tier-navy)',
                 }}
               >
                 {item}
@@ -304,7 +304,7 @@ const TestOverviewPage: React.FC<TestOverviewPageProps> = ({
       </div>
 
       {/* Methodology */}
-      <InfoCard icon={MapPin} title="Gjennomføring" color="var(--ak-status-warning)">
+      <InfoCard icon={MapPin} title="Gjennomføring" color="rgb(var(--status-warning))">
         <ol style={{
           margin: 0,
           paddingLeft: '20px',
@@ -315,7 +315,7 @@ const TestOverviewPage: React.FC<TestOverviewPageProps> = ({
           {test.methodology.map((step, i) => (
             <li key={i} style={{
               fontSize: '14px',
-              color: 'var(--ak-text-primary)',
+              color: 'var(--tier-navy)',
               lineHeight: 1.5,
             }}>
               {step}
@@ -326,11 +326,11 @@ const TestOverviewPage: React.FC<TestOverviewPageProps> = ({
 
       {/* Scoring */}
       <div style={{ marginTop: '16px' }}>
-        <InfoCard icon={Target} title="Scoring" color="var(--ak-primary)">
+        <InfoCard icon={Target} title="Scoring" color="var(--tier-navy)">
           <p style={{
             margin: '0 0 16px 0',
             fontSize: '14px',
-            color: 'var(--ak-text-secondary)',
+            color: 'var(--text-secondary)',
             lineHeight: 1.5,
           }}>
             {test.lowerIsBetter
@@ -347,7 +347,7 @@ const TestOverviewPage: React.FC<TestOverviewPageProps> = ({
 
       {/* Tips */}
       <div style={{ marginTop: '16px' }}>
-        <InfoCard icon={AlertCircle} title="Tips" color="var(--ak-status-warning)">
+        <InfoCard icon={AlertCircle} title="Tips" color="rgb(var(--status-warning))">
           <ul style={{
             margin: 0,
             paddingLeft: '20px',
@@ -358,7 +358,7 @@ const TestOverviewPage: React.FC<TestOverviewPageProps> = ({
             {test.tips.map((tip, i) => (
               <li key={i} style={{
                 fontSize: '14px',
-                color: 'var(--ak-text-primary)',
+                color: 'var(--tier-navy)',
                 lineHeight: 1.5,
               }}>
                 {tip}
@@ -372,7 +372,7 @@ const TestOverviewPage: React.FC<TestOverviewPageProps> = ({
       <div style={{
         marginTop: '32px',
         padding: '24px',
-        backgroundColor: 'var(--ak-surface-card)',
+        backgroundColor: 'var(--surface-card)',
         borderRadius: '12px',
         textAlign: 'center',
         boxShadow: '0 1px 3px rgba(0,0,0,0.08)',
@@ -380,7 +380,7 @@ const TestOverviewPage: React.FC<TestOverviewPageProps> = ({
         <p style={{
           margin: '0 0 16px 0',
           fontSize: '15px',
-          color: 'var(--ak-text-primary)',
+          color: 'var(--tier-navy)',
         }}>
           Klar til å teste?
         </p>

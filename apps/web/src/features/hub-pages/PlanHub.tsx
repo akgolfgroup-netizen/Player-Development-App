@@ -33,6 +33,7 @@ export default function PlanHub({
       area={area}
       title="Plan"
       subtitle="Planlegg trening, sett mål og følg med på turneringer"
+      helpText="Oversikt over kalender, målsetninger og turneringsoversikt. Planlegg din treningshverdag og følg med på fremtidige arrangementer."
       quickStats={[
         { label: 'Planlagte økter', value: stats.planlagteOkter, icon: 'Calendar' },
         { label: 'Kommende turneringer', value: stats.kommendeTurneringer, icon: 'Trophy' },

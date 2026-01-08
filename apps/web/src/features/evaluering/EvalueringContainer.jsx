@@ -1,5 +1,5 @@
 /**
- * AK Golf Academy - Evaluering Container
+ * TIER Golf Academy - Evaluering Container
  * Design System v3.0 - Premium Light
  *
  * Player evaluations overview with stats and filtering.
@@ -96,11 +96,11 @@ const STATS = {
 const getTypeConfig = (type) => {
   switch (type) {
     case 'training':
-      return { label: 'Trening', colorClasses: { bg: 'bg-ak-primary/15', text: 'text-ak-primary' }, icon: Dumbbell };
+      return { label: 'Trening', colorClasses: { bg: 'bg-tier-navy/15', text: 'text-tier-navy' }, icon: Dumbbell };
     case 'tournament':
       return { label: 'Turnering', colorClasses: { bg: 'bg-amber-500/15', text: 'text-amber-600' }, icon: Trophy };
     default:
-      return { label: type, colorClasses: { bg: 'bg-ak-surface-subtle', text: 'text-ak-text-secondary' }, icon: ClipboardCheck };
+      return { label: type, colorClasses: { bg: 'bg-tier-surface-base', text: 'text-tier-text-secondary' }, icon: ClipboardCheck };
   }
 };
 
@@ -120,8 +120,8 @@ const RatingStars = ({ rating, size = 14 }) => {
         <Star
           key={star}
           size={size}
-          fill={star <= rating ? '#f59e0b' : 'none'}
-          className={star <= rating ? 'text-amber-500' : 'text-ak-border-default'}
+          fill={star <= rating ? 'rgb(var(--tier-gold))' : 'none'}
+          className={star <= rating ? 'text-tier-gold' : 'text-tier-border-default'}
         />
       ))}
     </div>
@@ -139,7 +139,7 @@ const EvaluationCard = ({ evaluation, onClick }) => {
   return (
     <div
       onClick={() => onClick(evaluation)}
-      className="bg-ak-surface-base rounded-[14px] p-4 cursor-pointer transition-all shadow-sm hover:-translate-y-0.5 hover:shadow-md"
+      className="bg-tier-white rounded-[14px] p-4 cursor-pointer transition-all shadow-sm hover:-translate-y-0.5 hover:shadow-md"
     >
       <div className="flex items-start gap-3.5">
         <div className={`w-[42px] h-[42px] rounded-[10px] ${typeConfig.colorClasses.bg} flex items-center justify-center flex-shrink-0`}>
@@ -148,29 +148,29 @@ const EvaluationCard = ({ evaluation, onClick }) => {
 
         <div className="flex-1 min-w-0">
           <div className="flex items-center justify-between mb-1">
-            <SubSectionTitle className="text-sm font-semibold text-ak-text-primary m-0">
+            <SubSectionTitle className="text-sm font-semibold text-tier-navy m-0">
               {evaluation.title}
             </SubSectionTitle>
             <RatingStars rating={evaluation.rating} />
           </div>
 
-          <div className="text-xs text-ak-text-secondary mb-2 flex items-center gap-2">
+          <div className="text-xs text-tier-text-secondary mb-2 flex items-center gap-2">
             <span className={`py-0.5 px-1.5 rounded ${typeConfig.colorClasses.bg} ${typeConfig.colorClasses.text} font-medium`}>
               {typeConfig.label}
             </span>
             <span>{formatDate(evaluation.date)}</span>
           </div>
 
-          <p className="text-[13px] text-ak-text-primary m-0 mb-2 leading-snug line-clamp-2">
+          <p className="text-[13px] text-tier-navy m-0 mb-2 leading-snug line-clamp-2">
             {evaluation.summary}
           </p>
 
           {evaluation.result && (
             <div className={`inline-flex items-center gap-2 py-1.5 px-2.5 rounded-md mb-2 ${
-              evaluation.result.position <= 3 ? 'bg-amber-500/15' : 'bg-ak-surface-subtle'
+              evaluation.result.position <= 3 ? 'bg-amber-500/15' : 'bg-tier-surface-base'
             }`}>
-              <Trophy size={14} className={evaluation.result.position <= 3 ? 'text-amber-500' : 'text-ak-text-secondary'} />
-              <span className="text-xs font-medium text-ak-text-primary">
+              <Trophy size={14} className={evaluation.result.position <= 3 ? 'text-amber-500' : 'text-tier-text-secondary'} />
+              <span className="text-xs font-medium text-tier-navy">
                 {evaluation.result.position}. plass - Score: {evaluation.result.score}
               </span>
             </div>
@@ -180,7 +180,7 @@ const EvaluationCard = ({ evaluation, onClick }) => {
             {evaluation.tags.map((tag, idx) => (
               <span
                 key={idx}
-                className="text-[11px] text-ak-text-secondary bg-ak-surface-subtle py-0.5 px-2 rounded"
+                className="text-[11px] text-tier-text-secondary bg-tier-surface-base py-0.5 px-2 rounded"
               >
                 {tag}
               </span>
@@ -188,7 +188,7 @@ const EvaluationCard = ({ evaluation, onClick }) => {
           </div>
         </div>
 
-        <ChevronRight size={18} className="text-ak-text-secondary flex-shrink-0" />
+        <ChevronRight size={18} className="text-tier-text-secondary flex-shrink-0" />
       </div>
     </div>
   );
@@ -201,32 +201,32 @@ const EvaluationCard = ({ evaluation, onClick }) => {
 const StatsOverview = ({ stats }) => {
   return (
     <div className="grid grid-cols-[repeat(auto-fit,minmax(120px,1fr))] gap-3 mb-6">
-      <div className="bg-ak-surface-base rounded-xl p-4 text-center">
-        <div className="text-2xl font-bold text-ak-primary">
+      <div className="bg-tier-white rounded-xl p-4 text-center">
+        <div className="text-2xl font-bold text-tier-navy">
           {stats.totalEvaluations}
         </div>
-        <div className="text-xs text-ak-text-secondary">Totalt</div>
+        <div className="text-xs text-tier-text-secondary">Totalt</div>
       </div>
-      <div className="bg-ak-surface-base rounded-xl p-4 text-center">
+      <div className="bg-tier-white rounded-xl p-4 text-center">
         <div className="flex items-center justify-center gap-1">
           <span className="text-2xl font-bold text-amber-500">
             {stats.avgRating.toFixed(1)}
           </span>
-          <Star size={18} fill="#f59e0b" className="text-amber-500" />
+          <Star size={18} fill="rgb(var(--tier-gold))" className="text-tier-gold" />
         </div>
-        <div className="text-xs text-ak-text-secondary">Gj.sn. rating</div>
+        <div className="text-xs text-tier-text-secondary">Gj.sn. rating</div>
       </div>
-      <div className="bg-ak-surface-base rounded-xl p-4 text-center">
-        <div className="text-2xl font-bold text-ak-primary">
+      <div className="bg-tier-white rounded-xl p-4 text-center">
+        <div className="text-2xl font-bold text-tier-navy">
           {stats.trainingCount}
         </div>
-        <div className="text-xs text-ak-text-secondary">Treninger</div>
+        <div className="text-xs text-tier-text-secondary">Treninger</div>
       </div>
-      <div className="bg-ak-surface-base rounded-xl p-4 text-center">
+      <div className="bg-tier-white rounded-xl p-4 text-center">
         <div className="text-2xl font-bold text-amber-500">
           {stats.tournamentCount}
         </div>
-        <div className="text-xs text-ak-text-secondary">Turneringer</div>
+        <div className="text-xs text-tier-text-secondary">Turneringer</div>
       </div>
     </div>
   );
@@ -253,7 +253,7 @@ const EvalueringContainer = () => {
   ];
 
   return (
-    <div className="min-h-screen bg-ak-surface-subtle">
+    <div className="min-h-screen bg-tier-surface-base">
       <div className="p-4 px-6 pb-6 w-full">
         {/* Stats Overview */}
         <StatsOverview stats={STATS} />
@@ -267,8 +267,8 @@ const EvalueringContainer = () => {
                 onClick={() => setFilter(f.key)}
                 className={`py-2 px-4 rounded-full text-xs font-medium cursor-pointer transition-colors ${
                   filter === f.key
-                    ? 'bg-ak-primary text-white border-none'
-                    : 'bg-ak-surface-base text-ak-text-secondary border border-ak-border-default'
+                    ? 'bg-tier-navy text-white border-none'
+                    : 'bg-tier-white text-tier-text-secondary border border-tier-border-default'
                 }`}
               >
                 {f.label}
@@ -279,14 +279,14 @@ const EvalueringContainer = () => {
           <div className="flex-1 min-w-[200px] relative">
             <Search
               size={16}
-              className="absolute left-3 top-1/2 -translate-y-1/2 text-ak-text-secondary"
+              className="absolute left-3 top-1/2 -translate-y-1/2 text-tier-text-secondary"
             />
             <input
               type="text"
               value={searchQuery}
               onChange={(e) => setSearchQuery(e.target.value)}
               placeholder="Søk i evalueringer..."
-              className="w-full py-2.5 pr-3 pl-9 rounded-lg border border-ak-border-default text-[13px] bg-ak-surface-base text-ak-text-primary outline-none focus:border-ak-primary"
+              className="w-full py-2.5 pr-3 pl-9 rounded-lg border border-tier-border-default text-[13px] bg-tier-white text-tier-navy outline-none focus:border-tier-navy"
             />
           </div>
 

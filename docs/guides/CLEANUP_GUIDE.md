@@ -184,7 +184,7 @@ Save this as `cleanup.sh`:
 ```bash
 #!/bin/bash
 
-echo "🧹 Cleaning up IUP Golf Academy project..."
+echo "🧹 Cleaning up IUP Golf project..."
 echo ""
 
 # Safety check

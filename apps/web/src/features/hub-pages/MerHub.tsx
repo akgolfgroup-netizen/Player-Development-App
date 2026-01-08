@@ -33,18 +33,19 @@ export default function MerHub({
       area={area}
       title="Mer"
       subtitle="Profil, meldinger, ressurser og innstillinger"
+      helpText="Administrer din profil, les meldinger fra trener og få tilgang til ressurser og innstillinger."
       quickStats={[
         {
           label: 'Uleste meldinger',
           value: stats.ulesteMeldinger,
           icon: 'Mail',
-          color: stats.ulesteMeldinger > 0 ? '#DC2626' : undefined,
+          color: stats.ulesteMeldinger > 0 ? 'rgb(var(--status-error))' : undefined,
         },
         {
           label: 'Ny feedback',
           value: stats.nyFeedback,
           icon: 'MessageSquare',
-          color: stats.nyFeedback > 0 ? '#D97706' : undefined,
+          color: stats.nyFeedback > 0 ? 'rgb(var(--status-warning))' : undefined,
         },
         { label: 'Ressurser tilgjengelig', value: stats.ressurser, icon: 'BookOpen' },
       ]}

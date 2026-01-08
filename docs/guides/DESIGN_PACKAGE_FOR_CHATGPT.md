@@ -1,6 +1,6 @@
 # Design Package for ChatGPT Analysis
 
-> Complete design specification for AK Golf Academy IUP Platform
+> Complete design specification for TIER Golf IUP Platform
 
 ---
 
@@ -13,7 +13,7 @@
 
 ### Mockups
 **Location:** `/packages/design-system/mockups/`
-- `AK Golf IUP App - Mockup Oversikt.pdf` (578KB) - Complete app overview
+- `TIER Golf IUP App - Mockup Oversikt.pdf` (578KB) - Complete app overview
 - Interactive HTML demos available
 
 ### Logo
@@ -387,7 +387,7 @@ Open this SVG in any browser or design tool to see all components.
 
 ### Mockup PDF
 ```bash
-/packages/design-system/mockups/AK Golf IUP App - Mockup Oversikt.pdf
+/packages/design-system/mockups/TIER Golf IUP App - Mockup Oversikt.pdf
 ```
 578KB PDF showing all screens and flows.
 

@@ -1,5 +1,5 @@
 # Tailwind CSS + Catalyst Integration Plan
-## IUP Golf Academy Frontend
+## IUP Golf Frontend
 
 **Opprettet**: 2025-12-25
 **Status**: Plan klar for gjennomføring
@@ -8,9 +8,9 @@
 
 ## Executive Summary
 
-Denne planen beskriver hvordan vi skal integrere **Catalyst UI Kit** (Tailwind CSS) med den eksisterende IUP Golf Academy frontend-applikasjonen. Målet er å:
+Denne planen beskriver hvordan vi skal integrere **Catalyst UI Kit** (Tailwind CSS) med den eksisterende IUP Golf frontend-applikasjonen. Målet er å:
 
-1. Beholde AK Golf Academy design system (Blue Palette 01)
+1. Beholde TIER Golf design system (Blue Palette 01)
 2. Erstatte custom CSS med Tailwind utility-klasser
 3. Bruke Catalyst-komponenter som base for UI
 4. Migrere alle 36 features til ny styling
@@ -128,7 +128,7 @@ npm install @headlessui/react motion clsx
 npx tailwindcss init -p
 ```
 
-#### 1.2 Konfigurer Tailwind med AK Golf farger
+#### 1.2 Konfigurer Tailwind med TIER Golf farger
 Opprett `tailwind.config.js`:
 ```javascript
 /** @type {import('tailwindcss').Config} */
@@ -139,7 +139,7 @@ module.exports = {
   theme: {
     extend: {
       colors: {
-        // AK Golf Brand Colors
+        // TIER Golf Brand Colors
         ak: {
           ink: '#02060D',
           primary: '#10456A',
@@ -247,7 +247,7 @@ src/components/
 #### 2.2 Migrasjonsstrategi per komponent
 
 For hver komponent:
-1. Opprett wrapper i `src/components/catalyst/` som tilpasser til AK Golf
+1. Opprett wrapper i `src/components/catalyst/` som tilpasser til TIER Golf
 2. Oppdater imports i features gradvis
 3. Test at styling er konsistent
 4. Fjern gammel komponent når alle referanser er oppdatert
@@ -283,7 +283,7 @@ export function Button({ variant = 'primary', ...props }) {
 
 **Sidebar Layout (Coach/Admin views)**
 ```jsx
-// Bruk Catalyst sidebar-layout med AK Golf styling
+// Bruk Catalyst sidebar-layout med TIER Golf styling
 <SidebarLayout
   navbar={<AKNavbar />}
   sidebar={<AKSidebar />}
@@ -508,7 +508,7 @@ npm start
 1. ✅ Godkjenn denne planen
 2. ⬜ Start med Fase 1: Installer Tailwind
 3. ⬜ Kopier Catalyst-komponenter
-4. ⬜ Tilpass farger til AK Golf palette
+4. ⬜ Tilpass farger til TIER Golf palette
 5. ⬜ Begynn migrasjon av core komponenter
 
 ---

@@ -93,3 +93,30 @@ export const weeklySummaryQuerySchema = z.object({
 });
 
 export type WeeklySummaryQuery = z.infer<typeof weeklySummaryQuerySchema>;
+
+/**
+ * Player onboarding schema - for new player registration
+ */
+export const playerOnboardingSchema = z.object({
+  firstName: z.string().min(1, 'First name is required').max(100),
+  lastName: z.string().min(1, 'Last name is required').max(100),
+  dateOfBirth: z.string().refine((date) => !isNaN(Date.parse(date)), {
+    message: 'Invalid date format',
+  }),
+  gender: z.enum(['male', 'female', 'other'], {
+    errorMap: () => ({ message: 'Gender must be male, female, or other' }),
+  }),
+  phone: z.string().min(1, 'Phone number is required').max(20),
+  handicap: z.number().min(-10).max(54).nullable(),
+  category: z.enum(['A', 'B', 'C', 'D', '']).default('D'),
+  club: z.string().max(200).optional(),
+  goals: z.array(z.string()).default([]),
+  coachId: z.string().uuid().nullable(),
+  emergencyContact: z.object({
+    name: z.string().optional(),
+    phone: z.string().optional(),
+    email: z.string().email().optional(),
+  }).optional(),
+});
+
+export type PlayerOnboardingInput = z.infer<typeof playerOnboardingSchema>;

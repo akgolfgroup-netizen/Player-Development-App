@@ -114,7 +114,7 @@ const getTypeConfig = (type) => {
     case 'tour':
       return { label: 'Tour', color: 'var(--accent)' };
     case 'club':
-      return { label: 'Klubb', color: 'var(--success)' };
+      return { label: 'Klubb', color: 'var(--status-success)' };
     default:
       return { label: type, color: 'var(--text-secondary)' };
   }
@@ -122,8 +122,8 @@ const getTypeConfig = (type) => {
 
 const getPositionColor = (position) => {
   if (position === 1) return 'var(--achievement)';
-  if (position === 2) return 'var(--ak-medal-silver)';
-  if (position === 3) return 'var(--ak-medal-bronze)';
+  if (position === 2) return 'rgb(var(--text-secondary))';
+  if (position === 3) return 'rgb(var(--status-warning))';
   if (position <= 10) return 'var(--accent)';
   return 'var(--text-secondary)';
 };
@@ -254,8 +254,8 @@ const ResultCard = ({ result, onClick }) => {
           <div style={{
             fontSize: '16px',
             fontWeight: 600,
-            color: scoreToPar < 0 ? 'var(--success)' :
-                   scoreToPar > 0 ? 'var(--error)' : 'var(--text-primary)',
+            color: scoreToPar < 0 ? 'var(--status-success)' :
+                   scoreToPar > 0 ? 'var(--status-error)' : 'var(--text-primary)',
           }}>
             {scoreToPar === 0 ? 'E' : scoreToPar > 0 ? `+${scoreToPar}` : scoreToPar}
           </div>
@@ -334,7 +334,7 @@ const StatsOverview = ({ stats }) => (
       padding: '14px',
       textAlign: 'center',
     }}>
-      <div style={{ fontSize: '22px', fontWeight: 700, color: 'var(--success)' }}>
+      <div style={{ fontSize: '22px', fontWeight: 700, color: 'var(--status-success)' }}>
         {stats.top3}
       </div>
       <div style={{ fontSize: '11px', color: 'var(--text-secondary)' }}>Topp 3</div>
@@ -356,7 +356,7 @@ const StatsOverview = ({ stats }) => (
       padding: '14px',
       textAlign: 'center',
     }}>
-      <div style={{ fontSize: '22px', fontWeight: 700, color: 'var(--error)' }}>
+      <div style={{ fontSize: '22px', fontWeight: 700, color: 'var(--status-error)' }}>
         {stats.bestRound}
       </div>
       <div style={{ fontSize: '11px', color: 'var(--text-secondary)' }}>Beste runde</div>
@@ -433,6 +433,7 @@ const TurneringsResultaterContainer = () => {
       <PageHeader
         title="Turneringsresultater"
         subtitle="Dine resultater og statistikk"
+        helpText="Komplett oversikt over dine turneringsresultater med statistikk, trender og beste prestasjoner. Analyser resultatene dine over tid og identifiser forbedringsmuligheter."
       />
 
       <div style={{ padding: '16px 24px 24px', width: '100%' }}>
@@ -478,8 +479,8 @@ const TurneringsResultaterContainer = () => {
             backgroundColor: 'rgba(239, 68, 68, 0.15)',
             marginBottom: '20px',
           }}>
-            <AlertCircle size={20} color="var(--error)" />
-            <span style={{ fontSize: '14px', color: 'var(--error)', fontWeight: 500 }}>
+            <AlertCircle size={20} color="var(--status-error)" />
+            <span style={{ fontSize: '14px', color: 'var(--status-error)', fontWeight: 500 }}>
               {error} (viser demo-data)
             </span>
           </div>

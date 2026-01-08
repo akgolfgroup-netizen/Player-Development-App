@@ -1,5 +1,5 @@
 /**
- * AK GOLF ACADEMY — VIDEO ANALYSIS SYSTEM
+ * TIER GOLF — VIDEO ANALYSIS SYSTEM
  * VideoComparison Component
  *
  * Side-by-side video comparison for swing analysis:

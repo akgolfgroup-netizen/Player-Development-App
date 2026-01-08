@@ -22,36 +22,36 @@ import { SubSectionTitle } from '../../components/typography';
 
 const TYPE_CLASSES = {
   technical: {
-    text: 'text-ak-primary',
-    bg: 'bg-ak-primary/15',
+    text: 'text-tier-navy',
+    bg: 'bg-tier-navy/15',
     icon: Target,
     label: 'Teknikk',
     variant: 'accent',
   },
   short_game: {
-    text: 'text-ak-status-success',
-    bg: 'bg-ak-status-success/15',
+    text: 'text-tier-success',
+    bg: 'bg-tier-success/15',
     icon: Target,
     label: 'Kortspill',
     variant: 'success',
   },
   physical: {
-    text: 'text-ak-status-error',
-    bg: 'bg-ak-status-error/15',
+    text: 'text-tier-error',
+    bg: 'bg-tier-error/15',
     icon: Dumbbell,
     label: 'Fysisk',
     variant: 'error',
   },
   mental: {
-    text: 'text-ak-status-warning',
-    bg: 'bg-ak-status-warning/15',
+    text: 'text-tier-warning',
+    bg: 'bg-tier-warning/15',
     icon: Brain,
     label: 'Mental',
     variant: 'warning',
   },
   competition: {
-    text: 'text-ak-text-primary',
-    bg: 'bg-ak-surface-subtle',
+    text: 'text-tier-navy',
+    bg: 'bg-tier-surface-base',
     icon: Target,
     label: 'Runde',
     variant: 'neutral',
@@ -157,14 +157,14 @@ const STATS = {
 // HELPERS
 // ============================================================================
 
-const getMoodEmoji = (mood) => {
+const getMoodIcon = (mood) => {
   switch (mood) {
-    case 'excited': return '🔥';
-    case 'positive': return '😊';
-    case 'satisfied': return '👍';
-    case 'neutral': return '😐';
-    case 'frustrated': return '😤';
-    default: return '📝';
+    case 'excited': return 'flame';
+    case 'positive': return 'smile';
+    case 'satisfied': return 'thumbs-up';
+    case 'neutral': return 'meh';
+    case 'frustrated': return 'frown';
+    default: return 'file-text';
   }
 };
 
@@ -189,8 +189,8 @@ const RatingStars = ({ rating, size = 14 }) => (
       <Star
         key={star}
         size={size}
-        fill={star <= rating ? '#F59E0B' : 'none'}
-        className={star <= rating ? 'text-amber-500' : 'text-ak-border-default'}
+        fill={star <= rating ? 'rgb(var(--tier-gold))' : 'none'}
+        className={star <= rating ? 'text-tier-gold' : 'text-tier-border-default'}
       />
     ))}
   </div>
@@ -224,22 +224,22 @@ const DiaryEntryCard = ({ entry, onClick }) => {
               </SubSectionTitle>
               <div className="flex items-center gap-2 mt-1">
                 <Badge variant={typeConfig.variant} size="sm">{typeConfig.label}</Badge>
-                <span className="text-xs text-ak-text-secondary">
+                <span className="text-xs text-tier-text-secondary">
                   {formatDate(entry.date)}
                 </span>
-                <span className="text-xs text-ak-text-secondary flex items-center gap-1">
+                <span className="text-xs text-tier-text-secondary flex items-center gap-1">
                   <Clock size={12} />
                   {entry.duration} min
                 </span>
                 <span className="text-sm">
-                  {getMoodEmoji(entry.mood)}
+                  {getMoodIcon(entry.mood)}
                 </span>
               </div>
             </div>
             <RatingStars rating={entry.rating} />
           </div>
 
-          <p className="text-[13px] text-ak-text-primary my-2 leading-[1.4] line-clamp-2">
+          <p className="text-[13px] text-tier-navy my-2 leading-[1.4] line-clamp-2">
             {entry.reflection}
           </p>
 
@@ -252,7 +252,7 @@ const DiaryEntryCard = ({ entry, onClick }) => {
           )}
         </div>
 
-        <ChevronRight size={18} className="text-ak-text-secondary shrink-0" />
+        <ChevronRight size={18} className="text-tier-text-secondary shrink-0" />
       </div>
     </Card>
   );
@@ -265,37 +265,37 @@ const DiaryEntryCard = ({ entry, onClick }) => {
 const StatsOverview = ({ stats }) => (
   <div className="grid grid-cols-[repeat(auto-fit,minmax(100px,1fr))] gap-2 mb-6">
     <Card variant="default" padding="sm" className="text-center">
-      <div className="text-[22px] font-bold text-ak-primary">
+      <div className="text-[22px] font-bold text-tier-navy">
         {stats.totalEntries}
       </div>
-      <div className="text-[11px] text-ak-text-secondary">Totalt</div>
+      <div className="text-[11px] text-tier-text-secondary">Totalt</div>
     </Card>
     <Card variant="default" padding="sm" className="text-center">
-      <div className="text-[22px] font-bold text-ak-status-success">
+      <div className="text-[22px] font-bold text-tier-success">
         {stats.thisMonth}
       </div>
-      <div className="text-[11px] text-ak-text-secondary">Denne mnd</div>
+      <div className="text-[11px] text-tier-text-secondary">Denne mnd</div>
     </Card>
     <Card variant="default" padding="sm" className="text-center">
       <div className="flex items-center justify-center gap-0">
-        <span className="text-[22px] font-bold text-amber-500">
+        <span className="text-[22px] font-bold text-tier-gold">
           {stats.avgRating}
         </span>
-        <Star size={14} fill="#F59E0B" className="text-amber-500" />
+        <Star size={14} fill="rgb(var(--tier-gold))" className="text-tier-gold" />
       </div>
-      <div className="text-[11px] text-ak-text-secondary">Snittrating</div>
+      <div className="text-[11px] text-tier-text-secondary">Snittrating</div>
     </Card>
     <Card variant="default" padding="sm" className="text-center">
-      <div className="text-[22px] font-bold text-ak-text-primary">
+      <div className="text-[22px] font-bold text-tier-navy">
         {stats.avgDuration}
       </div>
-      <div className="text-[11px] text-ak-text-secondary">Min/økt</div>
+      <div className="text-[11px] text-tier-text-secondary">Min/økt</div>
     </Card>
     <Card variant="default" padding="sm" className="text-center">
-      <div className="text-[22px] font-bold text-ak-status-error flex items-center justify-center gap-1">
+      <div className="text-[22px] font-bold text-tier-error flex items-center justify-center gap-1">
         🔥 {stats.streak}
       </div>
-      <div className="text-[11px] text-ak-text-secondary">Streak</div>
+      <div className="text-[11px] text-tier-text-secondary">Streak</div>
     </Card>
   </div>
 );
@@ -339,7 +339,7 @@ const TreningsdagbokContainer = () => {
 
   if (loading) {
     return (
-      <div className="min-h-screen flex items-center justify-center bg-ak-surface-base">
+      <div className="min-h-screen flex items-center justify-center bg-tier-white">
         <StateCard variant="loading" title="Laster treningsdagbok..." />
       </div>
     );
@@ -354,13 +354,13 @@ const TreningsdagbokContainer = () => {
   });
 
   return (
-    <div className="min-h-screen bg-ak-surface-base">
+    <div className="min-h-screen bg-tier-white">
       <div className="p-0">
         {/* Error message */}
         {error && (
-          <div className="p-3 bg-ak-status-error/15 rounded-lg mb-4 flex items-center gap-2">
-            <AlertCircle size={16} className="text-ak-status-error" />
-            <span className="text-[13px] text-ak-status-error">{error} (viser demo-data)</span>
+          <div className="p-3 bg-tier-error/15 rounded-lg mb-4 flex items-center gap-2">
+            <AlertCircle size={16} className="text-tier-error" />
+            <span className="text-[13px] text-tier-error">{error} (viser demo-data)</span>
           </div>
         )}
 
@@ -371,13 +371,13 @@ const TreningsdagbokContainer = () => {
         <div className="mb-5">
           <Card variant="default" padding="sm" className="mb-3">
             <div className="flex items-center gap-2">
-              <Search size={18} className="text-ak-text-secondary" />
+              <Search size={18} className="text-tier-text-secondary" />
               <input
                 type="text"
                 placeholder="Søk i dagboken..."
                 value={searchQuery}
                 onChange={(e) => setSearchQuery(e.target.value)}
-                className="flex-1 border-none outline-none text-sm text-ak-text-primary bg-transparent"
+                className="flex-1 border-none outline-none text-sm text-tier-navy bg-transparent"
               />
             </div>
           </Card>

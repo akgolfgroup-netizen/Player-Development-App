@@ -1,4 +1,4 @@
-# AK Golf Academy - Development Roadmap 2025
+# TIER Golf - Development Roadmap 2025
 
 > Sist oppdatert: 29. desember 2025
 

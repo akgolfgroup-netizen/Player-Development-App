@@ -1,16 +1,16 @@
-# IUP Golf Academy - DataGolf Integration Summary
+# IUP Golf - DataGolf Integration Summary
 
 **Til: ChatGPT / AI Assistant**
-**Fra: IUP Golf Academy Team**
+**Fra: IUP Golf Team**
 **Dato: 18. Desember 2025**
 **Formål: Diskutere muligheter med DataGolf data**
 
 ---
 
-## 📋 KONTEKST: Hva Er IUP Golf Academy?
+## 📋 KONTEKST: Hva Er IUP Golf?
 
 ### Platform Overview
-IUP Golf Academy er en norsk **player development platform** for amatør- til pro-nivå golfspillere.
+IUP Golf er en norsk **player development platform** for amatør- til pro-nivå golfspillere.
 
 **Core Features:**
 - **20 standardiserte tester** som måler alle aspekter av golfspillet (driving, approach, kort spill, putting, fysikk, mental)
@@ -381,7 +381,7 @@ Current: SG Putting -0.4 (25th percentile vs tour)
 ## 🤔 SPØRSMÅL TIL CHATGPT
 
 Nå som du har full kontekst om:
-- Hva IUP Golf Academy er (player development platform)
+- Hva IUP Golf er (player development platform)
 - Hvilken data vi har (451 pros, SG komponenter, tour averages)
 - Hva vi har bygget (Stats Dashboard, Pro Gap Analysis)
 - Hva vi KAN bygge (10 feature ideas)

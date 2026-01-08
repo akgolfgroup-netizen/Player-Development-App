@@ -1,6 +1,6 @@
 # 📚 Documentation Index
 
-> **Comprehensive documentation for AK Golf Academy IUP Platform**
+> **Comprehensive documentation for TIER Golf IUP Platform**
 > Last Updated: December 17, 2025
 
 ---

@@ -69,9 +69,9 @@ export const EVENT_SOURCE_COLORS: Record<UnifiedEventSource, EventSourceColors> 
     label: 'Fysisk',
   },
   skole: {
-    bg: 'rgba(107, 91, 149, 0.1)',
-    border: 'var(--course-purple, #6B5B95)',
-    text: 'var(--course-purple, #6B5B95)',
+    bg: 'rgba(var(--category-j), 0.1)',
+    border: 'rgb(var(--category-j))',
+    text: 'rgb(var(--category-j))',
     label: 'Skole',
   },
   oppgave: {

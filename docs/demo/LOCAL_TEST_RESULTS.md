@@ -89,7 +89,7 @@ Response:
 <!DOCTYPE html>
 <html lang="no">
   <head>
-    <title>AK Golf Academy</title>
+    <title>TIER Golf</title>
   </head>
   <body>
     <div id="root"></div>

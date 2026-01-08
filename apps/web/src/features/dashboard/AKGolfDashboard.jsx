@@ -1,5 +1,5 @@
 /**
- * AKGolfDashboard Component
+ * TIERGolfDashboard Component
  * Design System v3.0 - Premium Light
  *
  * MIGRATED TO PAGE ARCHITECTURE - Minimal inline styles (dynamic colors)
@@ -22,12 +22,14 @@ import ExportButton from '../../components/ui/ExportButton';
 import { useAuth } from '../../contexts/AuthContext';
 import PeerComparisonWidget from '../../components/widgets/PeerComparisonWidget';
 import OnboardingChecklist from './OnboardingChecklist';
+import PageHeader from '../../ui/raw-blocks/PageHeader.raw';
+import PageContainer from '../../ui/raw-blocks/PageContainer.raw';
 
 // Responsive layout styles
 import './dashboard-responsive.css';
 
 /**
- * AKGolfDashboard - Premium Player Dashboard
+ * TIERGolfDashboard - Premium Player Dashboard
  *
  * NEW HIERARCHY (2026):
  * 1. Personalized Greeting + Smart Insight (Hero Section)
@@ -78,7 +80,7 @@ const generateSmartInsight = (stats, nextTest, goals) => {
     if (daysUntilTest <= 21 && daysUntilTest > 0) {
       insights.push({
         priority: 'warning',
-        icon: '⚠️',
+        icon: 'alert-triangle️',
         message: `Kategoritest om ${daysUntilTest} dager - har du forberedt deg?`,
       });
     }
@@ -226,9 +228,9 @@ TodayActionCard.displayName = 'TodayActionCard';
 
 // Status configuration - defined outside component to avoid recreation
 const STATUS_CONFIG = {
-  'on-track': { label: '✓ På målet', color: 'var(--ak-success)', bg: 'var(--success-muted)' },
-  'behind': { label: '⚠ Henger etter', color: 'var(--ak-warning)', bg: 'var(--warning-muted)' },
-  'ahead': { label: '🚀 Foran skjema', color: 'var(--ak-info)', bg: 'var(--info-muted)' },
+  'on-track': { label: '✓ På målet', color: 'rgb(var(--status-success))', bg: 'var(--success-muted)' },
+  'behind': { label: 'alert-triangle Henger etter', color: 'rgb(var(--status-warning))', bg: 'var(--warning-muted)' },
+  'ahead': { label: '🚀 Foran skjema', color: 'rgb(var(--status-info))', bg: 'var(--info-muted)' },
 };
 
 /**
@@ -272,7 +274,7 @@ const KPICard = memo(({
       {trend !== undefined && (
         <div style={{
           ...styles.trendRow,
-          color: trend >= 0 ? 'var(--ak-success)' : 'var(--ak-error)',
+          color: trend >= 0 ? 'rgb(var(--status-success))' : 'rgb(var(--status-error))',
         }}>
           <TrendingUp size={12} style={{ transform: trend < 0 ? 'rotate(180deg)' : 'none' }} aria-hidden="true" />
           <span>{trend >= 0 ? '+' : ''}{trend} {trendLabel || ''}</span>
@@ -286,7 +288,7 @@ const KPICard = memo(({
             <div style={{
               ...styles.kpiProgressFill,
               width: `${Math.min(progressPercent, 100)}%`,
-              backgroundColor: progress.color || 'var(--ak-success)',
+              backgroundColor: progress.color || 'rgb(var(--status-success))',
             }} />
           </div>
           <span style={styles.kpiProgressLabel}>
@@ -332,9 +334,9 @@ const WeeklyPerformanceSummary = ({ stats, loading }) => {
         value={`${stats.sessionsCompleted}/${stats.sessionsTotal}`}
         label="Økter denne uka"
         status={getSessionStatus()}
-        progress={{ current: stats.sessionsCompleted, max: stats.sessionsTotal, color: 'var(--ak-success)' }}
+        progress={{ current: stats.sessionsCompleted, max: stats.sessionsTotal, color: 'rgb(var(--status-success))' }}
         context={remainingSessions > 0 ? `${remainingSessions} økter igjen til målet` : null}
-        iconColor="var(--ak-success)"
+        iconColor="rgb(var(--status-success))"
       />
       <KPICard
         icon={Clock}
@@ -354,7 +356,7 @@ const WeeklyPerformanceSummary = ({ stats, loading }) => {
         trend={stats.streakTrend}
         trendLabel="vs. forrige uke"
         context={stats.streak >= 7 ? '🔥 Lengste denne måneden!' : stats.streak >= 3 ? '💪 Godt jobbet!' : null}
-        iconColor="var(--ak-status-warning)"
+        iconColor="rgb(var(--status-warning))"
       />
       <KPICard
         icon={TrendingUp}
@@ -363,7 +365,7 @@ const WeeklyPerformanceSummary = ({ stats, loading }) => {
         trend={stats.scoringTrend}
         trendLabel="slag"
         context={stats.scoringTrend < 0 ? '📉 Forbedring!' : null}
-        iconColor="var(--ak-info)"
+        iconColor="rgb(var(--status-info))"
       />
     </div>
   );
@@ -467,7 +469,7 @@ const GoalStatusBadge = ({ goal }) => {
   if (status === 'at-risk') {
     return (
       <span style={styles.goalAtRiskBadge}>
-        ⚠️ {goal.daysRemaining || 2} dager igjen, {goal.current || 0}/{goal.max || '?'}
+        alert-triangle️ {goal.daysRemaining || 2} dager igjen, {goal.current || 0}/{goal.max || '?'}
       </span>
     );
   }
@@ -478,7 +480,7 @@ const GoalStatusBadge = ({ goal }) => {
       <span style={{
         ...styles.goalProgressBadge,
         backgroundColor: isWarning ? 'var(--warning-muted)' : 'var(--bg-tertiary)',
-        color: isWarning ? 'var(--ak-warning)' : 'var(--text-secondary)',
+        color: isWarning ? 'rgb(var(--status-warning))' : 'var(--text-secondary)',
       }}>
         {goal.current}/{goal.max} {goal.unit || ''}
       </span>
@@ -554,9 +556,9 @@ const WeeklyGoalsWidget = memo(({ goals, onToggle, onAddGoal, onViewAll, loading
               {/* Checkbox */}
               <div style={{
                 ...styles.goalCheckbox,
-                borderColor: status === 'completed' ? 'var(--ak-success)' :
-                            status === 'at-risk' ? 'var(--ak-error)' : 'var(--border-default)',
-                backgroundColor: status === 'completed' ? 'var(--ak-success)' : 'transparent',
+                borderColor: status === 'completed' ? 'rgb(var(--status-success))' :
+                            status === 'at-risk' ? 'rgb(var(--status-error))' : 'var(--border-default)',
+                backgroundColor: status === 'completed' ? 'rgb(var(--status-success))' : 'transparent',
               }}>
                 {status === 'completed' && (
                   <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="white" strokeWidth="3">
@@ -570,8 +572,8 @@ const WeeklyGoalsWidget = memo(({ goals, onToggle, onAddGoal, onViewAll, loading
                 ...styles.goalTypeIcon,
                 backgroundColor: status === 'completed' ? 'var(--success-muted)' :
                                 status === 'at-risk' ? 'var(--error-muted)' : 'var(--bg-tertiary)',
-                color: status === 'completed' ? 'var(--ak-success)' :
-                       status === 'at-risk' ? 'var(--ak-error)' : 'var(--text-secondary)',
+                color: status === 'completed' ? 'rgb(var(--status-success))' :
+                       status === 'at-risk' ? 'rgb(var(--status-error))' : 'var(--text-secondary)',
               }}>
                 <IconComponent size={14} />
               </div>
@@ -638,9 +640,9 @@ const ProfileCard = ({ player, stats, onViewProgress, onViewPlan, onViewProfile 
   // Category color mapping
   const getCategoryColor = (category) => {
     const colors = {
-      'A': 'var(--ak-success)',
+      'A': 'rgb(var(--status-success))',
       'B': 'var(--text-brand)',
-      'C': 'var(--ak-warning)',
+      'C': 'rgb(var(--status-warning))',
       'D': 'var(--text-secondary)',
     };
     return colors[category] || colors['B'];
@@ -697,7 +699,7 @@ const ProfileCard = ({ player, stats, onViewProgress, onViewPlan, onViewProfile 
           <div style={styles.profileStatItem}>
             <span style={{
               ...styles.profileStatValue,
-              color: (stats?.strokesGained || 0) >= 0 ? 'var(--ak-success)' : 'var(--ak-error)',
+              color: (stats?.strokesGained || 0) >= 0 ? 'rgb(var(--status-success))' : 'rgb(var(--status-error))',
             }}>
               {stats?.strokesGained !== undefined
                 ? `${stats.strokesGained >= 0 ? '+' : ''}${stats.strokesGained.toFixed(1)}`
@@ -773,8 +775,8 @@ const TestPreparationItem = ({ completed, children }) => (
   <div style={styles.prepChecklistItem}>
     <div style={{
       ...styles.prepCheckbox,
-      backgroundColor: completed ? 'var(--ak-success)' : 'transparent',
-      borderColor: completed ? 'var(--ak-success)' : 'var(--border-default)',
+      backgroundColor: completed ? 'rgb(var(--status-success))' : 'transparent',
+      borderColor: completed ? 'rgb(var(--status-success))' : 'var(--border-default)',
     }}>
       {completed && (
         <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="white" strokeWidth="3">
@@ -828,8 +830,8 @@ const NextTestCard = ({ title, date, location, preparation, onViewDetails, onPre
     <div style={{
       ...cardShell.base,
       padding: 0,
-      borderLeft: isUrgent ? '4px solid var(--ak-error)' :
-                  isWarning ? '4px solid var(--ak-warning)' : '4px solid var(--text-brand)',
+      borderLeft: isUrgent ? '4px solid rgb(var(--status-error))' :
+                  isWarning ? '4px solid rgb(var(--status-warning))' : '4px solid var(--text-brand)',
     }}>
       {/* Header */}
       <div style={styles.testHeader}>
@@ -838,8 +840,8 @@ const NextTestCard = ({ title, date, location, preparation, onViewDetails, onPre
             ...styles.testIcon,
             backgroundColor: isUrgent ? 'var(--error-muted)' :
                             isWarning ? 'var(--warning-muted)' : 'var(--accent-muted)',
-            color: isUrgent ? 'var(--ak-error)' :
-                   isWarning ? 'var(--ak-warning)' : 'var(--text-brand)',
+            color: isUrgent ? 'rgb(var(--status-error))' :
+                   isWarning ? 'rgb(var(--status-warning))' : 'var(--text-brand)',
           }}>
             <Target size={18} />
           </div>
@@ -854,8 +856,8 @@ const NextTestCard = ({ title, date, location, preparation, onViewDetails, onPre
         </div>
         <div style={{
           ...styles.testDaysBadge,
-          backgroundColor: isUrgent ? 'var(--ak-error)' :
-                          isWarning ? 'var(--ak-warning)' : 'var(--text-brand)',
+          backgroundColor: isUrgent ? 'rgb(var(--status-error))' :
+                          isWarning ? 'rgb(var(--status-warning))' : 'var(--text-brand)',
         }}>
           Om {diffDays} dager
         </div>
@@ -1194,8 +1196,8 @@ const TasksWidget = ({ tasks, onToggle, onViewAll, loading, error }) => {
           >
             <div style={{
               ...styles.taskCheckbox,
-              borderColor: task.completed ? 'var(--ak-success)' : 'var(--border-default)',
-              backgroundColor: task.completed ? 'var(--ak-success)' : 'transparent',
+              borderColor: task.completed ? 'rgb(var(--status-success))' : 'var(--border-default)',
+              backgroundColor: task.completed ? 'rgb(var(--status-success))' : 'transparent',
             }}>
               {task.completed && (
                 <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="white" strokeWidth="3">
@@ -1301,9 +1303,9 @@ const DEFAULT_STATS = {
 };
 
 // LocalStorage key for onboarding dismissal
-const ONBOARDING_DISMISSED_KEY = 'ak-golf-onboarding-dismissed';
+const ONBOARDING_DISMISSED_KEY = 'tier-golf-onboarding-dismissed';
 
-const AKGolfDashboard = () => {
+const TIERGolfDashboard = () => {
   const navigate = useNavigate();
   const { data: dashboardData, loading, error, refetch } = useDashboard();
   const { user } = useAuth();
@@ -1395,9 +1397,18 @@ const AKGolfDashboard = () => {
   }, [onboardingStatus]);
 
   return (
-    <div id="dashboard-export" className="dashboard-layout" style={styles.dashboard}>
-      {/* Export Button - Full Width */}
-      <div className="dashboard-full-width" style={{ display: 'flex', justifyContent: 'flex-end', marginBottom: '-8px' }}>
+    <div className="min-h-screen bg-tier-surface-base">
+      {/* TIER-compliant PageHeader */}
+      <PageHeader
+        title="Dashboard"
+        subtitle="Din oversikt over trening, mål og utvikling"
+        helpText="Hjemmesiden din med oversikt over dagens økter, ukens mål, kommende tester og turneringer. Se fremgang, treningsstatistikk og meldinger fra trener på ett sted."
+      />
+
+      <PageContainer paddingY="md" background="base">
+        <div id="dashboard-export" className="dashboard-layout" style={styles.dashboard}>
+          {/* Export Button - Full Width */}
+          <div className="dashboard-full-width" style={{ display: 'flex', justifyContent: 'flex-end', marginBottom: '-8px' }}>
         <ExportButton
           targetId="dashboard-export"
           filename={`oversikt-${player.name?.replace(/\s+/g, '-') || 'spiller'}-${new Date().toISOString().split('T')[0]}`}
@@ -1519,7 +1530,8 @@ const AKGolfDashboard = () => {
             onViewDetails={() => navigate('/tournaments')}
           />
         )}
-      </div>
+        </div>
+      </PageContainer>
     </div>
   );
 };
@@ -1543,7 +1555,7 @@ const styles = {
     padding: '12px 16px',
     backgroundColor: 'var(--warning-muted)',
     borderRadius: '12px',
-    borderLeft: '3px solid var(--ak-warning)',
+    borderLeft: '3px solid rgb(var(--status-warning))',
     fontSize: '13px',
     color: 'var(--text-secondary)',
   },
@@ -1797,7 +1809,7 @@ const styles = {
   },
   goalsProgressFillThick: {
     height: '100%',
-    backgroundColor: 'var(--ak-success)',
+    backgroundColor: 'rgb(var(--status-success))',
     borderRadius: '6px',
     transition: 'width 0.3s ease',
   },
@@ -1885,7 +1897,7 @@ const styles = {
     fontSize: '11px',
     fontWeight: 600,
     backgroundColor: 'var(--success-muted)',
-    color: 'var(--ak-success)',
+    color: 'rgb(var(--status-success))',
   },
   goalAtRiskBadge: {
     padding: '4px 10px',
@@ -1893,7 +1905,7 @@ const styles = {
     fontSize: '11px',
     fontWeight: 600,
     backgroundColor: 'var(--error-muted)',
-    color: 'var(--ak-error)',
+    color: 'rgb(var(--status-error))',
   },
   goalProgressBadge: {
     padding: '4px 10px',
@@ -2096,7 +2108,7 @@ const styles = {
     borderRadius: '10px',
     fontSize: '10px',
     fontWeight: 600,
-    backgroundColor: 'var(--ak-error)',
+    backgroundColor: 'rgb(var(--status-error))',
     color: 'white',
   },
   msgBadgeHigh: {
@@ -2105,7 +2117,7 @@ const styles = {
     fontSize: '10px',
     fontWeight: 600,
     backgroundColor: 'var(--warning-muted)',
-    color: 'var(--ak-warning)',
+    color: 'rgb(var(--status-warning))',
   },
   msgBadgeInfo: {
     padding: '2px 8px',
@@ -2113,7 +2125,7 @@ const styles = {
     fontSize: '10px',
     fontWeight: 600,
     backgroundColor: 'var(--info-muted)',
-    color: 'var(--ak-info)',
+    color: 'rgb(var(--status-info))',
   },
   messagePreview: {
     fontSize: '13px',
@@ -2409,7 +2421,7 @@ const styles = {
   },
   progressFill: {
     height: '100%',
-    backgroundColor: 'var(--ak-success)',
+    backgroundColor: 'rgb(var(--status-success))',
     borderRadius: '4px',
     transition: 'width 0.3s ease',
   },
@@ -2434,7 +2446,7 @@ const styles = {
   },
   hoursProgressFill: {
     height: '100%',
-    backgroundColor: 'var(--ak-primary)',
+    backgroundColor: 'var(--tier-navy)',
     borderRadius: '4px',
     transition: 'width 0.3s ease',
   },
@@ -2455,7 +2467,7 @@ const styles = {
     width: '8px',
     height: '8px',
     borderRadius: '50%',
-    backgroundColor: 'var(--ak-info)',
+    backgroundColor: 'rgb(var(--status-info))',
     marginTop: '6px',
     flexShrink: 0,
   },
@@ -2555,7 +2567,7 @@ const styles = {
     display: 'flex',
     alignItems: 'center',
     justifyContent: 'center',
-    backgroundColor: 'var(--ak-primary)',
+    backgroundColor: 'var(--tier-navy)',
     color: 'white',
     borderRadius: '10px',
   },
@@ -2581,4 +2593,4 @@ const styles = {
   },
 };
 
-export default AKGolfDashboard;
+export default TIERGolfDashboard;

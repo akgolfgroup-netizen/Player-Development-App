@@ -17,8 +17,9 @@ import {
   Button,
   Separator,
 } from '../../components/shadcn';
-import { SectionTitle } from '../../components/typography';
+import { SectionTitle } from '../../components/typography/Headings';
 import { HandicapDisplay } from '../../components/shadcn/golf';
+import { PageHeader } from '../../ui/raw-blocks';
 import { cn } from 'lib/utils';
 
 // ============================================================================
@@ -70,7 +71,7 @@ const StatItem: React.FC<StatItemProps> = ({ value, label, highlight }) => (
   <div className="flex flex-col items-center text-center p-2">
     <span className={cn(
       "text-2xl font-bold",
-      highlight ? "text-ak-primary" : "text-text-primary"
+      highlight ? "text-tier-navy" : "text-text-primary"
     )}>
       {value || '-'}
     </span>
@@ -106,14 +107,20 @@ interface ProfileSectionProps {
   icon: React.ReactNode;
   title: string;
   children: React.ReactNode;
+  accentColor?: string;
 }
 
-const ProfileSection: React.FC<ProfileSectionProps> = ({ icon, title, children }) => (
-  <Card>
+const ProfileSection: React.FC<ProfileSectionProps> = ({ icon, title, children, accentColor = 'rgb(var(--tier-navy))' }) => (
+  <Card className="border border-gray-200">
     <CardHeader className="pb-3">
       <div className="flex items-center gap-3">
-        <div className="text-ak-primary">{icon}</div>
-        <CardTitle className="text-base font-semibold">{title}</CardTitle>
+        <div
+          className="w-10 h-10 rounded-lg flex items-center justify-center"
+          style={{ backgroundColor: accentColor + '20' }}
+        >
+          <div style={{ color: accentColor }}>{icon}</div>
+        </div>
+        <CardTitle className="text-base font-semibold text-gray-900">{title}</CardTitle>
       </div>
     </CardHeader>
     <Separator />
@@ -176,6 +183,12 @@ const ProfileView: React.FC<ProfileViewProps> = ({ profile, onUpdate }) => {
 
   return (
     <div className="max-w-5xl mx-auto p-6 space-y-6">
+      <PageHeader
+        title="Min Profil"
+        subtitle="Administrer personlig informasjon, golfdata og innstillinger"
+        helpText="Komplett oversikt over din profil med personlig informasjon, kontaktdetaljer, golfstatistikk og treningsdata. Se handicap, kategori, WAGR-rangering og nødkontakt. Rediger profil for å oppdatere informasjon."
+      />
+
       {/* Profile Header Card */}
       <Card>
         <CardContent className="p-6">
@@ -183,7 +196,7 @@ const ProfileView: React.FC<ProfileViewProps> = ({ profile, onUpdate }) => {
             <div className="flex items-center gap-4">
               <Avatar className="h-20 w-20">
                 <AvatarImage src={profile.profileImageUrl} alt={profile.firstName} />
-                <AvatarFallback className="text-2xl font-semibold bg-ak-primary text-white">
+                <AvatarFallback className="text-2xl font-semibold bg-tier-navy text-white">
                   {initials}
                 </AvatarFallback>
               </Avatar>
@@ -226,7 +239,11 @@ const ProfileView: React.FC<ProfileViewProps> = ({ profile, onUpdate }) => {
       {/* Profile Sections Grid */}
       <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
         {/* Personal Information */}
-        <ProfileSection icon={<User className="w-5 h-5" />} title="Personlig informasjon">
+        <ProfileSection
+          icon={<User className="w-5 h-5" />}
+          title="Personlig informasjon"
+          accentColor="rgb(var(--tier-navy))"
+        >
           <ProfileField
             icon={<User className="w-4 h-4" />}
             label="Navn"
@@ -245,7 +262,11 @@ const ProfileView: React.FC<ProfileViewProps> = ({ profile, onUpdate }) => {
         </ProfileSection>
 
         {/* Contact Information */}
-        <ProfileSection icon={<Mail className="w-5 h-5" />} title="Kontaktinformasjon">
+        <ProfileSection
+          icon={<Mail className="w-5 h-5" />}
+          title="Kontaktinformasjon"
+          accentColor="rgb(var(--status-success))"
+        >
           <ProfileField
             icon={<Mail className="w-4 h-4" />}
             label="E-post"
@@ -264,7 +285,11 @@ const ProfileView: React.FC<ProfileViewProps> = ({ profile, onUpdate }) => {
         </ProfileSection>
 
         {/* Golf Profile */}
-        <ProfileSection icon={<Target className="w-5 h-5" />} title="Golfprofil">
+        <ProfileSection
+          icon={<Target className="w-5 h-5" />}
+          title="Golfprofil"
+          accentColor="rgb(var(--tier-gold))"
+        >
           <ProfileField
             icon={<Flag className="w-4 h-4" />}
             label="Hjemmeklubb"
@@ -288,7 +313,11 @@ const ProfileView: React.FC<ProfileViewProps> = ({ profile, onUpdate }) => {
         </ProfileSection>
 
         {/* Training */}
-        <ProfileSection icon={<Calendar className="w-5 h-5" />} title="Trening">
+        <ProfileSection
+          icon={<Calendar className="w-5 h-5" />}
+          title="Trening"
+          accentColor="rgb(var(--category-j))"
+        >
           <ProfileField
             icon={<Calendar className="w-4 h-4" />}
             label="Timer per uke"
@@ -303,7 +332,11 @@ const ProfileView: React.FC<ProfileViewProps> = ({ profile, onUpdate }) => {
 
         {/* Emergency Contact */}
         {profile.emergencyContact && (
-          <ProfileSection icon={<Heart className="w-5 h-5" />} title="Nødkontakt">
+          <ProfileSection
+            icon={<Heart className="w-5 h-5" />}
+            title="Nødkontakt"
+            accentColor="rgb(var(--status-error))"
+          >
             <ProfileField
               icon={<User className="w-4 h-4" />}
               label="Navn"

@@ -151,6 +151,7 @@ export const playerNavigationV3: NavArea[] = [
           { href: '/trening/ovelser', label: 'Mine øvelser', icon: 'ClubIcon', description: 'Mine øvelser' },
           { href: '/trening/ovelser', label: 'Øvelsesbank', icon: 'ClubIcon', description: 'Alle øvelser' },
           { href: '/trening/videoer', label: 'Video', icon: 'VideoIcon', description: 'Instruksjonsvideoer' },
+          { href: '/trening/video-sammenligning', label: 'Video sammenligning', icon: 'CompareIcon', description: 'Sammenlign videoer side-ved-side' },
         ],
       },
       {
@@ -195,6 +196,7 @@ export const playerNavigationV3: NavArea[] = [
           { href: '/utvikling/innsikter', label: 'Spillerinnsikter', icon: 'StatsIcon', description: 'SG Journey, Skill DNA og Bounty Board' },
           { href: '/utvikling/treningsomrader', label: 'Treningsområder', icon: 'TargetIcon', description: 'Statistikk per treningsområde' },
           { href: '/utvikling/peer-sammenligning', label: 'Peer sammenligning', icon: 'StatsIcon', description: 'Sammenlign med lignende spillere' },
+          { href: '/utvikling/rapporter', label: 'Fremdriftsrapporter', icon: 'StatsIcon', description: 'Rapporter fra trener' },
           { href: '/utvikling/datagolf', label: 'Verktøy', icon: 'TargetIcon', description: 'Avanserte analyseverktøy' },
           { href: '/utvikling/fremgang', label: 'Fremgangsanalyse', icon: 'StatsIcon', description: 'Analyser din fremgang' },
           { href: '/utvikling/historikk', label: 'Historikk', icon: 'RefreshIcon', description: 'Tidligere resultater' },
@@ -302,6 +304,8 @@ export const playerNavigationV3: NavArea[] = [
           { href: '/mer/kunnskap', label: 'Kunnskapsbase', icon: 'LessonsIcon', description: 'Artikler og guider' },
           { href: '/mer/notater', label: 'Notater', icon: 'ScorecardIcon', description: 'Dine notater' },
           { href: '/mer/baner-vaer', label: 'Baner & Vær', icon: 'CloudIcon', description: 'Finn beste baner basert på værforhold' },
+          { href: '/mer/ai-historikk', label: 'AI Treningshistorikk', icon: 'ChatIcon', description: 'Se tidligere AI-samtaler' },
+          { href: '/mer/samlinger', label: 'Samlinger', icon: 'FolderIcon', description: 'Organiser videoer, øvelser og planer' },
         ],
       },
       {

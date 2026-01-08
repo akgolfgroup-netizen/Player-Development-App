@@ -2,7 +2,7 @@
 
 ## Overview
 
-This document outlines the standardized process for adding new Tailwind Plus blocks and maintaining UI consistency across the AK Golf Academy platform.
+This document outlines the standardized process for adding new Tailwind Plus blocks and maintaining UI consistency across the TIER Golf platform.
 
 ---
 

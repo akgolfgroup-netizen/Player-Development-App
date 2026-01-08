@@ -79,6 +79,9 @@ export const ROUTES = {
   ROOT: '/',
   LOGIN: '/login',
   WELCOME: '/welcome',
+  PRICING: '/pricing',
+  CHECKOUT: '/checkout',
+  CHECKOUT_SUCCESS: '/checkout/success',
 
   // Dashboard (redirect to /hjem)
   DASHBOARD: '/dashboard',
@@ -103,6 +106,10 @@ export const ROUTES = {
   RESOURCES: '/ressurser',
   ARCHIVE: '/arkiv',
   SETTINGS: '/innstillinger',
+
+  // Billing & Subscription
+  BILLING: '/billing',
+  SUBSCRIPTION_MANAGEMENT: '/innstillinger/subscription',
 
   // Video
   VIDEO_LIBRARY: '/video/library',
@@ -148,6 +155,8 @@ export const ROUTES = {
     FEATURE_FLAGS: '/admin/feature-flags',
     TIER_MANAGEMENT: '/admin/tier-management',
     ESCALATION: '/admin/escalation',
+    PAYMENTS: '/admin/payments',
+    SUBSCRIPTION_ANALYTICS: '/admin/analytics/subscriptions',
   },
 
   // Dev (development only)

@@ -1,5 +1,5 @@
 /**
- * AK Golf Academy - Samling List
+ * TIER Golf Academy - Samling List
  * Display all samlinger for the coach
  */
 
@@ -15,6 +15,7 @@ import {
   Search,
 } from 'lucide-react';
 import api from '../../services/api';
+import { PageHeader } from '../../ui/raw-blocks';
 
 interface Samling {
   id: string;
@@ -43,9 +44,9 @@ interface SamlingListResponse {
 const statusConfig = {
   draft: { label: 'Utkast', color: 'var(--text-tertiary)', bg: 'var(--bg-tertiary)' },
   published: { label: 'Publisert', color: 'var(--accent)', bg: 'rgba(var(--accent-rgb), 0.15)' },
-  in_progress: { label: 'Pågår', color: 'var(--success)', bg: 'rgba(var(--success-rgb), 0.15)' },
+  in_progress: { label: 'Pågår', color: 'var(--status-success)', bg: 'rgba(var(--success-rgb), 0.15)' },
   completed: { label: 'Fullført', color: 'var(--achievement)', bg: 'rgba(var(--achievement-rgb), 0.15)' },
-  cancelled: { label: 'Avlyst', color: 'var(--error)', bg: 'rgba(var(--error-rgb), 0.15)' },
+  cancelled: { label: 'Avlyst', color: 'var(--status-error)', bg: 'rgba(var(--error-rgb), 0.15)' },
 };
 
 const SamlingList: React.FC = () => {
@@ -97,52 +98,33 @@ const SamlingList: React.FC = () => {
   );
 
   return (
-    <div style={{ padding: '24px', maxWidth: '1200px', margin: '0 auto' }}>
-      {/* Header */}
-      <div style={{
-        display: 'flex',
-        justifyContent: 'space-between',
-        alignItems: 'center',
-        marginBottom: '24px'
-      }}>
-        <div>
-          <h1 style={{
-            fontSize: '24px',
-            fontWeight: 600,
-            color: 'var(--text-primary)',
-            margin: 0
-          }}>
-            Samlinger
-          </h1>
-          <p style={{
-            fontSize: '14px',
-            color: 'var(--text-secondary)',
-            marginTop: '4px'
-          }}>
-            Planlegg og administrer treningssamlinger
-          </p>
-        </div>
-
-        <button
-          onClick={() => navigate('/coach/samlinger/ny')}
-          style={{
-            display: 'flex',
-            alignItems: 'center',
-            gap: '8px',
-            padding: '10px 16px',
-            backgroundColor: 'var(--accent)',
-            color: 'white',
-            border: 'none',
-            borderRadius: '8px',
-            fontSize: '14px',
-            fontWeight: 500,
-            cursor: 'pointer',
-          }}
-        >
-          <Plus size={18} />
-          Ny samling
-        </button>
-      </div>
+    <div className="p-6 max-w-7xl mx-auto">
+      <PageHeader
+        title="Samlinger"
+        subtitle="Planlegg og administrer treningssamlinger"
+        helpText="Oversikt over alle treningssamlinger (camps/leirer). Se status (utkast, publisert, pågår, fullført, avlyst), dato, lokasjon, antall deltakere og økter. Opprett nye samlinger, filtrer på status og søk etter navn. Klikk på samling for detaljer."
+        actions={
+          <button
+            onClick={() => navigate('/coach/samlinger/ny')}
+            style={{
+              display: 'flex',
+              alignItems: 'center',
+              gap: '8px',
+              padding: '10px 16px',
+              backgroundColor: 'var(--accent)',
+              color: 'white',
+              border: 'none',
+              borderRadius: '8px',
+              fontSize: '14px',
+              fontWeight: 500,
+              cursor: 'pointer',
+            }}
+          >
+            <Plus size={18} />
+            Ny samling
+          </button>
+        }
+      />
 
       {/* Filters */}
       <div style={{

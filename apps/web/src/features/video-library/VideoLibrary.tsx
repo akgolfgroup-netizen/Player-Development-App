@@ -26,7 +26,7 @@ import Modal from '../../ui/composites/Modal.composite';
 import Button from '../../ui/primitives/Button';
 import PageHeader from '../../ui/raw-blocks/PageHeader.raw';
 import { Upload, RefreshCw, Video, BarChart2, Trash2 } from 'lucide-react';
-import { SubSectionTitle } from '../../components/typography';
+import { SubSectionTitle } from "../../ui/components/typography";
 
 // ============================================================================
 // TYPES
@@ -260,17 +260,17 @@ export function VideoLibrary({
       {videos.map((video: VideoItem) => (
         <div
           key={video.id}
-          className={`flex gap-4 p-3 bg-ak-surface-elevated rounded-xl cursor-pointer transition-colors border ${
+          className={`flex gap-4 p-3 bg-tier-white rounded-xl cursor-pointer transition-colors border ${
             selectedVideos.has(video.id)
-              ? 'border-ak-primary'
-              : 'border-ak-border-default hover:border-ak-primary/50'
+              ? 'border-tier-navy'
+              : 'border-tier-border-default hover:border-tier-navy/50'
           }`}
           onClick={() => onVideoClick?.(video)}
           role="button"
           tabIndex={0}
         >
           {/* Thumbnail */}
-          <div className="w-[160px] h-[90px] rounded-lg overflow-hidden flex-shrink-0 bg-ak-surface-subtle">
+          <div className="w-[160px] h-[90px] rounded-lg overflow-hidden flex-shrink-0 bg-tier-surface-base">
             {video.thumbnailUrl ? (
               <img
                 src={video.thumbnailUrl}
@@ -278,7 +278,7 @@ export function VideoLibrary({
                 className="w-full h-full object-cover"
               />
             ) : (
-              <div className="w-full h-full flex items-center justify-center text-ak-text-tertiary">
+              <div className="w-full h-full flex items-center justify-center text-tier-text-tertiary">
                 <Video size={32} />
               </div>
             )}
@@ -286,10 +286,10 @@ export function VideoLibrary({
 
           {/* Content */}
           <div className="flex-1 flex flex-col justify-center min-w-0">
-            <SubSectionTitle className="m-0 text-base font-semibold text-ak-text-primary overflow-hidden text-ellipsis whitespace-nowrap">
+            <SubSectionTitle className="m-0 text-base font-semibold text-tier-navy overflow-hidden text-ellipsis whitespace-nowrap">
               {video.title}
             </SubSectionTitle>
-            <div className="flex flex-wrap gap-3 mt-1 text-[13px] text-ak-text-secondary">
+            <div className="flex flex-wrap gap-3 mt-1 text-[13px] text-tier-text-secondary">
               {video.category && <span>{video.category}</span>}
               {video.viewAngle && <span>{video.viewAngle}</span>}
               {video.duration && (
@@ -332,6 +332,7 @@ export function VideoLibrary({
       <PageHeader
         title="Videobibliotek"
         subtitle="Se og analyser dine sving-videoer"
+        helpText="Samling av alle dine opplastede treningsvideoer. Organiser, søk og analyser videoer for å se utviklingen din over tid."
         actions={
           <Button onClick={onUploadClick} leftIcon={<Upload size={18} />}>
             Last opp video
@@ -355,7 +356,7 @@ export function VideoLibrary({
 
       {/* Bulk actions bar */}
       {selectedVideos.size > 0 && (
-        <div className="flex items-center gap-4 px-4 py-3 bg-ak-primary rounded-xl text-white">
+        <div className="flex items-center gap-4 px-4 py-3 bg-tier-navy rounded-xl text-white">
           <span className="text-sm font-semibold">
             {selectedVideos.size} valgt
           </span>
@@ -370,7 +371,7 @@ export function VideoLibrary({
               </button>
             )}
             <button
-              className="flex items-center gap-1 px-3 py-1.5 bg-ak-status-error/80 text-white border-none rounded-lg text-[13px] font-medium cursor-pointer hover:bg-ak-status-error"
+              className="flex items-center gap-1 px-3 py-1.5 bg-tier-error/80 text-white border-none rounded-lg text-[13px] font-medium cursor-pointer hover:bg-tier-error"
               onClick={handleDeleteSelected}
             >
               <Trash2 size={16} />
@@ -389,7 +390,7 @@ export function VideoLibrary({
       {/* Content */}
       {loading ? (
         <div className="flex items-center justify-center py-8">
-          <div className="w-10 h-10 border-[3px] border-ak-border-default border-t-ak-primary rounded-full animate-spin" />
+          <div className="w-10 h-10 border-[3px] border-tier-border-default border-t-tier-navy rounded-full animate-spin" />
         </div>
       ) : error ? (
         <StateCard
@@ -453,7 +454,7 @@ export function VideoLibrary({
           </>
         }
       >
-        <p className="m-0 text-ak-text-secondary">
+        <p className="m-0 text-tier-text-secondary">
           Er du sikker på at du vil slette {selectedVideos.size} {selectedVideos.size === 1 ? 'video' : 'videoer'}?
           Denne handlingen kan ikke angres.
         </p>

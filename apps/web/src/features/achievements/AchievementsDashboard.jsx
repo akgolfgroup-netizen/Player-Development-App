@@ -9,6 +9,7 @@
  * Uses design system colors (Blue Palette 01) for consistent styling.
  */
 import React, { useState, useMemo } from 'react';
+import { Trophy } from 'lucide-react';
 import { BadgeGrid } from '../../components/badges';
 import { SectionTitle, SubSectionTitle } from '../../components/typography';
 
@@ -63,8 +64,8 @@ export default function AchievementsDashboard({
             onClick={() => setFilter(cat)}
             className={`px-4 py-2 rounded-lg font-medium capitalize whitespace-nowrap transition-colors ${
               filter === cat
-                ? 'bg-ak-primary text-white'
-                : 'bg-ak-surface text-ak-ink hover:bg-ak-surface/80'
+                ? 'bg-tier-navy text-white'
+                : 'bg-tier-surface text-tier-ink hover:bg-tier-surface/80'
             }`}
           >
             {CATEGORY_LABELS[cat] || cat}
@@ -86,7 +87,7 @@ export default function AchievementsDashboard({
       {/* Recent Achievements */}
       {achievements.length > 0 && (
         <div className="mt-8">
-          <SectionTitle className="text-xl font-bold text-ak-ink mb-4">Nylige Prestasjoner</SectionTitle>
+          <SectionTitle className="text-xl font-bold text-tier-ink mb-4">Nylige Prestasjoner</SectionTitle>
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
             {achievements.slice(0, 6).map((achievement) => (
               <AchievementCard key={achievement.id} achievement={achievement} />
@@ -109,33 +110,33 @@ function AchievementCard({ achievement }) {
     <div
       className={`rounded-lg shadow p-5 transition-all ${
         isUnlocked
-          ? 'bg-white border-2 border-ak-primary/20'
-          : 'bg-ak-snow opacity-75'
+          ? 'bg-white border-2 border-tier-navy/20'
+          : 'bg-tier-white opacity-75'
       }`}
     >
       <div className="flex items-start gap-4">
-        <div className={`text-4xl ${isUnlocked ? '' : 'grayscale opacity-50'}`}>
-          {icon || '🏆'}
+        <div className={`${isUnlocked ? '' : 'grayscale opacity-50'}`}>
+          {icon || <Trophy className="w-10 h-10 text-tier-gold" />}
         </div>
         <div className="flex-1">
           <div className="flex justify-between items-start">
             <div>
-              <SubSectionTitle className="text-lg font-bold text-ak-ink">{name}</SubSectionTitle>
-              <p className="text-sm text-ak-steel">{description}</p>
+              <SubSectionTitle className="text-lg font-bold text-tier-ink">{name}</SubSectionTitle>
+              <p className="text-sm text-tier-text-secondary">{description}</p>
             </div>
             {xp > 0 && (
-              <span className="text-ak-gold font-bold">+{xp} XP</span>
+              <span className="text-tier-gold font-bold">+{xp} XP</span>
             )}
           </div>
 
           {category && (
-            <div className="inline-block mt-2 px-2 py-0.5 rounded-full text-xs font-medium bg-ak-mist text-ak-steel capitalize">
+            <div className="inline-block mt-2 px-2 py-0.5 rounded-full text-xs font-medium bg-tier-surface-base text-tier-text-secondary capitalize">
               {CATEGORY_LABELS[category] || category}
             </div>
           )}
 
           {isUnlocked && unlockedAt && (
-            <div className="text-xs text-ak-steel mt-2">
+            <div className="text-xs text-tier-text-secondary mt-2">
               Opptjent {new Date(unlockedAt).toLocaleDateString('nb-NO')}
             </div>
           )}

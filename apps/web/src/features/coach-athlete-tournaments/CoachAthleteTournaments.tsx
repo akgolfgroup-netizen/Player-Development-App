@@ -26,7 +26,7 @@ import {
 } from 'lucide-react';
 import PageHeader from '../../ui/raw-blocks/PageHeader.raw';
 import Button from '../../ui/primitives/Button';
-import { SubSectionTitle, CardTitle } from '../../components/typography';
+import { SubSectionTitle, CardTitle } from '../../components/typography/Headings';
 
 // ============================================================================
 // CLASS MAPPINGS
@@ -34,14 +34,14 @@ import { SubSectionTitle, CardTitle } from '../../components/typography';
 
 const STATUS_CLASSES = {
   registered: {
-    bg: 'bg-ak-status-success/15',
-    text: 'text-ak-status-success',
+    bg: 'bg-tier-success/15',
+    text: 'text-tier-success',
     icon: CheckCircle,
     label: 'Påmeldt',
   },
   pending: {
-    bg: 'bg-ak-status-warning/15',
-    text: 'text-ak-status-warning',
+    bg: 'bg-tier-warning/15',
+    text: 'text-tier-warning',
     icon: Clock,
     label: 'Venter',
   },
@@ -52,8 +52,8 @@ const STATUS_CLASSES = {
     label: 'Interessert',
   },
   declined: {
-    bg: 'bg-ak-status-error/15',
-    text: 'text-ak-status-error',
+    bg: 'bg-tier-error/15',
+    text: 'text-tier-error',
     icon: AlertCircle,
     label: 'Avslått',
   },
@@ -112,8 +112,8 @@ const Avatar: React.FC<{ name: string; color: string; size?: number }> = ({
 // Get status classes helper
 const getStatusClasses = (status: string) => {
   return STATUS_CLASSES[status as keyof typeof STATUS_CLASSES] || {
-    bg: 'bg-ak-surface-subtle',
-    text: 'text-ak-text-secondary',
+    bg: 'bg-tier-surface-base',
+    text: 'text-tier-text-secondary',
     icon: Clock,
     label: status,
   };
@@ -192,7 +192,7 @@ const generateMockAthletes = (): Athlete[] => {
         {
           id: 'e4',
           tournamentId: 't2',
-          tournamentName: 'AK Golf Academy Cup',
+          tournamentName: 'TIER Golf Academy Cup',
           date: '2025-01-20',
           location: 'Miklagard',
           status: 'registered',
@@ -263,7 +263,7 @@ const generateMockAthletes = (): Athlete[] => {
         {
           id: 'e8',
           tournamentId: 't2',
-          tournamentName: 'AK Golf Academy Cup',
+          tournamentName: 'TIER Golf Academy Cup',
           date: '2025-01-20',
           location: 'Miklagard',
           status: 'pending',
@@ -293,7 +293,7 @@ const generateMockAthletes = (): Athlete[] => {
         {
           id: 'e10',
           tournamentId: 't2',
-          tournamentName: 'AK Golf Academy Cup',
+          tournamentName: 'TIER Golf Academy Cup',
           date: '2025-01-20',
           location: 'Miklagard',
           status: 'registered',
@@ -449,46 +449,47 @@ export default function CoachAthleteTournaments() {
 
   if (loading) {
     return (
-      <div className="min-h-screen bg-ak-surface-subtle flex items-center justify-center">
-        <div className="w-12 h-12 border-4 border-ak-border-default border-t-ak-primary rounded-full animate-spin" />
+      <div className="min-h-screen bg-tier-surface-base flex items-center justify-center">
+        <div className="w-12 h-12 border-4 border-tier-border-default border-t-tier-navy rounded-full animate-spin" />
       </div>
     );
   }
 
   return (
-    <div className="min-h-screen bg-ak-surface-subtle font-sans">
+    <div className="min-h-screen bg-tier-surface-base font-sans">
       {/* Header - using PageHeader from design system */}
       <PageHeader
         title="Turneringsdeltakelse"
         subtitle="Oversikt over spillernes påmeldinger og deltakelse"
+        helpText="Oversikt over alle dine spilleres turneringspåmeldinger og resultater. Se kommende turneringer, fullførte turneringer og påmeldingsstatus for hver spiller."
       />
 
       {/* Stats badges */}
-      <div className="flex gap-3 flex-wrap px-6 pb-4 border-b border-ak-border-default">
-        <div className="flex items-center gap-2 py-2 px-3.5 bg-ak-status-success/10 rounded-lg">
-          <CheckCircle size={16} className="text-ak-status-success" />
-          <span className="text-[13px] text-ak-text-primary">
+      <div className="flex gap-3 flex-wrap px-6 pb-4 border-b border-tier-border-default">
+        <div className="flex items-center gap-2 py-2 px-3.5 bg-tier-success/10 rounded-lg">
+          <CheckCircle size={16} className="text-tier-success" />
+          <span className="text-[13px] text-tier-navy">
             <strong>{stats.totalRegistrations}</strong> påmeldinger
           </span>
         </div>
         {stats.pendingRegistrations > 0 && (
-          <div className="flex items-center gap-2 py-2 px-3.5 bg-ak-status-warning/15 rounded-lg">
-            <Clock size={16} className="text-ak-status-warning" />
-            <span className="text-[13px] text-ak-text-primary">
+          <div className="flex items-center gap-2 py-2 px-3.5 bg-tier-warning/15 rounded-lg">
+            <Clock size={16} className="text-tier-warning" />
+            <span className="text-[13px] text-tier-navy">
               <strong>{stats.pendingRegistrations}</strong> venter
             </span>
           </div>
         )}
-        <div className="flex items-center gap-2 py-2 px-3.5 bg-ak-primary/10 rounded-lg">
-          <Users size={16} className="text-ak-primary" />
-          <span className="text-[13px] text-ak-text-primary">
+        <div className="flex items-center gap-2 py-2 px-3.5 bg-tier-navy/10 rounded-lg">
+          <Users size={16} className="text-tier-navy" />
+          <span className="text-[13px] text-tier-navy">
             <strong>{stats.athletesWithTournaments}</strong> med turneringer
           </span>
         </div>
         {stats.athletesWithoutTournaments > 0 && (
-          <div className="flex items-center gap-2 py-2 px-3.5 bg-ak-surface-subtle rounded-lg">
-            <AlertCircle size={16} className="text-ak-text-secondary" />
-            <span className="text-[13px] text-ak-text-primary">
+          <div className="flex items-center gap-2 py-2 px-3.5 bg-tier-surface-base rounded-lg">
+            <AlertCircle size={16} className="text-tier-text-secondary" />
+            <span className="text-[13px] text-tier-navy">
               <strong>{stats.athletesWithoutTournaments}</strong> uten påmeldinger
             </span>
           </div>
@@ -496,16 +497,16 @@ export default function CoachAthleteTournaments() {
       </div>
 
       {/* Search and filters */}
-      <div className="bg-ak-surface-base py-4 px-6 border-b border-ak-border-default flex gap-3 items-center flex-wrap">
+      <div className="bg-tier-white py-4 px-6 border-b border-tier-border-default flex gap-3 items-center flex-wrap">
         {/* Search */}
-        <div className="flex items-center gap-2 py-2.5 px-3.5 bg-ak-surface-subtle rounded-lg flex-1 max-w-[300px]">
-          <Search size={18} className="text-ak-text-secondary" />
+        <div className="flex items-center gap-2 py-2.5 px-3.5 bg-tier-surface-base rounded-lg flex-1 max-w-[300px]">
+          <Search size={18} className="text-tier-text-secondary" />
           <input
             type="text"
             placeholder="Søk spiller..."
             value={searchQuery}
             onChange={(e) => setSearchQuery(e.target.value)}
-            className="flex-1 border-none bg-transparent text-sm text-ak-text-primary outline-none"
+            className="flex-1 border-none bg-transparent text-sm text-tier-navy outline-none"
           />
         </div>
 
@@ -524,7 +525,7 @@ export default function CoachAthleteTournaments() {
         <select
           value={sortBy}
           onChange={(e) => setSortBy(e.target.value as SortOption)}
-          className="py-2.5 px-3.5 bg-ak-surface-subtle border-none rounded-lg text-sm text-ak-text-primary cursor-pointer"
+          className="py-2.5 px-3.5 bg-tier-surface-base border-none rounded-lg text-sm text-tier-navy cursor-pointer"
         >
           <option value="name">Sorter: Navn</option>
           <option value="tournaments">Sorter: Flest turneringer</option>
@@ -534,7 +535,7 @@ export default function CoachAthleteTournaments() {
 
       {/* Filter options */}
       {showFilters && (
-        <div className="bg-ak-surface-base py-4 px-6 border-b border-ak-border-default flex gap-2 flex-wrap">
+        <div className="bg-tier-white py-4 px-6 border-b border-tier-border-default flex gap-2 flex-wrap">
           {[
             { value: 'all', label: 'Alle' },
             { value: 'A', label: 'Kategori A' },
@@ -548,8 +549,8 @@ export default function CoachAthleteTournaments() {
               onClick={() => setFilterBy(option.value as FilterOption)}
               className={`py-2 px-4 border-none rounded-full text-[13px] font-medium cursor-pointer ${
                 filterBy === option.value
-                  ? 'bg-ak-primary text-white'
-                  : 'bg-ak-surface-subtle text-ak-text-primary'
+                  ? 'bg-tier-navy text-white'
+                  : 'bg-tier-surface-base text-tier-navy'
               }`}
             >
               {option.label}
@@ -562,12 +563,12 @@ export default function CoachAthleteTournaments() {
       <div className="p-6">
         <div className="flex flex-col gap-3">
           {sortedAndFilteredAthletes.length === 0 ? (
-            <div className="bg-ak-surface-base rounded-xl py-12 px-6 text-center">
-              <Users size={48} className="text-ak-border-default mb-4 mx-auto" />
-              <SubSectionTitle className="text-[17px] leading-[22px] font-semibold text-ak-text-primary m-0">
+            <div className="bg-tier-white rounded-xl py-12 px-6 text-center">
+              <Users size={48} className="text-tier-border-default mb-4 mx-auto" />
+              <SubSectionTitle className="text-[17px] leading-[22px] font-semibold text-tier-navy m-0">
                 Ingen spillere funnet
               </SubSectionTitle>
-              <p className="text-[15px] leading-5 text-ak-text-secondary mt-2">
+              <p className="text-[15px] leading-5 text-tier-text-secondary mt-2">
                 Prøv å endre søk eller filter
               </p>
             </div>
@@ -579,26 +580,26 @@ export default function CoachAthleteTournaments() {
               return (
                 <div
                   key={athlete.id}
-                  className="bg-ak-surface-base rounded-xl shadow-sm overflow-hidden"
+                  className="bg-tier-white rounded-xl shadow-sm overflow-hidden"
                 >
                   {/* Athlete header */}
                   <div
                     onClick={() => setExpandedAthlete(isExpanded ? null : athlete.id)}
                     className={`py-4 px-5 flex items-center justify-between cursor-pointer ${
-                      isExpanded ? 'border-b border-ak-surface-subtle' : ''
+                      isExpanded ? 'border-b border-tier-surface-base' : ''
                     }`}
                   >
                     <div className="flex items-center gap-3.5">
                       <Avatar name={fullName} color={athlete.avatarColor} />
                       <div>
-                        <SubSectionTitle className="text-[17px] leading-[22px] font-semibold text-ak-text-primary m-0">
+                        <SubSectionTitle className="text-[17px] leading-[22px] font-semibold text-tier-navy m-0">
                           {athlete.lastName}, {athlete.firstName}
                         </SubSectionTitle>
                         <div className="flex items-center gap-2.5 mt-1">
-                          <span className="text-[11px] font-semibold text-ak-primary bg-ak-primary/15 py-0.5 px-2 rounded">
+                          <span className="text-[11px] font-semibold text-tier-navy bg-tier-navy/15 py-0.5 px-2 rounded">
                             Kategori {athlete.category}
                           </span>
-                          <span className="text-xs text-ak-text-secondary">
+                          <span className="text-xs text-tier-text-secondary">
                             {athlete.totalThisYear} turneringer i år
                           </span>
                         </div>
@@ -609,15 +610,15 @@ export default function CoachAthleteTournaments() {
                       {/* Tournament count badges */}
                       <div className="flex gap-2">
                         {athlete.upcomingTournaments.length > 0 && (
-                          <div className="flex items-center gap-1 py-1 px-2.5 bg-ak-status-success/10 rounded-full">
-                            <Trophy size={14} className="text-ak-status-success" />
-                            <span className="text-xs font-semibold text-ak-status-success">
+                          <div className="flex items-center gap-1 py-1 px-2.5 bg-tier-success/10 rounded-full">
+                            <Trophy size={14} className="text-tier-success" />
+                            <span className="text-xs font-semibold text-tier-success">
                               {athlete.upcomingTournaments.length}
                             </span>
                           </div>
                         )}
                         {athlete.upcomingTournaments.length === 0 && (
-                          <span className="text-xs text-ak-text-secondary italic">
+                          <span className="text-xs text-tier-text-secondary italic">
                             Ingen kommende
                           </span>
                         )}
@@ -625,7 +626,7 @@ export default function CoachAthleteTournaments() {
 
                       <ChevronDown
                         size={20}
-                        className={`text-ak-text-secondary transition-transform ${isExpanded ? 'rotate-180' : ''}`}
+                        className={`text-tier-text-secondary transition-transform ${isExpanded ? 'rotate-180' : ''}`}
                       />
                     </div>
                   </div>
@@ -636,7 +637,7 @@ export default function CoachAthleteTournaments() {
                       {/* Upcoming tournaments */}
                       {athlete.upcomingTournaments.length > 0 && (
                         <div className="mb-5">
-                          <CardTitle className="text-[13px] leading-[18px] text-ak-text-secondary uppercase tracking-wide m-0 mb-3">
+                          <CardTitle className="text-[13px] leading-[18px] text-tier-text-secondary uppercase tracking-wide m-0 mb-3">
                             Kommende turneringer
                           </CardTitle>
                           <div className="flex flex-col gap-2">
@@ -647,21 +648,21 @@ export default function CoachAthleteTournaments() {
                               return (
                                 <div
                                   key={entry.id}
-                                  className="flex items-center justify-between p-3 px-3.5 bg-ak-surface-subtle rounded-lg"
+                                  className="flex items-center justify-between p-3 px-3.5 bg-tier-surface-base rounded-lg"
                                 >
                                   <div className="flex items-center gap-3">
                                     <Trophy size={16} className="text-amber-500" />
                                     <div>
-                                      <div className="text-sm font-medium text-ak-text-primary">
+                                      <div className="text-sm font-medium text-tier-navy">
                                         {entry.tournamentName}
                                       </div>
                                       <div className="flex items-center gap-2 mt-1">
-                                        <Calendar size={12} className="text-ak-text-secondary" />
-                                        <span className="text-xs text-ak-text-secondary">
+                                        <Calendar size={12} className="text-tier-text-secondary" />
+                                        <span className="text-xs text-tier-text-secondary">
                                           {formatShortDate(entry.date)}
                                         </span>
-                                        <MapPin size={12} className="text-ak-text-secondary" />
-                                        <span className="text-xs text-ak-text-secondary">
+                                        <MapPin size={12} className="text-tier-text-secondary" />
+                                        <span className="text-xs text-tier-text-secondary">
                                           {entry.location}
                                         </span>
                                       </div>
@@ -684,22 +685,22 @@ export default function CoachAthleteTournaments() {
                       {/* Completed tournaments (last 3) */}
                       {athlete.completedTournaments.length > 0 && (
                         <div className="mb-4">
-                          <CardTitle className="text-[13px] leading-[18px] text-ak-text-secondary uppercase tracking-wide m-0 mb-3">
+                          <CardTitle className="text-[13px] leading-[18px] text-tier-text-secondary uppercase tracking-wide m-0 mb-3">
                             Siste resultater
                           </CardTitle>
                           <div className="flex flex-col gap-2">
                             {athlete.completedTournaments.slice(0, 3).map((entry) => (
                               <div
                                 key={entry.id}
-                                className="flex items-center justify-between p-3 px-3.5 bg-ak-primary/5 rounded-lg border-l-[3px] border-l-ak-primary"
+                                className="flex items-center justify-between p-3 px-3.5 bg-tier-navy/5 rounded-lg border-l-[3px] border-l-tier-navy"
                               >
                                 <div className="flex items-center gap-3">
-                                  <Award size={16} className="text-ak-primary" />
+                                  <Award size={16} className="text-tier-navy" />
                                   <div>
-                                    <div className="text-sm font-medium text-ak-text-primary">
+                                    <div className="text-sm font-medium text-tier-navy">
                                       {entry.tournamentName}
                                     </div>
-                                    <div className="text-xs text-ak-text-secondary">
+                                    <div className="text-xs text-tier-text-secondary">
                                       {formatDate(entry.date)} • {entry.location}
                                     </div>
                                   </div>
@@ -708,10 +709,10 @@ export default function CoachAthleteTournaments() {
                                 {entry.result && (
                                   <div className="flex items-center gap-3">
                                     <div className="text-right">
-                                      <div className="text-base font-bold text-ak-primary">
+                                      <div className="text-base font-bold text-tier-navy">
                                         #{entry.result.position}
                                       </div>
-                                      <div className="text-xs text-ak-text-secondary">
+                                      <div className="text-xs text-tier-text-secondary">
                                         {entry.result.score > 0 ? '+' : ''}
                                         {entry.result.score}
                                       </div>
@@ -727,14 +728,14 @@ export default function CoachAthleteTournaments() {
                       {/* No tournaments */}
                       {athlete.upcomingTournaments.length === 0 &&
                         athlete.completedTournaments.length === 0 && (
-                          <div className="flex items-center justify-center p-6 text-ak-text-secondary text-sm">
+                          <div className="flex items-center justify-center p-6 text-tier-text-secondary text-sm">
                             <Trophy size={18} className="mr-2" />
                             Ingen turneringer registrert
                           </div>
                         )}
 
                       {/* Actions */}
-                      <div className="flex gap-3 mt-4 pt-4 border-t border-ak-surface-subtle">
+                      <div className="flex gap-3 mt-4 pt-4 border-t border-tier-surface-base">
                         <Button
                           variant="primary"
                           size="sm"

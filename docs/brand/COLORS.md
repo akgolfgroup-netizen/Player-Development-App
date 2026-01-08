@@ -1,4 +1,4 @@
-# AK Golf Color System
+# TIER Golf Color System
 
 ## Brand Colors
 

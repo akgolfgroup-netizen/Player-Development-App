@@ -1,5 +1,5 @@
 /**
- * AK Golf Academy - Session Detail View
+ * TIER Golf Academy - Session Detail View
  * Design System v3.0 - Premium Light
  *
  * Viser full økt med AK-formel hierarki og alle blokker.
@@ -31,11 +31,11 @@ import { Button } from '../../ui/primitives';
 // =============================================================================
 
 const PYRAMIDS = {
-  FYS: { label: 'Fysisk', icon: '🏋️', description: 'Styrke, power, mobilitet' },
-  TEK: { label: 'Teknikk', icon: '🎯', description: 'Bevegelsesmønster, posisjoner' },
-  SLAG: { label: 'Golfslag', icon: '⛳', description: 'Slagkvalitet, nøyaktighet' },
-  SPILL: { label: 'Spill', icon: '🏌️', description: 'Strategi, banehåndtering' },
-  TURN: { label: 'Turnering', icon: '🏆', description: 'Mental prestasjon' },
+  FYS: { label: 'Fysisk', Icon: Dumbbell, description: 'Styrke, power, mobilitet' },
+  TEK: { label: 'Teknikk', Icon: Target, description: 'Bevegelsesmønster, posisjoner' },
+  SLAG: { label: 'Golfslag', Icon: Flag, description: 'Slagkvalitet, nøyaktighet' },
+  SPILL: { label: 'Spill', Icon: Gamepad2, description: 'Strategi, banehåndtering' },
+  TURN: { label: 'Turnering', Icon: Trophy, description: 'Mental prestasjon' },
 };
 
 const L_PHASES = {
@@ -70,7 +70,7 @@ const PRESSURE_LEVELS = {
 const getPyramidClasses = (pyramid) => {
   const classes = {
     FYS: 'bg-red-500/15 text-red-600 border-red-500/30',
-    TEK: 'bg-ak-primary/15 text-ak-primary border-ak-primary/30',
+    TEK: 'bg-tier-navy/15 text-tier-navy border-tier-navy/30',
     SLAG: 'bg-emerald-500/15 text-emerald-600 border-emerald-500/30',
     SPILL: 'bg-amber-500/15 text-amber-600 border-amber-500/30',
     TURN: 'bg-purple-500/15 text-purple-600 border-purple-500/30',
@@ -80,17 +80,17 @@ const getPyramidClasses = (pyramid) => {
 
 const getLPhaseClasses = (phase) => {
   const intensity = {
-    'L-KROPP': 'bg-ak-surface-subtle text-ak-text-secondary',
-    'L-ARM': 'bg-ak-primary/10 text-ak-primary',
-    'L-KØLLE': 'bg-ak-primary/20 text-ak-primary',
-    'L-BALL': 'bg-ak-primary/30 text-ak-primary',
-    'L-AUTO': 'bg-ak-primary text-white',
+    'L-KROPP': 'bg-tier-surface-base text-tier-text-secondary',
+    'L-ARM': 'bg-tier-navy/10 text-tier-navy',
+    'L-KØLLE': 'bg-tier-navy/20 text-tier-navy',
+    'L-BALL': 'bg-tier-navy/30 text-tier-navy',
+    'L-AUTO': 'bg-tier-navy text-white',
   };
   return intensity[phase] || intensity['L-BALL'];
 };
 
 const getCsLevelClasses = (level) => {
-  if (level <= 30) return 'bg-ak-surface-subtle text-ak-text-secondary';
+  if (level <= 30) return 'bg-tier-surface-base text-tier-text-secondary';
   if (level <= 50) return 'bg-emerald-500/15 text-emerald-600';
   if (level <= 70) return 'bg-emerald-500/25 text-emerald-600';
   if (level <= 90) return 'bg-emerald-500/40 text-emerald-700';
@@ -122,9 +122,9 @@ const getPressureClasses = (pressure) => {
 
 const getStatusClasses = (status) => {
   const classes = {
-    Planlagt: 'bg-ak-surface-subtle text-ak-text-secondary',
-    Pågår: 'bg-ak-status-warning text-white',
-    Fullført: 'bg-ak-status-success text-white',
+    Planlagt: 'bg-tier-surface-base text-tier-text-secondary',
+    Pågår: 'bg-tier-warning text-white',
+    Fullført: 'bg-tier-success text-white',
   };
   return classes[status] || classes.Planlagt;
 };
@@ -151,14 +151,14 @@ function FormulaCard({ session }) {
   const pyramidInfo = PYRAMIDS[pyramid] || PYRAMIDS.TEK;
 
   return (
-    <div className="bg-ak-surface-card rounded-xl p-4 mb-4 border border-ak-border-default">
+    <div className="bg-tier-white rounded-xl p-4 mb-4 border border-tier-border-default">
       {/* Formula header */}
       <div className="flex items-center justify-between mb-3">
-        <span className="text-xs font-medium text-ak-text-tertiary uppercase tracking-wide">
+        <span className="text-xs font-medium text-tier-text-tertiary uppercase tracking-wide">
           AK-Formel
         </span>
         {session.formula && (
-          <code className="text-xs bg-ak-surface-subtle px-2 py-1 rounded font-mono text-ak-text-secondary">
+          <code className="text-xs bg-tier-surface-base px-2 py-1 rounded font-mono text-tier-text-secondary">
             {session.formula}
           </code>
         )}
@@ -167,7 +167,7 @@ function FormulaCard({ session }) {
       {/* Pyramid badge */}
       <div className="flex items-center gap-3 mb-4">
         <div className={`flex items-center gap-2 px-3 py-2 rounded-lg border ${getPyramidClasses(pyramid)}`}>
-          <span className="text-xl">{pyramidInfo.icon}</span>
+          <pyramidInfo.Icon size={20} />
           <div>
             <div className="font-semibold text-sm">{pyramidInfo.label}</div>
             <div className="text-xs opacity-75">{pyramidInfo.description}</div>
@@ -179,8 +179,8 @@ function FormulaCard({ session }) {
       <div className="grid grid-cols-2 gap-3">
         {/* L-Phase */}
         {session.lPhase && (
-          <div className="bg-ak-surface-subtle rounded-lg p-3">
-            <span className="text-xs text-ak-text-tertiary block mb-1">L-Fase</span>
+          <div className="bg-tier-surface-base rounded-lg p-3">
+            <span className="text-xs text-tier-text-tertiary block mb-1">L-Fase</span>
             <span className={`inline-flex items-center px-2 py-1 rounded text-xs font-medium ${getLPhaseClasses(session.lPhase)}`}>
               {L_PHASES[session.lPhase]?.label || session.lPhase}
             </span>
@@ -189,8 +189,8 @@ function FormulaCard({ session }) {
 
         {/* CS Level */}
         {session.csLevel !== undefined && (
-          <div className="bg-ak-surface-subtle rounded-lg p-3">
-            <span className="text-xs text-ak-text-tertiary block mb-1">Clubspeed</span>
+          <div className="bg-tier-surface-base rounded-lg p-3">
+            <span className="text-xs text-tier-text-tertiary block mb-1">Clubspeed</span>
             <span className={`inline-flex items-center px-2 py-1 rounded text-xs font-medium ${getCsLevelClasses(session.csLevel)}`}>
               CS{session.csLevel}%
             </span>
@@ -199,8 +199,8 @@ function FormulaCard({ session }) {
 
         {/* Environment */}
         {session.environment && (
-          <div className="bg-ak-surface-subtle rounded-lg p-3">
-            <span className="text-xs text-ak-text-tertiary block mb-1">Miljø</span>
+          <div className="bg-tier-surface-base rounded-lg p-3">
+            <span className="text-xs text-tier-text-tertiary block mb-1">Miljø</span>
             <span className={`inline-flex items-center px-2 py-1 rounded text-xs font-medium ${getEnvironmentClasses(session.environment)}`}>
               {session.environment} – {ENVIRONMENTS[session.environment]?.label || ''}
             </span>
@@ -209,8 +209,8 @@ function FormulaCard({ session }) {
 
         {/* Pressure */}
         {session.pressure && (
-          <div className="bg-ak-surface-subtle rounded-lg p-3">
-            <span className="text-xs text-ak-text-tertiary block mb-1">Press</span>
+          <div className="bg-tier-surface-base rounded-lg p-3">
+            <span className="text-xs text-tier-text-tertiary block mb-1">Press</span>
             <span className={`inline-flex items-center px-2 py-1 rounded text-xs font-medium ${getPressureClasses(session.pressure)}`}>
               {session.pressure} – {PRESSURE_LEVELS[session.pressure]?.label || ''}
             </span>
@@ -219,9 +219,9 @@ function FormulaCard({ session }) {
 
         {/* P-Positions */}
         {session.positionStart && (
-          <div className="bg-ak-surface-subtle rounded-lg p-3 col-span-2">
-            <span className="text-xs text-ak-text-tertiary block mb-1">P-Posisjon (MORAD)</span>
-            <span className="text-sm font-medium text-ak-text-primary">
+          <div className="bg-tier-surface-base rounded-lg p-3 col-span-2">
+            <span className="text-xs text-tier-text-tertiary block mb-1">P-Posisjon (MORAD)</span>
+            <span className="text-sm font-medium text-tier-navy">
               {session.positionStart}
               {session.positionEnd && session.positionEnd !== session.positionStart && (
                 <> → {session.positionEnd}</>
@@ -240,36 +240,36 @@ function SessionBlock({ block, index, total, expanded, onToggle, onComplete }) {
   const pyramidInfo = PYRAMIDS[pyramid] || PYRAMIDS.TEK;
 
   return (
-    <div className="bg-ak-surface-card rounded-xl shadow-sm mb-3 overflow-hidden border border-ak-border-default">
+    <div className="bg-tier-white rounded-xl shadow-sm mb-3 overflow-hidden border border-tier-border-default">
       {/* Block header */}
       <div
         onClick={() => onToggle(index)}
-        className={`flex justify-between items-center p-4 cursor-pointer hover:bg-ak-surface-subtle/50 transition-colors ${
-          expanded ? 'border-b border-ak-border-default' : ''
+        className={`flex justify-between items-center p-4 cursor-pointer hover:bg-tier-surface-base/50 transition-colors ${
+          expanded ? 'border-b border-tier-border-default' : ''
         }`}
       >
         <div className="flex items-center gap-3">
           {/* Pyramid badge mini */}
-          <div className={`w-10 h-10 rounded-lg flex items-center justify-center text-lg ${getPyramidClasses(pyramid)}`}>
-            {pyramidInfo.icon}
+          <div className={`w-10 h-10 rounded-lg flex items-center justify-center ${getPyramidClasses(pyramid)}`}>
+            <pyramidInfo.Icon size={20} />
           </div>
           <div>
-            <div className="font-semibold text-ak-text-primary text-[15px]">
+            <div className="font-semibold text-tier-navy text-[15px]">
               {block.exercise}
             </div>
-            <div className="text-xs text-ak-text-secondary">
+            <div className="text-xs text-tier-text-secondary">
               Blokk {index + 1} av {total} • {block.duration} min
             </div>
           </div>
         </div>
         <div className="flex items-center gap-2">
           {block.completed && (
-            <CheckCircle2 size={20} className="text-ak-status-success" />
+            <CheckCircle2 size={20} className="text-tier-success" />
           )}
           {expanded ? (
-            <ChevronUp size={20} className="text-ak-text-tertiary" />
+            <ChevronUp size={20} className="text-tier-text-tertiary" />
           ) : (
-            <ChevronDown size={20} className="text-ak-text-tertiary" />
+            <ChevronDown size={20} className="text-tier-text-tertiary" />
           )}
         </div>
       </div>
@@ -280,19 +280,19 @@ function SessionBlock({ block, index, total, expanded, onToggle, onComplete }) {
           {/* Focus and area */}
           <div className="grid grid-cols-2 gap-4 mb-4">
             <div>
-              <span className="text-xs text-ak-text-tertiary block mb-1">Fokus</span>
-              <span className="text-sm font-medium text-ak-text-primary">{block.focus}</span>
+              <span className="text-xs text-tier-text-tertiary block mb-1">Fokus</span>
+              <span className="text-sm font-medium text-tier-navy">{block.focus}</span>
             </div>
             <div>
-              <span className="text-xs text-ak-text-tertiary block mb-1">Treningsområde</span>
-              <span className="text-sm font-medium text-ak-text-primary">{block.trainingArea}</span>
+              <span className="text-xs text-tier-text-tertiary block mb-1">Treningsområde</span>
+              <span className="text-sm font-medium text-tier-navy">{block.trainingArea}</span>
             </div>
           </div>
 
           {/* Volume */}
           <div className="mb-4">
-            <span className="text-xs text-ak-text-tertiary block mb-1">Volum</span>
-            <span className="text-sm font-medium text-ak-text-primary">
+            <span className="text-xs text-tier-text-tertiary block mb-1">Volum</span>
+            <span className="text-sm font-medium text-tier-navy">
               {block.reps} repetisjoner
             </span>
           </div>
@@ -338,11 +338,11 @@ function SessionBlock({ block, index, total, expanded, onToggle, onComplete }) {
 
           {/* Instructions */}
           {block.instructions && (
-            <div className="bg-ak-surface-subtle rounded-lg p-3 mb-4">
-              <span className="text-xs font-medium text-ak-primary block mb-1">
+            <div className="bg-tier-surface-base rounded-lg p-3 mb-4">
+              <span className="text-xs font-medium text-tier-navy block mb-1">
                 Instruksjoner
               </span>
-              <span className="text-sm text-ak-text-primary">
+              <span className="text-sm text-tier-navy">
                 {block.instructions}
               </span>
             </div>
@@ -356,8 +356,8 @@ function SessionBlock({ block, index, total, expanded, onToggle, onComplete }) {
             }}
             className={`flex items-center justify-center gap-2 w-full p-3 rounded-lg cursor-pointer text-sm font-medium transition-colors ${
               block.completed
-                ? 'bg-ak-status-success text-white'
-                : 'bg-ak-surface-subtle text-ak-text-primary hover:bg-ak-border-default'
+                ? 'bg-tier-success text-white'
+                : 'bg-tier-surface-base text-tier-navy hover:bg-tier-border-default'
             }`}
           >
             {block.completed ? (
@@ -407,7 +407,7 @@ export default function SessionDetailView({ session, onBack, onStartSession }) {
   if (!session) {
     return (
       <div className="flex items-center justify-center min-h-[200px]">
-        <span className="text-[15px] text-ak-text-secondary">
+        <span className="text-[15px] text-tier-text-secondary">
           Ingen økt valgt
         </span>
       </div>
@@ -418,11 +418,12 @@ export default function SessionDetailView({ session, onBack, onStartSession }) {
   const totalDuration = blocks.reduce((sum, b) => sum + (b.duration || 0), 0);
 
   return (
-    <div className="bg-ak-surface-base min-h-screen">
+    <div className="bg-tier-white min-h-screen">
       {/* Header */}
       <PageHeader
         title={session.title || 'Treningsøkt'}
         subtitle={session.date}
+        helpText="Detaljert oversikt over treningsøkten med alle blokker, øvelser og metadata. Se AK-formel hierarki (Pyramide, L-fase, CS-nivå), miljø og press for hver blokk."
         onBack={onBack}
         actions={
           <Button variant="ghost" size="sm">
@@ -436,21 +437,21 @@ export default function SessionDetailView({ session, onBack, onStartSession }) {
         <FormulaCard session={session} />
 
         {/* Session meta info */}
-        <div className="bg-ak-surface-card rounded-xl p-4 mb-4 border border-ak-border-default">
+        <div className="bg-tier-white rounded-xl p-4 mb-4 border border-tier-border-default">
           <div className="grid grid-cols-2 gap-4">
             <div className="flex items-center gap-2">
-              <Calendar size={16} className="text-ak-text-tertiary" />
-              <span className="text-sm text-ak-text-primary">{session.date}</span>
+              <Calendar size={16} className="text-tier-text-tertiary" />
+              <span className="text-sm text-tier-navy">{session.date}</span>
             </div>
             <div className="flex items-center gap-2">
-              <Clock size={16} className="text-ak-text-tertiary" />
-              <span className="text-sm text-ak-text-primary">
+              <Clock size={16} className="text-tier-text-tertiary" />
+              <span className="text-sm text-tier-navy">
                 {session.startTime} – {session.endTime}
               </span>
             </div>
             <div className="flex items-center gap-2">
-              <MapPin size={16} className="text-ak-text-tertiary" />
-              <span className="text-sm text-ak-text-primary">{session.location}</span>
+              <MapPin size={16} className="text-tier-text-tertiary" />
+              <span className="text-sm text-tier-navy">{session.location}</span>
             </div>
             <div className="flex items-center gap-2">
               <span className={`inline-flex items-center py-1 px-2.5 rounded-full text-xs font-semibold ${getStatusClasses(session.status)}`}>
@@ -461,22 +462,22 @@ export default function SessionDetailView({ session, onBack, onStartSession }) {
         </div>
 
         {/* Progress indicator */}
-        <div className="bg-ak-surface-card rounded-xl p-4 mb-4 border border-ak-border-default">
+        <div className="bg-tier-white rounded-xl p-4 mb-4 border border-tier-border-default">
           <div className="flex items-center justify-between mb-2">
-            <span className="text-sm font-medium text-ak-text-primary">
+            <span className="text-sm font-medium text-tier-navy">
               Fremgang
             </span>
-            <span className="text-sm text-ak-text-secondary">
+            <span className="text-sm text-tier-text-secondary">
               {completedCount} av {blocks.length} blokker
             </span>
           </div>
-          <div className="h-2 bg-ak-surface-subtle rounded-full overflow-hidden">
+          <div className="h-2 bg-tier-surface-base rounded-full overflow-hidden">
             <div
-              className="h-full bg-ak-status-success rounded-full transition-all duration-300"
+              className="h-full bg-tier-success rounded-full transition-all duration-300"
               style={{ width: `${blocks.length > 0 ? (completedCount / blocks.length) * 100 : 0}%` }}
             />
           </div>
-          <div className="flex justify-between mt-2 text-xs text-ak-text-tertiary">
+          <div className="flex justify-between mt-2 text-xs text-tier-text-tertiary">
             <span>{totalDuration} min totalt</span>
             <span>{blocks.length} blokker</span>
           </div>
@@ -484,7 +485,7 @@ export default function SessionDetailView({ session, onBack, onStartSession }) {
 
         {/* Blocks section */}
         <div className="mb-4">
-          <h3 className="text-sm font-semibold text-ak-text-primary mb-3 flex items-center gap-2">
+          <h3 className="text-sm font-semibold text-tier-navy mb-3 flex items-center gap-2">
             <Target size={16} />
             Treningsblokker
           </h3>
@@ -503,15 +504,15 @@ export default function SessionDetailView({ session, onBack, onStartSession }) {
         </div>
 
         {/* Notes */}
-        <div className="bg-ak-surface-card rounded-xl p-4 mb-4 border border-ak-border-default">
+        <div className="bg-tier-white rounded-xl p-4 mb-4 border border-tier-border-default">
           <div className="flex items-center gap-2 mb-2">
-            <span className="text-sm font-medium text-ak-text-primary">
+            <span className="text-sm font-medium text-tier-navy">
               Notater
             </span>
           </div>
           <textarea
             placeholder="Legg til notater fra økten..."
-            className="w-full min-h-[80px] p-3 bg-ak-surface-subtle border border-ak-border-default rounded-lg resize-y text-sm text-ak-text-primary focus:outline-none focus:ring-2 focus:ring-ak-primary/30"
+            className="w-full min-h-[80px] p-3 bg-tier-surface-base border border-tier-border-default rounded-lg resize-y text-sm text-tier-navy focus:outline-none focus:ring-2 focus:ring-tier-navy/30"
           />
         </div>
 
@@ -531,7 +532,7 @@ export default function SessionDetailView({ session, onBack, onStartSession }) {
             <Button
               variant="primary"
               onClick={handleEvaluate}
-              className="w-full bg-ak-status-success hover:bg-ak-status-success/90"
+              className="w-full bg-tier-success hover:bg-tier-success/90"
             >
               Evaluer økt
             </Button>

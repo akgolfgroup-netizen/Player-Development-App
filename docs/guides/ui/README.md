@@ -7,7 +7,7 @@
 
 ## 📋 OVERSIKT
 
-Dette er den komplette UI-designdokumentasjonen for AK Golf IUP-systemet. Designet dekker alle plattformer (mobil, nettbrett, desktop) og er klart for direkte implementering.
+Dette er den komplette UI-designdokumentasjonen for TIER Golf IUP-systemet. Designet dekker alle plattformer (mobil, nettbrett, desktop) og er klart for direkte implementering.
 
 ---
 
@@ -343,8 +343,8 @@ export const tokens = {
 
 ## 📞 KONTAKT
 
-**Prosjekt:** AK Golf Academy × Team Norway Golf - IUP System
-**Eier:** Anders Knutsen - AK Golf Academy
+**Prosjekt:** TIER Golf × Team Norway Golf - IUP System
+**Eier:** Anders Knutsen - TIER Golf
 **Design versjon:** 2.1 (Blue Palette 01)
 **Dato:** 17. desember 2025
 

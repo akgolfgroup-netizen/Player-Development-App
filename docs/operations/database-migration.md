@@ -2,7 +2,7 @@
 
 ## Overview
 
-This runbook provides step-by-step procedures for safely executing database migrations in the IUP Golf Academy platform.
+This runbook provides step-by-step procedures for safely executing database migrations in the IUP Golf platform.
 
 ## Table of Contents
 

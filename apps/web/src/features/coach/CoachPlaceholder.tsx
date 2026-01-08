@@ -7,7 +7,7 @@
 import React from 'react';
 import { ArrowLeft, Construction } from 'lucide-react';
 import { useNavigate } from 'react-router-dom';
-import { PageTitle } from '../../components/typography';
+import { PageTitle } from '../../components/typography/Headings';
 
 interface CoachPlaceholderProps {
   title: string;
@@ -22,22 +22,22 @@ export default function CoachPlaceholder({ title, description }: CoachPlaceholde
       {/* Back button */}
       <button
         onClick={() => navigate(-1)}
-        className="flex items-center gap-2 text-ak-text-secondary hover:text-ak-text-primary transition-colors mb-8 mx-auto"
+        className="flex items-center gap-2 text-tier-text-secondary hover:text-tier-navy transition-colors mb-8 mx-auto"
       >
         <ArrowLeft size={18} />
         <span>Tilbake</span>
       </button>
 
       {/* Icon */}
-      <div className="w-20 h-20 rounded-2xl bg-ak-surface-subtle flex items-center justify-center mx-auto mb-6">
-        <Construction size={40} className="text-ak-text-tertiary" />
+      <div className="w-20 h-20 rounded-2xl bg-tier-surface-base flex items-center justify-center mx-auto mb-6">
+        <Construction size={40} className="text-tier-text-tertiary" />
       </div>
 
       {/* Title */}
       <PageTitle className="!mb-3">{title}</PageTitle>
 
       {/* Description */}
-      <p className="text-ak-text-secondary mb-6">
+      <p className="text-tier-text-secondary mb-6">
         {description || 'Denne siden er under utvikling og vil være tilgjengelig snart.'}
       </p>
 

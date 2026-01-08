@@ -1,5 +1,5 @@
 /**
- * AK Golf Academy - Turneringsevaluering Container
+ * TIER Golf Academy - Turneringsevaluering Container
  * Design System v3.0 - Premium Light
  *
  * Tournament evaluations with stats and performance tracking.
@@ -167,8 +167,8 @@ const RatingStars = ({ rating, size = 14 }) => (
       <Star
         key={star}
         size={size}
-        fill={star <= rating ? '#f59e0b' : 'none'}
-        className={star <= rating ? 'text-amber-500' : 'text-ak-border-default'}
+        fill={star <= rating ? 'rgb(var(--tier-gold))' : 'none'}
+        className={star <= rating ? 'text-tier-gold' : 'text-tier-border-default'}
       />
     ))}
   </div>
@@ -185,19 +185,19 @@ const TournamentEvaluationCard = ({ evaluation, onClick }) => {
   return (
     <div
       onClick={() => onClick(evaluation)}
-      className={`bg-ak-surface-base rounded-2xl p-[18px] cursor-pointer transition-all shadow-sm hover:-translate-y-0.5 hover:shadow-lg ${
+      className={`bg-tier-white rounded-2xl p-[18px] cursor-pointer transition-all shadow-sm hover:-translate-y-0.5 hover:shadow-lg ${
         isWin ? 'border-2 border-amber-500' : 'border-2 border-transparent'
       }`}
     >
       <div className="flex items-start gap-4">
         {/* Position Badge */}
         <div className={`w-[50px] h-[50px] rounded-xl flex items-center justify-center flex-shrink-0 ${
-          isTopThree ? 'bg-amber-500/15' : 'bg-ak-surface-subtle'
+          isTopThree ? 'bg-amber-500/15' : 'bg-tier-surface-base'
         }`}>
           {isTopThree ? (
             <Award size={24} className="text-amber-500" />
           ) : (
-            <span className="text-lg font-bold text-ak-text-primary">
+            <span className="text-lg font-bold text-tier-navy">
               {evaluation.position}
             </span>
           )}
@@ -207,10 +207,10 @@ const TournamentEvaluationCard = ({ evaluation, onClick }) => {
           {/* Header */}
           <div className="flex items-start justify-between mb-2">
             <div>
-              <SubSectionTitle className="text-base font-semibold text-ak-text-primary m-0">
+              <SubSectionTitle className="text-base font-semibold text-tier-navy m-0">
                 {evaluation.tournamentName}
               </SubSectionTitle>
-              <div className="flex items-center gap-3 mt-1 text-xs text-ak-text-secondary">
+              <div className="flex items-center gap-3 mt-1 text-xs text-tier-text-secondary">
                 <span className="flex items-center gap-1">
                   <Calendar size={12} />
                   {formatDate(evaluation.date)}
@@ -226,21 +226,21 @@ const TournamentEvaluationCard = ({ evaluation, onClick }) => {
 
           {/* Score Info */}
           <div className="flex items-center gap-3 mb-3">
-            <div className="py-2 px-3 bg-ak-surface-subtle rounded-lg">
-              <div className="text-[11px] text-ak-text-secondary">Plassering</div>
-              <div className="text-base font-bold text-ak-text-primary">
+            <div className="py-2 px-3 bg-tier-surface-base rounded-lg">
+              <div className="text-[11px] text-tier-text-secondary">Plassering</div>
+              <div className="text-base font-bold text-tier-navy">
                 {evaluation.position}/{evaluation.field}
               </div>
             </div>
-            <div className="py-2 px-3 bg-ak-surface-subtle rounded-lg">
-              <div className="text-[11px] text-ak-text-secondary">Score</div>
-              <div className="text-base font-bold text-ak-text-primary">
+            <div className="py-2 px-3 bg-tier-surface-base rounded-lg">
+              <div className="text-[11px] text-tier-text-secondary">Score</div>
+              <div className="text-base font-bold text-tier-navy">
                 {evaluation.total} ({evaluation.toPar})
               </div>
             </div>
-            <div className="py-2 px-3 bg-ak-surface-subtle rounded-lg">
-              <div className="text-[11px] text-ak-text-secondary">Runder</div>
-              <div className="text-sm font-semibold text-ak-text-primary">
+            <div className="py-2 px-3 bg-tier-surface-base rounded-lg">
+              <div className="text-[11px] text-tier-text-secondary">Runder</div>
+              <div className="text-sm font-semibold text-tier-navy">
                 {evaluation.rounds.join(' - ')}
               </div>
             </div>
@@ -249,16 +249,16 @@ const TournamentEvaluationCard = ({ evaluation, onClick }) => {
           {/* Rating Breakdown */}
           <div className="flex gap-4 mb-3">
             <div className="flex items-center gap-1.5">
-              <Target size={14} className="text-ak-primary" />
-              <span className="text-xs text-ak-text-secondary">Teknikk:</span>
-              <span className="text-xs font-semibold text-ak-text-primary">
+              <Target size={14} className="text-tier-navy" />
+              <span className="text-xs text-tier-text-secondary">Teknikk:</span>
+              <span className="text-xs font-semibold text-tier-navy">
                 {evaluation.technicalRating}/5
               </span>
             </div>
             <div className="flex items-center gap-1.5">
               <Star size={14} className="text-amber-500" />
-              <span className="text-xs text-ak-text-secondary">Mental:</span>
-              <span className="text-xs font-semibold text-ak-text-primary">
+              <span className="text-xs text-tier-text-secondary">Mental:</span>
+              <span className="text-xs font-semibold text-tier-navy">
                 {evaluation.mentalRating}/5
               </span>
             </div>
@@ -269,7 +269,7 @@ const TournamentEvaluationCard = ({ evaluation, onClick }) => {
             {evaluation.strengths.slice(0, 2).map((strength, idx) => (
               <span
                 key={idx}
-                className="text-[11px] text-ak-status-success bg-ak-status-success/10 py-1 px-2 rounded-md flex items-center gap-1"
+                className="text-[11px] text-tier-success bg-tier-success/10 py-1 px-2 rounded-md flex items-center gap-1"
               >
                 <CheckCircle size={10} />
                 {strength}
@@ -278,7 +278,7 @@ const TournamentEvaluationCard = ({ evaluation, onClick }) => {
             {evaluation.weaknesses.slice(0, 1).map((weakness, idx) => (
               <span
                 key={idx}
-                className="text-[11px] text-ak-status-error bg-ak-status-error/10 py-1 px-2 rounded-md flex items-center gap-1"
+                className="text-[11px] text-tier-error bg-tier-error/10 py-1 px-2 rounded-md flex items-center gap-1"
               >
                 <AlertCircle size={10} />
                 {weakness}
@@ -287,7 +287,7 @@ const TournamentEvaluationCard = ({ evaluation, onClick }) => {
           </div>
         </div>
 
-        <ChevronRight size={20} className="text-ak-text-secondary flex-shrink-0" />
+        <ChevronRight size={20} className="text-tier-text-secondary flex-shrink-0" />
       </div>
     </div>
   );
@@ -299,44 +299,44 @@ const TournamentEvaluationCard = ({ evaluation, onClick }) => {
 
 const StatsOverview = ({ stats }) => (
   <div className="grid grid-cols-[repeat(auto-fit,minmax(100px,1fr))] gap-2.5 mb-6">
-    <div className="bg-ak-surface-base rounded-xl p-3.5 text-center">
-      <div className="text-[22px] font-bold text-ak-primary">
+    <div className="bg-tier-white rounded-xl p-3.5 text-center">
+      <div className="text-[22px] font-bold text-tier-navy">
         {stats.tournaments}
       </div>
-      <div className="text-[11px] text-ak-text-secondary">Turneringer</div>
+      <div className="text-[11px] text-tier-text-secondary">Turneringer</div>
     </div>
-    <div className="bg-ak-surface-base rounded-xl p-3.5 text-center">
+    <div className="bg-tier-white rounded-xl p-3.5 text-center">
       <div className="text-[22px] font-bold text-amber-500">
         {stats.wins}
       </div>
-      <div className="text-[11px] text-ak-text-secondary">Seiere</div>
+      <div className="text-[11px] text-tier-text-secondary">Seiere</div>
     </div>
-    <div className="bg-ak-surface-base rounded-xl p-3.5 text-center">
+    <div className="bg-tier-white rounded-xl p-3.5 text-center">
       <div className="text-[22px] font-bold text-amber-500">
         {stats.topThrees}
       </div>
-      <div className="text-[11px] text-ak-text-secondary">Topp 3</div>
+      <div className="text-[11px] text-tier-text-secondary">Topp 3</div>
     </div>
-    <div className="bg-ak-surface-base rounded-xl p-3.5 text-center">
-      <div className="text-[22px] font-bold text-ak-status-success">
+    <div className="bg-tier-white rounded-xl p-3.5 text-center">
+      <div className="text-[22px] font-bold text-tier-success">
         {stats.topTens}
       </div>
-      <div className="text-[11px] text-ak-text-secondary">Topp 10</div>
+      <div className="text-[11px] text-tier-text-secondary">Topp 10</div>
     </div>
-    <div className="bg-ak-surface-base rounded-xl p-3.5 text-center">
-      <div className="text-[22px] font-bold text-ak-text-primary">
+    <div className="bg-tier-white rounded-xl p-3.5 text-center">
+      <div className="text-[22px] font-bold text-tier-navy">
         {stats.avgPosition}
       </div>
-      <div className="text-[11px] text-ak-text-secondary">Gj.sn. plass</div>
+      <div className="text-[11px] text-tier-text-secondary">Gj.sn. plass</div>
     </div>
-    <div className="bg-ak-surface-base rounded-xl p-3.5 text-center">
+    <div className="bg-tier-white rounded-xl p-3.5 text-center">
       <div className="flex items-center justify-center gap-0.5">
         <span className="text-[22px] font-bold text-amber-500">
           {stats.avgRating}
         </span>
-        <Star size={14} fill="#f59e0b" className="text-amber-500" />
+        <Star size={14} fill="rgb(var(--tier-gold))" className="text-tier-gold" />
       </div>
-      <div className="text-[11px] text-ak-text-secondary">Gj.sn. rating</div>
+      <div className="text-[11px] text-tier-text-secondary">Gj.sn. rating</div>
     </div>
   </div>
 );
@@ -356,10 +356,11 @@ const TurneringsevalueringContainer = () => {
   });
 
   return (
-    <div className="min-h-screen bg-ak-surface-subtle">
+    <div className="min-h-screen bg-tier-surface-base">
       <PageHeader
         title="Turneringsevalueringer"
         subtitle="Evaluering av turneringsprestasjoner"
+        helpText="Dine turneringsevalueringer med mental, fysisk og teknisk vurdering. Se styrker, svakheter og nøkkelmomenter fra hver turnering for å forbedre fremtidige prestasjoner."
       />
 
       <div className="p-4 px-6 pb-6 max-w-[1000px] mx-auto">
@@ -369,7 +370,7 @@ const TurneringsevalueringContainer = () => {
         {/* Filters */}
         <div className="flex items-center justify-between mb-5 flex-wrap gap-3">
           <div className="flex items-center gap-2">
-            <span className="text-[13px] text-ak-text-secondary">Sorter:</span>
+            <span className="text-[13px] text-tier-text-secondary">Sorter:</span>
             {[
               { key: 'date', label: 'Dato' },
               { key: 'rating', label: 'Rating' },
@@ -380,8 +381,8 @@ const TurneringsevalueringContainer = () => {
                 onClick={() => setSortBy(option.key)}
                 className={`py-1.5 px-3 rounded-md border-none text-xs font-medium cursor-pointer transition-colors ${
                   sortBy === option.key
-                    ? 'bg-ak-primary text-white'
-                    : 'bg-ak-surface-base text-ak-text-primary hover:bg-ak-surface-subtle'
+                    ? 'bg-tier-navy text-white'
+                    : 'bg-tier-white text-tier-navy hover:bg-tier-surface-base'
                 }`}
               >
                 {option.label}

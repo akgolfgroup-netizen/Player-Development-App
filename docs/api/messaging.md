@@ -1,8 +1,8 @@
-# AK Golf Academy - Messaging & Notifications API
+# TIER Golf - Messaging & Notifications API
 
 ## Oversikt
 
-Denne dokumentasjonen beskriver API-endepunktene for kommunikasjonsplattformen i AK Golf Academy.
+Denne dokumentasjonen beskriver API-endepunktene for kommunikasjonsplattformen i TIER Golf.
 
 ---
 

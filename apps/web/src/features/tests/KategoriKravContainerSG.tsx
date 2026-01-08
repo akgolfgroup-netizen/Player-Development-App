@@ -13,7 +13,7 @@ import {
   TrendingUp,
   BarChart3,
 } from 'lucide-react';
-import { SectionTitle, SubSectionTitle, CardTitle } from '../../components/typography';
+import { SectionTitle, SubSectionTitle, CardTitle } from '../../components/typography/Headings';
 import Card from '../../ui/primitives/Card';
 import Badge from '../../ui/primitives/Badge.primitive';
 import Button from '../../ui/primitives/Button';

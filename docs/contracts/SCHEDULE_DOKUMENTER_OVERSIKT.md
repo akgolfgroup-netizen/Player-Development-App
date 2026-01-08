@@ -22,7 +22,7 @@
 ## SCHEDULE A: SERVICE DESCRIPTION
 
 ### Formål
-Beskriver hva IUP Golf Academy er, hva plattformen gjør, og hvilke funksjoner som er tilgjengelige.
+Beskriver hva IUP Golf er, hva plattformen gjør, og hvilke funksjoner som er tilgjengelige.
 
 ### Nøkkelinnhold
 

@@ -5,7 +5,7 @@ import { useToast } from '../../components/shadcn/use-toast';
 import Card from '../../ui/primitives/Card';
 import StateCard from '../../ui/composites/StateCard';
 import StatsGridTemplate from '../../ui/templates/StatsGridTemplate';
-import { PageTitle, SectionTitle, SubSectionTitle } from '../../components/typography';
+import { PageTitle, SectionTitle, SubSectionTitle } from '../../components/typography/Headings';
 import { Users, TrendingUp, Target, Award, BarChart3, Activity } from 'lucide-react';
 
 interface TeamAnalytics {
@@ -78,84 +78,84 @@ export const TeamAnalyticsDashboard: React.FC = () => {
   }
 
   const categoryColors: Record<string, string> = {
-    A: 'bg-ak-success',
-    B: 'bg-ak-primary',
-    C: 'bg-ak-warning',
-    D: 'bg-ak-text-secondary',
+    A: 'bg-tier-success',
+    B: 'bg-tier-navy',
+    C: 'bg-tier-warning',
+    D: 'bg-tier-text-secondary',
   };
 
   return (
     <div className="p-6 max-w-7xl mx-auto">
       <div className="mb-6">
         <PageTitle>Team-analyse</PageTitle>
-        <p className="text-ak-text-secondary mt-1">Oversikt over lagets prestasjoner og fremgang</p>
+        <p className="text-tier-text-secondary mt-1">Oversikt over lagets prestasjoner og fremgang</p>
       </div>
 
       {/* Summary Stats */}
       <div className="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-6 gap-4 mb-6">
         <Card variant="default" padding="md">
           <div className="flex items-center gap-3">
-            <div className="w-10 h-10 rounded-lg bg-ak-primary/10 flex items-center justify-center">
-              <Users size={20} className="text-ak-primary" />
+            <div className="w-10 h-10 rounded-lg bg-tier-navy/10 flex items-center justify-center">
+              <Users size={20} className="text-tier-navy" />
             </div>
             <div>
-              <p className="text-2xl font-bold text-ak-text-primary">{analytics.summary.totalPlayers}</p>
-              <p className="text-xs text-ak-text-secondary">Totalt spillere</p>
+              <p className="text-2xl font-bold text-tier-navy">{analytics.summary.totalPlayers}</p>
+              <p className="text-xs text-tier-text-secondary">Totalt spillere</p>
             </div>
           </div>
         </Card>
         <Card variant="default" padding="md">
           <div className="flex items-center gap-3">
-            <div className="w-10 h-10 rounded-lg bg-ak-success/10 flex items-center justify-center">
-              <Activity size={20} className="text-ak-success" />
+            <div className="w-10 h-10 rounded-lg bg-tier-success/10 flex items-center justify-center">
+              <Activity size={20} className="text-tier-success" />
             </div>
             <div>
-              <p className="text-2xl font-bold text-ak-text-primary">{analytics.summary.activePlayers}</p>
-              <p className="text-xs text-ak-text-secondary">Aktive</p>
+              <p className="text-2xl font-bold text-tier-navy">{analytics.summary.activePlayers}</p>
+              <p className="text-xs text-tier-text-secondary">Aktive</p>
             </div>
           </div>
         </Card>
         <Card variant="default" padding="md">
           <div className="flex items-center gap-3">
-            <div className="w-10 h-10 rounded-lg bg-ak-warning/10 flex items-center justify-center">
-              <Target size={20} className="text-ak-warning" />
+            <div className="w-10 h-10 rounded-lg bg-tier-warning/10 flex items-center justify-center">
+              <Target size={20} className="text-tier-warning" />
             </div>
             <div>
-              <p className="text-2xl font-bold text-ak-text-primary">{analytics.summary.averageHandicap?.toFixed(1) || '-'}</p>
-              <p className="text-xs text-ak-text-secondary">Snitt HCP</p>
+              <p className="text-2xl font-bold text-tier-navy">{analytics.summary.averageHandicap?.toFixed(1) || '-'}</p>
+              <p className="text-xs text-tier-text-secondary">Snitt HCP</p>
             </div>
           </div>
         </Card>
         <Card variant="default" padding="md">
           <div className="flex items-center gap-3">
-            <div className="w-10 h-10 rounded-lg bg-ak-primary/10 flex items-center justify-center">
-              <BarChart3 size={20} className="text-ak-primary" />
+            <div className="w-10 h-10 rounded-lg bg-tier-navy/10 flex items-center justify-center">
+              <BarChart3 size={20} className="text-tier-navy" />
             </div>
             <div>
-              <p className="text-2xl font-bold text-ak-text-primary">{analytics.summary.sessionsThisMonth}</p>
-              <p className="text-xs text-ak-text-secondary">Okter/mnd</p>
+              <p className="text-2xl font-bold text-tier-navy">{analytics.summary.sessionsThisMonth}</p>
+              <p className="text-xs text-tier-text-secondary">Okter/mnd</p>
             </div>
           </div>
         </Card>
         <Card variant="default" padding="md">
           <div className="flex items-center gap-3">
-            <div className="w-10 h-10 rounded-lg bg-ak-success/10 flex items-center justify-center">
-              <TrendingUp size={20} className="text-ak-success" />
+            <div className="w-10 h-10 rounded-lg bg-tier-success/10 flex items-center justify-center">
+              <TrendingUp size={20} className="text-tier-success" />
             </div>
             <div>
-              <p className="text-2xl font-bold text-ak-text-primary">{analytics.progressMetrics.improvedPlayers}</p>
-              <p className="text-xs text-ak-text-secondary">Forbedret</p>
+              <p className="text-2xl font-bold text-tier-navy">{analytics.progressMetrics.improvedPlayers}</p>
+              <p className="text-xs text-tier-text-secondary">Forbedret</p>
             </div>
           </div>
         </Card>
         <Card variant="default" padding="md">
           <div className="flex items-center gap-3">
-            <div className="w-10 h-10 rounded-lg bg-ak-error/10 flex items-center justify-center">
-              <Award size={20} className="text-ak-error" />
+            <div className="w-10 h-10 rounded-lg bg-tier-error/10 flex items-center justify-center">
+              <Award size={20} className="text-tier-error" />
             </div>
             <div>
-              <p className="text-2xl font-bold text-ak-text-primary">{analytics.progressMetrics.stalledPlayers}</p>
-              <p className="text-xs text-ak-text-secondary">Stagnert</p>
+              <p className="text-2xl font-bold text-tier-navy">{analytics.progressMetrics.stalledPlayers}</p>
+              <p className="text-xs text-tier-text-secondary">Stagnert</p>
             </div>
           </div>
         </Card>
@@ -172,12 +172,12 @@ export const TeamAnalyticsDashboard: React.FC = () => {
               return (
                 <div key={category}>
                   <div className="flex justify-between mb-1">
-                    <span className="font-medium text-ak-text-primary">Kategori {category}</span>
-                    <span className="text-ak-text-secondary">{count} spillere ({percentage.toFixed(0)}%)</span>
+                    <span className="font-medium text-tier-navy">Kategori {category}</span>
+                    <span className="text-tier-text-secondary">{count} spillere ({percentage.toFixed(0)}%)</span>
                   </div>
-                  <div className="h-3 bg-ak-surface-subtle rounded-full overflow-hidden">
+                  <div className="h-3 bg-tier-surface-base rounded-full overflow-hidden">
                     <div
-                      className={`h-full ${categoryColors[category] || 'bg-ak-primary'} rounded-full transition-all`}
+                      className={`h-full ${categoryColors[category] || 'bg-tier-navy'} rounded-full transition-all`}
                       style={{ width: `${percentage}%` }}
                     />
                   </div>
@@ -207,23 +207,23 @@ export const TeamAnalyticsDashboard: React.FC = () => {
           {analytics.topPerformers?.length > 0 ? (
             <div className="space-y-3">
               {analytics.topPerformers.slice(0, 5).map((player, index) => (
-                <div key={player.id} className="flex items-center gap-3 p-3 bg-ak-surface-subtle rounded-lg">
-                  <div className="w-8 h-8 rounded-full bg-ak-success text-white flex items-center justify-center font-bold text-sm">
+                <div key={player.id} className="flex items-center gap-3 p-3 bg-tier-surface-base rounded-lg">
+                  <div className="w-8 h-8 rounded-full bg-tier-success text-white flex items-center justify-center font-bold text-sm">
                     {index + 1}
                   </div>
                   <div className="flex-1">
-                    <p className="font-medium text-ak-text-primary">{player.name}</p>
-                    <p className="text-xs text-ak-text-secondary">Kat. {player.category}</p>
+                    <p className="font-medium text-tier-navy">{player.name}</p>
+                    <p className="text-xs text-tier-text-secondary">Kat. {player.category}</p>
                   </div>
                   <div className="text-right">
-                    <p className="font-semibold text-ak-success">+{player.improvement.toFixed(1)}%</p>
-                    <p className="text-xs text-ak-text-secondary">forbedring</p>
+                    <p className="font-semibold text-tier-success">+{player.improvement.toFixed(1)}%</p>
+                    <p className="text-xs text-tier-text-secondary">forbedring</p>
                   </div>
                 </div>
               ))}
             </div>
           ) : (
-            <p className="text-ak-text-secondary text-center py-4">Ingen data enna</p>
+            <p className="text-tier-text-secondary text-center py-4">Ingen data enna</p>
           )}
         </Card>
 
@@ -233,20 +233,20 @@ export const TeamAnalyticsDashboard: React.FC = () => {
           {analytics.needsAttention?.length > 0 ? (
             <div className="space-y-3">
               {analytics.needsAttention.slice(0, 5).map(player => (
-                <div key={player.id} className="flex items-center gap-3 p-3 bg-ak-error/5 rounded-lg border-l-3 border-ak-error">
+                <div key={player.id} className="flex items-center gap-3 p-3 bg-tier-error/5 rounded-lg border-l-3 border-tier-error">
                   <div className="flex-1">
-                    <p className="font-medium text-ak-text-primary">{player.name}</p>
-                    <p className="text-xs text-ak-text-secondary">{player.reason}</p>
+                    <p className="font-medium text-tier-navy">{player.name}</p>
+                    <p className="text-xs text-tier-text-secondary">{player.reason}</p>
                   </div>
                   <div className="text-right">
-                    <p className="font-semibold text-ak-error">{player.daysInactive} dager</p>
-                    <p className="text-xs text-ak-text-secondary">inaktiv</p>
+                    <p className="font-semibold text-tier-error">{player.daysInactive} dager</p>
+                    <p className="text-xs text-tier-text-secondary">inaktiv</p>
                   </div>
                 </div>
               ))}
             </div>
           ) : (
-            <p className="text-ak-text-secondary text-center py-4">Alle spillere er aktive</p>
+            <p className="text-tier-text-secondary text-center py-4">Alle spillere er aktive</p>
           )}
         </Card>
       </div>

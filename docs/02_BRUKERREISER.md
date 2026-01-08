@@ -1,4 +1,4 @@
-# IUP Golf Academy - Brukerreiser
+# IUP Golf - Brukerreiser
 
 ## Innholdsfortegnelse
 1. [Spiller Brukerreise](#spiller-brukerreise)

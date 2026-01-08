@@ -23,7 +23,7 @@ import {
 import Card from '../../ui/primitives/Card';
 import Badge from '../../ui/primitives/Badge.primitive';
 import Button from '../../ui/primitives/Button';
-import { SectionTitle, SubSectionTitle } from '../../components/typography';
+import { SectionTitle, SubSectionTitle } from '../../components/typography/Headings';
 import useTestResults, { TestResult, TestCategory } from '../../hooks/useTestResults';
 
 // ============================================================================
@@ -38,11 +38,11 @@ interface ComparisonData {
 
 const CHART_COLORS = [
   'var(--accent)',
-  'var(--success)',
-  'var(--warning)',
-  'var(--error)',
-  '#8b5cf6',
-  '#ec4899',
+  'var(--status-success)',
+  'var(--status-warning)',
+  'var(--status-error)',
+  'rgb(var(--category-j))',
+  'rgb(var(--status-error))',
 ];
 
 // ============================================================================
@@ -211,7 +211,7 @@ const ComparisonChart: React.FC<ComparisonChartProps> = ({ data }) => {
           y1={chartData.getY(100)}
           x2="100"
           y2={chartData.getY(100)}
-          stroke="var(--success)"
+          stroke="var(--status-success)"
           strokeWidth="0.3"
           strokeDasharray="2,2"
         />
@@ -356,7 +356,7 @@ const ComparisonTable: React.FC<ComparisonTableProps> = ({ data }) => {
                         style={{
                           ...styles.miniProgressFill,
                           width: `${Math.min(100, progress)}%`,
-                          backgroundColor: progress >= 100 ? 'var(--success)' : d.color,
+                          backgroundColor: progress >= 100 ? 'var(--status-success)' : d.color,
                         }}
                       />
                     </div>
@@ -367,13 +367,13 @@ const ComparisonTable: React.FC<ComparisonTableProps> = ({ data }) => {
                   <div style={styles.trendCell}>
                     {d.test.trend === 'improving' ? (
                       <>
-                        <TrendingUp size={14} color="var(--success)" />
-                        <span style={{ color: 'var(--success)' }}>+{d.test.trendPercent}%</span>
+                        <TrendingUp size={14} color="var(--status-success)" />
+                        <span style={{ color: 'var(--status-success)' }}>+{d.test.trendPercent}%</span>
                       </>
                     ) : d.test.trend === 'declining' ? (
                       <>
-                        <TrendingDown size={14} color="var(--error)" />
-                        <span style={{ color: 'var(--error)' }}>-{d.test.trendPercent}%</span>
+                        <TrendingDown size={14} color="var(--status-error)" />
+                        <span style={{ color: 'var(--status-error)' }}>-{d.test.trendPercent}%</span>
                       </>
                     ) : (
                       <>

@@ -1,4 +1,4 @@
-# IUP Golf Academy
+# IUP Golf
 ## Komplett Digital Treningsplattform for Junior Golf
 
 **Presentasjon for Partnere**
@@ -277,7 +277,7 @@ En **enterprise-grade treningsplattform** spesifikt designet for junior golftren
 
 ## Oppsummering
 
-**IUP Golf Academy** er en komplett, produksjonsklar plattform som gir:
+**IUP Golf** er en komplett, produksjonsklar plattform som gir:
 
 1. **Spillere** - Strukturert utvikling med motiverende gamification
 2. **Trenere** - Kraftige verktøy for analyse og oppfølging

@@ -26,21 +26,21 @@ const getStatusBadge = (status, waitlistPosition) => {
       return {
         label: 'Bekreftet',
         icon: CheckCircle,
-        color: 'var(--success)',
+        color: 'var(--status-success)',
         bg: 'rgba(var(--success-rgb), 0.15)',
       };
     case 'registered':
       return {
         label: 'Registrert',
         icon: CheckCircle,
-        color: 'var(--success)',
+        color: 'var(--status-success)',
         bg: 'rgba(var(--success-rgb), 0.15)',
       };
     case 'pending':
       return {
         label: 'Venter på starttid',
         icon: Clock,
-        color: 'var(--warning)',
+        color: 'var(--status-warning)',
         bg: 'rgba(var(--warning-rgb), 0.15)',
       };
     case 'waitlist':
@@ -54,7 +54,7 @@ const getStatusBadge = (status, waitlistPosition) => {
       return {
         label: 'Avmeldt',
         icon: XCircle,
-        color: 'var(--error)',
+        color: 'var(--status-error)',
         bg: 'rgba(var(--error-rgb), 0.15)',
       };
     default:
@@ -90,7 +90,7 @@ const UpcomingTournamentCard = ({ tournament, onViewDetails }) => {
               {statusConfig.label}
             </span>
             {tournament.level && (
-              <span className="px-2 py-1 bg-ak-mist rounded-lg text-xs font-medium text-ak-charcoal">
+              <span className="px-2 py-1 bg-tier-surface-base rounded-lg text-xs font-medium text-tier-navy">
                 {tournament.level}
               </span>
             )}
@@ -99,8 +99,8 @@ const UpcomingTournamentCard = ({ tournament, onViewDetails }) => {
 
         {daysUntil > 0 && daysUntil <= 60 && (
           <div className="text-right">
-            <div className="text-2xl font-bold text-ak-primary">{daysUntil}</div>
-            <div className="text-xs text-ak-steel">dager</div>
+            <div className="text-2xl font-bold text-tier-navy">{daysUntil}</div>
+            <div className="text-xs text-tier-text-secondary">dager</div>
           </div>
         )}
       </div>
@@ -108,17 +108,17 @@ const UpcomingTournamentCard = ({ tournament, onViewDetails }) => {
       {/* Details */}
       <div className="space-y-2 mb-4">
         <div className="flex items-center gap-2 text-sm">
-          <Calendar size={16} className="text-ak-steel" />
-          <span className="text-ak-charcoal">{formatDate(tournament.startDate)}</span>
+          <Calendar size={16} className="text-tier-text-secondary" />
+          <span className="text-tier-navy">{formatDate(tournament.startDate)}</span>
         </div>
         <div className="flex items-center gap-2 text-sm">
-          <MapPin size={16} className="text-ak-steel" />
-          <span className="text-ak-charcoal">{tournament.location}</span>
+          <MapPin size={16} className="text-tier-text-secondary" />
+          <span className="text-tier-navy">{tournament.location}</span>
         </div>
         {tournament.format && (
           <div className="flex items-center gap-2 text-sm">
-            <Trophy size={16} className="text-ak-steel" />
-            <span className="text-ak-charcoal">
+            <Trophy size={16} className="text-tier-text-secondary" />
+            <span className="text-tier-navy">
               {tournament.numberOfRounds > 1 ? `${tournament.numberOfRounds} runder - ` : ''}
               {tournament.format}
             </span>
@@ -127,11 +127,11 @@ const UpcomingTournamentCard = ({ tournament, onViewDetails }) => {
       </div>
 
       {/* Actions */}
-      <div className="flex items-center justify-between pt-3 border-t border-ak-mist">
-        <Button variant="ghost" size="sm" style={{ color: 'var(--error)' }}>
+      <div className="flex items-center justify-between pt-3 border-t border-tier-surface-base">
+        <Button variant="ghost" size="sm" style={{ color: 'var(--status-error)' }}>
           Meld av
         </Button>
-        <div className="flex items-center gap-1 text-sm text-ak-primary font-medium">
+        <div className="flex items-center gap-1 text-sm text-tier-navy font-medium">
           Se detaljer
           <ChevronRight size={16} />
         </div>
@@ -145,9 +145,9 @@ const PastResultCard = ({ result }) => {
 
   const getMedalColor = (position) => {
     switch (position) {
-      case 1: return 'var(--ak-medal-gold)';
-      case 2: return 'var(--ak-medal-silver)';
-      case 3: return 'var(--ak-medal-bronze)';
+      case 1: return 'rgb(var(--tier-gold))';
+      case 2: return 'rgb(var(--text-secondary))';
+      case 3: return 'rgb(var(--status-warning))';
       default: return null;
     }
   };
@@ -164,24 +164,24 @@ const PastResultCard = ({ result }) => {
         {isTopThree ? (
           <Medal size={24} style={{ color: getMedalColor(result.position) }} />
         ) : (
-          <span className="text-lg font-bold text-ak-charcoal">{result.position || '-'}</span>
+          <span className="text-lg font-bold text-tier-navy">{result.position || '-'}</span>
         )}
       </div>
 
       {/* Info */}
       <div className="flex-1">
         <CardTitle>{result.name}</CardTitle>
-        <p className="text-sm text-ak-steel">
+        <p className="text-sm text-tier-text-secondary">
           {formatDate(result.date)} · {result.location}
         </p>
       </div>
 
       {/* Result */}
       <div className="text-right">
-        <div className="text-lg font-bold text-ak-charcoal">
+        <div className="text-lg font-bold text-tier-navy">
           {result.position ? `${result.position}. plass` : '-'}
         </div>
-        <div className="text-sm text-ak-steel">
+        <div className="text-sm text-tier-text-secondary">
           {result.totalScore} ({result.scoreToPar >= 0 ? '+' : ''}{result.scoreToPar})
         </div>
       </div>
@@ -238,7 +238,7 @@ const MineTurneringerContainer = () => {
   if (loading) {
     return (
       <div className="min-h-screen flex items-center justify-center">
-        <Loader2 className="w-8 h-8 animate-spin text-ak-primary" />
+        <Loader2 className="w-8 h-8 animate-spin text-tier-navy" />
       </div>
     );
   }
@@ -248,6 +248,7 @@ const MineTurneringerContainer = () => {
       <PageHeader
         title="Mine turneringer"
         subtitle="Dine påmeldinger og resultater"
+        helpText="Oversikt over turneringer du er påmeldt, har deltatt i eller er interessert i. Se påmeldingsstatus, resultater og kommende turneringer."
         actions={
           <Button
             variant="primary"
@@ -269,16 +270,16 @@ const MineTurneringerContainer = () => {
         {/* Stats */}
         <div className="grid grid-cols-3 gap-4 mb-6">
           <div className="bg-white rounded-xl p-4 text-center">
-            <div className="text-2xl font-bold text-ak-success">{confirmedCount}</div>
-            <div className="text-xs text-ak-steel">Bekreftet</div>
+            <div className="text-2xl font-bold text-tier-success">{confirmedCount}</div>
+            <div className="text-xs text-tier-text-secondary">Bekreftet</div>
           </div>
           <div className="bg-white rounded-xl p-4 text-center">
-            <div className="text-2xl font-bold text-ak-warning">{pendingCount}</div>
-            <div className="text-xs text-ak-steel">Venter</div>
+            <div className="text-2xl font-bold text-tier-warning">{pendingCount}</div>
+            <div className="text-xs text-tier-text-secondary">Venter</div>
           </div>
           <div className="bg-white rounded-xl p-4 text-center">
-            <div className="text-2xl font-bold text-ak-gold">{topThreeCount}</div>
-            <div className="text-xs text-ak-steel">Pallplasser</div>
+            <div className="text-2xl font-bold text-tier-gold">{topThreeCount}</div>
+            <div className="text-xs text-tier-text-secondary">Pallplasser</div>
           </div>
         </div>
 
@@ -288,8 +289,8 @@ const MineTurneringerContainer = () => {
             onClick={() => setActiveTab('upcoming')}
             className={`flex-1 py-3 rounded-xl text-sm font-medium transition-colors ${
               activeTab === 'upcoming'
-                ? 'bg-ak-primary text-white'
-                : 'bg-white text-ak-charcoal hover:bg-ak-snow'
+                ? 'bg-tier-navy text-white'
+                : 'bg-white text-tier-navy hover:bg-tier-white'
             }`}
           >
             Kommende ({tournaments.upcoming.length})
@@ -298,8 +299,8 @@ const MineTurneringerContainer = () => {
             onClick={() => setActiveTab('results')}
             className={`flex-1 py-3 rounded-xl text-sm font-medium transition-colors ${
               activeTab === 'results'
-                ? 'bg-ak-primary text-white'
-                : 'bg-white text-ak-charcoal hover:bg-ak-snow'
+                ? 'bg-tier-navy text-white'
+                : 'bg-white text-tier-navy hover:bg-tier-white'
             }`}
           >
             Resultater ({tournaments.past.length})
@@ -319,11 +320,11 @@ const MineTurneringerContainer = () => {
               ))
             ) : (
               <div className="bg-white rounded-2xl p-8 text-center">
-                <Trophy size={48} className="mx-auto mb-4 text-ak-mist" />
+                <Trophy size={48} className="mx-auto mb-4 text-tier-surface-base" />
                 <SubSectionTitle style={{ marginBottom: '8px' }}>
                   Ingen påmeldinger ennå
                 </SubSectionTitle>
-                <p className="text-sm text-ak-steel mb-4">
+                <p className="text-sm text-tier-text-secondary mb-4">
                   Finn din neste turnering i turneringskalenderen
                 </p>
                 <Button
@@ -343,11 +344,11 @@ const MineTurneringerContainer = () => {
               ))
             ) : (
               <div className="bg-white rounded-2xl p-8 text-center">
-                <FileText size={48} className="mx-auto mb-4 text-ak-mist" />
+                <FileText size={48} className="mx-auto mb-4 text-tier-surface-base" />
                 <SubSectionTitle style={{ marginBottom: '8px' }}>
                   Ingen resultater ennå
                 </SubSectionTitle>
-                <p className="text-sm text-ak-steel">
+                <p className="text-sm text-tier-text-secondary">
                   Dine turneringsresultater vil vises her
                 </p>
               </div>

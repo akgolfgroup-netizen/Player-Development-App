@@ -7,7 +7,7 @@
 
 ## 📋 OPPSUMMERING
 
-Design System v2.1 (Blue Palette 01) er nå satt opp som **PERMANENT DEFAULT DESIGN** for hele AK Golf IUP appen.
+Design System v2.1 (Blue Palette 01) er nå satt opp som **PERMANENT DEFAULT DESIGN** for hele TIER Golf IUP appen.
 
 **Source of Truth:**
 ```

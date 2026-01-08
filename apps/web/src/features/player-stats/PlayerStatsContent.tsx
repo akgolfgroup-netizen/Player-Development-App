@@ -13,7 +13,7 @@ import Button from '../../ui/primitives/Button';
 import StateCard from '../../ui/composites/StateCard';
 
 import { useStrokesGained } from '../../hooks/useStrokesGained';
-import { SectionTitle, CardTitle } from '../../components/typography';
+import { SectionTitle, CardTitle } from '../../components/typography/Headings';
 import { getStrokesGainedIcon } from '../../constants/icons';
 
 interface StrokesGainedData {
@@ -49,14 +49,14 @@ const PlayerStatsContent: React.FC = () => {
 
   const getSGColor = (value: number | null | undefined) => {
     if (value === null || value === undefined) return 'var(--text-tertiary)';
-    if (value > 0) return 'var(--success)';
-    if (value < 0) return 'var(--error)';
+    if (value > 0) return 'var(--status-success)';
+    if (value < 0) return 'var(--status-error)';
     return 'var(--text-secondary)';
   };
 
   const getTrendIcon = (trend: number) => {
-    if (trend > 0) return <TrendingUp size={16} color="var(--success)" />;
-    if (trend < 0) return <TrendingDown size={16} color="var(--error)" />;
+    if (trend > 0) return <TrendingUp size={16} color="var(--status-success)" />;
+    if (trend < 0) return <TrendingDown size={16} color="var(--status-error)" />;
     return <Activity size={16} color="var(--text-tertiary)" />;
   };
 
@@ -129,7 +129,7 @@ const PlayerStatsContent: React.FC = () => {
                 <div style={styles.trendBadge}>
                   {getTrendIcon(sgData?.trend || 0)}
                   <span style={{
-                    color: (sgData?.trend || 0) >= 0 ? 'var(--success)' : 'var(--error)',
+                    color: (sgData?.trend || 0) >= 0 ? 'var(--status-success)' : 'var(--status-error)',
                     fontSize: '14px',
                     fontWeight: 600
                   }}>
@@ -178,7 +178,7 @@ const PlayerStatsContent: React.FC = () => {
                       </div>
                       <div style={styles.sgDetailRow}>
                         <span>PGA Elite</span>
-                        <span style={{ color: 'var(--success)' }}>{formatSG(cat.pgaElite)}</span>
+                        <span style={{ color: 'var(--status-success)' }}>{formatSG(cat.pgaElite)}</span>
                       </div>
                       <div style={styles.sgDetailRow}>
                         <span>Din gap til elite</span>
@@ -241,7 +241,7 @@ const PlayerStatsContent: React.FC = () => {
                       style={{
                         ...styles.trendBarFill,
                         height: `${Math.max(20, (week.total + 0.5) * 80)}%`,
-                        backgroundColor: week.total >= 0 ? 'var(--success)' : 'var(--error)',
+                        backgroundColor: week.total >= 0 ? 'var(--status-success)' : 'var(--status-error)',
                       }}
                     />
                   </div>

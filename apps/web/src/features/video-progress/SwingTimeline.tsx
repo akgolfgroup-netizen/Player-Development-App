@@ -18,7 +18,7 @@ import React, { useState, useMemo, useCallback, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { Video, BarChart3 } from 'lucide-react';
 import Button from '../../ui/primitives/Button';
-import { SubSectionTitle } from '../../components/typography';
+import { SubSectionTitle } from "../../ui/components/typography";
 
 // ============================================================================
 // TYPES
@@ -164,11 +164,11 @@ export function SwingTimeline({
   // Render empty state
   if (videos.length === 0) {
     return (
-      <div className={`flex flex-col gap-3 p-4 bg-ak-surface-elevated rounded-xl border border-ak-border-default ${className || ''}`} style={style}>
+      <div className={`flex flex-col gap-3 p-4 bg-tier-white rounded-xl border border-tier-border-default ${className || ''}`} style={style}>
         <div className="flex justify-between items-center gap-3">
-          <SubSectionTitle className="m-0 text-base font-semibold text-ak-text-primary">{title}</SubSectionTitle>
+          <SubSectionTitle className="m-0 text-base font-semibold text-tier-navy">{title}</SubSectionTitle>
         </div>
-        <div className="flex flex-col items-center justify-center py-6 text-ak-text-tertiary text-center">
+        <div className="flex flex-col items-center justify-center py-6 text-tier-text-tertiary text-center">
           <Video size={32} className="mb-2" />
           <p className="text-sm m-0">
             Ingen videoer i denne kategorien ennå
@@ -179,10 +179,10 @@ export function SwingTimeline({
   }
 
   return (
-    <div className={`flex flex-col gap-3 p-4 bg-ak-surface-elevated rounded-xl border border-ak-border-default ${className || ''}`} style={style}>
+    <div className={`flex flex-col gap-3 p-4 bg-tier-white rounded-xl border border-tier-border-default ${className || ''}`} style={style}>
       {/* Header */}
       <div className="flex justify-between items-center gap-3">
-        <SubSectionTitle className="m-0 text-base font-semibold text-ak-text-primary">{title}</SubSectionTitle>
+        <SubSectionTitle className="m-0 text-base font-semibold text-tier-navy">{title}</SubSectionTitle>
         {selectable && (
           <Button
             variant="primary"
@@ -198,7 +198,7 @@ export function SwingTimeline({
 
       {/* Selection info */}
       {selectedVideos.length > 0 && (
-        <div className="flex items-center gap-2 px-3 py-2 bg-ak-primary/10 rounded-lg text-xs text-ak-text-secondary">
+        <div className="flex items-center gap-2 px-3 py-2 bg-tier-navy/10 rounded-lg text-xs text-tier-text-secondary">
           <span>
             {selectedVideos.length === 1
               ? `1 video valgt - velg 1 til for å sammenligne`
@@ -222,9 +222,9 @@ export function SwingTimeline({
                 onClick={(e) => handleVideoClick(video, e)}
               >
                 <div
-                  className={`w-20 h-[60px] bg-ak-surface-subtle rounded-lg overflow-hidden border-2 transition-all ${
+                  className={`w-20 h-[60px] bg-tier-surface-base rounded-lg overflow-hidden border-2 transition-all ${
                     isSelected(video.id)
-                      ? 'border-ak-primary shadow-[0_0_0_2px_rgba(99,102,241,0.3)]'
+                      ? 'border-tier-navy shadow-[0_0_0_2px_rgba(99,102,241,0.3)]'
                       : 'border-transparent'
                   }`}
                 >
@@ -235,12 +235,12 @@ export function SwingTimeline({
                       className="w-full h-full object-cover"
                     />
                   ) : (
-                    <div className="w-full h-full flex items-center justify-center text-ak-text-tertiary">
+                    <div className="w-full h-full flex items-center justify-center text-tier-text-tertiary">
                       <Video size={24} />
                     </div>
                   )}
                 </div>
-                <span className="text-[11px] text-ak-text-secondary font-mono">
+                <span className="text-[11px] text-tier-text-secondary font-mono">
                   {formatDate(video.createdAt)}
                 </span>
               </div>
@@ -249,7 +249,7 @@ export function SwingTimeline({
         ) : (
           /* Desktop: Positioned timeline layout */
           <div className="relative h-[120px] flex items-end">
-            <div className="absolute bottom-6 left-0 right-0 h-0.5 bg-ak-border-default" />
+            <div className="absolute bottom-6 left-0 right-0 h-0.5 bg-tier-border-default" />
             {videoPositions.map((video) => (
               <div
                 key={video.id}
@@ -261,9 +261,9 @@ export function SwingTimeline({
                 title={`${video.title} - ${formatDate(video.createdAt)}`}
               >
                 <div
-                  className={`w-[60px] h-[45px] bg-ak-surface-subtle rounded overflow-hidden mb-2 border-2 transition-all ${
+                  className={`w-[60px] h-[45px] bg-tier-surface-base rounded overflow-hidden mb-2 border-2 transition-all ${
                     isSelected(video.id)
-                      ? 'border-ak-primary shadow-[0_0_0_2px_rgba(99,102,241,0.3)]'
+                      ? 'border-tier-navy shadow-[0_0_0_2px_rgba(99,102,241,0.3)]'
                       : 'border-transparent'
                   }`}
                 >
@@ -274,13 +274,13 @@ export function SwingTimeline({
                       className="w-full h-full object-cover"
                     />
                   ) : (
-                    <div className="w-full h-full flex items-center justify-center text-ak-text-tertiary">
+                    <div className="w-full h-full flex items-center justify-center text-tier-text-tertiary">
                       <Video size={20} />
                     </div>
                   )}
                 </div>
-                <div className="absolute bottom-5 left-1/2 -translate-x-1/2 w-2.5 h-2.5 bg-ak-primary rounded-full border-2 border-ak-surface-elevated" />
-                <span className="absolute bottom-0 left-1/2 -translate-x-1/2 text-[10px] text-ak-text-tertiary whitespace-nowrap font-mono">
+                <div className="absolute bottom-5 left-1/2 -translate-x-1/2 w-2.5 h-2.5 bg-tier-navy rounded-full border-2 border-tier-white" />
+                <span className="absolute bottom-0 left-1/2 -translate-x-1/2 text-[10px] text-tier-text-tertiary whitespace-nowrap font-mono">
                   {formatDate(video.createdAt)}
                 </span>
               </div>

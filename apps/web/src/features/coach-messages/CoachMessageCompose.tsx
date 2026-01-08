@@ -1,7 +1,7 @@
 /* eslint-disable @typescript-eslint/no-explicit-any, @typescript-eslint/no-unused-vars */
 // @ts-nocheck
 /**
- * AK Golf Academy - Coach Message Compose
+ * TIER Golf Academy - Coach Message Compose
  * Design System v3.0 - Premium Light
  *
  * Message composition form for coaches.
@@ -26,6 +26,7 @@ import { sanitizeText, sanitizeSearchQuery } from '../../utils/sanitize';
 import Button from '../../ui/primitives/Button';
 import Card from '../../ui/primitives/Card';
 import PageHeader from '../../ui/raw-blocks/PageHeader.raw';
+import PageContainer from '../../ui/raw-blocks/PageContainer.raw';
 
 interface Recipient {
   id: string;
@@ -124,33 +125,34 @@ export const CoachMessageCompose: React.FC = () => {
   const canSend = subject.trim() && message.trim() && (sendToAll || selectedRecipients.length > 0);
 
   return (
-    <div className="bg-ak-surface-subtle min-h-screen">
-      {/* Header - using PageHeader from design system */}
+    <div className="min-h-screen bg-tier-surface-base">
+      {/* TIER-compliant PageHeader */}
       <PageHeader
         title="Ny beskjed"
         subtitle="Send til spillere eller grupper"
+        helpText="Send beskjeder til enkeltspillere, grupper eller alle dine spillere. Meldingene havner i spillernes meldingsboks og de får varsling."
         onBack={() => navigate('/coach/messages')}
       />
 
-      <div className="px-6 pb-6">
+      <PageContainer paddingY="md" background="base">
 
       <Card variant="default" padding="none" className="overflow-hidden">
         {/* Recipients Section */}
-        <div className="p-4 px-5 border-b border-ak-border-default">
+        <div className="p-4 px-5 border-b border-tier-border-default">
           <div className="flex items-center gap-3 mb-3">
-            <span className="text-sm font-medium text-ak-text-secondary w-[60px]">
+            <span className="text-sm font-medium text-tier-text-secondary w-[60px]">
               Til:
             </span>
             <div className="flex-1">
               {sendToAll ? (
-                <div className="inline-flex items-center gap-1.5 py-1.5 px-3 bg-ak-status-success/15 rounded-full text-ak-status-success text-[13px] font-medium">
+                <div className="inline-flex items-center gap-1.5 py-1.5 px-3 bg-tier-success/15 rounded-full text-tier-success text-[13px] font-medium">
                   <Users size={14} />
                   Alle spillere
                   <button
                     onClick={() => setSendToAll(false)}
                     className="bg-transparent border-none cursor-pointer p-0.5 flex"
                   >
-                    <X size={14} className="text-ak-status-success" />
+                    <X size={14} className="text-tier-success" />
                   </button>
                 </div>
               ) : (
@@ -160,8 +162,8 @@ export const CoachMessageCompose: React.FC = () => {
                       key={recipient.id}
                       className={`inline-flex items-center gap-1.5 py-1.5 px-3 rounded-full text-[13px] font-medium ${
                         recipient.type === 'group'
-                          ? 'bg-ak-status-warning/15 text-ak-status-warning'
-                          : 'bg-ak-primary/10 text-ak-primary'
+                          ? 'bg-tier-warning/15 text-tier-warning'
+                          : 'bg-tier-navy/10 text-tier-navy'
                       }`}
                     >
                       {recipient.type === 'group' ? <Users size={14} /> : <User size={14} />}
@@ -185,24 +187,24 @@ export const CoachMessageCompose: React.FC = () => {
                         setShowRecipientPicker(true);
                       }}
                       onFocus={() => setShowRecipientPicker(true)}
-                      className="border-none bg-transparent text-sm text-ak-text-primary outline-none w-[180px]"
+                      className="border-none bg-transparent text-sm text-tier-navy outline-none w-[180px]"
                     />
                     {showRecipientPicker && (
-                      <div className="absolute top-full left-0 w-[280px] max-h-[300px] overflow-y-auto bg-ak-surface-base rounded-lg border border-ak-border-default shadow-lg z-[100] mt-1">
+                      <div className="absolute top-full left-0 w-[280px] max-h-[300px] overflow-y-auto bg-tier-white rounded-lg border border-tier-border-default shadow-lg z-[100] mt-1">
                         <div
                           onClick={() => {
                             setSendToAll(true);
                             setSelectedRecipients([]);
                             setShowRecipientPicker(false);
                           }}
-                          className="p-3 px-4 cursor-pointer flex items-center gap-2.5 border-b border-ak-border-default bg-ak-status-success/15 hover:bg-ak-status-success/20"
+                          className="p-3 px-4 cursor-pointer flex items-center gap-2.5 border-b border-tier-border-default bg-tier-success/15 hover:bg-tier-success/20"
                         >
-                          <Users size={16} className="text-ak-status-success" />
+                          <Users size={16} className="text-tier-success" />
                           <div>
-                            <p className="text-sm font-medium text-ak-status-success m-0">
+                            <p className="text-sm font-medium text-tier-success m-0">
                               Alle spillere
                             </p>
-                            <p className="text-xs text-ak-text-tertiary m-0">
+                            <p className="text-xs text-tier-text-tertiary m-0">
                               Send til alle dine spillere
                             </p>
                           </div>
@@ -211,25 +213,25 @@ export const CoachMessageCompose: React.FC = () => {
                           <div
                             key={recipient.id}
                             onClick={() => addRecipient(recipient)}
-                            className="p-3 px-4 cursor-pointer flex items-center gap-2.5 hover:bg-ak-surface-subtle"
+                            className="p-3 px-4 cursor-pointer flex items-center gap-2.5 hover:bg-tier-surface-base"
                           >
                             <div
                               className={`w-8 h-8 rounded-full flex items-center justify-center ${
                                 recipient.type === 'group'
-                                  ? 'bg-ak-status-warning/15'
-                                  : 'bg-ak-primary/10'
+                                  ? 'bg-tier-warning/15'
+                                  : 'bg-tier-navy/10'
                               }`}
                             >
                               {recipient.type === 'group'
-                                ? <Users size={14} className="text-ak-status-warning" />
-                                : <User size={14} className="text-ak-primary" />
+                                ? <Users size={14} className="text-tier-warning" />
+                                : <User size={14} className="text-tier-navy" />
                               }
                             </div>
                             <div>
-                              <p className="text-sm font-medium text-ak-text-primary m-0">
+                              <p className="text-sm font-medium text-tier-navy m-0">
                                 {recipient.name}
                               </p>
-                              <p className="text-xs text-ak-text-tertiary m-0">
+                              <p className="text-xs text-tier-text-tertiary m-0">
                                 {recipient.type === 'group'
                                   ? `${recipient.memberCount} medlemmer`
                                   : `Kategori ${recipient.category}`
@@ -248,7 +250,7 @@ export const CoachMessageCompose: React.FC = () => {
 
           {/* Category Selector */}
           <div className="flex items-center gap-3">
-            <span className="text-sm font-medium text-ak-text-secondary w-[60px]">
+            <span className="text-sm font-medium text-tier-text-secondary w-[60px]">
               Type:
             </span>
             <div className="flex gap-2">
@@ -275,13 +277,13 @@ export const CoachMessageCompose: React.FC = () => {
         </div>
 
         {/* Subject */}
-        <div className="p-4 px-5 border-b border-ak-border-default">
+        <div className="p-4 px-5 border-b border-tier-border-default">
           <input
             type="text"
             placeholder="Emne..."
             value={subject}
             onChange={(e) => setSubject(e.target.value)}
-            className="w-full border-none bg-transparent text-base font-semibold text-ak-text-primary outline-none"
+            className="w-full border-none bg-transparent text-base font-semibold text-tier-navy outline-none"
           />
         </div>
 
@@ -291,17 +293,17 @@ export const CoachMessageCompose: React.FC = () => {
             placeholder="Skriv din beskjed her..."
             value={message}
             onChange={(e) => setMessage(e.target.value)}
-            className="w-full min-h-[200px] border-none bg-transparent text-sm leading-relaxed text-ak-text-primary outline-none resize-y"
+            className="w-full min-h-[200px] border-none bg-transparent text-sm leading-relaxed text-tier-navy outline-none resize-y"
           />
         </div>
 
         {/* Attachments */}
         {attachments.length > 0 && (
-          <div className="py-3 px-5 border-t border-ak-border-default flex gap-2 flex-wrap">
+          <div className="py-3 px-5 border-t border-tier-border-default flex gap-2 flex-wrap">
             {attachments.map((att, idx) => (
               <div
                 key={idx}
-                className="flex items-center gap-1.5 py-1.5 px-3 bg-ak-surface-subtle rounded text-[13px] text-ak-text-secondary"
+                className="flex items-center gap-1.5 py-1.5 px-3 bg-tier-surface-base rounded text-[13px] text-tier-text-secondary"
               >
                 <FileText size={14} />
                 {att.name}
@@ -317,7 +319,7 @@ export const CoachMessageCompose: React.FC = () => {
         )}
 
         {/* Footer Actions */}
-        <div className="p-4 px-5 border-t border-ak-border-default flex justify-between items-center">
+        <div className="p-4 px-5 border-t border-tier-border-default flex justify-between items-center">
           <div className="flex gap-2">
             <Button
               variant="ghost"
@@ -344,13 +346,13 @@ export const CoachMessageCompose: React.FC = () => {
                   type="date"
                   value={scheduleDate}
                   onChange={(e) => setScheduleDate(e.target.value)}
-                  className="py-2 px-3 rounded border border-ak-border-default text-[13px] text-ak-text-primary"
+                  className="py-2 px-3 rounded border border-tier-border-default text-[13px] text-tier-navy"
                 />
                 <input
                   type="time"
                   value={scheduleTime}
                   onChange={(e) => setScheduleTime(e.target.value)}
-                  className="py-2 px-3 rounded border border-ak-border-default text-[13px] text-ak-text-primary"
+                  className="py-2 px-3 rounded border border-tier-border-default text-[13px] text-tier-navy"
                 />
               </div>
             )}
@@ -373,7 +375,7 @@ export const CoachMessageCompose: React.FC = () => {
           className="fixed inset-0 z-50"
         />
       )}
-      </div>
+      </PageContainer>
     </div>
   );
 };

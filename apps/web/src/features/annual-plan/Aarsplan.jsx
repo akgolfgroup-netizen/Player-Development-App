@@ -1,11 +1,16 @@
 /**
- * AKGolfAarsplan Component
+ * TIERGolfAarsplan Component
  * Design System v3.0 - Premium Light
  *
  * MIGRATED TO PAGE ARCHITECTURE - Minimal inline styles (dynamic colors)
+ *
+ * Features:
+ * - Gantt-style timeline visualization
+ * - Swimlane focus matrix
+ * - Improved month cards
  */
 
-import React, { useState } from 'react';
+import React, { useState, useMemo } from 'react';
 import { PageHeader } from '../../components/layout/PageHeader';
 import { SectionTitle, SubSectionTitle, CardTitle } from '../../components/typography';
 import ExportButton from '../../components/ui/ExportButton';
@@ -13,8 +18,8 @@ import ExportButton from '../../components/ui/ExportButton';
 // Period colors (Blue Palette 01)
 const periodColors = {
   evaluering: 'var(--text-muted)',
-  grunnlag: 'var(--ak-session-teknikk)',
-  spesialisering: 'var(--ak-session-golfslag)',
+  grunnlag: 'rgb(var(--tier-gold))',
+  spesialisering: 'rgb(var(--tier-navy))',
   turnering: 'var(--achievement)',
 };
 
@@ -46,11 +51,560 @@ const Icons = {
       <line x1="4" y1="22" x2="4" y2="15"/>
     </svg>
   ),
+  Trophy: () => (
+    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+      <path d="M6 9H4.5a2.5 2.5 0 0 1 0-5H6"/>
+      <path d="M18 9h1.5a2.5 2.5 0 0 0 0-5H18"/>
+      <path d="M4 22h16"/>
+      <path d="M10 14.66V17c0 .55-.47.98-.97 1.21C7.85 18.75 7 20.24 7 22"/>
+      <path d="M14 14.66V17c0 .55.47.98.97 1.21C16.15 18.75 17 20.24 17 22"/>
+      <path d="M18 2H6v7a6 6 0 0 0 12 0V2Z"/>
+    </svg>
+  ),
+  GolfFlag: () => (
+    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+      <path d="M4 15s1-1 4-1 5 2 8 2 4-1 4-1V3s-1 1-4 1-5-2-8-2-4 1-4 1z"/>
+      <line x1="4" y1="22" x2="4" y2="15"/>
+    </svg>
+  ),
+  GolfBall: () => (
+    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+      <circle cx="12" cy="12" r="10"/>
+      <path d="M12 2a14.5 14.5 0 0 0 0 20 14.5 14.5 0 0 0 0-20"/>
+      <path d="M2 12h20"/>
+    </svg>
+  ),
+  Crosshair: () => (
+    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+      <circle cx="12" cy="12" r="10"/>
+      <line x1="22" y1="12" x2="18" y2="12"/>
+      <line x1="6" y1="12" x2="2" y2="12"/>
+      <line x1="12" y1="6" x2="12" y2="2"/>
+      <line x1="12" y1="22" x2="12" y2="18"/>
+    </svg>
+  ),
+  Settings: () => (
+    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+      <circle cx="12" cy="12" r="3"/>
+      <path d="M12 1v6m0 6v6"/>
+      <path d="m4.93 4.93 4.24 4.24m5.66 5.66 4.24 4.24"/>
+      <path d="M1 12h6m6 0h6"/>
+      <path d="m4.93 19.07 4.24-4.24m5.66-5.66 4.24-4.24"/>
+    </svg>
+  ),
+  Dumbbell: () => (
+    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+      <path d="M14.4 14.4 9.6 9.6"/>
+      <path d="M18.657 21.485a2 2 0 1 1-2.829-2.828l-1.767 1.768a2 2 0 1 1-2.829-2.829l6.364-6.364a2 2 0 1 1 2.829 2.829l-1.768 1.767a2 2 0 1 1 2.828 2.829z"/>
+      <path d="m21.5 21.5-1.4-1.4"/>
+      <path d="M3.9 3.9 2.5 2.5"/>
+      <path d="M6.404 12.768a2 2 0 1 1-2.829-2.829l1.768-1.767a2 2 0 1 1-2.828-2.829l2.828-2.828a2 2 0 1 1 2.829 2.828l1.767-1.768a2 2 0 1 1 2.829 2.829z"/>
+    </svg>
+  ),
+};
+
+// ===== GANTT TIMELINE COMPONENT =====
+const GanttTimeline = ({ yearPlan, periodConfig, currentMonthIndex }) => {
+  const months = ['Okt', 'Nov', 'Des', 'Jan', 'Feb', 'Mar', 'Apr', 'Mai', 'Jun', 'Jul', 'Aug', 'Sep'];
+
+  // Group consecutive months by period
+  const periodBars = useMemo(() => {
+    const bars = [];
+    let currentPeriod = null;
+    let startIdx = 0;
+
+    yearPlan.forEach((month, idx) => {
+      if (month.period !== currentPeriod) {
+        if (currentPeriod !== null) {
+          bars.push({
+            period: currentPeriod,
+            startIdx,
+            endIdx: idx - 1,
+            config: periodConfig[currentPeriod],
+          });
+        }
+        currentPeriod = month.period;
+        startIdx = idx;
+      }
+    });
+    // Add final period
+    if (currentPeriod !== null) {
+      bars.push({
+        period: currentPeriod,
+        startIdx,
+        endIdx: yearPlan.length - 1,
+        config: periodConfig[currentPeriod],
+      });
+    }
+    return bars;
+  }, [yearPlan, periodConfig]);
+
+  // Extract tournaments from all months
+  const tournaments = useMemo(() => {
+    const all = [];
+    yearPlan.forEach((month, idx) => {
+      if (month.tournaments && month.tournaments.length > 0) {
+        month.tournaments.forEach(t => {
+          all.push({ name: t, monthIdx: idx });
+        });
+      }
+    });
+    return all;
+  }, [yearPlan]);
+
+  return (
+    <div style={{
+      backgroundColor: 'var(--bg-primary)',
+      borderRadius: '16px',
+      padding: '20px',
+      marginBottom: '24px',
+      border: '1px solid var(--border-default)',
+    }}>
+      <SubSectionTitle style={{ fontSize: '14px', fontWeight: 600, color: 'var(--text-primary)', marginBottom: '16px' }}>
+        Årshjul - Periodeoversikt
+      </SubSectionTitle>
+
+      {/* Month labels */}
+      <div style={{ display: 'flex', marginBottom: '8px', paddingLeft: '100px' }}>
+        {months.map((m, idx) => (
+          <div
+            key={m}
+            style={{
+              flex: 1,
+              textAlign: 'center',
+              fontSize: '11px',
+              fontWeight: idx === currentMonthIndex ? 600 : 400,
+              color: idx === currentMonthIndex ? 'var(--accent)' : 'var(--text-secondary)',
+            }}
+          >
+            {m}
+          </div>
+        ))}
+      </div>
+
+      {/* Gantt bars */}
+      <div style={{ position: 'relative', marginBottom: '12px' }}>
+        {/* Period row */}
+        <div style={{ display: 'flex', alignItems: 'center', marginBottom: '8px' }}>
+          <div style={{ width: '100px', fontSize: '12px', fontWeight: 500, color: 'var(--text-secondary)' }}>
+            Periode
+          </div>
+          <div style={{ flex: 1, display: 'flex', height: '32px', gap: '2px' }}>
+            {periodBars.map((bar, idx) => {
+              const width = ((bar.endIdx - bar.startIdx + 1) / 12) * 100;
+              return (
+                <div
+                  key={idx}
+                  style={{
+                    width: `${width}%`,
+                    backgroundColor: bar.config.color,
+                    borderRadius: '6px',
+                    display: 'flex',
+                    alignItems: 'center',
+                    justifyContent: 'center',
+                    color: 'rgb(var(--tier-white))',
+                    fontSize: '11px',
+                    fontWeight: 600,
+                    textShadow: '0 1px 2px rgba(0,0,0,0.2)',
+                  }}
+                >
+                  {bar.config.name}
+                </div>
+              );
+            })}
+          </div>
+        </div>
+
+        {/* Current month indicator */}
+        <div style={{
+          position: 'absolute',
+          left: `calc(100px + ${(currentMonthIndex + 0.5) / 12 * 100}% - ${100 / 12 / 2}%)`,
+          top: 0,
+          bottom: 0,
+          width: '2px',
+          backgroundColor: 'var(--accent)',
+          zIndex: 10,
+        }}>
+          <div style={{
+            position: 'absolute',
+            top: '-8px',
+            left: '50%',
+            transform: 'translateX(-50%)',
+            width: '8px',
+            height: '8px',
+            borderRadius: '50%',
+            backgroundColor: 'var(--accent)',
+          }} />
+        </div>
+      </div>
+
+      {/* Tournaments row */}
+      {tournaments.length > 0 && (
+        <div style={{ display: 'flex', alignItems: 'flex-start', paddingTop: '8px', borderTop: '1px solid var(--border-subtle)' }}>
+          <div style={{ width: '100px', fontSize: '12px', fontWeight: 500, color: 'var(--text-secondary)', paddingTop: '4px' }}>
+            Turneringer
+          </div>
+          <div style={{ flex: 1, position: 'relative', minHeight: '28px' }}>
+            {tournaments.map((t, idx) => (
+              <div
+                key={idx}
+                style={{
+                  position: 'absolute',
+                  left: `${(t.monthIdx / 12) * 100}%`,
+                  top: `${(idx % 2) * 16}px`,
+                  display: 'flex',
+                  alignItems: 'center',
+                  gap: '4px',
+                }}
+              >
+                <div style={{
+                  width: '6px',
+                  height: '6px',
+                  borderRadius: '50%',
+                  backgroundColor: 'var(--achievement)',
+                }} />
+                <span style={{ fontSize: '10px', color: 'var(--text-secondary)', whiteSpace: 'nowrap' }}>
+                  {t.name}
+                </span>
+              </div>
+            ))}
+          </div>
+        </div>
+      )}
+    </div>
+  );
+};
+
+// ===== SWIMLANE FOCUS MATRIX =====
+const SwimlaneFocusMatrix = ({ yearPlan, focusAreas, priorityLabels }) => {
+  const months = ['Okt', 'Nov', 'Des', 'Jan', 'Feb', 'Mar', 'Apr', 'Mai', 'Jun', 'Jul', 'Aug', 'Sep'];
+
+  // Get intensity color based on priority value
+  const getIntensityStyle = (value) => {
+    const colors = {
+      0: { bg: 'var(--bg-tertiary)', opacity: 0.3 },
+      1: { bg: 'var(--text-secondary)', opacity: 0.5 },
+      2: { bg: 'var(--status-warning)', opacity: 0.7 },
+      3: { bg: 'var(--status-success)', opacity: 1 },
+    };
+    return colors[value] || colors[0];
+  };
+
+  return (
+    <div style={{
+      backgroundColor: 'var(--bg-primary)',
+      borderRadius: '16px',
+      padding: '20px',
+      marginBottom: '24px',
+      border: '1px solid var(--border-default)',
+    }}>
+      <SubSectionTitle style={{ fontSize: '14px', fontWeight: 600, color: 'var(--text-primary)', marginBottom: '16px' }}>
+        Fokusmatrise - Intensitet over året
+      </SubSectionTitle>
+
+      {/* Month headers */}
+      <div style={{ display: 'flex', marginBottom: '8px' }}>
+        <div style={{ width: '120px' }} />
+        {months.map((m) => (
+          <div
+            key={m}
+            style={{
+              flex: 1,
+              textAlign: 'center',
+              fontSize: '10px',
+              fontWeight: 500,
+              color: 'var(--text-secondary)',
+            }}
+          >
+            {m}
+          </div>
+        ))}
+      </div>
+
+      {/* Focus area rows - reversed to show pyramid order (bottom to top) */}
+      {[...focusAreas].reverse().map((area) => (
+        <div key={area.key} style={{ display: 'flex', alignItems: 'center', marginBottom: '4px' }}>
+          <div style={{
+            width: '120px',
+            display: 'flex',
+            alignItems: 'center',
+            gap: '8px',
+            fontSize: '12px',
+            fontWeight: 500,
+            color: 'var(--text-primary)',
+          }}>
+            <span style={{ color: 'var(--text-secondary)' }}>{area.icon}</span>
+            {area.label}
+          </div>
+          <div style={{ flex: 1, display: 'flex', gap: '2px' }}>
+            {yearPlan.map((month, idx) => {
+              const value = month.focus[area.key];
+              const intensity = getIntensityStyle(value);
+              return (
+                <div
+                  key={idx}
+                  style={{
+                    flex: 1,
+                    height: '24px',
+                    backgroundColor: intensity.bg,
+                    opacity: intensity.opacity,
+                    borderRadius: '3px',
+                    display: 'flex',
+                    alignItems: 'center',
+                    justifyContent: 'center',
+                  }}
+                  title={`${area.label}: ${priorityLabels[value]?.label || 'Pause'} (${month.month})`}
+                >
+                  {value > 0 && (
+                    <span style={{ fontSize: '9px', fontWeight: 600, color: value >= 2 ? 'rgb(var(--tier-white))' : 'var(--text-secondary)' }}>
+                      {value}
+                    </span>
+                  )}
+                </div>
+              );
+            })}
+          </div>
+        </div>
+      ))}
+
+      {/* Legend */}
+      <div style={{
+        display: 'flex',
+        justifyContent: 'center',
+        gap: '16px',
+        marginTop: '16px',
+        paddingTop: '12px',
+        borderTop: '1px solid var(--border-subtle)',
+      }}>
+        {[3, 2, 1, 0].map(p => (
+          <div key={p} style={{ display: 'flex', alignItems: 'center', gap: '6px' }}>
+            <div style={{
+              width: '16px',
+              height: '16px',
+              borderRadius: '3px',
+              backgroundColor: getIntensityStyle(p).bg,
+              opacity: getIntensityStyle(p).opacity,
+            }} />
+            <span style={{ fontSize: '11px', color: 'var(--text-secondary)' }}>
+              {priorityLabels[p]?.label || 'Pause'}
+            </span>
+          </div>
+        ))}
+      </div>
+    </div>
+  );
+};
+
+// ===== IMPROVED MONTH CARD =====
+const ImprovedMonthCard = ({ month, periodConfig, priorityLabels, focusAreas, isCurrentMonth, isExpanded, onToggle }) => {
+  const period = periodConfig[month.period];
+  const completedGoals = month.activities?.length || 0;
+
+  return (
+    <div
+      onClick={onToggle}
+      style={{
+        backgroundColor: 'var(--bg-primary)',
+        borderRadius: '12px',
+        border: isCurrentMonth ? '2px solid var(--accent)' : '1px solid var(--border-default)',
+        overflow: 'hidden',
+        cursor: 'pointer',
+        transition: 'all 0.2s ease',
+        boxShadow: isExpanded ? '0 4px 12px rgba(0,0,0,0.1)' : '0 2px 6px rgba(0,0,0,0.04)',
+      }}
+    >
+      {/* Header with gradient */}
+      <div style={{
+        padding: '12px 14px',
+        background: `linear-gradient(135deg, ${period.color}20, ${period.color}08)`,
+        borderBottom: '1px solid var(--border-subtle)',
+      }}>
+        <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
+          <div>
+            <div style={{ fontSize: '15px', fontWeight: 600, color: 'var(--text-primary)' }}>
+              {month.month}
+            </div>
+            <div style={{ fontSize: '11px', color: 'var(--text-secondary)', marginTop: '2px' }}>
+              Uke {month.weeks[0]}-{month.weeks[month.weeks.length - 1]}
+            </div>
+          </div>
+          <div style={{
+            padding: '4px 10px',
+            borderRadius: '6px',
+            backgroundColor: period.bg,
+            color: period.color,
+            fontSize: '11px',
+            fontWeight: 600,
+          }}>
+            {period.icon} {period.name}
+          </div>
+        </div>
+      </div>
+
+      {/* Focus bars - compact visualization */}
+      <div style={{ padding: '12px 14px' }}>
+        <div style={{ display: 'flex', flexDirection: 'column', gap: '6px' }}>
+          {focusAreas.map((area) => {
+            const value = month.focus[area.key];
+            const pLabel = priorityLabels[value];
+            return (
+              <div key={area.key} style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
+                <div style={{
+                  width: '70px',
+                  display: 'flex',
+                  alignItems: 'center',
+                  gap: '4px',
+                  fontSize: '11px',
+                  color: 'var(--text-secondary)',
+                }}>
+                  {area.icon}
+                  <span style={{ fontSize: '10px' }}>{area.label}</span>
+                </div>
+                <div style={{
+                  flex: 1,
+                  height: '6px',
+                  backgroundColor: 'var(--bg-tertiary)',
+                  borderRadius: '3px',
+                  overflow: 'hidden',
+                }}>
+                  <div style={{
+                    width: `${(value / 3) * 100}%`,
+                    height: '100%',
+                    backgroundColor: pLabel?.color || 'var(--border-default)',
+                    borderRadius: '3px',
+                    transition: 'width 0.3s ease',
+                  }} />
+                </div>
+                <div style={{
+                  width: '14px',
+                  fontSize: '10px',
+                  fontWeight: 600,
+                  color: pLabel?.color || 'var(--text-tertiary)',
+                  textAlign: 'right',
+                }}>
+                  {value}
+                </div>
+              </div>
+            );
+          })}
+        </div>
+
+        {/* AK Parameters - compact row */}
+        <div style={{
+          display: 'flex',
+          gap: '8px',
+          marginTop: '12px',
+          paddingTop: '10px',
+          borderTop: '1px solid var(--border-subtle)',
+        }}>
+          <div style={{
+            flex: 1,
+            backgroundColor: 'var(--bg-secondary)',
+            borderRadius: '6px',
+            padding: '6px 8px',
+            textAlign: 'center',
+          }}>
+            <div style={{ fontSize: '9px', color: 'var(--text-tertiary)', textTransform: 'uppercase' }}>L-fase</div>
+            <div style={{ fontSize: '11px', fontWeight: 600, color: 'var(--text-primary)' }}>{month.learningPhase}</div>
+          </div>
+          <div style={{
+            flex: 1,
+            backgroundColor: 'var(--bg-secondary)',
+            borderRadius: '6px',
+            padding: '6px 8px',
+            textAlign: 'center',
+          }}>
+            <div style={{ fontSize: '9px', color: 'var(--text-tertiary)', textTransform: 'uppercase' }}>CS</div>
+            <div style={{ fontSize: '11px', fontWeight: 600, color: 'var(--text-primary)' }}>{month.clubSpeed}</div>
+          </div>
+          <div style={{
+            flex: 1,
+            backgroundColor: 'var(--bg-secondary)',
+            borderRadius: '6px',
+            padding: '6px 8px',
+            textAlign: 'center',
+          }}>
+            <div style={{ fontSize: '9px', color: 'var(--text-tertiary)', textTransform: 'uppercase' }}>Setting</div>
+            <div style={{ fontSize: '11px', fontWeight: 600, color: 'var(--text-primary)' }}>{month.setting}</div>
+          </div>
+        </div>
+
+        {/* Benchmark indicator */}
+        {month.benchmark && month.benchmark.length > 0 && (
+          <div style={{
+            display: 'flex',
+            alignItems: 'center',
+            gap: '6px',
+            marginTop: '10px',
+            padding: '6px 10px',
+            backgroundColor: 'var(--achievement)15',
+            borderRadius: '6px',
+          }}>
+            <span style={{ fontSize: '12px' }}>📊</span>
+            <span style={{ fontSize: '11px', color: 'var(--achievement)', fontWeight: 500 }}>
+              Benchmark: Uke {month.benchmark.join(', ')}
+            </span>
+          </div>
+        )}
+
+        {/* Tournaments */}
+        {month.tournaments && month.tournaments.length > 0 && (
+          <div style={{
+            display: 'flex',
+            alignItems: 'center',
+            gap: '6px',
+            marginTop: '8px',
+            padding: '6px 10px',
+            backgroundColor: 'var(--accent)10',
+            borderRadius: '6px',
+          }}>
+            <span style={{ fontSize: '12px' }}>🏆</span>
+            <span style={{ fontSize: '11px', color: 'var(--accent)', fontWeight: 500 }}>
+              {month.tournaments.join(' · ')}
+            </span>
+          </div>
+        )}
+      </div>
+
+      {/* Expanded content */}
+      {isExpanded && month.activities && (
+        <div style={{
+          padding: '12px 14px',
+          borderTop: '1px solid var(--border-subtle)',
+          backgroundColor: 'var(--bg-secondary)',
+        }}>
+          <div style={{ fontSize: '11px', fontWeight: 600, color: 'var(--text-secondary)', marginBottom: '8px', textTransform: 'uppercase' }}>
+            Aktiviteter
+          </div>
+          <div style={{ display: 'flex', flexWrap: 'wrap', gap: '6px' }}>
+            {month.activities.map((activity, i) => (
+              <div
+                key={i}
+                style={{
+                  display: 'flex',
+                  alignItems: 'center',
+                  gap: '4px',
+                  padding: '4px 8px',
+                  backgroundColor: 'var(--bg-primary)',
+                  borderRadius: '4px',
+                  fontSize: '11px',
+                  color: 'var(--text-primary)',
+                }}
+              >
+                <div style={{ width: '4px', height: '4px', borderRadius: '50%', backgroundColor: period.color }} />
+                {activity}
+              </div>
+            ))}
+          </div>
+        </div>
+      )}
+    </div>
+  );
 };
 
 // ===== UI COMPONENTS =====
 const Card = ({ children, className = '', padding = true }) => (
-  <div className={`bg-white border border-ak-mist rounded-xl ${padding ? 'p-4' : ''} ${className}`}
+  <div className={`bg-white border border-tier-surface-base rounded-xl ${padding ? 'p-4' : ''} ${className}`}
        style={{ boxShadow: '0 2px 8px rgba(0,0,0,0.06)' }}>
     {children}
   </div>
@@ -104,7 +658,7 @@ const PriorityBar = ({ value, maxValue = 3, color }) => (
  * @param {function} onRefresh - Callback to refresh data
  * @param {string} initialView - Initial view mode: 'overview' | 'periods' | 'focus' | 'timeline' | 'grid'
  */
-const AKGolfAarsplan = ({ player: apiPlayer = null, annualPlan: apiAnnualPlan = null, plans = [], onRefresh, initialView = 'overview' }) => {
+const TIERGolfAarsplan = ({ player: apiPlayer = null, annualPlan: apiAnnualPlan = null, plans = [], onRefresh, initialView = 'overview' }) => {
   const [selectedMonth, setSelectedMonth] = useState(null);
   // Map initialView to internal view state
   const mapInitialView = (view) => {
@@ -133,15 +687,15 @@ const AKGolfAarsplan = ({ player: apiPlayer = null, annualPlan: apiAnnualPlan = 
   // Period definitions (Blue Palette 01)
   const periodConfig = {
     E: { name: 'Evaluering', color: 'var(--text-secondary)', bg: 'var(--bg-tertiary)', icon: '📋' },
-    G: { name: 'Grunnperiode', color: 'rgba(var(--accent-rgb), 0.8)', bg: `${'var(--success)'}20`, icon: '🏗️' },
-    S: { name: 'Spesialperiode', color: 'var(--success)', bg: `${'var(--success)'}15`, icon: '🎯' },
+    G: { name: 'Grunnperiode', color: 'rgba(var(--accent-rgb), 0.8)', bg: `${'var(--status-success)'}20`, icon: '🏗️' },
+    S: { name: 'Spesialperiode', color: 'var(--status-success)', bg: `${'var(--status-success)'}15`, icon: '🎯' },
     T: { name: 'Turnering', color: 'var(--achievement)', bg: `${'var(--achievement)'}15`, icon: '🏆' },
   };
 
   // Priority labels (Blue Palette 01)
   const priorityLabels = {
-    3: { label: 'Utvikle', color: 'var(--success)' },
-    2: { label: 'Beholde', color: 'var(--warning)' },
+    3: { label: 'Utvikle', color: 'var(--status-success)' },
+    2: { label: 'Beholde', color: 'var(--status-warning)' },
     1: { label: 'Vedlikehold', color: 'var(--text-secondary)' },
     0: { label: 'Pause', color: 'var(--border-default)' },
   };
@@ -299,11 +853,11 @@ const AKGolfAarsplan = ({ player: apiPlayer = null, annualPlan: apiAnnualPlan = 
 
   // Focus areas config
   const focusAreas = [
-    { key: 'konkurranse', label: 'Konkurranse', icon: '🏆' },
-    { key: 'spill', label: 'Spill', icon: '⛳' },
-    { key: 'golfslag', label: 'Golfslag', icon: '🎯' },
-    { key: 'teknikk', label: 'Teknikk', icon: '⚙️' },
-    { key: 'fysisk', label: 'Fysisk', icon: '💪' },
+    { key: 'konkurranse', label: 'Konkurranse', icon: <Icons.Trophy /> },
+    { key: 'spill', label: 'Spill', icon: <Icons.GolfFlag /> },
+    { key: 'golfslag', label: 'Golfslag', icon: <Icons.Crosshair /> },
+    { key: 'teknikk', label: 'Teknikk', icon: <Icons.Settings /> },
+    { key: 'fysisk', label: 'Fysisk', icon: <Icons.Dumbbell /> },
   ];
 
   // Current month calculation (simulated)
@@ -315,6 +869,7 @@ const AKGolfAarsplan = ({ player: apiPlayer = null, annualPlan: apiAnnualPlan = 
       <PageHeader
         title="Årsplan 2026"
         subtitle="Team Norway"
+        helpText="Din 12-måneders treningsplan med periodisering, fokusområder og milepæler. Se månedsvisning av trening, turneringer og samlinger gjennom hele sesongen."
         actions={
           <div style={{ display: 'flex', alignItems: 'center', gap: '12px' }}>
             <ExportButton
@@ -364,48 +919,62 @@ const AKGolfAarsplan = ({ player: apiPlayer = null, annualPlan: apiAnnualPlan = 
 
       <div style={{ padding: '24px', width: '100%' }}>
         {/* Player Summary Card */}
-        <Card className="mb-6 bg-gradient-to-r from-ak-primary to-ak-primary-light text-white border-0">
+        <Card className="mb-6 border-0" style={{ background: 'linear-gradient(135deg, rgb(var(--tier-navy)) 0%, rgb(var(--tier-navy-dark)) 100%)' }}>
           <div className="flex items-center justify-between">
             <div className="flex items-center gap-4">
               <Avatar name={player.name} size={56} />
               <div>
-                <SectionTitle className="text-[20px] font-bold">{player.name}</SectionTitle>
-                <p className="text-white/70 text-[13px]">{player.club}</p>
+                <SectionTitle className="text-[20px] font-bold" style={{ color: 'rgb(var(--tier-white))' }}>{player.name}</SectionTitle>
+                <p className="text-[13px]" style={{ color: 'rgba(255, 255, 255, 0.7)' }}>{player.club}</p>
               </div>
             </div>
 
             <div className="flex gap-8">
               <div className="text-center">
-                <p className="text-white/60 text-[11px] uppercase tracking-wide">Kategori</p>
-                <p className="text-[24px] font-bold">{player.category}</p>
+                <p className="text-[11px] uppercase tracking-wide" style={{ color: 'rgba(255, 255, 255, 0.6)' }}>Kategori</p>
+                <p className="text-[24px] font-bold" style={{ color: 'rgb(var(--tier-white))' }}>{player.category}</p>
               </div>
               <div className="text-center">
-                <p className="text-white/60 text-[11px] uppercase tracking-wide">Snitt</p>
-                <p className="text-[24px] font-bold">{player.avgScore}</p>
+                <p className="text-[11px] uppercase tracking-wide" style={{ color: 'rgba(255, 255, 255, 0.6)' }}>Snitt</p>
+                <p className="text-[24px] font-bold" style={{ color: 'rgb(var(--tier-white))' }}>{player.avgScore}</p>
               </div>
               <div className="text-center">
-                <p className="text-white/60 text-[11px] uppercase tracking-wide">Målscore</p>
-                <p className="text-[24px] font-bold text-ak-gold">{player.targetScore}</p>
+                <p className="text-[11px] uppercase tracking-wide" style={{ color: 'rgba(255, 255, 255, 0.6)' }}>Målscore</p>
+                <p className="text-[24px] font-bold text-tier-gold">{player.targetScore}</p>
               </div>
             </div>
           </div>
         </Card>
 
-        {/* Period Legend */}
-        <div className="mb-6 flex flex-wrap items-center gap-6">
-          <span className="text-[12px] text-ak-steel font-medium uppercase tracking-wide">Perioder:</span>
+        {/* NEW: Gantt Timeline */}
+        <GanttTimeline
+          yearPlan={yearPlan}
+          periodConfig={periodConfig}
+          currentMonthIndex={currentMonthIndex}
+        />
+
+        {/* NEW: Swimlane Focus Matrix */}
+        <SwimlaneFocusMatrix
+          yearPlan={yearPlan}
+          focusAreas={focusAreas}
+          priorityLabels={priorityLabels}
+        />
+
+        {/* Period Legend - more compact */}
+        <div className="mb-6 flex flex-wrap items-center gap-4 p-3 bg-white rounded-xl border border-tier-surface-base">
+          <span className="text-[11px] text-tier-text-secondary font-medium uppercase tracking-wide">Perioder:</span>
           {Object.entries(periodConfig).map(([key, val]) => (
-            <div key={key} className="flex items-center gap-2">
-              <div className="w-3 h-3 rounded-full" style={{ backgroundColor: val.color }} />
-              <span className="text-[13px] text-ak-charcoal">{val.name}</span>
+            <div key={key} className="flex items-center gap-1.5">
+              <div className="w-2.5 h-2.5 rounded-full" style={{ backgroundColor: val.color }} />
+              <span className="text-[12px] text-tier-navy">{val.name}</span>
             </div>
           ))}
-          <div className="h-4 w-px bg-ak-mist" />
-          <span className="text-[12px] text-ak-steel font-medium uppercase tracking-wide">Prioritet:</span>
+          <div className="h-3 w-px bg-tier-surface-base" />
+          <span className="text-[11px] text-tier-text-secondary font-medium uppercase tracking-wide">Prioritet:</span>
           {[3, 2, 1].map(p => (
-            <div key={p} className="flex items-center gap-2">
-              <div className="w-3 h-3 rounded-sm" style={{ backgroundColor: priorityLabels[p].color }} />
-              <span className="text-[13px] text-ak-charcoal">{priorityLabels[p].label}</span>
+            <div key={p} className="flex items-center gap-1.5">
+              <div className="w-2.5 h-2.5 rounded-sm" style={{ backgroundColor: priorityLabels[p].color }} />
+              <span className="text-[12px] text-tier-navy">{priorityLabels[p].label}</span>
             </div>
           ))}
         </div>
@@ -415,7 +984,7 @@ const AKGolfAarsplan = ({ player: apiPlayer = null, annualPlan: apiAnnualPlan = 
           // Timeline View
           <div className="relative">
             {/* Timeline line */}
-            <div className="absolute left-[120px] top-0 bottom-0 w-0.5 bg-ak-mist" />
+            <div className="absolute left-[120px] top-0 bottom-0 w-0.5 bg-tier-surface-base" />
 
             <div className="space-y-4">
               {yearPlan.map((month, idx) => {
@@ -428,7 +997,7 @@ const AKGolfAarsplan = ({ player: apiPlayer = null, annualPlan: apiAnnualPlan = 
                     {/* Timeline dot */}
                     <div
                       className={`absolute left-[112px] w-4 h-4 rounded-full border-4 border-white z-10 ${
-                        isCurrentMonth ? 'ring-4 ring-ak-primary/20' : ''
+                        isCurrentMonth ? 'ring-4 ring-tier-navy/20' : ''
                       }`}
                       style={{ backgroundColor: period.color, top: '24px' }}
                     />
@@ -436,16 +1005,16 @@ const AKGolfAarsplan = ({ player: apiPlayer = null, annualPlan: apiAnnualPlan = 
                     <div className="flex gap-4">
                       {/* Month Label */}
                       <div className="w-[100px] text-right pt-4">
-                        <p className={`text-[15px] font-semibold ${isCurrentMonth ? 'text-ak-primary' : 'text-ak-charcoal'}`}>
+                        <p className={`text-[15px] font-semibold ${isCurrentMonth ? 'text-tier-navy' : 'text-tier-navy'}`}>
                           {month.month}
                         </p>
-                        <p className="text-[11px] text-ak-steel">Uke {month.weeks[0]}-{month.weeks[month.weeks.length - 1]}</p>
+                        <p className="text-[11px] text-tier-text-secondary">Uke {month.weeks[0]}-{month.weeks[month.weeks.length - 1]}</p>
                       </div>
 
                       {/* Content Card */}
                       <Card
                         className={`flex-1 ml-8 cursor-pointer transition-all ${
-                          isCurrentMonth ? 'ring-2 ring-ak-primary/20' : ''
+                          isCurrentMonth ? 'ring-2 ring-tier-navy/20' : ''
                         } ${isExpanded ? 'shadow-lg' : 'hover:shadow-md'}`}
                         onClick={() => setSelectedMonth(isExpanded ? null : idx)}
                       >
@@ -468,8 +1037,8 @@ const AKGolfAarsplan = ({ player: apiPlayer = null, annualPlan: apiAnnualPlan = 
                           {focusAreas.map(area => (
                             <div key={area.key} className="flex items-center justify-between">
                               <div className="flex items-center gap-1.5">
-                                <span className="text-[12px]">{area.icon}</span>
-                                <span className="text-[12px] text-ak-charcoal">{area.label}</span>
+                                <span className="text-tier-text-secondary">{area.icon}</span>
+                                <span className="text-[12px] text-tier-navy font-medium">{area.label}</span>
                               </div>
                               <PriorityBar value={month.focus[area.key]} color={priorityLabels[month.focus[area.key]]?.color || 'var(--border-default)'} />
                             </div>
@@ -478,17 +1047,17 @@ const AKGolfAarsplan = ({ player: apiPlayer = null, annualPlan: apiAnnualPlan = 
 
                         {/* AK Parameters */}
                         <div className="flex gap-4 mb-3">
-                          <div className="bg-ak-snow rounded-lg px-3 py-2 text-center">
-                            <p className="text-[10px] text-ak-steel uppercase">Læringsfase</p>
-                            <p className="text-[13px] font-semibold text-ak-charcoal">{month.learningPhase}</p>
+                          <div className="bg-tier-white rounded-lg px-3 py-2 text-center">
+                            <p className="text-[10px] text-tier-text-secondary uppercase">Læringsfase</p>
+                            <p className="text-[13px] font-semibold text-tier-navy">{month.learningPhase}</p>
                           </div>
-                          <div className="bg-ak-snow rounded-lg px-3 py-2 text-center">
-                            <p className="text-[10px] text-ak-steel uppercase">Clubspeed</p>
-                            <p className="text-[13px] font-semibold text-ak-charcoal">{month.clubSpeed}</p>
+                          <div className="bg-tier-white rounded-lg px-3 py-2 text-center">
+                            <p className="text-[10px] text-tier-text-secondary uppercase">Clubspeed</p>
+                            <p className="text-[13px] font-semibold text-tier-navy">{month.clubSpeed}</p>
                           </div>
-                          <div className="bg-ak-snow rounded-lg px-3 py-2 text-center">
-                            <p className="text-[10px] text-ak-steel uppercase">Setting</p>
-                            <p className="text-[13px] font-semibold text-ak-charcoal">{month.setting}</p>
+                          <div className="bg-tier-white rounded-lg px-3 py-2 text-center">
+                            <p className="text-[10px] text-tier-text-secondary uppercase">Setting</p>
+                            <p className="text-[13px] font-semibold text-tier-navy">{month.setting}</p>
                           </div>
                         </div>
 
@@ -496,7 +1065,7 @@ const AKGolfAarsplan = ({ player: apiPlayer = null, annualPlan: apiAnnualPlan = 
                         {month.tournaments.length > 0 && (
                           <div className="flex items-center gap-2 mb-3">
                             <Icons.Flag />
-                            <span className="text-[12px] text-ak-charcoal">
+                            <span className="text-[12px] text-tier-navy">
                               {month.tournaments.join(' · ')}
                             </span>
                           </div>
@@ -504,13 +1073,13 @@ const AKGolfAarsplan = ({ player: apiPlayer = null, annualPlan: apiAnnualPlan = 
 
                         {/* Expanded Content */}
                         {isExpanded && (
-                          <div className="mt-4 pt-4 border-t border-ak-mist">
-                            <CardTitle className="text-[12px] text-ak-steel uppercase tracking-wide mb-2">Aktiviteter</CardTitle>
+                          <div className="mt-4 pt-4 border-t border-tier-surface-base">
+                            <CardTitle className="text-[12px] text-tier-text-secondary uppercase tracking-wide mb-2">Aktiviteter</CardTitle>
                             <div className="grid grid-cols-2 gap-2">
                               {month.activities.map((activity, i) => (
                                 <div key={i} className="flex items-center gap-2">
                                   <div className="w-1.5 h-1.5 rounded-full" style={{ backgroundColor: period.color }} />
-                                  <span className="text-[13px] text-ak-charcoal">{activity}</span>
+                                  <span className="text-[13px] text-tier-navy">{activity}</span>
                                 </div>
                               ))}
                             </div>
@@ -524,75 +1093,22 @@ const AKGolfAarsplan = ({ player: apiPlayer = null, annualPlan: apiAnnualPlan = 
             </div>
           </div>
         ) : (
-          // Grid View
+          // Grid View - using improved month cards
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4">
             {yearPlan.map((month, idx) => {
-              const period = periodConfig[month.period];
               const isCurrentMonth = idx === currentMonthIndex;
 
               return (
-                <Card
+                <ImprovedMonthCard
                   key={month.month}
-                  className={`cursor-pointer transition-all hover:shadow-lg ${
-                    isCurrentMonth ? 'ring-2 ring-ak-primary' : ''
-                  }`}
-                  onClick={() => setSelectedMonth(selectedMonth === idx ? null : idx)}
-                >
-                  {/* Header */}
-                  <div
-                    className="p-3 -mx-4 -mt-4 mb-3 rounded-t-xl"
-                    style={{ background: `linear-gradient(135deg, ${period.color}15, ${period.color}05)` }}
-                  >
-                    <div className="flex items-center justify-between">
-                      <div>
-                        <SubSectionTitle className="text-[17px] font-semibold text-ak-charcoal">{month.month}</SubSectionTitle>
-                        <p className="text-[11px] text-ak-steel">Uke {month.weeks[0]}-{month.weeks[month.weeks.length - 1]}</p>
-                      </div>
-                      <Badge color={period.color} bg={period.bg}>
-                        {period.name}
-                      </Badge>
-                    </div>
-                  </div>
-
-                  {/* Focus Areas */}
-                  <div className="space-y-2 mb-4">
-                    {focusAreas.map(area => (
-                      <div key={area.key} className="flex items-center justify-between">
-                        <div className="flex items-center gap-2">
-                          <span className="text-[11px]">{area.icon}</span>
-                          <span className="text-[12px] text-ak-charcoal">{area.label}</span>
-                        </div>
-                        <PriorityBar value={month.focus[area.key]} color={priorityLabels[month.focus[area.key]]?.color || 'var(--border-default)'} />
-                      </div>
-                    ))}
-                  </div>
-
-                  {/* Parameters */}
-                  <div className="grid grid-cols-3 gap-2 text-center">
-                    <div className="bg-ak-snow rounded-lg p-2">
-                      <p className="text-[9px] text-ak-steel">L-fase</p>
-                      <p className="text-[11px] font-semibold text-ak-charcoal">{month.learningPhase}</p>
-                    </div>
-                    <div className="bg-ak-snow rounded-lg p-2">
-                      <p className="text-[9px] text-ak-steel">CS</p>
-                      <p className="text-[11px] font-semibold text-ak-charcoal">{month.clubSpeed}</p>
-                    </div>
-                    <div className="bg-ak-snow rounded-lg p-2">
-                      <p className="text-[9px] text-ak-steel">Setting</p>
-                      <p className="text-[11px] font-semibold text-ak-charcoal">{month.setting}</p>
-                    </div>
-                  </div>
-
-                  {/* Benchmark indicator */}
-                  {month.benchmark.length > 0 && (
-                    <div className="mt-3 pt-3 border-t border-ak-mist">
-                      <div className="flex items-center gap-1.5 text-[11px] text-ak-gold">
-                        <Icons.Target />
-                        <span>Benchmark: Uke {month.benchmark.join(', ')}</span>
-                      </div>
-                    </div>
-                  )}
-                </Card>
+                  month={month}
+                  periodConfig={periodConfig}
+                  priorityLabels={priorityLabels}
+                  focusAreas={focusAreas}
+                  isCurrentMonth={isCurrentMonth}
+                  isExpanded={selectedMonth === idx}
+                  onToggle={() => setSelectedMonth(selectedMonth === idx ? null : idx)}
+                />
               );
             })}
           </div>
@@ -600,19 +1116,19 @@ const AKGolfAarsplan = ({ player: apiPlayer = null, annualPlan: apiAnnualPlan = 
 
         {/* Five Process Summary */}
         <Card className="mt-8">
-          <SectionTitle className="text-[18px] font-bold text-ak-charcoal mb-6 text-center">Fem-prosess Arsoversikt</SectionTitle>
+          <SectionTitle className="text-[18px] font-bold text-tier-navy mb-6 text-center">Fem-prosess Arsoversikt</SectionTitle>
 
           <div className="grid grid-cols-1 md:grid-cols-5 gap-4">
             {[
               { name: 'Teknisk', icon: '⚙️', color: 'var(--accent)', desc: 'Sving, slag, teknikk' },
-              { name: 'Fysisk', icon: '💪', color: 'var(--success)', desc: 'Styrke, utholdenhet, mobilitet' },
+              { name: 'Fysisk', icon: '💪', color: 'var(--status-success)', desc: 'Styrke, utholdenhet, mobilitet' },
               { name: 'Mental', icon: '🧠', color: 'rgba(var(--accent-rgb), 0.8)', desc: 'Fokus, visualisering, rutiner' },
               { name: 'Strategisk', icon: '🎯', color: 'var(--achievement)', desc: 'Banestrategi, beslutninger' },
-              { name: 'Sosial', icon: '👥', color: 'var(--warning)', desc: 'Team, kommunikasjon, nettverk' },
+              { name: 'Sosial', icon: '👥', color: 'var(--status-warning)', desc: 'Team, kommunikasjon, nettverk' },
             ].map(process => (
               <div
                 key={process.name}
-                className="bg-ak-snow rounded-xl p-4 text-center border border-ak-mist"
+                className="bg-tier-white rounded-xl p-4 text-center border border-tier-surface-base"
               >
                 <div
                   className="w-12 h-12 rounded-xl mx-auto mb-3 flex items-center justify-center text-2xl"
@@ -620,8 +1136,8 @@ const AKGolfAarsplan = ({ player: apiPlayer = null, annualPlan: apiAnnualPlan = 
                 >
                   {process.icon}
                 </div>
-                <SubSectionTitle className="font-semibold text-ak-charcoal">{process.name}</SubSectionTitle>
-                <p className="text-[11px] text-ak-steel mt-1">{process.desc}</p>
+                <SubSectionTitle className="font-semibold text-tier-navy">{process.name}</SubSectionTitle>
+                <p className="text-[11px] text-tier-text-secondary mt-1">{process.desc}</p>
               </div>
             ))}
           </div>
@@ -630,7 +1146,7 @@ const AKGolfAarsplan = ({ player: apiPlayer = null, annualPlan: apiAnnualPlan = 
 
       {/* Footer */}
       <footer className="text-center py-6">
-        <p className="text-[12px] text-ak-steel">
+        <p className="text-[12px] text-tier-text-secondary">
           Team Norway Golf — Individuell Utviklingsplan
         </p>
       </footer>
@@ -638,4 +1154,4 @@ const AKGolfAarsplan = ({ player: apiPlayer = null, annualPlan: apiAnnualPlan = 
   );
 };
 
-export default AKGolfAarsplan;
+export default TIERGolfAarsplan;

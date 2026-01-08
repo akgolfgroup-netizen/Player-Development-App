@@ -5,6 +5,7 @@ import LoadingState from '../../components/ui/LoadingState';
 import ErrorState from '../../components/ui/ErrorState';
 import EmptyState from '../../components/ui/EmptyState';
 import AchievementsDashboard from './AchievementsDashboard';
+import { PageHeader } from '../../ui/raw-blocks';
 
 /**
  * AchievementsDashboardContainer
@@ -64,36 +65,37 @@ const AchievementsDashboardContainer = () => {
     }
   }, [user, fetchData]);
 
-  if (state === 'loading') {
-    return <LoadingState message="Laster prestasjoner..." />;
-  }
-
-  if (state === 'error') {
-    return (
-      <ErrorState
-        errorType={error?.type}
-        message={error?.message || 'Kunne ikke laste prestasjoner'}
-        onRetry={fetchData}
-      />
-    );
-  }
-
-  if (state === 'empty') {
-    return (
-      <EmptyState
-        title="Ingen prestasjoner"
-        message="Du har ikke låst opp noen prestasjoner ennå. Fortsett å trene for å opptjene badges!"
-      />
-    );
-  }
-
   return (
-    <AchievementsDashboard
-      achievements={data.achievements}
-      stats={data.stats}
-      badges={data.badges}
-      badgeProgress={data.badgeProgress}
-    />
+    <>
+      <PageHeader
+        title="Prestasjoner"
+        subtitle="Dine opptjente badges og prestasjonsmerker"
+        helpText="Oversikt over alle prestasjoner og badges. Filtrer på kategori (konsistens, volum, forbedring, milepæler, spesial). Se total XP, opplåste badges, fremgang mot neste nivå og nylige prestasjoner. Spor prestasjonene dine over tid."
+        showBackButton={false}
+      />
+      {state === 'loading' && <LoadingState message="Laster prestasjoner..." />}
+      {state === 'error' && (
+        <ErrorState
+          errorType={error?.type}
+          message={error?.message || 'Kunne ikke laste prestasjoner'}
+          onRetry={fetchData}
+        />
+      )}
+      {state === 'empty' && (
+        <EmptyState
+          title="Ingen prestasjoner"
+          message="Du har ikke låst opp noen prestasjoner ennå. Fortsett å trene for å opptjene badges!"
+        />
+      )}
+      {state === 'idle' && (
+        <AchievementsDashboard
+          achievements={data.achievements}
+          stats={data.stats}
+          badges={data.badges}
+          badgeProgress={data.badgeProgress}
+        />
+      )}
+    </>
   );
 };
 

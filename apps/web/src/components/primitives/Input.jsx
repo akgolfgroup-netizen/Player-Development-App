@@ -1,5 +1,5 @@
 /**
- * AK GOLF ACADEMY — DESIGN SYSTEM v3.0
+ * TIER GOLF — DESIGN SYSTEM v3.0
  * Input Primitive Component
  *
  * Uses design tokens via CSS variables. Do not hardcode colors or spacing.

@@ -20,16 +20,16 @@ import { coachesAPI } from '../../services/api';
 import { useToast } from '../../components/shadcn/use-toast';
 import PageHeader from '../../ui/raw-blocks/PageHeader.raw';
 import Button from '../../ui/primitives/Button';
-import { SubSectionTitle } from '../../components/typography';
+import { SubSectionTitle } from "../../ui/components/typography";
 
 // ============================================================================
 // CLASS MAPPINGS
 // ============================================================================
 
 const CATEGORY_CLASSES = {
-  A: { bg: 'bg-ak-status-success/15', text: 'text-ak-status-success' },
-  B: { bg: 'bg-ak-primary/15', text: 'text-ak-primary' },
-  C: { bg: 'bg-ak-status-warning/15', text: 'text-ak-status-warning' },
+  A: { bg: 'bg-tier-success/15', text: 'text-tier-success' },
+  B: { bg: 'bg-tier-navy/15', text: 'text-tier-navy' },
+  C: { bg: 'bg-tier-warning/15', text: 'text-tier-warning' },
 };
 
 interface Player {
@@ -149,7 +149,7 @@ export const CoachPlanningHub: React.FC = () => {
   }), [players, groups]);
 
   const getCategoryClasses = (category: string) => {
-    return CATEGORY_CLASSES[category as keyof typeof CATEGORY_CLASSES] || { bg: 'bg-ak-surface-base', text: 'text-ak-text-secondary' };
+    return CATEGORY_CLASSES[category as keyof typeof CATEGORY_CLASSES] || { bg: 'bg-tier-white', text: 'text-tier-text-secondary' };
   };
 
   const formatDate = (dateString?: string) => {
@@ -160,18 +160,19 @@ export const CoachPlanningHub: React.FC = () => {
 
   if (loading) {
     return (
-      <div className="min-h-screen bg-ak-surface-subtle flex items-center justify-center">
-        <Loader2 size={40} className="text-ak-primary animate-spin" />
+      <div className="min-h-screen bg-tier-surface-base flex items-center justify-center">
+        <Loader2 size={40} className="text-tier-navy animate-spin" />
       </div>
     );
   }
 
   return (
-    <div className="bg-ak-surface-subtle min-h-screen">
+    <div className="bg-tier-surface-base min-h-screen">
       {/* Header - using PageHeader from design system */}
       <PageHeader
         title="Treningsplanlegger"
         subtitle="Velg spiller eller gruppe for å opprette/redigere treningsplan"
+        helpText="Din planleggingsoversikt for spillere, grupper og treningsopplegg. Hold kontroll på alle dine aktiviteter."
         actions={
           <Button
             variant="secondary"
@@ -187,52 +188,52 @@ export const CoachPlanningHub: React.FC = () => {
 
       {/* Stats Cards */}
       <div className="grid grid-cols-4 gap-3 mb-6">
-        <div className="bg-ak-surface-base rounded-xl p-4 border border-ak-border-default">
+        <div className="bg-tier-white rounded-xl p-4 border border-tier-border-default">
           <div className="flex items-center gap-2 mb-2">
-            <User size={16} className="text-ak-status-success" />
-            <span className="text-xs text-ak-text-secondary">Spillere med plan</span>
+            <User size={16} className="text-tier-success" />
+            <span className="text-xs text-tier-text-secondary">Spillere med plan</span>
           </div>
-          <p className="text-2xl font-bold text-ak-status-success m-0">
+          <p className="text-2xl font-bold text-tier-success m-0">
             {stats.playersWithPlan}
           </p>
         </div>
-        <div className="bg-ak-surface-base rounded-xl p-4 border border-ak-border-default">
+        <div className="bg-tier-white rounded-xl p-4 border border-tier-border-default">
           <div className="flex items-center gap-2 mb-2">
-            <User size={16} className="text-ak-status-warning" />
-            <span className="text-xs text-ak-text-secondary">Mangler plan</span>
+            <User size={16} className="text-tier-warning" />
+            <span className="text-xs text-tier-text-secondary">Mangler plan</span>
           </div>
-          <p className="text-2xl font-bold text-ak-status-warning m-0">
+          <p className="text-2xl font-bold text-tier-warning m-0">
             {stats.playersWithoutPlan}
           </p>
         </div>
-        <div className="bg-ak-surface-base rounded-xl p-4 border border-ak-border-default">
+        <div className="bg-tier-white rounded-xl p-4 border border-tier-border-default">
           <div className="flex items-center gap-2 mb-2">
-            <Users size={16} className="text-ak-status-success" />
-            <span className="text-xs text-ak-text-secondary">Grupper med plan</span>
+            <Users size={16} className="text-tier-success" />
+            <span className="text-xs text-tier-text-secondary">Grupper med plan</span>
           </div>
-          <p className="text-2xl font-bold text-ak-status-success m-0">
+          <p className="text-2xl font-bold text-tier-success m-0">
             {stats.groupsWithPlan}
           </p>
         </div>
-        <div className="bg-ak-surface-base rounded-xl p-4 border border-ak-border-default">
+        <div className="bg-tier-white rounded-xl p-4 border border-tier-border-default">
           <div className="flex items-center gap-2 mb-2">
-            <Users size={16} className="text-ak-status-error" />
-            <span className="text-xs text-ak-text-secondary">Grupper uten plan</span>
+            <Users size={16} className="text-tier-error" />
+            <span className="text-xs text-tier-text-secondary">Grupper uten plan</span>
           </div>
-          <p className="text-2xl font-bold text-ak-status-error m-0">
+          <p className="text-2xl font-bold text-tier-error m-0">
             {stats.groupsWithoutPlan}
           </p>
         </div>
       </div>
 
       {/* Tabs */}
-      <div className="flex gap-1 mb-5 p-1 bg-ak-surface-subtle rounded-xl w-fit">
+      <div className="flex gap-1 mb-5 p-1 bg-tier-surface-base rounded-xl w-fit">
         <button
           onClick={() => setActiveTab('players')}
           className={`py-2.5 px-5 rounded-lg border-none text-sm font-medium cursor-pointer flex items-center gap-2 transition-all ${
             activeTab === 'players'
-              ? 'bg-ak-surface-base text-ak-text-primary shadow-sm'
-              : 'bg-transparent text-ak-text-secondary'
+              ? 'bg-tier-white text-tier-navy shadow-sm'
+              : 'bg-transparent text-tier-text-secondary'
           }`}
         >
           <User size={16} />
@@ -242,8 +243,8 @@ export const CoachPlanningHub: React.FC = () => {
           onClick={() => setActiveTab('groups')}
           className={`py-2.5 px-5 rounded-lg border-none text-sm font-medium cursor-pointer flex items-center gap-2 transition-all ${
             activeTab === 'groups'
-              ? 'bg-ak-surface-base text-ak-text-primary shadow-sm'
-              : 'bg-transparent text-ak-text-secondary'
+              ? 'bg-tier-white text-tier-navy shadow-sm'
+              : 'bg-transparent text-tier-text-secondary'
           }`}
         >
           <Users size={16} />
@@ -256,14 +257,14 @@ export const CoachPlanningHub: React.FC = () => {
         <div className="relative flex-1 min-w-[200px] max-w-[400px]">
           <Search
             size={18}
-            className="absolute left-3 top-1/2 -translate-y-1/2 text-ak-text-secondary"
+            className="absolute left-3 top-1/2 -translate-y-1/2 text-tier-text-secondary"
           />
           <input
             type="text"
             placeholder={activeTab === 'players' ? 'Søk etter spiller...' : 'Søk etter gruppe...'}
             value={searchQuery}
             onChange={(e) => setSearchQuery(e.target.value)}
-            className="w-full py-3 pl-10 pr-3 rounded-[10px] border border-ak-border-default bg-ak-surface-base text-sm text-ak-text-primary outline-none focus:border-ak-primary"
+            className="w-full py-3 pl-10 pr-3 rounded-[10px] border border-tier-border-default bg-tier-white text-sm text-tier-navy outline-none focus:border-tier-navy"
           />
         </div>
         <div className="flex gap-2">
@@ -277,8 +278,8 @@ export const CoachPlanningHub: React.FC = () => {
               onClick={() => setFilterPlan(filter.key as typeof filterPlan)}
               className={`py-2.5 px-4 rounded-[10px] border-none text-[13px] font-medium cursor-pointer transition-colors ${
                 filterPlan === filter.key
-                  ? 'bg-ak-primary text-white'
-                  : 'bg-ak-surface-base text-ak-text-secondary hover:bg-ak-surface-subtle'
+                  ? 'bg-tier-navy text-white'
+                  : 'bg-tier-white text-tier-text-secondary hover:bg-tier-surface-base'
               }`}
             >
               {filter.label}
@@ -296,18 +297,18 @@ export const CoachPlanningHub: React.FC = () => {
               <div
                 key={player.id}
                 onClick={() => navigate(`/coach/athletes/${player.id}/plan`)}
-                className="bg-ak-surface-base rounded-xl p-4 border border-ak-border-default cursor-pointer transition-all hover:shadow-md flex items-center gap-3"
+                className="bg-tier-white rounded-xl p-4 border border-tier-border-default cursor-pointer transition-all hover:shadow-md flex items-center gap-3"
               >
                 <div className={`w-12 h-12 rounded-full flex items-center justify-center text-base font-semibold border-2 ${
                   player.hasActivePlan
-                    ? 'bg-ak-status-success/15 border-ak-status-success text-ak-status-success'
-                    : 'bg-ak-status-warning/15 border-ak-status-warning text-ak-status-warning'
+                    ? 'bg-tier-success/15 border-tier-success text-tier-success'
+                    : 'bg-tier-warning/15 border-tier-warning text-tier-warning'
                 }`}>
                   {player.name.split(' ').map(n => n[0]).join('')}
                 </div>
                 <div className="flex-1">
                   <div className="flex items-center gap-2 mb-1">
-                    <SubSectionTitle className="text-[15px] font-semibold text-ak-text-primary m-0">
+                    <SubSectionTitle className="text-[15px] font-semibold text-tier-navy m-0">
                       {player.name}
                     </SubSectionTitle>
                     <span className={`text-[10px] font-semibold py-0.5 px-1.5 rounded ${catClasses.bg} ${catClasses.text}`}>
@@ -315,29 +316,29 @@ export const CoachPlanningHub: React.FC = () => {
                     </span>
                   </div>
                   <div className="flex items-center gap-3">
-                    <span className="text-xs text-ak-text-secondary">
+                    <span className="text-xs text-tier-text-secondary">
                       HCP {player.hcp}
                     </span>
                     {player.hasActivePlan ? (
                       <>
-                        <span className="text-[11px] text-ak-status-success flex items-center gap-1">
+                        <span className="text-[11px] text-tier-success flex items-center gap-1">
                           <CheckCircle size={12} />
                           {player.weeksInPlan}u plan
                         </span>
                         {player.planUpdated && (
-                          <span className="text-[11px] text-ak-text-secondary">
+                          <span className="text-[11px] text-tier-text-secondary">
                             Oppdatert {formatDate(player.planUpdated)}
                           </span>
                         )}
                       </>
                     ) : (
-                      <span className="text-[11px] text-ak-status-warning font-medium">
+                      <span className="text-[11px] text-tier-warning font-medium">
                         Ingen aktiv plan
                       </span>
                     )}
                   </div>
                 </div>
-                <ChevronRight size={18} className="text-ak-text-secondary" />
+                <ChevronRight size={18} className="text-tier-text-secondary" />
               </div>
             );
           })}
@@ -348,43 +349,43 @@ export const CoachPlanningHub: React.FC = () => {
             <div
               key={group.id}
               onClick={() => navigate(`/coach/groups/${group.id}/plan`)}
-              className="bg-ak-surface-base rounded-xl p-4 border border-ak-border-default cursor-pointer transition-all hover:shadow-md flex items-center gap-3"
+              className="bg-tier-white rounded-xl p-4 border border-tier-border-default cursor-pointer transition-all hover:shadow-md flex items-center gap-3"
             >
               <div className={`w-12 h-12 rounded-xl flex items-center justify-center border-2 ${
                 group.hasGroupPlan
-                  ? 'bg-ak-status-success/15 border-ak-status-success'
-                  : 'bg-ak-status-warning/15 border-ak-status-warning'
+                  ? 'bg-tier-success/15 border-tier-success'
+                  : 'bg-tier-warning/15 border-tier-warning'
               }`}>
-                <Users size={20} className={group.hasGroupPlan ? 'text-ak-status-success' : 'text-ak-status-warning'} />
+                <Users size={20} className={group.hasGroupPlan ? 'text-tier-success' : 'text-tier-warning'} />
               </div>
               <div className="flex-1">
-                <SubSectionTitle className="text-[15px] font-semibold text-ak-text-primary m-0 mb-1">
+                <SubSectionTitle className="text-[15px] font-semibold text-tier-navy m-0 mb-1">
                   {group.name}
                 </SubSectionTitle>
                 <div className="flex items-center gap-3">
-                  <span className="text-xs text-ak-text-secondary">
+                  <span className="text-xs text-tier-text-secondary">
                     {group.memberCount} medlemmer
                   </span>
                   {group.hasGroupPlan ? (
                     <>
-                      <span className="text-[11px] text-ak-status-success flex items-center gap-1">
+                      <span className="text-[11px] text-tier-success flex items-center gap-1">
                         <CheckCircle size={12} />
                         Aktiv plan
                       </span>
                       {group.planUpdated && (
-                        <span className="text-[11px] text-ak-text-secondary">
+                        <span className="text-[11px] text-tier-text-secondary">
                           Oppdatert {formatDate(group.planUpdated)}
                         </span>
                       )}
                     </>
                   ) : (
-                    <span className="text-[11px] text-ak-status-warning font-medium">
+                    <span className="text-[11px] text-tier-warning font-medium">
                       Ingen gruppeplan
                     </span>
                   )}
                 </div>
               </div>
-              <ChevronRight size={18} className="text-ak-text-secondary" />
+              <ChevronRight size={18} className="text-tier-text-secondary" />
             </div>
           ))}
         </div>
@@ -392,9 +393,9 @@ export const CoachPlanningHub: React.FC = () => {
 
       {((activeTab === 'players' && filteredPlayers.length === 0) ||
         (activeTab === 'groups' && filteredGroups.length === 0)) && (
-        <div className="text-center py-16 px-5 bg-ak-surface-base rounded-2xl border border-ak-border-default">
-          <ClipboardList size={48} className="text-ak-text-secondary mb-4 mx-auto" />
-          <p className="text-base text-ak-text-secondary m-0">
+        <div className="text-center py-16 px-5 bg-tier-white rounded-2xl border border-tier-border-default">
+          <ClipboardList size={48} className="text-tier-text-secondary mb-4 mx-auto" />
+          <p className="text-base text-tier-text-secondary m-0">
             Ingen {activeTab === 'players' ? 'spillere' : 'grupper'} funnet
           </p>
         </div>

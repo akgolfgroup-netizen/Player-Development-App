@@ -1,5 +1,5 @@
 /**
- * AK Golf Academy - Periodeplaner Container
+ * TIER Golf Academy - Periodeplaner Container
  * Design System v3.0 - Premium Light
  *
  * Season planning with period cards and week overview.
@@ -228,14 +228,14 @@ const getPhaseConfig = (phase) => {
     case 'off-season':
       return {
         label: 'Off-season',
-        colorClasses: { bg: 'bg-ak-primary/15', text: 'text-ak-primary', fill: 'bg-ak-primary' },
+        colorClasses: { bg: 'bg-tier-navy/15', text: 'text-tier-navy', fill: 'bg-tier-navy' },
         icon: Snowflake,
         description: 'Grunnlagsperiode',
       };
     case 'pre-season':
       return {
         label: 'Forberedelse',
-        colorClasses: { bg: 'bg-ak-status-success/15', text: 'text-ak-status-success', fill: 'bg-ak-status-success' },
+        colorClasses: { bg: 'bg-tier-success/15', text: 'text-tier-success', fill: 'bg-tier-success' },
         icon: Flower2,
         description: 'Oppkjoring',
       };
@@ -249,14 +249,14 @@ const getPhaseConfig = (phase) => {
     case 'transition':
       return {
         label: 'Overgang',
-        colorClasses: { bg: 'bg-ak-status-warning/15', text: 'text-ak-status-warning', fill: 'bg-ak-status-warning' },
+        colorClasses: { bg: 'bg-tier-warning/15', text: 'text-tier-warning', fill: 'bg-tier-warning' },
         icon: Leaf,
         description: 'Evaluering og planlegging',
       };
     default:
       return {
         label: phase,
-        colorClasses: { bg: 'bg-ak-surface-subtle', text: 'text-ak-text-secondary', fill: 'bg-ak-text-secondary' },
+        colorClasses: { bg: 'bg-tier-surface-base', text: 'text-tier-text-secondary', fill: 'bg-tier-text-secondary' },
         icon: Calendar,
         description: '',
       };
@@ -266,29 +266,29 @@ const getPhaseConfig = (phase) => {
 const getStatusConfig = (status) => {
   switch (status) {
     case 'active':
-      return { label: 'Aktiv', colorClasses: { bg: 'bg-ak-status-success/15', text: 'text-ak-status-success' }, icon: Play };
+      return { label: 'Aktiv', colorClasses: { bg: 'bg-tier-success/15', text: 'text-tier-success' }, icon: Play };
     case 'upcoming':
-      return { label: 'Kommende', colorClasses: { bg: 'bg-ak-surface-subtle', text: 'text-ak-text-secondary' }, icon: Clock };
+      return { label: 'Kommende', colorClasses: { bg: 'bg-tier-surface-base', text: 'text-tier-text-secondary' }, icon: Clock };
     case 'completed':
-      return { label: 'Fullfort', colorClasses: { bg: 'bg-ak-primary/15', text: 'text-ak-primary' }, icon: CheckCircle };
+      return { label: 'Fullfort', colorClasses: { bg: 'bg-tier-navy/15', text: 'text-tier-navy' }, icon: CheckCircle };
     default:
-      return { label: status, colorClasses: { bg: 'bg-ak-surface-subtle', text: 'text-ak-text-secondary' }, icon: Clock };
+      return { label: status, colorClasses: { bg: 'bg-tier-surface-base', text: 'text-tier-text-secondary' }, icon: Clock };
   }
 };
 
 const getSessionTypeConfig = (type) => {
   switch (type) {
     case 'Styrke':
-      return { colorClasses: { bg: 'bg-ak-status-error/15', text: 'text-ak-status-error' }, icon: Dumbbell };
+      return { colorClasses: { bg: 'bg-tier-error/15', text: 'text-tier-error' }, icon: Dumbbell };
     case 'Simulator':
     case 'Teknikk':
-      return { colorClasses: { bg: 'bg-ak-primary/15', text: 'text-ak-primary' }, icon: Target };
+      return { colorClasses: { bg: 'bg-tier-navy/15', text: 'text-tier-navy' }, icon: Target };
     case 'Mental':
       return { colorClasses: { bg: 'bg-amber-500/15', text: 'text-amber-600' }, icon: Brain };
     case 'Hvile':
-      return { colorClasses: { bg: 'bg-ak-surface-subtle', text: 'text-ak-text-secondary' }, icon: Clock };
+      return { colorClasses: { bg: 'bg-tier-surface-base', text: 'text-tier-text-secondary' }, icon: Clock };
     default:
-      return { colorClasses: { bg: 'bg-ak-surface-subtle', text: 'text-ak-text-secondary' }, icon: Calendar };
+      return { colorClasses: { bg: 'bg-tier-surface-base', text: 'text-tier-text-secondary' }, icon: Calendar };
   }
 };
 
@@ -306,8 +306,8 @@ const PeriodCard = ({ period, isExpanded, onToggle }) => {
   const totalGoals = period.goals.length;
 
   return (
-    <div className={`bg-ak-surface-base rounded-2xl overflow-hidden shadow-sm ${
-      period.status === 'active' ? 'border-2 border-ak-status-success' : 'border-2 border-transparent'
+    <div className={`bg-tier-white rounded-2xl overflow-hidden shadow-sm ${
+      period.status === 'active' ? 'border-2 border-tier-success' : 'border-2 border-transparent'
     }`}>
       {/* Header */}
       <div
@@ -320,7 +320,7 @@ const PeriodCard = ({ period, isExpanded, onToggle }) => {
           </div>
           <div>
             <div className="flex items-center gap-2">
-              <SubSectionTitle className="text-base font-semibold text-ak-text-primary m-0">
+              <SubSectionTitle className="text-base font-semibold text-tier-navy m-0">
                 {period.name}
               </SubSectionTitle>
               <span className={`text-[11px] font-medium py-0.5 px-2 rounded ${statusConfig.colorClasses.bg} ${statusConfig.colorClasses.text} flex items-center gap-1`}>
@@ -328,7 +328,7 @@ const PeriodCard = ({ period, isExpanded, onToggle }) => {
                 {statusConfig.label}
               </span>
             </div>
-            <div className="text-[13px] text-ak-text-secondary mt-1">
+            <div className="text-[13px] text-tier-text-secondary mt-1">
               {formatDateRange(period.startDate, period.endDate)} - {phaseConfig.description}
             </div>
           </div>
@@ -337,16 +337,16 @@ const PeriodCard = ({ period, isExpanded, onToggle }) => {
         <div className="flex items-center gap-4">
           {period.status === 'active' && (
             <div className="text-right">
-              <div className="text-xl font-bold text-ak-primary">
+              <div className="text-xl font-bold text-tier-navy">
                 {period.progress}%
               </div>
-              <div className="text-[11px] text-ak-text-secondary">fullfort</div>
+              <div className="text-[11px] text-tier-text-secondary">fullfort</div>
             </div>
           )}
-          <div className={`w-8 h-8 rounded-lg bg-ak-surface-subtle flex items-center justify-center transition-transform duration-200 ${
+          <div className={`w-8 h-8 rounded-lg bg-tier-surface-base flex items-center justify-center transition-transform duration-200 ${
             isExpanded ? 'rotate-180' : 'rotate-0'
           }`}>
-            <ChevronDown size={18} className="text-ak-text-secondary" />
+            <ChevronDown size={18} className="text-tier-text-secondary" />
           </div>
         </div>
       </div>
@@ -354,9 +354,9 @@ const PeriodCard = ({ period, isExpanded, onToggle }) => {
       {/* Progress bar for active period */}
       {period.status === 'active' && (
         <div className="px-5 pb-4">
-          <div className="h-1.5 bg-ak-surface-subtle rounded-sm overflow-hidden">
+          <div className="h-1.5 bg-tier-surface-base rounded-sm overflow-hidden">
             <div
-              className="h-full bg-ak-status-success rounded-sm transition-all duration-300"
+              className="h-full bg-tier-success rounded-sm transition-all duration-300"
               style={{ width: `${period.progress}%` }}
             />
           </div>
@@ -365,10 +365,10 @@ const PeriodCard = ({ period, isExpanded, onToggle }) => {
 
       {/* Expanded Content */}
       {isExpanded && (
-        <div className="px-5 pb-5 border-t border-ak-border-default">
+        <div className="px-5 pb-5 border-t border-tier-border-default">
           {/* Focus Areas */}
           <div className="mt-4">
-            <div className="text-[13px] font-semibold text-ak-text-primary mb-2">
+            <div className="text-[13px] font-semibold text-tier-navy mb-2">
               Fokusomrader
             </div>
             <div className="flex gap-2 flex-wrap">
@@ -386,10 +386,10 @@ const PeriodCard = ({ period, isExpanded, onToggle }) => {
           {/* Goals */}
           <div className="mt-5">
             <div className="flex items-center justify-between mb-3">
-              <div className="text-[13px] font-semibold text-ak-text-primary">
+              <div className="text-[13px] font-semibold text-tier-navy">
                 Mal for perioden
               </div>
-              <div className="text-xs text-ak-text-secondary">
+              <div className="text-xs text-tier-text-secondary">
                 {completedGoals}/{totalGoals} fullfort
               </div>
             </div>
@@ -398,23 +398,23 @@ const PeriodCard = ({ period, isExpanded, onToggle }) => {
                 <div
                   key={goal.id}
                   className={`flex items-center gap-2.5 py-2.5 px-3 rounded-lg ${
-                    goal.completed ? 'bg-ak-status-success/10' : 'bg-ak-surface-subtle'
+                    goal.completed ? 'bg-tier-success/10' : 'bg-tier-surface-base'
                   }`}
                 >
                   <div className={`w-5 h-5 rounded-full flex items-center justify-center ${
                     goal.completed
-                      ? 'bg-ak-status-success'
-                      : 'bg-ak-surface-base border-2 border-ak-border-default'
+                      ? 'bg-tier-success'
+                      : 'bg-tier-white border-2 border-tier-border-default'
                   }`}>
                     {goal.completed && <CheckCircle size={14} className="text-white" />}
                   </div>
                   <span className={`text-[13px] flex-1 ${
-                    goal.completed ? 'text-ak-text-secondary line-through' : 'text-ak-text-primary'
+                    goal.completed ? 'text-tier-text-secondary line-through' : 'text-tier-navy'
                   }`}>
                     {goal.text}
                   </span>
                   {goal.current !== undefined && !goal.completed && (
-                    <span className="text-[11px] text-ak-primary bg-ak-primary/10 py-0.5 px-2 rounded">
+                    <span className="text-[11px] text-tier-navy bg-tier-navy/10 py-0.5 px-2 rounded">
                       {goal.current} av mal
                     </span>
                   )}
@@ -425,43 +425,43 @@ const PeriodCard = ({ period, isExpanded, onToggle }) => {
 
           {/* Weekly Hours Distribution */}
           <div className="mt-5">
-            <div className="text-[13px] font-semibold text-ak-text-primary mb-3">
+            <div className="text-[13px] font-semibold text-tier-navy mb-3">
               Ukentlig treningstid
             </div>
             <div className="flex gap-3">
-              <div className="flex-1 bg-ak-primary/10 p-3 rounded-[10px] text-center">
-                <div className="text-xl font-bold text-ak-primary">
+              <div className="flex-1 bg-tier-navy/10 p-3 rounded-[10px] text-center">
+                <div className="text-xl font-bold text-tier-navy">
                   {period.weeklyHours.technical}t
                 </div>
-                <div className="text-[11px] text-ak-text-secondary">Teknisk</div>
+                <div className="text-[11px] text-tier-text-secondary">Teknisk</div>
               </div>
-              <div className="flex-1 bg-ak-status-error/10 p-3 rounded-[10px] text-center">
-                <div className="text-xl font-bold text-ak-status-error">
+              <div className="flex-1 bg-tier-error/10 p-3 rounded-[10px] text-center">
+                <div className="text-xl font-bold text-tier-error">
                   {period.weeklyHours.physical}t
                 </div>
-                <div className="text-[11px] text-ak-text-secondary">Fysisk</div>
+                <div className="text-[11px] text-tier-text-secondary">Fysisk</div>
               </div>
               <div className="flex-1 bg-amber-500/10 p-3 rounded-[10px] text-center">
                 <div className="text-xl font-bold text-amber-600">
                   {period.weeklyHours.mental}t
                 </div>
-                <div className="text-[11px] text-ak-text-secondary">Mental</div>
+                <div className="text-[11px] text-tier-text-secondary">Mental</div>
               </div>
             </div>
           </div>
 
           {/* Coach Note */}
           {period.notes && (
-            <div className={`mt-4 p-3 bg-ak-surface-subtle rounded-[10px] border-l-[3px] ${
-              phaseConfig.colorClasses.text === 'text-ak-primary' ? 'border-l-ak-primary' :
-              phaseConfig.colorClasses.text === 'text-ak-status-success' ? 'border-l-ak-status-success' :
+            <div className={`mt-4 p-3 bg-tier-surface-base rounded-[10px] border-l-[3px] ${
+              phaseConfig.colorClasses.text === 'text-tier-navy' ? 'border-l-tier-navy' :
+              phaseConfig.colorClasses.text === 'text-tier-success' ? 'border-l-tier-success' :
               phaseConfig.colorClasses.text === 'text-amber-600' ? 'border-l-amber-500' :
-              'border-l-ak-status-warning'
+              'border-l-tier-warning'
             }`}>
-              <div className="text-[11px] text-ak-text-secondary mb-1">
+              <div className="text-[11px] text-tier-text-secondary mb-1">
                 Trenernotat - {period.coach}
               </div>
-              <div className="text-[13px] text-ak-text-primary leading-relaxed">
+              <div className="text-[13px] text-tier-navy leading-relaxed">
                 {period.notes}
               </div>
             </div>
@@ -481,18 +481,18 @@ const CurrentWeekPlan = ({ weekPlan }) => {
   const totalSessions = weekPlan.sessions.filter(s => s.type !== 'Hvile').length;
 
   return (
-    <div className="bg-ak-surface-base rounded-2xl p-5 shadow-sm">
+    <div className="bg-tier-white rounded-2xl p-5 shadow-sm">
       <div className="flex items-center justify-between mb-4">
         <div>
-          <SubSectionTitle className="text-base font-semibold text-ak-text-primary m-0">
+          <SubSectionTitle className="text-base font-semibold text-tier-navy m-0">
             Denne uken (Uke {weekPlan.week})
           </SubSectionTitle>
-          <div className="text-[13px] text-ak-text-secondary mt-0.5">
+          <div className="text-[13px] text-tier-text-secondary mt-0.5">
             Tema: {weekPlan.theme}
           </div>
         </div>
-        <div className="bg-ak-status-success/10 py-2 px-3 rounded-lg">
-          <span className="text-sm font-semibold text-ak-status-success">
+        <div className="bg-tier-success/10 py-2 px-3 rounded-lg">
+          <span className="text-sm font-semibold text-tier-success">
             {completedSessions}/{totalSessions} okter
           </span>
         </div>
@@ -507,28 +507,28 @@ const CurrentWeekPlan = ({ weekPlan }) => {
             <div
               key={idx}
               className={`flex items-center gap-3 p-3 rounded-[10px] ${
-                session.completed ? 'bg-ak-status-success/5' : 'bg-ak-surface-subtle'
+                session.completed ? 'bg-tier-success/5' : 'bg-tier-surface-base'
               } ${session.type === 'Hvile' ? 'opacity-60' : 'opacity-100'}`}
             >
               <div className={`w-9 h-9 rounded-lg flex items-center justify-center ${
-                session.completed ? 'bg-ak-status-success/15' : config.colorClasses.bg
+                session.completed ? 'bg-tier-success/15' : config.colorClasses.bg
               }`}>
                 {session.completed ? (
-                  <CheckCircle size={18} className="text-ak-status-success" />
+                  <CheckCircle size={18} className="text-tier-success" />
                 ) : (
                   <Icon size={18} className={config.colorClasses.text} />
                 )}
               </div>
               <div className="flex-1">
-                <div className="text-sm font-medium text-ak-text-primary">
+                <div className="text-sm font-medium text-tier-navy">
                   {session.day}
                 </div>
-                <div className="text-xs text-ak-text-secondary">
+                <div className="text-xs text-tier-text-secondary">
                   {session.type} - {session.focus}
                 </div>
               </div>
               {session.duration > 0 && (
-                <div className="text-xs text-ak-text-secondary bg-ak-surface-base py-1 px-2 rounded-md">
+                <div className="text-xs text-tier-text-secondary bg-tier-white py-1 px-2 rounded-md">
                   {session.duration} min
                 </div>
               )}
@@ -732,10 +732,11 @@ const PeriodeplanerContainer = () => {
   }
 
   return (
-    <div className="min-h-screen bg-ak-surface-subtle">
+    <div className="min-h-screen bg-tier-surface-base">
       <PageHeader
         title="Periodeplaner"
         subtitle="Sesongplanlegging og periodisering"
+        helpText="Oversikt over treningsperiodens struktur med evalueringsperiode, grunnperiode, spesialiseringsperiode og turneringsperiode. Se mål og fokus for hver periode."
         actions={
           <Button
             variant={isSyncing ? 'secondary' : 'primary'}
@@ -752,29 +753,29 @@ const PeriodeplanerContainer = () => {
       <div className="p-4 px-6 pb-6 w-full">
         {/* Stats Overview */}
         <div className="grid grid-cols-[repeat(auto-fit,minmax(150px,1fr))] gap-3 mb-6">
-          <div className="bg-ak-surface-base rounded-xl p-4 text-center">
-            <div className="text-2xl font-bold text-ak-status-success">
+          <div className="bg-tier-white rounded-xl p-4 text-center">
+            <div className="text-2xl font-bold text-tier-success">
               {activePeriod?.name.split(' ')[0] || '-'}
             </div>
-            <div className="text-xs text-ak-text-secondary">Aktiv periode</div>
+            <div className="text-xs text-tier-text-secondary">Aktiv periode</div>
           </div>
-          <div className="bg-ak-surface-base rounded-xl p-4 text-center">
-            <div className="text-2xl font-bold text-ak-primary">
+          <div className="bg-tier-white rounded-xl p-4 text-center">
+            <div className="text-2xl font-bold text-tier-navy">
               {activePeriod?.progress || 0}%
             </div>
-            <div className="text-xs text-ak-text-secondary">Fullfort</div>
+            <div className="text-xs text-tier-text-secondary">Fullfort</div>
           </div>
-          <div className="bg-ak-surface-base rounded-xl p-4 text-center">
+          <div className="bg-tier-white rounded-xl p-4 text-center">
             <div className="text-2xl font-bold text-amber-600">
               {totalWeeklyHours}t
             </div>
-            <div className="text-xs text-ak-text-secondary">Timer/uke</div>
+            <div className="text-xs text-tier-text-secondary">Timer/uke</div>
           </div>
-          <div className="bg-ak-surface-base rounded-xl p-4 text-center">
-            <div className="text-2xl font-bold text-ak-text-primary">
+          <div className="bg-tier-white rounded-xl p-4 text-center">
+            <div className="text-2xl font-bold text-tier-navy">
               {periods.length}
             </div>
-            <div className="text-xs text-ak-text-secondary">Perioder i ar</div>
+            <div className="text-xs text-tier-text-secondary">Perioder i ar</div>
           </div>
         </div>
 
@@ -782,7 +783,7 @@ const PeriodeplanerContainer = () => {
         <div className="grid grid-cols-[repeat(auto-fit,minmax(400px,1fr))] gap-6">
           {/* Left: Period Cards */}
           <div>
-            <SectionTitle className="text-lg font-semibold text-ak-text-primary m-0 mb-4">
+            <SectionTitle className="text-lg font-semibold text-tier-navy m-0 mb-4">
               Arsplan 2025
             </SectionTitle>
             <div className="flex flex-col gap-3">
@@ -799,14 +800,14 @@ const PeriodeplanerContainer = () => {
 
           {/* Right: Current Week */}
           <div>
-            <SectionTitle className="text-lg font-semibold text-ak-text-primary m-0 mb-4">
+            <SectionTitle className="text-lg font-semibold text-tier-navy m-0 mb-4">
               Ukeoversikt
             </SectionTitle>
             <CurrentWeekPlan weekPlan={CURRENT_WEEK_PLAN} />
 
             {/* Period Timeline Visual */}
-            <div className="mt-6 bg-ak-surface-base rounded-2xl p-5 shadow-sm">
-              <SubSectionTitle className="text-sm font-semibold text-ak-text-primary m-0 mb-4">
+            <div className="mt-6 bg-tier-white rounded-2xl p-5 shadow-sm">
+              <SubSectionTitle className="text-sm font-semibold text-tier-navy m-0 mb-4">
                 Arshjul
               </SubSectionTitle>
               <div className="flex gap-1 h-6">
@@ -838,7 +839,7 @@ const PeriodeplanerContainer = () => {
                   );
                 })}
               </div>
-              <div className="flex justify-between mt-2 text-[10px] text-ak-text-secondary">
+              <div className="flex justify-between mt-2 text-[10px] text-tier-text-secondary">
                 <span>Jan</span>
                 <span>Apr</span>
                 <span>Jul</span>

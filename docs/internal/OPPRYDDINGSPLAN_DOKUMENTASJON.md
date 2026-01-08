@@ -191,13 +191,13 @@ mv CLAUDE_PROJECT_*.md archive/
 
 ### Template: Root README.md
 ```markdown
-# AK Golf Academy - IUP System
+# TIER Golf - IUP System
 
 **Individuell Utviklingsplan for golfspillere**
 
 ## Oversikt
 
-Dette prosjektet er et komplett system for individualisert treningsplanlegging for golfspillere, utviklet av AK Golf Academy i samarbeid med Team Norway Golf.
+Dette prosjektet er et komplett system for individualisert treningsplanlegging for golfspillere, utviklet av TIER Golf i samarbeid med Team Norway Golf.
 
 ### Prosjektstatus
 
@@ -246,11 +246,11 @@ npm start
 ## Team
 
 - **Utvikler:** Anders Kristiansen
-- **Partnere:** AK Golf Academy, Team Norway Golf
+- **Partnere:** TIER Golf, Team Norway Golf
 
 ## Lisens
 
-Private - AK Golf Academy © 2025
+Private - TIER Golf © 2025
 \`\`\`
 
 ---

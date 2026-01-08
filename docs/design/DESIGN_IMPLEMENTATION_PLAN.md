@@ -1,4 +1,4 @@
-# AK Golf Design System - Implementation Plan
+# TIER Golf Design System - Implementation Plan
 
 **Version:** 1.0
 **Date:** December 29, 2025

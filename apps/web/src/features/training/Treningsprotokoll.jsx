@@ -20,47 +20,47 @@ import { SectionTitle, SubSectionTitle, CardTitle } from '../../components/typog
 
 const SESSION_CATEGORY_CLASSES = {
   teknikk: {
-    text: 'text-ak-primary',
-    bg: 'bg-ak-primary/15',
+    text: 'text-tier-navy',
+    bg: 'bg-tier-navy/15',
   },
   golfslag: {
-    text: 'text-ak-status-success',
-    bg: 'bg-ak-status-success/15',
+    text: 'text-tier-success',
+    bg: 'bg-tier-success/15',
   },
   spill: {
-    text: 'text-ak-status-warning',
-    bg: 'bg-ak-status-warning/15',
+    text: 'text-tier-warning',
+    bg: 'bg-tier-warning/15',
   },
   konkurranse: {
     text: 'text-amber-500',
     bg: 'bg-amber-500/15',
   },
   fysisk: {
-    text: 'text-ak-status-error',
-    bg: 'bg-ak-status-error/15',
+    text: 'text-tier-error',
+    bg: 'bg-tier-error/15',
   },
   mental: {
-    text: 'text-ak-text-secondary',
-    bg: 'bg-ak-surface-subtle',
+    text: 'text-tier-text-secondary',
+    bg: 'bg-tier-surface-base',
   },
 };
 
 const LEVEL_CLASSES = {
-  L1: { bg: 'bg-ak-surface-subtle', text: 'text-ak-text-secondary', label: 'L1 · Eksponering' },
-  L2: { bg: 'bg-ak-border-default', text: 'text-ak-text-primary', label: 'L2 · Fundamentals' },
-  L3: { bg: 'bg-ak-status-success/20', text: 'text-ak-status-success', label: 'L3 · Variasjon' },
-  L4: { bg: 'bg-ak-status-success', text: 'text-white', label: 'L4 · Timing' },
-  L5: { bg: 'bg-ak-primary', text: 'text-white', label: 'L5 · Automatikk' },
+  L1: { bg: 'bg-tier-surface-base', text: 'text-tier-text-secondary', label: 'L1 · Eksponering' },
+  L2: { bg: 'bg-tier-border-default', text: 'text-tier-navy', label: 'L2 · Fundamentals' },
+  L3: { bg: 'bg-tier-success/20', text: 'text-tier-success', label: 'L3 · Variasjon' },
+  L4: { bg: 'bg-tier-success', text: 'text-white', label: 'L4 · Timing' },
+  L5: { bg: 'bg-tier-navy', text: 'text-white', label: 'L5 · Automatikk' },
 };
 
 const SPEED_CLASSES = {
-  CS0: { bg: 'bg-ak-surface-subtle', text: 'text-ak-text-secondary', label: 'CS0 · N/A' },
-  CS20: { bg: 'bg-ak-surface-subtle', text: 'text-ak-text-secondary', label: 'CS20 · 20%' },
-  CS40: { bg: 'bg-ak-border-default', text: 'text-ak-text-primary', label: 'CS40 · 40%' },
-  CS60: { bg: 'bg-ak-status-success/20', text: 'text-ak-status-success', label: 'CS60 · 60%' },
-  CS70: { bg: 'bg-ak-status-success', text: 'text-white', label: 'CS70 · 70%' },
-  CS80: { bg: 'bg-ak-primary/80', text: 'text-white', label: 'CS80 · 80%' },
-  CS100: { bg: 'bg-ak-primary', text: 'text-white', label: 'CS100 · Maks' },
+  CS0: { bg: 'bg-tier-surface-base', text: 'text-tier-text-secondary', label: 'CS0 · N/A' },
+  CS20: { bg: 'bg-tier-surface-base', text: 'text-tier-text-secondary', label: 'CS20 · 20%' },
+  CS40: { bg: 'bg-tier-border-default', text: 'text-tier-navy', label: 'CS40 · 40%' },
+  CS60: { bg: 'bg-tier-success/20', text: 'text-tier-success', label: 'CS60 · 60%' },
+  CS70: { bg: 'bg-tier-success', text: 'text-white', label: 'CS70 · 70%' },
+  CS80: { bg: 'bg-tier-navy/80', text: 'text-white', label: 'CS80 · 80%' },
+  CS100: { bg: 'bg-tier-navy', text: 'text-white', label: 'CS100 · Maks' },
 };
 
 // ===== ICONS =====
@@ -128,7 +128,7 @@ const Icons = {
 
 // ===== UI COMPONENTS =====
 const Card = ({ children, className = '', padding = true }) => (
-  <div className={`bg-white border border-ak-mist rounded-xl shadow-sm ${padding ? 'p-4' : ''} ${className}`}>
+  <div className={`bg-white border border-tier-surface-base rounded-xl shadow-sm ${padding ? 'p-4' : ''} ${className}`}>
     {children}
   </div>
 );
@@ -192,14 +192,14 @@ const SettingTag = ({ setting }) => {
   const { label } = config[setting] || { label: setting };
 
   return (
-    <span className="px-2 py-1 rounded-md text-[11px] font-medium bg-ak-gold/10 text-ak-gold">
+    <span className="px-2 py-1 rounded-md text-[11px] font-medium bg-tier-gold/10 text-tier-gold">
       {label}
     </span>
   );
 };
 
 // ===== MAIN TRAINING PROTOCOL COMPONENT =====
-const AKGolfTreningsprotokoll = ({ sessions: apiSessions = [], player: apiPlayer = null }) => {
+const TIERGolfTreningsprotokoll = ({ sessions: apiSessions = [], player: apiPlayer = null }) => {
   const [selectedSession, setSelectedSession] = useState(null);
   const [activeExercise, setActiveExercise] = useState(0);
   const [isPlaying, setIsPlaying] = useState(false);
@@ -443,11 +443,12 @@ const AKGolfTreningsprotokoll = ({ sessions: apiSessions = [], player: apiPlayer
   };
 
   return (
-    <div className="min-h-screen bg-ak-surface-subtle font-sans">
+    <div className="min-h-screen bg-tier-surface-base font-sans">
       {/* Header */}
       <PageHeader
         title="Treningsprotokoll"
         subtitle="Planlagte og gjennomførte økter"
+        helpText="Logg og dokumenter treningsøkter med detaljer om øvelser, varighet og intensitet."
       />
 
       <div className="p-6 w-full">
@@ -464,8 +465,8 @@ const AKGolfTreningsprotokoll = ({ sessions: apiSessions = [], player: apiPlayer
                   onClick={() => setSelectedCategory(cat.id)}
                   className={`px-3 py-1.5 rounded-lg text-[12px] font-medium transition-colors ${
                     selectedCategory === cat.id
-                      ? 'bg-ak-primary text-white'
-                      : 'bg-white text-ak-charcoal border border-ak-mist hover:bg-ak-snow'
+                      ? 'bg-tier-navy text-white'
+                      : 'bg-white text-tier-navy border border-tier-surface-base hover:bg-tier-white'
                   }`}
                 >
                   {cat.label}
@@ -479,7 +480,7 @@ const AKGolfTreningsprotokoll = ({ sessions: apiSessions = [], player: apiPlayer
                 <Card
                   key={session.id}
                   className={`cursor-pointer transition-all hover:shadow-md ${
-                    selectedSession?.id === session.id ? 'ring-2 ring-ak-primary' : ''
+                    selectedSession?.id === session.id ? 'ring-2 ring-tier-navy' : ''
                   }`}
                   onClick={() => {
                     setSelectedSession(session);
@@ -496,7 +497,7 @@ const AKGolfTreningsprotokoll = ({ sessions: apiSessions = [], player: apiPlayer
                     </div>
                     <div className="flex-1 min-w-0">
                       <SubSectionTitle className="text-[14px] line-clamp-1">{session.name}</SubSectionTitle>
-                      <div className="flex items-center gap-2 mt-1 text-[11px] text-ak-steel">
+                      <div className="flex items-center gap-2 mt-1 text-[11px] text-tier-text-secondary">
                         <Icons.Clock />
                         <span>{session.duration} min</span>
                         <span>·</span>
@@ -519,7 +520,7 @@ const AKGolfTreningsprotokoll = ({ sessions: apiSessions = [], player: apiPlayer
             {selectedSession ? (
               <>
                 {/* Session Header */}
-                <Card className="mb-4 bg-gradient-to-r from-ak-primary to-ak-primary-light text-white border-0">
+                <Card className="mb-4 bg-gradient-to-r from-tier-navy to-tier-navy-light text-white border-0">
                   <div className="flex items-start justify-between mb-4">
                     <div>
                       <div className="flex items-center gap-2 mb-2">
@@ -559,7 +560,7 @@ const AKGolfTreningsprotokoll = ({ sessions: apiSessions = [], player: apiPlayer
                     <span className="text-[12px] text-white/70">Fokus:</span>
                     {selectedSession.focus.map((f, i) => (
                       <Badge key={i} variant="neutral" size="sm">
-                        <span className="text-ak-primary">{f}</span>
+                        <span className="text-tier-navy">{f}</span>
                       </Badge>
                     ))}
                   </div>
@@ -572,16 +573,16 @@ const AKGolfTreningsprotokoll = ({ sessions: apiSessions = [], player: apiPlayer
                       <button
                         onClick={() => setIsPlaying(!isPlaying)}
                         className={`w-12 h-12 rounded-full flex items-center justify-center transition-colors ${
-                          isPlaying ? 'bg-ak-error text-white' : 'bg-ak-primary text-white'
+                          isPlaying ? 'bg-tier-error text-white' : 'bg-tier-navy text-white'
                         }`}
                       >
                         {isPlaying ? <Icons.Pause /> : <Icons.Play />}
                       </button>
                       <div>
-                        <p className="text-[14px] font-semibold text-ak-charcoal">
+                        <p className="text-[14px] font-semibold text-tier-navy">
                           {selectedSession.exercises[activeExercise]?.name || 'Klar til start'}
                         </p>
-                        <p className="text-[12px] text-ak-steel">
+                        <p className="text-[12px] text-tier-text-secondary">
                           Øvelse {activeExercise + 1} av {selectedSession.exercises.length}
                         </p>
                       </div>
@@ -591,7 +592,7 @@ const AKGolfTreningsprotokoll = ({ sessions: apiSessions = [], player: apiPlayer
                       <button
                         onClick={() => setActiveExercise(Math.max(0, activeExercise - 1))}
                         disabled={activeExercise === 0}
-                        className="p-2 rounded-lg border border-ak-mist disabled:opacity-50"
+                        className="p-2 rounded-lg border border-tier-surface-base disabled:opacity-50"
                       >
                         <span className="rotate-180 inline-block"><Icons.ChevronRight /></span>
                       </button>
@@ -605,14 +606,14 @@ const AKGolfTreningsprotokoll = ({ sessions: apiSessions = [], player: apiPlayer
                             setActiveExercise(activeExercise + 1);
                           }
                         }}
-                        className="!bg-ak-status-success hover:!bg-ak-status-success/90"
+                        className="!bg-tier-success hover:!bg-tier-success/90"
                       >
                         Fullfør
                       </Button>
                       <button
                         onClick={() => setActiveExercise(Math.min(selectedSession.exercises.length - 1, activeExercise + 1))}
                         disabled={activeExercise === selectedSession.exercises.length - 1}
-                        className="p-2 rounded-lg border border-ak-mist disabled:opacity-50"
+                        className="p-2 rounded-lg border border-tier-surface-base disabled:opacity-50"
                       >
                         <Icons.SkipForward />
                       </button>
@@ -631,19 +632,19 @@ const AKGolfTreningsprotokoll = ({ sessions: apiSessions = [], player: apiPlayer
                       <Card
                         key={exercise.id}
                         className={`cursor-pointer transition-all ${
-                          isActive ? 'ring-2 ring-ak-primary bg-ak-primary/5' : ''
+                          isActive ? 'ring-2 ring-tier-navy bg-tier-navy/5' : ''
                         } ${isCompleted ? 'opacity-60' : ''}`}
                         onClick={() => setActiveExercise(idx)}
                       >
                         <div className="flex items-start gap-3">
                           <div className="flex-shrink-0">
                             {isCompleted ? (
-                              <div className="w-8 h-8 rounded-full bg-ak-success flex items-center justify-center text-white">
+                              <div className="w-8 h-8 rounded-full bg-tier-success flex items-center justify-center text-white">
                                 <Icons.Check />
                               </div>
                             ) : (
                               <div className={`w-8 h-8 rounded-full border-2 flex items-center justify-center text-[12px] font-bold ${
-                                isActive ? 'border-ak-primary text-ak-primary' : 'border-ak-mist text-ak-steel'
+                                isActive ? 'border-tier-navy text-tier-navy' : 'border-tier-surface-base text-tier-text-secondary'
                               }`}>
                                 {idx + 1}
                               </div>
@@ -652,10 +653,10 @@ const AKGolfTreningsprotokoll = ({ sessions: apiSessions = [], player: apiPlayer
 
                           <div className="flex-1 min-w-0">
                             <div className="flex items-center justify-between mb-1">
-                              <CardTitle className={`text-[14px] ${isCompleted ? 'line-through text-ak-steel' : ''}`}>
+                              <CardTitle className={`text-[14px] ${isCompleted ? 'line-through text-tier-text-secondary' : ''}`}>
                                 {exercise.name}
                               </CardTitle>
-                              <div className="flex items-center gap-2 text-[11px] text-ak-steel">
+                              <div className="flex items-center gap-2 text-[11px] text-tier-text-secondary">
                                 <Icons.Clock />
                                 {exercise.duration} min
                                 {exercise.reps && (
@@ -667,7 +668,7 @@ const AKGolfTreningsprotokoll = ({ sessions: apiSessions = [], player: apiPlayer
                                 )}
                               </div>
                             </div>
-                            <p className="text-[12px] text-ak-steel">{exercise.description}</p>
+                            <p className="text-[12px] text-tier-text-secondary">{exercise.description}</p>
                           </div>
                         </div>
                       </Card>
@@ -690,4 +691,4 @@ const AKGolfTreningsprotokoll = ({ sessions: apiSessions = [], player: apiPlayer
   );
 };
 
-export default AKGolfTreningsprotokoll;
+export default TIERGolfTreningsprotokoll;

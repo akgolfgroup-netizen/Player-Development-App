@@ -1,4 +1,4 @@
-# AK Golf Academy - App Funksjonalitet
+# TIER Golf - App Funksjonalitet
 
 > **KILDE:** `/packages/design-system/figma/ak_golf_complete_figma_kit.svg`
 > **Versjon:** v2.1
@@ -1481,4 +1481,4 @@ Når test er valgt, vises den som vanlig blokk med ekstra felt:
 
 ---
 
-*Spesifikasjon v1.0 - AK Golf Academy*
+*Spesifikasjon v1.0 - TIER Golf*

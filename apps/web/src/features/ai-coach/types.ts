@@ -79,7 +79,7 @@ export const AI_TRIGGERS: Record<string, AITriggerConfig> = {
   goalNearCompletion: {
     id: 'goal-near-completion',
     condition: 'User is close to completing a goal',
-    title: 'Nesten i mål! 🎯',
+    title: 'Nesten i mål!',
     description: 'Du er nær ved å nå et av målene dine! La meg gi deg noen tips for å fullføre sterkt.',
     primaryAction: 'Gi meg sluttspurt-tips',
     suggestions: ['Hva er neste steg?', 'Sett nytt mål'],
@@ -105,7 +105,7 @@ export const AI_TRIGGERS: Record<string, AITriggerConfig> = {
   positiveTrend: {
     id: 'positive-trend',
     condition: 'User shows improving performance',
-    title: 'Flott fremgang! 📈',
+    title: 'Flott fremgang!',
     description: 'Du viser god fremgang! La meg foreslå hvordan du kan bygge videre på dette momentumet.',
     primaryAction: 'Maksimer fremgangen',
     suggestions: ['Hva fungerer?', 'Neste utfordring'],

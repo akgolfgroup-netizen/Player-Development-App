@@ -1,5 +1,5 @@
 /**
- * AK Golf Academy - Coach Training Plan (View Only)
+ * TIER Golf Academy - Coach Training Plan (View Only)
  * Design System v3.0 - Premium Light
  *
  * MIGRATED TO PAGE ARCHITECTURE - Zero inline styles
@@ -24,7 +24,8 @@ import { ArrowLeft, ClipboardList, Calendar, Clock, CheckCircle, Edit } from "lu
 import Button from '../../ui/primitives/Button';
 import Card from '../../ui/primitives/Card';
 import StateCard from '../../ui/composites/StateCard';
-import { PageTitle, SectionTitle } from '../../components/typography';
+import { PageTitle, SectionTitle } from '../../components/typography/Headings';
+import { TrainingCategoryBadge, type TrainingCategory } from '../../components/shadcn/golf';
 
 //////////////////////////////
 // 1. TYPES
@@ -37,6 +38,8 @@ type TrainingBlock = {
   date: string; // ISO date
   durationMinutes?: number;
   completed: boolean;
+  category?: TrainingCategory; // Training category from AK Formula (fysisk, teknikk, slag, spill, turnering)
+  akFormula?: string; // Complete AK Formula string (optional)
 };
 
 type Props = {
@@ -52,11 +55,11 @@ type Props = {
 //////////////////////////////
 
 const MOCK_BLOCKS: TrainingBlock[] = [
-  { id: "b1", name: "Putting fokus", description: "Lag putts fra 1-3 meter", date: "2025-12-28", durationMinutes: 60, completed: false },
-  { id: "b2", name: "Driver trening", date: "2025-12-30", durationMinutes: 90, completed: false },
-  { id: "b3", name: "Kort spill", date: "2025-12-22", durationMinutes: 45, completed: false },
-  { id: "b4", name: "Banespill", date: "2025-12-15", durationMinutes: 180, completed: true },
-  { id: "b5", name: "Teknikktrening", date: "2025-12-10", durationMinutes: 60, completed: true },
+  { id: "b1", name: "Putting fokus", description: "Lag putts fra 1-3 meter", date: "2025-12-28", durationMinutes: 60, completed: false, category: "teknikk" },
+  { id: "b2", name: "Driver trening", date: "2025-12-30", durationMinutes: 90, completed: false, category: "slag" },
+  { id: "b3", name: "Kort spill", date: "2025-12-22", durationMinutes: 45, completed: false, category: "slag" },
+  { id: "b4", name: "Banespill", date: "2025-12-15", durationMinutes: 180, completed: true, category: "spill" },
+  { id: "b5", name: "Teknikktrening", date: "2025-12-10", durationMinutes: 60, completed: true, category: "teknikk" },
 ];
 
 //////////////////////////////
@@ -115,10 +118,10 @@ export default function CoachTrainingPlan({
   return (
     <section
       aria-label="Training plan"
-      className="min-h-screen bg-ak-surface-base"
+      className="min-h-screen bg-tier-white"
     >
       {/* Header */}
-      <div className="bg-ak-surface-subtle border-b border-ak-border-default py-4 px-6">
+      <div className="bg-tier-surface-base border-b border-tier-border-default py-4 px-6">
         {onBack && (
           <div className="mb-4">
             <Button variant="ghost" size="sm" onClick={onBack} leftIcon={<ArrowLeft size={18} />}>
@@ -129,14 +132,14 @@ export default function CoachTrainingPlan({
 
         <div className="flex items-center justify-between">
           <div className="flex items-center gap-3">
-            <div className="w-12 h-12 rounded-lg bg-ak-primary/15 flex items-center justify-center">
-              <ClipboardList size={24} className="text-ak-primary" />
+            <div className="w-12 h-12 rounded-lg bg-tier-navy/15 flex items-center justify-center">
+              <ClipboardList size={24} className="text-tier-navy" />
             </div>
             <div>
               <PageTitle className="m-0">
                 Treningsplan
               </PageTitle>
-              <p className="text-[13px] text-ak-text-secondary m-0 mt-1">
+              <p className="text-[13px] text-tier-text-secondary m-0 mt-1">
                 {athleteName}
               </p>
             </div>
@@ -155,27 +158,30 @@ export default function CoachTrainingPlan({
         {nextSession && (
           <Card variant="accent" padding="lg" className="mb-6">
             <div className="flex items-center gap-2 mb-3">
-              <Calendar size={18} className="text-ak-primary" />
-              <span className="text-[13px] text-ak-primary opacity-90">
+              <Calendar size={18} className="text-tier-navy" />
+              <span className="text-[13px] text-tier-navy opacity-90">
                 Neste økt
               </span>
+              {nextSession.category && (
+                <TrainingCategoryBadge category={nextSession.category} size="sm" />
+              )}
             </div>
             <SectionTitle className="m-0 mb-2">
               {nextSession.name}
             </SectionTitle>
             <div className="flex items-center gap-4">
-              <span className="text-[15px] text-ak-text-primary">
+              <span className="text-[15px] text-tier-navy">
                 {formatDate(nextSession.date)}
               </span>
               {nextSession.durationMinutes && (
-                <div className="flex items-center gap-1 text-ak-text-secondary">
+                <div className="flex items-center gap-1 text-tier-text-secondary">
                   <Clock size={14} />
                   <span>{nextSession.durationMinutes} min</span>
                 </div>
               )}
             </div>
             {nextSession.description && (
-              <p className="text-[15px] text-ak-text-secondary m-0 mt-3">
+              <p className="text-[15px] text-tier-text-secondary m-0 mt-3">
                 {nextSession.description}
               </p>
             )}
@@ -184,11 +190,11 @@ export default function CoachTrainingPlan({
 
         {/* Upcoming Sessions */}
         <Card variant="default" padding="none" className="mb-6 overflow-hidden">
-          <div className="p-5 border-b border-ak-border-default">
+          <div className="p-5 border-b border-tier-border-default">
             <SectionTitle className="m-0">
               Kommende økter
             </SectionTitle>
-            <p className="text-[13px] text-ak-text-secondary m-0 mt-1">
+            <p className="text-[13px] text-tier-text-secondary m-0 mt-1">
               {upcomingBlocks.length} planlagte
             </p>
           </div>
@@ -201,10 +207,10 @@ export default function CoachTrainingPlan({
                 <div
                   key={block.id}
                   className={`flex items-center gap-4 py-4 px-5 ${
-                    index < upcomingBlocks.length - 1 ? 'border-b border-ak-border-default' : ''
+                    index < upcomingBlocks.length - 1 ? 'border-b border-tier-border-default' : ''
                   }`}
                 >
-                  <div className="w-14 p-2 rounded-lg bg-ak-primary/15 text-ak-primary text-center">
+                  <div className="w-14 p-2 rounded-lg bg-tier-navy/15 text-tier-navy text-center">
                     <div className="text-[13px] font-semibold">
                       {new Date(block.date).toLocaleDateString("nb-NO", { weekday: 'short' }).toUpperCase()}
                     </div>
@@ -214,11 +220,16 @@ export default function CoachTrainingPlan({
                   </div>
 
                   <div className="flex-1">
-                    <div className="text-[15px] font-semibold text-ak-text-primary">
-                      {block.name}
+                    <div className="flex items-center gap-2 mb-1">
+                      <span className="text-[15px] font-semibold text-tier-navy">
+                        {block.name}
+                      </span>
+                      {block.category && (
+                        <TrainingCategoryBadge category={block.category} size="sm" />
+                      )}
                     </div>
                     {block.description && (
-                      <p className="text-[13px] text-ak-text-secondary m-0 mt-1">
+                      <p className="text-[13px] text-tier-text-secondary m-0 mt-1">
                         {block.description}
                       </p>
                     )}
@@ -226,8 +237,8 @@ export default function CoachTrainingPlan({
 
                   {block.durationMinutes && (
                     <div className="flex items-center gap-1">
-                      <Clock size={14} className="text-ak-text-tertiary" />
-                      <span className="text-[13px] text-ak-text-tertiary">
+                      <Clock size={14} className="text-tier-text-tertiary" />
+                      <span className="text-[13px] text-tier-text-tertiary">
                         {block.durationMinutes} min
                       </span>
                     </div>
@@ -241,11 +252,11 @@ export default function CoachTrainingPlan({
         {/* Completed Sessions */}
         {completedBlocks.length > 0 && (
           <Card variant="default" padding="none" className="overflow-hidden">
-            <div className="p-5 border-b border-ak-border-default">
+            <div className="p-5 border-b border-tier-border-default">
               <SectionTitle className="m-0">
                 Fullførte økter
               </SectionTitle>
-              <p className="text-[13px] text-ak-text-secondary m-0 mt-1">
+              <p className="text-[13px] text-tier-text-secondary m-0 mt-1">
                 {completedBlocks.length} gjennomført
               </p>
             </div>
@@ -254,19 +265,22 @@ export default function CoachTrainingPlan({
               {completedBlocks.slice(0, 5).map((block, index) => (
                 <div
                   key={block.id}
-                  className={`flex items-center gap-4 py-3.5 px-5 bg-ak-surface-subtle ${
-                    index < Math.min(completedBlocks.length, 5) - 1 ? 'border-b border-ak-border-default' : ''
+                  className={`flex items-center gap-4 py-3.5 px-5 bg-tier-surface-base ${
+                    index < Math.min(completedBlocks.length, 5) - 1 ? 'border-b border-tier-border-default' : ''
                   }`}
                 >
-                  <CheckCircle size={20} className="text-ak-status-success" />
+                  <CheckCircle size={20} className="text-tier-success" />
 
-                  <div className="flex-1">
-                    <span className="text-[15px] text-ak-text-secondary">
+                  <div className="flex-1 flex items-center gap-2">
+                    <span className="text-[15px] text-tier-text-secondary">
                       {block.name}
                     </span>
+                    {block.category && (
+                      <TrainingCategoryBadge category={block.category} size="sm" />
+                    )}
                   </div>
 
-                  <span className="text-[13px] text-ak-text-tertiary">
+                  <span className="text-[13px] text-tier-text-tertiary">
                     {formatShortDate(block.date)}
                   </span>
                 </div>

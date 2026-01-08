@@ -57,6 +57,7 @@ const UILabContainer = () => {
       <PageHeader
         title="UI Lab"
         subtitle="Komponentutstilling"
+        helpText="Utviklerverktøy for testing og demonstrasjon av alle UI-komponenter i designsystemet. Se shadcn/ui komponenter og eksempler på implementasjon."
         showBackButton={false}
       />
 
@@ -209,9 +210,9 @@ const styles = {
     transition: 'all 0.2s',
   },
   toggleButtonActive: {
-    backgroundColor: 'var(--ak-primary)',
+    backgroundColor: 'var(--tier-navy)',
     color: 'white',
-    borderColor: 'var(--ak-primary)',
+    borderColor: 'var(--tier-navy)',
   },
   content: {
     maxWidth: '1536px',

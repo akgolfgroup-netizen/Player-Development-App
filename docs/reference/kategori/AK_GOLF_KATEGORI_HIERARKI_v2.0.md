@@ -1,5 +1,5 @@
-# AK Golf – Komplett Kategorihierarki v2.0
-> Referansedokument for økt-kategorisering i AK Golf App
+# TIER Golf – Komplett Kategorihierarki v2.0
+> Referansedokument for økt-kategorisering i TIER Golf App
 > Versjon: 2.0
 > Dato: 14. desember 2025
 

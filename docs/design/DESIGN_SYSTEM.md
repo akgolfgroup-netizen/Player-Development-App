@@ -1,4 +1,4 @@
-# AK Golf Academy - Design System v3.0
+# TIER Golf - Design System v3.0
 
 **Palette**: Blue Palette 01 (Default)
 **Source**: `/packages/design-system/figma/ak_golf_figma_kit_blue_palette01.svg`
@@ -10,7 +10,7 @@
 
 ### Blue Palette 01 (Current Default)
 
-The Blue Palette 01 replaces the original Forest/Green theme with a professional blue color scheme suitable for a sports academy.
+The Blue Palette 01 replaces the original Forest/Green theme with a professional blue color scheme suitable for a sports training platform.
 
 #### Brand Colors
 
@@ -89,7 +89,7 @@ font-family: 'Inter, system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-ser
 import { tokens, typographyStyle } from './design-tokens';
 
 // In your component
-<h1 style={typographyStyle('display')}>Welcome to AK Golf Academy</h1>
+<h1 style={typographyStyle('display')}>Welcome to TIER Golf</h1>
 <p style={typographyStyle('body')}>Start your development journey today.</p>
 ```
 
@@ -174,7 +174,7 @@ const OldStyledButton = styled.button`
 ```javascript
 // Using the helper function (recommended)
 <h1 style={typographyStyle('display')}>
-  AK Golf Academy
+  TIER Golf
 </h1>
 
 // Manual usage

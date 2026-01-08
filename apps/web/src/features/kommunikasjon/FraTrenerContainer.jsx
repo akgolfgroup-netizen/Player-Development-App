@@ -1,5 +1,5 @@
 /**
- * AK Golf Academy - Fra Trener Container
+ * TIER Golf Academy - Fra Trener Container
  * Design System v3.0 - Premium Light
  *
  * Coach messages and feedback for players.
@@ -100,17 +100,17 @@ const COACH_MESSAGES = [
 const getTypeConfig = (type) => {
   switch (type) {
     case 'feedback':
-      return { label: 'Feedback', colorClasses: { bg: 'bg-ak-primary/15', text: 'text-ak-primary' }, icon: MessageSquare };
+      return { label: 'Feedback', colorClasses: { bg: 'bg-tier-navy/15', text: 'text-tier-navy' }, icon: MessageSquare };
     case 'plan_update':
-      return { label: 'Planoppdatering', colorClasses: { bg: 'bg-ak-status-success/15', text: 'text-ak-status-success' }, icon: Calendar };
+      return { label: 'Planoppdatering', colorClasses: { bg: 'bg-tier-success/15', text: 'text-tier-success' }, icon: Calendar };
     case 'goal_review':
       return { label: 'Malevaluering', colorClasses: { bg: 'bg-amber-500/15', text: 'text-amber-600' }, icon: Target };
     case 'achievement':
-      return { label: 'Prestasjon', colorClasses: { bg: 'bg-ak-status-success/15', text: 'text-ak-status-success' }, icon: Star };
+      return { label: 'Prestasjon', colorClasses: { bg: 'bg-tier-success/15', text: 'text-tier-success' }, icon: Star };
     case 'breaking_point':
-      return { label: 'Breaking Point', colorClasses: { bg: 'bg-ak-status-error/15', text: 'text-ak-status-error' }, icon: Target };
+      return { label: 'Breaking Point', colorClasses: { bg: 'bg-tier-error/15', text: 'text-tier-error' }, icon: Target };
     default:
-      return { label: type, colorClasses: { bg: 'bg-ak-surface-subtle', text: 'text-ak-text-secondary' }, icon: FileText };
+      return { label: type, colorClasses: { bg: 'bg-tier-surface-base', text: 'text-tier-text-secondary' }, icon: FileText };
   }
 };
 
@@ -136,13 +136,13 @@ const CoachMessageCard = ({ message, onClick }) => {
   return (
     <div
       onClick={() => onClick(message)}
-      className={`bg-ak-surface-base rounded-[14px] p-4 cursor-pointer transition-all shadow-sm hover:-translate-y-0.5 hover:shadow-md ${
-        message.read ? '' : 'border-l-[3px] border-l-ak-primary'
+      className={`bg-tier-white rounded-[14px] p-4 cursor-pointer transition-all shadow-sm hover:-translate-y-0.5 hover:shadow-md ${
+        message.read ? '' : 'border-l-[3px] border-l-tier-navy'
       }`}
     >
       <div className="flex items-start gap-3.5">
         {/* Coach Avatar */}
-        <div className="w-11 h-11 rounded-full bg-ak-primary flex items-center justify-center text-white text-sm font-semibold flex-shrink-0">
+        <div className="w-11 h-11 rounded-full bg-tier-navy flex items-center justify-center text-white text-sm font-semibold flex-shrink-0">
           {message.coach.name.split(' ').map((n) => n[0]).join('')}
         </div>
 
@@ -150,14 +150,14 @@ const CoachMessageCard = ({ message, onClick }) => {
           {/* Header */}
           <div className="flex items-center justify-between mb-1">
             <div className="flex items-center gap-2">
-              <span className="text-[13px] font-semibold text-ak-text-primary">
+              <span className="text-[13px] font-semibold text-tier-navy">
                 {message.coach.name}
               </span>
-              <span className="text-[11px] text-ak-text-secondary">
+              <span className="text-[11px] text-tier-text-secondary">
                 {message.coach.role}
               </span>
             </div>
-            <span className="text-[11px] text-ak-text-secondary">
+            <span className="text-[11px] text-tier-text-secondary">
               {formatDate(message.date)}
             </span>
           </div>
@@ -168,13 +168,13 @@ const CoachMessageCard = ({ message, onClick }) => {
               <TypeIcon size={10} />
               {typeConfig.label}
             </span>
-            <SubSectionTitle className={`text-[15px] ${message.read ? 'font-medium' : 'font-semibold'} text-ak-text-primary m-0`}>
+            <SubSectionTitle className={`text-[15px] ${message.read ? 'font-medium' : 'font-semibold'} text-tier-navy m-0`}>
               {message.title}
             </SubSectionTitle>
           </div>
 
           {/* Content Preview */}
-          <p className="text-[13px] text-ak-text-secondary m-0 mb-2.5 leading-snug line-clamp-2">
+          <p className="text-[13px] text-tier-text-secondary m-0 mb-2.5 leading-snug line-clamp-2">
             {message.content}
           </p>
 
@@ -182,24 +182,24 @@ const CoachMessageCard = ({ message, onClick }) => {
           <div className="flex items-center justify-between">
             <div className="flex gap-3">
               {message.attachments.length > 0 && (
-                <div className="flex items-center gap-1 text-[11px] text-ak-primary">
+                <div className="flex items-center gap-1 text-[11px] text-tier-navy">
                   <Video size={12} />
                   {message.attachments.length} vedlegg
                 </div>
               )}
               {message.relatedTo && (
-                <div className="text-[11px] text-ak-text-secondary">
+                <div className="text-[11px] text-tier-text-secondary">
                   Relatert til: {message.relatedTo}
                 </div>
               )}
             </div>
             {!message.read && (
-              <div className="w-2 h-2 rounded-full bg-ak-primary" />
+              <div className="w-2 h-2 rounded-full bg-tier-navy" />
             )}
           </div>
         </div>
 
-        <ChevronRight size={18} className="text-ak-text-secondary flex-shrink-0" />
+        <ChevronRight size={18} className="text-tier-text-secondary flex-shrink-0" />
       </div>
     </div>
   );
@@ -227,32 +227,33 @@ const FraTrenerContainer = () => {
   const unreadCount = COACH_MESSAGES.filter((m) => !m.read).length;
 
   return (
-    <div className="min-h-screen bg-ak-surface-subtle">
+    <div className="min-h-screen bg-tier-surface-base">
       <PageHeader
         title="Fra trener"
         subtitle={`${unreadCount} uleste meldinger`}
+        helpText="Meldinger og beskjeder fra din trener. Se viktige oppdateringer, tilbakemeldinger på treninger og planlagte aktiviteter."
       />
 
       <div className="p-4 px-6 pb-6 w-full">
         {/* Stats */}
         <div className="grid grid-cols-[repeat(auto-fit,minmax(120px,1fr))] gap-2.5 mb-6">
-          <div className="bg-ak-surface-base rounded-xl p-3.5 text-center">
-            <div className="text-[22px] font-bold text-ak-primary">
+          <div className="bg-tier-white rounded-xl p-3.5 text-center">
+            <div className="text-[22px] font-bold text-tier-navy">
               {COACH_MESSAGES.length}
             </div>
-            <div className="text-[11px] text-ak-text-secondary">Totalt</div>
+            <div className="text-[11px] text-tier-text-secondary">Totalt</div>
           </div>
-          <div className="bg-ak-surface-base rounded-xl p-3.5 text-center">
-            <div className="text-[22px] font-bold text-ak-status-error">
+          <div className="bg-tier-white rounded-xl p-3.5 text-center">
+            <div className="text-[22px] font-bold text-tier-error">
               {unreadCount}
             </div>
-            <div className="text-[11px] text-ak-text-secondary">Uleste</div>
+            <div className="text-[11px] text-tier-text-secondary">Uleste</div>
           </div>
-          <div className="bg-ak-surface-base rounded-xl p-3.5 text-center">
-            <div className="text-[22px] font-bold text-ak-status-success">
+          <div className="bg-tier-white rounded-xl p-3.5 text-center">
+            <div className="text-[22px] font-bold text-tier-success">
               {COACH_MESSAGES.filter((m) => m.type === 'feedback').length}
             </div>
-            <div className="text-[11px] text-ak-text-secondary">Feedbacks</div>
+            <div className="text-[11px] text-tier-text-secondary">Feedbacks</div>
           </div>
         </div>
 
@@ -264,8 +265,8 @@ const FraTrenerContainer = () => {
               onClick={() => setFilter(f.key)}
               className={`py-2 px-3.5 rounded-lg border-none text-[13px] font-medium cursor-pointer whitespace-nowrap transition-colors ${
                 filter === f.key
-                  ? 'bg-ak-primary text-white'
-                  : 'bg-ak-surface-base text-ak-text-primary hover:bg-ak-surface-subtle'
+                  ? 'bg-tier-navy text-white'
+                  : 'bg-tier-white text-tier-navy hover:bg-tier-surface-base'
               }`}
             >
               {f.label}

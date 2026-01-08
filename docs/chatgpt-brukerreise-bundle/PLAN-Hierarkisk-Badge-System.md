@@ -1,8 +1,8 @@
-# AK Golf Academy - Hierarkisk Badge System Plan
+# TIER Golf - Hierarkisk Badge System Plan
 
 ## Konsept
 
-Badge-systemet skal følge AK Golf sin **spillerkategori-hierarki (A-K)** der:
+Badge-systemet skal følge TIER Golf sin **spillerkategori-hierarki (A-K)** der:
 - **A-spillere** (elite) har høyere krav for å oppnå samme badge
 - **K-spillere** (nybegynnere) har lavere krav tilpasset deres nivå
 - Alle spillere kan oppnå alle badges, men kravene skaleres

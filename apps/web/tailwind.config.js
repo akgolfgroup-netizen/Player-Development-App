@@ -1,10 +1,12 @@
 /** @type {import('tailwindcss').Config} */
 /**
- * AK GOLF ACADEMY — DESIGN SYSTEM v3.0
+ * TIER GOLF ACADEMY — DESIGN SYSTEM v3.0
  * Tailwind CSS Configuration
  *
  * All colors, spacing, radius, and shadows reference CSS variables
- * defined in src/index.css. This ensures a single source of truth.
+ * defined in src/styles/tier-tokens.css. This ensures a single source of truth.
+ *
+ * Design Philosophy: Navy × Gold × Category A-K System
  */
 
 // Helper for CSS variables with alpha support (RGB triplet format)
@@ -40,57 +42,151 @@ module.exports = {
     },
     extend: {
       // ═══════════════════════════════════════════
+      // BREAKPOINTS (TIER System) - Using standard px values
+      // ═══════════════════════════════════════════
+      screens: {
+        'tier-xs': '375px',    // Mobile S
+        'tier-sm': '640px',    // Mobile L
+        'tier-md': '768px',    // Tablet
+        'tier-lg': '1024px',   // Desktop
+        'tier-xl': '1280px',   // Desktop L
+        'tier-2xl': '1536px',  // Desktop XL
+      },
+
+      // ═══════════════════════════════════════════
       // COLORS (CSS Variable References)
       // ═══════════════════════════════════════════
       colors: {
+        // ═══════════════════════════════════════════
+        // TIER GOLF DESIGN SYSTEM
+        // Navy × Gold × Category A-K × Badge Tiers
+        // ═══════════════════════════════════════════
+        tier: {
+          navy: {
+            DEFAULT: withAlpha("--tier-navy"),
+            light: withAlpha("--tier-navy-light"),
+            dark: withAlpha("--tier-navy-dark"),
+          },
+          gold: {
+            DEFAULT: withAlpha("--tier-gold"),
+            light: withAlpha("--tier-gold-light"),
+            dark: withAlpha("--tier-gold-dark"),
+          },
+          white: withAlpha("--tier-white"),
+          // Surface colors
+          'surface-base': withAlpha("--tier-bg-app"),
+          'surface-subtle': withAlpha("--tier-surface-card"),
+          'surface-card': withAlpha("--tier-surface-card"),
+          'surface-elevated': withAlpha("--tier-surface-elevated"),
+          // Text colors
+          'text-primary': withAlpha("--tier-text-primary"),
+          'text-secondary': withAlpha("--tier-text-body"),
+          'text-tertiary': withAlpha("--tier-text-muted"),
+          // Border colors
+          'border-default': withAlpha("--tier-border"),
+          'border-subtle': withAlpha("--tier-border"),
+          // Status colors
+          success: {
+            DEFAULT: withAlpha("--tier-success"),
+            light: withAlpha("--tier-success-light"),
+            dark: withAlpha("--tier-success-dark"),
+          },
+          warning: {
+            DEFAULT: withAlpha("--tier-warning"),
+            light: withAlpha("--tier-warning-light"),
+            dark: withAlpha("--tier-warning-dark"),
+          },
+          error: {
+            DEFAULT: withAlpha("--tier-error"),
+            light: withAlpha("--tier-error-light"),
+            dark: withAlpha("--tier-error-dark"),
+          },
+          info: {
+            DEFAULT: withAlpha("--tier-info"),
+            light: withAlpha("--tier-info-light"),
+            dark: withAlpha("--tier-info-dark"),
+          },
+        },
+        surface: {
+          primary: withAlpha("--surface-primary"),
+          secondary: withAlpha("--surface-secondary"),
+          tertiary: withAlpha("--surface-tertiary"),
+          elevated: withAlpha("--surface-elevated"),
+        },
+        category: {
+          a: withAlpha("--category-a"),
+          b: withAlpha("--category-b"),
+          c: withAlpha("--category-c"),
+          d: withAlpha("--category-d"),
+          e: withAlpha("--category-e"),
+          f: withAlpha("--category-f"),
+          g: withAlpha("--category-g"),
+          h: withAlpha("--category-h"),
+          i: withAlpha("--category-i"),
+          j: withAlpha("--category-j"),
+          k: withAlpha("--category-k"),
+        },
+        'badge-tier': {
+          bronze: withAlpha("--tier-bronze"),
+          silver: withAlpha("--tier-silver"),
+          gold: withAlpha("--tier-gold-badge"),
+          platinum: withAlpha("--tier-platinum"),
+        },
+        status: {
+          success: withAlpha("--status-success"),
+          warning: withAlpha("--status-warning"),
+          error: withAlpha("--status-error"),
+          info: withAlpha("--status-info"),
+        },
+
         // ═══════════════════════════════════════════
         // AK SEMANTIC COLOR SYSTEM (Premium Light)
         // Stone × Midnight Blue × Emerald × Soft Gold
         // ═══════════════════════════════════════════
         ak: {
           surface: {
-            base: withAlpha("--ak-bg-app"),
-            card: withAlpha("--ak-surface-card"),
-            elevated: withAlpha("--ak-surface-elevated"),
-            border: withAlpha("--ak-border"),
+            base: withAlpha("--tier-bg-app"),
+            card: withAlpha("--tier-surface-card"),
+            elevated: withAlpha("--tier-surface-elevated"),
+            border: withAlpha("--tier-border"),
           },
           text: {
-            primary: withAlpha("--ak-text-primary"),
-            body: withAlpha("--ak-text-body"),
-            muted: withAlpha("--ak-text-muted"),
+            primary: withAlpha("--tier-text-primary"),
+            body: withAlpha("--tier-text-body"),
+            muted: withAlpha("--tier-text-muted"),
             inverse: "#FFFFFF",
           },
           action: {
-            primary: withAlpha("--ak-action-primary"),
-            hover: withAlpha("--ak-action-hover"),
-            active: withAlpha("--ak-action-active"),
+            primary: withAlpha("--tier-action-primary"),
+            hover: withAlpha("--tier-action-hover"),
+            active: withAlpha("--tier-action-active"),
           },
           progress: {
-            DEFAULT: withAlpha("--ak-progress"),
-            soft: withAlpha("--ak-progress-soft"),
+            DEFAULT: withAlpha("--tier-progress"),
+            soft: withAlpha("--tier-progress-soft"),
           },
           prestige: {
-            DEFAULT: withAlpha("--ak-prestige"),
-            strong: withAlpha("--ak-prestige-strong"),
+            DEFAULT: withAlpha("--tier-prestige"),
+            strong: withAlpha("--tier-prestige-strong"),
             muted: "rgba(198, 162, 77, 0.12)",
           },
           status: {
-            success: withAlpha("--ak-status-success"),
-            warning: withAlpha("--ak-status-warning"),
-            error: withAlpha("--ak-status-error"),
-            info: withAlpha("--ak-status-info"),
+            success: withAlpha("--tier-status-success"),
+            warning: withAlpha("--tier-status-warning"),
+            error: withAlpha("--tier-status-error"),
+            info: withAlpha("--tier-status-info"),
           },
           category: {
-            teknikk: withAlpha("--ak-category-teknikk"),
-            fysisk: withAlpha("--ak-category-fysisk"),
-            mental: withAlpha("--ak-category-mental"),
-            spill: withAlpha("--ak-category-spill"),
-            test: withAlpha("--ak-category-test"),
-            "teknikk-muted": withAlpha("--ak-category-teknikk-muted"),
-            "fysisk-muted": withAlpha("--ak-category-fysisk-muted"),
-            "mental-muted": withAlpha("--ak-category-mental-muted"),
-            "spill-muted": withAlpha("--ak-category-spill-muted"),
-            "test-muted": withAlpha("--ak-category-test-muted"),
+            teknikk: withAlpha("--tier-category-teknikk"),
+            fysisk: withAlpha("--tier-category-fysisk"),
+            mental: withAlpha("--tier-category-mental"),
+            spill: withAlpha("--tier-category-spill"),
+            test: withAlpha("--tier-category-test"),
+            "teknikk-muted": withAlpha("--tier-category-teknikk-muted"),
+            "fysisk-muted": withAlpha("--tier-category-fysisk-muted"),
+            "mental-muted": withAlpha("--tier-category-mental-muted"),
+            "spill-muted": withAlpha("--tier-category-spill-muted"),
+            "test-muted": withAlpha("--tier-category-test-muted"),
           },
         },
 
@@ -206,55 +302,55 @@ module.exports = {
         // STATUS COLORS - Complete Semantic System
         // ═══════════════════════════════════════════
         success: {
-          DEFAULT: 'var(--ak-success)',
-          light: 'var(--ak-success-light)',
-          dark: 'var(--ak-success-dark)',
-          bg: 'var(--ak-success-bg)',
-          border: 'var(--ak-success-border)',
+          DEFAULT: 'var(--tier-success)',
+          light: 'var(--tier-success-light)',
+          dark: 'var(--tier-success-dark)',
+          bg: 'var(--tier-success-bg)',
+          border: 'var(--tier-success-border)',
           muted: 'var(--success-muted)',  // rgba(5, 150, 105, 0.1)
         },
         warning: {
-          DEFAULT: 'var(--ak-warning)',
-          light: 'var(--ak-warning-light)',
-          dark: 'var(--ak-warning-dark)',
-          bg: 'var(--ak-warning-bg)',
-          border: 'var(--ak-warning-border)',
+          DEFAULT: 'var(--tier-warning)',
+          light: 'var(--tier-warning-light)',
+          dark: 'var(--tier-warning-dark)',
+          bg: 'var(--tier-warning-bg)',
+          border: 'var(--tier-warning-border)',
           muted: 'var(--warning-muted)',  // rgba(217, 119, 6, 0.1)
         },
         danger: {
-          DEFAULT: 'var(--ak-error)',
-          light: 'var(--ak-error-light)',
-          dark: 'var(--ak-error-dark)',
-          bg: 'var(--ak-error-bg)',
-          border: 'var(--ak-error-border)',
+          DEFAULT: 'var(--tier-error)',
+          light: 'var(--tier-error-light)',
+          dark: 'var(--tier-error-dark)',
+          bg: 'var(--tier-error-bg)',
+          border: 'var(--tier-error-border)',
           muted: 'var(--error-muted)',  // rgba(220, 38, 38, 0.08)
         },
         info: {
-          DEFAULT: 'var(--ak-info)',
-          light: 'var(--ak-info-light)',
-          dark: 'var(--ak-info-dark)',
-          bg: 'var(--ak-info-bg)',
-          border: 'var(--ak-info-border)',
+          DEFAULT: 'var(--tier-info)',
+          light: 'var(--tier-info-light)',
+          dark: 'var(--tier-info-dark)',
+          bg: 'var(--tier-info-bg)',
+          border: 'var(--tier-info-border)',
           muted: 'var(--info-muted)',  // rgba(2, 132, 199, 0.1)
         },
 
         // ═══════════════════════════════════════════
         // BRAND COLORS (Detailed palette)
         // ═══════════════════════════════════════════
-        'ak-ink': 'var(--ak-ink)',
-        'ak-primary': 'var(--ak-primary)',
-        'ak-primary-light': 'var(--ak-primary-light)',
-        'ak-snow': 'var(--ak-snow)',
-        'ak-surface': 'var(--ak-surface)',
-        'ak-gold': 'var(--ak-gold)',
-        'ak-white': 'var(--ak-white)',
-        'ak-teal': 'var(--ak-teal)',
+        'ak-ink': 'var(--tier-ink)',
+        'ak-primary': 'var(--tier-primary)',
+        'ak-primary-light': 'var(--tier-primary-light)',
+        'ak-snow': 'var(--tier-snow)',
+        'ak-surface': 'var(--tier-surface)',
+        'ak-gold': 'var(--tier-gold)',
+        'ak-white': 'var(--tier-white)',
+        'ak-teal': 'var(--tier-teal)',
 
         // Legacy aliases
-        'ak-forest': 'var(--ak-forest)',
-        'ak-forest-light': 'var(--ak-forest-light)',
-        'ak-foam': 'var(--ak-foam)',
-        'ak-ivory': 'var(--ak-ivory)',
+        'ak-forest': 'var(--tier-forest)',
+        'ak-forest-light': 'var(--tier-forest-light)',
+        'ak-foam': 'var(--tier-foam)',
+        'ak-ivory': 'var(--tier-ivory)',
 
         // Gray scale (complete)
         'gray-50': 'var(--gray-50)',
@@ -276,16 +372,16 @@ module.exports = {
         'brand-cream': 'var(--brand-cream)',
 
         // Legacy neutral aliases
-        'ak-charcoal': 'var(--ak-charcoal)',
-        'ak-steel': 'var(--ak-steel)',
-        'ak-mist': 'var(--ak-mist)',
-        'ak-cloud': 'var(--ak-cloud)',
+        'ak-charcoal': 'var(--tier-charcoal)',
+        'ak-steel': 'var(--tier-steel)',
+        'ak-mist': 'var(--tier-mist)',
+        'ak-cloud': 'var(--tier-cloud)',
 
         // Status colors (legacy - use success/warning/danger instead)
-        'ak-success': 'var(--ak-success)',
-        'ak-warning': 'var(--ak-warning)',
-        'ak-error': 'var(--ak-error)',
-        'ak-info': 'var(--ak-info)',
+        'ak-success': 'var(--tier-success)',
+        'ak-warning': 'var(--tier-warning)',
+        'ak-error': 'var(--tier-error)',
+        'ak-info': 'var(--tier-info)',
 
         // Semantic - Background
         'bg-default': 'var(--background-default)',
@@ -401,6 +497,8 @@ module.exports = {
       fontFamily: {
         sans: ['Inter', '-apple-system', 'BlinkMacSystemFont', 'Segoe UI', 'Roboto', 'sans-serif'],
         logo: ['DM Sans', 'sans-serif'],
+        display: ['DM Sans', '-apple-system', 'BlinkMacSystemFont', 'sans-serif'], // TIER: Headers
+        mono: ['JetBrains Mono', 'SF Mono', 'Fira Code', 'monospace'],
       },
 
       fontSize: {
@@ -420,6 +518,33 @@ module.exports = {
       // SPACING (CSS Variable References)
       // ═══════════════════════════════════════════
       spacing: {
+        // TIER spacing system (base 4px unit)
+        'tier-0': 'var(--space-0)',
+        'tier-px': 'var(--space-px)',
+        'tier-0.5': 'var(--space-0-5)',
+        'tier-1': 'var(--space-1)',
+        'tier-1.5': 'var(--space-1-5)',
+        'tier-2': 'var(--space-2)',
+        'tier-2.5': 'var(--space-2-5)',
+        'tier-3': 'var(--space-3)',
+        'tier-3.5': 'var(--space-3-5)',
+        'tier-4': 'var(--space-4)',
+        'tier-5': 'var(--space-5)',
+        'tier-6': 'var(--space-6)',
+        'tier-7': 'var(--space-7)',
+        'tier-8': 'var(--space-8)',
+        'tier-9': 'var(--space-9)',
+        'tier-10': 'var(--space-10)',
+        'tier-11': 'var(--space-11)',
+        'tier-12': 'var(--space-12)',
+        'tier-14': 'var(--space-14)',
+        'tier-16': 'var(--space-16)',
+        'tier-20': 'var(--space-20)',
+        'tier-24': 'var(--space-24)',
+        'tier-28': 'var(--space-28)',
+        'tier-32': 'var(--space-32)',
+
+        // Legacy AK spacing
         'ak-1': 'var(--spacing-1)',
         'ak-2': 'var(--spacing-2)',
         'ak-3': 'var(--spacing-3)',
@@ -431,8 +556,6 @@ module.exports = {
         'ak-12': 'var(--spacing-12)',
         'ak-16': 'var(--spacing-16)',
         'ak-20': 'var(--spacing-20)',
-
-        // Legacy aliases
         'ak-xs': 'var(--spacing-xs)',
         'ak-sm': 'var(--spacing-sm)',
         'ak-md': 'var(--spacing-md)',
@@ -445,6 +568,17 @@ module.exports = {
       // BORDER RADIUS (CSS Variable References)
       // ═══════════════════════════════════════════
       borderRadius: {
+        // TIER radius system
+        'tier-none': 'var(--radius-none)',
+        'tier-sm': 'var(--radius-sm)',
+        'tier-md': 'var(--radius-md)',
+        'tier-lg': 'var(--radius-lg)',
+        'tier-xl': 'var(--radius-xl)',
+        'tier-2xl': 'var(--radius-2xl)',
+        'tier-3xl': 'var(--radius-3xl)',
+        'tier-full': 'var(--radius-full)',
+
+        // Legacy AK radius
         'ak-sm': 'var(--radius-sm)',
         'ak-md': 'var(--radius-md)',
         'ak-lg': 'var(--radius-lg)',
@@ -455,6 +589,23 @@ module.exports = {
       // SHADOWS (CSS Variable References)
       // ═══════════════════════════════════════════
       boxShadow: {
+        // TIER shadow system
+        'tier-xs': 'var(--shadow-xs)',
+        'tier-sm': 'var(--shadow-sm)',
+        'tier-md': 'var(--shadow-md)',
+        'tier-lg': 'var(--shadow-lg)',
+        'tier-xl': 'var(--shadow-xl)',
+        'tier-2xl': 'var(--shadow-2xl)',
+        'tier-inner': 'var(--shadow-inner)',
+        'tier-card': 'var(--shadow-card)',
+        'tier-card-hover': 'var(--shadow-card-hover)',
+        'tier-dropdown': 'var(--shadow-dropdown)',
+        'tier-modal': 'var(--shadow-modal)',
+        'tier-toast': 'var(--shadow-toast)',
+        'tier-gold': 'var(--shadow-gold)',
+        'tier-navy': 'var(--shadow-navy)',
+
+        // Legacy AK shadows
         'ak-card': 'var(--shadow-card)',
         'ak-elevated': 'var(--shadow-elevated)',
       },
@@ -468,13 +619,13 @@ module.exports = {
         brand: 'var(--border-brand)',
         accent: 'var(--accent)',
         'accent-muted': 'var(--accent-soft)',
-        success: 'var(--ak-success-border)',
+        success: 'var(--tier-success-border)',
         'success-muted': 'var(--success-border-muted)',
-        warning: 'var(--ak-warning-border)',
+        warning: 'var(--tier-warning-border)',
         'warning-muted': 'var(--warning-border-muted)',
-        danger: 'var(--ak-error-border)',
+        danger: 'var(--tier-error-border)',
         'danger-muted': 'var(--error-border-muted)',
-        info: 'var(--ak-info-border)',
+        info: 'var(--tier-info-border)',
         'info-muted': 'var(--info-border-muted)',
       },
 

@@ -1,4 +1,4 @@
-# AK Golf Motion Guidelines
+# TIER Golf Motion Guidelines
 
 ## Principles
 

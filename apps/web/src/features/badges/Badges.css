@@ -52,7 +52,7 @@
 .badges-page__stat-value {
   font-size: var(--font-size-title2);
   font-weight: 700;
-  color: var(--ak-primary);
+  color: rgb(var(--tier-navy));
 }
 
 .badges-page__stat-label {
@@ -79,7 +79,7 @@
   width: 40px;
   height: 40px;
   border: 3px solid var(--border-default);
-  border-top-color: var(--ak-primary);
+  border-top-color: rgb(var(--tier-navy));
   border-radius: 50%;
   animation: spin 1s linear infinite;
   margin-bottom: var(--spacing-4);
@@ -118,13 +118,13 @@
 }
 
 .badge-grid__filter:hover {
-  border-color: var(--ak-primary-light);
-  color: var(--ak-primary);
+  border-color: rgb(var(--tier-navy-light));
+  color: rgb(var(--tier-navy));
 }
 
 .badge-grid__filter--active {
-  background: var(--ak-primary);
-  border-color: var(--ak-primary);
+  background: rgb(var(--tier-navy));
+  border-color: rgb(var(--tier-navy));
   color: var(--text-inverse);
 }
 
@@ -163,8 +163,8 @@
 }
 
 .badge-card--unlocked {
-  background: linear-gradient(135deg, var(--ak-gold) 0%, var(--ak-gold-light) 100%);
-  border-color: var(--ak-gold);
+  background: linear-gradient(135deg, rgb(var(--tier-gold)) 0%, rgb(var(--tier-gold-light)) 100%);
+  border-color: rgb(var(--tier-gold));
   color: var(--text-inverse);
 }
 
@@ -234,7 +234,7 @@
 
 .badge-card__progress-fill {
   height: 100%;
-  background: var(--ak-primary);
+  background: rgb(var(--tier-navy));
   border-radius: 2px;
   transition: width 0.3s ease;
 }

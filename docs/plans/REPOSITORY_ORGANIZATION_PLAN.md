@@ -253,7 +253,7 @@ Lag en profesjonell banner for repository preview.
 
 ### Ny README Struktur:
 ```markdown
-# AK Golf Academy - IUP Platform
+# TIER Golf - IUP Platform
 
 [Badges: Build, Coverage, License, Version]
 

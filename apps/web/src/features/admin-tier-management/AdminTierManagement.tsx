@@ -1,5 +1,5 @@
 /**
- * AK Golf Academy - Admin Tier Management
+ * TIER Golf Academy - Admin Tier Management
  *
  * Archetype: A - List/Index Page
  * Purpose: Manage subscription tiers as billing configuration
@@ -113,11 +113,12 @@ export default function AdminTierManagement() {
       <Page.Header
         title="Abonnementsnivåer"
         subtitle="Konfigurasjon av faktureringsnivåer"
+        helpText="Administrator-oversikt over abonnementsnivåer og faktureringskonfigurasjon. Se pris, intervall (månedlig/årlig), tilgjengelige funksjoner per nivå, og aktiver/deaktiver tiers. Ekspander rad for fullstendige detaljer."
       />
 
       <Page.Content>
         <Page.Section title="Nivåer" description="Tilgjengelige abonnementsplaner">
-          <div className="divide-y divide-ak-border-default">
+          <div className="divide-y divide-tier-border-default">
             {tiers.map((tier) => (
               <div key={tier.id} className="py-4 first:pt-0 last:pb-0">
                 {/* Tier Row */}
@@ -158,7 +159,7 @@ export default function AdminTierManagement() {
 
                 {/* Expanded Features */}
                 {expandedId === tier.id && (
-                  <div className="mt-4 p-4 bg-ak-surface-subtle rounded-lg">
+                  <div className="mt-4 p-4 bg-tier-surface-base rounded-lg">
                     <Text variant="caption1" color="secondary" className="mb-3">
                       Inkluderte funksjoner
                     </Text>
@@ -166,9 +167,9 @@ export default function AdminTierManagement() {
                       {Object.entries(tier.features).map(([key, enabled]) => (
                         <div key={key} className="flex items-center gap-2">
                           {enabled ? (
-                            <CheckCircle size={16} className="text-ak-status-success" />
+                            <CheckCircle size={16} className="text-tier-success" />
                           ) : (
-                            <XCircle size={16} className="text-ak-text-tertiary" />
+                            <XCircle size={16} className="text-tier-text-tertiary" />
                           )}
                           <Text
                             variant="body"

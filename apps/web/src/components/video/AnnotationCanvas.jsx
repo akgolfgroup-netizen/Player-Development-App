@@ -1,5 +1,5 @@
 /**
- * AK GOLF ACADEMY — VIDEO ANALYSIS SYSTEM
+ * TIER GOLF — VIDEO ANALYSIS SYSTEM
  * AnnotationCanvas Component
  *
  * Canvas overlay for drawing annotations on video frames:

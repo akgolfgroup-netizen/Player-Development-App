@@ -26,7 +26,7 @@ import { useDashboardData } from '../../data';
 import type { DashboardSession } from '../../data';
 import { getSimState } from '../../dev/simulateState';
 import { useScreenView } from '../../analytics/useScreenView';
-import { SectionTitle } from '../../components/typography';
+import { SectionTitle } from '../../components/typography/Headings';
 
 // Pure functions - moved outside component to avoid recreation
 const getStatusText = (status: DashboardSession['status']) => {
@@ -43,11 +43,11 @@ const getStatusText = (status: DashboardSession['status']) => {
 const getStatusColorClass = (status: DashboardSession['status']) => {
   switch (status) {
     case 'completed':
-      return 'text-ak-status-success';
+      return 'text-tier-success';
     case 'in_progress':
-      return 'text-ak-primary';
+      return 'text-tier-navy';
     default:
-      return 'text-ak-text-secondary';
+      return 'text-tier-text-secondary';
   }
 };
 
@@ -127,7 +127,7 @@ const DashboardPage: React.FC = () => {
 
       {/* Today's Sessions */}
       <section className="mb-6">
-        <SectionTitle className="text-lg font-semibold text-ak-text-primary mb-3">
+        <SectionTitle className="text-lg font-semibold text-tier-navy mb-3">
           Dine økter i dag
         </SectionTitle>
         <div className="flex flex-col gap-3">
@@ -146,7 +146,7 @@ const DashboardPage: React.FC = () => {
             sessions.map((session) => (
               <Card key={session.id} className="flex flex-col gap-1">
                 <div className="flex justify-between items-center">
-                  <span className="text-base font-semibold text-ak-text-primary">
+                  <span className="text-base font-semibold text-tier-navy">
                     {session.title}
                   </span>
                   <span
@@ -155,7 +155,7 @@ const DashboardPage: React.FC = () => {
                     {getStatusText(session.status)}
                   </span>
                 </div>
-                <div className="text-xs text-ak-text-secondary">
+                <div className="text-xs text-tier-text-secondary">
                   {session.start} - {session.end}
                 </div>
               </Card>

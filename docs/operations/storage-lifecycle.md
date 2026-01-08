@@ -2,7 +2,7 @@
 
 ## Overview
 
-This document describes storage lifecycle policies for IUP Golf Academy video assets.
+This document describes storage lifecycle policies for IUP Golf video assets.
 
 ---
 

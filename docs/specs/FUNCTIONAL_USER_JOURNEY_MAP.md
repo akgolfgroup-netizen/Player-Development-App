@@ -1,6 +1,6 @@
 # Functional User Journey Map: Golfer
 
-**Context:** AK Golf Academy App
+**Context:** TIER Golf App
 **Primary User:** Competitive golfer (player)
 **Goal:** Golfer starts using the app → trains over a period → evaluates whether the app is worth continuing to use
 

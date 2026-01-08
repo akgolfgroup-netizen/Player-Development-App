@@ -1,4 +1,4 @@
-# Dashboard Implementation - AK Golf Academy
+# Dashboard Implementation - TIER Golf
 
 > **Implementert:** 15. desember 2025
 > **Design Kilde:** `/Design/figma/ak_golf_complete_figma_kit.svg`

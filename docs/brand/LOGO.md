@@ -1,8 +1,8 @@
-# AK Golf Logo
+# TIER Golf Logo
 
 ## Primary Logo
 
-The AK Golf logo is a stylized monogram combining the letters "A" and "K" in a dynamic golf-inspired form.
+The TIER Golf logo is a stylized monogram combining the letters "A" and "K" in a dynamic golf-inspired form.
 
 ```
 ┌─────────────────────────────────────┐

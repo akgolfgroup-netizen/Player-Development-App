@@ -1,5 +1,5 @@
 /**
- * AK GOLF ACADEMY — VIDEO ANALYSIS SYSTEM
+ * TIER GOLF — VIDEO ANALYSIS SYSTEM
  * VideoControls Component
  *
  * Provides playback controls for video player:

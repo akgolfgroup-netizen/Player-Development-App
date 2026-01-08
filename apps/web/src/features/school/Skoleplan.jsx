@@ -1,5 +1,5 @@
 /**
- * AK Golf Academy - Skoleplan
+ * TIER Golf Academy - Skoleplan
  * Design System v3.0 - Premium Light
  *
  * School schedule management with subjects, timetable, and tasks.
@@ -22,7 +22,8 @@ import {
   Edit2,
   X,
   Calendar,
-  AlertCircle
+  AlertCircle,
+  Target
 } from 'lucide-react';
 
 // ============================================================================
@@ -39,14 +40,14 @@ const UKEDAG_LABELS = {
 };
 
 const PRIORITET_CONFIG = {
-  low: { colorClasses: { dot: 'bg-ak-text-secondary' }, label: 'Lav' },
-  medium: { colorClasses: { dot: 'bg-ak-status-warning' }, label: 'Medium' },
-  high: { colorClasses: { dot: 'bg-ak-status-error' }, label: 'Hoy' }
+  low: { colorClasses: { dot: 'bg-tier-text-secondary' }, label: 'Lav' },
+  medium: { colorClasses: { dot: 'bg-tier-warning' }, label: 'Medium' },
+  high: { colorClasses: { dot: 'bg-tier-error' }, label: 'Hoy' }
 };
 
 const DEFAULT_COLORS = [
-  '#3B82F6', '#10B981', '#F59E0B', '#EF4444', '#8B5CF6',
-  '#06B6D4', '#EC4899', '#6366F1', '#84CC16', '#F97316'
+  'rgb(var(--status-info))', 'rgb(var(--status-success))', 'rgb(var(--tier-gold))', 'rgb(var(--status-error))', 'rgb(var(--category-j))',
+  'rgb(var(--status-info))', 'rgb(var(--status-error))', 'rgb(var(--category-j))', 'rgb(var(--status-success))', 'rgb(var(--status-warning))'
 ];
 
 // ============================================================================
@@ -85,13 +86,13 @@ const Modal = ({ isOpen, onClose, title, children }) => {
         className="bg-white rounded-2xl max-w-[500px] w-[90%] max-h-[90vh] overflow-auto shadow-xl"
         onClick={e => e.stopPropagation()}
       >
-        <div className="flex justify-between items-center p-5 px-6 border-b border-ak-border-default">
-          <SectionTitle className="text-lg font-semibold text-ak-text-primary m-0">
+        <div className="flex justify-between items-center p-5 px-6 border-b border-tier-border-default">
+          <SectionTitle className="text-lg font-semibold text-tier-navy m-0">
             {title}
           </SectionTitle>
           <button
             onClick={onClose}
-            className="bg-transparent border-none cursor-pointer p-1 text-ak-text-secondary hover:text-ak-text-primary"
+            className="bg-transparent border-none cursor-pointer p-1 text-tier-text-secondary hover:text-tier-navy"
           >
             <X size={20} />
           </button>
@@ -151,7 +152,7 @@ const FagModal = ({ isOpen, onClose, fag, onSave, onDelete }) => {
     <Modal isOpen={isOpen} onClose={onClose} title={fag ? 'Rediger fag' : 'Nytt fag'}>
       <form onSubmit={handleSubmit}>
         <div className="mb-4">
-          <label className="block text-sm font-medium text-ak-text-primary mb-1.5">
+          <label className="block text-sm font-medium text-tier-navy mb-1.5">
             Fagnavn *
           </label>
           <input
@@ -159,13 +160,13 @@ const FagModal = ({ isOpen, onClose, fag, onSave, onDelete }) => {
             value={form.navn}
             onChange={e => setForm({ ...form, navn: e.target.value })}
             placeholder="f.eks. Matematikk"
-            className="w-full py-2.5 px-3 border border-ak-border-default rounded-lg text-[15px] box-border focus:outline-none focus:border-ak-primary"
+            className="w-full py-2.5 px-3 border border-tier-border-default rounded-lg text-[15px] box-border focus:outline-none focus:border-tier-navy"
             required
           />
         </div>
 
         <div className="mb-4">
-          <label className="block text-sm font-medium text-ak-text-primary mb-1.5">
+          <label className="block text-sm font-medium text-tier-navy mb-1.5">
             Larer
           </label>
           <input
@@ -173,12 +174,12 @@ const FagModal = ({ isOpen, onClose, fag, onSave, onDelete }) => {
             value={form.larer}
             onChange={e => setForm({ ...form, larer: e.target.value })}
             placeholder="Larerens navn"
-            className="w-full py-2.5 px-3 border border-ak-border-default rounded-lg text-[15px] box-border focus:outline-none focus:border-ak-primary"
+            className="w-full py-2.5 px-3 border border-tier-border-default rounded-lg text-[15px] box-border focus:outline-none focus:border-tier-navy"
           />
         </div>
 
         <div className="mb-4">
-          <label className="block text-sm font-medium text-ak-text-primary mb-1.5">
+          <label className="block text-sm font-medium text-tier-navy mb-1.5">
             Rom
           </label>
           <input
@@ -186,12 +187,12 @@ const FagModal = ({ isOpen, onClose, fag, onSave, onDelete }) => {
             value={form.rom}
             onChange={e => setForm({ ...form, rom: e.target.value })}
             placeholder="f.eks. A101"
-            className="w-full py-2.5 px-3 border border-ak-border-default rounded-lg text-[15px] box-border focus:outline-none focus:border-ak-primary"
+            className="w-full py-2.5 px-3 border border-tier-border-default rounded-lg text-[15px] box-border focus:outline-none focus:border-tier-navy"
           />
         </div>
 
         <div className="mb-6">
-          <label className="block text-sm font-medium text-ak-text-primary mb-2">
+          <label className="block text-sm font-medium text-tier-navy mb-2">
             Farge
           </label>
           <div className="flex gap-2 flex-wrap">
@@ -201,7 +202,7 @@ const FagModal = ({ isOpen, onClose, fag, onSave, onDelete }) => {
                 type="button"
                 onClick={() => setForm({ ...form, farge: color })}
                 className={`w-8 h-8 rounded-lg cursor-pointer transition-all ${
-                  form.farge === color ? 'border-[3px] border-ak-text-primary' : 'border-2 border-transparent'
+                  form.farge === color ? 'border-[3px] border-tier-navy' : 'border-2 border-transparent'
                 }`}
                 style={{ backgroundColor: color }}
               />
@@ -215,7 +216,7 @@ const FagModal = ({ isOpen, onClose, fag, onSave, onDelete }) => {
               type="button"
               variant="secondary"
               onClick={handleDelete}
-              className="bg-ak-status-error/15 text-ak-status-error hover:bg-ak-status-error/25"
+              className="bg-tier-error/15 text-tier-error hover:bg-tier-error/25"
             >
               Slett
             </Button>
@@ -296,8 +297,8 @@ const TimeModal = ({ isOpen, onClose, time, fag, allFag, onSave, onDelete }) => 
     return (
       <Modal isOpen={isOpen} onClose={onClose} title="Legg til time">
         <div className="text-center py-5">
-          <BookOpen size={48} className="text-ak-text-secondary mb-4 mx-auto" />
-          <p className="text-ak-text-secondary mb-4">
+          <BookOpen size={48} className="text-tier-text-secondary mb-4 mx-auto" />
+          <p className="text-tier-text-secondary mb-4">
             Du ma opprette minst ett fag for du kan legge til timer.
           </p>
           <Button variant="primary" onClick={onClose}>
@@ -312,13 +313,13 @@ const TimeModal = ({ isOpen, onClose, time, fag, allFag, onSave, onDelete }) => 
     <Modal isOpen={isOpen} onClose={onClose} title={time ? 'Rediger time' : 'Ny time'}>
       <form onSubmit={handleSubmit}>
         <div className="mb-4">
-          <label className="block text-sm font-medium text-ak-text-primary mb-1.5">
+          <label className="block text-sm font-medium text-tier-navy mb-1.5">
             Fag *
           </label>
           <select
             value={form.fagId}
             onChange={e => setForm({ ...form, fagId: e.target.value })}
-            className="w-full py-2.5 px-3 border border-ak-border-default rounded-lg text-[15px] box-border bg-white focus:outline-none focus:border-ak-primary"
+            className="w-full py-2.5 px-3 border border-tier-border-default rounded-lg text-[15px] box-border bg-white focus:outline-none focus:border-tier-navy"
             required
           >
             {allFag.map(f => (
@@ -328,13 +329,13 @@ const TimeModal = ({ isOpen, onClose, time, fag, allFag, onSave, onDelete }) => 
         </div>
 
         <div className="mb-4">
-          <label className="block text-sm font-medium text-ak-text-primary mb-1.5">
+          <label className="block text-sm font-medium text-tier-navy mb-1.5">
             Ukedag *
           </label>
           <select
             value={form.ukedag}
             onChange={e => setForm({ ...form, ukedag: e.target.value })}
-            className="w-full py-2.5 px-3 border border-ak-border-default rounded-lg text-[15px] box-border bg-white focus:outline-none focus:border-ak-primary"
+            className="w-full py-2.5 px-3 border border-tier-border-default rounded-lg text-[15px] box-border bg-white focus:outline-none focus:border-tier-navy"
             required
           >
             {UKEDAGER.map(dag => (
@@ -347,26 +348,26 @@ const TimeModal = ({ isOpen, onClose, time, fag, allFag, onSave, onDelete }) => 
 
         <div className="flex gap-3 mb-6">
           <div className="flex-1">
-            <label className="block text-sm font-medium text-ak-text-primary mb-1.5">
+            <label className="block text-sm font-medium text-tier-navy mb-1.5">
               Start *
             </label>
             <input
               type="time"
               value={form.startTid}
               onChange={e => setForm({ ...form, startTid: e.target.value })}
-              className="w-full py-2.5 px-3 border border-ak-border-default rounded-lg text-[15px] box-border focus:outline-none focus:border-ak-primary"
+              className="w-full py-2.5 px-3 border border-tier-border-default rounded-lg text-[15px] box-border focus:outline-none focus:border-tier-navy"
               required
             />
           </div>
           <div className="flex-1">
-            <label className="block text-sm font-medium text-ak-text-primary mb-1.5">
+            <label className="block text-sm font-medium text-tier-navy mb-1.5">
               Slutt *
             </label>
             <input
               type="time"
               value={form.sluttTid}
               onChange={e => setForm({ ...form, sluttTid: e.target.value })}
-              className="w-full py-2.5 px-3 border border-ak-border-default rounded-lg text-[15px] box-border focus:outline-none focus:border-ak-primary"
+              className="w-full py-2.5 px-3 border border-tier-border-default rounded-lg text-[15px] box-border focus:outline-none focus:border-tier-navy"
               required
             />
           </div>
@@ -378,7 +379,7 @@ const TimeModal = ({ isOpen, onClose, time, fag, allFag, onSave, onDelete }) => 
               type="button"
               variant="secondary"
               onClick={handleDelete}
-              className="bg-ak-status-error/15 text-ak-status-error hover:bg-ak-status-error/25"
+              className="bg-tier-error/15 text-tier-error hover:bg-tier-error/25"
             >
               Slett
             </Button>
@@ -460,8 +461,8 @@ const OppgaveModal = ({ isOpen, onClose, oppgave, allFag, onSave, onDelete }) =>
     return (
       <Modal isOpen={isOpen} onClose={onClose} title="Legg til oppgave">
         <div className="text-center py-5">
-          <BookOpen size={48} className="text-ak-text-secondary mb-4 mx-auto" />
-          <p className="text-ak-text-secondary mb-4">
+          <BookOpen size={48} className="text-tier-text-secondary mb-4 mx-auto" />
+          <p className="text-tier-text-secondary mb-4">
             Du ma opprette minst ett fag for du kan legge til oppgaver.
           </p>
           <Button variant="primary" onClick={onClose}>
@@ -476,13 +477,13 @@ const OppgaveModal = ({ isOpen, onClose, oppgave, allFag, onSave, onDelete }) =>
     <Modal isOpen={isOpen} onClose={onClose} title={oppgave ? 'Rediger oppgave' : 'Ny oppgave'}>
       <form onSubmit={handleSubmit}>
         <div className="mb-4">
-          <label className="block text-sm font-medium text-ak-text-primary mb-1.5">
+          <label className="block text-sm font-medium text-tier-navy mb-1.5">
             Fag *
           </label>
           <select
             value={form.fagId}
             onChange={e => setForm({ ...form, fagId: e.target.value })}
-            className="w-full py-2.5 px-3 border border-ak-border-default rounded-lg text-[15px] box-border bg-white focus:outline-none focus:border-ak-primary"
+            className="w-full py-2.5 px-3 border border-tier-border-default rounded-lg text-[15px] box-border bg-white focus:outline-none focus:border-tier-navy"
             required
           >
             {allFag.map(f => (
@@ -492,7 +493,7 @@ const OppgaveModal = ({ isOpen, onClose, oppgave, allFag, onSave, onDelete }) =>
         </div>
 
         <div className="mb-4">
-          <label className="block text-sm font-medium text-ak-text-primary mb-1.5">
+          <label className="block text-sm font-medium text-tier-navy mb-1.5">
             Tittel *
           </label>
           <input
@@ -500,13 +501,13 @@ const OppgaveModal = ({ isOpen, onClose, oppgave, allFag, onSave, onDelete }) =>
             value={form.tittel}
             onChange={e => setForm({ ...form, tittel: e.target.value })}
             placeholder="Hva skal gjores?"
-            className="w-full py-2.5 px-3 border border-ak-border-default rounded-lg text-[15px] box-border focus:outline-none focus:border-ak-primary"
+            className="w-full py-2.5 px-3 border border-tier-border-default rounded-lg text-[15px] box-border focus:outline-none focus:border-tier-navy"
             required
           />
         </div>
 
         <div className="mb-4">
-          <label className="block text-sm font-medium text-ak-text-primary mb-1.5">
+          <label className="block text-sm font-medium text-tier-navy mb-1.5">
             Beskrivelse
           </label>
           <textarea
@@ -514,31 +515,31 @@ const OppgaveModal = ({ isOpen, onClose, oppgave, allFag, onSave, onDelete }) =>
             onChange={e => setForm({ ...form, beskrivelse: e.target.value })}
             placeholder="Mer detaljer..."
             rows={3}
-            className="w-full py-2.5 px-3 border border-ak-border-default rounded-lg text-[15px] box-border resize-y focus:outline-none focus:border-ak-primary"
+            className="w-full py-2.5 px-3 border border-tier-border-default rounded-lg text-[15px] box-border resize-y focus:outline-none focus:border-tier-navy"
           />
         </div>
 
         <div className="flex gap-3 mb-6">
           <div className="flex-1">
-            <label className="block text-sm font-medium text-ak-text-primary mb-1.5">
+            <label className="block text-sm font-medium text-tier-navy mb-1.5">
               Frist *
             </label>
             <input
               type="date"
               value={form.frist}
               onChange={e => setForm({ ...form, frist: e.target.value })}
-              className="w-full py-2.5 px-3 border border-ak-border-default rounded-lg text-[15px] box-border focus:outline-none focus:border-ak-primary"
+              className="w-full py-2.5 px-3 border border-tier-border-default rounded-lg text-[15px] box-border focus:outline-none focus:border-tier-navy"
               required
             />
           </div>
           <div className="flex-1">
-            <label className="block text-sm font-medium text-ak-text-primary mb-1.5">
+            <label className="block text-sm font-medium text-tier-navy mb-1.5">
               Prioritet
             </label>
             <select
               value={form.prioritet}
               onChange={e => setForm({ ...form, prioritet: e.target.value })}
-              className="w-full py-2.5 px-3 border border-ak-border-default rounded-lg text-[15px] box-border bg-white focus:outline-none focus:border-ak-primary"
+              className="w-full py-2.5 px-3 border border-tier-border-default rounded-lg text-[15px] box-border bg-white focus:outline-none focus:border-tier-navy"
             >
               <option value="low">Lav</option>
               <option value="medium">Medium</option>
@@ -553,7 +554,7 @@ const OppgaveModal = ({ isOpen, onClose, oppgave, allFag, onSave, onDelete }) =>
               type="button"
               variant="secondary"
               onClick={handleDelete}
-              className="bg-ak-status-error/15 text-ak-status-error hover:bg-ak-status-error/25"
+              className="bg-tier-error/15 text-tier-error hover:bg-tier-error/25"
             >
               Slett
             </Button>
@@ -604,11 +605,11 @@ const Timeplan = ({ timer, fag, onAddTime, onEditTime }) => {
   };
 
   return (
-    <div className="bg-white rounded-xl border border-ak-border-default overflow-hidden">
-      <div className="flex justify-between items-center p-4 px-5 border-b border-ak-border-default">
+    <div className="bg-white rounded-xl border border-tier-border-default overflow-hidden">
+      <div className="flex justify-between items-center p-4 px-5 border-b border-tier-border-default">
         <div className="flex items-center gap-2.5">
-          <Clock size={20} className="text-ak-primary" />
-          <SubSectionTitle className="text-base font-semibold text-ak-text-primary m-0">
+          <Clock size={20} className="text-tier-navy" />
+          <SubSectionTitle className="text-base font-semibold text-tier-navy m-0">
             Timeplan
           </SubSectionTitle>
         </div>
@@ -625,13 +626,13 @@ const Timeplan = ({ timer, fag, onAddTime, onEditTime }) => {
       <div className="overflow-x-auto">
         <div className="flex min-w-[600px]">
           {UKEDAGER.map(dag => (
-            <div key={dag} className={`flex-1 ${dag !== 'fredag' ? 'border-r border-ak-border-default' : ''}`}>
-              <div className="p-3 text-center bg-ak-surface-subtle border-b border-ak-border-default font-semibold text-[13px] text-ak-text-primary">
+            <div key={dag} className={`flex-1 ${dag !== 'fredag' ? 'border-r border-tier-border-default' : ''}`}>
+              <div className="p-3 text-center bg-tier-surface-base border-b border-tier-border-default font-semibold text-[13px] text-tier-navy">
                 {UKEDAG_LABELS[dag]}
               </div>
               <div className="min-h-[200px] p-2">
                 {timerByDag[dag].length === 0 ? (
-                  <div className="h-full flex items-center justify-center text-ak-text-secondary text-xs">
+                  <div className="h-full flex items-center justify-center text-tier-text-secondary text-xs">
                     Ingen timer
                   </div>
                 ) : (
@@ -643,18 +644,18 @@ const Timeplan = ({ timer, fag, onAddTime, onEditTime }) => {
                         onClick={() => onEditTime(time)}
                         className="p-2.5 mb-1.5 rounded-md cursor-pointer transition-transform hover:scale-[1.02]"
                         style={{
-                          backgroundColor: `${fagInfo?.farge || '#3B82F6'}15`,
-                          borderLeft: `3px solid ${fagInfo?.farge || '#3B82F6'}`
+                          backgroundColor: `${fagInfo?.farge || 'rgb(var(--status-info))'}15`,
+                          borderLeft: `3px solid ${fagInfo?.farge || 'rgb(var(--status-info))'}`
                         }}
                       >
-                        <div className="text-xs text-ak-text-secondary mb-1">
+                        <div className="text-xs text-tier-text-secondary mb-1">
                           {time.startTid} - {time.sluttTid}
                         </div>
-                        <div className="text-[13px] font-semibold text-ak-text-primary">
+                        <div className="text-[13px] font-semibold text-tier-navy">
                           {fagInfo?.navn || 'Ukjent fag'}
                         </div>
                         {fagInfo?.rom && (
-                          <div className="text-[11px] text-ak-text-secondary mt-0.5">
+                          <div className="text-[11px] text-tier-text-secondary mt-0.5">
                             Rom: {fagInfo.rom}
                           </div>
                         )}
@@ -697,20 +698,20 @@ const OppgaveListe = ({ oppgaver, fag, onToggleStatus, onEdit, onAdd }) => {
   const overdueCount = oppgaver.filter(o => o.status === 'pending' && isOverdue(o.frist)).length;
 
   return (
-    <div className="bg-white rounded-xl border border-ak-border-default overflow-hidden">
-      <div className="flex justify-between items-center p-4 px-5 border-b border-ak-border-default flex-wrap gap-3">
+    <div className="bg-white rounded-xl border border-tier-border-default overflow-hidden">
+      <div className="flex justify-between items-center p-4 px-5 border-b border-tier-border-default flex-wrap gap-3">
         <div className="flex items-center gap-2.5">
-          <BookOpen size={20} className="text-ak-primary" />
-          <SubSectionTitle className="text-base font-semibold text-ak-text-primary m-0">
+          <BookOpen size={20} className="text-tier-navy" />
+          <SubSectionTitle className="text-base font-semibold text-tier-navy m-0">
             Oppgaver
           </SubSectionTitle>
           {pendingCount > 0 && (
-            <span className="py-0.5 px-2 bg-ak-primary text-white rounded-xl text-xs font-medium">
+            <span className="py-0.5 px-2 bg-tier-navy text-white rounded-xl text-xs font-medium">
               {pendingCount}
             </span>
           )}
           {overdueCount > 0 && (
-            <span className="py-0.5 px-2 bg-ak-status-error text-white rounded-xl text-xs font-medium">
+            <span className="py-0.5 px-2 bg-tier-error text-white rounded-xl text-xs font-medium">
               {overdueCount} forsinket
             </span>
           )}
@@ -720,7 +721,7 @@ const OppgaveListe = ({ oppgaver, fag, onToggleStatus, onEdit, onAdd }) => {
           <select
             value={fagFilter}
             onChange={e => setFagFilter(e.target.value)}
-            className="py-1.5 px-2.5 border border-ak-border-default rounded-md text-[13px] bg-white"
+            className="py-1.5 px-2.5 border border-tier-border-default rounded-md text-[13px] bg-white"
           >
             <option value="all">Alle fag</option>
             {fag.map(f => (
@@ -731,7 +732,7 @@ const OppgaveListe = ({ oppgaver, fag, onToggleStatus, onEdit, onAdd }) => {
           <select
             value={filter}
             onChange={e => setFilter(e.target.value)}
-            className="py-1.5 px-2.5 border border-ak-border-default rounded-md text-[13px] bg-white"
+            className="py-1.5 px-2.5 border border-tier-border-default rounded-md text-[13px] bg-white"
           >
             <option value="all">Alle</option>
             <option value="pending">Ugjort</option>
@@ -751,7 +752,7 @@ const OppgaveListe = ({ oppgaver, fag, onToggleStatus, onEdit, onAdd }) => {
 
       <div className="max-h-[400px] overflow-auto">
         {filteredOppgaver.length === 0 ? (
-          <div className="p-10 text-center text-ak-text-secondary">
+          <div className="p-10 text-center text-tier-text-secondary">
             <CheckCircle2 size={40} className="mb-3 opacity-50 mx-auto" />
             <p className="m-0">Ingen oppgaver a vise</p>
           </div>
@@ -764,8 +765,8 @@ const OppgaveListe = ({ oppgaver, fag, onToggleStatus, onEdit, onAdd }) => {
             return (
               <div
                 key={oppgave.id}
-                className={`flex items-start gap-3 py-3.5 px-5 border-b border-ak-border-default ${
-                  oppgave.status === 'completed' ? 'bg-ak-surface-subtle' : 'bg-white'
+                className={`flex items-start gap-3 py-3.5 px-5 border-b border-tier-border-default ${
+                  oppgave.status === 'completed' ? 'bg-tier-surface-base' : 'bg-white'
                 }`}
               >
                 <button
@@ -773,9 +774,9 @@ const OppgaveListe = ({ oppgaver, fag, onToggleStatus, onEdit, onAdd }) => {
                   className="bg-transparent border-none cursor-pointer p-0.5 mt-0.5"
                 >
                   {oppgave.status === 'completed' ? (
-                    <CheckCircle2 size={22} className="text-ak-status-success" />
+                    <CheckCircle2 size={22} className="text-tier-success" />
                   ) : (
-                    <Circle size={22} className="text-ak-text-secondary" />
+                    <Circle size={22} className="text-tier-text-secondary" />
                   )}
                 </button>
 
@@ -784,31 +785,44 @@ const OppgaveListe = ({ oppgaver, fag, onToggleStatus, onEdit, onAdd }) => {
                     <span
                       className="py-0.5 px-2 rounded text-[11px] font-medium"
                       style={{
-                        backgroundColor: `${fagInfo?.farge || '#3B82F6'}20`,
-                        color: fagInfo?.farge || '#3B82F6'
+                        backgroundColor: `${fagInfo?.farge || 'rgb(var(--status-info))'}20`,
+                        color: fagInfo?.farge || 'rgb(var(--status-info))'
                       }}
                     >
                       {fagInfo?.navn || 'Ukjent'}
                     </span>
                     <span
-                      className={`w-1.5 h-1.5 rounded-full ${PRIORITET_CONFIG[oppgave.prioritet]?.colorClasses?.dot || 'bg-ak-text-secondary'}`}
+                      className={`w-1.5 h-1.5 rounded-full ${PRIORITET_CONFIG[oppgave.prioritet]?.colorClasses?.dot || 'bg-tier-text-secondary'}`}
                       title={`Prioritet: ${PRIORITET_CONFIG[oppgave.prioritet]?.label || oppgave.prioritet}`}
                     />
                   </div>
 
                   <div className={`text-sm font-medium mb-1 ${
-                    oppgave.status === 'completed' ? 'text-ak-text-secondary line-through' : 'text-ak-text-primary'
+                    oppgave.status === 'completed' ? 'text-tier-text-secondary line-through' : 'text-tier-navy'
                   }`}>
                     {oppgave.tittel}
                   </div>
 
                   {oppgave.beskrivelse && (
-                    <div className="text-[13px] text-ak-text-secondary mb-1 overflow-hidden text-ellipsis whitespace-nowrap">
+                    <div className="text-[13px] text-tier-text-secondary mb-1 overflow-hidden text-ellipsis whitespace-nowrap">
                       {oppgave.beskrivelse}
                     </div>
                   )}
 
-                  <div className={`flex items-center gap-1.5 text-xs ${overdue ? 'text-ak-status-error' : 'text-ak-text-secondary'}`}>
+                  {/* Test Integration Badge */}
+                  {oppgave.testId && oppgave.test && (
+                    <div className="flex items-center gap-1.5 mb-1.5 bg-tier-info-light px-2 py-1 rounded text-xs text-tier-info">
+                      <Target size={12} />
+                      <span>Test: {oppgave.test.name}</span>
+                      {oppgave.testDate && (
+                        <span className="ml-1 text-tier-text-secondary">
+                          ({formatDate(oppgave.testDate)})
+                        </span>
+                      )}
+                    </div>
+                  )}
+
+                  <div className={`flex items-center gap-1.5 text-xs ${overdue ? 'text-tier-error' : 'text-tier-text-secondary'}`}>
                     {overdue && <AlertCircle size={12} />}
                     <Calendar size={12} />
                     <span>
@@ -831,7 +845,7 @@ const OppgaveListe = ({ oppgaver, fag, onToggleStatus, onEdit, onAdd }) => {
 
                 <button
                   onClick={() => onEdit(oppgave)}
-                  className="bg-transparent border-none cursor-pointer p-1 text-ak-text-secondary hover:text-ak-text-primary"
+                  className="bg-transparent border-none cursor-pointer p-1 text-tier-text-secondary hover:text-tier-navy"
                 >
                   <Edit2 size={16} />
                 </button>
@@ -850,14 +864,14 @@ const OppgaveListe = ({ oppgaver, fag, onToggleStatus, onEdit, onAdd }) => {
 
 const FagListe = ({ fag, onEdit, onAdd }) => {
   return (
-    <div className="bg-white rounded-xl border border-ak-border-default overflow-hidden">
-      <div className="flex justify-between items-center p-4 px-5 border-b border-ak-border-default">
+    <div className="bg-white rounded-xl border border-tier-border-default overflow-hidden">
+      <div className="flex justify-between items-center p-4 px-5 border-b border-tier-border-default">
         <div className="flex items-center gap-2.5">
-          <GraduationCap size={20} className="text-ak-primary" />
-          <SubSectionTitle className="text-base font-semibold text-ak-text-primary m-0">
+          <GraduationCap size={20} className="text-tier-navy" />
+          <SubSectionTitle className="text-base font-semibold text-tier-navy m-0">
             Fag
           </SubSectionTitle>
-          <span className="py-0.5 px-2 bg-ak-surface-subtle text-ak-text-secondary rounded-xl text-xs font-medium">
+          <span className="py-0.5 px-2 bg-tier-surface-base text-tier-text-secondary rounded-xl text-xs font-medium">
             {fag.length}
           </span>
         </div>
@@ -872,7 +886,7 @@ const FagListe = ({ fag, onEdit, onAdd }) => {
       </div>
 
       {fag.length === 0 ? (
-        <div className="p-10 text-center text-ak-text-secondary">
+        <div className="p-10 text-center text-tier-text-secondary">
           <BookOpen size={40} className="mb-3 opacity-50 mx-auto" />
           <p className="m-0">Ingen fag enda. Opprett ditt forste fag!</p>
         </div>
@@ -884,16 +898,16 @@ const FagListe = ({ fag, onEdit, onAdd }) => {
               onClick={() => onEdit(f)}
               className="flex items-center gap-2.5 py-2.5 px-3.5 rounded-lg cursor-pointer hover:opacity-80 transition-opacity"
               style={{
-                backgroundColor: `${f.farge || '#3B82F6'}15`,
-                borderLeft: `3px solid ${f.farge || '#3B82F6'}`
+                backgroundColor: `${f.farge || 'rgb(var(--status-info))'}15`,
+                borderLeft: `3px solid ${f.farge || 'rgb(var(--status-info))'}`
               }}
             >
               <div>
-                <div className="text-sm font-semibold text-ak-text-primary">
+                <div className="text-sm font-semibold text-tier-navy">
                   {f.navn}
                 </div>
                 {(f.larer || f.rom) && (
-                  <div className="text-xs text-ak-text-secondary">
+                  <div className="text-xs text-tier-text-secondary">
                     {f.larer}{f.larer && f.rom && ' | '}{f.rom}
                   </div>
                 )}
@@ -1005,10 +1019,11 @@ const Skoleplan = ({
   };
 
   return (
-    <div className="min-h-screen bg-ak-surface-subtle">
+    <div className="min-h-screen bg-tier-surface-base">
       <PageHeader
         title="Skoleplan"
         subtitle="Administrer timeplan, fag og oppgaver"
+        helpText="Ukentlig timeplan med alle skolefag, timer og oppgaver. Legg til nye fag med farge, administrer timer per ukedag og hold oversikt over kommende frister og prøver."
       />
 
       <div className="p-6 w-full">

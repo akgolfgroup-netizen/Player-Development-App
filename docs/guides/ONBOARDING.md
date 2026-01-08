@@ -1,6 +1,6 @@
 # New Developer Onboarding Guide
 
-> Welcome to AK Golf Academy IUP Platform! 🎉
+> Welcome to TIER Golf IUP Platform! 🎉
 > **For**: New developers joining the project
 > **Time**: ~2-3 hours to get fully set up
 > **Updated**: December 16, 2025
@@ -301,7 +301,7 @@ Let's add a custom endpoint:
    const helloRoutes: FastifyPluginAsync = async (fastify) => {
      fastify.get('/', async (req, reply) => {
        return {
-         message: 'Hello from IUP Golf Academy!',
+         message: 'Hello from IUP Golf!',
          user: req.user?.firstName || 'Anonymous',
          timestamp: new Date().toISOString()
        };

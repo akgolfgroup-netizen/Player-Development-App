@@ -1,6 +1,6 @@
 /**
  * ============================================================
- * PLAYER ROUTES V3 - AK Golf Academy
+ * PLAYER ROUTES V3 - TIER Golf Academy
  * ============================================================
  *
  * Rutedefinisjoner for spillerportalen med 5-område struktur.
@@ -40,8 +40,11 @@ const TreningOkter = lazy(() => Promise.resolve({ default: () => <PlaceholderPag
 const TreningPlan = lazy(() => Promise.resolve({ default: () => <PlaceholderPage title="Treningsplan" /> }));
 const TreningOvelser = lazy(() => Promise.resolve({ default: () => <PlaceholderPage title="Øvelsesbank" /> }));
 const TreningVideoer = lazy(() => import('../features/video-library/VideoLibrary'));
+const VideoAnnotation = lazy(() => import('../features/video-annotations/VideoAnnotationPage'));
 const TreningTesting = lazy(() => Promise.resolve({ default: () => <PlaceholderPage title="Testing" /> }));
 const TreningTestRegistrer = lazy(() => Promise.resolve({ default: () => <PlaceholderPage title="Registrer test" /> }));
+const TreningTeknikkplan = lazy(() => import('../features/technique-plan/TechniquePlanPage'));
+const TreningFokus = lazy(() => import('../features/focus-engine/FocusEnginePage'));
 
 // Utvikling area
 const UtviklingOversikt = lazy(() => Promise.resolve({ default: () => <PlaceholderPage title="Min utvikling" /> }));
@@ -51,32 +54,48 @@ const UtviklingTestresultater = lazy(() => Promise.resolve({ default: () => <Pla
 const UtviklingKrav = lazy(() => Promise.resolve({ default: () => <PlaceholderPage title="Kategori-krav" /> }));
 const UtviklingBadges = lazy(() => Promise.resolve({ default: () => <PlaceholderPage title="Merker" /> }));
 const UtviklingAchievements = lazy(() => Promise.resolve({ default: () => <PlaceholderPage title="Oppnåelser" /> }));
+const UtviklingStrokesGained = lazy(() => import('../features/strokes-gained/StrokesGainedPage'));
+const UtviklingDataGolf = lazy(() => import('../features/datagolf/PlayerDataGolfPage'));
+const UtviklingBreakingPoints = lazy(() => import('../features/breaking-points/BreakingPointsPage'));
+const UtviklingTreningsomrader = lazy(() => import('../features/training-area-performance/TrainingAreaPerformancePage').then(m => ({ default: m.TrainingAreaPerformancePage })));
+const UtviklingPeerComparison = lazy(() => import('../features/peer-comparison/PeerComparisonPage'));
+const ProgressReportsPage = lazy(() => import('../features/progress-reports/ProgressReportsPage'));
 
 // Plan area
 const PlanKalender = lazy(() => import('../features/calendar/CalendarPage'));
 const NotionKalender = lazy(() => import('../features/calendar/NotionCalendarPage'));
 const PlayerCalendarPage = lazy(() => import('../features/calendar/PlayerCalendarPage'));
 const PlanUkeplan = lazy(() => Promise.resolve({ default: () => <PlaceholderPage title="Ukeplan" /> }));
-const PlanBooking = lazy(() => Promise.resolve({ default: () => <PlaceholderPage title="Booking" /> }));
+const PlanBooking = lazy(() => import('../features/bookings/PlayerBookingPage'));
+const PlanSkole = lazy(() => import('../features/school/SkoleplanContainer'));
 const PlanMaal = lazy(() => import('../features/goals/GoalsPage'));
 const PlanAarsplan = lazy(() => Promise.resolve({ default: () => <PlaceholderPage title="Årsplan" /> }));
 const PlanTurneringer = lazy(() => Promise.resolve({ default: () => <PlaceholderPage title="Turneringskalender" /> }));
 const PlanMineTurneringer = lazy(() => Promise.resolve({ default: () => <PlaceholderPage title="Mine turneringer" /> }));
+const TournamentPrepPage = lazy(() => import('../features/tournament-prep/TournamentPrepPage'));
 
 // Onboarding
 const OnboardingPage = lazy(() => import('../features/onboarding/OnboardingPage'));
+const IntakeFormPage = lazy(() => import('../features/intake/IntakeFormPage'));
 
 // Mer area
 const MerProfil = lazy(() => Promise.resolve({ default: () => <PlaceholderPage title="Min profil" /> }));
 const MerProfilRediger = lazy(() => Promise.resolve({ default: () => <PlaceholderPage title="Rediger profil" /> }));
 const MerTrenerteam = lazy(() => Promise.resolve({ default: () => <PlaceholderPage title="Trenerteam" /> }));
-const MerMeldinger = lazy(() => Promise.resolve({ default: () => <PlaceholderPage title="Meldinger" /> }));
+const MerMeldinger = lazy(() => import('../features/chat/ChatPage'));
 const MerFeedback = lazy(() => Promise.resolve({ default: () => <PlaceholderPage title="Trenerfeedback" /> }));
 const MerKunnskap = lazy(() => Promise.resolve({ default: () => <PlaceholderPage title="Kunnskapsbase" /> }));
 const MerNotater = lazy(() => Promise.resolve({ default: () => <PlaceholderPage title="Notater" /> }));
 const MerInnstillinger = lazy(() => Promise.resolve({ default: () => <PlaceholderPage title="Innstillinger" /> }));
+const MerSupport = lazy(() => import('../features/support/SupportPage'));
 const MerVarsler = lazy(() => Promise.resolve({ default: () => <PlaceholderPage title="Varselinnstillinger" /> }));
-const MerKalibrering = lazy(() => Promise.resolve({ default: () => <PlaceholderPage title="Kalibrering" /> }));
+const CalibrationPage = lazy(() => import('../features/calibration/CalibrationPage'));
+const WeatherCoursesPage = lazy(() => import('../features/weather-courses/WeatherCoursesPage'));
+const PlayerInsightsPage = lazy(() => import('../features/player-insights/PlayerInsightsPage'));
+const AIConversationsHistoryPage = lazy(() => import('../features/ai-conversations/AIConversationsHistoryPage'));
+const CollectionsPage = lazy(() => import('../features/collections/CollectionsPage'));
+const VideoComparisonPage = lazy(() => import('../features/video-comparison/VideoComparisonPage'));
+const AdminPanelPage = lazy(() => import('../features/admin/AdminPanelPage'));
 
 // ============================================================
 // Placeholder Component
@@ -126,6 +145,8 @@ export const ROUTES_V3 = {
     VIDEOER: '/trening/videoer',
     TESTING: '/trening/testing',
     TESTING_REGISTRER: '/trening/testing/registrer',
+    TEKNIKKPLAN: '/trening/teknikkplan',
+    FOKUS: '/trening/fokus',
   },
 
   // Utvikling
@@ -138,6 +159,9 @@ export const ROUTES_V3 = {
     KRAV: '/utvikling/krav',
     BADGES: '/utvikling/badges',
     ACHIEVEMENTS: '/utvikling/achievements',
+    STROKES_GAINED: '/utvikling/strokes-gained',
+    DATAGOLF: '/utvikling/sammenlign-proff',
+    BREAKING_POINTS: '/utvikling/vendepunkter',
   },
 
   // Plan
@@ -146,6 +170,7 @@ export const ROUTES_V3 = {
     KALENDER: '/plan/kalender',
     UKEPLAN: '/plan/ukeplan',
     BOOKING: '/plan/booking',
+    SKOLE: '/plan/skole',
     MAAL: '/plan/maal',
     AARSPLAN: '/plan/aarsplan',
     TURNERINGER: '/plan/turneringer',
@@ -186,8 +211,12 @@ export function getPlayerRoutesV3() {
       <Route path="/trening/plan" element={<SuspenseWrapper><TreningPlan /></SuspenseWrapper>} />
       <Route path="/trening/ovelser" element={<SuspenseWrapper><TreningOvelser /></SuspenseWrapper>} />
       <Route path="/trening/videoer" element={<SuspenseWrapper><TreningVideoer /></SuspenseWrapper>} />
+      <Route path="/trening/videoer/:videoId/annotate" element={<SuspenseWrapper><VideoAnnotation /></SuspenseWrapper>} />
+      <Route path="/trening/video-sammenligning" element={<SuspenseWrapper><VideoComparisonPage /></SuspenseWrapper>} />
       <Route path="/trening/testing" element={<SuspenseWrapper><TreningTesting /></SuspenseWrapper>} />
       <Route path="/trening/testing/registrer" element={<SuspenseWrapper><TreningTestRegistrer /></SuspenseWrapper>} />
+      <Route path="/trening/teknikkplan" element={<SuspenseWrapper><TreningTeknikkplan /></SuspenseWrapper>} />
+      <Route path="/trening/fokus" element={<SuspenseWrapper><TreningFokus /></SuspenseWrapper>} />
 
       {/* Utvikling */}
       <Route path="/utvikling" element={<SuspenseWrapper><UtviklingHub /></SuspenseWrapper>} />
@@ -198,6 +227,13 @@ export function getPlayerRoutesV3() {
       <Route path="/utvikling/krav" element={<SuspenseWrapper><UtviklingKrav /></SuspenseWrapper>} />
       <Route path="/utvikling/badges" element={<SuspenseWrapper><UtviklingBadges /></SuspenseWrapper>} />
       <Route path="/utvikling/achievements" element={<SuspenseWrapper><UtviklingAchievements /></SuspenseWrapper>} />
+      <Route path="/utvikling/strokes-gained" element={<SuspenseWrapper><UtviklingStrokesGained /></SuspenseWrapper>} />
+      <Route path="/utvikling/sammenlign-proff" element={<SuspenseWrapper><UtviklingDataGolf /></SuspenseWrapper>} />
+      <Route path="/utvikling/vendepunkter" element={<SuspenseWrapper><UtviklingBreakingPoints /></SuspenseWrapper>} />
+      <Route path="/utvikling/innsikter" element={<SuspenseWrapper><PlayerInsightsPage /></SuspenseWrapper>} />
+      <Route path="/utvikling/treningsomrader" element={<SuspenseWrapper><UtviklingTreningsomrader /></SuspenseWrapper>} />
+      <Route path="/utvikling/peer-sammenligning" element={<SuspenseWrapper><UtviklingPeerComparison /></SuspenseWrapper>} />
+      <Route path="/utvikling/rapporter" element={<SuspenseWrapper><ProgressReportsPage /></SuspenseWrapper>} />
 
       {/* Plan */}
       <Route path="/plan" element={<SuspenseWrapper><PlanHub /></SuspenseWrapper>} />
@@ -206,10 +242,12 @@ export function getPlayerRoutesV3() {
       <Route path="/plan/kalender-old" element={<SuspenseWrapper><PlanKalender /></SuspenseWrapper>} />
       <Route path="/plan/ukeplan" element={<SuspenseWrapper><PlanUkeplan /></SuspenseWrapper>} />
       <Route path="/plan/booking" element={<SuspenseWrapper><PlanBooking /></SuspenseWrapper>} />
+      <Route path="/plan/skole" element={<SuspenseWrapper><PlanSkole /></SuspenseWrapper>} />
       <Route path="/plan/maal" element={<SuspenseWrapper><PlanMaal /></SuspenseWrapper>} />
       <Route path="/plan/aarsplan" element={<SuspenseWrapper><PlanAarsplan /></SuspenseWrapper>} />
       <Route path="/plan/turneringer" element={<SuspenseWrapper><PlanTurneringer /></SuspenseWrapper>} />
       <Route path="/plan/turneringer/mine" element={<SuspenseWrapper><PlanMineTurneringer /></SuspenseWrapper>} />
+      <Route path="/plan/turneringer/prep/:prepId" element={<SuspenseWrapper><TournamentPrepPage /></SuspenseWrapper>} />
 
       {/* Mer */}
       <Route path="/mer" element={<SuspenseWrapper><MerHub /></SuspenseWrapper>} />
@@ -222,10 +260,16 @@ export function getPlayerRoutesV3() {
       <Route path="/mer/notater" element={<SuspenseWrapper><MerNotater /></SuspenseWrapper>} />
       <Route path="/mer/innstillinger" element={<SuspenseWrapper><MerInnstillinger /></SuspenseWrapper>} />
       <Route path="/mer/varsler" element={<SuspenseWrapper><MerVarsler /></SuspenseWrapper>} />
-      <Route path="/mer/kalibrering" element={<SuspenseWrapper><MerKalibrering /></SuspenseWrapper>} />
+      <Route path="/mer/kalibrering" element={<SuspenseWrapper><CalibrationPage /></SuspenseWrapper>} />
+      <Route path="/mer/support" element={<SuspenseWrapper><MerSupport /></SuspenseWrapper>} />
+      <Route path="/mer/baner-vaer" element={<SuspenseWrapper><WeatherCoursesPage /></SuspenseWrapper>} />
+      <Route path="/mer/ai-historikk" element={<SuspenseWrapper><AIConversationsHistoryPage /></SuspenseWrapper>} />
+      <Route path="/mer/samlinger" element={<SuspenseWrapper><CollectionsPage /></SuspenseWrapper>} />
+      <Route path="/mer/admin" element={<SuspenseWrapper><AdminPanelPage /></SuspenseWrapper>} />
 
       {/* Onboarding */}
       <Route path="/onboarding" element={<SuspenseWrapper><OnboardingPage /></SuspenseWrapper>} />
+      <Route path="/onboarding/intake" element={<SuspenseWrapper><IntakeFormPage /></SuspenseWrapper>} />
 
       {/* Redirects from old routes */}
       <Route path="/" element={<Navigate to="/dashboard" replace />} />

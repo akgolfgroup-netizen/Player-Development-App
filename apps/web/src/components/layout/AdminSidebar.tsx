@@ -1,5 +1,5 @@
 /**
- * AK Golf Academy - Admin Sidebar
+ * TIER Golf Academy - Admin Sidebar
  * Design System v3.0 - Blue Palette 01
  *
  * Sidebar navigation for administrators.
@@ -430,8 +430,8 @@ export default function AdminSidebar({
       style={{
         width: '260px',
         height: '100vh',
-        backgroundColor: 'var(--accent)',
-        color: 'var(--bg-primary)',
+        backgroundColor: 'rgb(var(--tier-primary, 10 37 64))',
+        color: 'rgb(var(--tier-white))',
         display: 'flex',
         flexDirection: 'column',
         flexShrink: 0,
@@ -473,7 +473,7 @@ export default function AdminSidebar({
               Admin Portal
             </div>
             <div style={{ color: 'rgba(255, 255, 255, 0.45)', fontSize: '11px' }}>
-              AK Golf Academy
+              TIER Golf
             </div>
           </div>
         </Link>

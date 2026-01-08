@@ -1,5 +1,5 @@
 /**
- * AK Golf Academy - Coach Sidebar
+ * TIER Golf Academy - Coach Sidebar
  * Design System v3.0 - Premium Light
  *
  * Sidebar navigation for coaches.
@@ -10,7 +10,8 @@ import React, { useState, useEffect, useMemo } from 'react';
 import { Link, useLocation, useNavigate } from 'react-router-dom';
 import * as LucideIcons from 'lucide-react';
 import { coachNavigationConfig, coachQuickActions, type NavItem } from '../../config/coach-navigation';
-import { AKLogo } from '../branding/AKLogo';
+import { TIERGolfFullLogo } from '../branding/TIERGolfFullLogo';
+import { loadSidebarState, saveSidebarState } from '../../utils/sidebar-state';
 
 const { LogOut, ChevronDown, ChevronRight, Menu, X } = LucideIcons;
 
@@ -38,7 +39,8 @@ export default function CoachSidebar({ user, unreadAlerts = 0, onLogout, isMobil
 
   const [isMobile, setIsMobile] = useState(false);
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
-  const [openSubmenus, setOpenSubmenus] = useState<Record<string, boolean>>({});
+  // Load initial sidebar state from sessionStorage to preserve menu state across navigation
+  const [openSubmenus, setOpenSubmenus] = useState<Record<string, boolean>>(() => loadSidebarState());
 
   // Map navigation items with icons
   const items = useMemo(() => {
@@ -91,7 +93,9 @@ export default function CoachSidebar({ user, unreadAlerts = 0, onLogout, isMobil
 
   // Render navigation items
   const renderNavItems = () => {
-    return items.map((item) => {
+    return items
+      .filter(item => !item.hideFromSidebar) // Filter out items hidden from sidebar
+      .map((item) => {
       if (item.submenu) {
         const isOpen = openSubmenus[item.labelNO] || false;
         const activeChild = hasActiveChild(item.submenu);
@@ -99,7 +103,11 @@ export default function CoachSidebar({ user, unreadAlerts = 0, onLogout, isMobil
         return (
           <div key={item.labelNO}>
             <button
-              onClick={() => setOpenSubmenus({ ...openSubmenus, [item.labelNO]: !isOpen })}
+              onClick={() => {
+                const newState = { ...openSubmenus, [item.labelNO]: !isOpen };
+                setOpenSubmenus(newState);
+                saveSidebarState(newState);
+              }}
               aria-expanded={isOpen}
               style={{
                 width: '100%',
@@ -108,7 +116,7 @@ export default function CoachSidebar({ user, unreadAlerts = 0, onLogout, isMobil
                 gap: '12px',
                 borderRadius: '12px',
                 padding: '12px 16px',
-                color: activeChild ? '#FFFFFF' : 'rgba(255, 255, 255, 0.75)',
+                color: activeChild ? 'rgb(var(--tier-white))' : 'rgba(255, 255, 255, 0.75)',
                 backgroundColor: activeChild ? 'rgba(255, 255, 255, 0.15)' : 'transparent',
                 transition: 'all 0.2s',
                 fontSize: '15px',
@@ -124,37 +132,43 @@ export default function CoachSidebar({ user, unreadAlerts = 0, onLogout, isMobil
             </button>
 
             {isOpen && (
-              <div style={{ marginLeft: '28px', marginTop: '4px', marginBottom: '8px' }}>
+              <div style={{
+                marginLeft: '8px',
+                marginRight: '8px',
+                marginTop: '8px',
+                marginBottom: '8px',
+                display: 'grid',
+                gridTemplateColumns: 'repeat(2, 1fr)',
+                gap: '8px',
+              }}>
                 {item.submenu.map((subItem) => {
                   const active = isActive(subItem.href);
+                  const SubIcon = subItem.icon ? getIcon(subItem.icon) : null;
                   return (
                     <Link
                       key={subItem.href}
                       to={subItem.href}
                       style={{
                         display: 'flex',
+                        flexDirection: 'column',
                         alignItems: 'center',
-                        gap: '8px',
-                        borderRadius: '8px',
-                        padding: '10px 12px',
+                        justifyContent: 'center',
+                        gap: '6px',
+                        borderRadius: '12px',
+                        padding: '12px 8px',
                         textDecoration: 'none',
-                        color: active ? '#FFFFFF' : 'rgba(255, 255, 255, 0.65)',
-                        backgroundColor: active ? 'rgba(255, 255, 255, 0.1)' : 'transparent',
+                        color: active ? 'rgb(var(--tier-white))' : 'rgba(255, 255, 255, 0.75)',
+                        backgroundColor: active ? 'rgba(255, 255, 255, 0.15)' : 'rgba(255, 255, 255, 0.06)',
+                        border: active ? '1px solid rgba(255, 255, 255, 0.2)' : '1px solid rgba(255, 255, 255, 0.08)',
                         transition: 'all 0.2s',
-                        fontSize: '14px',
-                        fontWeight: active ? 500 : 400,
-                        marginBottom: '2px',
+                        fontSize: '12px',
+                        fontWeight: 500,
+                        textAlign: 'center',
+                        minHeight: '60px',
                       }}
                     >
-                      <div
-                        style={{
-                          width: 6,
-                          height: 6,
-                          borderRadius: '50%',
-                          backgroundColor: active ? 'var(--achievement)' : 'rgba(255, 255, 255, 0.3)',
-                        }}
-                      />
-                      {subItem.labelNO || subItem.label}
+                      {SubIcon && <SubIcon size={18} style={{ opacity: 0.85 }} />}
+                      <span style={{ lineHeight: '1.2' }}>{subItem.labelNO || subItem.label}</span>
                     </Link>
                   );
                 })}
@@ -175,7 +189,7 @@ export default function CoachSidebar({ user, unreadAlerts = 0, onLogout, isMobil
               borderRadius: '12px',
               padding: '12px 16px',
               textDecoration: 'none',
-              color: active ? '#FFFFFF' : 'rgba(255, 255, 255, 0.75)',
+              color: active ? 'rgb(var(--tier-white))' : 'rgba(255, 255, 255, 0.75)',
               backgroundColor: active ? 'rgba(255, 255, 255, 0.15)' : 'transparent',
               transition: 'all 0.2s',
               fontSize: '15px',
@@ -428,8 +442,8 @@ export default function CoachSidebar({ user, unreadAlerts = 0, onLogout, isMobil
       style={{
         width: '280px',
         height: '100vh',
-        backgroundColor: 'var(--ak-primary, #1A3D2E)',
-        color: '#FFFFFF',
+        backgroundColor: 'rgb(var(--tier-primary, 10 37 64))',
+        color: 'rgb(var(--tier-white))',
         display: 'flex',
         flexDirection: 'column',
         flexShrink: 0,
@@ -453,15 +467,7 @@ export default function CoachSidebar({ user, unreadAlerts = 0, onLogout, isMobil
             textDecoration: 'none',
           }}
         >
-          <AKLogo size={40} color="#FFFFFF" />
-          <div>
-            <div style={{ color: '#FFFFFF', fontWeight: 600, fontSize: '16px' }}>
-              AK Golf
-            </div>
-            <div style={{ color: 'rgba(255, 255, 255, 0.5)', fontSize: '12px' }}>
-              Trenerportal
-            </div>
-          </div>
+          <TIERGolfFullLogo height={36} variant="light" />
         </Link>
       </div>
 

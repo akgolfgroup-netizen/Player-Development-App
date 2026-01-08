@@ -1,5 +1,5 @@
 /**
- * AK GOLF ACADEMY - ExportButton Component
+ * TIER GOLF - ExportButton Component
  * Design System v3.0 - Premium Light
  *
  * MIGRATED TO PAGE ARCHITECTURE - Minimal inline styles (dynamic colors)
@@ -67,7 +67,7 @@ export default function ExportButton({
         scale: 2, // Higher quality
         useCORS: true,
         allowTaint: true,
-        backgroundColor: '#FFFFFF',
+        backgroundColor: 'rgb(var(--tier-white))',
         logging: false,
         windowWidth: element.scrollWidth,
         windowHeight: element.scrollHeight,
@@ -125,7 +125,7 @@ export default function ExportButton({
         pdf.setFontSize(8);
         pdf.setTextColor(180, 180, 180);
         pdf.text(
-          `AK Golf Academy - Side ${i} av ${pageCount}`,
+          `TIER Golf Academy - Side ${i} av ${pageCount}`,
           pdf.internal.pageSize.getWidth() / 2,
           pdf.internal.pageSize.getHeight() - 10,
           { align: 'center' }
@@ -252,7 +252,7 @@ export function usePdfExport() {
         scale: 2,
         useCORS: true,
         allowTaint: true,
-        backgroundColor: '#FFFFFF',
+        backgroundColor: 'rgb(var(--tier-white))',
         logging: false,
       });
 

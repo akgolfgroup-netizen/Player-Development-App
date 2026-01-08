@@ -7,7 +7,7 @@
 import React, { useState } from 'react';
 import { Share2, Users, UserCheck, Save } from 'lucide-react';
 import { PageHeader } from '../../components/layout/PageHeader';
-import { SectionTitle, SubSectionTitle } from '../../components/typography';
+import { SectionTitle, SubSectionTitle } from '../../components/typography/Headings';
 import {
   Card,
   CardContent,

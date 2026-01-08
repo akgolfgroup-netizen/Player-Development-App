@@ -17,7 +17,7 @@ import Button from '../../ui/primitives/Button';
 import StateCard from '../../ui/composites/StateCard';
 
 import { useStrokesGained } from '../../hooks/useStrokesGained';
-import { SectionTitle, SubSectionTitle, CardTitle } from '../../components/typography';
+import { SectionTitle, SubSectionTitle, CardTitle } from '../../components/typography/Headings';
 
 interface CategoryData {
   value: number;
@@ -62,14 +62,14 @@ const StrokesGainedContent: React.FC = () => {
 
   const getSGColor = (value: number | null | undefined) => {
     if (value === null || value === undefined) return 'var(--text-tertiary)';
-    if (value > 0) return 'var(--success)';
-    if (value < 0) return 'var(--error)';
+    if (value > 0) return 'var(--status-success)';
+    if (value < 0) return 'var(--status-error)';
     return 'var(--text-secondary)';
   };
 
   const getTrendIcon = (trend: number) => {
-    if (trend > 0) return <TrendingUp size={14} color="var(--success)" />;
-    if (trend < 0) return <TrendingDown size={14} color="var(--error)" />;
+    if (trend > 0) return <TrendingUp size={14} color="var(--status-success)" />;
+    if (trend < 0) return <TrendingDown size={14} color="var(--status-error)" />;
     return <Activity size={14} color="var(--text-tertiary)" />;
   };
 
@@ -204,7 +204,7 @@ const StrokesGainedContent: React.FC = () => {
                 </span>
                 <div style={styles.totalTrend}>
                   {getTrendIcon(sgData?.trend || 0)}
-                  <span style={{ color: (sgData?.trend || 0) >= 0 ? 'var(--success)' : 'var(--error)' }}>
+                  <span style={{ color: (sgData?.trend || 0) >= 0 ? 'var(--status-success)' : 'var(--status-error)' }}>
                     {formatSG(sgData?.trend)} fra forrige
                   </span>
                 </div>
@@ -295,7 +295,7 @@ const StrokesGainedContent: React.FC = () => {
                         </div>
                         <div style={styles.statItem}>
                           <span style={styles.statLabel}>PGA Elite</span>
-                          <span style={{ ...styles.statValue, color: 'var(--success)' }}>
+                          <span style={{ ...styles.statValue, color: 'var(--status-success)' }}>
                             {formatSG(cat.pgaElite)}
                           </span>
                         </div>
@@ -343,7 +343,7 @@ const StrokesGainedContent: React.FC = () => {
                     style={{
                       ...styles.trendBarInner,
                       height: `${Math.max(20, (week.total + 0.5) * 100)}%`,
-                      backgroundColor: week.total >= 0 ? 'var(--success)' : 'var(--error)',
+                      backgroundColor: week.total >= 0 ? 'var(--status-success)' : 'var(--status-error)',
                     }}
                   />
                 </div>
@@ -578,7 +578,7 @@ const styles: Record<string, React.CSSProperties> = {
     top: '-2px',
     width: '2px',
     height: '12px',
-    backgroundColor: 'var(--success)',
+    backgroundColor: 'var(--status-success)',
   },
   statsGrid: {
     display: 'grid',

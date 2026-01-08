@@ -2,6 +2,7 @@ import React, { useState, useEffect, useCallback } from 'react';
 import { BadgeGrid } from '../../components/badges';
 import { useAuth } from '../../contexts/AuthContext';
 import { badgesAPI } from '../../services/api';
+import { PageHeader } from '../../ui/raw-blocks';
 import './Badges.css';
 
 /**
@@ -153,6 +154,12 @@ const Badges = () => {
 
   return (
     <div className="badges-page">
+      <PageHeader
+        title="Prestasjonsmerker"
+        subtitle="Se dine opptjente badges og tilgjengelige prestasjoner"
+        helpText="Komplett oversikt over alle tilgjengelige prestasjonsmerker som du kan låse opp. Badges opptjenes gjennom trening, turneringer og milepæler. Filtrer på kategori, se fremgang og spor din totale XP-samling."
+        showBackButton={false}
+      />
       <BadgeGrid
         badges={badges}
         userStats={userStats}

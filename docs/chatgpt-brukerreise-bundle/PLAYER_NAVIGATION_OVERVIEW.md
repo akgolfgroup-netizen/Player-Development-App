@@ -1,6 +1,6 @@
 # Player Navigation - Komplett Oversikt
 
-> AK Golf Academy - Spiller Navigasjon
+> TIER Golf - Spiller Navigasjon
 > Basert på database-skjema og eksisterende funksjonalitet
 
 ---
@@ -467,4 +467,4 @@ export const playerNavigationConfig = [
 ---
 
 *Dokument generert: Desember 2025*
-*AK Golf Academy - Player Navigation v2.0*
+*TIER Golf - Player Navigation v2.0*

@@ -1,5 +1,5 @@
 /**
- * AK Golf Academy - Trenerteam Screen
+ * TIER Golf Academy - Trenerteam Screen
  * Design System v3.0 - Premium Light
  *
  * IUP App - Individuell Utviklingsplan
@@ -10,6 +10,7 @@
  */
 
 import React, { useState } from 'react';
+import { Calendar, BarChart3, Star } from 'lucide-react';
 import { PageHeader } from '../../components/layout/PageHeader';
 import { SectionTitle, SubSectionTitle, CardTitle } from '../../components/typography';
 import Button from '../../ui/primitives/Button';
@@ -30,12 +31,12 @@ const Avatar = ({ name, size = 'md', role }) => {
 
   const getRoleClasses = (roleType) => {
     switch (roleType) {
-      case 'hovedtrener': return 'bg-ak-primary';
-      case 'teknisk': return 'bg-ak-primary/80';
-      case 'fysisk': return 'bg-ak-status-success';
+      case 'hovedtrener': return 'bg-tier-navy';
+      case 'teknisk': return 'bg-tier-navy/80';
+      case 'fysisk': return 'bg-tier-success';
       case 'mental': return 'bg-amber-500';
-      case 'strategi': return 'bg-ak-status-warning';
-      default: return 'bg-ak-primary';
+      case 'strategi': return 'bg-tier-warning';
+      default: return 'bg-tier-navy';
     }
   };
 
@@ -63,7 +64,7 @@ const TrainerCard = ({ trainer, isSelected, onSelect }) => {
 
   return (
     <Card
-      className={`p-4 cursor-pointer transition-all ${isSelected ? 'ring-2 ring-ak-primary border-ak-primary' : 'hover:shadow-md'}`}
+      className={`p-4 cursor-pointer transition-all ${isSelected ? 'ring-2 ring-tier-navy border-tier-navy' : 'hover:shadow-md'}`}
       onClick={() => onSelect(trainer.id)}
     >
       <div className="flex items-start gap-4">
@@ -72,10 +73,10 @@ const TrainerCard = ({ trainer, isSelected, onSelect }) => {
         <div className="flex-1 min-w-0">
           <div className="flex items-start justify-between">
             <div>
-              <SubSectionTitle className="font-semibold text-base text-ak-text-primary m-0">
+              <SubSectionTitle className="font-semibold text-base text-tier-navy m-0">
                 {trainer.name}
               </SubSectionTitle>
-              <p className="text-sm text-ak-text-secondary m-0">
+              <p className="text-sm text-tier-text-secondary m-0">
                 {roleLabels[trainer.role]}
               </p>
             </div>
@@ -91,13 +92,13 @@ const TrainerCard = ({ trainer, isSelected, onSelect }) => {
             ))}
           </div>
 
-          <div className="flex items-center gap-4 mt-3 text-xs text-ak-text-secondary">
+          <div className="flex items-center gap-4 mt-3 text-xs text-tier-text-secondary">
             <span className="flex items-center gap-1">
-              <span>📅</span>
+              <Calendar className="w-4 h-4" />
               <span>Siden {trainer.startYear}</span>
             </span>
             <span className="flex items-center gap-1">
-              <span>📊</span>
+              <BarChart3 className="w-4 h-4" />
               <span>{trainer.sessionsTotal} økter</span>
             </span>
           </div>
@@ -120,20 +121,20 @@ const TrainerDetail = ({ trainer, onClose, onMessage, onSchedule }) => {
     <div className="fixed inset-0 bg-black/50 flex items-center justify-center p-4 z-50">
       <Card className="w-full max-w-md max-h-[90vh] overflow-y-auto relative">
         {/* Header */}
-        <div className="p-6 text-center border-b border-ak-border-default">
+        <div className="p-6 text-center border-b border-tier-border-default">
           <button
             onClick={onClose}
-            className="absolute top-4 right-4 text-2xl text-ak-text-secondary bg-transparent border-none cursor-pointer"
+            className="absolute top-4 right-4 text-2xl text-tier-text-secondary bg-transparent border-none cursor-pointer"
           >
             ×
           </button>
 
           <Avatar name={trainer.name} size="xl" role={trainer.role} />
 
-          <SectionTitle className="font-bold text-xl mt-4 text-ak-text-primary m-0">
+          <SectionTitle className="font-bold text-xl mt-4 text-tier-navy m-0">
             {trainer.name}
           </SectionTitle>
-          <p className="text-ak-text-secondary m-0">{roleLabels[trainer.role]}</p>
+          <p className="text-tier-text-secondary m-0">{roleLabels[trainer.role]}</p>
 
           {trainer.isPrimary && (
             <Badge variant="warning" className="mt-2">Primær kontakt</Badge>
@@ -144,19 +145,19 @@ const TrainerDetail = ({ trainer, onClose, onMessage, onSchedule }) => {
         <div className="p-6 space-y-6">
           {/* Kontakt */}
           <div>
-            <CardTitle className="font-medium text-sm mb-3 text-ak-text-primary m-0">
+            <CardTitle className="font-medium text-sm mb-3 text-tier-navy m-0">
               Kontaktinfo
             </CardTitle>
             <div className="space-y-2">
               <div className="flex items-center gap-3 text-sm">
                 <span>📧</span>
-                <a href={`mailto:${trainer.email}`} className="text-ak-primary">
+                <a href={`mailto:${trainer.email}`} className="text-tier-navy">
                   {trainer.email}
                 </a>
               </div>
               <div className="flex items-center gap-3 text-sm">
                 <span>📱</span>
-                <a href={`tel:${trainer.phone}`} className="text-ak-primary">
+                <a href={`tel:${trainer.phone}`} className="text-tier-navy">
                   {trainer.phone}
                 </a>
               </div>
@@ -165,7 +166,7 @@ const TrainerDetail = ({ trainer, onClose, onMessage, onSchedule }) => {
 
           {/* Spesialiseringer */}
           <div>
-            <CardTitle className="font-medium text-sm mb-3 text-ak-text-primary m-0">
+            <CardTitle className="font-medium text-sm mb-3 text-tier-navy m-0">
               Spesialiseringer
             </CardTitle>
             <div className="flex flex-wrap gap-2">
@@ -177,13 +178,13 @@ const TrainerDetail = ({ trainer, onClose, onMessage, onSchedule }) => {
 
           {/* Sertifiseringer */}
           <div>
-            <CardTitle className="font-medium text-sm mb-3 text-ak-text-primary m-0">
+            <CardTitle className="font-medium text-sm mb-3 text-tier-navy m-0">
               Sertifiseringer
             </CardTitle>
             <div className="space-y-2">
               {trainer.certifications.map((cert, idx) => (
-                <div key={idx} className="flex items-center gap-2 text-sm text-ak-text-secondary">
-                  <span className="text-ak-status-success">✓</span>
+                <div key={idx} className="flex items-center gap-2 text-sm text-tier-text-secondary">
+                  <span className="text-tier-success">✓</span>
                   <span>{cert}</span>
                 </div>
               ))}
@@ -192,33 +193,33 @@ const TrainerDetail = ({ trainer, onClose, onMessage, onSchedule }) => {
 
           {/* Bio */}
           <div>
-            <CardTitle className="font-medium text-sm mb-3 text-ak-text-primary m-0">
+            <CardTitle className="font-medium text-sm mb-3 text-tier-navy m-0">
               Om treneren
             </CardTitle>
-            <p className="text-sm leading-relaxed text-ak-text-secondary m-0">
+            <p className="text-sm leading-relaxed text-tier-text-secondary m-0">
               {trainer.bio}
             </p>
           </div>
 
           {/* Statistikk */}
           <div className="grid grid-cols-3 gap-3">
-            <div className="text-center p-3 rounded-xl bg-ak-surface-subtle">
-              <div className="font-bold text-lg text-ak-primary">
+            <div className="text-center p-3 rounded-xl bg-tier-surface-base">
+              <div className="font-bold text-lg text-tier-navy">
                 {trainer.sessionsTotal}
               </div>
-              <div className="text-xs text-ak-text-secondary">Økter totalt</div>
+              <div className="text-xs text-tier-text-secondary">Økter totalt</div>
             </div>
-            <div className="text-center p-3 rounded-xl bg-ak-surface-subtle">
-              <div className="font-bold text-lg text-ak-primary">
+            <div className="text-center p-3 rounded-xl bg-tier-surface-base">
+              <div className="font-bold text-lg text-tier-navy">
                 {trainer.sessionsMonth}
               </div>
-              <div className="text-xs text-ak-text-secondary">Denne måned</div>
+              <div className="text-xs text-tier-text-secondary">Denne måned</div>
             </div>
-            <div className="text-center p-3 rounded-xl bg-ak-surface-subtle">
-              <div className="font-bold text-lg text-ak-primary">
+            <div className="text-center p-3 rounded-xl bg-tier-surface-base">
+              <div className="font-bold text-lg text-tier-navy">
                 {trainer.startYear}
               </div>
-              <div className="text-xs text-ak-text-secondary">Siden år</div>
+              <div className="text-xs text-tier-text-secondary">Siden år</div>
             </div>
           </div>
 
@@ -240,33 +241,33 @@ const TrainerDetail = ({ trainer, onClose, onMessage, onSchedule }) => {
 const UpcomingSession = ({ session }) => {
   const getTypeClasses = (type) => {
     switch (type) {
-      case 'teknisk': return 'bg-ak-primary/80';
-      case 'fysisk': return 'bg-ak-status-success';
+      case 'teknisk': return 'bg-tier-navy/80';
+      case 'fysisk': return 'bg-tier-success';
       case 'mental': return 'bg-amber-500';
-      case 'strategi': return 'bg-ak-status-warning';
-      case 'evaluering': return 'bg-ak-primary';
-      default: return 'bg-ak-primary';
+      case 'strategi': return 'bg-tier-warning';
+      case 'evaluering': return 'bg-tier-navy';
+      default: return 'bg-tier-navy';
     }
   };
 
   return (
-    <div className="flex items-center gap-4 p-4 rounded-xl bg-ak-surface-subtle">
+    <div className="flex items-center gap-4 p-4 rounded-xl bg-tier-surface-base">
       <div className={`w-1 h-12 rounded-full ${getTypeClasses(session.type)}`} />
 
       <div className="flex-1">
         <div className="flex items-center justify-between">
-          <CardTitle className="font-medium text-sm text-ak-text-primary m-0">
+          <CardTitle className="font-medium text-sm text-tier-navy m-0">
             {session.title}
           </CardTitle>
-          <span className="text-xs text-ak-text-secondary">
+          <span className="text-xs text-tier-text-secondary">
             {session.duration} min
           </span>
         </div>
-        <p className="text-xs mt-1 text-ak-text-secondary m-0">
+        <p className="text-xs mt-1 text-tier-text-secondary m-0">
           med {session.trainer}
         </p>
         <div className="flex items-center gap-2 mt-2">
-          <span className="text-xs text-ak-primary">
+          <span className="text-xs text-tier-navy">
             {session.date} • {session.time}
           </span>
         </div>
@@ -279,27 +280,27 @@ const UpcomingSession = ({ session }) => {
 
 const MessagePreview = ({ message, onView }) => (
   <div
-    className="flex items-start gap-3 p-3 rounded-xl cursor-pointer hover:bg-ak-surface-subtle transition-all"
+    className="flex items-start gap-3 p-3 rounded-xl cursor-pointer hover:bg-tier-surface-base transition-all"
     onClick={onView}
   >
     <Avatar name={message.from} size="sm" role={message.role} />
 
     <div className="flex-1 min-w-0">
       <div className="flex items-center justify-between">
-        <CardTitle className="font-medium text-sm truncate text-ak-text-primary m-0">
+        <CardTitle className="font-medium text-sm truncate text-tier-navy m-0">
           {message.from}
         </CardTitle>
-        <span className="text-xs text-ak-text-secondary">
+        <span className="text-xs text-tier-text-secondary">
           {message.time}
         </span>
       </div>
-      <p className={`text-xs truncate mt-0.5 m-0 ${message.unread ? 'text-ak-text-primary' : 'text-ak-text-secondary'}`}>
+      <p className={`text-xs truncate mt-0.5 m-0 ${message.unread ? 'text-tier-navy' : 'text-tier-text-secondary'}`}>
         {message.preview}
       </p>
     </div>
 
     {message.unread && (
-      <div className="w-2 h-2 rounded-full mt-2 bg-ak-primary" />
+      <div className="w-2 h-2 rounded-full mt-2 bg-tier-navy" />
     )}
   </div>
 );
@@ -405,11 +406,12 @@ const Trenerteam = ({ trainers: apiTrainers = null, sessions: apiSessions = null
   ];
 
   return (
-    <div className="min-h-screen bg-ak-surface-subtle">
+    <div className="min-h-screen bg-tier-surface-base">
       {/* Header */}
       <PageHeader
         title="Mitt Trenerteam"
         subtitle={`${trainers.length} trenere tilknyttet`}
+        helpText="Oversikt over trenerteamet og deres ansvarsområder. Kontakt og samarbeid med andre trenere."
       />
 
       {/* Tabs */}
@@ -421,14 +423,14 @@ const Trenerteam = ({ trainers: apiTrainers = null, sessions: apiSessions = null
               onClick={() => setActiveTab(tab.id)}
               className={`flex-1 py-2.5 px-4 rounded-xl text-sm font-medium flex items-center justify-center gap-2 border-none cursor-pointer transition-colors ${
                 activeTab === tab.id
-                  ? 'bg-ak-primary text-white'
-                  : 'bg-ak-surface-base text-ak-text-primary'
+                  ? 'bg-tier-navy text-white'
+                  : 'bg-tier-white text-tier-navy'
               }`}
             >
               <span>{tab.icon}</span>
               <span>{tab.label}</span>
               {tab.id === 'messages' && messages.filter(m => m.unread).length > 0 && (
-                <span className="w-5 h-5 rounded-full text-[11px] flex items-center justify-center text-white bg-ak-status-error">
+                <span className="w-5 h-5 rounded-full text-[11px] flex items-center justify-center text-white bg-tier-error">
                   {messages.filter(m => m.unread).length}
                 </span>
               )}
@@ -446,18 +448,18 @@ const Trenerteam = ({ trainers: apiTrainers = null, sessions: apiSessions = null
               {/* Primær trener highlight */}
               <Card className="p-4 bg-amber-500/[0.06] border-amber-500">
                 <div className="flex items-center gap-3 mb-3">
-                  <span className="text-lg">⭐</span>
-                  <span className="font-medium text-sm text-ak-text-primary">
+                  <Star className="w-5 h-5 text-tier-gold fill-tier-gold" />
+                  <span className="font-medium text-sm text-tier-navy">
                     Din primære kontakt
                   </span>
                 </div>
                 <div className="flex items-center gap-4">
                   <Avatar name={trainers[0].name} size="lg" role={trainers[0].role} />
                   <div className="flex-1">
-                    <SubSectionTitle className="font-semibold text-ak-text-primary m-0">
+                    <SubSectionTitle className="font-semibold text-tier-navy m-0">
                       {trainers[0].name}
                     </SubSectionTitle>
-                    <p className="text-sm text-ak-text-secondary m-0">
+                    <p className="text-sm text-tier-text-secondary m-0">
                       Hovedtrener • {trainers[0].sessionsTotal} økter sammen
                     </p>
                   </div>
@@ -469,7 +471,7 @@ const Trenerteam = ({ trainers: apiTrainers = null, sessions: apiSessions = null
 
               {/* Alle trenere */}
               <div>
-                <SubSectionTitle className="font-semibold text-sm mb-3 px-1 text-ak-text-primary m-0">
+                <SubSectionTitle className="font-semibold text-sm mb-3 px-1 text-tier-navy m-0">
                   Hele teamet
                 </SubSectionTitle>
                 <div className="space-y-3">
@@ -486,27 +488,27 @@ const Trenerteam = ({ trainers: apiTrainers = null, sessions: apiSessions = null
 
               {/* Team statistikk */}
               <Card className="p-4">
-                <SubSectionTitle className="font-semibold text-sm mb-4 text-ak-text-primary m-0">
+                <SubSectionTitle className="font-semibold text-sm mb-4 text-tier-navy m-0">
                   Team-statistikk
                 </SubSectionTitle>
                 <div className="grid grid-cols-3 gap-4">
                   <div className="text-center">
-                    <div className="text-2xl font-bold text-ak-primary">
+                    <div className="text-2xl font-bold text-tier-navy">
                       {trainers.reduce((sum, t) => sum + t.sessionsTotal, 0)}
                     </div>
-                    <div className="text-xs mt-1 text-ak-text-secondary">Økter totalt</div>
+                    <div className="text-xs mt-1 text-tier-text-secondary">Økter totalt</div>
                   </div>
                   <div className="text-center">
-                    <div className="text-2xl font-bold text-ak-primary">
+                    <div className="text-2xl font-bold text-tier-navy">
                       {trainers.reduce((sum, t) => sum + t.sessionsMonth, 0)}
                     </div>
-                    <div className="text-xs mt-1 text-ak-text-secondary">Denne måned</div>
+                    <div className="text-xs mt-1 text-tier-text-secondary">Denne måned</div>
                   </div>
                   <div className="text-center">
-                    <div className="text-2xl font-bold text-ak-primary">
+                    <div className="text-2xl font-bold text-tier-navy">
                       {trainers.length}
                     </div>
-                    <div className="text-xs mt-1 text-ak-text-secondary">Spesialister</div>
+                    <div className="text-xs mt-1 text-tier-text-secondary">Spesialister</div>
                   </div>
                 </div>
               </Card>
@@ -517,7 +519,7 @@ const Trenerteam = ({ trainers: apiTrainers = null, sessions: apiSessions = null
           {activeTab === 'schedule' && (
             <>
               <div className="flex items-center justify-between mb-2">
-                <SubSectionTitle className="font-semibold text-sm text-ak-text-primary m-0">
+                <SubSectionTitle className="font-semibold text-sm text-tier-navy m-0">
                   Kommende økter med trenere
                 </SubSectionTitle>
                 <Button variant="ghost" size="sm">Se alle</Button>
@@ -531,21 +533,21 @@ const Trenerteam = ({ trainers: apiTrainers = null, sessions: apiSessions = null
 
               {/* Book ny økt */}
               <Card className="p-4 mt-4">
-                <SubSectionTitle className="font-semibold text-sm mb-3 text-ak-text-primary m-0">
+                <SubSectionTitle className="font-semibold text-sm mb-3 text-tier-navy m-0">
                   Book ny økt
                 </SubSectionTitle>
                 <div className="grid grid-cols-2 gap-3">
                   {trainers.map(trainer => (
                     <button
                       key={trainer.id}
-                      className="flex items-center gap-3 p-3 rounded-xl text-left transition-all hover:shadow-md bg-ak-surface-subtle border-none cursor-pointer"
+                      className="flex items-center gap-3 p-3 rounded-xl text-left transition-all hover:shadow-md bg-tier-surface-base border-none cursor-pointer"
                     >
                       <Avatar name={trainer.name} size="sm" role={trainer.role} />
                       <div className="min-w-0">
-                        <div className="text-sm font-medium truncate text-ak-text-primary">
+                        <div className="text-sm font-medium truncate text-tier-navy">
                           {trainer.name.split(' ')[0]}
                         </div>
-                        <div className="text-xs capitalize text-ak-text-secondary">
+                        <div className="text-xs capitalize text-tier-text-secondary">
                           {trainer.role}
                         </div>
                       </div>
@@ -560,7 +562,7 @@ const Trenerteam = ({ trainers: apiTrainers = null, sessions: apiSessions = null
           {activeTab === 'messages' && (
             <>
               <div className="flex items-center justify-between mb-2">
-                <SubSectionTitle className="font-semibold text-sm text-ak-text-primary m-0">
+                <SubSectionTitle className="font-semibold text-sm text-tier-navy m-0">
                   Meldinger
                 </SubSectionTitle>
                 <Button variant="primary" size="sm">
@@ -568,7 +570,7 @@ const Trenerteam = ({ trainers: apiTrainers = null, sessions: apiSessions = null
                 </Button>
               </div>
 
-              <Card className="divide-y divide-ak-border-default">
+              <Card className="divide-y divide-tier-border-default">
                 {messages.map(message => (
                   <MessagePreview
                     key={message.id}
@@ -581,7 +583,7 @@ const Trenerteam = ({ trainers: apiTrainers = null, sessions: apiSessions = null
               {messages.length === 0 && (
                 <div className="text-center py-12">
                   <span className="text-4xl">💬</span>
-                  <p className="mt-4 text-sm text-ak-text-secondary">
+                  <p className="mt-4 text-sm text-tier-text-secondary">
                     Ingen meldinger ennå
                   </p>
                 </div>

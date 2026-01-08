@@ -1,5 +1,5 @@
 /**
- * AK Golf Academy - New Conversation
+ * TIER Golf Academy - New Conversation
  * Design System v3.0 - Premium Light
  *
  * Komponent for å starte en ny samtale.
@@ -18,7 +18,7 @@ import {
   X,
 } from 'lucide-react';
 import Button from '../../ui/primitives/Button';
-import { SectionTitle } from '../../components/typography';
+import { SectionTitle } from '../../components/typography/Headings';
 
 // ============================================================================
 // TYPES
@@ -84,21 +84,21 @@ export default function NewConversation({ userId }: NewConversationProps) {
             name: 'Anders Kristiansen',
             role: 'coach',
             avatarInitials: 'AK',
-            avatarColor: 'var(--ak-status-warning)',
+            avatarColor: 'rgb(var(--status-warning))',
           },
           {
             id: '2',
             name: 'Erik Hansen',
             role: 'coach',
             avatarInitials: 'EH',
-            avatarColor: 'var(--ak-primary)',
+            avatarColor: 'var(--tier-navy)',
           },
           {
             id: '3',
             name: 'Lars Olsen',
             role: 'player',
             avatarInitials: 'LO',
-            avatarColor: 'var(--ak-status-success)',
+            avatarColor: 'rgb(var(--status-success))',
           },
         ]);
       } finally {
@@ -148,31 +148,31 @@ export default function NewConversation({ userId }: NewConversationProps) {
       <div className="flex items-center gap-3 mb-6">
         <button
           onClick={() => navigate('/meldinger')}
-          className="flex items-center justify-center w-10 h-10 bg-ak-surface-base border border-ak-border-default rounded-lg cursor-pointer hover:bg-ak-surface-subtle transition-colors"
+          className="flex items-center justify-center w-10 h-10 bg-tier-white border border-tier-border-default rounded-lg cursor-pointer hover:bg-tier-surface-base transition-colors"
         >
-          <ArrowLeft size={20} className="text-ak-text-primary" />
+          <ArrowLeft size={20} className="text-tier-navy" />
         </button>
-        <SectionTitle className="text-[22px] leading-7 font-bold text-ak-text-primary m-0">
+        <SectionTitle className="text-[22px] leading-7 font-bold text-tier-navy m-0">
           Ny melding
         </SectionTitle>
       </div>
 
       {/* Contact selection or message composer */}
       {!selectedContact ? (
-        <div className="bg-ak-surface-base rounded-xl border border-ak-border-default overflow-hidden">
+        <div className="bg-tier-white rounded-xl border border-tier-border-default overflow-hidden">
           {/* Search */}
-          <div className="p-4 border-b border-ak-surface-subtle">
+          <div className="p-4 border-b border-tier-surface-base">
             <div className="relative">
               <Search
                 size={18}
-                className="absolute left-3 top-1/2 -translate-y-1/2 text-ak-text-secondary"
+                className="absolute left-3 top-1/2 -translate-y-1/2 text-tier-text-secondary"
               />
               <input
                 type="text"
                 placeholder="Søk etter kontakt..."
                 value={searchQuery}
                 onChange={(e) => setSearchQuery(e.target.value)}
-                className="w-full py-2.5 pr-3 pl-10 bg-ak-surface-subtle border-none rounded-lg text-sm text-ak-text-primary outline-none focus:ring-2 focus:ring-ak-primary/30"
+                className="w-full py-2.5 pr-3 pl-10 bg-tier-surface-base border-none rounded-lg text-sm text-tier-navy outline-none focus:ring-2 focus:ring-tier-navy/30"
               />
             </div>
           </div>
@@ -180,11 +180,11 @@ export default function NewConversation({ userId }: NewConversationProps) {
           {/* Contact list */}
           {loading ? (
             <div className="py-8 text-center">
-              <div className="w-8 h-8 border-[3px] border-ak-border-default border-t-ak-primary rounded-full mx-auto animate-spin" />
+              <div className="w-8 h-8 border-[3px] border-tier-border-default border-t-tier-navy rounded-full mx-auto animate-spin" />
             </div>
           ) : filteredContacts.length === 0 ? (
             <div className="py-8 text-center">
-              <p className="text-[15px] leading-5 text-ak-text-secondary m-0">
+              <p className="text-[15px] leading-5 text-tier-text-secondary m-0">
                 {searchQuery
                   ? 'Ingen kontakter funnet'
                   : 'Ingen tilgjengelige kontakter'}
@@ -195,7 +195,7 @@ export default function NewConversation({ userId }: NewConversationProps) {
               <button
                 key={contact.id}
                 onClick={() => setSelectedContact(contact)}
-                className="flex items-center gap-3 w-full py-3.5 px-4 bg-transparent border-none border-b border-ak-surface-subtle cursor-pointer text-left hover:bg-ak-surface-subtle transition-colors"
+                className="flex items-center gap-3 w-full py-3.5 px-4 bg-transparent border-none border-b border-tier-surface-base cursor-pointer text-left hover:bg-tier-surface-base transition-colors"
               >
                 <div
                   className="w-11 h-11 rounded-lg flex items-center justify-center text-white font-bold text-sm flex-shrink-0"
@@ -204,10 +204,10 @@ export default function NewConversation({ userId }: NewConversationProps) {
                   {contact.avatarInitials}
                 </div>
                 <div className="flex-1">
-                  <p className="text-[17px] leading-[22px] font-semibold text-ak-text-primary m-0 mb-0.5">
+                  <p className="text-[17px] leading-[22px] font-semibold text-tier-navy m-0 mb-0.5">
                     {contact.name}
                   </p>
-                  <p className="text-[13px] leading-[18px] text-ak-text-secondary m-0">
+                  <p className="text-[13px] leading-[18px] text-tier-text-secondary m-0">
                     {getRoleLabel(contact.role)}
                   </p>
                 </div>
@@ -216,9 +216,9 @@ export default function NewConversation({ userId }: NewConversationProps) {
           )}
         </div>
       ) : (
-        <div className="bg-ak-surface-base rounded-xl border border-ak-border-default overflow-hidden">
+        <div className="bg-tier-white rounded-xl border border-tier-border-default overflow-hidden">
           {/* Selected contact header */}
-          <div className="flex items-center gap-3 p-4 border-b border-ak-surface-subtle">
+          <div className="flex items-center gap-3 p-4 border-b border-tier-surface-base">
             <div
               className="w-11 h-11 rounded-lg flex items-center justify-center text-white font-bold text-sm"
               style={{ backgroundColor: selectedContact.avatarColor }}
@@ -226,18 +226,18 @@ export default function NewConversation({ userId }: NewConversationProps) {
               {selectedContact.avatarInitials}
             </div>
             <div className="flex-1">
-              <p className="text-[17px] leading-[22px] font-semibold text-ak-text-primary m-0 mb-0.5">
+              <p className="text-[17px] leading-[22px] font-semibold text-tier-navy m-0 mb-0.5">
                 {selectedContact.name}
               </p>
-              <p className="text-[13px] leading-[18px] text-ak-text-secondary m-0">
+              <p className="text-[13px] leading-[18px] text-tier-text-secondary m-0">
                 {getRoleLabel(selectedContact.role)}
               </p>
             </div>
             <button
               onClick={() => setSelectedContact(null)}
-              className="flex items-center justify-center w-8 h-8 bg-ak-surface-subtle border-none rounded cursor-pointer hover:bg-ak-border-default transition-colors"
+              className="flex items-center justify-center w-8 h-8 bg-tier-surface-base border-none rounded cursor-pointer hover:bg-tier-border-default transition-colors"
             >
-              <X size={16} className="text-ak-text-secondary" />
+              <X size={16} className="text-tier-text-secondary" />
             </button>
           </div>
 
@@ -247,12 +247,12 @@ export default function NewConversation({ userId }: NewConversationProps) {
               placeholder="Skriv din melding..."
               value={message}
               onChange={(e) => setMessage(e.target.value)}
-              className="w-full min-h-[120px] p-3 bg-ak-surface-subtle border-none rounded-lg text-sm leading-relaxed resize-y outline-none font-[inherit] text-ak-text-primary focus:ring-2 focus:ring-ak-primary/30"
+              className="w-full min-h-[120px] p-3 bg-tier-surface-base border-none rounded-lg text-sm leading-relaxed resize-y outline-none font-[inherit] text-tier-navy focus:ring-2 focus:ring-tier-navy/30"
             />
           </div>
 
           {/* Send button */}
-          <div className="p-4 border-t border-ak-surface-subtle flex justify-end">
+          <div className="p-4 border-t border-tier-surface-base flex justify-end">
             <Button
               variant="primary"
               onClick={handleSend}

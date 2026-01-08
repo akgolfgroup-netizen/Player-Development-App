@@ -1,4 +1,4 @@
-# AK Golf IUP - Feature Status
+# TIER Golf IUP - Feature Status
 
 Sist oppdatert: 2024-12-31 (Sprint 3 fullført - alle 30 features integrert)
 

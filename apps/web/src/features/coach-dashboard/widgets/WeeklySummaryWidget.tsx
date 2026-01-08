@@ -65,10 +65,10 @@ export const WeeklySummaryWidget: React.FC<WeeklySummaryWidgetProps> = ({
     return (
       <Card variant="default" padding="md">
         <div className="animate-pulse space-y-3">
-          <div className="h-4 bg-ak-surface-subtle rounded w-1/3" />
+          <div className="h-4 bg-tier-surface-base rounded w-1/3" />
           <div className="grid grid-cols-3 gap-3">
             {[1, 2, 3].map(i => (
-              <div key={i} className="h-16 bg-ak-surface-subtle rounded" />
+              <div key={i} className="h-16 bg-tier-surface-base rounded" />
             ))}
           </div>
         </div>
@@ -79,28 +79,28 @@ export const WeeklySummaryWidget: React.FC<WeeklySummaryWidgetProps> = ({
   if (!summary) return null;
 
   const stats = [
-    { icon: Activity, label: 'Okter', value: summary.sessionsCompleted, color: 'text-ak-primary' },
-    { icon: Calendar, label: 'Minutter', value: summary.totalMinutes, color: 'text-ak-success' },
-    { icon: Target, label: 'Tester', value: summary.testsCompleted, color: 'text-ak-warning' },
-    { icon: TrendingUp, label: 'BP fremgang', value: `${summary.breakingPointsProgress}%`, color: 'text-ak-primary' },
-    { icon: Award, label: 'Bragder', value: summary.achievements, color: 'text-ak-prestige' },
+    { icon: Activity, label: 'Okter', value: summary.sessionsCompleted, color: 'text-tier-navy' },
+    { icon: Calendar, label: 'Minutter', value: summary.totalMinutes, color: 'text-tier-success' },
+    { icon: Target, label: 'Tester', value: summary.testsCompleted, color: 'text-tier-warning' },
+    { icon: TrendingUp, label: 'BP fremgang', value: `${summary.breakingPointsProgress}%`, color: 'text-tier-navy' },
+    { icon: Award, label: 'Bragder', value: summary.achievements, color: 'text-tier-gold' },
   ];
 
   if (compact) {
     return (
-      <div className="flex items-center gap-4 p-3 bg-ak-surface-subtle rounded-lg">
+      <div className="flex items-center gap-4 p-3 bg-tier-surface-base rounded-lg">
         {playerName && (
-          <span className="font-medium text-ak-text-primary">{playerName}</span>
+          <span className="font-medium text-tier-navy">{playerName}</span>
         )}
         <div className="flex gap-4 text-sm">
-          <span className="text-ak-text-secondary">
-            <span className="font-semibold text-ak-text-primary">{summary.sessionsCompleted}</span> økter
+          <span className="text-tier-text-secondary">
+            <span className="font-semibold text-tier-navy">{summary.sessionsCompleted}</span> økter
           </span>
-          <span className="text-ak-text-secondary">
-            <span className="font-semibold text-ak-text-primary">{summary.totalMinutes}</span> min
+          <span className="text-tier-text-secondary">
+            <span className="font-semibold text-tier-navy">{summary.totalMinutes}</span> min
           </span>
           {summary.streakDays > 0 && (
-            <span className="text-ak-success font-medium">
+            <span className="text-tier-success font-medium">
               {summary.streakDays} dager streak
             </span>
           )}
@@ -114,8 +114,8 @@ export const WeeklySummaryWidget: React.FC<WeeklySummaryWidgetProps> = ({
       <div className="flex items-center justify-between mb-4">
         <SubSectionTitle>Ukens oppsummering</SubSectionTitle>
         {summary.streakDays > 0 && (
-          <div className="flex items-center gap-1 px-2 py-1 bg-ak-success/10 rounded-full">
-            <span className="text-xs font-semibold text-ak-success">
+          <div className="flex items-center gap-1 px-2 py-1 bg-tier-success/10 rounded-full">
+            <span className="text-xs font-semibold text-tier-success">
               {summary.streakDays} dager streak
             </span>
           </div>
@@ -126,10 +126,10 @@ export const WeeklySummaryWidget: React.FC<WeeklySummaryWidgetProps> = ({
         {stats.map((stat, index) => {
           const Icon = stat.icon;
           return (
-            <div key={index} className="text-center p-3 bg-ak-surface-subtle rounded-lg">
+            <div key={index} className="text-center p-3 bg-tier-surface-base rounded-lg">
               <Icon size={20} className={`mx-auto mb-1 ${stat.color}`} />
-              <p className="text-lg font-bold text-ak-text-primary">{stat.value}</p>
-              <p className="text-xs text-ak-text-secondary">{stat.label}</p>
+              <p className="text-lg font-bold text-tier-navy">{stat.value}</p>
+              <p className="text-xs text-tier-text-secondary">{stat.label}</p>
             </div>
           );
         })}

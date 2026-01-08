@@ -1,11 +1,11 @@
 # DataGolf Opportunity Analysis - Hvordan Skape En Unik App
 
 **Dato:** 18. Desember 2025
-**Kontekst:** IUP Golf Academy + DataGolf Pro Tier Integration
+**Kontekst:** IUP Golf + DataGolf Pro Tier Integration
 
 ---
 
-## 🎯 Hva Er IUP Golf Academy Faktisk?
+## 🎯 Hva Er IUP Golf Faktisk?
 
 ### Core Business
 **Player Development Platform for Amateur til Pro-nivå**
@@ -605,7 +605,7 @@ Competitors:
 ├─ Shot Scope: "Measure everything" ← Still don't know what to fix
 └─ GolfPad: "GPS + scoring" ← No development path
 
-IUP Golf Academy:
+IUP Golf:
 "Bridge from amateur to pro with AI-powered insights"
 ├─ See exactly where you stand vs tour players ✨
 ├─ Get data-driven training recommendations ✨

@@ -46,14 +46,14 @@ const DayView = ({
   // Session colors using semantic tokens (see COLOR_USAGE_RULES.md)
   const getSessionColor = (type) => {
     const colors = {
-      teknikk: { bg: 'bg-ak-session-teknikk-muted', border: 'border-ak-session-teknikk', text: 'text-ak-text-primary', accent: 'bg-ak-session-teknikk' },
-      golfslag: { bg: 'bg-ak-session-golfslag-muted', border: 'border-ak-session-golfslag', text: 'text-ak-text-primary', accent: 'bg-ak-session-golfslag' },
-      spill: { bg: 'bg-ak-session-spill-muted', border: 'border-ak-session-spill', text: 'text-ak-text-primary', accent: 'bg-ak-session-spill' },
-      konkurranse: { bg: 'bg-ak-session-kompetanse-muted', border: 'border-ak-session-kompetanse', text: 'text-ak-text-primary', accent: 'bg-ak-session-kompetanse' },
-      fysisk: { bg: 'bg-ak-session-fysisk-muted', border: 'border-ak-session-fysisk', text: 'text-ak-text-primary', accent: 'bg-ak-session-fysisk' },
-      mental: { bg: 'bg-ak-surface-elevated', border: 'border-ak-border-default', text: 'text-ak-text-secondary', accent: 'bg-ak-text-tertiary' },
+      teknikk: { bg: 'bg-amber-100', border: 'border-tier-gold', text: 'text-tier-navy', accent: 'bg-tier-gold' },
+      golfslag: { bg: 'bg-blue-100', border: 'border-tier-navy', text: 'text-tier-navy', accent: 'bg-tier-navy' },
+      spill: { bg: 'bg-emerald-100', border: 'border-emerald-600', text: 'text-tier-navy', accent: 'bg-emerald-600' },
+      konkurranse: { bg: 'bg-purple-100', border: 'border-purple-600', text: 'text-tier-navy', accent: 'bg-purple-600' },
+      fysisk: { bg: 'bg-orange-100', border: 'border-orange-600', text: 'text-tier-navy', accent: 'bg-orange-600' },
+      mental: { bg: 'bg-tier-white', border: 'border-tier-border-default', text: 'text-tier-text-secondary', accent: 'bg-tier-text-tertiary' },
     };
-    return colors[type] || { bg: 'bg-ak-surface-elevated', border: 'border-ak-border-default', text: 'text-ak-text-secondary', accent: 'bg-ak-text-tertiary' };
+    return colors[type] || { bg: 'bg-tier-white', border: 'border-tier-border-default', text: 'text-tier-text-secondary', accent: 'bg-tier-text-tertiary' };
   };
 
   const getSessionsForHour = (hour) => {
@@ -83,25 +83,25 @@ const DayView = ({
   };
 
   return (
-    <div className="flex h-full flex-col bg-ak-surface-card rounded-xl shadow-sm ring-1 ring-ak-border-default overflow-hidden">
+    <div className="flex h-full flex-col bg-tier-white rounded-xl shadow-sm ring-1 ring-tier-border-default overflow-hidden">
       {/* Header */}
-      <header className="flex flex-none items-center justify-between border-b border-ak-border-default px-6 py-4">
+      <header className="flex flex-none items-center justify-between border-b border-tier-border-default px-6 py-4">
         <div>
-          <SectionTitle className="text-base font-semibold leading-6 text-ak-text-primary">
+          <SectionTitle className="text-base font-semibold leading-6 text-tier-navy">
             {dayNames[date.getDay()]}
           </SectionTitle>
-          <p className="mt-1 text-sm text-ak-text-secondary">
+          <p className="mt-1 text-sm text-tier-text-secondary">
             <time dateTime={date.toISOString().split('T')[0]}>
               {date.getDate()}. {monthNames[date.getMonth()]} {date.getFullYear()}
             </time>
           </p>
         </div>
         <div className="flex items-center">
-          <div className="relative flex items-center rounded-lg bg-ak-surface-card shadow-sm ring-1 ring-ak-border-default md:items-stretch">
+          <div className="relative flex items-center rounded-lg bg-tier-white shadow-sm ring-1 ring-tier-border-default md:items-stretch">
             <button
               type="button"
               onClick={() => onNavigate?.(-1)}
-              className="flex h-9 w-9 items-center justify-center rounded-l-lg text-ak-text-secondary hover:text-ak-text-primary focus:relative md:hover:bg-ak-surface-subtle"
+              className="flex h-9 w-9 items-center justify-center rounded-l-lg text-tier-text-secondary hover:text-tier-navy focus:relative md:hover:bg-tier-surface-base"
             >
               <span className="sr-only">Forrige dag</span>
               <ChevronLeft className="h-5 w-5" aria-hidden="true" />
@@ -112,14 +112,14 @@ const DayView = ({
                 // Navigate to today - parent handles this
                 onNavigate?.(0, true);
               }}
-              className="hidden px-3.5 text-sm font-semibold text-ak-text-primary hover:bg-ak-surface-subtle focus:relative md:block"
+              className="hidden px-3.5 text-sm font-semibold text-tier-navy hover:bg-tier-surface-base focus:relative md:block"
             >
               I dag
             </button>
             <button
               type="button"
               onClick={() => onNavigate?.(1)}
-              className="flex h-9 w-9 items-center justify-center rounded-r-lg text-ak-text-secondary hover:text-ak-text-primary focus:relative md:hover:bg-ak-surface-subtle"
+              className="flex h-9 w-9 items-center justify-center rounded-r-lg text-tier-text-secondary hover:text-tier-navy focus:relative md:hover:bg-tier-surface-base"
             >
               <span className="sr-only">Neste dag</span>
               <ChevronRight className="h-5 w-5" aria-hidden="true" />
@@ -127,11 +127,11 @@ const DayView = ({
           </div>
           {onAddEvent && (
             <div className="hidden md:ml-4 md:flex md:items-center">
-              <div className="ml-6 h-6 w-px bg-ak-border-default" />
+              <div className="ml-6 h-6 w-px bg-tier-border-default" />
               <button
                 type="button"
                 onClick={onAddEvent}
-                className="ml-6 rounded-lg bg-ak-primary px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-ak-primary/90"
+                className="ml-6 rounded-lg bg-tier-navy px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-tier-navy/90"
               >
                 Ny hendelse
               </button>
@@ -142,7 +142,7 @@ const DayView = ({
 
       {/* Today indicator badge */}
       {isToday && (
-        <div className="flex-none bg-ak-primary text-white px-6 py-2 text-sm font-medium">
+        <div className="flex-none bg-tier-navy text-white px-6 py-2 text-sm font-medium">
           I dag
         </div>
       )}
@@ -154,7 +154,7 @@ const DayView = ({
       >
         <div className="flex flex-auto">
           {/* Time Labels */}
-          <div className="sticky left-0 z-10 w-16 flex-none bg-ak-surface-card">
+          <div className="sticky left-0 z-10 w-16 flex-none bg-tier-white">
             <div className="relative" style={{ height: `${hours.length * 4}rem` }}>
               {hours.map((hour) => (
                 <div
@@ -162,7 +162,7 @@ const DayView = ({
                   className="absolute w-full text-right pr-3"
                   style={{ top: `${((hour - 5) / 18) * 100}%` }}
                 >
-                  <span className="relative -top-2 text-xs font-medium text-ak-text-tertiary">
+                  <span className="relative -top-2 text-xs font-medium text-tier-text-tertiary">
                     {formatHour(hour)}
                   </span>
                 </div>
@@ -171,7 +171,7 @@ const DayView = ({
           </div>
 
           {/* Events Column */}
-          <div className="flex-auto border-l border-ak-border-default">
+          <div className="flex-auto border-l border-tier-border-default">
             <div
               className="relative"
               style={{ height: `${hours.length * 4}rem` }}
@@ -181,7 +181,7 @@ const DayView = ({
                 <div
                   key={hour}
                   onClick={() => onTimeSlotClick?.(hour)}
-                  className="absolute w-full border-b border-ak-border-subtle hover:bg-ak-surface-subtle/50 cursor-pointer transition-colors"
+                  className="absolute w-full border-b border-tier-border-default hover:bg-tier-surface-base/50 cursor-pointer transition-colors"
                   style={{
                     top: `${((hour - 5) / 18) * 100}%`,
                     height: `${(1 / 18) * 100}%`,
@@ -195,8 +195,8 @@ const DayView = ({
                   className="absolute left-0 right-0 z-20 flex items-center"
                   style={{ top: getCurrentTimePosition() }}
                 >
-                  <div className="h-3 w-3 rounded-full bg-ak-primary -ml-1.5" />
-                  <div className="flex-auto h-0.5 bg-ak-primary" />
+                  <div className="h-3 w-3 rounded-full bg-tier-navy -ml-1.5" />
+                  <div className="flex-auto h-0.5 bg-tier-navy" />
                 </div>
               )}
 
@@ -253,7 +253,7 @@ const DayView = ({
                       {/* Action buttons */}
                       <div className="flex items-start gap-2 ml-2">
                         {isCompleted ? (
-                          <div className="flex h-8 w-8 items-center justify-center rounded-full bg-ak-status-success">
+                          <div className="flex h-8 w-8 items-center justify-center rounded-full bg-tier-success">
                             <Check className="h-4 w-4 text-white" />
                           </div>
                         ) : !isRest && onStartSession && (
@@ -262,7 +262,7 @@ const DayView = ({
                               e.stopPropagation();
                               onStartSession?.(session);
                             }}
-                            className="flex h-8 w-8 items-center justify-center rounded-full bg-ak-primary hover:bg-ak-primary/90 transition-colors"
+                            className="flex h-8 w-8 items-center justify-center rounded-full bg-tier-navy hover:bg-tier-navy/90 transition-colors"
                           >
                             <Play className="h-4 w-4 text-white ml-0.5" />
                           </button>
@@ -288,8 +288,8 @@ const DayView = ({
 
       {/* Session Summary (Mobile) */}
       {sessions.length > 0 && (
-        <div className="flex-none border-t border-ak-border-default p-4 sm:hidden">
-          <SubSectionTitle className="text-sm font-semibold text-ak-text-primary mb-3">
+        <div className="flex-none border-t border-tier-border-default p-4 sm:hidden">
+          <SubSectionTitle className="text-sm font-semibold text-tier-navy mb-3">
             {sessions.length} {sessions.length === 1 ? 'hendelse' : 'hendelser'} i dag
           </SubSectionTitle>
           <div className="space-y-2">
@@ -315,13 +315,13 @@ const DayView = ({
                     </p>
                   </div>
                   {session.status === 'completed' && (
-                    <Check className="h-5 w-5 text-ak-status-success" />
+                    <Check className="h-5 w-5 text-tier-success" />
                   )}
                 </button>
               );
             })}
             {sessions.length > 3 && (
-              <p className="text-xs text-ak-text-tertiary text-center pt-1">
+              <p className="text-xs text-tier-text-tertiary text-center pt-1">
                 + {sessions.length - 3} flere hendelser
               </p>
             )}
@@ -332,17 +332,17 @@ const DayView = ({
       {/* Empty state */}
       {sessions.length === 0 && (
         <div className="flex-1 flex flex-col items-center justify-center p-8 text-center">
-          <Clock className="h-12 w-12 text-ak-text-tertiary mb-4" />
-          <SubSectionTitle className="text-lg font-semibold text-ak-text-primary mb-2">
+          <Clock className="h-12 w-12 text-tier-text-tertiary mb-4" />
+          <SubSectionTitle className="text-lg font-semibold text-tier-navy mb-2">
             Ingen hendelser
           </SubSectionTitle>
-          <p className="text-sm text-ak-text-secondary mb-4">
+          <p className="text-sm text-tier-text-secondary mb-4">
             Du har ingen planlagte hendelser denne dagen.
           </p>
           {onAddEvent && (
             <button
               onClick={onAddEvent}
-              className="rounded-lg bg-ak-primary px-4 py-2 text-sm font-semibold text-white shadow-sm hover:bg-ak-primary/90"
+              className="rounded-lg bg-tier-navy px-4 py-2 text-sm font-semibold text-white shadow-sm hover:bg-tier-navy/90"
             >
               Legg til hendelse
             </button>

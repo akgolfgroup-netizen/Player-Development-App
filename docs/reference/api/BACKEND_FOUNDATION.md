@@ -1,5 +1,5 @@
 # ✅ Backend Foundation Complete - Code-Based System
-## AK Golf Academy × Team Norway Golf - IUP System
+## TIER Golf × Team Norway Golf - IUP System
 
 **Date**: December 14, 2025
 **Status**: Phase 1 Backend Foundation Ready
@@ -596,6 +596,6 @@ curl http://localhost:5000/api/v1/players
 ---
 
 **Built by**: Claude Code
-**For**: Anders Knutsen - AK Golf Academy
+**For**: Anders Knutsen - TIER Golf
 **Partner**: Team Norway Golf
 **Date**: December 14, 2025

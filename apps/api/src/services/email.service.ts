@@ -33,6 +33,13 @@ export enum EmailTemplate {
   TEST_RESULTS = 'test-results',
   ACHIEVEMENT_UNLOCKED = 'achievement-unlocked',
   WEEKLY_SUMMARY = 'weekly-summary',
+  // Payment & Subscription notifications
+  PAYMENT_SUCCESSFUL = 'payment-successful',
+  PAYMENT_FAILED = 'payment-failed',
+  TRIAL_ENDING = 'trial-ending',
+  SUBSCRIPTION_CANCELED = 'subscription-canceled',
+  SUBSCRIPTION_RENEWED = 'subscription-renewed',
+  PLAN_CHANGED = 'plan-changed',
 }
 
 export class EmailService {
@@ -458,6 +465,188 @@ export class EmailService {
       data: {
         ...data,
         dashboardUrl: `${config.frontend.url}/dashboard`,
+      },
+    });
+  }
+
+  /**
+   * Send payment successful notification
+   */
+  async sendPaymentSuccessfulEmail(
+    to: string,
+    data: {
+      userName: string;
+      amount: number;
+      currency: string;
+      planType: string;
+      invoiceUrl?: string;
+    }
+  ): Promise<boolean> {
+    // Format amount from cents to currency
+    const formattedAmount = (data.amount / 100).toFixed(2);
+
+    return this.sendEmail({
+      to,
+      subject: 'Payment Successful - IUP Golf Academy',
+      template: EmailTemplate.PAYMENT_SUCCESSFUL,
+      data: {
+        ...data,
+        formattedAmount,
+        billingUrl: `${config.frontend.url}/billing`,
+        supportEmail: process.env.SUPPORT_EMAIL || 'support@iup-golf.com',
+      },
+    });
+  }
+
+  /**
+   * Send payment failed notification
+   */
+  async sendPaymentFailedEmail(
+    to: string,
+    data: {
+      userName: string;
+      amount: number;
+      currency: string;
+      failureReason: string;
+      retryDate?: Date;
+    }
+  ): Promise<boolean> {
+    const formattedAmount = (data.amount / 100).toFixed(2);
+
+    return this.sendEmail({
+      to,
+      subject: 'Payment Failed - Action Required',
+      template: EmailTemplate.PAYMENT_FAILED,
+      data: {
+        ...data,
+        formattedAmount,
+        updatePaymentUrl: `${config.frontend.url}/billing`,
+        supportEmail: process.env.SUPPORT_EMAIL || 'support@iup-golf.com',
+      },
+    });
+  }
+
+  /**
+   * Send trial ending reminder
+   */
+  async sendTrialEndingEmail(
+    to: string,
+    data: {
+      userName: string;
+      planType: string;
+      trialEndDate: Date;
+      daysRemaining: number;
+    }
+  ): Promise<boolean> {
+    return this.sendEmail({
+      to,
+      subject: `Your Trial Ends in ${data.daysRemaining} Days`,
+      template: EmailTemplate.TRIAL_ENDING,
+      data: {
+        ...data,
+        formattedEndDate: data.trialEndDate.toLocaleDateString('en-US', {
+          month: 'long',
+          day: 'numeric',
+          year: 'numeric'
+        }),
+        billingUrl: `${config.frontend.url}/billing`,
+        pricingUrl: `${config.frontend.url}/pricing`,
+      },
+    });
+  }
+
+  /**
+   * Send subscription canceled notification
+   */
+  async sendSubscriptionCanceledEmail(
+    to: string,
+    data: {
+      userName: string;
+      planType: string;
+      accessEndDate: Date;
+    }
+  ): Promise<boolean> {
+    return this.sendEmail({
+      to,
+      subject: 'Subscription Canceled - IUP Golf Academy',
+      template: EmailTemplate.SUBSCRIPTION_CANCELED,
+      data: {
+        ...data,
+        formattedEndDate: data.accessEndDate.toLocaleDateString('en-US', {
+          month: 'long',
+          day: 'numeric',
+          year: 'numeric'
+        }),
+        reactivateUrl: `${config.frontend.url}/billing`,
+        feedbackUrl: `${config.frontend.url}/feedback`,
+      },
+    });
+  }
+
+  /**
+   * Send subscription renewed notification
+   */
+  async sendSubscriptionRenewedEmail(
+    to: string,
+    data: {
+      userName: string;
+      amount: number;
+      currency: string;
+      planType: string;
+      nextBillingDate: Date;
+      invoiceUrl?: string;
+    }
+  ): Promise<boolean> {
+    const formattedAmount = (data.amount / 100).toFixed(2);
+
+    return this.sendEmail({
+      to,
+      subject: 'Subscription Renewed - IUP Golf Academy',
+      template: EmailTemplate.SUBSCRIPTION_RENEWED,
+      data: {
+        ...data,
+        formattedAmount,
+        formattedNextBilling: data.nextBillingDate.toLocaleDateString('en-US', {
+          month: 'long',
+          day: 'numeric',
+          year: 'numeric'
+        }),
+        billingUrl: `${config.frontend.url}/billing`,
+      },
+    });
+  }
+
+  /**
+   * Send plan changed notification
+   */
+  async sendPlanChangedEmail(
+    to: string,
+    data: {
+      userName: string;
+      oldPlan: string;
+      newPlan: string;
+      effectiveDate: Date;
+      proratedAmount?: number;
+    }
+  ): Promise<boolean> {
+    const formattedProrated = data.proratedAmount
+      ? (data.proratedAmount / 100).toFixed(2)
+      : null;
+
+    return this.sendEmail({
+      to,
+      subject: 'Plan Changed Successfully - IUP Golf Academy',
+      template: EmailTemplate.PLAN_CHANGED,
+      data: {
+        ...data,
+        formattedProrated,
+        formattedEffectiveDate: data.effectiveDate.toLocaleDateString('en-US', {
+          month: 'long',
+          day: 'numeric',
+          year: 'numeric'
+        }),
+        billingUrl: `${config.frontend.url}/billing`,
+        plansUrl: `${config.frontend.url}/pricing`,
       },
     });
   }

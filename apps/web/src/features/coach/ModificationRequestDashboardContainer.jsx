@@ -5,6 +5,7 @@ import LoadingState from '../../components/ui/LoadingState';
 import ErrorState from '../../components/ui/ErrorState';
 import EmptyState from '../../components/ui/EmptyState';
 import ModificationRequestDashboard from './ModificationRequestDashboard';
+import { PageHeader } from '../../ui/raw-blocks';
 
 const ModificationRequestDashboardContainer = () => {
   const { user } = useAuth();
@@ -38,30 +39,31 @@ const ModificationRequestDashboardContainer = () => {
     }
   };
 
-  if (state === 'loading') {
-    return <LoadingState message="Laster endringsforespørsler..." />;
-  }
-
-  if (state === 'error') {
-    return (
-      <ErrorState
-        errorType={error?.type}
-        message={error?.message || 'Kunne ikke laste endringsforespørsler'}
-        onRetry={fetchModificationRequests}
+  return (
+    <>
+      <PageHeader
+        title="Endringsforespørsler"
+        subtitle="Gjennomgå og svar på spillernes endringsforespørsler"
+        helpText="Oversikt over endringsforespørsler fra spillere angående treningsplaner. Filtrer på status (venter, under behandling, løst, avvist). Se spillerdetaljer, bekymringer, hastegrad og behandlingstidspunkter. Svar på forespørsler direkte fra dashboardet."
+        showBackButton={false}
       />
-    );
-  }
-
-  if (state === 'empty') {
-    return (
-      <EmptyState
-        title="Ingen forespørsler"
-        message="Det er ingen endringsforespørsler å behandle"
-      />
-    );
-  }
-
-  return <ModificationRequestDashboard requests={requests} />;
+      {state === 'loading' && <LoadingState message="Laster endringsforespørsler..." />}
+      {state === 'error' && (
+        <ErrorState
+          errorType={error?.type}
+          message={error?.message || 'Kunne ikke laste endringsforespørsler'}
+          onRetry={fetchModificationRequests}
+        />
+      )}
+      {state === 'empty' && (
+        <EmptyState
+          title="Ingen forespørsler"
+          message="Det er ingen endringsforespørsler å behandle"
+        />
+      )}
+      {state === 'idle' && <ModificationRequestDashboard requests={requests} />}
+    </>
+  );
 };
 
 export default ModificationRequestDashboardContainer;

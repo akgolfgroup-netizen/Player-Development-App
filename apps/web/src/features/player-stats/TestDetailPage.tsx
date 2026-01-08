@@ -34,7 +34,7 @@ import Badge from '../../ui/primitives/Badge.primitive';
 import Button from '../../ui/primitives/Button';
 import StateCard from '../../ui/composites/StateCard';
 import { PageHeader } from '../../components/layout/PageHeader';
-import { SectionTitle, SubSectionTitle } from '../../components/typography';
+import { SectionTitle, SubSectionTitle } from '../../components/typography/Headings';
 import useTestResults, { TestResult, CoachNote } from '../../hooks/useTestResults';
 
 // ============================================================================
@@ -112,7 +112,7 @@ const HistoryChart: React.FC<HistoryChartProps> = ({
           y1={chartData.getY(requirement)}
           x2="100"
           y2={chartData.getY(requirement)}
-          stroke="var(--warning)"
+          stroke="var(--status-warning)"
           strokeWidth="0.4"
           strokeDasharray="2,2"
         />
@@ -124,7 +124,7 @@ const HistoryChart: React.FC<HistoryChartProps> = ({
             y1={chartData.getY(targetRequirement)}
             x2="100"
             y2={chartData.getY(targetRequirement)}
-            stroke="var(--success)"
+            stroke="var(--status-success)"
             strokeWidth="0.4"
             strokeDasharray="3,3"
           />
@@ -217,12 +217,12 @@ const HistoryChart: React.FC<HistoryChartProps> = ({
       {/* Legend */}
       <div style={styles.legend}>
         <div style={styles.legendItem}>
-          <span style={{ ...styles.legendLine, borderStyle: 'dashed', borderColor: 'var(--warning)' }} />
+          <span style={{ ...styles.legendLine, borderStyle: 'dashed', borderColor: 'var(--status-warning)' }} />
           <span>Krav</span>
         </div>
         {targetRequirement && (
           <div style={styles.legendItem}>
-            <span style={{ ...styles.legendLine, borderStyle: 'dashed', borderColor: 'var(--success)' }} />
+            <span style={{ ...styles.legendLine, borderStyle: 'dashed', borderColor: 'var(--status-success)' }} />
             <span>Mål</span>
           </div>
         )}
@@ -332,9 +332,9 @@ const TestDetailPage: React.FC = () => {
   }
 
   const trendIcon = test.trend === 'improving' ? (
-    <TrendingUp size={16} color="var(--success)" />
+    <TrendingUp size={16} color="var(--status-success)" />
   ) : test.trend === 'declining' ? (
-    <TrendingDown size={16} color="var(--error)" />
+    <TrendingDown size={16} color="var(--status-error)" />
   ) : (
     <Minus size={16} color="var(--text-tertiary)" />
   );
@@ -379,15 +379,15 @@ const TestDetailPage: React.FC = () => {
             <span style={styles.currentLabel}>Nåværende</span>
             <span style={{
               ...styles.currentValue,
-              color: test.meetsCurrent ? 'var(--success)' : 'var(--warning)',
+              color: test.meetsCurrent ? 'var(--status-success)' : 'var(--status-warning)',
             }}>
               {test.currentValue}{test.unit}
             </span>
             <div style={styles.trendBadge}>
               {trendIcon}
               <span style={{
-                color: test.trend === 'improving' ? 'var(--success)' :
-                  test.trend === 'declining' ? 'var(--error)' : 'var(--text-tertiary)',
+                color: test.trend === 'improving' ? 'var(--status-success)' :
+                  test.trend === 'declining' ? 'var(--status-error)' : 'var(--text-tertiary)',
               }}>
                 {test.trendPercent > 0 ? `${test.trendPercent.toFixed(1)}%` : 'Stabil'}
               </span>
@@ -438,7 +438,7 @@ const TestDetailPage: React.FC = () => {
               icon={<Target size={18} />}
               label="Beste resultat"
               value={`${test.bestValue}${test.unit}`}
-              color="var(--success)"
+              color="var(--status-success)"
             />
           </Card>
           <Card padding="md">
@@ -454,7 +454,7 @@ const TestDetailPage: React.FC = () => {
               icon={<Zap size={18} />}
               label="Forbedring/uke"
               value={`${test.improvementRate > 0 ? '+' : ''}${test.improvementRate}${test.unit}`}
-              color={test.improvementRate > 0 ? 'var(--success)' : 'var(--text-tertiary)'}
+              color={test.improvementRate > 0 ? 'var(--status-success)' : 'var(--text-tertiary)'}
             />
           </Card>
           <Card padding="md">
@@ -462,7 +462,7 @@ const TestDetailPage: React.FC = () => {
               icon={<Clock size={18} />}
               label="Tid til mål"
               value={formatPrediction(test.predictedDaysToTarget)}
-              color={test.predictedDaysToTarget === 0 ? 'var(--success)' : 'var(--accent)'}
+              color={test.predictedDaysToTarget === 0 ? 'var(--status-success)' : 'var(--accent)'}
             />
           </Card>
         </div>
@@ -518,7 +518,7 @@ const TestDetailPage: React.FC = () => {
             <div style={styles.recommendationsList}>
               {test.recommendations.map((rec, i) => (
                 <div key={i} style={styles.recommendationItem}>
-                  <Lightbulb size={16} color="var(--warning)" />
+                  <Lightbulb size={16} color="var(--status-warning)" />
                   <span>{rec}</span>
                 </div>
               ))}
@@ -840,7 +840,7 @@ const styles: Record<string, React.CSSProperties> = {
   },
   progressFill: {
     height: '100%',
-    background: 'linear-gradient(90deg, var(--accent) 0%, var(--success) 100%)',
+    background: 'linear-gradient(90deg, var(--accent) 0%, var(--status-success) 100%)',
     borderRadius: '6px',
     transition: 'width 0.3s ease',
   },

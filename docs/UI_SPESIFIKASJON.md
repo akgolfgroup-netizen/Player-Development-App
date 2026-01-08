@@ -333,7 +333,7 @@ For hver skjerm, definer:
 ### Layout
 ```
 ┌─────────────────────────────────────────────────────────────┐
-│  AK Golf Academy                      [Varsler 3] [Profil]  │
+│  TIER Golf                      [Varsler 3] [Profil]  │
 ├─────────────────────────────────────────────────────────────┤
 │                                                              │
 │  VARSLER SOM KREVER OPPMERKSOMHET                           │

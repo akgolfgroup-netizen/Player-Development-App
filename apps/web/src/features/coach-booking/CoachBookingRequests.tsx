@@ -1,6 +1,6 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 /**
- * AK Golf Academy - Coach Booking Requests
+ * TIER Golf Academy - Coach Booking Requests
  * Design System v3.0 - Blue Palette 01
  *
  * Liste over alle bookingforespørsler for trener.
@@ -20,10 +20,11 @@ import {
   Search,
   CheckCircle2,
   XCircle,
+  Save,
 } from 'lucide-react';
 import Card from '../../ui/primitives/Card';
 import Button from '../../ui/primitives/Button';
-import { PageTitle, SubSectionTitle } from '../../components/typography';
+import { PageTitle, SubSectionTitle } from '../../components/typography/Headings';
 
 interface BookingRequest {
   id: string;
@@ -178,6 +179,20 @@ export default function CoachBookingRequests() {
     }
   };
 
+  const handleSave = async () => {
+    // Save current filter and sort preferences
+    try {
+      await fetch('/api/v1/coach/bookings/preferences', {
+        method: 'PUT',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ filter, sortBy }),
+      });
+      console.log('Preferences saved');
+    } catch (error) {
+      console.error('Failed to save preferences:', error);
+    }
+  };
+
   // Filter and sort requests
   const filteredRequests = requests
     .filter((req) => {
@@ -220,14 +235,14 @@ export default function CoachBookingRequests() {
       case 'approved':
         return {
           bg: 'rgba(var(--success-rgb), 0.15)',
-          color: 'var(--success)',
+          color: 'var(--status-success)',
           text: 'Godkjent',
           icon: CheckCircle2,
         };
       case 'declined':
         return {
           bg: 'rgba(var(--error-rgb), 0.15)',
-          color: 'var(--error)',
+          color: 'var(--status-error)',
           text: 'Avslått',
           icon: XCircle,
         };
@@ -299,7 +314,7 @@ export default function CoachBookingRequests() {
           >
             <ArrowLeft size={20} color={'var(--text-primary)'} />
           </button>
-          <div>
+          <div style={{ flex: 1 }}>
             <PageTitle style={{ margin: 0 }}>
               Bookingforespørsler
             </PageTitle>
@@ -315,6 +330,34 @@ export default function CoachBookingRequests() {
                 : 'Ingen ventende forespørsler'}
             </p>
           </div>
+          <button
+            onClick={handleSave}
+            style={{
+              display: 'flex',
+              alignItems: 'center',
+              gap: '8px',
+              padding: '10px 18px',
+              backgroundColor: 'var(--tier-primary, var(--accent))',
+              color: 'white',
+              border: 'none',
+              borderRadius: 'var(--radius-md)',
+              fontSize: '14px',
+              fontWeight: 600,
+              cursor: 'pointer',
+              transition: 'all 0.2s',
+            }}
+            onMouseEnter={(e) => {
+              e.currentTarget.style.opacity = '0.9';
+              e.currentTarget.style.transform = 'translateY(-1px)';
+            }}
+            onMouseLeave={(e) => {
+              e.currentTarget.style.opacity = '1';
+              e.currentTarget.style.transform = 'translateY(0)';
+            }}
+          >
+            <Save size={18} />
+            Lagre
+          </button>
         </div>
 
         {/* Filters */}
@@ -449,7 +492,7 @@ export default function CoachBookingRequests() {
                     overflow: 'hidden',
                     border:
                       request.status === 'pending'
-                        ? `2px solid ${'var(--warning)'}`
+                        ? `2px solid ${'var(--status-warning)'}`
                         : `1px solid ${'var(--border-default)'}`,
                   }}
                 >
@@ -622,8 +665,8 @@ export default function CoachBookingRequests() {
                             gap: '8px',
                             padding: '10px',
                             backgroundColor: 'var(--bg-primary)',
-                            color: 'var(--error)',
-                            border: `1px solid ${'var(--error)'}`,
+                            color: 'var(--status-error)',
+                            border: `1px solid ${'var(--status-error)'}`,
                             borderRadius: 'var(--radius-md)',
                             fontSize: '14px',
                             fontWeight: 600,
@@ -644,7 +687,7 @@ export default function CoachBookingRequests() {
                             justifyContent: 'center',
                             gap: '8px',
                             padding: '10px',
-                            backgroundColor: 'var(--success)',
+                            backgroundColor: 'var(--status-success)',
                             color: 'var(--bg-primary)',
                             border: 'none',
                             borderRadius: 'var(--radius-md)',

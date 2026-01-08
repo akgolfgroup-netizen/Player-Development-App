@@ -1,4 +1,4 @@
-# 🚀 IUP Golf Academy - Complete Demo Guide
+# 🚀 IUP Golf - Complete Demo Guide
 
 **Quick Start:** Run the full application in 5 minutes!
 
@@ -435,7 +435,7 @@ http://localhost:3001
 
 ## 🎉 You're Ready!
 
-The complete IUP Golf Academy application is now running with:
+The complete IUP Golf application is now running with:
 
 - ✅ 21 backend endpoints (100% complete)
 - ✅ 26 screens (21 desktop + 5 mobile)

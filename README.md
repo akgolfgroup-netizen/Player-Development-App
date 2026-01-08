@@ -1,4 +1,4 @@
-# AK Golf Academy - IUP Platform
+# TIER Golf Academy - IUP Platform
 
 > Production-ready Individual Development Plan (IUP) platform for junior golf training academies
 
@@ -12,36 +12,52 @@
 
 ---
 
-## Latest Updates (December 26, 2025)
+## 🚀 Latest Updates (January 2026)
 
-### Recent Changes
-- **Video Progress Tracking** - Timeline view showing swing progress over time
-- **Video Annotations** - Coaches can annotate videos with markers and audio notes
-- **Video Comparison** - Side-by-side comparison of two videos for analysis
-- **Video Thumbnails** - Automatic thumbnail generation on upload
-- **Real-time Video Notifications** - WebSocket events for video uploads, shares, and reviews
-- **Reference Video Library** - Coach library for sharing technique reference videos
-- **Mobile Responsiveness** - Improved mobile experience across video features
-- **Sentry Profiling** - Enhanced error tracking and performance monitoring
+### Recently Completed
+- ✅ **TIER Design System Migration** (Jan 6) - Complete rebrand with Nordic Minimalism v3.1
+- ✅ **OAuth & Stripe Integration** (Jan 7) - Full payment and authentication infrastructure
+- ✅ **DataGolf API Integration** (Jan 7) - Live tournament data and player statistics
+- ✅ **Project Documentation Overhaul** (Jan 8) - Developer handoff, roadmap, technical highlights
 
-### Previous Updates (December 25, 2025)
-- **API Service Tests** - Comprehensive test coverage for API services
-- **Documentation Restructure** - Professional Google-style documentation standards
-- **Dashboard Widgets** - Reusable dashboard widgets and refactored player dashboard
-- **UI Component Tests** - Comprehensive tests for Modal and Tabs composites
-- **Scripts & Monitoring** - Phase 6 additional features complete
+### For New Developers
+- 📖 **Start Here:** [Developer Handoff](./DEVELOPER_HANDOFF.md) - Complete onboarding guide
+- 🗺️ **Roadmap:** [Development Roadmap](./ROADMAP.md) - Q1 2026 priorities
+- 📊 **Status:** [Project Status](./PROJECT_STATUS.md) - Current state overview
+- 🏆 **Highlights:** [Technical Highlights](/docs/HIGHLIGHTS.md) - Architecture achievements
 
-### Infrastructure
+### Previous Updates (December 2025)
 - **Video Analysis System** - Complete video upload with S3 multipart support, annotations, and comparisons
 - **Two-Factor Authentication** - TOTP with backup codes
 - **Test Coverage** - 45%+ with 240+ test cases
 - **Performance Optimization** - 50+ database indexes, Redis caching strategy
+- **Documentation Restructure** - Professional Google-style documentation standards
 
 ---
 
 ## Overview
 
-Enterprise-grade coaching platform for AK Golf Academy with production-ready monitoring, security, and DevOps infrastructure.
+Enterprise-grade coaching platform for TIER Golf Academy with production-ready monitoring, security, and DevOps infrastructure.
+
+## Prosjekt på et Øyeblikk
+
+**Domene:** Individuelle Utviklingsplaner (IUP) for junior golfakademier
+**Skala:** Multi-tenant SaaS som støtter 50+ spillere per akademi
+**Kompleksitet:** 113 Prisma-modeller, 70+ REST-endepunkter, 33 testfiler
+**Status:** Produksjonsklart med monitoring, 2FA, videoanalyse, sanntidsoppdateringer
+
+**Kjerneverdier:**
+- Digitaliserer Team Norges beviste IUP-metodikk for junior golfutvikling
+- Sporer fremgang på tvers av 11 kategorier (A-K) med 20+ standardiserte testprotokoller
+- Muliggjør datadrevne coaching-beslutninger gjennom peer comparison og breaking point detection
+- Erstatter Excel-basert sporing med produksjonsklart system
+
+**Teknisk Sofistikering:**
+- Monorepo med delt design system og databaselag
+- Multi-tenant arkitektur med organisasjonsnivå-dataisolering
+- Sanntids WebSocket-oppdateringer for coach-spiller-samarbeid
+- S3-basert videoanalyse med annotering og sammenligningsfunksjoner
+- Omfattende observability (Prometheus, Grafana, Sentry)
 
 ### Key Features
 
@@ -105,6 +121,34 @@ pnpm start
 | Coach  | coach@demo.com   | coach123  |
 | Player | player@demo.com  | player123 |
 
+### Vanlige Oppsetsproblemer
+
+**Problem:** Prisma client-feil
+```bash
+# Løsning: Regenerer Prisma client
+cd apps/api
+npx prisma generate
+```
+
+**Problem:** Port allerede i bruk (3000/3001)
+```bash
+# Finn og drep prosess
+lsof -ti:3000 | xargs kill -9
+lsof -ti:3001 | xargs kill -9
+```
+
+**Problem:** Docker-containere starter ikke
+```bash
+# Reset Docker-tilstand
+docker-compose down -v
+docker-compose up -d
+```
+
+**Første gangs oppsett tar lang tid?**
+- Initial seed oppretter testdata for 5 spillere med full historikk
+- Forvent 2-3 minutter for seed på første kjøring
+- Påfølgende oppstarter: <30 sekunder
+
 ---
 
 ## Project Structure
@@ -149,6 +193,40 @@ IUP_Master_V1/
 | Testing    | Jest, Playwright, K6              |
 | Design     | Inter font, Blue Palette 01       |
 | Build      | pnpm, Turbo, Docker               |
+
+---
+
+## Kodekvalitetsindikatorer
+
+### Testdekning
+- **45%+ total dekning** (240+ testtilfeller)
+- **33 testfiler** som dekker kritiske veier
+- **3 sikkerhetstestsuiter** (XSS, SQL injection, RBAC)
+- **Integration tests** for alle major API-moduler
+- **Unit tests** for domenelogikk (focus engine, badge evaluator, video services)
+
+### CI/CD Pipeline
+- **Automatisert på hver PR:** Lint → Security Audit → Tests → Build
+- **Design System Gate:** Blokkerer PRer som bryter design tokens (BLOCKING)
+- **Sikkerhetsskanning:** Snyk + pnpm audit
+- **Multi-stage deployment:** develop → staging → main → production
+- **Test environments:** PostgreSQL 16 + Redis 7 i CI
+
+### Kodestandarder
+- **TypeScript strict mode** på backend (100% dekning, 270 filer)
+- **ESLint + Prettier** håndhevet i CI
+- **Conventional commits** for changelog-generering
+- **ADRs for store beslutninger** (Architecture Decision Records)
+- **PR reviews required** før merge
+
+### Produksjonsfunksjoner
+- **Zero-downtime migrations** via Prisma
+- **Prometheus metrics** eksportert på `/metrics`
+- **Sentry error tracking** med profiling
+- **Rate limiting** per endepunkt
+- **CORS-beskyttelse** med whitelist
+- **Helmet.js security headers**
+- **PII redaction** i logger
 
 ---
 
@@ -372,7 +450,7 @@ See [CONTRIBUTING.md](./CONTRIBUTING.md) for guidelines.
 
 ## License
 
-Proprietary - AK Golf Academy
+Proprietary - TIER Golf Academy
 © 2025 All Rights Reserved
 
 ---

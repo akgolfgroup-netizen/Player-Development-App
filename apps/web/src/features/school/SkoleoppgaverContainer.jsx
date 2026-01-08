@@ -1,5 +1,5 @@
 /**
- * AK Golf Academy - Skoleoppgaver Container
+ * TIER Golf Academy - Skoleoppgaver Container
  * Design System v3.0 - Premium Light
  *
  * School assignments tracking with subject filtering.
@@ -100,30 +100,30 @@ const SUBJECTS = ['Alle', 'Matematikk', 'Norsk', 'Engelsk', 'Naturfag', 'Samfunn
 const getSubjectConfig = (subject) => {
   switch (subject) {
     case 'Matematikk':
-      return { colorClasses: { bg: 'bg-ak-primary/15', text: 'text-ak-primary', border: 'border-ak-primary' } };
+      return { colorClasses: { bg: 'bg-tier-navy/15', text: 'text-tier-navy', border: 'border-tier-navy' } };
     case 'Norsk':
-      return { colorClasses: { bg: 'bg-ak-status-error/15', text: 'text-ak-status-error', border: 'border-ak-status-error' } };
+      return { colorClasses: { bg: 'bg-tier-error/15', text: 'text-tier-error', border: 'border-tier-error' } };
     case 'Engelsk':
-      return { colorClasses: { bg: 'bg-ak-status-success/15', text: 'text-ak-status-success', border: 'border-ak-status-success' } };
+      return { colorClasses: { bg: 'bg-tier-success/15', text: 'text-tier-success', border: 'border-tier-success' } };
     case 'Naturfag':
-      return { colorClasses: { bg: 'bg-ak-status-warning/15', text: 'text-ak-status-warning', border: 'border-ak-status-warning' } };
+      return { colorClasses: { bg: 'bg-tier-warning/15', text: 'text-tier-warning', border: 'border-tier-warning' } };
     case 'Samfunnsfag':
       return { colorClasses: { bg: 'bg-amber-500/15', text: 'text-amber-600', border: 'border-amber-500' } };
     default:
-      return { colorClasses: { bg: 'bg-ak-surface-subtle', text: 'text-ak-text-secondary', border: 'border-ak-border-default' } };
+      return { colorClasses: { bg: 'bg-tier-surface-base', text: 'text-tier-text-secondary', border: 'border-tier-border-default' } };
   }
 };
 
 const getStatusConfig = (status) => {
   switch (status) {
     case 'completed':
-      return { label: 'Fullfort', colorClasses: { text: 'text-ak-status-success' }, icon: CheckCircle };
+      return { label: 'Fullfort', colorClasses: { text: 'text-tier-success' }, icon: CheckCircle };
     case 'in_progress':
-      return { label: 'Pagar', colorClasses: { text: 'text-ak-status-warning' }, icon: Clock };
+      return { label: 'Pagar', colorClasses: { text: 'text-tier-warning' }, icon: Clock };
     case 'pending':
-      return { label: 'Ikke startet', colorClasses: { text: 'text-ak-text-secondary' }, icon: Circle };
+      return { label: 'Ikke startet', colorClasses: { text: 'text-tier-text-secondary' }, icon: Circle };
     default:
-      return { label: status, colorClasses: { text: 'text-ak-text-secondary' }, icon: Circle };
+      return { label: status, colorClasses: { text: 'text-tier-text-secondary' }, icon: Circle };
   }
 };
 
@@ -159,7 +159,7 @@ const AssignmentCard = ({ assignment, onClick }) => {
   return (
     <div
       onClick={() => onClick(assignment)}
-      className={`bg-ak-surface-base rounded-xl py-3.5 px-4 cursor-pointer transition-all shadow-sm hover:-translate-y-0.5 hover:shadow-md border-l-4 ${subjectConfig.colorClasses.border} ${
+      className={`bg-tier-white rounded-xl py-3.5 px-4 cursor-pointer transition-all shadow-sm hover:-translate-y-0.5 hover:shadow-md border-l-4 ${subjectConfig.colorClasses.border} ${
         assignment.status === 'completed' ? 'opacity-70' : ''
       }`}
     >
@@ -169,7 +169,7 @@ const AssignmentCard = ({ assignment, onClick }) => {
             <span className={`text-[10px] font-medium py-0.5 px-1.5 rounded ${subjectConfig.colorClasses.bg} ${subjectConfig.colorClasses.text}`}>
               {assignment.subject}
             </span>
-            <span className="text-[10px] font-medium py-0.5 px-1.5 rounded bg-ak-surface-subtle text-ak-text-secondary">
+            <span className="text-[10px] font-medium py-0.5 px-1.5 rounded bg-tier-surface-base text-tier-text-secondary">
               {assignment.type}
             </span>
           </div>
@@ -180,22 +180,22 @@ const AssignmentCard = ({ assignment, onClick }) => {
 
         <div className="flex flex-col items-end gap-1">
           <div className={`flex items-center gap-1 text-xs font-normal ${
-            isOverdue ? 'text-ak-status-error font-medium' :
-            isUrgent ? 'text-ak-status-warning font-medium' : 'text-ak-text-secondary'
+            isOverdue ? 'text-tier-error font-medium' :
+            isUrgent ? 'text-tier-warning font-medium' : 'text-tier-text-secondary'
           }`}>
             {isOverdue && <AlertCircle size={12} />}
             <Calendar size={12} />
             {formatDueDate(assignment.dueDate)}
           </div>
           {assignment.grade && (
-            <span className="text-xs font-semibold text-ak-status-success">
+            <span className="text-xs font-semibold text-tier-success">
               {assignment.grade}
             </span>
           )}
         </div>
       </div>
 
-      <p className="text-xs text-ak-text-secondary m-0 mb-2 leading-snug">
+      <p className="text-xs text-tier-text-secondary m-0 mb-2 leading-snug">
         {assignment.description}
       </p>
 
@@ -205,7 +205,7 @@ const AssignmentCard = ({ assignment, onClick }) => {
           {statusConfig.label}
         </div>
         {assignment.attachments > 0 && (
-          <div className="flex items-center gap-1 text-[11px] text-ak-text-secondary">
+          <div className="flex items-center gap-1 text-[11px] text-tier-text-secondary">
             <FileText size={12} />
             {assignment.attachments} vedlegg
           </div>
@@ -256,32 +256,33 @@ const SkoleoppgaverContainer = () => {
   };
 
   return (
-    <div className="min-h-screen bg-ak-surface-subtle">
+    <div className="min-h-screen bg-tier-surface-base">
       <PageHeader
         title="Skoleoppgaver"
         subtitle="Hold oversikt over lekser og innleveringer"
+        helpText="Oversikt over alle skoleoppgaver med tidsfrister og status. Filtrer på fag, se prioriterte oppgaver og marker som fullført. Administrer lekser, innleveringer og prøver på ett sted."
       />
 
       <div className="py-4 px-6 pb-6 max-w-[800px] mx-auto">
         {/* Stats */}
         <div className="grid grid-cols-3 gap-2.5 mb-6">
-          <div className="bg-ak-surface-base rounded-xl p-3.5 text-center">
-            <div className="text-2xl font-bold text-ak-primary">
+          <div className="bg-tier-white rounded-xl p-3.5 text-center">
+            <div className="text-2xl font-bold text-tier-navy">
               {stats.total}
             </div>
-            <div className="text-[11px] text-ak-text-secondary">Aktive</div>
+            <div className="text-[11px] text-tier-text-secondary">Aktive</div>
           </div>
-          <div className="bg-ak-surface-base rounded-xl p-3.5 text-center">
-            <div className="text-2xl font-bold text-ak-status-error">
+          <div className="bg-tier-white rounded-xl p-3.5 text-center">
+            <div className="text-2xl font-bold text-tier-error">
               {stats.urgent}
             </div>
-            <div className="text-[11px] text-ak-text-secondary">Haster</div>
+            <div className="text-[11px] text-tier-text-secondary">Haster</div>
           </div>
-          <div className="bg-ak-surface-base rounded-xl p-3.5 text-center">
-            <div className="text-2xl font-bold text-ak-status-success">
+          <div className="bg-tier-white rounded-xl p-3.5 text-center">
+            <div className="text-2xl font-bold text-tier-success">
               {stats.completed}
             </div>
-            <div className="text-[11px] text-ak-text-secondary">Fullfort</div>
+            <div className="text-[11px] text-tier-text-secondary">Fullfort</div>
           </div>
         </div>
 
@@ -295,8 +296,8 @@ const SkoleoppgaverContainer = () => {
                   onClick={() => setStatusFilter(f.key)}
                   className={`py-2 px-3.5 rounded-lg border-none text-[13px] font-medium cursor-pointer transition-colors ${
                     statusFilter === f.key
-                      ? 'bg-ak-primary text-white'
-                      : 'bg-ak-surface-base text-ak-text-primary hover:bg-ak-surface-subtle'
+                      ? 'bg-tier-navy text-white'
+                      : 'bg-tier-white text-tier-navy hover:bg-tier-surface-base'
                   }`}
                 >
                   {f.label}
@@ -316,7 +317,7 @@ const SkoleoppgaverContainer = () => {
                   className={`py-1.5 px-3 rounded-md text-xs font-medium cursor-pointer whitespace-nowrap transition-colors ${
                     isSelected
                       ? `border-2 ${subjectConfig.colorClasses.border} ${subjectConfig.colorClasses.bg} ${subjectConfig.colorClasses.text}`
-                      : 'border border-ak-border-default bg-ak-surface-base text-ak-text-primary hover:bg-ak-surface-subtle'
+                      : 'border border-tier-border-default bg-tier-white text-tier-navy hover:bg-tier-surface-base'
                   }`}
                 >
                   {subject}
@@ -335,11 +336,11 @@ const SkoleoppgaverContainer = () => {
                 onClick={() => handleAssignmentClick(assignment)}
               />
               {selectedAssignment?.id === assignment.id && (
-                <div className={`bg-ak-surface-base rounded-[14px] p-5 -mt-1.5 border-t-[3px] ${getSubjectConfig(assignment.subject).colorClasses.border}`}>
+                <div className={`bg-tier-white rounded-[14px] p-5 -mt-1.5 border-t-[3px] ${getSubjectConfig(assignment.subject).colorClasses.border}`}>
                   <CardTitle className="mb-3">
                     {assignment.title}
                   </CardTitle>
-                  <p className="text-sm text-ak-text-secondary mb-4">
+                  <p className="text-sm text-tier-text-secondary mb-4">
                     {assignment.description}
                   </p>
                   <div className="flex gap-2">

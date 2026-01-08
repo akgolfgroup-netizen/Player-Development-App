@@ -30,7 +30,7 @@ import Card from '../../ui/primitives/Card';
 import Badge from '../../ui/primitives/Badge.primitive';
 import Button from '../../ui/primitives/Button';
 import StateCard from '../../ui/composites/StateCard';
-import { SectionTitle, SubSectionTitle } from '../../components/typography';
+import { SectionTitle, SubSectionTitle } from '../../components/typography/Headings';
 import useTestResults from '../../hooks/useTestResults';
 
 // Lazy load sub-widgets for performance
@@ -127,10 +127,10 @@ const TestResultsContent: React.FC = () => {
           <Card padding="md">
             <div style={styles.statCard}>
               <div style={{ ...styles.statIcon, backgroundColor: 'rgba(34, 197, 94, 0.1)' }}>
-                <Target size={20} color="var(--success)" />
+                <Target size={20} color="var(--status-success)" />
               </div>
               <div style={styles.statContent}>
-                <span style={{ ...styles.statValue, color: 'var(--success)' }}>
+                <span style={{ ...styles.statValue, color: 'var(--status-success)' }}>
                   {passedTests}/{totalTests}
                 </span>
                 <span style={styles.statLabel}>Oppfylt</span>
@@ -242,7 +242,7 @@ const TestResultsContent: React.FC = () => {
                         <div style={styles.testValue}>
                           <span style={{
                             ...styles.currentValue,
-                            color: test.meetsCurrent ? 'var(--success)' : 'var(--warning)',
+                            color: test.meetsCurrent ? 'var(--status-success)' : 'var(--status-warning)',
                           }}>
                             {test.currentValue}{test.unit}
                           </span>
@@ -253,9 +253,9 @@ const TestResultsContent: React.FC = () => {
 
                         <div style={styles.testTrend}>
                           {test.trend === 'improving' ? (
-                            <TrendingUp size={16} color="var(--success)" />
+                            <TrendingUp size={16} color="var(--status-success)" />
                           ) : test.trend === 'declining' ? (
-                            <TrendingDown size={16} color="var(--error)" />
+                            <TrendingDown size={16} color="var(--status-error)" />
                           ) : null}
                           <ChevronRight size={16} color="var(--text-tertiary)" />
                         </div>
@@ -270,7 +270,7 @@ const TestResultsContent: React.FC = () => {
                           width: `${Math.min(100, test.lowerIsBetter
                             ? (test.requirement / test.currentValue) * 100
                             : (test.currentValue / test.requirement) * 100)}%`,
-                          backgroundColor: test.meetsCurrent ? 'var(--success)' : 'var(--accent)',
+                          backgroundColor: test.meetsCurrent ? 'var(--status-success)' : 'var(--accent)',
                         }}
                       />
                     </div>

@@ -140,13 +140,19 @@ export function SessionScreenConnected() {
 
   const handleFinishSession = async () => {
     await completeSession();
+
+    // Calculate actual session duration
+    const durationMinutes = session.startedAt
+      ? Math.round((Date.now() - new Date(session.startedAt).getTime()) / 60000)
+      : 60; // Fallback if startedAt is not set
+
     // Navigate to reflection
     navigation.navigate('Reflection', {
       sessionId,
       sessionSummary: {
         trainingArea: session.trainingArea,
         blockCount: session.blocks.length,
-        durationMinutes: 60, // TODO: Calculate actual duration
+        durationMinutes,
       },
     });
   };

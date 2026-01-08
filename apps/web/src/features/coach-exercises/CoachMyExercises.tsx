@@ -15,7 +15,7 @@ import {
 } from 'lucide-react';
 import { useNavigate } from 'react-router-dom';
 import { exercisesAPI } from '../../services/api';
-import { PageTitle, SubSectionTitle } from '../../components/typography';
+import { PageTitle, SubSectionTitle } from '../../components/typography/Headings';
 
 interface MyExercise {
   id: string;
@@ -125,8 +125,18 @@ export const CoachMyExercises: React.FC = () => {
       try {
         setLoading(true);
         const response = await exercisesAPI.getAll();
-        const data = response.data?.data || response.data || mockMyExercises;
-        setExercises(data);
+        const data = response.data?.data || response.data;
+
+        // Ensure data is an array
+        if (Array.isArray(data)) {
+          setExercises(data);
+        } else if (data && typeof data === 'object' && Array.isArray(data.exercises)) {
+          // Handle case where response is { exercises: [...] }
+          setExercises(data.exercises);
+        } else {
+          // Fallback to mock data
+          setExercises(mockMyExercises);
+        }
       } catch (err: any) {
         setError(err.response?.data?.message || 'Kunne ikke laste øvelser');
         setExercises(mockMyExercises);
@@ -237,7 +247,7 @@ export const CoachMyExercises: React.FC = () => {
               width: '48px',
               height: '48px',
               borderRadius: '12px',
-              background: 'linear-gradient(135deg, var(--warning), var(--warning))',
+              background: 'linear-gradient(135deg, var(--status-warning), var(--status-warning))',
               display: 'flex',
               alignItems: 'center',
               justifyContent: 'center'
@@ -418,7 +428,7 @@ export const CoachMyExercises: React.FC = () => {
                       padding: '2px 8px',
                       borderRadius: '4px',
                       backgroundColor: 'var(--success-muted)',
-                      color: 'var(--success)'
+                      color: 'var(--status-success)'
                     }}>
                       Egen
                     </span>
@@ -545,7 +555,7 @@ export const CoachMyExercises: React.FC = () => {
                           gap: '10px',
                           cursor: 'pointer',
                           fontSize: '13px',
-                          color: 'var(--error)'
+                          color: 'var(--status-error)'
                         }}
                       >
                         <Trash2 size={14} />

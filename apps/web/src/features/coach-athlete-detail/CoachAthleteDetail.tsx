@@ -1,5 +1,5 @@
 /**
- * AK Golf Academy - Coach Athlete Detail
+ * TIER Golf Academy - Coach Athlete Detail
  * Design System v3.0 - Semantic CSS Variables
  *
  * Purpose:
@@ -25,6 +25,8 @@ import { FileText, TrendingUp, ClipboardList, StickyNote, ChevronRight } from "l
 import Button from '../../ui/primitives/Button';
 import Card from '../../ui/primitives/Card';
 import PageHeader from '../../ui/raw-blocks/PageHeader.raw';
+import PageContainer from '../../ui/raw-blocks/PageContainer.raw';
+import { CoachExportButton } from '../../components/export';
 
 //////////////////////////////
 // 2. TYPES
@@ -111,100 +113,60 @@ export default function CoachAthleteDetail({
   };
 
   return (
-    <section
-      aria-label="Athlete detail"
-      style={{
-        minHeight: '100vh',
-        backgroundColor: 'var(--bg-secondary)',
-        fontFamily: "'Inter', -apple-system, BlinkMacSystemFont, system-ui, sans-serif",
-      }}
-    >
-      {/* Header - using PageHeader from design system with Avatar */}
-      <div style={{ display: 'flex', alignItems: 'flex-start', gap: '16px', padding: '0 24px' }}>
-        <Avatar name={athleteName} size={64} />
-        <div style={{ flex: 1 }}>
-          <PageHeader
-            title={athleteName}
-            subtitle="Velg handling nedenfor"
-            onBack={onBack}
-            divider={false}
-          />
-        </div>
-      </div>
-      <div style={{ borderBottom: '1px solid var(--border-default)', marginBottom: '24px' }} />
+    <div className="min-h-screen bg-tier-surface-base">
+      {/* TIER-compliant PageHeader */}
+      <PageHeader
+        title={athleteName}
+        subtitle="Velg handling nedenfor"
+        helpText="Spilleroversikt med tilgang til dokumentasjon, utvikling, treningsplan og notater. Velg en handling for å se detaljert informasjon om spilleren."
+        onBack={onBack}
+        actions={<CoachExportButton playerId={athleteId} />}
+      />
 
-      {/* Navigation Actions */}
-      <div style={{ padding: '24px' }}>
+      <PageContainer paddingY="md" background="base">
+        {/* Avatar Section */}
+        <div className="flex items-center gap-4 mb-6">
+          <Avatar name={athleteName} size={64} />
+          <div className="flex-1">
+            <h2 className="text-2xl font-bold text-tier-navy">{athleteName}</h2>
+            <p className="text-tier-body text-tier-text-secondary mt-1">Velg handling nedenfor</p>
+          </div>
+        </div>
+
+        {/* Navigation Actions */}
+        <div>
         <nav aria-label="Athlete views">
           <Card variant="default" padding="none">
-            <div style={{ overflow: 'hidden' }}>
+            <div className="overflow-hidden">
               {navigationItems.map((item, index) => (
                 <button
                   key={item.id}
                   type="button"
                   onClick={() => handleAction(item.id)}
-                  style={{
-                    width: '100%',
-                    display: 'flex',
-                    alignItems: 'center',
-                    gap: '16px',
-                    padding: '18px 20px',
-                    backgroundColor: 'transparent',
-                    border: 'none',
-                    borderBottom: index < navigationItems.length - 1 ? '1px solid var(--border-default)' : 'none',
-                    cursor: 'pointer',
-                    textAlign: 'left',
-                    transition: 'background-color 0.2s ease',
-                  }}
-                  onMouseEnter={(e) => {
-                    e.currentTarget.style.backgroundColor = 'var(--bg-secondary)';
-                  }}
-                  onMouseLeave={(e) => {
-                    e.currentTarget.style.backgroundColor = 'transparent';
-                  }}
+                  className={`w-full flex items-center gap-4 px-5 py-4 bg-transparent border-none cursor-pointer text-left transition-colors hover:bg-tier-surface-subtle ${
+                    index < navigationItems.length - 1 ? 'border-b border-tier-border-default' : ''
+                  }`}
                 >
-                  <div
-                    style={{
-                      width: 48,
-                      height: 48,
-                      borderRadius: 'var(--radius-md)',
-                      backgroundColor: 'rgba(var(--accent-rgb), 0.1)',
-                      display: 'flex',
-                      alignItems: 'center',
-                      justifyContent: 'center',
-                      flexShrink: 0,
-                    }}
-                  >
-                    <item.icon size={24} style={{ color: 'var(--accent)' }} />
+                  <div className="w-12 h-12 rounded-lg bg-tier-navy/10 flex items-center justify-center shrink-0">
+                    <item.icon size={24} className="text-tier-navy" />
                   </div>
-                  <div style={{ flex: 1 }}>
-                    <span style={{
-                      display: 'block',
-                      fontSize: '15px',
-                      lineHeight: '20px',
-                      fontWeight: 600,
-                      color: 'var(--text-primary)',
-                    }}>
+                  <div className="flex-1">
+                    <span className="block text-[15px] leading-5 font-semibold text-tier-navy">
                       {item.label}
                     </span>
-                    <span style={{
-                      display: 'block',
-                      fontSize: '13px',
-                      lineHeight: '18px',
-                      color: 'var(--text-secondary)',
-                      marginTop: '2px',
-                    }}>
+                    <span className="block text-[13px] leading-[18px] text-tier-text-secondary mt-0.5">
                       {item.description}
                     </span>
                   </div>
-                  <ChevronRight size={20} style={{ color: 'var(--text-secondary)' }} />
+                  <ChevronRight size={20} className="text-tier-text-secondary" />
                 </button>
               ))}
             </div>
           </Card>
         </nav>
-      </div>
-    </section>
+        </div>
+      </PageContainer>
+    </div>
   );
 }
 

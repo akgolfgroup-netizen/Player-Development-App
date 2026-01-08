@@ -9,6 +9,7 @@ import React, { useState } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import { ArrowLeft, AlertCircle } from 'lucide-react';
 import { SectionTitle } from '../../../components/typography';
+import { PageHeader } from '../../../components/layout/PageHeader';
 import Button from '../../../ui/primitives/Button';
 import { testDefinitions, TestDefinition } from '../config/testDefinitions';
 import TestOverviewPage from '../templates/TestOverviewPage';
@@ -58,7 +59,7 @@ const TestDetailPage: React.FC = () => {
           justifyContent: 'center',
           marginBottom: '24px',
         }}>
-          <AlertCircle size={40} color="var(--ak-status-error)" />
+          <AlertCircle size={40} color="rgb(var(--status-error))" />
         </div>
         <SectionTitle style={{ margin: '0 0 8px 0' }}>
           Test ikke funnet
@@ -66,7 +67,7 @@ const TestDetailPage: React.FC = () => {
         <p style={{
           margin: '0 0 24px 0',
           fontSize: '15px',
-          color: 'var(--ak-text-secondary)',
+          color: 'var(--text-secondary)',
           maxWidth: '400px',
         }}>
           Vi kunne ikke finne testen "{testId}". Sjekk at du har riktig URL eller velg en test fra listen.
@@ -131,14 +132,29 @@ const TestDetailPage: React.FC = () => {
   return (
     <div style={{
       minHeight: '100vh',
-      backgroundColor: 'var(--ak-surface-subtle)',
-      padding: '24px',
+      backgroundColor: 'rgb(var(--gray-100))',
     }}>
-      <TestOverviewPage
-        test={test}
-        onSubmit={handleSubmit}
-        onClose={handleClose}
+      <PageHeader
+        title={test.name}
+        subtitle={`Test #${test.testNumber} - ${test.category}`}
+        helpText="Detaljer om denne testen inkludert beskrivelse, instruks joner og registreringsskjema. Fullfør testen ved å fylle inn dine resultater og submit for å lagre i testprotokollen. Se tidligere resultater for å spore fremgang."
+        actions={
+          <Button
+            variant="secondary"
+            onClick={handleClose}
+            leftIcon={<ArrowLeft size={18} />}
+          >
+            Tilbake
+          </Button>
+        }
       />
+      <div style={{ padding: '24px' }}>
+        <TestOverviewPage
+          test={test}
+          onSubmit={handleSubmit}
+          onClose={handleClose}
+        />
+      </div>
     </div>
   );
 };

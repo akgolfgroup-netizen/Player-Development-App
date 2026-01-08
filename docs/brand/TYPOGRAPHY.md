@@ -1,4 +1,4 @@
-# AK Golf Typography
+# TIER Golf Typography
 
 ## Font Families
 

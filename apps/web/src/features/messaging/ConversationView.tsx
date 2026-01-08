@@ -1,5 +1,5 @@
 /**
- * AK Golf Academy - Conversation View
+ * TIER Golf Academy - Conversation View
  * Design System v3.0 - Premium Light
  *
  * Chat-visning for en enkelt samtale.
@@ -23,7 +23,7 @@ import {
   User,
   Info,
 } from 'lucide-react';
-import { SectionTitle } from '../../components/typography';
+import { SectionTitle } from '../../components/typography/Headings';
 
 interface Message {
   id: string;
@@ -97,7 +97,7 @@ export default function ConversationView() {
           name: 'Anders Kristiansen (Trener)',
           groupType: 'coach_player',
           avatarInitials: 'AK',
-          avatarColor: 'var(--ak-status-warning)',
+          avatarColor: 'rgb(var(--status-warning))',
           members: [
             { id: '1', name: 'Anders Kristiansen', type: 'coach', isOnline: true },
           ],
@@ -274,8 +274,8 @@ export default function ConversationView() {
   if (loading) {
     return (
       <div className="p-6 text-center">
-        <div className="w-10 h-10 border-[3px] border-ak-border-default border-t-ak-primary rounded-full mx-auto mb-4 animate-spin" />
-        <p className="text-ak-text-secondary">Laster samtale...</p>
+        <div className="w-10 h-10 border-[3px] border-tier-border-default border-t-tier-navy rounded-full mx-auto mb-4 animate-spin" />
+        <p className="text-tier-text-secondary">Laster samtale...</p>
       </div>
     );
   }
@@ -283,10 +283,10 @@ export default function ConversationView() {
   if (!conversation) {
     return (
       <div className="p-6 text-center">
-        <p className="text-ak-status-error">Samtale ikke funnet</p>
+        <p className="text-tier-error">Samtale ikke funnet</p>
         <Link
           to="/meldinger"
-          className="text-ak-primary mt-4 block"
+          className="text-tier-navy mt-4 block"
         >
           Tilbake til meldinger
         </Link>
@@ -297,10 +297,10 @@ export default function ConversationView() {
   return (
     <div className="flex flex-col h-[calc(100vh-48px)] max-w-[800px] mx-auto">
       {/* Header */}
-      <div className="flex items-center gap-3 p-4 bg-ak-surface-base border-b border-ak-border-default rounded-t-xl">
+      <div className="flex items-center gap-3 p-4 bg-tier-white border-b border-tier-border-default rounded-t-xl">
         <button
           onClick={() => navigate('/meldinger')}
-          className="flex items-center justify-center w-9 h-9 bg-transparent border-none rounded cursor-pointer text-ak-text-primary hover:bg-ak-surface-subtle"
+          className="flex items-center justify-center w-9 h-9 bg-transparent border-none rounded cursor-pointer text-tier-navy hover:bg-tier-surface-base"
         >
           <ArrowLeft size={20} />
         </button>
@@ -313,23 +313,23 @@ export default function ConversationView() {
         </div>
 
         <div className="flex-1">
-          <SectionTitle className="text-[17px] leading-[22px] font-semibold text-ak-text-primary m-0">
+          <SectionTitle className="text-[17px] leading-[22px] font-semibold text-tier-navy m-0">
             {conversation.name}
           </SectionTitle>
           <div className="flex items-center gap-1.5">
             {conversation.groupType === 'team' ? (
-              <Users size={12} className="text-ak-text-secondary" />
+              <Users size={12} className="text-tier-text-secondary" />
             ) : (
-              <User size={12} className="text-ak-text-secondary" />
+              <User size={12} className="text-tier-text-secondary" />
             )}
-            <span className="text-[13px] leading-[18px] text-ak-text-secondary">
+            <span className="text-[13px] leading-[18px] text-tier-text-secondary">
               {conversation.members.length}{' '}
               {conversation.members.length === 1 ? 'medlem' : 'medlemmer'}
             </span>
             {conversation.members.some((m) => m.isOnline) && (
               <>
-                <span className="text-ak-border-default">•</span>
-                <span className="text-[13px] leading-[18px] text-ak-status-success">
+                <span className="text-tier-border-default">•</span>
+                <span className="text-[13px] leading-[18px] text-tier-success">
                   Aktiv nå
                 </span>
               </>
@@ -337,18 +337,18 @@ export default function ConversationView() {
           </div>
         </div>
 
-        <button className="flex items-center justify-center w-9 h-9 bg-transparent border-none rounded cursor-pointer text-ak-text-secondary hover:bg-ak-surface-subtle">
+        <button className="flex items-center justify-center w-9 h-9 bg-transparent border-none rounded cursor-pointer text-tier-text-secondary hover:bg-tier-surface-base">
           <Info size={20} />
         </button>
       </div>
 
       {/* Messages */}
-      <div className="flex-1 overflow-y-auto p-4 bg-ak-surface-subtle">
+      <div className="flex-1 overflow-y-auto p-4 bg-tier-surface-base">
         {Object.entries(groupedMessages).map(([date, dateMessages]: [string, Message[]]) => (
           <div key={date}>
             {/* Date header */}
             <div className="text-center my-4">
-              <span className="text-[13px] leading-[18px] text-ak-text-secondary bg-ak-surface-base py-1 px-3 rounded-full border border-ak-border-default">
+              <span className="text-[13px] leading-[18px] text-tier-text-secondary bg-tier-white py-1 px-3 rounded-full border border-tier-border-default">
                 {formatDateHeader(dateMessages[0].createdAt)}
               </span>
             </div>
@@ -365,14 +365,14 @@ export default function ConversationView() {
                     <div
                       className={`py-2 px-3 rounded-t-lg -mb-1 border-l-[3px] ${
                         message.isOwn
-                          ? 'bg-ak-primary/20 border-l-ak-primary'
-                          : 'bg-ak-surface-elevated border-l-ak-status-warning'
+                          ? 'bg-tier-navy/20 border-l-tier-navy'
+                          : 'bg-tier-white border-l-tier-warning'
                       }`}
                     >
-                      <p className="text-xs leading-4 text-ak-primary font-semibold m-0 mb-0.5">
+                      <p className="text-xs leading-4 text-tier-navy font-semibold m-0 mb-0.5">
                         {message.replyTo.senderName}
                       </p>
-                      <p className="text-[13px] leading-[18px] text-ak-text-secondary m-0">
+                      <p className="text-[13px] leading-[18px] text-tier-text-secondary m-0">
                         {message.replyTo.content}
                       </p>
                     </div>
@@ -382,12 +382,12 @@ export default function ConversationView() {
                   <div
                     className={`py-2.5 px-3.5 ${
                       message.isOwn
-                        ? 'bg-ak-primary text-white'
-                        : 'bg-ak-surface-base text-ak-text-primary shadow-sm'
+                        ? 'bg-tier-navy text-white'
+                        : 'bg-tier-white text-tier-navy shadow-sm'
                     } ${message.replyTo ? 'rounded-b-lg' : 'rounded-lg'}`}
                   >
                     {!message.isOwn && conversation.groupType === 'team' && (
-                      <p className="text-xs leading-4 text-ak-status-warning font-semibold m-0 mb-1">
+                      <p className="text-xs leading-4 text-tier-warning font-semibold m-0 mb-1">
                         {message.senderName}
                       </p>
                     )}
@@ -397,7 +397,7 @@ export default function ConversationView() {
                     <div className="flex items-center justify-end gap-1 mt-1">
                       <span
                         className={`text-xs leading-4 ${
-                          message.isOwn ? 'text-white/70' : 'text-ak-text-secondary'
+                          message.isOwn ? 'text-white/70' : 'text-tier-text-secondary'
                         }`}
                       >
                         {formatTime(message.createdAt)}
@@ -416,7 +416,7 @@ export default function ConversationView() {
                   {!message.isOwn && (
                     <button
                       onClick={() => setReplyingTo(message)}
-                      className="flex items-center gap-1 mt-1 py-1 px-2 bg-transparent border-none rounded text-ak-text-secondary text-xs cursor-pointer hover:bg-ak-surface-base"
+                      className="flex items-center gap-1 mt-1 py-1 px-2 bg-transparent border-none rounded text-tier-text-secondary text-xs cursor-pointer hover:bg-tier-white"
                     >
                       <Reply size={12} />
                       Svar
@@ -432,19 +432,19 @@ export default function ConversationView() {
 
       {/* Reply indicator */}
       {replyingTo && (
-        <div className="flex items-center gap-3 py-2.5 px-4 bg-ak-surface-elevated border-t border-ak-border-default">
-          <Reply size={16} className="text-ak-primary" />
+        <div className="flex items-center gap-3 py-2.5 px-4 bg-tier-white border-t border-tier-border-default">
+          <Reply size={16} className="text-tier-navy" />
           <div className="flex-1">
-            <p className="text-xs leading-4 text-ak-primary font-semibold m-0">
+            <p className="text-xs leading-4 text-tier-navy font-semibold m-0">
               Svarer til {replyingTo.senderName}
             </p>
-            <p className="text-[13px] leading-[18px] text-ak-text-secondary m-0 overflow-hidden text-ellipsis whitespace-nowrap">
+            <p className="text-[13px] leading-[18px] text-tier-text-secondary m-0 overflow-hidden text-ellipsis whitespace-nowrap">
               {replyingTo.content}
             </p>
           </div>
           <button
             onClick={() => setReplyingTo(null)}
-            className="flex items-center justify-center w-7 h-7 bg-transparent border-none rounded cursor-pointer text-ak-text-secondary hover:bg-ak-surface-subtle"
+            className="flex items-center justify-center w-7 h-7 bg-transparent border-none rounded cursor-pointer text-tier-text-secondary hover:bg-tier-surface-base"
           >
             <X size={16} />
           </button>
@@ -452,8 +452,8 @@ export default function ConversationView() {
       )}
 
       {/* Input area */}
-      <div className="flex items-end gap-2.5 py-3 px-4 bg-ak-surface-base border-t border-ak-border-default rounded-b-xl">
-        <button className="flex items-center justify-center w-10 h-10 bg-transparent border-none rounded cursor-pointer text-ak-text-secondary hover:bg-ak-surface-subtle">
+      <div className="flex items-end gap-2.5 py-3 px-4 bg-tier-white border-t border-tier-border-default rounded-b-xl">
+        <button className="flex items-center justify-center w-10 h-10 bg-transparent border-none rounded cursor-pointer text-tier-text-secondary hover:bg-tier-surface-base">
           <Paperclip size={20} />
         </button>
 
@@ -465,7 +465,7 @@ export default function ConversationView() {
             onKeyPress={handleKeyPress}
             placeholder="Skriv en melding..."
             rows={1}
-            className="w-full py-2.5 px-3.5 bg-ak-surface-elevated border border-ak-border-default rounded-lg text-[15px] resize-none outline-none font-[inherit] focus:border-ak-primary"
+            className="w-full py-2.5 px-3.5 bg-tier-white border border-tier-border-default rounded-lg text-[15px] resize-none outline-none font-[inherit] focus:border-tier-navy"
           />
         </div>
 
@@ -474,8 +474,8 @@ export default function ConversationView() {
           disabled={!newMessage.trim() || sending}
           className={`flex items-center justify-center w-10 h-10 border-none rounded-lg text-white transition-colors ${
             newMessage.trim()
-              ? 'bg-ak-primary cursor-pointer hover:bg-ak-primary/90'
-              : 'bg-ak-border-default cursor-not-allowed'
+              ? 'bg-tier-navy cursor-pointer hover:bg-tier-navy/90'
+              : 'bg-tier-border-default cursor-not-allowed'
           }`}
         >
           <Send size={18} />

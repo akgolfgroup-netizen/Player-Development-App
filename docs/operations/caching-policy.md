@@ -2,7 +2,7 @@
 
 ## Overview
 
-This document defines the caching strategy for IUP Golf Academy API and web application.
+This document defines the caching strategy for IUP Golf API and web application.
 
 ---
 

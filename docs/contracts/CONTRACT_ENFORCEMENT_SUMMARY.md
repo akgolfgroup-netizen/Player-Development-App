@@ -2,7 +2,7 @@
 
 ## Kontekst
 
-Golf-treningsapp (AK Golf Academy) med streng produktfilosofi:
+Golf-treningsapp (TIER Golf) med streng produktfilosofi:
 
 - **Ingen gamification** (XP, badges, streaks)
 - **Ingen motivasjonsretorikk** ("Great job!", "Keep it up!")

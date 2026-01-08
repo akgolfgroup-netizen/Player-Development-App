@@ -14,6 +14,7 @@ import { LogIn, AlertCircle, X } from 'lucide-react';
 import { TIERGolfFullLogo } from '../../components/branding/TIERGolfFullLogo';
 import { AuthPage } from '../../ui/components';
 import { Button, Text, Input } from '../../ui/primitives';
+import { OAuthButtons } from '../../components/auth';
 
 // ============================================================================
 // MAIN COMPONENT
@@ -77,6 +78,25 @@ const Login: React.FC = () => {
       setError(result.error ?? 'Innlogging feilet');
     }
     setLoading(false);
+  };
+
+  const handleOAuthSuccess = (data: {
+    accessToken: string;
+    refreshToken: string;
+    user: any;
+  }) => {
+    // Store tokens in localStorage (same as AuthContext does)
+    localStorage.setItem('accessToken', data.accessToken);
+    localStorage.setItem('refreshToken', data.refreshToken);
+    localStorage.setItem('userData', JSON.stringify(data.user));
+
+    // Navigate to appropriate page based on role
+    navigate(getRedirectPath(data.user.role, data.user.onboardingComplete));
+  };
+
+  const handleOAuthError = (error: Error) => {
+    console.error('OAuth error:', error);
+    setError(error.message || 'OAuth innlogging feilet');
   };
 
   const handleDemoLogin = async (role: 'admin' | 'coach' | 'player') => {
@@ -175,6 +195,9 @@ const Login: React.FC = () => {
             {loading ? 'Logger inn...' : 'Logg Inn'}
           </Button>
         </form>
+
+        {/* OAuth Sign-In Buttons */}
+        <OAuthButtons onSuccess={handleOAuthSuccess} onError={handleOAuthError} />
 
         {/* Demo Login Buttons */}
         <div className="mt-8 pt-6 border-t border-tier-border-default">

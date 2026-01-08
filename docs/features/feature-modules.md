@@ -1,4 +1,4 @@
-# IUP Golf Academy - Feature Modules Documentation
+# IUP Golf - Feature Modules Documentation
 
 **Version:** 1.0
 **Last Updated:** 2025-12-20
@@ -19,7 +19,7 @@
 
 ## Overview
 
-The IUP Golf Academy application is organized into **36 feature modules** grouped by user role. Each feature module is self-contained with its own components, state management, and API integrations.
+The IUP Golf application is organized into **36 feature modules** grouped by user role. Each feature module is self-contained with its own components, state management, and API integrations.
 
 ### Architecture Pattern
 - **Component Pattern:** Container/Presenter pattern with hooks
@@ -217,7 +217,7 @@ Features designed specifically for player/athlete users.
 
 **File Path:** `/apps/web/src/features/training/`
 
-**AK Golf Parameters:**
+**TIER Golf Parameters:**
 - **Learning Phase (L1-L5):** Exposure → Automaticity
 - **Club Speed (CS0-CS100):** N/A to Max speed
 - **Setting (S1-S10):** Range → Tournament

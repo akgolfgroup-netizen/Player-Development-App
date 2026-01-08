@@ -1,6 +1,6 @@
 # KOMPARATIV AUDIT: KATEGORI-SYSTEM A-K
 **FØR vs ETTER v2.0**
-**AK Golf Academy × Team Norway Golf**
+**TIER Golf × Team Norway Golf**
 **Dato**: 14. desember 2025
 **Auditor**: Claude Code Analysis
 

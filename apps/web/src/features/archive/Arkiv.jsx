@@ -29,7 +29,7 @@ const Icons = {
 
 // ===== UI COMPONENTS =====
 const Card = ({ children, className = '', padding = true }) => (
-  <div className={`bg-white border border-ak-mist rounded-xl ${padding ? 'p-4' : ''} ${className}`}
+  <div className={`bg-white border border-tier-surface-base rounded-xl ${padding ? 'p-4' : ''} ${className}`}
        style={{ boxShadow: '0 2px 8px rgba(0,0,0,0.06)' }}>
     {children}
   </div>
@@ -58,7 +58,7 @@ const Badge = ({ children, variant = 'neutral', size = 'sm' }) => {
 
 // ===== MAIN COMPONENT =====
 // eslint-disable-next-line no-unused-vars
-const AKGolfArkiv = ({ player: apiPlayer = null, archiveData: apiArchiveData = null }) => {
+const TIERGolfArkiv = ({ player: apiPlayer = null, archiveData: apiArchiveData = null }) => {
   const [searchQuery, setSearchQuery] = useState('');
   const [selectedYear, setSelectedYear] = useState('2025');
   const [expandedFolders, setExpandedFolders] = useState(['planer', 'tester']);
@@ -94,7 +94,7 @@ const AKGolfArkiv = ({ player: apiPlayer = null, archiveData: apiArchiveData = n
       tester: {
         label: 'Testresultater',
         icon: <Icons.BarChart />,
-        color: 'var(--success)',
+        color: 'var(--status-success)',
         documents: [
           { id: 4, name: 'Benchmark Q1', type: 'test', date: '2025-03-15', size: '1.2 MB', score: '14/20' },
           { id: 5, name: 'Benchmark Q2', type: 'test', date: '2025-06-15', size: '1.4 MB', score: '16/20' },
@@ -115,7 +115,7 @@ const AKGolfArkiv = ({ player: apiPlayer = null, archiveData: apiArchiveData = n
       mål: {
         label: 'Målsetninger',
         icon: <Icons.Target />,
-        color: 'var(--warning)',
+        color: 'var(--status-warning)',
         documents: [
           { id: 11, name: 'Mål 2025', type: 'goals', date: '2025-01-01', achieved: '7/10' },
           { id: 12, name: 'Q1 Delmål', type: 'goals', date: '2025-04-01', achieved: '3/3' },
@@ -135,7 +135,7 @@ const AKGolfArkiv = ({ player: apiPlayer = null, archiveData: apiArchiveData = n
       tester: {
         label: 'Testresultater',
         icon: <Icons.BarChart />,
-        color: 'var(--success)',
+        color: 'var(--status-success)',
         documents: [
           { id: 15, name: 'Benchmark Q4 2024', type: 'test', date: '2024-12-01', size: '1.3 MB', score: '12/20' },
           { id: 16, name: 'Benchmark Q3 2024', type: 'test', date: '2024-09-15', size: '1.2 MB', score: '11/20' },
@@ -152,7 +152,7 @@ const AKGolfArkiv = ({ player: apiPlayer = null, archiveData: apiArchiveData = n
       mål: {
         label: 'Målsetninger',
         icon: <Icons.Target />,
-        color: 'var(--warning)',
+        color: 'var(--status-warning)',
         documents: [
           { id: 18, name: 'Mål 2024', type: 'goals', date: '2024-01-01', achieved: '6/8' },
         ],
@@ -170,7 +170,7 @@ const AKGolfArkiv = ({ player: apiPlayer = null, archiveData: apiArchiveData = n
       tester: {
         label: 'Testresultater',
         icon: <Icons.BarChart />,
-        color: 'var(--success)',
+        color: 'var(--status-success)',
         documents: [
           { id: 20, name: 'Benchmark Q4 2023', type: 'test', date: '2023-12-01', size: '1.1 MB', score: '9/20' },
         ],
@@ -184,7 +184,7 @@ const AKGolfArkiv = ({ player: apiPlayer = null, archiveData: apiArchiveData = n
       mål: {
         label: 'Målsetninger',
         icon: <Icons.Target />,
-        color: 'var(--warning)',
+        color: 'var(--status-warning)',
         documents: [
           { id: 21, name: 'Mål 2023', type: 'goals', date: '2023-01-01', achieved: '5/6' },
         ],
@@ -263,22 +263,23 @@ const AKGolfArkiv = ({ player: apiPlayer = null, archiveData: apiArchiveData = n
       <PageHeader
         title="Arkiv"
         subtitle="Historiske dokumenter"
+        helpText="Arkiverte data fra tidligere sesonger og aktiviteter. Søk og gjenopprett historisk informasjon."
       />
 
       <div style={{ padding: '24px', width: '100%' }}>
         {/* Stats Cards */}
         <div className="grid grid-cols-3 gap-4 mb-6">
           <Card className="text-center">
-            <p className="text-[11px] text-ak-steel uppercase tracking-wide mb-1">Totalt dokumenter</p>
-            <p className="text-[28px] font-bold text-ak-primary">{stats.totalDocs}</p>
+            <p className="text-[11px] text-tier-text-secondary uppercase tracking-wide mb-1">Totalt dokumenter</p>
+            <p className="text-[28px] font-bold text-tier-navy">{stats.totalDocs}</p>
           </Card>
           <Card className="text-center">
-            <p className="text-[11px] text-ak-steel uppercase tracking-wide mb-1">Benchmarks</p>
-            <p className="text-[28px] font-bold text-ak-success">{stats.totalTests}</p>
+            <p className="text-[11px] text-tier-text-secondary uppercase tracking-wide mb-1">Benchmarks</p>
+            <p className="text-[28px] font-bold text-tier-success">{stats.totalTests}</p>
           </Card>
           <Card className="text-center">
-            <p className="text-[11px] text-ak-steel uppercase tracking-wide mb-1">Turneringer</p>
-            <p className="text-[28px] font-bold text-ak-gold">{stats.totalTournaments}</p>
+            <p className="text-[11px] text-tier-text-secondary uppercase tracking-wide mb-1">Turneringer</p>
+            <p className="text-[28px] font-bold text-tier-gold">{stats.totalTournaments}</p>
           </Card>
         </div>
 
@@ -287,7 +288,7 @@ const AKGolfArkiv = ({ player: apiPlayer = null, archiveData: apiArchiveData = n
           <div className="hidden lg:block w-64 flex-shrink-0 space-y-4">
             {/* Search */}
             <div className="relative">
-              <div className="absolute left-3 top-1/2 -translate-y-1/2 text-ak-steel">
+              <div className="absolute left-3 top-1/2 -translate-y-1/2 text-tier-text-secondary">
                 <Icons.Search />
               </div>
               <input
@@ -295,14 +296,14 @@ const AKGolfArkiv = ({ player: apiPlayer = null, archiveData: apiArchiveData = n
                 placeholder="Søk i arkiv..."
                 value={searchQuery}
                 onChange={(e) => setSearchQuery(e.target.value)}
-                className="w-full pl-10 pr-4 py-2.5 bg-white border border-ak-mist rounded-xl text-[13px] focus:outline-none focus:ring-2 focus:ring-ak-primary/20"
+                className="w-full pl-10 pr-4 py-2.5 bg-white border border-tier-surface-base rounded-xl text-[13px] focus:outline-none focus:ring-2 focus:ring-tier-navy/20"
               />
             </div>
 
             {/* Year Selector */}
             <Card padding={false}>
-              <div className="p-4 border-b border-ak-mist">
-                <SubSectionTitle className="text-[13px] font-semibold text-ak-charcoal">Velg år</SubSectionTitle>
+              <div className="p-4 border-b border-tier-surface-base">
+                <SubSectionTitle className="text-[13px] font-semibold text-tier-navy">Velg år</SubSectionTitle>
               </div>
               <div className="py-2">
                 {years.map(year => (
@@ -311,8 +312,8 @@ const AKGolfArkiv = ({ player: apiPlayer = null, archiveData: apiArchiveData = n
                     onClick={() => setSelectedYear(year)}
                     className={`w-full flex items-center justify-between px-4 py-2.5 text-left transition-colors ${
                       selectedYear === year
-                        ? 'bg-ak-primary/5 text-ak-primary border-l-2 border-ak-primary'
-                        : 'text-ak-charcoal hover:bg-ak-snow'
+                        ? 'bg-tier-navy/5 text-tier-navy border-l-2 border-tier-navy'
+                        : 'text-tier-navy hover:bg-tier-white'
                     }`}
                   >
                     <span className="text-[14px] font-medium">{year}</span>
@@ -325,23 +326,23 @@ const AKGolfArkiv = ({ player: apiPlayer = null, archiveData: apiArchiveData = n
             </Card>
 
             {/* Quick Info */}
-            <Card className="bg-ak-primary/5 border-ak-primary/10">
-              <CardTitle className="text-[12px] font-semibold text-ak-primary mb-2">Progresjonssammendrag</CardTitle>
+            <Card className="bg-tier-navy/5 border-tier-navy/10">
+              <CardTitle className="text-[12px] font-semibold text-tier-navy mb-2">Progresjonssammendrag</CardTitle>
               <div className="space-y-2 text-[12px]">
                 <div className="flex justify-between">
-                  <span className="text-ak-steel">Benchmark 2023:</span>
-                  <span className="font-medium text-ak-charcoal">9/20</span>
+                  <span className="text-tier-text-secondary">Benchmark 2023:</span>
+                  <span className="font-medium text-tier-navy">9/20</span>
                 </div>
                 <div className="flex justify-between">
-                  <span className="text-ak-steel">Benchmark 2024:</span>
-                  <span className="font-medium text-ak-charcoal">12/20</span>
+                  <span className="text-tier-text-secondary">Benchmark 2024:</span>
+                  <span className="font-medium text-tier-navy">12/20</span>
                 </div>
                 <div className="flex justify-between">
-                  <span className="text-ak-steel">Benchmark 2025:</span>
-                  <span className="font-medium text-ak-success">18/20</span>
+                  <span className="text-tier-text-secondary">Benchmark 2025:</span>
+                  <span className="font-medium text-tier-success">18/20</span>
                 </div>
-                <div className="pt-2 border-t border-ak-primary/10">
-                  <span className="text-ak-success font-semibold">+100% forbedring</span>
+                <div className="pt-2 border-t border-tier-navy/10">
+                  <span className="text-tier-success font-semibold">+100% forbedring</span>
                 </div>
               </div>
             </Card>
@@ -357,8 +358,8 @@ const AKGolfArkiv = ({ player: apiPlayer = null, archiveData: apiArchiveData = n
                   onClick={() => setSelectedYear(year)}
                   className={`flex-shrink-0 px-4 py-2 rounded-lg text-[13px] font-medium transition-colors ${
                     selectedYear === year
-                      ? 'bg-ak-primary text-white'
-                      : 'bg-white text-ak-charcoal border border-ak-mist'
+                      ? 'bg-tier-navy text-white'
+                      : 'bg-white text-tier-navy border border-tier-surface-base'
                   }`}
                 >
                   {year}
@@ -368,7 +369,7 @@ const AKGolfArkiv = ({ player: apiPlayer = null, archiveData: apiArchiveData = n
 
             {/* Year Title */}
             <div className="flex items-center justify-between mb-4">
-              <SectionTitle className="text-[20px] font-bold text-ak-charcoal">Arkiv {selectedYear}</SectionTitle>
+              <SectionTitle className="text-[20px] font-bold text-tier-navy">Arkiv {selectedYear}</SectionTitle>
               <Badge variant={selectedYear === '2025' ? 'success' : 'neutral'} size="md">
                 {selectedYear === '2025' ? 'Aktivt år' : 'Historisk'}
               </Badge>
@@ -385,7 +386,7 @@ const AKGolfArkiv = ({ player: apiPlayer = null, archiveData: apiArchiveData = n
                     {/* Folder Header */}
                     <button
                       onClick={() => toggleFolder(folderId)}
-                      className="w-full flex items-center justify-between p-4 hover:bg-ak-snow transition-colors rounded-t-xl"
+                      className="w-full flex items-center justify-between p-4 hover:bg-tier-white transition-colors rounded-t-xl"
                     >
                       <div className="flex items-center gap-3">
                         <div
@@ -395,31 +396,31 @@ const AKGolfArkiv = ({ player: apiPlayer = null, archiveData: apiArchiveData = n
                           {isExpanded ? <Icons.FolderOpen /> : <Icons.Folder />}
                         </div>
                         <div className="text-left">
-                          <SubSectionTitle className="text-[14px] font-semibold text-ak-charcoal">{folder.label}</SubSectionTitle>
-                          <p className="text-[12px] text-ak-steel">{folder.documents.length} dokumenter</p>
+                          <SubSectionTitle className="text-[14px] font-semibold text-tier-navy">{folder.label}</SubSectionTitle>
+                          <p className="text-[12px] text-tier-text-secondary">{folder.documents.length} dokumenter</p>
                         </div>
                       </div>
-                      <span className="text-ak-steel">
+                      <span className="text-tier-text-secondary">
                         {isExpanded ? <Icons.ChevronDown /> : <Icons.ChevronRight />}
                       </span>
                     </button>
 
                     {/* Documents List */}
                     {isExpanded && filteredDocs.length > 0 && (
-                      <div className="border-t border-ak-mist">
+                      <div className="border-t border-tier-surface-base">
                         {filteredDocs.map((doc, idx) => (
                           <div
                             key={doc.id}
-                            className={`flex items-center justify-between p-4 hover:bg-ak-snow cursor-pointer transition-colors ${
-                              idx !== filteredDocs.length - 1 ? 'border-b border-ak-mist' : ''
+                            className={`flex items-center justify-between p-4 hover:bg-tier-white cursor-pointer transition-colors ${
+                              idx !== filteredDocs.length - 1 ? 'border-b border-tier-surface-base' : ''
                             }`}
                             onClick={() => setSelectedDocument(doc)}
                           >
                             <div className="flex items-center gap-3">
-                              <span className="text-ak-primary">{getDocumentIcon(doc.type)}</span>
+                              <span className="text-tier-navy">{getDocumentIcon(doc.type)}</span>
                               <div>
-                                <CardTitle className="text-[13px] font-medium text-ak-charcoal">{doc.name}</CardTitle>
-                                <div className="flex items-center gap-2 text-[11px] text-ak-steel">
+                                <CardTitle className="text-[13px] font-medium text-tier-navy">{doc.name}</CardTitle>
+                                <div className="flex items-center gap-2 text-[11px] text-tier-text-secondary">
                                   <Icons.Clock />
                                   <span>{formatDate(doc.date)}</span>
                                   {doc.size && (
@@ -452,10 +453,10 @@ const AKGolfArkiv = ({ player: apiPlayer = null, archiveData: apiArchiveData = n
 
                               {/* Actions */}
                               <div className="flex items-center gap-1">
-                                <button className="p-1.5 rounded-lg hover:bg-ak-mist text-ak-steel transition-colors">
+                                <button className="p-1.5 rounded-lg hover:bg-tier-surface-base text-tier-text-secondary transition-colors">
                                   <Icons.Eye />
                                 </button>
-                                <button className="p-1.5 rounded-lg hover:bg-ak-mist text-ak-steel transition-colors">
+                                <button className="p-1.5 rounded-lg hover:bg-tier-surface-base text-tier-text-secondary transition-colors">
                                   <Icons.Download />
                                 </button>
                               </div>
@@ -467,9 +468,9 @@ const AKGolfArkiv = ({ player: apiPlayer = null, archiveData: apiArchiveData = n
 
                     {/* Empty State */}
                     {isExpanded && filteredDocs.length === 0 && (
-                      <div className="p-8 text-center border-t border-ak-mist">
-                        <span className="mb-2 block text-ak-steel"><FolderIcon size={32} /></span>
-                        <p className="text-[13px] text-ak-steel">
+                      <div className="p-8 text-center border-t border-tier-surface-base">
+                        <span className="mb-2 block text-tier-text-secondary"><FolderIcon size={32} /></span>
+                        <p className="text-[13px] text-tier-text-secondary">
                           {searchQuery ? 'Ingen dokumenter matcher søket' : 'Ingen dokumenter i denne mappen'}
                         </p>
                       </div>
@@ -481,10 +482,10 @@ const AKGolfArkiv = ({ player: apiPlayer = null, archiveData: apiArchiveData = n
 
             {/* Timeline View */}
             <Card className="mt-6">
-              <SubSectionTitle className="text-[15px] font-semibold text-ak-charcoal mb-4">Tidslinje {selectedYear}</SubSectionTitle>
+              <SubSectionTitle className="text-[15px] font-semibold text-tier-navy mb-4">Tidslinje {selectedYear}</SubSectionTitle>
               <div className="relative">
                 {/* Timeline line */}
-                <div className="absolute left-4 top-0 bottom-0 w-0.5 bg-ak-mist" />
+                <div className="absolute left-4 top-0 bottom-0 w-0.5 bg-tier-surface-base" />
 
                 <div className="space-y-4">
                   {Object.values(currentYearData)
@@ -494,14 +495,14 @@ const AKGolfArkiv = ({ player: apiPlayer = null, archiveData: apiArchiveData = n
                     .map((doc) => (
                       <div key={doc.id} className="flex gap-4 relative">
                         {/* Timeline dot */}
-                        <div className="w-8 h-8 rounded-full bg-white border-2 border-ak-primary flex items-center justify-center z-10 flex-shrink-0 text-ak-primary">
+                        <div className="w-8 h-8 rounded-full bg-white border-2 border-tier-navy flex items-center justify-center z-10 flex-shrink-0 text-tier-navy">
                           {getDocumentIcon(doc.type, 14)}
                         </div>
 
                         {/* Content */}
                         <div className="flex-1 pb-4">
-                          <p className="text-[11px] text-ak-steel mb-1">{formatDate(doc.date)}</p>
-                          <p className="text-[13px] font-medium text-ak-charcoal">{doc.name}</p>
+                          <p className="text-[11px] text-tier-text-secondary mb-1">{formatDate(doc.date)}</p>
+                          <p className="text-[13px] font-medium text-tier-navy">{doc.name}</p>
                           <div className="flex gap-2 mt-1">
                             {doc.score && <Badge variant="success" size="sm">{doc.score}</Badge>}
                             {doc.result && <Badge variant="achievement" size="sm">{doc.result}</Badge>}
@@ -520,4 +521,4 @@ const AKGolfArkiv = ({ player: apiPlayer = null, archiveData: apiArchiveData = n
   );
 };
 
-export default AKGolfArkiv;
+export default TIERGolfArkiv;

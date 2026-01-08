@@ -1,5 +1,5 @@
 # Kategori- og Treningssystem - Komplett Guide
-> AK Golf Academy & Team Norway Golf Integration
+> TIER Golf & Team Norway Golf Integration
 > Versjon: 2.0 | Dato: 14. desember 2025
 
 ---

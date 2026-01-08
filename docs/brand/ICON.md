@@ -1,4 +1,4 @@
-# AK Golf App Icon
+# TIER Golf App Icon
 
 ## App Icon Specifications
 

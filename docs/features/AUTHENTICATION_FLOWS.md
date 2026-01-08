@@ -1,6 +1,6 @@
 # Authentication Flows
 
-**IUP Golf Academy API**
+**IUP Golf API**
 
 This document provides detailed diagrams and explanations of authentication workflows.
 

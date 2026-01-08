@@ -27,7 +27,7 @@ import {
 import Card from '../../ui/primitives/Card';
 import Badge from '../../ui/primitives/Badge.primitive';
 import Button from '../../ui/primitives/Button';
-import { SectionTitle, SubSectionTitle } from '../../components/typography';
+import { SectionTitle, SubSectionTitle } from '../../components/typography/Headings';
 import useTestResults, { CoachNote, TestResult } from '../../hooks/useTestResults';
 
 // ============================================================================
@@ -55,13 +55,13 @@ const NOTE_TYPE_CONFIG: Record<CoachNote['type'], {
   recommendation: {
     label: 'Anbefaling',
     icon: <Lightbulb size={14} />,
-    color: 'var(--warning)',
+    color: 'var(--status-warning)',
     bgColor: 'var(--bg-warning-subtle)',
   },
   praise: {
     label: 'Ros',
     icon: <Award size={14} />,
-    color: 'var(--success)',
+    color: 'var(--status-success)',
     bgColor: 'var(--bg-success-subtle)',
   },
   focus: {

@@ -15,7 +15,7 @@ import apiClient from '../services/apiClient';
 // Design token values (inline styles)
 const tokenValues = {
   spacing: { xs: '4px', sm: '8px', md: '16px', lg: '24px' },
-  colors: { charcoal: '#1C1C1E', white: '#FFFFFF', primary: '#10456A', mist: '#E5E7EB' },
+  colors: { charcoal: '#1C1C1E', white: 'rgb(var(--tier-white))', primary: '#10456A', mist: '#E5E7EB' },
   borderRadius: { sm: '8px', md: '12px' },
 };
 

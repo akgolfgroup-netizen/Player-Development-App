@@ -30,7 +30,7 @@ import StateCard from '../../ui/composites/StateCard';
 import { useProBenchmark, ApproachSkillData } from '../../hooks/useProBenchmark';
 import { useStrokesGained } from '../../hooks/useStrokesGained';
 import { useScreenView } from '../../analytics/useScreenView';
-import { SectionTitle, SubSectionTitle } from '../../components/typography';
+import { SectionTitle, SubSectionTitle } from '../../components/typography/Headings';
 
 /**
  * BenchmarkPage - Visuelt inspirerende sammenligning med PGA-proffer og amatører
@@ -55,10 +55,10 @@ const BenchmarkPage: React.FC = () => {
   };
 
   const getSGColor = (value: number) => {
-    if (value >= 0.5) return 'var(--success)';
+    if (value >= 0.5) return 'var(--status-success)';
     if (value >= 0) return 'var(--accent)';
-    if (value >= -0.5) return 'var(--warning)';
-    return 'var(--error)';
+    if (value >= -0.5) return 'var(--status-warning)';
+    return 'var(--status-error)';
   };
 
   const getGapToElite = (category: 'total' | 'approach' | 'putting' | 'aroundGreen') => {
@@ -150,7 +150,7 @@ const BenchmarkPage: React.FC = () => {
                       const gap = getGapToElite('total');
                       if (!gap) return '-';
                       return (
-                        <span style={{ color: gap.gap >= 0 ? 'var(--success)' : 'var(--error)' }}>
+                        <span style={{ color: gap.gap >= 0 ? 'var(--status-success)' : 'var(--status-error)' }}>
                           {formatSG(gap.gap)}
                         </span>
                       );
@@ -160,7 +160,7 @@ const BenchmarkPage: React.FC = () => {
                 <div style={styles.gapIndicator}>
                   <span style={styles.gapLabel}>PGA Elite</span>
                   <div style={styles.gapValue}>
-                    <span style={{ color: 'var(--success)' }}>
+                    <span style={{ color: 'var(--status-success)' }}>
                       {formatSG(eliteBenchmarks?.top10.total)}
                     </span>
                   </div>
@@ -185,8 +185,8 @@ const BenchmarkPage: React.FC = () => {
                 />
                 {/* Markers */}
                 <div style={{ ...styles.progressMarker, left: '40%' }} title="Tour Average" />
-                <div style={{ ...styles.progressMarker, left: '70%', backgroundColor: 'var(--warning)' }} title="Top 50" />
-                <div style={{ ...styles.progressMarker, left: '100%', backgroundColor: 'var(--success)' }} title="Top 10" />
+                <div style={{ ...styles.progressMarker, left: '70%', backgroundColor: 'var(--status-warning)' }} title="Top 50" />
+                <div style={{ ...styles.progressMarker, left: '100%', backgroundColor: 'var(--status-success)' }} title="Top 10" />
               </div>
               <div style={styles.progressLabels}>
                 <span>Scratch</span>
@@ -240,7 +240,7 @@ const BenchmarkPage: React.FC = () => {
                     <div style={styles.categoryCardDivider} />
                     <div style={styles.categoryCardStat}>
                       <span style={styles.statLabel}>Elite</span>
-                      <span style={{ ...styles.statValue, color: 'var(--success)' }}>
+                      <span style={{ ...styles.statValue, color: 'var(--status-success)' }}>
                         {formatSG(gap?.eliteValue)}
                       </span>
                     </div>
@@ -249,7 +249,7 @@ const BenchmarkPage: React.FC = () => {
                       <span style={styles.statLabel}>Gap</span>
                       <span style={{
                         ...styles.statValue,
-                        color: (gap?.gap || 0) >= 0 ? 'var(--success)' : 'var(--error)',
+                        color: (gap?.gap || 0) >= 0 ? 'var(--status-success)' : 'var(--status-error)',
                       }}>
                         {formatSG(gap?.gap)}
                       </span>
@@ -294,11 +294,11 @@ const BenchmarkPage: React.FC = () => {
 
             <div style={styles.approachLegend}>
               <div style={styles.legendItem}>
-                <div style={{ ...styles.legendDot, backgroundColor: 'var(--success)' }} />
+                <div style={{ ...styles.legendDot, backgroundColor: 'var(--status-success)' }} />
                 <span>Fairway</span>
               </div>
               <div style={styles.legendItem}>
-                <div style={{ ...styles.legendDot, backgroundColor: 'var(--warning)' }} />
+                <div style={{ ...styles.legendDot, backgroundColor: 'var(--status-warning)' }} />
                 <span>Rough</span>
               </div>
             </div>
@@ -376,7 +376,7 @@ const BenchmarkPage: React.FC = () => {
                     </div>
                     <div style={{
                       ...styles.wagrMove,
-                      color: player.move > 0 ? 'var(--success)' : player.move < 0 ? 'var(--error)' : 'var(--text-tertiary)',
+                      color: player.move > 0 ? 'var(--status-success)' : player.move < 0 ? 'var(--status-error)' : 'var(--text-tertiary)',
                     }}>
                       {player.move > 0 && <TrendingUp size={12} />}
                       {player.move < 0 && <TrendingDown size={12} />}
@@ -414,7 +414,7 @@ const BenchmarkPage: React.FC = () => {
                     </div>
                     <div style={{
                       ...styles.wagrMove,
-                      color: player.move > 0 ? 'var(--success)' : player.move < 0 ? 'var(--error)' : 'var(--text-tertiary)',
+                      color: player.move > 0 ? 'var(--status-success)' : player.move < 0 ? 'var(--status-error)' : 'var(--text-tertiary)',
                     }}>
                       {player.move > 0 && <TrendingUp size={12} />}
                       {player.move < 0 && <TrendingDown size={12} />}
@@ -447,10 +447,10 @@ const BenchmarkPage: React.FC = () => {
 // Approach Distance Card Component
 const ApproachDistanceCard: React.FC<{ skill: ApproachSkillData; index: number }> = ({ skill, index }) => {
   const gradients = [
-    'linear-gradient(135deg, var(--ak-status-success-light) 0%, var(--ak-status-success) 100%)',
-    'linear-gradient(135deg, var(--ak-status-info-light) 0%, var(--ak-status-info) 100%)',
-    'linear-gradient(135deg, var(--ak-primary-light) 0%, var(--ak-primary) 100%)',
-    'linear-gradient(135deg, var(--ak-status-warning-light) 0%, var(--ak-status-warning) 100%)',
+    'linear-gradient(135deg, var(--tier-success/20) 0%, rgb(var(--status-success)) 100%)',
+    'linear-gradient(135deg, var(--tier-info/20) 0%, rgb(var(--status-info)) 100%)',
+    'linear-gradient(135deg, var(--tier-navy-light) 0%, var(--tier-navy) 100%)',
+    'linear-gradient(135deg, var(--status-warning-light) 0%, rgb(var(--status-warning)) 100%)',
   ];
 
   return (
@@ -481,7 +481,7 @@ const ApproachDistanceCard: React.FC<{ skill: ApproachSkillData; index: number }
         </div>
         <div style={styles.approachDivider} />
         <div style={styles.approachLieRow}>
-          <span style={{ ...styles.approachLieLabel, color: 'var(--warning)' }}>Rough</span>
+          <span style={{ ...styles.approachLieLabel, color: 'var(--status-warning)' }}>Rough</span>
           <div style={styles.approachLieStats}>
             <div style={styles.approachLieStat}>
               <span style={styles.approachLieValue}>
@@ -627,7 +627,7 @@ const styles: Record<string, React.CSSProperties> = {
     left: 0,
     top: 0,
     height: '100%',
-    background: 'linear-gradient(90deg, var(--accent) 0%, var(--success) 100%)',
+    background: 'linear-gradient(90deg, var(--accent) 0%, var(--status-success) 100%)',
     borderRadius: '6px',
     transition: 'width 0.5s ease-out',
   },
@@ -767,7 +767,7 @@ const styles: Record<string, React.CSSProperties> = {
   approachLieLabel: {
     fontSize: 'var(--font-size-footnote)',
     fontWeight: 500,
-    color: 'var(--success)',
+    color: 'var(--status-success)',
     minWidth: '50px',
   },
   approachLieStats: {

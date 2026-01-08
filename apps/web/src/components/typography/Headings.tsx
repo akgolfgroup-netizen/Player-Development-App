@@ -31,28 +31,29 @@ interface PageTitleProps extends HeadingProps {
 }
 
 // ============================================================
-// DESIGN TOKENS
+// DESIGN TOKENS - TIER Golf Design System
 // ============================================================
 
 const headingStyles = {
   pageTitle: {
-    fontSize: '20px',
-    fontWeight: 600,
-    color: 'var(--text-primary)',
+    fontSize: '28px',
+    fontWeight: 700,
+    color: 'rgb(var(--tier-navy))',
     margin: 0,
-    lineHeight: 1.3,
+    lineHeight: 1.2,
+    letterSpacing: '-0.02em',
   },
   pageTitleSubtitle: {
-    fontSize: '13px',
+    fontSize: '14px',
     fontWeight: 400,
-    color: 'var(--text-secondary)',
-    margin: '4px 0 0 0',
-    lineHeight: 1.4,
+    color: 'rgb(var(--tier-text-secondary))',
+    margin: '8px 0 0 0',
+    lineHeight: 1.5,
   },
   sectionTitle: {
     fontSize: '20px',
     fontWeight: 600,
-    color: 'var(--text-primary)',
+    color: 'rgb(var(--tier-navy))',
     margin: 0,
     lineHeight: 1.3,
     letterSpacing: '-0.01em',
@@ -60,7 +61,7 @@ const headingStyles = {
   subSectionTitle: {
     fontSize: '16px',
     fontWeight: 600,
-    color: 'var(--text-primary)',
+    color: 'rgb(var(--tier-navy))',
     margin: 0,
     lineHeight: 1.4,
   },
@@ -152,7 +153,7 @@ export const CardTitle: React.FC<HeadingProps> = ({
     style={{
       fontSize: '14px',
       fontWeight: 600,
-      color: 'var(--text-primary)',
+      color: 'rgb(var(--tier-navy))',
       margin: 0,
       lineHeight: 1.4,
       ...style,

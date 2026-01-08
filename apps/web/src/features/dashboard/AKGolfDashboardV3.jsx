@@ -11,7 +11,7 @@ import { CalendarOversiktWidget } from '../calendar-oversikt';
 import { PageTitle, SectionTitle, SubSectionTitle, CardTitle } from '../../components/typography';
 
 /**
- * AKGolfDashboard V3.1 - UX Redesign
+ * TIERGolfDashboard V3.1 - UX Redesign
  *
  * Forbedringer basert på UX-analyse:
  * - P1: Redusert KPI-visning, oppgaver flyttet opp
@@ -83,10 +83,10 @@ const COMPONENT_LABELS = {
 };
 
 const COMPONENT_COLORS = {
-  OTT: 'var(--ak-status-info)',
-  APP: 'var(--ak-status-success)',
-  ARG: 'var(--ak-status-warning)',
-  PUTT: 'var(--ak-session-teknikk)',
+  OTT: 'rgb(var(--status-info))',
+  APP: 'rgb(var(--status-success))',
+  ARG: 'rgb(var(--status-warning))',
+  PUTT: 'rgb(var(--tier-gold))',
 };
 
 // ===== ZONE A COMPONENTS =====
@@ -128,7 +128,7 @@ const FocusCard = ({ focus, loading }) => {
     return (
       <div style={styles.focusCard}>
         <div style={styles.focusCardHeader}>
-          <Crosshair size={16} style={{ color: 'var(--ak-primary)' }} />
+          <Crosshair size={16} style={{ color: 'var(--tier-navy)' }} />
           <span style={styles.focusCardLabel}>Ukens fokus</span>
         </div>
         <SubSectionTitle style={styles.focusCardTitle}>Start din første økt</SubSectionTitle>
@@ -139,7 +139,7 @@ const FocusCard = ({ focus, loading }) => {
     );
   }
 
-  const focusColor = COMPONENT_COLORS[focus.focusComponent] || 'var(--ak-primary)';
+  const focusColor = COMPONENT_COLORS[focus.focusComponent] || 'var(--tier-navy)';
   const focusLabel = COMPONENT_LABELS[focus.focusComponent] || focus.focusComponent;
   const sessionsCompleted = focus.sessionsCompleted || 0;
   const sessionsTarget = focus.sessionsTarget || 4;
@@ -198,10 +198,10 @@ const FocusCard = ({ focus, loading }) => {
         <div style={styles.focusConfidence}>
           <span style={{
             ...styles.focusConfidenceBadge,
-            backgroundColor: focus.confidence === 'high' ? 'var(--ak-status-successMuted)' :
-                           focus.confidence === 'med' ? 'var(--ak-status-warningMuted)' : 'var(--ak-surface-subtle)',
-            color: focus.confidence === 'high' ? 'var(--ak-status-success)' :
-                   focus.confidence === 'med' ? 'var(--ak-status-warning)' : 'var(--ak-text-tertiary)',
+            backgroundColor: focus.confidence === 'high' ? 'var(--status-success-muted)' :
+                           focus.confidence === 'med' ? 'var(--tier-warning/20)' : 'rgb(var(--gray-100))',
+            color: focus.confidence === 'high' ? 'rgb(var(--status-success))' :
+                   focus.confidence === 'med' ? 'rgb(var(--status-warning))' : 'var(--text-tertiary)',
           }}>
             {focus.confidence === 'high' ? 'Sikker anbefaling' :
              focus.confidence === 'med' ? 'Moderat sikkerhet' : 'Begrenset data'}
@@ -288,9 +288,9 @@ const ContextualCTA = ({ focus, upcomingSession, onStart }) => {
  */
 const QuickStartCTA = ({ onStart }) => (
   <button style={styles.quickStartButton} onClick={() => onStart({ type: 'quick', duration: 15 })}>
-    <Zap size={16} style={{ color: 'var(--ak-text-secondary)' }} />
+    <Zap size={16} style={{ color: 'var(--text-secondary)' }} />
     <span>Bare 15 minutter? Start hurtigøkt</span>
-    <ChevronRight size={14} style={{ color: 'var(--ak-text-tertiary)' }} />
+    <ChevronRight size={14} style={{ color: 'var(--text-tertiary)' }} />
   </button>
 );
 
@@ -353,7 +353,7 @@ const WeekAtGlanceCard = ({ stats, loading }) => {
               style={{
                 ...weekStyles.progressFill,
                 width: `${sessionsPercent}%`,
-                backgroundColor: sessionsPercent >= 100 ? 'var(--success)' : 'var(--accent)',
+                backgroundColor: sessionsPercent >= 100 ? 'var(--status-success)' : 'var(--accent)',
               }}
             />
           </div>
@@ -375,7 +375,7 @@ const WeekAtGlanceCard = ({ stats, loading }) => {
               style={{
                 ...weekStyles.progressFill,
                 width: `${hoursPercent}%`,
-                backgroundColor: hoursPercent >= 100 ? 'var(--success)' : 'var(--accent)',
+                backgroundColor: hoursPercent >= 100 ? 'var(--status-success)' : 'var(--accent)',
               }}
             />
           </div>
@@ -394,7 +394,7 @@ const WeekAtGlanceCard = ({ stats, loading }) => {
             <CheckCircle2
               size={16}
               style={{
-                color: stats.sessionsCompleted > 0 ? 'var(--success)' : 'var(--text-tertiary)',
+                color: stats.sessionsCompleted > 0 ? 'var(--status-success)' : 'var(--text-tertiary)',
               }}
             />
             <span style={weekStyles.completedText}>
@@ -560,7 +560,7 @@ const Last7DaysVisualization = ({ calendarEvents, stats }) => {
               <div style={{
                 ...last7Styles.dayIndicator,
                 backgroundColor:
-                  status === 'completed' ? 'var(--success)' :
+                  status === 'completed' ? 'var(--status-success)' :
                   status === 'has-events' ? 'var(--accent)' :
                   status === 'weekend' ? 'var(--background-elevated)' :
                   'var(--background-surface)',
@@ -580,7 +580,7 @@ const Last7DaysVisualization = ({ calendarEvents, stats }) => {
 
       <div style={last7Styles.legend}>
         <div style={last7Styles.legendItem}>
-          <div style={{ ...last7Styles.legendDot, backgroundColor: 'var(--success)' }} />
+          <div style={{ ...last7Styles.legendDot, backgroundColor: 'var(--status-success)' }} />
           <span>Fullført</span>
         </div>
         <div style={last7Styles.legendItem}>
@@ -611,7 +611,7 @@ const TasksList = ({ tasks, onToggle, onViewAll, onStartTask }) => {
     <div style={styles.card}>
       <div style={styles.cardHeader}>
         <div style={styles.cardHeaderLeft}>
-          <Target size={16} style={{ color: 'var(--ak-text-secondary)' }} />
+          <Target size={16} style={{ color: 'var(--text-secondary)' }} />
           <span style={styles.cardTitle}>Dagens oppgaver</span>
         </div>
         {tasks.length > 3 && (
@@ -622,7 +622,7 @@ const TasksList = ({ tasks, onToggle, onViewAll, onStartTask }) => {
       </div>
       {tasks.length === 0 ? (
         <div style={styles.emptyState}>
-          <Sparkles size={24} style={{ color: 'var(--ak-text-tertiary)', marginBottom: 8 }} />
+          <Sparkles size={24} style={{ color: 'var(--text-tertiary)', marginBottom: 8 }} />
           <p>Ingen oppgaver i dag – nyt friheten!</p>
         </div>
       ) : (
@@ -632,14 +632,14 @@ const TasksList = ({ tasks, onToggle, onViewAll, onStartTask }) => {
               key={task.id}
               style={{
                 ...styles.taskItem,
-                backgroundColor: task.completed ? 'var(--ak-status-successMuted)' : 'transparent',
+                backgroundColor: task.completed ? 'var(--status-success-muted)' : 'transparent',
               }}
             >
               <div
                 style={{
                   ...styles.taskCheckbox,
-                  borderColor: task.completed ? 'var(--ak-status-success)' : 'var(--ak-border-default)',
-                  backgroundColor: task.completed ? 'var(--ak-status-success)' : 'transparent',
+                  borderColor: task.completed ? 'rgb(var(--status-success))' : 'rgb(var(--border-color))',
+                  backgroundColor: task.completed ? 'rgb(var(--status-success))' : 'transparent',
                 }}
                 onClick={() => onToggle?.(task.id)}
               >
@@ -652,7 +652,7 @@ const TasksList = ({ tasks, onToggle, onViewAll, onStartTask }) => {
               <span style={{
                 ...styles.taskTitle,
                 textDecoration: task.completed ? 'line-through' : 'none',
-                color: task.completed ? 'var(--ak-text-tertiary)' : 'var(--ak-text-primary)',
+                color: task.completed ? 'var(--text-tertiary)' : 'var(--tier-navy)',
                 flex: 1,
               }}>
                 {task.title}
@@ -672,7 +672,7 @@ const TasksList = ({ tasks, onToggle, onViewAll, onStartTask }) => {
       {tasks.length > 0 && (
         <div style={styles.cardFooterMeta}>
           {completedCount === tasks.length ? (
-            <span style={{ color: 'var(--ak-status-success)' }}>✓ Alle fullført!</span>
+            <span style={{ color: 'rgb(var(--status-success))' }}>✓ Alle fullført!</span>
           ) : (
             `${completedCount} av ${Math.min(tasks.length, 3)} fullført`
           )}
@@ -736,7 +736,7 @@ const ProgressStrip = ({ sessions, hours, streak }) => {
           <div style={{
             ...styles.progressStripFill,
             width: `${sessionsPercent}%`,
-            backgroundColor: sessionsPercent >= 100 ? 'var(--ak-status-success)' : 'var(--ak-primary)',
+            backgroundColor: sessionsPercent >= 100 ? 'rgb(var(--status-success))' : 'var(--tier-navy)',
           }} />
         </div>
       </div>
@@ -753,7 +753,7 @@ const ProgressStrip = ({ sessions, hours, streak }) => {
           <div style={{
             ...styles.progressStripFill,
             width: `${Math.min(hoursPercent, 100)}%`,
-            backgroundColor: hoursPercent >= 100 ? 'var(--ak-status-success)' : 'var(--ak-status-info)',
+            backgroundColor: hoursPercent >= 100 ? 'rgb(var(--status-success))' : 'rgb(var(--status-info))',
           }} />
         </div>
       </div>
@@ -763,7 +763,7 @@ const ProgressStrip = ({ sessions, hours, streak }) => {
         <div style={styles.progressStripStreak}>
           <span style={{
             ...styles.progressStripStreakValue,
-            color: streak >= 7 ? 'var(--ak-status-warning)' : 'var(--ak-text-primary)',
+            color: streak >= 7 ? 'rgb(var(--status-warning))' : 'var(--tier-navy)',
           }}>
             {streak >= 7 ? '🔥' : ''}{streak}
           </span>
@@ -790,7 +790,7 @@ const NotificationsList = ({ notifications, onViewAll }) => {
     <div style={styles.card}>
       <div style={styles.cardHeader}>
         <div style={styles.cardHeaderLeft}>
-          <Bell size={16} style={{ color: 'var(--ak-text-secondary)' }} />
+          <Bell size={16} style={{ color: 'var(--text-secondary)' }} />
           <span style={styles.cardTitle}>Varslinger</span>
           {notifications.length > 0 && (
             <span style={styles.notificationBadge}>{notifications.length}</span>
@@ -820,7 +820,7 @@ const NotificationsList = ({ notifications, onViewAll }) => {
 
 // ===== MAIN DASHBOARD =====
 
-const AKGolfDashboardV3 = () => {
+const TIERGolfDashboardV3 = () => {
   const navigate = useNavigate();
   const { data: dashboardData, loading } = useDashboard();
   const { data: focusData, loading: focusLoading } = useFocus();
@@ -1041,7 +1041,7 @@ const styles = {
   },
   greetingText: {
     fontSize: '12px',
-    color: 'var(--ak-text-tertiary)',
+    color: 'var(--text-tertiary)',
     textTransform: 'uppercase',
     letterSpacing: '0.05em',
     margin: '0 0 4px 0',
@@ -1049,13 +1049,13 @@ const styles = {
   playerName: {
     fontSize: '32px',
     fontWeight: 700,
-    color: 'var(--ak-text-primary)',
+    color: 'var(--tier-navy)',
     margin: '0 0 6px 0',
     letterSpacing: '-0.02em',
   },
   motivationalText: {
     fontSize: '15px',
-    color: 'var(--ak-text-secondary)',
+    color: 'var(--text-secondary)',
     margin: 0,
     fontWeight: 500,
   },
@@ -1063,10 +1063,10 @@ const styles = {
   // FocusCard
   focusCard: {
     padding: '20px',
-    backgroundColor: 'var(--ak-surface-card)',
+    backgroundColor: 'var(--surface-card)',
     borderRadius: '16px',
-    border: '1px solid var(--ak-border-muted)',
-    borderLeft: '4px solid var(--ak-primary)',
+    border: '1px solid rgb(var(--border-muted))',
+    borderLeft: '4px solid var(--tier-navy)',
     boxShadow: '0 2px 8px rgba(0, 0, 0, 0.04)',
   },
   focusCardLoading: {
@@ -1076,7 +1076,7 @@ const styles = {
   },
   focusCardLoadingPulse: {
     height: '16px',
-    backgroundColor: 'var(--ak-surface-subtle)',
+    backgroundColor: 'rgb(var(--gray-100))',
     borderRadius: '4px',
     animation: 'pulse 1.5s ease-in-out infinite',
   },
@@ -1094,7 +1094,7 @@ const styles = {
   focusCardLabel: {
     fontSize: '12px',
     fontWeight: 600,
-    color: 'var(--ak-text-secondary)',
+    color: 'var(--text-secondary)',
     textTransform: 'uppercase',
     letterSpacing: '0.03em',
   },
@@ -1107,13 +1107,13 @@ const styles = {
   focusCardTitle: {
     fontSize: '20px',
     fontWeight: 700,
-    color: 'var(--ak-text-primary)',
+    color: 'var(--tier-navy)',
     margin: '0 0 8px 0',
     letterSpacing: '-0.01em',
   },
   focusCardDescription: {
     fontSize: '14px',
-    color: 'var(--ak-text-secondary)',
+    color: 'var(--text-secondary)',
     margin: '0 0 16px 0',
     lineHeight: 1.5,
   },
@@ -1125,7 +1125,7 @@ const styles = {
   focusProgressTrack: {
     flex: 1,
     height: '6px',
-    backgroundColor: 'var(--ak-surface-subtle)',
+    backgroundColor: 'rgb(var(--gray-100))',
     borderRadius: '3px',
     overflow: 'hidden',
   },
@@ -1136,7 +1136,7 @@ const styles = {
   },
   focusProgressLabel: {
     fontSize: '13px',
-    color: 'var(--ak-text-tertiary)',
+    color: 'var(--text-tertiary)',
     fontWeight: 500,
     whiteSpace: 'nowrap',
   },
@@ -1160,7 +1160,7 @@ const styles = {
     justifyContent: 'space-between',
     width: '100%',
     padding: '16px 20px',
-    backgroundColor: 'var(--ak-primary, #1B4D3E)',
+    backgroundColor: 'rgb(var(--tier-navy))',
     color: 'white',
     border: 'none',
     borderRadius: '14px',
@@ -1203,8 +1203,8 @@ const styles = {
     width: '100%',
     padding: '12px 16px',
     backgroundColor: 'transparent',
-    color: 'var(--ak-text-secondary)',
-    border: '1px dashed var(--ak-border-default)',
+    color: 'var(--text-secondary)',
+    border: '1px dashed rgb(var(--border-color))',
     borderRadius: '10px',
     cursor: 'pointer',
     fontSize: '14px',
@@ -1219,9 +1219,9 @@ const styles = {
     alignItems: 'center',
     gap: '20px',
     padding: '14px 18px',
-    backgroundColor: 'var(--ak-surface-card)',
+    backgroundColor: 'var(--surface-card)',
     borderRadius: '12px',
-    border: '1px solid var(--ak-border-muted)',
+    border: '1px solid rgb(var(--border-muted))',
   },
   progressStripItem: {
     flex: 1,
@@ -1236,17 +1236,17 @@ const styles = {
   progressStripLabel: {
     fontSize: '12px',
     fontWeight: 500,
-    color: 'var(--ak-text-tertiary)',
+    color: 'var(--text-tertiary)',
   },
   progressStripValue: {
     fontSize: '12px',
     fontWeight: 600,
-    color: 'var(--ak-text-secondary)',
+    color: 'var(--text-secondary)',
     fontFeatureSettings: '"tnum"',
   },
   progressStripBar: {
     height: '4px',
-    backgroundColor: 'var(--ak-surface-subtle)',
+    backgroundColor: 'rgb(var(--gray-100))',
     borderRadius: '2px',
     overflow: 'hidden',
   },
@@ -1260,7 +1260,7 @@ const styles = {
     alignItems: 'center',
     gap: '4px',
     paddingLeft: '16px',
-    borderLeft: '1px solid var(--ak-border-muted)',
+    borderLeft: '1px solid rgb(var(--border-muted))',
   },
   progressStripStreakValue: {
     fontSize: '16px',
@@ -1269,7 +1269,7 @@ const styles = {
   },
   progressStripStreakLabel: {
     fontSize: '11px',
-    color: 'var(--ak-text-tertiary)',
+    color: 'var(--text-tertiary)',
     whiteSpace: 'nowrap',
   },
   progressStripEncouragement: {
@@ -1280,14 +1280,14 @@ const styles = {
   progressStripEncouragementText: {
     fontSize: '13px',
     fontWeight: 500,
-    color: 'var(--ak-text-secondary)',
+    color: 'var(--text-secondary)',
   },
 
   // Generic card
   card: {
-    backgroundColor: 'var(--ak-surface-card)',
+    backgroundColor: 'var(--surface-card)',
     borderRadius: '12px',
-    border: '1px solid var(--ak-border-muted)',
+    border: '1px solid rgb(var(--border-muted))',
     overflow: 'hidden',
   },
   cardHeader: {
@@ -1295,7 +1295,7 @@ const styles = {
     alignItems: 'center',
     justifyContent: 'space-between',
     padding: '12px 16px',
-    borderBottom: '1px solid var(--ak-border-muted)',
+    borderBottom: '1px solid rgb(var(--border-muted))',
   },
   cardHeaderLeft: {
     display: 'flex',
@@ -1305,7 +1305,7 @@ const styles = {
   cardTitle: {
     fontSize: '14px',
     fontWeight: 600,
-    color: 'var(--ak-text-primary)',
+    color: 'var(--tier-navy)',
   },
   cardAction: {
     display: 'flex',
@@ -1313,7 +1313,7 @@ const styles = {
     gap: '4px',
     fontSize: '13px',
     fontWeight: 500,
-    color: 'var(--ak-text-secondary)',
+    color: 'var(--text-secondary)',
     backgroundColor: 'transparent',
     border: 'none',
     padding: '4px 8px',
@@ -1325,14 +1325,14 @@ const styles = {
   cardFooterMeta: {
     padding: '10px 16px',
     fontSize: '12px',
-    color: 'var(--ak-text-tertiary)',
-    borderTop: '1px solid var(--ak-border-muted)',
-    backgroundColor: 'var(--ak-surface-subtle)',
+    color: 'var(--text-tertiary)',
+    borderTop: '1px solid rgb(var(--border-muted))',
+    backgroundColor: 'rgb(var(--gray-100))',
   },
   emptyState: {
     padding: '24px 16px',
     textAlign: 'center',
-    color: 'var(--ak-text-tertiary)',
+    color: 'var(--text-tertiary)',
     fontSize: '14px',
     display: 'flex',
     flexDirection: 'column',
@@ -1349,7 +1349,7 @@ const styles = {
     alignItems: 'center',
     gap: '12px',
     padding: '12px 16px',
-    borderBottom: '1px solid var(--ak-border-muted)',
+    borderBottom: '1px solid rgb(var(--border-muted))',
     transition: 'background-color 0.15s ease',
   },
   taskCheckbox: {
@@ -1373,8 +1373,8 @@ const styles = {
     padding: '4px 10px',
     fontSize: '12px',
     fontWeight: 600,
-    color: 'var(--ak-primary)',
-    backgroundColor: 'var(--ak-primaryMuted)',
+    color: 'var(--tier-navy)',
+    backgroundColor: 'var(--tier-navy/20)',
     border: 'none',
     borderRadius: '6px',
     cursor: 'pointer',
@@ -1385,8 +1385,8 @@ const styles = {
   notificationBadge: {
     fontSize: '11px',
     fontWeight: 600,
-    color: 'var(--ak-primary)',
-    backgroundColor: 'var(--ak-primaryMuted)',
+    color: 'var(--tier-navy)',
+    backgroundColor: 'var(--tier-navy/20)',
     padding: '2px 8px',
     borderRadius: '10px',
   },
@@ -1399,13 +1399,13 @@ const styles = {
     alignItems: 'flex-start',
     gap: '12px',
     padding: '12px 16px',
-    borderBottom: '1px solid var(--ak-border-muted)',
+    borderBottom: '1px solid rgb(var(--border-muted))',
   },
   notificationDot: {
     width: '8px',
     height: '8px',
     borderRadius: '50%',
-    backgroundColor: 'var(--ak-primary)',
+    backgroundColor: 'var(--tier-navy)',
     marginTop: '6px',
     flexShrink: 0,
   },
@@ -1416,12 +1416,12 @@ const styles = {
   notificationTitle: {
     fontSize: '14px',
     fontWeight: 500,
-    color: 'var(--ak-text-primary)',
+    color: 'var(--tier-navy)',
     margin: 0,
   },
   notificationMessage: {
     fontSize: '13px',
-    color: 'var(--ak-text-secondary)',
+    color: 'var(--text-secondary)',
     margin: '2px 0 0 0',
     overflow: 'hidden',
     textOverflow: 'ellipsis',
@@ -1429,7 +1429,7 @@ const styles = {
   },
   notificationTime: {
     fontSize: '12px',
-    color: 'var(--ak-text-tertiary)',
+    color: 'var(--text-tertiary)',
     flexShrink: 0,
   },
 };
@@ -1437,9 +1437,9 @@ const styles = {
 // ===== WEEK AT GLANCE STYLES =====
 const weekStyles = {
   card: {
-    backgroundColor: 'var(--background-white, var(--ak-surface-card))',
+    backgroundColor: 'var(--background-white, var(--surface-card))',
     borderRadius: '16px',
-    border: '1px solid var(--border-subtle, var(--ak-border-muted))',
+    border: '1px solid var(--border-subtle, rgb(var(--border-muted)))',
     padding: '20px 24px',
     boxShadow: '0 2px 8px rgba(0, 0, 0, 0.04)',
     height: '100%',
@@ -1458,14 +1458,14 @@ const weekStyles = {
   cardTitle: {
     fontSize: '16px',
     fontWeight: 600,
-    color: 'var(--text-primary, var(--ak-text-primary))',
+    color: 'var(--text-primary, var(--tier-navy))',
   },
   streakBadge: {
     display: 'flex',
     alignItems: 'center',
     gap: '6px',
     padding: '6px 12px',
-    backgroundColor: 'var(--background-surface, var(--ak-surface-subtle))',
+    backgroundColor: 'var(--background-surface, rgb(var(--gray-100)))',
     borderRadius: '20px',
   },
   streakIcon: {
@@ -1474,7 +1474,7 @@ const weekStyles = {
   streakValue: {
     fontSize: '13px',
     fontWeight: 600,
-    color: 'var(--text-primary, var(--ak-text-primary))',
+    color: 'var(--text-primary, var(--tier-navy))',
   },
   metricsGrid: {
     display: 'grid',
@@ -1494,17 +1494,17 @@ const weekStyles = {
   metricLabel: {
     fontSize: '13px',
     fontWeight: 500,
-    color: 'var(--text-secondary, var(--ak-text-secondary))',
+    color: 'var(--text-secondary, var(--text-secondary))',
   },
   metricValue: {
     fontSize: '14px',
     fontWeight: 600,
-    color: 'var(--text-primary, var(--ak-text-primary))',
+    color: 'var(--text-primary, var(--tier-navy))',
     fontFeatureSettings: '"tnum"',
   },
   progressTrack: {
     height: '8px',
-    backgroundColor: 'var(--background-surface, var(--ak-surface-subtle))',
+    backgroundColor: 'var(--background-surface, rgb(var(--gray-100)))',
     borderRadius: '4px',
     overflow: 'hidden',
   },
@@ -1515,7 +1515,7 @@ const weekStyles = {
   },
   metricSubtext: {
     fontSize: '12px',
-    color: 'var(--text-tertiary, var(--ak-text-tertiary))',
+    color: 'var(--text-tertiary, var(--text-tertiary))',
   },
   completedIndicator: {
     display: 'flex',
@@ -1525,7 +1525,7 @@ const weekStyles = {
   },
   completedText: {
     fontSize: '13px',
-    color: 'var(--text-secondary, var(--ak-text-secondary))',
+    color: 'var(--text-secondary, var(--text-secondary))',
   },
   loadingGrid: {
     display: 'grid',
@@ -1534,7 +1534,7 @@ const weekStyles = {
   },
   loadingPulse: {
     height: '60px',
-    backgroundColor: 'var(--background-surface, var(--ak-surface-subtle))',
+    backgroundColor: 'var(--background-surface, rgb(var(--gray-100)))',
     borderRadius: '8px',
     animation: 'pulse 1.5s ease-in-out infinite',
   },
@@ -1543,9 +1543,9 @@ const weekStyles = {
 // ===== BADGES & SCORE STYLES =====
 const badgeStyles = {
   card: {
-    backgroundColor: 'var(--background-white, var(--ak-surface-card))',
+    backgroundColor: 'var(--background-white, var(--surface-card))',
     borderRadius: '16px',
-    border: '1px solid var(--border-subtle, var(--ak-border-muted))',
+    border: '1px solid var(--border-subtle, rgb(var(--border-muted)))',
     padding: '20px 24px',
     boxShadow: '0 2px 8px rgba(0, 0, 0, 0.04)',
     height: '100%',
@@ -1561,7 +1561,7 @@ const badgeStyles = {
   cardTitle: {
     fontSize: '16px',
     fontWeight: 600,
-    color: 'var(--text-primary, var(--ak-text-primary))',
+    color: 'var(--text-primary, var(--tier-navy))',
   },
   content: {
     display: 'flex',
@@ -1578,7 +1578,7 @@ const badgeStyles = {
     width: '44px',
     height: '44px',
     borderRadius: '12px',
-    backgroundColor: 'var(--background-elevated, var(--ak-surface-subtle))',
+    backgroundColor: 'var(--background-elevated, rgb(var(--gray-100)))',
     display: 'flex',
     alignItems: 'center',
     justifyContent: 'center',
@@ -1590,14 +1590,14 @@ const badgeStyles = {
   rankLabel: {
     fontSize: '11px',
     fontWeight: 500,
-    color: 'var(--text-tertiary, var(--ak-text-tertiary))',
+    color: 'var(--text-tertiary, var(--text-tertiary))',
     textTransform: 'uppercase',
     letterSpacing: '0.03em',
   },
   rankName: {
     fontSize: '18px',
     fontWeight: 700,
-    color: 'var(--text-primary, var(--ak-text-primary))',
+    color: 'var(--text-primary, var(--tier-navy))',
   },
   xpSection: {
     display: 'flex',
@@ -1612,17 +1612,17 @@ const badgeStyles = {
   xpLabel: {
     fontSize: '13px',
     fontWeight: 600,
-    color: 'var(--text-primary, var(--ak-text-primary))',
+    color: 'var(--text-primary, var(--tier-navy))',
   },
   xpValue: {
     fontSize: '13px',
     fontWeight: 500,
-    color: 'var(--text-secondary, var(--ak-text-secondary))',
+    color: 'var(--text-secondary, var(--text-secondary))',
     fontFeatureSettings: '"tnum"',
   },
   xpTrack: {
     height: '6px',
-    backgroundColor: 'var(--background-surface, var(--ak-surface-subtle))',
+    backgroundColor: 'var(--background-surface, rgb(var(--gray-100)))',
     borderRadius: '3px',
     overflow: 'hidden',
   },
@@ -1634,14 +1634,14 @@ const badgeStyles = {
   },
   xpSubtext: {
     fontSize: '11px',
-    color: 'var(--text-tertiary, var(--ak-text-tertiary))',
+    color: 'var(--text-tertiary, var(--text-tertiary))',
   },
   badgesSection: {
     display: 'flex',
     alignItems: 'center',
     gap: '12px',
     paddingTop: '8px',
-    borderTop: '1px solid var(--border-subtle, var(--ak-border-muted))',
+    borderTop: '1px solid var(--border-subtle, rgb(var(--border-muted)))',
     marginTop: 'auto',
   },
   badgesStat: {
@@ -1652,12 +1652,12 @@ const badgeStyles = {
   badgesCount: {
     fontSize: '20px',
     fontWeight: 700,
-    color: 'var(--text-primary, var(--ak-text-primary))',
+    color: 'var(--text-primary, var(--tier-navy))',
     fontFeatureSettings: '"tnum"',
   },
   badgesLabel: {
     fontSize: '12px',
-    color: 'var(--text-secondary, var(--ak-text-secondary))',
+    color: 'var(--text-secondary, var(--text-secondary))',
   },
   badgeEmoji: {
     fontSize: '20px',
@@ -1673,9 +1673,9 @@ const badgeStyles = {
 // ===== LAST 7 DAYS STYLES =====
 const last7Styles = {
   container: {
-    backgroundColor: 'var(--background-white, var(--ak-surface-card))',
+    backgroundColor: 'var(--background-white, var(--surface-card))',
     borderRadius: '16px',
-    border: '1px solid var(--border-subtle, var(--ak-border-muted))',
+    border: '1px solid var(--border-subtle, rgb(var(--border-muted)))',
     padding: '16px 24px',
     boxShadow: '0 2px 8px rgba(0, 0, 0, 0.04)',
   },
@@ -1688,7 +1688,7 @@ const last7Styles = {
   title: {
     fontSize: '14px',
     fontWeight: 600,
-    color: 'var(--text-primary, var(--ak-text-primary))',
+    color: 'var(--text-primary, var(--tier-navy))',
   },
   stripContainer: {
     display: 'flex',
@@ -1728,14 +1728,14 @@ const last7Styles = {
     gap: '20px',
     marginTop: '16px',
     paddingTop: '12px',
-    borderTop: '1px solid var(--border-subtle, var(--ak-border-muted))',
+    borderTop: '1px solid var(--border-subtle, rgb(var(--border-muted)))',
   },
   legendItem: {
     display: 'flex',
     alignItems: 'center',
     gap: '6px',
     fontSize: '11px',
-    color: 'var(--text-tertiary, var(--ak-text-tertiary))',
+    color: 'var(--text-tertiary, var(--text-tertiary))',
   },
   legendDot: {
     width: '10px',
@@ -1753,4 +1753,4 @@ const last7Styles = {
 //   .metricsGrid { grid-template-columns: 1fr; }
 // }
 
-export default AKGolfDashboardV3;
+export default TIERGolfDashboardV3;

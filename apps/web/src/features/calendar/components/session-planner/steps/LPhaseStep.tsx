@@ -18,11 +18,11 @@ interface LPhaseStepProps {
 }
 
 const PHASE_ICONS: Record<LPhase, string> = {
-  'L-KROPP': '🧍',
-  'L-ARM': '💪',
-  'L-KØLLE': '🏌️',
-  'L-BALL': '⛳',
-  'L-AUTO': '🚀',
+  'L-KROPP': '',
+  'L-ARM': '',
+  'L-KØLLE': '',
+  'L-BALL': '',
+  'L-AUTO': '',
 };
 
 export const LPhaseStep: React.FC<LPhaseStepProps> = ({ planner }) => {
@@ -33,10 +33,10 @@ export const LPhaseStep: React.FC<LPhaseStepProps> = ({ planner }) => {
   return (
     <div className="space-y-4">
       <div>
-        <SubSectionTitle className="text-sm font-medium mb-1 text-ak-text-secondary">
+        <SubSectionTitle className="text-sm font-medium mb-1 text-tier-text-secondary">
           Læringsfase
         </SubSectionTitle>
-        <p className="text-xs text-ak-text-tertiary">
+        <p className="text-xs text-tier-text-tertiary">
           Velg hvor du er i læringsprosessen
         </p>
       </div>
@@ -53,8 +53,8 @@ export const LPhaseStep: React.FC<LPhaseStepProps> = ({ planner }) => {
               onClick={() => setLPhase(key)}
               className={`w-full flex items-center gap-3 p-4 rounded-xl transition-all duration-200 border-2 ${
                 isSelected
-                  ? 'bg-ak-primary/10 border-ak-primary'
-                  : 'bg-ak-surface-subtle border-transparent'
+                  ? 'bg-tier-navy/10 border-tier-navy'
+                  : 'bg-tier-surface-base border-transparent'
               }`}
             >
               {/* Icon */}
@@ -64,24 +64,24 @@ export const LPhaseStep: React.FC<LPhaseStepProps> = ({ planner }) => {
               <div className="flex-1 text-left">
                 <span
                   className={`font-medium text-sm block ${
-                    isSelected ? 'text-ak-primary' : 'text-ak-text-primary'
+                    isSelected ? 'text-tier-navy' : 'text-tier-navy'
                   }`}
                 >
                   {value.label}
                 </span>
-                <span className="text-xs text-ak-text-tertiary">
+                <span className="text-xs text-tier-text-tertiary">
                   {value.description}
                 </span>
               </div>
 
               {/* CS range badge */}
               {csRange && (
-                <span className="px-2 py-1 rounded text-xs font-medium bg-ak-surface-base text-ak-text-secondary">
+                <span className="px-2 py-1 rounded text-xs font-medium bg-tier-white text-tier-text-secondary">
                   CS{csRange.min}-{csRange.max}
                 </span>
               )}
               {!csRange && (
-                <span className="px-2 py-1 rounded text-xs font-medium bg-ak-surface-base text-ak-text-tertiary">
+                <span className="px-2 py-1 rounded text-xs font-medium bg-tier-white text-tier-text-tertiary">
                   CS0
                 </span>
               )}
@@ -91,9 +91,9 @@ export const LPhaseStep: React.FC<LPhaseStepProps> = ({ planner }) => {
       </div>
 
       {/* Progression hint */}
-      <div className="flex items-center gap-2 p-3 rounded-lg bg-ak-status-info/10">
-        <span className="text-sm text-ak-status-info">💡</span>
-        <span className="text-xs text-ak-status-info">
+      <div className="flex items-center gap-2 p-3 rounded-lg bg-tier-info/10">
+        <span className="text-sm text-tier-info">💡</span>
+        <span className="text-xs text-tier-info">
           Start med L-KROPP for nye bevegelser, og jobb deg oppover til L-AUTO
         </span>
       </div>

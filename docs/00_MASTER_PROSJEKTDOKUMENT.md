@@ -1,9 +1,9 @@
 # MASTER PROSJEKTDOKUMENT
-## AK Golf Academy × Team Norway Golf - IUP System
+## TIER Golf × Team Norway Golf - IUP System
 
 **Versjon**: 3.0
 **Sist oppdatert**: 2. januar 2026
-**Eier**: Anders Knutsen - AK Golf Academy
+**Eier**: Anders Knutsen - TIER Golf
 **Neste milestone**: Spania treningssamling 3-10. januar 2026
 
 ---
@@ -163,7 +163,7 @@ npm start
 - 11-nivå kategorisystem fra A-K (OWGR/Rolex World Top 150 til junior klubbspillere)
 
 **Samarbeidspartnere**:
-- **AK Golf Academy** - Hovedaktør og metodikkutvikler
+- **TIER Golf** - Hovedaktør og metodikkutvikler
 - **Team Norway Golf** - Nasjonalt rammeverk og testprotokoller
 - **WANG Toppidrett Fredrikstad** - Utdanningspartner
 - **GFGK (Gamle Fredrikstad Golfklubb)** - Hjemklubb
@@ -175,7 +175,7 @@ npm start
 - Tidlig spesialisering før 12 år gir **3.76x høyere** utbrenningsrisiko
 - Multi-sport deltakelse før 12 år anbefales sterkt
 
-### AK Golf Academy metodikk
+### TIER Golf metodikk
 
 **Fem-prosess pyramide**:
 1. **Teknisk** - Swing, slag-produksjon, ball-striking

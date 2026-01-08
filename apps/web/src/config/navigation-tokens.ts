@@ -1,6 +1,6 @@
 /**
  * ============================================================
- * NAVIGATION DESIGN TOKENS - AK Golf Academy
+ * NAVIGATION DESIGN TOKENS - TIER Golf Academy
  * ============================================================
  *
  * Fargepalett og design tokens for fargekodet navigasjon.
@@ -13,69 +13,69 @@
  * Farger for hvert hovedområde
  */
 export const navigationColors = {
-  // Dashboard - Brand green (default)
+  // Dashboard - TIER Navy (default)
   dashboard: {
-    primary: '#1B4D3E',
-    light: '#2A6B55',
-    dark: '#133629',
-    surface: '#F5F7F9',
-    surfaceHover: '#EEF1F4',
-    text: '#111827',
-    textMuted: '#6B7280',
-    border: '#E5E7EB',
-    accent: '#B8860B', // Gold accent
+    primary: 'rgb(var(--tier-navy))',
+    light: 'rgb(var(--tier-navy-light))',
+    dark: 'rgb(var(--tier-navy-dark))',
+    surface: 'rgb(var(--surface-secondary))',
+    surfaceHover: 'rgb(var(--surface-elevated))',
+    text: 'rgb(var(--text-primary))',
+    textMuted: 'rgb(var(--text-secondary))',
+    border: 'rgb(var(--border-light))',
+    accent: 'rgb(var(--tier-gold))', // TIER Gold accent
   },
 
-  // Trening - Green (aktivitet, logging)
+  // Trening - Success Green (aktivitet, logging)
   trening: {
-    primary: '#059669',
-    light: '#10B981',
-    dark: '#047857',
-    surface: '#ECFDF5',
-    surfaceHover: '#D1FAE5',
-    text: '#064E3B',
-    textMuted: '#047857',
-    border: '#A7F3D0',
-    accent: '#34D399',
+    primary: 'rgb(var(--status-success))',
+    light: 'rgb(var(--status-success-light))',
+    dark: 'rgb(var(--status-success-dark))',
+    surface: 'rgb(var(--surface-tertiary))',
+    surfaceHover: 'rgb(var(--surface-elevated))',
+    text: 'rgb(var(--text-primary))',
+    textMuted: 'rgb(var(--text-secondary))',
+    border: 'rgb(var(--border-light))',
+    accent: 'rgb(var(--status-success-light))',
   },
 
-  // Utvikling - Blue (fremgang, statistikk)
+  // Utvikling - Info Blue (fremgang, statistikk)
   utvikling: {
-    primary: '#0284C7',
-    light: '#0EA5E9',
-    dark: '#0369A1',
-    surface: '#F0F9FF',
-    surfaceHover: '#E0F2FE',
-    text: '#0C4A6E',
-    textMuted: '#0369A1',
-    border: '#BAE6FD',
-    accent: '#38BDF8',
+    primary: 'rgb(var(--status-info))',
+    light: 'rgb(var(--status-info-light))',
+    dark: 'rgb(var(--status-info-dark))',
+    surface: 'rgb(var(--surface-tertiary))',
+    surfaceHover: 'rgb(var(--surface-elevated))',
+    text: 'rgb(var(--text-primary))',
+    textMuted: 'rgb(var(--text-secondary))',
+    border: 'rgb(var(--border-light))',
+    accent: 'rgb(var(--status-info-light))',
   },
 
-  // Plan - Amber (kalender, mål)
+  // Plan - Warning Amber (kalender, mål)
   plan: {
-    primary: '#D97706',
-    light: '#F59E0B',
-    dark: '#B45309',
-    surface: '#FFFBEB',
-    surfaceHover: '#FEF3C7',
-    text: '#78350F',
-    textMuted: '#92400E',
-    border: '#FCD34D',
-    accent: '#FBBF24',
+    primary: 'rgb(var(--status-warning))',
+    light: 'rgb(var(--status-warning-light))',
+    dark: 'rgb(var(--status-warning-dark))',
+    surface: 'rgb(var(--surface-tertiary))',
+    surfaceHover: 'rgb(var(--surface-elevated))',
+    text: 'rgb(var(--text-primary))',
+    textMuted: 'rgb(var(--text-secondary))',
+    border: 'rgb(var(--border-light))',
+    accent: 'rgb(var(--status-warning))',
   },
 
-  // Mer - Purple (profil, innstillinger)
+  // Mer - Category J Purple (profil, innstillinger)
   mer: {
-    primary: '#7C3AED',
-    light: '#8B5CF6',
-    dark: '#6D28D9',
-    surface: '#F5F3FF',
-    surfaceHover: '#EDE9FE',
-    text: '#4C1D95',
-    textMuted: '#5B21B6',
-    border: '#C4B5FD',
-    accent: '#A78BFA',
+    primary: 'rgb(var(--category-j))',
+    light: 'rgb(var(--category-k))',
+    dark: 'rgb(var(--category-j))',
+    surface: 'rgb(var(--category-j-bg))',
+    surfaceHover: 'rgb(var(--surface-elevated))',
+    text: 'rgb(var(--text-primary))',
+    textMuted: 'rgb(var(--text-secondary))',
+    border: 'rgb(var(--border-light))',
+    accent: 'rgb(var(--category-k))',
   },
 } as const;
 

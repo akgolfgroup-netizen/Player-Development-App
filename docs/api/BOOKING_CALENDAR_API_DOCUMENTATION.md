@@ -969,4 +969,4 @@ Breaking changes will increment the version number.
 
 **Last Updated:** 2025-12-15
 **API Version:** 1.0
-**Maintainer:** IUP Golf Academy Development Team
+**Maintainer:** IUP Golf Development Team

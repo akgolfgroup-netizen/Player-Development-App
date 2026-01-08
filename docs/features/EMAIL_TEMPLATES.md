@@ -1,6 +1,6 @@
 # Email Templates
 
-**IUP Golf Academy API - Email System Documentation**
+**IUP Golf API - Email System Documentation**
 
 This document provides comprehensive information about the email template system, including available templates, usage examples, and testing procedures.
 
@@ -20,7 +20,7 @@ This document provides comprehensive information about the email template system
 
 ## Overview
 
-The IUP Golf Academy API includes a comprehensive email template system built with:
+The IUP Golf API includes a comprehensive email template system built with:
 
 - **Handlebars** templating engine for dynamic content
 - **Nodemailer** for email delivery
@@ -65,7 +65,7 @@ await emailService.sendWelcomeEmail('user@example.com', {
   firstName: 'John',
   email: 'john@example.com',
   role: 'coach',
-  organizationName: 'Demo Golf Academy'
+  organizationName: 'Demo Golf'
 });
 ```
 
@@ -573,7 +573,7 @@ SMTP_USER=your-email@gmail.com
 SMTP_PASSWORD=your-app-password
 
 # From Address
-SMTP_FROM=IUP Golf Academy <noreply@iup-golf.com>
+SMTP_FROM=IUP Golf <noreply@iup-golf.com>
 ```
 
 ### Popular SMTP Providers

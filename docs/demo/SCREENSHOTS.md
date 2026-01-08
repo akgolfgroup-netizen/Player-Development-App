@@ -1,4 +1,4 @@
-# Screenshots Liste - IUP Golf Academy Demo
+# Screenshots Liste - IUP Golf Demo
 
 Komplett liste over screenshots som trengs for demo-presentasjonen.
 
@@ -263,7 +263,7 @@ Ctrl + Shift + M (Windows)
 
 **Hva vise:**
 - [ ] Login form (email + password felter)
-- [ ] "IUP Golf Academy" logo/tittel
+- [ ] "IUP Golf" logo/tittel
 - [ ] "Logg inn" button
 - [ ] "Glemt passord?" link (hvis implementert)
 - [ ] Clean, profesjonell design
@@ -279,7 +279,7 @@ Ctrl + Shift + M (Windows)
 **Filnavn:** `15-problem-excel-mockup.png`
 
 **Hva lage:**
-- [ ] Excel-ark med treningsplan (før IUP Golf Academy)
+- [ ] Excel-ark med treningsplan (før IUP Golf)
 - [ ] Rader: Dato, Økt, Varighet, Fokus, Notater
 - [ ] Ser rotete og manuelt ut (mange farger, dårlig formatering)
 - [ ] Eksempel på fragmentert kommunikasjon (screenshot av SMS/WhatsApp)

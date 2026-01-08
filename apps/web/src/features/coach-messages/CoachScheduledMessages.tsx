@@ -1,6 +1,6 @@
 // @ts-nocheck
 /**
- * AK Golf Academy - Coach Scheduled Messages
+ * TIER Golf Academy - Coach Scheduled Messages
  * Design System v3.0 - Premium Light
  *
  * Timeline view of scheduled messages for coaches.
@@ -25,7 +25,7 @@ import { useNavigate } from 'react-router-dom';
 import PageHeader from '../../ui/raw-blocks/PageHeader.raw';
 import Button from '../../ui/primitives/Button';
 import { messagesAPI } from '../../services/api';
-import { SubSectionTitle } from '../../components/typography';
+import { SubSectionTitle } from "../../ui/components/typography";
 
 interface ScheduledMessage {
   id: string;
@@ -164,34 +164,34 @@ export const CoachScheduledMessages: React.FC = () => {
   const getCategoryBadgeClasses = (category: string) => {
     switch (category) {
       case 'training':
-        return { bg: 'bg-ak-primary/15', text: 'text-ak-primary', label: 'Trening' };
+        return { bg: 'bg-tier-navy/15', text: 'text-tier-navy', label: 'Trening' };
       case 'tournament':
-        return { bg: 'bg-ak-status-warning/15', text: 'text-ak-status-warning', label: 'Turnering' };
+        return { bg: 'bg-tier-warning/15', text: 'text-tier-warning', label: 'Turnering' };
       case 'urgent':
-        return { bg: 'bg-ak-status-error/15', text: 'text-ak-status-error', label: 'Viktig' };
+        return { bg: 'bg-tier-error/15', text: 'text-tier-error', label: 'Viktig' };
       default:
-        return { bg: 'bg-ak-text-secondary/15', text: 'text-ak-text-secondary', label: 'Generelt' };
+        return { bg: 'bg-tier-text-secondary/15', text: 'text-tier-text-secondary', label: 'Generelt' };
     }
   };
 
   const getTimelineClasses = (daysUntil: number) => {
     if (daysUntil <= 1) {
       return {
-        circle: 'bg-ak-status-error/15 border-2 border-ak-status-error',
-        icon: 'text-ak-status-error',
-        badge: 'bg-ak-status-error/15 text-ak-status-error'
+        circle: 'bg-tier-error/15 border-2 border-tier-error',
+        icon: 'text-tier-error',
+        badge: 'bg-tier-error/15 text-tier-error'
       };
     } else if (daysUntil <= 7) {
       return {
-        circle: 'bg-ak-status-warning/15 border-2 border-ak-status-warning',
-        icon: 'text-ak-status-warning',
-        badge: 'bg-ak-status-warning/15 text-ak-status-warning'
+        circle: 'bg-tier-warning/15 border-2 border-tier-warning',
+        icon: 'text-tier-warning',
+        badge: 'bg-tier-warning/15 text-tier-warning'
       };
     }
     return {
-      circle: 'bg-ak-primary/15 border-2 border-ak-primary',
-      icon: 'text-ak-primary',
-      badge: 'bg-ak-primary/15 text-ak-primary'
+      circle: 'bg-tier-navy/15 border-2 border-tier-navy',
+      icon: 'text-tier-navy',
+      badge: 'bg-tier-navy/15 text-tier-navy'
     };
   };
 
@@ -231,11 +231,12 @@ export const CoachScheduledMessages: React.FC = () => {
   };
 
   return (
-    <div className="bg-ak-surface-subtle min-h-screen">
+    <div className="bg-tier-surface-base min-h-screen">
       {/* Header - using PageHeader from design system */}
       <PageHeader
         title="Planlagte beskjeder"
         subtitle={`${mockScheduledMessages.length} beskjeder i kø`}
+        helpText="Planlegg meldinger som sendes automatisk til spillere på et bestemt tidspunkt."
         actions={
           <Button
             variant="primary"
@@ -253,14 +254,14 @@ export const CoachScheduledMessages: React.FC = () => {
       <div className="relative mb-5">
         <Search
           size={18}
-          className="absolute left-3 top-1/2 -translate-y-1/2 text-ak-text-tertiary"
+          className="absolute left-3 top-1/2 -translate-y-1/2 text-tier-text-tertiary"
         />
         <input
           type="text"
           placeholder="Søk i planlagte beskjeder..."
           value={searchQuery}
           onChange={(e) => setSearchQuery(e.target.value)}
-          className="w-full max-w-[400px] py-3 pr-3 pl-10 rounded-[10px] border border-ak-border-default bg-ak-surface-base text-sm text-ak-text-primary outline-none focus:border-ak-primary"
+          className="w-full max-w-[400px] py-3 pr-3 pl-10 rounded-[10px] border border-tier-border-default bg-tier-white text-sm text-tier-navy outline-none focus:border-tier-navy"
         />
       </div>
 
@@ -279,12 +280,12 @@ export const CoachScheduledMessages: React.FC = () => {
                   <Clock size={18} className={timelineStyle.icon} />
                 </div>
                 {index < sortedMessages.length - 1 && (
-                  <div className="w-0.5 flex-1 bg-ak-border-default mt-2 min-h-[40px]" />
+                  <div className="w-0.5 flex-1 bg-tier-border-default mt-2 min-h-[40px]" />
                 )}
               </div>
 
               {/* Message Card */}
-              <div className="flex-1 bg-ak-surface-base rounded-xl p-4 px-5 border border-ak-border-default cursor-pointer transition-colors hover:border-ak-primary/50">
+              <div className="flex-1 bg-tier-white rounded-xl p-4 px-5 border border-tier-border-default cursor-pointer transition-colors hover:border-tier-navy/50">
                 {/* Scheduled time badge */}
                 <div className={`inline-flex items-center gap-1.5 py-1 px-2.5 rounded-md mb-3 ${timelineStyle.badge}`}>
                   <Calendar size={12} />
@@ -296,18 +297,18 @@ export const CoachScheduledMessages: React.FC = () => {
                 <div className="flex justify-between items-start">
                   <div className="flex-1">
                     <div className="flex items-center gap-2 mb-1">
-                      <SubSectionTitle className="text-[15px] font-semibold text-ak-text-primary m-0">
+                      <SubSectionTitle className="text-[15px] font-semibold text-tier-navy m-0">
                         {message.subject}
                       </SubSectionTitle>
                       <span className={`text-[10px] font-medium py-0.5 px-1.5 rounded ${categoryStyle.bg} ${categoryStyle.text}`}>
                         {categoryStyle.label}
                       </span>
                     </div>
-                    <p className="text-[13px] text-ak-text-secondary m-0 mb-2 overflow-hidden text-ellipsis whitespace-nowrap max-w-[500px]">
+                    <p className="text-[13px] text-tier-text-secondary m-0 mb-2 overflow-hidden text-ellipsis whitespace-nowrap max-w-[500px]">
                       {message.preview}
                     </p>
                     <div className="flex items-center gap-3">
-                      <div className="flex items-center gap-1 text-ak-text-tertiary">
+                      <div className="flex items-center gap-1 text-tier-text-tertiary">
                         {getRecipientIcon(message.recipients.type)}
                         <span className="text-xs">
                           {message.recipients.name}
@@ -315,7 +316,7 @@ export const CoachScheduledMessages: React.FC = () => {
                         </span>
                       </div>
                       {message.hasAttachment && (
-                        <span className="text-xs text-ak-text-tertiary">
+                        <span className="text-xs text-tier-text-tertiary">
                           📎 Vedlegg
                         </span>
                       )}
@@ -326,24 +327,24 @@ export const CoachScheduledMessages: React.FC = () => {
                   <div className="flex gap-2 ml-4">
                     <button
                       onClick={(e) => handleEdit(e, message.id)}
-                      className="w-9 h-9 rounded-lg border border-ak-border-default bg-transparent flex items-center justify-center cursor-pointer hover:bg-ak-surface-subtle"
+                      className="w-9 h-9 rounded-lg border border-tier-border-default bg-transparent flex items-center justify-center cursor-pointer hover:bg-tier-surface-base"
                       title="Rediger"
                     >
-                      <Edit2 size={16} className="text-ak-text-secondary" />
+                      <Edit2 size={16} className="text-tier-text-secondary" />
                     </button>
                     <button
                       onClick={(e) => handleSendNow(e, message.id)}
-                      className="w-9 h-9 rounded-lg border-none bg-ak-status-success/15 flex items-center justify-center cursor-pointer hover:bg-ak-status-success/25"
+                      className="w-9 h-9 rounded-lg border-none bg-tier-success/15 flex items-center justify-center cursor-pointer hover:bg-tier-success/25"
                       title="Send nå"
                     >
-                      <Send size={16} className="text-ak-status-success" />
+                      <Send size={16} className="text-tier-success" />
                     </button>
                     <button
                       onClick={(e) => handleDelete(e, message.id)}
-                      className="w-9 h-9 rounded-lg border-none bg-ak-status-error/15 flex items-center justify-center cursor-pointer hover:bg-ak-status-error/25"
+                      className="w-9 h-9 rounded-lg border-none bg-tier-error/15 flex items-center justify-center cursor-pointer hover:bg-tier-error/25"
                       title="Slett"
                     >
-                      <Trash2 size={16} className="text-ak-status-error" />
+                      <Trash2 size={16} className="text-tier-error" />
                     </button>
                   </div>
                 </div>
@@ -354,15 +355,15 @@ export const CoachScheduledMessages: React.FC = () => {
       </div>
 
       {sortedMessages.length === 0 && (
-        <div className="text-center py-[60px] px-5 bg-ak-surface-base rounded-2xl border border-ak-border-default">
-          <Clock size={48} className="text-ak-text-tertiary mb-4" />
-          <p className="text-base text-ak-text-secondary m-0 mb-4">
+        <div className="text-center py-[60px] px-5 bg-tier-white rounded-2xl border border-tier-border-default">
+          <Clock size={48} className="text-tier-text-tertiary mb-4" />
+          <p className="text-base text-tier-text-secondary m-0 mb-4">
             {searchQuery ? 'Ingen planlagte beskjeder funnet' : 'Ingen planlagte beskjeder'}
           </p>
           {!searchQuery && (
             <button
               onClick={() => navigate('/coach/messages/compose')}
-              className="inline-flex items-center gap-2 py-2.5 px-5 rounded-[10px] border-none bg-ak-primary text-white text-sm font-medium cursor-pointer hover:bg-ak-primary/90"
+              className="inline-flex items-center gap-2 py-2.5 px-5 rounded-[10px] border-none bg-tier-navy text-white text-sm font-medium cursor-pointer hover:bg-tier-navy/90"
             >
               <Plus size={16} />
               Planlegg første beskjed

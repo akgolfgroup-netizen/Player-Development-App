@@ -2,7 +2,7 @@
 
 ## Overview
 
-This playbook provides structured procedures for responding to production incidents in the IUP Golf Academy platform.
+This playbook provides structured procedures for responding to production incidents in the IUP Golf platform.
 
 ## Severity Levels
 
@@ -477,7 +477,7 @@ curl -X PATCH https://status.iup-golf.com/api/incidents/latest \
 
 **Email/SMS (for P0 incidents lasting > 30 minutes):**
 ```markdown
-Subject: [INCIDENT] IUP Golf Academy Service Disruption
+Subject: [INCIDENT] IUP Golf Service Disruption
 
 Dear Customers,
 
@@ -491,7 +491,7 @@ Expected Resolution: 15:15 UTC
 We apologize for the inconvenience and will provide updates every 30 minutes.
 
 Best regards,
-IUP Golf Academy Team
+IUP Golf Team
 ```
 
 ---
@@ -576,7 +576,7 @@ curl -X PATCH https://status.iup-golf.com/api/incidents/latest \
 #### 7.3 Send Resolution Communication
 
 ```markdown
-Subject: [RESOLVED] IUP Golf Academy Service Restored
+Subject: [RESOLVED] IUP Golf Service Restored
 
 Dear Customers,
 
@@ -591,7 +591,7 @@ We have implemented a fix and are monitoring closely. We apologize for the incon
 If you continue to experience any issues, please contact support@iup-golf.com.
 
 Best regards,
-IUP Golf Academy Team
+IUP Golf Team
 ```
 
 #### 7.4 Document Timeline

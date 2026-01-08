@@ -15,7 +15,7 @@ const tokenColors = {
   error: '#C45B4E',
   forest: '#10456A',
   primaryLight: '#2C5F7F',
-  gold: '#C9A227',
+  gold: 'rgb(var(--tier-gold))',
 };
 
 // Session type colors (Blue Palette 01)
@@ -169,7 +169,7 @@ const KategoriSystemOversikt = () => {
         <div className="relative px-6 py-12">
           <div className="max-w-7xl mx-auto text-center">
             <PageTitle className="text-5xl font-bold text-white mb-4" style={{fontFamily: 'Outfit, sans-serif'}}>
-              AK Golf Academy & Team Norway Golf
+              TIER Golf Academy & Team Norway Golf
             </PageTitle>
             <p className="text-xl text-blue-100 mb-8 max-w-3xl mx-auto">
               Integrert kategori system for systematisk golfutvikling
@@ -206,7 +206,7 @@ const KategoriSystemOversikt = () => {
                 Hovedintegrasjonspunkter
               </SectionTitle>
               <p className="text-lg text-gray-600 max-w-3xl mx-auto">
-                Seks kjernekompoenenter som kobler AK Golf Academy sitt vitenskapelige system med Team Norway Golf sitt nasjonale rammeverk
+                Seks kjernekompoenenter som kobler TIER Golf Academy sitt vitenskapelige system med Team Norway Golf sitt nasjonale rammeverk
               </p>
             </div>
 
@@ -226,7 +226,7 @@ const KategoriSystemOversikt = () => {
                   </SubSectionTitle>
                   <div className="space-y-3">
                     <div className="p-3 bg-blue-50 rounded-lg">
-                      <p className="text-sm font-medium text-blue-700 mb-1">AK Golf Academy</p>
+                      <p className="text-sm font-medium text-blue-700 mb-1">TIER Golf Academy</p>
                       <p className="text-sm text-gray-700">{component.ak}</p>
                     </div>
                     <div className="p-3 bg-green-50 rounded-lg">
@@ -404,23 +404,33 @@ const KategoriSystemOversikt = () => {
             </div>
 
             <div className="grid gap-4">
-              {settingLevels.map((setting, index) => (
-                <div 
-                  key={setting.level}
-                  className="card-hover bg-white rounded-xl p-4 shadow-md border-l-4"
-                  style={{
-                    borderLeftColor: `hsl(${(index / 9) * 120}, 70%, 50%)`,
-                    animationDelay: `${index * 0.05}s`
-                  }}
-                >
-                  <div className="flex items-center justify-between">
-                    <div className="flex items-center gap-4">
-                      <div 
-                        className="w-10 h-10 rounded-full flex items-center justify-center text-white font-bold"
-                        style={{backgroundColor: `hsl(${(index / 9) * 120}, 70%, 50%)`}}
-                      >
-                        {setting.level}
-                      </div>
+              {settingLevels.map((setting, index) => {
+                // Use TIER category colors for gradient effect
+                const settingColors = [
+                  'rgb(var(--category-a))', 'rgb(var(--category-b))', 'rgb(var(--category-c))',
+                  'rgb(var(--category-d))', 'rgb(var(--category-e))', 'rgb(var(--category-f))',
+                  'rgb(var(--category-g))', 'rgb(var(--category-h))', 'rgb(var(--category-i))',
+                  'rgb(var(--category-j))'
+                ];
+                const settingColor = settingColors[index % settingColors.length];
+
+                return (
+                  <div
+                    key={setting.level}
+                    className="card-hover bg-white rounded-xl p-4 shadow-md border-l-4"
+                    style={{
+                      borderLeftColor: settingColor,
+                      animationDelay: `${index * 0.05}s`
+                    }}
+                  >
+                    <div className="flex items-center justify-between">
+                      <div className="flex items-center gap-4">
+                        <div
+                          className="w-10 h-10 rounded-full flex items-center justify-center text-white font-bold"
+                          style={{backgroundColor: settingColor}}
+                        >
+                          {setting.level}
+                        </div>
                       <div>
                         <SubSectionTitle className="font-bold text-gray-800">{setting.environment}</SubSectionTitle>
                         <p className="text-sm text-gray-600">{setting.usage}</p>
@@ -434,7 +444,8 @@ const KategoriSystemOversikt = () => {
                     </div>
                   </div>
                 </div>
-              ))}
+                );
+              })}
             </div>
 
             <div className="bg-gradient-to-r from-blue-500 to-green-500 rounded-3xl p-8 text-white">
@@ -470,7 +481,7 @@ const KategoriSystemOversikt = () => {
             Integrert System for Systematisk Golfutvikling
           </p>
           <p className="text-gray-400">
-            AK Golf Academy metodikk + Team Norway Golf standarder = Objektiv prestasjonsutvikling
+            TIER Golf Academy metodikk + Team Norway Golf standarder = Objektiv prestasjonsutvikling
           </p>
         </div>
       </div>

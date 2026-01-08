@@ -13,7 +13,7 @@ import { PageHeader } from '../../components/layout/PageHeader';
 import LoadingSpinner from '../../components/LoadingSpinner';
 import ErrorState from '../../components/ui/ErrorState';
 import Button from '../../ui/primitives/Button';
-import { SectionTitle } from '../../components/typography';
+import { SectionTitle } from '../../components/typography/Headings';
 import {
   Calendar,
   Clock,

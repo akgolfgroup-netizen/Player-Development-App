@@ -1,6 +1,6 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 /**
- * AK Golf Academy - Message Center
+ * TIER Golf Academy - Message Center
  * Design System v3.0 - Premium Light
  *
  * Hovedkomponent for meldingssystemet.
@@ -23,7 +23,7 @@ import {
   ChevronUp,
 } from 'lucide-react';
 import MembersList, { Member } from '../../ui/composites/MembersList.composite';
-import { SubSectionTitle } from '../../components/typography';
+import { SubSectionTitle } from "../../ui/components/typography";
 
 // ============================================================================
 // TYPES
@@ -123,7 +123,7 @@ export default function MessageCenter({ userId, filterType: initialFilterType }:
             name: 'Anders Kristiansen (Trener)',
             groupType: 'coach_player',
             avatarInitials: 'AK',
-            avatarColor: 'var(--ak-status-warning)',
+            avatarColor: 'rgb(var(--status-warning))',
             lastMessage: {
               content: 'Husk å fokusere på putting i dag!',
               senderName: 'Anders',
@@ -140,7 +140,7 @@ export default function MessageCenter({ userId, filterType: initialFilterType }:
             name: 'WANG Toppidrett',
             groupType: 'team',
             avatarInitials: 'WT',
-            avatarColor: 'var(--ak-primary)',
+            avatarColor: 'var(--tier-navy)',
             lastMessage: {
               content: 'Samling på lørdag kl 10:00',
               senderName: 'Trener',
@@ -159,7 +159,7 @@ export default function MessageCenter({ userId, filterType: initialFilterType }:
             name: 'Team Norway U18',
             groupType: 'team',
             avatarInitials: 'TN',
-            avatarColor: 'var(--ak-status-error)',
+            avatarColor: 'rgb(var(--status-error))',
             lastMessage: {
               content: 'Treningsplan for neste uke er klar',
               senderName: 'Landslagstrener',
@@ -197,7 +197,7 @@ export default function MessageCenter({ userId, filterType: initialFilterType }:
             email: 'anders@akgolf.no',
             role: 'Hovedtrener',
             avatarInitials: 'AK',
-            avatarColor: 'var(--ak-status-warning)',
+            avatarColor: 'rgb(var(--status-warning))',
             type: 'coach',
             isOnline: true,
           },
@@ -206,7 +206,7 @@ export default function MessageCenter({ userId, filterType: initialFilterType }:
             name: 'Erik Johansen',
             email: 'erik@demo.no',
             avatarInitials: 'EJ',
-            avatarColor: 'var(--ak-status-success)',
+            avatarColor: 'rgb(var(--status-success))',
             category: 'Kat. A',
             type: 'player',
             lastSeen: '2t siden',
@@ -216,7 +216,7 @@ export default function MessageCenter({ userId, filterType: initialFilterType }:
             name: 'Sofie Andersen',
             email: 'sofie@demo.no',
             avatarInitials: 'SA',
-            avatarColor: 'var(--ak-primary)',
+            avatarColor: 'var(--tier-navy)',
             category: 'Kat. A',
             type: 'player',
             isOnline: true,
@@ -226,7 +226,7 @@ export default function MessageCenter({ userId, filterType: initialFilterType }:
             name: 'Lars Olsen',
             email: 'lars@demo.no',
             avatarInitials: 'LO',
-            avatarColor: 'var(--ak-status-error)',
+            avatarColor: 'rgb(var(--status-error))',
             category: 'Kat. B',
             type: 'player',
             lastSeen: '1d siden',
@@ -236,7 +236,7 @@ export default function MessageCenter({ userId, filterType: initialFilterType }:
             name: 'Emma Berg',
             email: 'emma@demo.no',
             avatarInitials: 'EB',
-            avatarColor: 'var(--ak-primary)',
+            avatarColor: 'var(--tier-navy)',
             category: 'Kat. B',
             type: 'player',
             lastSeen: '3t siden',
@@ -274,8 +274,8 @@ export default function MessageCenter({ userId, filterType: initialFilterType }:
   if (loading) {
     return (
       <div className="p-6 text-center">
-        <div className="w-10 h-10 border-[3px] border-ak-border-default border-t-ak-primary rounded-full mx-auto mb-4 animate-spin" />
-        <p className="text-ak-text-secondary">Laster meldinger...</p>
+        <div className="w-10 h-10 border-[3px] border-tier-border-default border-t-tier-navy rounded-full mx-auto mb-4 animate-spin" />
+        <p className="text-tier-text-secondary">Laster meldinger...</p>
       </div>
     );
   }
@@ -288,14 +288,14 @@ export default function MessageCenter({ userId, filterType: initialFilterType }:
         <div className="flex-1 relative">
           <Search
             size={18}
-            className="absolute left-3 top-1/2 -translate-y-1/2 text-ak-text-secondary"
+            className="absolute left-3 top-1/2 -translate-y-1/2 text-tier-text-secondary"
           />
           <input
             type="text"
             placeholder="Søk i samtaler..."
             value={searchQuery}
             onChange={(e) => setSearchQuery(e.target.value)}
-            className="w-full py-2.5 pr-3 pl-10 bg-ak-surface-base border border-ak-border-default rounded-lg text-sm text-ak-text-primary outline-none focus:border-ak-primary"
+            className="w-full py-2.5 pr-3 pl-10 bg-tier-white border border-tier-border-default rounded-lg text-sm text-tier-navy outline-none focus:border-tier-navy"
           />
         </div>
 
@@ -311,8 +311,8 @@ export default function MessageCenter({ userId, filterType: initialFilterType }:
               onClick={() => setFilterType(filter.key as 'all' | 'unread' | 'coach')}
               className={`px-3.5 py-2 text-[13px] font-medium rounded cursor-pointer border transition-colors ${
                 filterType === filter.key
-                  ? 'bg-ak-primary text-white border-ak-primary'
-                  : 'bg-ak-surface-base text-ak-text-primary border-ak-border-default hover:border-ak-primary'
+                  ? 'bg-tier-navy text-white border-tier-navy'
+                  : 'bg-tier-white text-tier-navy border-tier-border-default hover:border-tier-navy'
               }`}
             >
               {filter.label}
@@ -322,14 +322,14 @@ export default function MessageCenter({ userId, filterType: initialFilterType }:
       </div>
 
       {/* Conversations list */}
-      <div className="bg-ak-surface-base rounded-xl border border-ak-border-default overflow-hidden">
+      <div className="bg-tier-white rounded-xl border border-tier-border-default overflow-hidden">
         {filteredConversations.length === 0 ? (
           <div className="flex flex-col items-center justify-center py-12 px-4 text-center">
-            <MessageSquare className="w-12 h-12 text-ak-text-tertiary mb-4" />
-            <h3 className="text-lg font-semibold text-ak-text-primary mb-2">
+            <MessageSquare className="w-12 h-12 text-tier-text-tertiary mb-4" />
+            <h3 className="text-lg font-semibold text-tier-navy mb-2">
               Ingen meldinger
             </h3>
-            <p className="text-sm text-ak-text-tertiary mb-4 max-w-[320px]">
+            <p className="text-sm text-tier-text-tertiary mb-4 max-w-[320px]">
               {searchQuery
                 ? 'Ingen samtaler matcher søket ditt'
                 : 'Start en ny samtale med treneren din'}
@@ -340,14 +340,14 @@ export default function MessageCenter({ userId, filterType: initialFilterType }:
             <Link
               key={conversation.id}
               to={`/meldinger/${conversation.id}`}
-              className={`flex items-center gap-3.5 p-4 no-underline transition-colors hover:bg-ak-surface-subtle ${
-                index < filteredConversations.length - 1 ? 'border-b border-ak-surface-subtle' : ''
-              } ${conversation.unreadCount > 0 ? 'bg-ak-primary/5' : 'bg-transparent'}`}
+              className={`flex items-center gap-3.5 p-4 no-underline transition-colors hover:bg-tier-surface-base ${
+                index < filteredConversations.length - 1 ? 'border-b border-tier-surface-base' : ''
+              } ${conversation.unreadCount > 0 ? 'bg-tier-navy/5' : 'bg-transparent'}`}
             >
               {/* Avatar */}
               <div
                 className="w-12 h-12 rounded-lg flex items-center justify-center text-white font-bold text-base flex-shrink-0"
-                style={{ backgroundColor: conversation.avatarColor || 'var(--ak-primary)' }}
+                style={{ backgroundColor: conversation.avatarColor || 'var(--tier-navy)' }}
               >
                 {conversation.avatarInitials}
               </div>
@@ -355,10 +355,10 @@ export default function MessageCenter({ userId, filterType: initialFilterType }:
               {/* Content */}
               <div className="flex-1 min-w-0">
                 <div className="flex items-center gap-2 mb-1">
-                  <span className={`text-[17px] leading-[22px] text-ak-text-primary ${conversation.unreadCount > 0 ? 'font-bold' : 'font-semibold'}`}>
+                  <span className={`text-[17px] leading-[22px] text-tier-navy ${conversation.unreadCount > 0 ? 'font-bold' : 'font-semibold'}`}>
                     {conversation.name}
                   </span>
-                  <span className="flex items-center gap-1 px-1.5 py-0.5 bg-ak-surface-subtle rounded text-ak-text-secondary text-[11px]">
+                  <span className="flex items-center gap-1 px-1.5 py-0.5 bg-tier-surface-base rounded text-tier-text-secondary text-[11px]">
                     {getGroupIcon(conversation.groupType)}
                     {conversation.groupType === 'team' && 'Gruppe'}
                     {conversation.groupType === 'coach_player' && 'Trener'}
@@ -368,12 +368,12 @@ export default function MessageCenter({ userId, filterType: initialFilterType }:
                 {conversation.lastMessage && (
                   <div className="flex items-center gap-1.5">
                     {conversation.lastMessage.isRead ? (
-                      <CheckCheck size={14} className="text-ak-status-success" />
+                      <CheckCheck size={14} className="text-tier-success" />
                     ) : (
-                      <Check size={14} className="text-ak-text-secondary" />
+                      <Check size={14} className="text-tier-text-secondary" />
                     )}
                     <p className={`text-[13px] leading-[18px] m-0 overflow-hidden text-ellipsis whitespace-nowrap ${
-                      conversation.unreadCount > 0 ? 'text-ak-text-primary font-medium' : 'text-ak-text-secondary'
+                      conversation.unreadCount > 0 ? 'text-tier-navy font-medium' : 'text-tier-text-secondary'
                     }`}>
                       {conversation.lastMessage.content}
                     </p>
@@ -384,12 +384,12 @@ export default function MessageCenter({ userId, filterType: initialFilterType }:
               {/* Time and unread badge */}
               <div className="flex flex-col items-end gap-1.5 flex-shrink-0">
                 {conversation.lastMessage && (
-                  <span className={`text-xs leading-4 ${conversation.unreadCount > 0 ? 'text-ak-primary' : 'text-ak-text-secondary'}`}>
+                  <span className={`text-xs leading-4 ${conversation.unreadCount > 0 ? 'text-tier-navy' : 'text-tier-text-secondary'}`}>
                     {formatTime(conversation.lastMessage.sentAt)}
                   </span>
                 )}
                 {conversation.unreadCount > 0 && (
-                  <span className="min-w-[20px] h-5 rounded-full bg-ak-primary text-white text-[11px] font-bold flex items-center justify-center px-1.5">
+                  <span className="min-w-[20px] h-5 rounded-full bg-tier-navy text-white text-[11px] font-bold flex items-center justify-center px-1.5">
                     {conversation.unreadCount}
                   </span>
                 )}
@@ -403,32 +403,32 @@ export default function MessageCenter({ userId, filterType: initialFilterType }:
       <div className="mt-6">
         <button
           onClick={() => setShowContacts(!showContacts)}
-          className={`flex items-center justify-between w-full p-4 px-5 bg-ak-surface-base border border-ak-border-default cursor-pointer text-left ${
+          className={`flex items-center justify-between w-full p-4 px-5 bg-tier-white border border-tier-border-default cursor-pointer text-left ${
             showContacts ? 'rounded-t-xl' : 'rounded-xl'
           }`}
         >
           <div className="flex items-center gap-3">
-            <div className="w-10 h-10 rounded-full bg-ak-primary flex items-center justify-center">
+            <div className="w-10 h-10 rounded-full bg-tier-navy flex items-center justify-center">
               <Users size={20} color="white" />
             </div>
             <div>
-              <SubSectionTitle className="text-[17px] leading-[22px] font-semibold text-ak-text-primary m-0">
+              <SubSectionTitle className="text-[17px] leading-[22px] font-semibold text-tier-navy m-0">
                 Kontakter
               </SubSectionTitle>
-              <p className="text-[13px] leading-[18px] text-ak-text-secondary mt-0.5 mb-0">
+              <p className="text-[13px] leading-[18px] text-tier-text-secondary mt-0.5 mb-0">
                 {contacts.length} personer · {contacts.filter(c => c.isOnline).length} online
               </p>
             </div>
           </div>
           {showContacts ? (
-            <ChevronUp size={20} className="text-ak-text-secondary" />
+            <ChevronUp size={20} className="text-tier-text-secondary" />
           ) : (
-            <ChevronDown size={20} className="text-ak-text-secondary" />
+            <ChevronDown size={20} className="text-tier-text-secondary" />
           )}
         </button>
 
         {showContacts && (
-          <div className="bg-ak-surface-base border border-ak-border-default border-t-0 rounded-b-xl overflow-hidden">
+          <div className="bg-tier-white border border-tier-border-default border-t-0 rounded-b-xl overflow-hidden">
             <MembersList
               members={contacts}
               onMemberClick={(member) => {

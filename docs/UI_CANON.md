@@ -1,10 +1,10 @@
-# AK Golf Academy - UI Canon
+# TIER Golf - UI Canon
 
 > **Version:** 3.0
 > **Last Updated:** 2026-01-01
 > **Source of Truth:** This document + `src/index.css` + `tailwind.config.js`
 
-This document defines the official design specifications for all UI components in the AK Golf Academy application. All new components MUST follow these guidelines.
+This document defines the official design specifications for all UI components in the TIER Golf application. All new components MUST follow these guidelines.
 
 ---
 
@@ -60,7 +60,7 @@ This document defines the official design specifications for all UI components i
 
 #### Green Scale
 
-The complete green scale for the AK Golf brand identity.
+The complete green scale for the TIER Golf brand identity.
 
 | Token | Hex | CSS Variable | Tailwind | Usage |
 |-------|-----|--------------|----------|-------|

@@ -33,6 +33,7 @@ export default function UtviklingHub({
       area={area}
       title="Min utvikling"
       subtitle="Følg med på din fremgang og se dine prestasjoner"
+      helpText="Se din fremgang, statistikk og oppnådde merker. Analyser din utvikling over tid og identifiser forbedringsområder."
       quickStats={[
         { label: 'Kategori-fremgang', value: `${stats.kategoriFremgang}%`, icon: 'TrendingUp' },
         { label: 'Siste testscore', value: stats.testScore, icon: 'Target' },

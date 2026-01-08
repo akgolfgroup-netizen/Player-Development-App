@@ -1,4 +1,4 @@
-# AK Golf Academy - Design System v2.1
+# TIER Golf - Design System v2.1
 
 > **KILDE:** `/packages/design-system/figma/ak_golf_complete_figma_kit.svg`
 > **Versjon:** Design System v2.1
@@ -330,4 +330,4 @@ filter: drop-shadow(0 2px 4px rgba(0, 0, 0, 0.06));
 
 ---
 
-*Design System v2.1 - AK Golf Academy - Desember 2025*
+*Design System v2.1 - TIER Golf - Desember 2025*

@@ -1,4 +1,4 @@
-# Railway Deployment Guide - IUP Golf Academy
+# Railway Deployment Guide - IUP Golf
 
 **Platform:** Railway.app
 **Estimated time:** 1-2 hours
@@ -44,7 +44,7 @@ Før du starter, sørg for at du har:
 2. Velg "Deploy from GitHub repo"
 3. Velg repositoryet: `IUP_Master_V1`
 4. Velg branch: `main` (eller `master`)
-5. Gi prosjektet navn: "IUP Golf Academy Demo"
+5. Gi prosjektet navn: "IUP Golf Demo"
 
 **Railway vil nå:**
 - Automatisk detektere Dockerfiles
@@ -187,7 +187,7 @@ railway login
 
 # Link til ditt prosjekt
 railway link
-# Velg "IUP Golf Academy Demo" fra listen
+# Velg "IUP Golf Demo" fra listen
 ```
 
 ### 4.3 Kjør migrations
@@ -387,7 +387,7 @@ lighthouse https://iupgolf.no --view
 
 Sett opp Sentry for error tracking:
 1. Opprett gratis Sentry-konto på sentry.io
-2. Opprett nytt prosjekt "IUP Golf Academy"
+2. Opprett nytt prosjekt "IUP Golf"
 3. Legg til DSN i environment variables:
    ```bash
    SENTRY_DSN=https://abc123@o123.ingest.sentry.io/456
@@ -603,7 +603,7 @@ Railway har memory limits på Hobby plan (512MB). Hvis React build feiler:
 
 ---
 
-**Gratulerer! 🎉** IUP Golf Academy er nå live på `https://iupgolf.no` (eller din Railway URL).
+**Gratulerer! 🎉** IUP Golf er nå live på `https://iupgolf.no` (eller din Railway URL).
 
 **Login og test:**
 - Spiller: `player@demo.com` / `player123`

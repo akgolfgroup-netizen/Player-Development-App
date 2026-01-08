@@ -6,16 +6,18 @@
  * Bruker pyramide-systemet: FYS → TEK → SLAG → SPILL → TURN
  *
  * MIGRATED TO PAGE ARCHITECTURE - Zero inline styles
+ * UPDATED: Integrated with CalendarWeekGrid for time-based view
  */
-import React, { useState, useEffect, useCallback, useRef } from 'react';
+import React, { useState, useEffect, useCallback, useRef, useMemo } from 'react';
 import {
   Calendar, Clock, Target, CheckCircle, ChevronRight, ChevronLeft,
   Dumbbell, Brain, Flag, RotateCcw, Flame, X, Plus, FileText,
-  MoreHorizontal, Trophy, Crosshair
+  MoreHorizontal, Trophy, Crosshair, Grid, List
 } from 'lucide-react';
 import { PageHeader } from '../../components/layout/PageHeader';
 import { AICoachGuide } from '../ai-coach';
 import { GUIDE_PRESETS } from '../ai-coach/types';
+import { CalendarWeekGrid } from '../calendar/components/enhanced/CalendarWeekGrid';
 
 // =============================================================================
 // AK HIERARCHY CONFIGURATION (from AK_GOLF_KATEGORI_HIERARKI_v2.0)
@@ -33,9 +35,9 @@ const PYRAMID_CLASSES = {
     description: 'Styrke, power, mobilitet',
   },
   TEK: {
-    text: 'text-ak-primary',
-    bg: 'bg-ak-primary/10',
-    activeBg: 'bg-ak-primary',
+    text: 'text-tier-navy',
+    bg: 'bg-tier-navy/10',
+    activeBg: 'bg-tier-navy',
     icon: Target,
     emoji: '🎯',
     label: 'Teknikk',
@@ -69,9 +71,9 @@ const PYRAMID_CLASSES = {
     description: 'Mental prestasjon',
   },
   REST: {
-    text: 'text-ak-text-secondary',
-    bg: 'bg-ak-surface-subtle',
-    activeBg: 'bg-ak-text-secondary',
+    text: 'text-tier-text-secondary',
+    bg: 'bg-tier-surface-base',
+    activeBg: 'bg-tier-text-secondary',
     icon: RotateCcw,
     emoji: '😴',
     label: 'Hvile',
@@ -158,6 +160,7 @@ const WEEK_DATA = {
           environment: 'M0',
           pressure: 'PR1',
           duration: 60,
+          startTime: '07:00',
           status: 'completed',
           description: 'Fokus på core og rotasjon. 3 sett av hver øvelse.',
           exercises: ['Planke 3x60s', 'Russian twists 3x20', 'Cable rotations 3x15'],
@@ -169,6 +172,7 @@ const WEEK_DATA = {
           name: 'Visualisering',
           formula: 'TURN_UTV_M0_PR1',
           duration: 20,
+          startTime: '18:00',
           status: 'completed',
           description: 'Visualiser perfekte slag på driving range.',
         },
@@ -191,6 +195,7 @@ const WEEK_DATA = {
           environment: 'M1',
           pressure: 'PR2',
           duration: 90,
+          startTime: '09:00',
           status: 'completed',
           description: 'Fokus på konsistent kontakt og ballbane.',
           exercises: ['Oppvarming 20 baller', 'Alignment drill', 'Tempo drill 1-2-3', 'Full sving med mål'],
@@ -204,6 +209,7 @@ const WEEK_DATA = {
           environment: 'M3',
           pressure: 'PR2',
           duration: 30,
+          startTime: '14:00',
           status: 'completed',
           description: 'Gate putting og avstandskontroll.',
         },
@@ -237,6 +243,7 @@ const WEEK_DATA = {
           positionStart: 'P4.0',
           positionEnd: 'P7.0',
           duration: 120,
+          startTime: '09:00',
           status: 'pending',
           description: 'Presisjon og avstandskontroll med 4-6 jern.',
           exercises: ['6-jern til mål 147m', '5-jern til mål 160m', '4-jern til mål 175m'],
@@ -250,6 +257,7 @@ const WEEK_DATA = {
           environment: 'M3',
           pressure: 'PR2',
           duration: 40,
+          startTime: '14:00',
           status: 'pending',
           description: 'Chip fra tight lie og fringe.',
         },
@@ -269,6 +277,7 @@ const WEEK_DATA = {
           formula: 'FYS_MOBILITET_M0',
           environment: 'M0',
           duration: 45,
+          startTime: '07:00',
           status: 'pending',
           description: 'Dynamisk stretching og mobilitetstrening.',
         },
@@ -279,6 +288,7 @@ const WEEK_DATA = {
           name: 'Mental forberedelse',
           formula: 'TURN_UTV_M0_PR2',
           duration: 30,
+          startTime: '18:00',
           status: 'pending',
           description: 'Pre-round rutine og fokusøvelser.',
         },
@@ -300,6 +310,7 @@ const WEEK_DATA = {
           environment: 'M4',
           pressure: 'PR4',
           duration: 150,
+          startTime: '10:00',
           status: 'pending',
           description: 'Full 18-hulls simulering på TrackMan.',
           exercises: ['Pre-shot rutine', 'Course management', 'Scoring fokus'],
@@ -349,6 +360,88 @@ const formatFullDate = (dateStr) => {
 };
 
 // ============================================================================
+// SESSION TO CALENDAR EVENT TRANSFORMATION
+// ============================================================================
+
+/**
+ * Convert training plan sessions to calendar events
+ * Assigns default times based on session type and order
+ */
+const sessionsToCalendarEvents = (weekData) => {
+  const events = [];
+
+  // Default time assignments by session type
+  const defaultTimes = {
+    FYS: '07:00',      // Fysisk - morning
+    TEK: '09:00',      // Teknikk - mid-morning
+    SLAG: '14:00',     // Golfslag - afternoon
+    SPILL: '10:00',    // Spill - morning
+    TURN: '18:00',     // Turnering/mental - evening
+    REST: null,        // Rest days - no time
+  };
+
+  weekData.days.forEach((day) => {
+    let currentHour = 7; // Start assigning from 7:00
+
+    day.sessions.forEach((session, idx) => {
+      if (session.type === 'REST') return; // Skip rest days
+
+      // Use session's assigned time or calculate based on order
+      const startTime = session.startTime || defaultTimes[session.type] || `${String(currentHour).padStart(2, '0')}:00`;
+      const [startHour, startMin] = startTime.split(':').map(Number);
+
+      const durationHours = Math.floor(session.duration / 60);
+      const durationMins = session.duration % 60;
+
+      let endHour = startHour + durationHours;
+      let endMin = startMin + durationMins;
+
+      if (endMin >= 60) {
+        endHour += 1;
+        endMin -= 60;
+      }
+
+      const endTime = `${String(endHour).padStart(2, '0')}:${String(endMin).padStart(2, '0')}`;
+
+      // Map session type to calendar category
+      const categoryMap = {
+        FYS: 'trening',
+        TEK: 'trening',
+        SLAG: 'trening',
+        SPILL: 'trening',
+        TURN: 'mental',
+      };
+
+      // Map status
+      const statusMap = {
+        completed: 'completed',
+        in_progress: 'in_progress',
+        pending: 'planned',
+      };
+
+      events.push({
+        id: session.id,
+        title: session.name,
+        date: day.date,
+        start: startTime,
+        end: endTime,
+        location: session.environment ? ENVIRONMENT_LABELS[session.environment] : undefined,
+        category: categoryMap[session.type] || 'trening',
+        status: statusMap[session.status] || 'planned',
+        // Store original session for details
+        _originalSession: session,
+      });
+
+      // Increment time for next session (add buffer time)
+      currentHour = endHour + 1;
+      if (currentHour > 21) currentHour = 7; // Wrap around
+    });
+  });
+
+  return events;
+};
+
+// ============================================================================
 // SESSION CHIP COMPONENT (Notion-style)
 // ============================================================================
 
@@ -361,7 +454,7 @@ const SessionChip = ({ session, isSelected, onClick }) => {
 
   if (isRest) {
     return (
-      <div className="py-1.5 px-2.5 text-xs text-ak-text-secondary italic">
+      <div className="py-1.5 px-2.5 text-xs text-tier-text-secondary italic">
         Hviledag
       </div>
     );
@@ -421,26 +514,26 @@ const DayColumn = ({ day, selectedSessionId, onSessionClick }) => {
   const dayName = day.dayName.slice(0, 3);
 
   return (
-    <div className="flex-1 min-w-0 border-r border-ak-border-default flex flex-col">
+    <div className="flex-1 min-w-0 border-r border-tier-border-default flex flex-col">
       {/* Day Header */}
-      <div className={`py-3 px-2 border-b border-ak-border-default text-center relative ${
-        isToday ? 'bg-ak-primary/5' : ''
+      <div className={`py-3 px-2 border-b border-tier-border-default text-center relative ${
+        isToday ? 'bg-tier-navy/5' : ''
       }`}>
         {isToday && (
-          <div className="absolute left-0 top-0 bottom-0 w-[3px] bg-ak-primary" />
+          <div className="absolute left-0 top-0 bottom-0 w-[3px] bg-tier-navy" />
         )}
         <div className={`text-[11px] font-medium uppercase tracking-wide ${
-          isToday ? 'text-ak-primary' : 'text-ak-text-secondary'
+          isToday ? 'text-tier-navy' : 'text-tier-text-secondary'
         }`}>
           {dayName}
         </div>
         <div className={`text-xl font-semibold mt-0.5 ${
-          isToday ? 'text-ak-primary' : 'text-ak-text-primary'
+          isToday ? 'text-tier-navy' : 'text-tier-navy'
         }`}>
           {dayNumber}
         </div>
         {isToday && (
-          <div className="mt-1 text-[9px] font-semibold text-ak-primary uppercase tracking-wide">
+          <div className="mt-1 text-[9px] font-semibold text-tier-navy uppercase tracking-wide">
             I dag
           </div>
         )}
@@ -448,7 +541,7 @@ const DayColumn = ({ day, selectedSessionId, onSessionClick }) => {
 
       {/* Sessions */}
       <div className={`flex-1 p-2 flex flex-col gap-1.5 min-h-[120px] ${
-        day.isCompleted ? 'bg-ak-surface-subtle' : ''
+        day.isCompleted ? 'bg-tier-surface-base' : ''
       }`}>
         {day.sessions.map((session) => (
           <SessionChip
@@ -509,19 +602,19 @@ const SessionSidebarDrawer = ({ isOpen, session, onClose, allSessions, onSession
         ref={drawerRef}
         role="complementary"
         aria-label="Øktdetaljer"
-        className={`fixed top-0 left-0 bottom-0 w-[380px] bg-ak-surface-base z-50 flex flex-col overflow-hidden transition-transform duration-[250ms] ${
+        className={`fixed top-0 left-0 bottom-0 w-[380px] bg-tier-white z-50 flex flex-col overflow-hidden transition-transform duration-[250ms] ${
           isOpen ? 'translate-x-0 shadow-xl' : '-translate-x-full'
         }`}
       >
         {/* Header */}
-        <div className="flex items-center justify-between py-4 px-5 border-b border-ak-border-default">
-          <h2 className="text-sm font-semibold text-ak-text-primary m-0">
+        <div className="flex items-center justify-between py-4 px-5 border-b border-tier-border-default">
+          <h2 className="text-sm font-semibold text-tier-navy m-0">
             {session ? 'Øktdetaljer' : 'Oversikt'}
           </h2>
           <button
             onClick={onClose}
             aria-label="Lukk sidebar"
-            className="flex items-center justify-center w-8 h-8 border-none bg-transparent rounded-md cursor-pointer text-ak-text-secondary hover:bg-ak-surface-subtle"
+            className="flex items-center justify-center w-8 h-8 border-none bg-transparent rounded-md cursor-pointer text-tier-text-secondary hover:bg-tier-surface-base"
           >
             <X size={18} />
           </button>
@@ -538,44 +631,44 @@ const SessionSidebarDrawer = ({ isOpen, session, onClose, allSessions, onSession
                   {React.createElement(config.icon, { size: 12 })}
                   {config.label}
                 </div>
-                <h3 className="text-xl font-semibold text-ak-text-primary m-0">
+                <h3 className="text-xl font-semibold text-tier-navy m-0">
                   {session.name}
                 </h3>
               </div>
 
               {/* Metadata */}
-              <div className="flex flex-col gap-3 p-4 bg-ak-surface-subtle rounded-lg mb-5">
+              <div className="flex flex-col gap-3 p-4 bg-tier-surface-base rounded-lg mb-5">
                 <div className="flex items-center gap-2.5">
-                  <Calendar size={14} className="text-ak-text-secondary" />
-                  <span className="text-[13px] text-ak-text-primary">
+                  <Calendar size={14} className="text-tier-text-secondary" />
+                  <span className="text-[13px] text-tier-navy">
                     {formatFullDate(WEEK_DATA.days.find(d => d.sessions.some(s => s.id === session.id))?.date)}
                   </span>
                 </div>
                 <div className="flex items-center gap-2.5">
-                  <Clock size={14} className="text-ak-text-secondary" />
-                  <span className="text-[13px] text-ak-text-primary">
+                  <Clock size={14} className="text-tier-text-secondary" />
+                  <span className="text-[13px] text-tier-navy">
                     {session.duration} minutter
                   </span>
                 </div>
                 <div className="flex items-center gap-2.5">
                   {session.status === 'completed' ? (
                     <>
-                      <CheckCircle size={14} className="text-ak-status-success" />
-                      <span className="text-[13px] text-ak-status-success font-medium">
+                      <CheckCircle size={14} className="text-tier-success" />
+                      <span className="text-[13px] text-tier-success font-medium">
                         Fullført
                       </span>
                     </>
                   ) : session.status === 'in_progress' ? (
                     <>
-                      <div className="w-3.5 h-3.5 rounded-full bg-ak-info" />
-                      <span className="text-[13px] text-ak-info font-medium">
+                      <div className="w-3.5 h-3.5 rounded-full bg-tier-info" />
+                      <span className="text-[13px] text-tier-info font-medium">
                         Pågår
                       </span>
                     </>
                   ) : (
                     <>
-                      <div className="w-3.5 h-3.5 rounded-full border-2 border-ak-text-secondary" />
-                      <span className="text-[13px] text-ak-text-secondary">
+                      <div className="w-3.5 h-3.5 rounded-full border-2 border-tier-text-secondary" />
+                      <span className="text-[13px] text-tier-text-secondary">
                         Planlagt
                       </span>
                     </>
@@ -586,10 +679,10 @@ const SessionSidebarDrawer = ({ isOpen, session, onClose, allSessions, onSession
               {/* Description */}
               {session.description && (
                 <div className="mb-5">
-                  <h4 className="text-xs font-semibold text-ak-text-secondary uppercase tracking-wide mb-2">
+                  <h4 className="text-xs font-semibold text-tier-text-secondary uppercase tracking-wide mb-2">
                     Beskrivelse
                   </h4>
-                  <p className="text-sm text-ak-text-primary leading-relaxed m-0">
+                  <p className="text-sm text-tier-navy leading-relaxed m-0">
                     {session.description}
                   </p>
                 </div>
@@ -598,7 +691,7 @@ const SessionSidebarDrawer = ({ isOpen, session, onClose, allSessions, onSession
               {/* Exercises */}
               {session.exercises && session.exercises.length > 0 && (
                 <div className="mb-5">
-                  <h4 className="text-xs font-semibold text-ak-text-secondary uppercase tracking-wide mb-2">
+                  <h4 className="text-xs font-semibold text-tier-text-secondary uppercase tracking-wide mb-2">
                     Øvelser
                   </h4>
                   <ul className="m-0 p-0 list-none">
@@ -606,11 +699,11 @@ const SessionSidebarDrawer = ({ isOpen, session, onClose, allSessions, onSession
                       <li
                         key={idx}
                         className={`flex items-center gap-2.5 py-2.5 ${
-                          idx < session.exercises.length - 1 ? 'border-b border-ak-border-default' : ''
+                          idx < session.exercises.length - 1 ? 'border-b border-tier-border-default' : ''
                         }`}
                       >
                         <div className={`w-1.5 h-1.5 rounded-full ${config.activeBg} shrink-0`} />
-                        <span className="text-[13px] text-ak-text-primary">
+                        <span className="text-[13px] text-tier-navy">
                           {exercise}
                         </span>
                       </li>
@@ -622,12 +715,12 @@ const SessionSidebarDrawer = ({ isOpen, session, onClose, allSessions, onSession
               {/* Actions */}
               <div className="flex flex-col gap-2">
                 {session.status !== 'completed' && (
-                  <button className="flex items-center justify-center gap-2 py-3 px-4 bg-ak-primary text-white border-none rounded-lg text-sm font-medium cursor-pointer">
+                  <button className="flex items-center justify-center gap-2 py-3 px-4 bg-tier-navy text-white border-none rounded-lg text-sm font-medium cursor-pointer">
                     <CheckCircle size={16} />
                     Marker som fullført
                   </button>
                 )}
-                <button className="flex items-center justify-center gap-2 py-3 px-4 bg-transparent text-ak-text-primary border border-ak-border-default rounded-lg text-sm font-medium cursor-pointer">
+                <button className="flex items-center justify-center gap-2 py-3 px-4 bg-transparent text-tier-navy border border-tier-border-default rounded-lg text-sm font-medium cursor-pointer">
                   <FileText size={16} />
                   Legg til notat
                 </button>
@@ -638,7 +731,7 @@ const SessionSidebarDrawer = ({ isOpen, session, onClose, allSessions, onSession
             <div>
               {/* Today's Sessions */}
               <div className="mb-6">
-                <h4 className="text-xs font-semibold text-ak-text-secondary uppercase tracking-wide mb-3">
+                <h4 className="text-xs font-semibold text-tier-text-secondary uppercase tracking-wide mb-3">
                   Dagens økter
                 </h4>
                 <div className="flex flex-col gap-2">
@@ -653,20 +746,20 @@ const SessionSidebarDrawer = ({ isOpen, session, onClose, allSessions, onSession
                         <button
                           key={sess.id}
                           onClick={() => onSessionSelect(sess)}
-                          className="flex items-center gap-2.5 p-3 bg-ak-surface-subtle border-none rounded-lg cursor-pointer text-left w-full"
+                          className="flex items-center gap-2.5 p-3 bg-tier-surface-base border-none rounded-lg cursor-pointer text-left w-full"
                         >
                           <div className={`w-8 h-8 rounded-md ${cfg.bg} flex items-center justify-center`}>
                             {React.createElement(cfg.icon, { size: 16, className: cfg.text })}
                           </div>
                           <div className="flex-1">
-                            <div className="text-[13px] font-medium text-ak-text-primary">
+                            <div className="text-[13px] font-medium text-tier-navy">
                               {sess.name}
                             </div>
-                            <div className="text-xs text-ak-text-secondary">
+                            <div className="text-xs text-tier-text-secondary">
                               {sess.duration} min
                             </div>
                           </div>
-                          <ChevronRight size={16} className="text-ak-text-secondary" />
+                          <ChevronRight size={16} className="text-tier-text-secondary" />
                         </button>
                       );
                     })}
@@ -674,7 +767,7 @@ const SessionSidebarDrawer = ({ isOpen, session, onClose, allSessions, onSession
                     const day = WEEK_DATA.days.find(d => d.sessions.some(sess => sess.id === s.id));
                     return day?.isToday;
                   }).length === 0 && (
-                    <p className="text-[13px] text-ak-text-secondary italic">
+                    <p className="text-[13px] text-tier-text-secondary italic">
                       Ingen økter planlagt i dag
                     </p>
                   )}
@@ -683,19 +776,19 @@ const SessionSidebarDrawer = ({ isOpen, session, onClose, allSessions, onSession
 
               {/* Week Summary */}
               <div className="mb-6">
-                <h4 className="text-xs font-semibold text-ak-text-secondary uppercase tracking-wide mb-3">
+                <h4 className="text-xs font-semibold text-tier-text-secondary uppercase tracking-wide mb-3">
                   Ukeoversikt
                 </h4>
-                <div className="p-4 bg-ak-surface-subtle rounded-lg">
+                <div className="p-4 bg-tier-surface-base rounded-lg">
                   <div className="flex justify-between mb-3">
-                    <span className="text-[13px] text-ak-text-secondary">Fullført</span>
-                    <span className="text-sm font-semibold text-ak-text-primary">
+                    <span className="text-[13px] text-tier-text-secondary">Fullført</span>
+                    <span className="text-sm font-semibold text-tier-navy">
                       {WEEK_DATA.completedHours}t / {WEEK_DATA.totalPlannedHours}t
                     </span>
                   </div>
-                  <div className="h-1.5 bg-ak-border-default rounded-sm overflow-hidden">
+                  <div className="h-1.5 bg-tier-border-default rounded-sm overflow-hidden">
                     <div
-                      className="h-full bg-ak-primary rounded-sm"
+                      className="h-full bg-tier-navy rounded-sm"
                       style={{ width: `${(WEEK_DATA.completedHours / WEEK_DATA.totalPlannedHours) * 100}%` }}
                     />
                   </div>
@@ -704,7 +797,7 @@ const SessionSidebarDrawer = ({ isOpen, session, onClose, allSessions, onSession
 
               {/* Category Filter */}
               <div>
-                <h4 className="text-xs font-semibold text-ak-text-secondary uppercase tracking-wide mb-3">
+                <h4 className="text-xs font-semibold text-tier-text-secondary uppercase tracking-wide mb-3">
                   Kategorier
                 </h4>
                 <div className="flex flex-wrap gap-2">
@@ -738,28 +831,28 @@ const WeekStatsBar = ({ stats, completedHours, totalHours }) => {
   const progressPercent = Math.round((completedHours / totalHours) * 100);
 
   return (
-    <div className="flex items-center gap-6 py-3 px-5 bg-ak-surface-base border-b border-ak-border-default text-[13px]">
+    <div className="flex items-center gap-6 py-3 px-5 bg-tier-white border-b border-tier-border-default text-[13px]">
       <div className="flex items-center gap-2">
-        <span className="text-ak-text-secondary">Fremgang:</span>
-        <span className="font-semibold text-ak-text-primary">{progressPercent}%</span>
-        <div className="w-20 h-1 bg-ak-border-default rounded-sm overflow-hidden">
+        <span className="text-tier-text-secondary">Fremgang:</span>
+        <span className="font-semibold text-tier-navy">{progressPercent}%</span>
+        <div className="w-20 h-1 bg-tier-border-default rounded-sm overflow-hidden">
           <div
-            className="h-full bg-ak-primary rounded-sm"
+            className="h-full bg-tier-navy rounded-sm"
             style={{ width: `${progressPercent}%` }}
           />
         </div>
       </div>
 
-      <div className="w-px h-4 bg-ak-border-default" />
+      <div className="w-px h-4 bg-tier-border-default" />
 
       <div className="flex items-center gap-1.5">
-        <Clock size={14} className="text-ak-text-secondary" />
-        <span className="text-ak-text-secondary">{completedHours}t fullført</span>
-        <span className="text-ak-text-secondary/50">/</span>
-        <span className="text-ak-text-secondary">{totalHours}t planlagt</span>
+        <Clock size={14} className="text-tier-text-secondary" />
+        <span className="text-tier-text-secondary">{completedHours}t fullført</span>
+        <span className="text-tier-text-secondary/50">/</span>
+        <span className="text-tier-text-secondary">{totalHours}t planlagt</span>
       </div>
 
-      <div className="w-px h-4 bg-ak-border-default" />
+      <div className="w-px h-4 bg-tier-border-default" />
 
       <div className="flex items-center gap-3">
         {[
@@ -772,7 +865,7 @@ const WeekStatsBar = ({ stats, completedHours, totalHours }) => {
           return (
             <div key={type} className="flex items-center gap-1">
               <div className={`w-2 h-2 rounded-sm ${cfg.activeBg}`} />
-              <span className="text-ak-text-secondary">{hours}t</span>
+              <span className="text-tier-text-secondary">{hours}t</span>
             </div>
           );
         })}
@@ -789,6 +882,7 @@ const UkensTreningsplanContainer = () => {
   const [weekOffset, setWeekOffset] = useState(0);
   const [selectedSessionId, setSelectedSessionId] = useState(null);
   const [isSidebarOpen, setIsSidebarOpen] = useState(false);
+  const [viewMode, setViewMode] = useState('calendar'); // 'calendar' or 'list'
 
   const weekDates = getWeekDates(weekOffset);
   const startDate = weekDates[0].toLocaleDateString('nb-NO', { day: 'numeric', month: 'short' });
@@ -798,10 +892,23 @@ const UkensTreningsplanContainer = () => {
   const allSessions = WEEK_DATA.days.flatMap(day => day.sessions);
   const selectedSession = allSessions.find(s => s.id === selectedSessionId);
 
+  // Convert sessions to calendar events
+  const calendarEvents = useMemo(() => {
+    return sessionsToCalendarEvents(WEEK_DATA);
+  }, []);
+
   const handleSessionClick = useCallback((session) => {
     setSelectedSessionId(session.id);
     setIsSidebarOpen(true);
   }, []);
+
+  const handleCalendarEventClick = useCallback((event) => {
+    // If event has original session data, use that
+    const session = event._originalSession || allSessions.find(s => s.id === event.id);
+    if (session) {
+      handleSessionClick(session);
+    }
+  }, [allSessions, handleSessionClick]);
 
   const handleCloseSidebar = useCallback(() => {
     setIsSidebarOpen(false);
@@ -818,11 +925,12 @@ const UkensTreningsplanContainer = () => {
   }, [isSidebarOpen, handleCloseSidebar]);
 
   return (
-    <div className="min-h-screen bg-ak-surface-base">
+    <div className="min-h-screen bg-tier-white">
       {/* Page Header */}
       <PageHeader
         title="Ukens treningsplan"
         subtitle="Din plan for denne uken"
+        helpText="Se din ukentlige treningsplan med alle planlagte økter. Følg opp fremgang og juster planen etter behov."
       />
 
       {/* AI Coach Guide */}
@@ -831,13 +939,13 @@ const UkensTreningsplanContainer = () => {
       </div>
 
       {/* Navigation Bar */}
-      <div className="flex items-center justify-between py-3 px-5 border-b border-ak-border-default bg-ak-surface-base">
+      <div className="flex items-center justify-between py-3 px-5 border-b border-tier-border-default bg-tier-white">
         <div className="flex items-center gap-3">
           {/* Sidebar Toggle */}
           <button
             onClick={handleToggleSidebar}
-            className={`flex items-center justify-center w-8 h-8 border border-ak-border-default rounded-md cursor-pointer text-ak-text-secondary ${
-              isSidebarOpen ? 'bg-ak-surface-subtle' : 'bg-ak-surface-base'
+            className={`flex items-center justify-center w-8 h-8 border border-tier-border-default rounded-md cursor-pointer text-tier-text-secondary ${
+              isSidebarOpen ? 'bg-tier-surface-base' : 'bg-tier-white'
             }`}
             aria-label="Toggle sidebar"
           >
@@ -847,14 +955,14 @@ const UkensTreningsplanContainer = () => {
           {/* Week Navigation */}
           <button
             onClick={() => setWeekOffset(weekOffset - 1)}
-            className="flex items-center justify-center w-8 h-8 border border-ak-border-default rounded-md bg-ak-surface-base cursor-pointer text-ak-text-primary"
+            className="flex items-center justify-center w-8 h-8 border border-tier-border-default rounded-md bg-tier-white cursor-pointer text-tier-navy"
             aria-label="Forrige uke"
           >
             <ChevronLeft size={16} />
           </button>
           <button
             onClick={() => setWeekOffset(weekOffset + 1)}
-            className="flex items-center justify-center w-8 h-8 border border-ak-border-default rounded-md bg-ak-surface-base cursor-pointer text-ak-text-primary"
+            className="flex items-center justify-center w-8 h-8 border border-tier-border-default rounded-md bg-tier-white cursor-pointer text-tier-navy"
             aria-label="Neste uke"
           >
             <ChevronRight size={16} />
@@ -862,10 +970,10 @@ const UkensTreningsplanContainer = () => {
 
           {/* Week Info */}
           <div className="ml-2">
-            <span className="text-[15px] font-semibold text-ak-text-primary">
+            <span className="text-[15px] font-semibold text-tier-navy">
               Uke {WEEK_DATA.weekNumber}
             </span>
-            <span className="text-sm text-ak-text-secondary ml-2">
+            <span className="text-sm text-tier-text-secondary ml-2">
               {startDate} – {endDate}
             </span>
           </div>
@@ -873,12 +981,40 @@ const UkensTreningsplanContainer = () => {
 
         {/* Right Side */}
         <div className="flex items-center gap-3">
-          <div className="flex items-center gap-1.5 py-1.5 px-3 bg-ak-primary/10 rounded-md text-xs font-medium text-ak-primary">
+          {/* View Toggle */}
+          <div className="flex items-center gap-1 p-1 bg-tier-surface-base rounded-md">
+            <button
+              onClick={() => setViewMode('calendar')}
+              className={`flex items-center gap-1.5 py-1.5 px-3 border-none rounded text-xs font-medium cursor-pointer transition-colors ${
+                viewMode === 'calendar'
+                  ? 'bg-tier-white text-tier-navy shadow-sm'
+                  : 'bg-transparent text-tier-text-secondary hover:text-tier-navy'
+              }`}
+              aria-label="Kalendervisning"
+            >
+              <Grid size={14} />
+              Kalender
+            </button>
+            <button
+              onClick={() => setViewMode('list')}
+              className={`flex items-center gap-1.5 py-1.5 px-3 border-none rounded text-xs font-medium cursor-pointer transition-colors ${
+                viewMode === 'list'
+                  ? 'bg-tier-white text-tier-navy shadow-sm'
+                  : 'bg-transparent text-tier-text-secondary hover:text-tier-navy'
+              }`}
+              aria-label="Listevisning"
+            >
+              <List size={14} />
+              Liste
+            </button>
+          </div>
+
+          <div className="flex items-center gap-1.5 py-1.5 px-3 bg-tier-navy/10 rounded-md text-xs font-medium text-tier-navy">
             <Calendar size={12} />
             {WEEK_DATA.period}
           </div>
 
-          <button className="flex items-center gap-1.5 py-2 px-3.5 bg-ak-text-primary text-white border-none rounded-md text-[13px] font-medium cursor-pointer">
+          <button className="flex items-center gap-1.5 py-2 px-3.5 bg-tier-navy text-white border-none rounded-md text-[13px] font-medium cursor-pointer">
             <Plus size={14} />
             Legg til økt
           </button>
@@ -892,17 +1028,31 @@ const UkensTreningsplanContainer = () => {
         totalHours={WEEK_DATA.totalPlannedHours}
       />
 
-      {/* Calendar Grid */}
-      <div className="flex border-b border-ak-border-default min-h-[calc(100vh-280px)]">
-        {WEEK_DATA.days.map((day, idx) => (
-          <DayColumn
-            key={idx}
-            day={day}
-            selectedSessionId={selectedSessionId}
-            onSessionClick={handleSessionClick}
+      {/* View Content */}
+      {viewMode === 'calendar' ? (
+        /* Calendar Week Grid View */
+        <div className="h-[calc(100vh-340px)]">
+          <CalendarWeekGrid
+            weekDates={weekDates}
+            events={calendarEvents}
+            onEventClick={handleCalendarEventClick}
+            startHour={6}
+            endHour={22}
           />
-        ))}
-      </div>
+        </div>
+      ) : (
+        /* Original List View */
+        <div className="flex border-b border-tier-border-default min-h-[calc(100vh-280px)]">
+          {WEEK_DATA.days.map((day, idx) => (
+            <DayColumn
+              key={idx}
+              day={day}
+              selectedSessionId={selectedSessionId}
+              onSessionClick={handleSessionClick}
+            />
+          ))}
+        </div>
+      )}
 
       {/* Sidebar Drawer */}
       <SessionSidebarDrawer

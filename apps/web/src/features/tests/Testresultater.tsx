@@ -4,7 +4,7 @@
  */
 import React, { useState } from 'react';
 import { PageHeader } from '../../components/layout/PageHeader';
-import { SectionTitle, SubSectionTitle, CardTitle as TypographyCardTitle } from '../../components/typography';
+import { SectionTitle, SubSectionTitle, CardTitle as TypographyCardTitle } from '../../components/typography/Headings';
 import { AICoachGuide, GUIDE_PRESETS } from '../ai-coach';
 import {
   TrendingUp, TrendingDown, Minus, Calendar, ChevronDown,

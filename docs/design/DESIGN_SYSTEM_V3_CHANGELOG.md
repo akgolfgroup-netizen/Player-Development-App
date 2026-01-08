@@ -1,11 +1,11 @@
 # Design System v3.0 Implementation Changelog
 
 **Date:** December 18, 2024
-**Source:** `AK_GOLF_DESIGN_SYSTEM_COMPLETE.html`
+**Source:** `TIER_GOLF_DESIGN_SYSTEM_COMPLETE.html`
 
 ## Summary
 
-Implemented AK Golf Academy Design System v3.0 as the default design for all existing and new UI in the `apps/web/` application.
+Implemented TIER Golf Design System v3.0 as the default design for all existing and new UI in the `apps/web/` application.
 
 ## Changes Made
 
@@ -159,5 +159,5 @@ npm run lint:css
 
 ---
 
-**Design System Source:** `AK_GOLF_DESIGN_SYSTEM_COMPLETE.html`
+**Design System Source:** `TIER_GOLF_DESIGN_SYSTEM_COMPLETE.html`
 **Last Updated:** December 18, 2024

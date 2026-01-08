@@ -1,0 +1,485 @@
+/**
+ * DagensTreningsplanContainer.jsx
+ * Design System v3.0 - Premium Light
+ *
+ * MIGRATED TO PAGE ARCHITECTURE - Zero inline styles
+ */
+import React, { useState } from 'react';
+import {
+  Calendar, Clock, Target, CheckCircle, Play,
+  ChevronRight, RotateCcw, Flame, Dumbbell, Brain, Flag,
+  Video, MessageCircle, Plus, Award
+} from 'lucide-react';
+import Button from '../../ui/primitives/Button';
+import { SectionTitle, SubSectionTitle } from '../../components/typography';
+
+// ============================================================================
+// MOCK DATA - Will be replaced with API data
+// ============================================================================
+
+const TODAY_PLAN = {
+  date: new Date().toISOString().split('T')[0],
+  dayName: new Date().toLocaleDateString('nb-NO', { weekday: 'long' }),
+  theme: 'Langt spill fokus',
+  totalDuration: 150,
+  completedDuration: 60,
+  sessions: [
+    {
+      id: 's1',
+      type: 'warmup',
+      name: 'Oppvarming',
+      duration: 15,
+      status: 'completed',
+      description: 'Dynamisk stretching og lett sving',
+      exercises: [
+        { name: 'Arm-sirkler', reps: '10 hver vei', completed: true },
+        { name: 'Hofte-rotasjon', reps: '10 hver vei', completed: true },
+        { name: 'Torso-twist', reps: '20 totalt', completed: true },
+        { name: 'Lette svinger', reps: '20 svinger', completed: true },
+      ],
+    },
+    {
+      id: 's2',
+      type: 'technical',
+      name: 'Driver-trening',
+      duration: 45,
+      status: 'completed',
+      description: 'Fokus på konsistent kontakt og ballbane',
+      exercises: [
+        { name: 'Alignment-drill', reps: '10 baller', completed: true, notes: 'Fokus på skulder-linje' },
+        { name: 'Tempo-drill (1-2-3)', reps: '20 baller', completed: true },
+        { name: 'Full sving med mål', reps: '30 baller', completed: true },
+      ],
+      trackmanData: {
+        avgClubSpeed: '108 mph',
+        avgBallSpeed: '158 mph',
+        avgCarry: '242 m',
+        avgSmash: '1.46',
+      },
+    },
+    {
+      id: 's3',
+      type: 'technical',
+      name: 'Lange jern (4-6)',
+      duration: 40,
+      status: 'in_progress',
+      description: 'Presisjon og avstandskontroll',
+      exercises: [
+        { name: 'Alignment check', reps: '5 baller', completed: true },
+        { name: '6-jern til mål 147 m', reps: '20 baller', completed: false },
+        { name: '5-jern til mål 160 m', reps: '15 baller', completed: false },
+        { name: '4-jern til mål 175 m', reps: '15 baller', completed: false },
+      ],
+      targetZones: [
+        { club: '6-jern', distance: '147 m', tolerance: '±7 m' },
+        { club: '5-jern', distance: '160 m', tolerance: '±9 m' },
+        { club: '4-jern', distance: '175 m', tolerance: '±11 m' },
+      ],
+    },
+    {
+      id: 's4',
+      type: 'short_game',
+      name: 'Kortspill',
+      duration: 35,
+      status: 'pending',
+      description: 'Chipping og pitching',
+      exercises: [
+        { name: 'Chip fra tight lie', reps: '15 baller', completed: false },
+        { name: 'Pitch 25-42 m', reps: '20 baller', completed: false },
+        { name: 'Up-and-down challenge', reps: '10 forsøk', completed: false },
+      ],
+    },
+    {
+      id: 's5',
+      type: 'cooldown',
+      name: 'Avslutning',
+      duration: 15,
+      status: 'pending',
+      description: 'Putting og stretching',
+      exercises: [
+        { name: 'Gate-putting drill', reps: '20 putter', completed: false },
+        { name: 'Avstandskontroll 6-12 m', reps: '10 putter', completed: false },
+        { name: 'Stretching', reps: '5 min', completed: false },
+      ],
+    },
+  ],
+  coachNote: 'Husk å fokusere på tempo i dag. Vi justerte litt på grip forrige økt - vær bevisst på dette gjennom hele treningen.',
+  goals: [
+    'Oppnå minimum 65% fairway-treff med driver',
+    'Gjennomsnittlig avvik fra mål under 10 m med lange jern',
+    'Minimum 5/10 up-and-downs',
+  ],
+};
+
+// ============================================================================
+// CLASS MAPPINGS
+// ============================================================================
+
+const SESSION_TYPE_CLASSES = {
+  warmup: {
+    text: 'text-ak-status-warning',
+    bg: 'bg-ak-status-warning/15',
+    icon: Flame,
+    label: 'Oppvarming',
+  },
+  technical: {
+    text: 'text-ak-primary',
+    bg: 'bg-ak-primary/15',
+    icon: Target,
+    label: 'Teknikk',
+  },
+  short_game: {
+    text: 'text-ak-status-success',
+    bg: 'bg-ak-status-success/15',
+    icon: Flag,
+    label: 'Kortspill',
+  },
+  physical: {
+    text: 'text-ak-status-error',
+    bg: 'bg-ak-status-error/15',
+    icon: Dumbbell,
+    label: 'Fysisk',
+  },
+  mental: {
+    text: 'text-amber-500',
+    bg: 'bg-amber-500/15',
+    icon: Brain,
+    label: 'Mental',
+  },
+  cooldown: {
+    text: 'text-ak-text-secondary',
+    bg: 'bg-ak-surface-subtle',
+    icon: RotateCcw,
+    label: 'Avslutning',
+  },
+};
+
+const STATUS_CLASSES = {
+  completed: {
+    text: 'text-ak-status-success',
+    bg: 'bg-ak-status-success/15',
+    progressBg: 'bg-ak-status-success',
+    icon: CheckCircle,
+    label: 'Fullført',
+  },
+  in_progress: {
+    text: 'text-ak-primary',
+    bg: 'bg-ak-primary/15',
+    progressBg: 'bg-ak-primary',
+    icon: Play,
+    label: 'Pågår',
+  },
+  pending: {
+    text: 'text-ak-text-secondary',
+    bg: 'bg-ak-surface-subtle',
+    progressBg: 'bg-ak-text-secondary',
+    icon: Clock,
+    label: 'Venter',
+  },
+};
+
+// ============================================================================
+// SESSION CARD COMPONENT
+// ============================================================================
+
+const SessionCard = ({ session, onStart, onComplete }) => {
+  const [isExpanded, setIsExpanded] = useState(session.status === 'in_progress');
+  const typeConfig = SESSION_TYPE_CLASSES[session.type] || SESSION_TYPE_CLASSES.cooldown;
+  const statusConfig = STATUS_CLASSES[session.status] || STATUS_CLASSES.pending;
+  const TypeIcon = typeConfig.icon;
+
+  const completedExercises = session.exercises.filter(e => e.completed).length;
+  const totalExercises = session.exercises.length;
+  const progressWidth = (completedExercises / totalExercises) * 100;
+
+  return (
+    <div className={`bg-ak-surface-base rounded-2xl overflow-hidden shadow-sm border-2 ${
+      session.status === 'in_progress' ? 'border-ak-primary' : 'border-transparent'
+    } ${session.status === 'completed' ? 'opacity-80' : 'opacity-100'}`}>
+      {/* Header */}
+      <div
+        onClick={() => setIsExpanded(!isExpanded)}
+        className="p-4 cursor-pointer flex items-center gap-3"
+      >
+        <div className={`w-11 h-11 rounded-xl ${typeConfig.bg} flex items-center justify-center`}>
+          {session.status === 'completed' ? (
+            <CheckCircle size={22} className="text-ak-status-success" />
+          ) : (
+            <TypeIcon size={22} className={typeConfig.text} />
+          )}
+        </div>
+
+        <div className="flex-1">
+          <div className="flex items-center gap-2">
+            <SubSectionTitle className={`text-[15px] m-0 ${
+              session.status === 'completed' ? 'line-through' : ''
+            }`}>
+              {session.name}
+            </SubSectionTitle>
+            <span className={`text-[11px] font-medium ${statusConfig.text} ${statusConfig.bg} py-0.5 px-1.5 rounded`}>
+              {statusConfig.label}
+            </span>
+          </div>
+          <div className="text-xs text-ak-text-secondary mt-0.5">
+            {session.duration} min - {completedExercises}/{totalExercises} øvelser
+          </div>
+        </div>
+
+        <div className={`w-7 h-7 rounded-lg bg-ak-surface-subtle flex items-center justify-center transition-transform duration-200 ${
+          isExpanded ? 'rotate-90' : 'rotate-0'
+        }`}>
+          <ChevronRight size={16} className="text-ak-text-secondary" />
+        </div>
+      </div>
+
+      {/* Progress bar */}
+      {session.status !== 'pending' && (
+        <div className="px-4 pb-2">
+          <div className="h-1 bg-ak-surface-subtle rounded-sm overflow-hidden">
+            <div
+              className={`h-full rounded-sm transition-[width] duration-300 ${statusConfig.progressBg}`}
+              style={{ width: `${progressWidth}%` }}
+            />
+          </div>
+        </div>
+      )}
+
+      {/* Expanded Content */}
+      {isExpanded && (
+        <div className="px-4 pb-4 border-t border-ak-border-default mt-2">
+          <p className="text-[13px] text-ak-text-secondary my-3 leading-relaxed">
+            {session.description}
+          </p>
+
+          {/* Exercises */}
+          <div className="flex flex-col gap-2">
+            {session.exercises.map((exercise, idx) => (
+              <div
+                key={idx}
+                className={`flex items-center gap-2.5 py-2.5 px-3 rounded-lg ${
+                  exercise.completed ? 'bg-ak-status-success/10' : 'bg-ak-surface-subtle'
+                }`}
+              >
+                <div className={`w-[22px] h-[22px] rounded-full flex items-center justify-center cursor-pointer ${
+                  exercise.completed
+                    ? 'bg-ak-status-success border-0'
+                    : 'bg-ak-surface-base border-2 border-ak-border-default'
+                }`}>
+                  {exercise.completed && <CheckCircle size={14} className="text-white" />}
+                </div>
+                <div className="flex-1">
+                  <div className={`text-[13px] ${
+                    exercise.completed ? 'text-ak-text-secondary line-through' : 'text-ak-text-primary'
+                  }`}>
+                    {exercise.name}
+                  </div>
+                  {exercise.notes && (
+                    <div className="text-[11px] text-ak-text-secondary">
+                      {exercise.notes}
+                    </div>
+                  )}
+                </div>
+                <span className="text-xs text-ak-text-secondary bg-ak-surface-base py-1 px-2 rounded-md">
+                  {exercise.reps}
+                </span>
+              </div>
+            ))}
+          </div>
+
+          {/* Trackman Data (if available) */}
+          {session.trackmanData && (
+            <div className="mt-3 p-3 bg-ak-primary/10 rounded-[10px]">
+              <div className="text-xs font-semibold text-ak-primary mb-2 flex items-center gap-1.5">
+                <Video size={14} />
+                TrackMan Data
+              </div>
+              <div className="grid grid-cols-4 gap-2">
+                {Object.entries(session.trackmanData).map(([key, value]) => (
+                  <div key={key} className="text-center">
+                    <div className="text-sm font-semibold text-ak-text-primary">
+                      {value}
+                    </div>
+                    <div className="text-[10px] text-ak-text-secondary">
+                      {key.replace('avg', 'Gj.sn ')}
+                    </div>
+                  </div>
+                ))}
+              </div>
+            </div>
+          )}
+
+          {/* Action Buttons */}
+          {session.status === 'pending' && (
+            <Button
+              variant="primary"
+              leftIcon={<Play size={16} />}
+              onClick={(e) => {
+                e.stopPropagation();
+                onStart(session.id);
+              }}
+              className="w-full mt-3 justify-center"
+            >
+              Start økt
+            </Button>
+          )}
+          {session.status === 'in_progress' && (
+            <Button
+              variant="primary"
+              leftIcon={<CheckCircle size={16} />}
+              onClick={(e) => {
+                e.stopPropagation();
+                onComplete(session.id);
+              }}
+              className="w-full mt-3 justify-center !bg-ak-status-success"
+            >
+              Marker som fullført
+            </Button>
+          )}
+        </div>
+      )}
+    </div>
+  );
+};
+
+// ============================================================================
+// MAIN COMPONENT
+// ============================================================================
+
+const DagensTreningsplanContainer = () => {
+  const [plan, setPlan] = useState(TODAY_PLAN);
+
+  const progressPercent = Math.round((plan.completedDuration / plan.totalDuration) * 100);
+  const completedSessions = plan.sessions.filter(s => s.status === 'completed').length;
+
+  const handleStartSession = (sessionId) => {
+    setPlan(prev => ({
+      ...prev,
+      sessions: prev.sessions.map(s =>
+        s.id === sessionId ? { ...s, status: 'in_progress' } : s
+      ),
+    }));
+  };
+
+  const handleCompleteSession = (sessionId) => {
+    setPlan(prev => {
+      const session = prev.sessions.find(s => s.id === sessionId);
+      return {
+        ...prev,
+        completedDuration: prev.completedDuration + (session?.duration || 0),
+        sessions: prev.sessions.map(s =>
+          s.id === sessionId
+            ? { ...s, status: 'completed', exercises: s.exercises.map(e => ({ ...e, completed: true })) }
+            : s
+        ),
+      };
+    });
+  };
+
+  return (
+    <div className="min-h-screen bg-ak-surface-subtle">
+      {/* Context info - theme and day */}
+      <div className="text-[13px] text-ak-text-secondary mb-4">
+        {plan.dayName.charAt(0).toUpperCase() + plan.dayName.slice(1)} - {plan.theme}
+      </div>
+
+      {/* Two-column layout: Sessions left, Coach note top-right */}
+      <div className="grid grid-cols-[1fr_320px] gap-6 mb-5">
+        {/* Left column: Progress Overview */}
+        <div className="bg-ak-surface-base rounded-2xl p-5 shadow-sm">
+          <div className="flex items-center justify-between mb-4">
+            <div>
+              <SectionTitle className="text-lg m-0">
+                Dagens fremgang
+              </SectionTitle>
+              <div className="text-[13px] text-ak-text-secondary mt-0.5">
+                {completedSessions}/{plan.sessions.length} økter fullført
+              </div>
+            </div>
+            <div className={`text-[28px] font-bold ${
+              progressPercent >= 100 ? 'text-ak-status-success' : 'text-ak-primary'
+            }`}>
+              {progressPercent}%
+            </div>
+          </div>
+
+          <div className="h-2 bg-ak-surface-subtle rounded overflow-hidden">
+            <div
+              className={`h-full rounded transition-[width] duration-500 ${
+                progressPercent >= 100 ? 'bg-ak-status-success' : 'bg-ak-primary'
+              }`}
+              style={{ width: `${progressPercent}%` }}
+            />
+          </div>
+
+          <div className="flex justify-between mt-3 text-xs text-ak-text-secondary">
+            <span>{plan.completedDuration} min fullført</span>
+            <span>{plan.totalDuration - plan.completedDuration} min gjenstår</span>
+          </div>
+        </div>
+
+        {/* Right column: Coach Note (top-right position) */}
+        {plan.coachNote && (
+          <div className="bg-ak-primary/10 rounded-xl p-4 border-l-4 border-ak-primary self-start">
+            <div className="flex items-center gap-2 mb-2">
+              <MessageCircle size={16} className="text-ak-primary" />
+              <span className="text-[13px] font-semibold text-ak-primary">
+                Beskjed fra trener
+              </span>
+            </div>
+            <p className="text-[13px] text-ak-text-primary m-0 leading-relaxed">
+              {plan.coachNote}
+            </p>
+          </div>
+        )}
+      </div>
+
+      {/* Today's Goals */}
+      <div className="bg-ak-surface-base rounded-xl p-4 mb-5">
+        <div className="flex items-center gap-2 mb-3">
+          <Award size={16} className="text-ak-status-warning" />
+          <span className="text-[13px] font-semibold text-ak-text-primary">
+            Dagens mål
+          </span>
+        </div>
+        <div className="flex flex-col gap-1.5">
+          {plan.goals.map((goal, idx) => (
+            <div
+              key={idx}
+              className="flex items-center gap-2 text-[13px] text-ak-text-primary"
+            >
+              <Target size={12} className="text-ak-status-warning" />
+              {goal}
+            </div>
+          ))}
+        </div>
+      </div>
+
+      {/* Sessions */}
+      <SectionTitle className="text-base m-0 mb-4">
+        Økter
+      </SectionTitle>
+
+      <div className="flex flex-col gap-3">
+        {plan.sessions.map((session) => (
+          <SessionCard
+            key={session.id}
+            session={session}
+            onStart={handleStartSession}
+            onComplete={handleCompleteSession}
+          />
+        ))}
+      </div>
+
+      {/* Add Custom Exercise */}
+      <Button
+        variant="secondary"
+        leftIcon={<Plus size={18} />}
+        className="w-full mt-4 justify-center border-2 border-dashed border-ak-border-default !bg-transparent"
+      >
+        Legg til egen økt
+      </Button>
+    </div>
+  );
+};
+
+export default DagensTreningsplanContainer;

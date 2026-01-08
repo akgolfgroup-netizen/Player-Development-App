@@ -1,6 +1,6 @@
 # Coach API Documentation
 
-> AK Golf Academy - Backend API for Coach Functions
+> TIER Golf - Backend API for Coach Functions
 > Last Updated: December 2025
 
 ---
@@ -437,4 +437,4 @@ Coaches can subscribe to these events:
 
 ---
 
-*AK Golf Academy - Coach API v1.0*
+*TIER Golf - Coach API v1.0*

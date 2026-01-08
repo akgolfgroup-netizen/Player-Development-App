@@ -4,6 +4,7 @@ import apiClient from '../../services/apiClient';
 import LoadingState from '../../components/ui/LoadingState';
 import ErrorState from '../../components/ui/ErrorState';
 import ProgressDashboard from './ProgressDashboard';
+import { PageHeader } from '../../ui/raw-blocks';
 
 /**
  * ProgressDashboardContainer - Fetches and transforms dashboard data for progress view
@@ -227,20 +228,24 @@ const ProgressDashboardContainer = () => {
     }
   }, [user, fetchProgress]);
 
-  if (state === 'loading') {
-    return <LoadingState message="Laster fremdrift..." />;
-  }
-
-  if (state === 'error') {
-    return (
-      <ErrorState
-        message={error?.message || 'Kunne ikke laste fremgangsdata'}
-        onRetry={fetchProgress}
+  return (
+    <>
+      <PageHeader
+        title="Fremdrift"
+        subtitle="Spor din treningsfremgang og aktivitetsstatistikk"
+        helpText="Komplett oversikt over din treningsfremgang med gjennomføringsgrad, daglig streak, økter fullført og total treningstid. Se 12-ukers aktivitetshistorikk, treningsfokus fordelt på ferdighetsområder (Tee, Innspill, Naerspill, Putting) og kommende planlagte økter."
+        showBackButton={false}
       />
-    );
-  }
-
-  return <ProgressDashboard data={progressData} />;
+      {state === 'loading' && <LoadingState message="Laster fremdrift..." />}
+      {state === 'error' && (
+        <ErrorState
+          message={error?.message || 'Kunne ikke laste fremgangsdata'}
+          onRetry={fetchProgress}
+        />
+      )}
+      {state === 'idle' && <ProgressDashboard data={progressData} />}
+    </>
+  );
 };
 
 export default ProgressDashboardContainer;

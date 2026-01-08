@@ -2,7 +2,7 @@
 
 ## Introduction
 
-Welcome to the IUP Golf Academy Booking & Calendar System! This guide will help you navigate the calendar interface and create bookings for training sessions.
+Welcome to the IUP Golf Booking & Calendar System! This guide will help you navigate the calendar interface and create bookings for training sessions.
 
 ---
 
@@ -22,7 +22,7 @@ Welcome to the IUP Golf Academy Booking & Calendar System! This guide will help 
 
 ### Accessing the Calendar
 
-1. Log in to your IUP Golf Academy account
+1. Log in to your IUP Golf account
 2. Navigate to **"Kalender"** in the main menu
 3. The calendar will load showing the current month
 
@@ -478,12 +478,12 @@ A: Latest versions of:
 
 **Session Type:** Category of training (individual, group, test, etc.)
 
-**Tenant:** Your organization (IUP Golf Academy)
+**Tenant:** Your organization (IUP Golf)
 
 ---
 
 **Last Updated:** 2025-12-15
 **Version:** 1.0
-**For Questions:** Contact IUP Golf Academy Support
+**For Questions:** Contact IUP Golf Support
 
 **Happy Booking! ⛳**

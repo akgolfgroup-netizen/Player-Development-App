@@ -8,7 +8,7 @@ import {
 import { useDashboard } from '../../hooks/useDashboard'
 import { useFocus } from '../../hooks/useFocus'
 import { CalendarOversiktWidget } from '../calendar-oversikt'
-import { PageTitle, SectionTitle, SubSectionTitle, CardTitle as TypographyCardTitle } from '../../components/typography'
+import { PageTitle, SectionTitle, SubSectionTitle, CardTitle as TypographyCardTitle } from '../../components/typography/Headings'
 
 // shadcn/ui components
 import {
@@ -28,7 +28,7 @@ import {
 } from '../../components/shadcn/golf'
 
 /**
- * AKGolfDashboard V4 - shadcn/ui Premium Redesign
+ * TIERGolfDashboard V4 - shadcn/ui Premium Redesign
  *
  * Upgraded from V3 with:
  * - shadcn/ui components for consistent, polished UI
@@ -102,8 +102,8 @@ const WelcomeSection: React.FC<WelcomeSectionProps> = ({ playerName, avatarUrl, 
         {/* Profile Avatar */}
         <div className="relative">
           <div
-            className="w-16 h-16 rounded-full flex items-center justify-center overflow-hidden ring-4 ring-white shadow-ak-elevated"
-            style={{ background: 'linear-gradient(135deg, var(--ak-primary) 0%, var(--ak-primary-dark) 100%)' }}
+            className="w-16 h-16 rounded-full flex items-center justify-center overflow-hidden ring-4 ring-white shadow-tier-white"
+            style={{ background: 'linear-gradient(135deg, var(--tier-navy) 0%, var(--tier-navy-dark) 100%)' }}
           >
             {avatarUrl ? (
               <img
@@ -116,7 +116,7 @@ const WelcomeSection: React.FC<WelcomeSectionProps> = ({ playerName, avatarUrl, 
             )}
           </div>
           {streak > 0 && (
-            <div className="absolute -bottom-1 -right-1 w-6 h-6 bg-orange-500 rounded-full flex items-center justify-center text-xs shadow-ak-sm">
+            <div className="absolute -bottom-1 -right-1 w-6 h-6 bg-orange-500 rounded-full flex items-center justify-center text-xs shadow-sm">
               🔥
             </div>
           )}
@@ -124,13 +124,13 @@ const WelcomeSection: React.FC<WelcomeSectionProps> = ({ playerName, avatarUrl, 
 
         {/* Text Content */}
         <div className="space-y-1">
-          <p className="text-caption-2 text-ak-text-tertiary uppercase tracking-wider font-medium">
+          <p className="text-caption-2 text-tier-text-tertiary uppercase tracking-wider font-medium">
             {getGreeting()}
           </p>
-          <PageTitle className="text-title-1 text-ak-text-primary tracking-tight">
+          <PageTitle className="text-title-1 text-tier-navy tracking-tight">
             {firstName}
           </PageTitle>
-          <p className="text-subhead text-ak-text-secondary font-medium">
+          <p className="text-subhead text-tier-text-secondary font-medium">
             {motivationalMessage}
           </p>
         </div>
@@ -151,18 +151,18 @@ interface WeekAtGlanceCardProps {
 const WeekAtGlanceCard: React.FC<WeekAtGlanceCardProps> = ({ stats, loading }) => {
   if (loading) {
     return (
-      <Card className="h-full shadow-ak-card rounded-ak-lg">
+      <Card className="h-full shadow-tier-white rounded-xl">
         <CardHeader className="pb-4">
           <CardTitle className="flex items-center gap-2 text-headline">
-            <Calendar className="h-5 w-5 text-ak-primary" />
+            <Calendar className="h-5 w-5 text-tier-navy" />
             Denne uken
           </CardTitle>
         </CardHeader>
         <CardContent>
           <div className="grid grid-cols-3 gap-6 animate-pulse">
-            <div className="h-16 bg-ak-surface-subtle rounded-ak-sm" />
-            <div className="h-16 bg-ak-surface-subtle rounded-ak-sm" />
-            <div className="h-16 bg-ak-surface-subtle rounded-ak-sm" />
+            <div className="h-16 bg-tier-surface-base rounded-md" />
+            <div className="h-16 bg-tier-surface-base rounded-md" />
+            <div className="h-16 bg-tier-surface-base rounded-md" />
           </div>
         </CardContent>
       </Card>
@@ -177,12 +177,12 @@ const WeekAtGlanceCard: React.FC<WeekAtGlanceCardProps> = ({ stats, loading }) =
     : 0
 
   return (
-    <Card className="h-full shadow-ak-card rounded-ak-lg">
+    <Card className="h-full shadow-tier-white rounded-xl">
       <CardHeader className="pb-4">
         <div className="flex items-center justify-between">
           <CardTitle className="flex items-center gap-2 text-headline">
             <div className="w-8 h-8 rounded-lg flex items-center justify-center" style={{ backgroundColor: 'var(--accent-muted)' }}>
-              <Calendar className="h-5 w-5" style={{ color: 'var(--ak-primary)' }} />
+              <Calendar className="h-5 w-5" style={{ color: 'var(--tier-navy)' }} />
             </div>
             Denne uken
           </CardTitle>
@@ -199,17 +199,17 @@ const WeekAtGlanceCard: React.FC<WeekAtGlanceCardProps> = ({ stats, loading }) =
           {/* Planned Sessions */}
           <div className="space-y-2">
             <div className="flex justify-between items-baseline">
-              <span className="text-subhead text-ak-text-secondary">Planlagte økter</span>
-              <span className="text-subhead font-semibold tabular-nums text-ak-text-primary">
+              <span className="text-subhead text-tier-text-secondary">Planlagte økter</span>
+              <span className="text-subhead font-semibold tabular-nums text-tier-navy">
                 {stats.sessionsCompleted} av {stats.sessionsTotal}
               </span>
             </div>
             <Progress
               value={sessionsPercent}
-              className="h-2 bg-ak-component-progress-bg"
-              indicatorClassName={sessionsPercent >= 100 ? 'bg-ak-component-progress-success' : 'bg-ak-component-progress-fill'}
+              className="h-2 bg-tier-surface-base"
+              indicatorClassName={sessionsPercent >= 100 ? 'bg-tier-success' : 'bg-tier-navy'}
             />
-            <span className="text-caption-1 text-ak-text-tertiary">
+            <span className="text-caption-1 text-tier-text-tertiary">
               {sessionsPercent >= 100 ? 'Mål nådd!' : `${100 - sessionsPercent}% gjenstår`}
             </span>
           </div>
@@ -217,17 +217,17 @@ const WeekAtGlanceCard: React.FC<WeekAtGlanceCardProps> = ({ stats, loading }) =
           {/* Training Hours */}
           <div className="space-y-2">
             <div className="flex justify-between items-baseline">
-              <span className="text-subhead text-ak-text-secondary">Treningstimer</span>
-              <span className="text-subhead font-semibold tabular-nums text-ak-text-primary">
+              <span className="text-subhead text-tier-text-secondary">Treningstimer</span>
+              <span className="text-subhead font-semibold tabular-nums text-tier-navy">
                 {stats.hoursThisWeek}t av {stats.hoursGoal}t
               </span>
             </div>
             <Progress
               value={hoursPercent}
-              className="h-2 bg-ak-component-progress-bg"
-              indicatorClassName={hoursPercent >= 100 ? 'bg-ak-component-progress-success' : 'bg-ak-component-progress-fill'}
+              className="h-2 bg-tier-surface-base"
+              indicatorClassName={hoursPercent >= 100 ? 'bg-tier-success' : 'bg-tier-navy'}
             />
-            <span className="text-caption-1 text-ak-text-tertiary">
+            <span className="text-caption-1 text-tier-text-tertiary">
               {hoursPercent >= 100 ? 'Måltimer nådd!' : `${stats.hoursGoal - stats.hoursThisWeek}t gjenstår`}
             </span>
           </div>
@@ -235,14 +235,14 @@ const WeekAtGlanceCard: React.FC<WeekAtGlanceCardProps> = ({ stats, loading }) =
           {/* Completed Last 7 Days */}
           <div className="space-y-2">
             <div className="flex justify-between items-baseline">
-              <span className="text-subhead text-ak-text-secondary">Fullført siste 7 dager</span>
-              <span className="text-subhead font-semibold tabular-nums text-ak-text-primary">{stats.sessionsCompleted} økter</span>
+              <span className="text-subhead text-tier-text-secondary">Fullført siste 7 dager</span>
+              <span className="text-subhead font-semibold tabular-nums text-tier-navy">{stats.sessionsCompleted} økter</span>
             </div>
             <div className="flex items-center gap-2 py-2">
               <CheckCircle2
-                className={`h-4 w-4 ${stats.sessionsCompleted > 0 ? 'text-ak-status-success' : 'text-ak-text-tertiary'}`}
+                className={`h-4 w-4 ${stats.sessionsCompleted > 0 ? 'text-tier-success' : 'text-tier-text-tertiary'}`}
               />
-              <span className="text-subhead text-ak-text-secondary">
+              <span className="text-subhead text-tier-text-secondary">
                 {stats.sessionsCompleted > 0
                   ? `${Math.round(stats.hoursThisWeek)} timer totalt`
                   : 'Ingen økter ennå'}
@@ -280,15 +280,15 @@ const BadgesScoreCard: React.FC<BadgesScoreCardProps> = ({
 
   if (loading) {
     return (
-      <Card className="h-full shadow-ak-card rounded-ak-lg">
+      <Card className="h-full shadow-tier-white rounded-xl">
         <CardHeader className="pb-4">
           <CardTitle className="flex items-center gap-2 text-headline">
-            <Award className="h-5 w-5 text-ak-primary" />
+            <Award className="h-5 w-5 text-tier-navy" />
             Merker & Poeng
           </CardTitle>
         </CardHeader>
         <CardContent>
-          <div className="h-32 bg-ak-surface-subtle rounded-ak-sm animate-pulse" />
+          <div className="h-32 bg-tier-surface-base rounded-md animate-pulse" />
         </CardContent>
       </Card>
     )
@@ -299,7 +299,7 @@ const BadgesScoreCard: React.FC<BadgesScoreCardProps> = ({
   const badgeCount = achievements?.length || 0
 
   return (
-    <Card className="h-full flex flex-col shadow-ak-card rounded-ak-lg">
+    <Card className="h-full flex flex-col shadow-tier-white rounded-xl">
       <CardHeader className="pb-4">
         <CardTitle className="flex items-center gap-2 text-headline">
           <div className="w-8 h-8 rounded-lg flex items-center justify-center" style={{ backgroundColor: 'var(--achievement-muted)' }}>
@@ -315,28 +315,28 @@ const BadgesScoreCard: React.FC<BadgesScoreCardProps> = ({
             <Trophy className="h-5 w-5" style={{ color: 'var(--achievement)' }} />
           </div>
           <div>
-            <span className="text-stat-label text-ak-text-tertiary">RANK</span>
-            <p className="text-title-3 text-ak-text-primary">{rankName}</p>
+            <span className="text-stat-label text-tier-text-tertiary">RANK</span>
+            <p className="text-title-3 text-tier-navy">{rankName}</p>
           </div>
         </div>
 
         {/* XP Progress */}
         <div className="space-y-1.5">
           <div className="flex justify-between items-baseline">
-            <span className="text-subhead font-semibold text-ak-text-primary">Level {level || 1}</span>
-            <span className="text-subhead text-ak-text-secondary tabular-nums">{totalXp || 0} XP</span>
+            <span className="text-subhead font-semibold text-tier-navy">Level {level || 1}</span>
+            <span className="text-subhead text-tier-text-secondary tabular-nums">{totalXp || 0} XP</span>
           </div>
-          <Progress value={xpProgress} className="h-1.5 bg-ak-component-progress-bg" indicatorClassName="bg-ak-component-progress-fill" />
-          <span className="text-caption-1 text-ak-text-tertiary">
+          <Progress value={xpProgress} className="h-1.5 bg-tier-surface-base" indicatorClassName="bg-tier-navy" />
+          <span className="text-caption-1 text-tier-text-tertiary">
             {xp || 0} / {nextLevelXp || 100} til neste nivå
           </span>
         </div>
 
         {/* Badges Count */}
-        <div className="flex items-center gap-3 pt-3 border-t border-ak-border-muted mt-auto">
+        <div className="flex items-center gap-3 pt-3 border-t border-tier-border-default mt-auto">
           <div className="flex items-baseline gap-1.5">
-            <span className="text-title-2 tabular-nums text-ak-text-primary">{badgeCount}</span>
-            <span className="text-subhead text-ak-text-secondary">merker opptjent</span>
+            <span className="text-title-2 tabular-nums text-tier-navy">{badgeCount}</span>
+            <span className="text-subhead text-tier-text-secondary">merker opptjent</span>
           </div>
           {badgeCount > 0 && achievements?.slice(0, 3).map((badge, idx) => (
             <span key={badge.id || idx} className="text-xl">
@@ -383,11 +383,11 @@ const Last7DaysVisualization: React.FC<Last7DaysProps> = ({ calendarEvents, stat
   }
 
   return (
-    <Card className="shadow-ak-card rounded-ak-lg">
+    <Card className="shadow-tier-white rounded-xl">
       <CardHeader className="pb-3">
         <CardTitle className="flex items-center gap-2 text-subhead">
           <div className="w-7 h-7 rounded-lg flex items-center justify-center" style={{ backgroundColor: 'var(--accent-muted)' }}>
-            <TrendingUp className="h-4 w-4" style={{ color: 'var(--ak-primary)' }} />
+            <TrendingUp className="h-4 w-4" style={{ color: 'var(--tier-navy)' }} />
           </div>
           Siste 7 dager
         </CardTitle>
@@ -398,19 +398,19 @@ const Last7DaysVisualization: React.FC<Last7DaysProps> = ({ calendarEvents, stat
             const status = getDayStatus(day, index)
             return (
               <div key={day.date} className="flex flex-col items-center gap-2 flex-1">
-                <span className={`text-caption-1 ${day.isToday ? 'text-ak-primary font-semibold' : 'text-ak-text-tertiary'}`}>
+                <span className={`text-caption-1 ${day.isToday ? 'text-tier-navy font-semibold' : 'text-tier-text-tertiary'}`}>
                   {day.label}
                 </span>
                 <div className={`
-                  w-full max-w-12 h-8 rounded-ak-sm flex items-center justify-center transition-all duration-ak-base
-                  ${status === 'completed' ? 'bg-ak-status-success' : ''}
-                  ${status === 'has-events' ? 'bg-ak-primary' : ''}
-                  ${status === 'weekend' ? 'bg-ak-surface-elevated' : ''}
-                  ${status === 'empty' ? 'bg-ak-surface-subtle' : ''}
-                  ${day.isToday ? 'ring-2 ring-ak-primary' : 'border border-ak-border-muted'}
+                  w-full max-w-12 h-8 rounded-md flex items-center justify-center transition-all duration-ak-base
+                  ${status === 'completed' ? 'bg-tier-success' : ''}
+                  ${status === 'has-events' ? 'bg-tier-navy' : ''}
+                  ${status === 'weekend' ? 'bg-tier-white' : ''}
+                  ${status === 'empty' ? 'bg-tier-surface-base' : ''}
+                  ${day.isToday ? 'ring-2 ring-tier-navy' : 'border border-tier-border-default'}
                 `}>
-                  {status === 'completed' && <CheckCircle2 className="h-3 w-3 text-ak-text-inverse" />}
-                  {status === 'has-events' && <div className="w-2 h-2 rounded-full bg-ak-surface-card" />}
+                  {status === 'completed' && <CheckCircle2 className="h-3 w-3 text-tier-white" />}
+                  {status === 'has-events' && <div className="w-2 h-2 rounded-full bg-tier-white" />}
                 </div>
               </div>
             )
@@ -418,17 +418,17 @@ const Last7DaysVisualization: React.FC<Last7DaysProps> = ({ calendarEvents, stat
         </div>
 
         {/* Legend */}
-        <div className="flex justify-center gap-5 mt-4 pt-3 border-t border-ak-border-muted">
-          <div className="flex items-center gap-1.5 text-caption-1 text-ak-text-tertiary">
-            <div className="w-2.5 h-2.5 rounded-ak-xs bg-ak-status-success" />
+        <div className="flex justify-center gap-5 mt-4 pt-3 border-t border-tier-border-default">
+          <div className="flex items-center gap-1.5 text-caption-1 text-tier-text-tertiary">
+            <div className="w-2.5 h-2.5 rounded bg-tier-success" />
             <span>Fullført</span>
           </div>
-          <div className="flex items-center gap-1.5 text-caption-1 text-ak-text-tertiary">
-            <div className="w-2.5 h-2.5 rounded-ak-xs bg-ak-primary" />
+          <div className="flex items-center gap-1.5 text-caption-1 text-tier-text-tertiary">
+            <div className="w-2.5 h-2.5 rounded bg-tier-navy" />
             <span>I dag</span>
           </div>
-          <div className="flex items-center gap-1.5 text-caption-1 text-ak-text-tertiary">
-            <div className="w-2.5 h-2.5 rounded-ak-xs bg-ak-surface-subtle border border-ak-border-muted" />
+          <div className="flex items-center gap-1.5 text-caption-1 text-tier-text-tertiary">
+            <div className="w-2.5 h-2.5 rounded bg-tier-surface-base border border-tier-border-default" />
             <span>Ingen data</span>
           </div>
         </div>
@@ -447,11 +447,11 @@ interface FocusCardProps {
 const FocusCard: React.FC<FocusCardProps> = ({ focus, loading }) => {
   if (loading) {
     return (
-      <Card className="border-l-4 shadow-ak-card rounded-ak-lg" style={{ borderLeftColor: 'var(--ak-primary)' }}>
+      <Card className="border-l-4 shadow-tier-white rounded-xl" style={{ borderLeftColor: 'var(--tier-navy)' }}>
         <CardContent className="pt-5">
           <div className="space-y-3 animate-pulse">
-            <div className="h-4 bg-ak-surface-subtle rounded-ak-xs w-1/3" />
-            <div className="h-6 bg-ak-surface-subtle rounded-ak-xs w-2/3" />
+            <div className="h-4 bg-tier-surface-base rounded w-1/3" />
+            <div className="h-6 bg-tier-surface-base rounded w-2/3" />
           </div>
         </CardContent>
       </Card>
@@ -460,18 +460,18 @@ const FocusCard: React.FC<FocusCardProps> = ({ focus, loading }) => {
 
   if (!focus) {
     return (
-      <Card className="border-l-4 shadow-ak-card rounded-ak-lg" style={{ borderLeftColor: 'var(--ak-primary)' }}>
+      <Card className="border-l-4 shadow-tier-white rounded-xl" style={{ borderLeftColor: 'var(--tier-navy)' }}>
         <CardContent className="pt-5">
           <div className="flex items-center gap-2 mb-3">
             <div className="w-7 h-7 rounded-lg flex items-center justify-center" style={{ backgroundColor: 'var(--accent-muted)' }}>
-              <Crosshair className="h-4 w-4" style={{ color: 'var(--ak-primary)' }} />
+              <Crosshair className="h-4 w-4" style={{ color: 'var(--tier-navy)' }} />
             </div>
-            <span className="text-stat-label text-ak-text-secondary">
+            <span className="text-stat-label text-tier-text-secondary">
               UKENS FOKUS
             </span>
           </div>
-          <SubSectionTitle className="text-title-3 text-ak-text-primary mb-2">Start din første økt</SubSectionTitle>
-          <p className="text-subhead text-ak-text-secondary">
+          <SubSectionTitle className="text-title-3 text-tier-navy mb-2">Start din første økt</SubSectionTitle>
+          <p className="text-subhead text-tier-text-secondary">
             Fullfør noen tester for å få personlig anbefaling
           </p>
         </CardContent>
@@ -485,30 +485,30 @@ const FocusCard: React.FC<FocusCardProps> = ({ focus, loading }) => {
   const progressPercent = Math.round((sessionsCompleted / sessionsTarget) * 100)
 
   return (
-    <Card className="border-l-4 shadow-ak-card rounded-ak-lg" style={{ borderLeftColor: 'var(--ak-primary)' }}>
+    <Card className="border-l-4 shadow-tier-white rounded-xl" style={{ borderLeftColor: 'var(--tier-navy)' }}>
       <CardContent className="pt-5">
         <div className="flex items-center justify-between mb-3">
           <div className="flex items-center gap-2">
             <div className="w-7 h-7 rounded-lg flex items-center justify-center" style={{ backgroundColor: 'var(--accent-muted)' }}>
-              <Crosshair className="h-4 w-4" style={{ color: 'var(--ak-primary)' }} />
+              <Crosshair className="h-4 w-4" style={{ color: 'var(--tier-navy)' }} />
             </div>
-            <span className="text-stat-label text-ak-text-secondary">
+            <span className="text-stat-label text-tier-text-secondary">
               UKENS FOKUS
             </span>
           </div>
-          <span className="text-caption-1 font-semibold px-2.5 py-1 rounded-full" style={{ backgroundColor: 'var(--accent-muted)', color: 'var(--ak-primary)' }}>
+          <span className="text-caption-1 font-semibold px-2.5 py-1 rounded-full" style={{ backgroundColor: 'var(--accent-muted)', color: 'var(--tier-navy)' }}>
             {focusLabel}
           </span>
         </div>
 
-        <SubSectionTitle className="text-title-3 text-ak-text-primary mb-2">
+        <SubSectionTitle className="text-title-3 text-tier-navy mb-2">
           {focus.approachWeakestBucket
             ? `${focusLabel}: ${focus.approachWeakestBucket.replace('_', '-')} yards`
             : focusLabel}
         </SubSectionTitle>
 
         {focus.reasonCodes?.length > 0 && (
-          <p className="text-subhead text-ak-text-secondary mb-4">
+          <p className="text-subhead text-tier-text-secondary mb-4">
             {focus.reasonCodes.includes(`weak_${focus.focusComponent.toLowerCase()}_test_cluster`)
               ? 'Dine tester viser forbedringspotensial her'
               : focus.reasonCodes.includes(`high_weight_${focus.focusComponent.toLowerCase()}`)
@@ -518,8 +518,8 @@ const FocusCard: React.FC<FocusCardProps> = ({ focus, loading }) => {
         )}
 
         <div className="flex items-center gap-3">
-          <Progress value={progressPercent} className="flex-1 h-1.5 bg-ak-component-progress-bg" indicatorClassName="bg-ak-component-progress-fill" />
-          <span className="text-caption-1 text-ak-text-tertiary font-medium whitespace-nowrap">
+          <Progress value={progressPercent} className="flex-1 h-1.5 bg-tier-surface-base" indicatorClassName="bg-tier-navy" />
+          <span className="text-caption-1 text-tier-text-tertiary font-medium whitespace-nowrap">
             {sessionsCompleted} av {sessionsTarget} økter
           </span>
         </div>
@@ -538,7 +538,7 @@ interface ContextualCTAProps {
 
 const ContextualCTA: React.FC<ContextualCTAProps> = ({ focus, upcomingSession, onStart }) => {
   const ctaStyle = {
-    backgroundColor: 'var(--ak-primary)',
+    backgroundColor: 'var(--tier-navy)',
     color: 'var(--text-inverse)',
   }
 
@@ -548,7 +548,7 @@ const ContextualCTA: React.FC<ContextualCTAProps> = ({ focus, upcomingSession, o
 
     return (
       <button
-        className="w-full flex items-center justify-between h-auto py-4 px-5 rounded-xl shadow-ak-sm transition-all duration-200 hover:opacity-90 active:opacity-80"
+        className="w-full flex items-center justify-between h-auto py-4 px-5 rounded-xl shadow-sm transition-all duration-200 hover:opacity-90 active:opacity-80"
         style={ctaStyle}
         onClick={() => onStart(upcomingSession)}
       >
@@ -570,7 +570,7 @@ const ContextualCTA: React.FC<ContextualCTAProps> = ({ focus, upcomingSession, o
 
     return (
       <button
-        className="w-full flex items-center justify-between h-auto py-4 px-5 rounded-xl shadow-ak-sm transition-all duration-200 hover:opacity-90 active:opacity-80"
+        className="w-full flex items-center justify-between h-auto py-4 px-5 rounded-xl shadow-sm transition-all duration-200 hover:opacity-90 active:opacity-80"
         style={ctaStyle}
         onClick={() => onStart({ type: 'focus', focus })}
       >
@@ -588,7 +588,7 @@ const ContextualCTA: React.FC<ContextualCTAProps> = ({ focus, upcomingSession, o
 
   return (
     <button
-      className="w-full flex items-center justify-between h-auto py-4 px-5 rounded-xl shadow-ak-sm transition-all duration-200 hover:opacity-90 active:opacity-80"
+      className="w-full flex items-center justify-between h-auto py-4 px-5 rounded-xl shadow-sm transition-all duration-200 hover:opacity-90 active:opacity-80"
       style={ctaStyle}
       onClick={() => onStart({ type: 'quick' })}
     >
@@ -609,12 +609,12 @@ const ContextualCTA: React.FC<ContextualCTAProps> = ({ focus, upcomingSession, o
 const QuickStartCTA: React.FC<{ onStart: (session: any) => void }> = ({ onStart }) => (
   <Button
     variant="outline"
-    className="w-full justify-center gap-2 border-dashed border-ak-border bg-ak-surface-card hover:bg-ak-surface-subtle rounded-ak-md transition-all duration-ak-base"
+    className="w-full justify-center gap-2 border-dashed border-tier-border bg-tier-white hover:bg-tier-surface-base rounded-lg transition-all duration-ak-base"
     onClick={() => onStart({ type: 'quick', duration: 15 })}
   >
-    <Zap className="h-4 w-4 text-ak-text-secondary" />
-    <span className="text-subhead text-ak-text-secondary">Bare 15 minutter? Start hurtigøkt</span>
-    <ChevronRight className="h-3.5 w-3.5 text-ak-text-tertiary" />
+    <Zap className="h-4 w-4 text-tier-text-secondary" />
+    <span className="text-subhead text-tier-text-secondary">Bare 15 minutter? Start hurtigøkt</span>
+    <ChevronRight className="h-3.5 w-3.5 text-tier-text-tertiary" />
   </Button>
 )
 
@@ -632,17 +632,17 @@ const TasksList: React.FC<TasksListProps> = ({ tasks, onToggle, onViewAll, onSta
   const displayTasks = tasks.slice(0, 3)
 
   return (
-    <Card className="shadow-ak-card rounded-ak-lg">
+    <Card className="shadow-tier-white rounded-xl">
       <CardHeader className="pb-3">
         <div className="flex items-center justify-between">
           <CardTitle className="flex items-center gap-2 text-subhead">
             <div className="w-7 h-7 rounded-lg flex items-center justify-center" style={{ backgroundColor: 'var(--success-muted)' }}>
-              <Target className="h-4 w-4" style={{ color: 'var(--success)' }} />
+              <Target className="h-4 w-4" style={{ color: 'var(--status-success)' }} />
             </div>
             Dagens oppgaver
           </CardTitle>
           {tasks.length > 3 && (
-            <Button variant="ghost" size="sm" onClick={onViewAll} className="text-caption-1 h-7 text-ak-primary hover:text-ak-primary-hover">
+            <Button variant="ghost" size="sm" onClick={onViewAll} className="text-caption-1 h-7 text-tier-navy hover:text-tier-navy-hover">
               +{tasks.length - 3} mer <ChevronRight className="h-3 w-3 ml-1" />
             </Button>
           )}
@@ -651,16 +651,16 @@ const TasksList: React.FC<TasksListProps> = ({ tasks, onToggle, onViewAll, onSta
       <CardContent className="pt-0">
         {tasks.length === 0 ? (
           <div className="py-6 text-center">
-            <Sparkles className="h-6 w-6 text-ak-text-tertiary mx-auto mb-2" />
-            <p className="text-subhead text-ak-text-tertiary">Ingen oppgaver i dag – nyt friheten!</p>
+            <Sparkles className="h-6 w-6 text-tier-text-tertiary mx-auto mb-2" />
+            <p className="text-subhead text-tier-text-tertiary">Ingen oppgaver i dag – nyt friheten!</p>
           </div>
         ) : (
           <div className="space-y-1">
             {displayTasks.map(task => (
               <div
                 key={task.id}
-                className={`flex items-center gap-3 py-3 px-3 -mx-3 rounded-ak-sm transition-colors duration-ak-fast ${
-                  task.completed ? 'bg-ak-status-success-muted' : 'hover:bg-ak-surface-subtle'
+                className={`flex items-center gap-3 py-3 px-3 -mx-3 rounded-md transition-colors duration-ak-fast ${
+                  task.completed ? 'bg-tier-success-muted' : 'hover:bg-tier-surface-base'
                 }`}
               >
                 <Checkbox
@@ -669,7 +669,7 @@ const TasksList: React.FC<TasksListProps> = ({ tasks, onToggle, onViewAll, onSta
                   className="h-4.5 w-4.5"
                 />
                 <span className={`flex-1 text-subhead font-medium ${
-                  task.completed ? 'line-through text-ak-text-tertiary' : 'text-ak-text-primary'
+                  task.completed ? 'line-through text-tier-text-tertiary' : 'text-tier-navy'
                 }`}>
                   {task.title}
                 </span>
@@ -677,7 +677,7 @@ const TasksList: React.FC<TasksListProps> = ({ tasks, onToggle, onViewAll, onSta
                   <Button
                     variant="ghost"
                     size="sm"
-                    className="text-caption-1 h-7 text-ak-primary hover:text-ak-primary-hover hover:bg-ak-primary-muted"
+                    className="text-caption-1 h-7 text-tier-navy hover:text-tier-navy-hover hover:bg-tier-navy-muted"
                     onClick={() => onStartTask(task)}
                   >
                     Start
@@ -689,9 +689,9 @@ const TasksList: React.FC<TasksListProps> = ({ tasks, onToggle, onViewAll, onSta
         )}
 
         {tasks.length > 0 && (
-          <div className="pt-3 mt-3 border-t border-ak-border-muted text-caption-1 text-ak-text-tertiary">
+          <div className="pt-3 mt-3 border-t border-tier-border-default text-caption-1 text-tier-text-tertiary">
             {completedCount === tasks.length ? (
-              <span className="text-ak-status-success">✓ Alle fullført!</span>
+              <span className="text-tier-success">✓ Alle fullført!</span>
             ) : (
               `${completedCount} av ${Math.min(tasks.length, 3)} fullført`
             )}
@@ -715,7 +715,7 @@ const NotificationsList: React.FC<NotificationsListProps> = ({ notifications, on
   if (notifications.length === 0) return null
 
   return (
-    <Card className="shadow-ak-card rounded-ak-lg">
+    <Card className="shadow-tier-white rounded-xl">
       <CardHeader className="pb-3">
         <div className="flex items-center justify-between">
           <CardTitle className="flex items-center gap-2 text-subhead">
@@ -730,7 +730,7 @@ const NotificationsList: React.FC<NotificationsListProps> = ({ notifications, on
             )}
           </CardTitle>
           {notifications.length > 2 && (
-            <Button variant="ghost" size="sm" onClick={onViewAll} className="text-caption-1 h-7 text-ak-primary hover:text-ak-primary-hover">
+            <Button variant="ghost" size="sm" onClick={onViewAll} className="text-caption-1 h-7 text-tier-navy hover:text-tier-navy-hover">
               Se alle <ChevronRight className="h-3 w-3 ml-1" />
             </Button>
           )}
@@ -740,12 +740,12 @@ const NotificationsList: React.FC<NotificationsListProps> = ({ notifications, on
         <div className="space-y-1">
           {displayNotifications.map((notif, idx) => (
             <div key={notif.id || idx} className="flex items-start gap-3 py-3">
-              <div className="w-2 h-2 rounded-full bg-ak-primary mt-2 flex-shrink-0" />
+              <div className="w-2 h-2 rounded-full bg-tier-navy mt-2 flex-shrink-0" />
               <div className="flex-1 min-w-0">
-                <p className="text-subhead font-medium text-ak-text-primary">{notif.title}</p>
-                <p className="text-subhead text-ak-text-secondary truncate">{notif.message}</p>
+                <p className="text-subhead font-medium text-tier-navy">{notif.title}</p>
+                <p className="text-subhead text-tier-text-secondary truncate">{notif.message}</p>
               </div>
-              <span className="text-caption-1 text-ak-text-tertiary flex-shrink-0">{notif.time || 'Nylig'}</span>
+              <span className="text-caption-1 text-tier-text-tertiary flex-shrink-0">{notif.time || 'Nylig'}</span>
             </div>
           ))}
         </div>
@@ -756,7 +756,7 @@ const NotificationsList: React.FC<NotificationsListProps> = ({ notifications, on
 
 // ===== MAIN DASHBOARD =====
 
-const AKGolfDashboardV4: React.FC = () => {
+const TIERGolfDashboardV4: React.FC = () => {
   const navigate = useNavigate()
   const { data: dashboardData, loading } = useDashboard()
   const { data: focusData, loading: focusLoading } = useFocus()
@@ -806,13 +806,13 @@ const AKGolfDashboardV4: React.FC = () => {
   if (loading) {
     return (
       <div className="flex items-center justify-center p-12">
-        <div className="text-subhead text-ak-text-tertiary">Laster dashboard...</div>
+        <div className="text-subhead text-tier-text-tertiary">Laster dashboard...</div>
       </div>
     )
   }
 
   return (
-    <div className="w-full px-6 py-6 space-y-6 bg-ak-surface-base min-h-screen">
+    <div className="w-full px-6 py-6 space-y-6 bg-tier-white min-h-screen">
       {/* Row 1: Welcome Header */}
       <WelcomeSection
         playerName={player.name}
@@ -879,4 +879,4 @@ const AKGolfDashboardV4: React.FC = () => {
   )
 }
 
-export default AKGolfDashboardV4
+export default TIERGolfDashboardV4

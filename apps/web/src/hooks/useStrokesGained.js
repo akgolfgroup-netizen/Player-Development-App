@@ -170,4 +170,135 @@ function getDemoData() {
   };
 }
 
+/**
+ * Hook for fetching Strokes Gained historical trends
+ * @param {string} playerId - Player ID
+ * @param {number} months - Number of months to fetch (default: 6)
+ */
+export function useStrokesGainedTrends(playerId, months = 6) {
+  const [data, setData] = useState(null);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
+
+  const fetchTrends = useCallback(async () => {
+    if (!playerId) return;
+
+    try {
+      setLoading(true);
+      setError(null);
+
+      const response = await apiClient.get('/strokes-gained/trends', {
+        params: { playerId, months },
+      });
+
+      setData(response.data);
+    } catch (err) {
+      setError(err.message || 'Failed to load trends');
+      console.error('[StrokesGained] Error fetching trends:', err);
+    } finally {
+      setLoading(false);
+    }
+  }, [playerId, months]);
+
+  useEffect(() => {
+    fetchTrends();
+  }, [fetchTrends]);
+
+  return {
+    trends: data?.trends || [],
+    loading,
+    error,
+    refetch: fetchTrends,
+  };
+}
+
+/**
+ * Hook for fetching Strokes Gained breakdown by category
+ * @param {string} playerId - Player ID
+ */
+export function useStrokesGainedBreakdown(playerId) {
+  const [data, setData] = useState(null);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
+
+  const fetchBreakdown = useCallback(async () => {
+    if (!playerId) return;
+
+    try {
+      setLoading(true);
+      setError(null);
+
+      const response = await apiClient.get('/strokes-gained/breakdown', {
+        params: { playerId },
+      });
+
+      setData(response.data);
+    } catch (err) {
+      setError(err.message || 'Failed to load breakdown');
+      console.error('[StrokesGained] Error fetching breakdown:', err);
+    } finally {
+      setLoading(false);
+    }
+  }, [playerId]);
+
+  useEffect(() => {
+    fetchBreakdown();
+  }, [fetchBreakdown]);
+
+  return {
+    breakdown: data?.breakdown || {
+      putting: 0,
+      approach: 0,
+      aroundGreen: 0,
+      teeToGreen: 0,
+    },
+    loading,
+    error,
+    refetch: fetchBreakdown,
+  };
+}
+
+/**
+ * Hook for fetching Strokes Gained peer comparison
+ * @param {string} playerId - Player ID
+ */
+export function useStrokesGainedPeerComparison(playerId) {
+  const [data, setData] = useState(null);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
+
+  const fetchPeerComparison = useCallback(async () => {
+    if (!playerId) return;
+
+    try {
+      setLoading(true);
+      setError(null);
+
+      const response = await apiClient.get('/strokes-gained/peer-comparison', {
+        params: { playerId },
+      });
+
+      setData(response.data);
+    } catch (err) {
+      setError(err.message || 'Failed to load peer comparison');
+      console.error('[StrokesGained] Error fetching peer comparison:', err);
+    } finally {
+      setLoading(false);
+    }
+  }, [playerId]);
+
+  useEffect(() => {
+    fetchPeerComparison();
+  }, [fetchPeerComparison]);
+
+  return {
+    percentile: data?.percentile || 50,
+    peerAverage: data?.peerAverage || 0,
+    playerValue: data?.playerValue || 0,
+    loading,
+    error,
+    refetch: fetchPeerComparison,
+  };
+}
+
 export default useStrokesGained;

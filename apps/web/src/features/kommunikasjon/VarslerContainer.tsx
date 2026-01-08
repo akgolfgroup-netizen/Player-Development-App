@@ -23,7 +23,7 @@ import {
 } from 'lucide-react';
 import { PageHeader } from '../../components/layout/PageHeader';
 import Button from '../../ui/primitives/Button';
-import { CardTitle } from '../../components/typography';
+import { CardTitle } from '../../components/typography/Headings';
 import { notificationsAPI } from '../../services/api';
 
 // ============================================================================
@@ -117,21 +117,21 @@ const NOTIFICATIONS: Notification[] = [
 const getNotificationConfig = (type: string) => {
   switch (type) {
     case 'training':
-      return { icon: Calendar, colorClass: 'text-ak-primary bg-ak-primary/15' };
+      return { icon: Calendar, colorClass: 'text-tier-navy bg-tier-navy/15' };
     case 'tournament':
-      return { icon: Trophy, colorClass: 'text-ak-status-warning bg-ak-status-warning/15' };
+      return { icon: Trophy, colorClass: 'text-tier-warning bg-tier-warning/15' };
     case 'achievement':
-      return { icon: Award, colorClass: 'text-ak-status-success bg-ak-status-success/15' };
+      return { icon: Award, colorClass: 'text-tier-success bg-tier-success/15' };
     case 'message':
-      return { icon: MessageSquare, colorClass: 'text-ak-primary bg-ak-primary/15' };
+      return { icon: MessageSquare, colorClass: 'text-tier-navy bg-tier-navy/15' };
     case 'reminder':
-      return { icon: Clock, colorClass: 'text-ak-status-warning bg-ak-status-warning/15' };
+      return { icon: Clock, colorClass: 'text-tier-warning bg-tier-warning/15' };
     case 'test':
-      return { icon: Target, colorClass: 'text-ak-status-success bg-ak-status-success/15' };
+      return { icon: Target, colorClass: 'text-tier-success bg-tier-success/15' };
     case 'alert':
-      return { icon: AlertCircle, colorClass: 'text-ak-status-error bg-ak-status-error/15' };
+      return { icon: AlertCircle, colorClass: 'text-tier-error bg-tier-error/15' };
     default:
-      return { icon: Bell, colorClass: 'text-ak-text-secondary bg-ak-surface-subtle' };
+      return { icon: Bell, colorClass: 'text-tier-text-secondary bg-tier-surface-base' };
   }
 };
 
@@ -173,8 +173,8 @@ const NotificationCard: React.FC<NotificationCardProps> = ({
     <div
       className={`
         flex items-start gap-3.5 p-3.5 rounded-xl shadow-sm cursor-pointer transition-all
-        ${notification.read ? 'bg-ak-surface-base' : 'bg-ak-primary/5 border-l-[3px] border-ak-primary'}
-        hover:bg-ak-surface-subtle
+        ${notification.read ? 'bg-tier-white' : 'bg-tier-navy/5 border-l-[3px] border-tier-navy'}
+        hover:bg-tier-surface-base
       `}
       onClick={() => {
         if (!notification.read) onRead(notification.id);
@@ -189,15 +189,15 @@ const NotificationCard: React.FC<NotificationCardProps> = ({
       <div className="flex-1 min-w-0">
         <div className="flex items-center justify-between mb-1">
           <CardTitle
-            className={`text-sm m-0 text-ak-text-primary ${notification.read ? 'font-medium' : 'font-semibold'}`}
+            className={`text-sm m-0 text-tier-navy ${notification.read ? 'font-medium' : 'font-semibold'}`}
           >
             {notification.title}
           </CardTitle>
-          <span className="text-[11px] text-ak-text-secondary">
+          <span className="text-[11px] text-tier-text-secondary">
             {formatTimestamp(notification.timestamp)}
           </span>
         </div>
-        <p className="text-[13px] text-ak-text-secondary m-0 leading-relaxed">
+        <p className="text-[13px] text-tier-text-secondary m-0 leading-relaxed">
           {notification.message}
         </p>
       </div>
@@ -209,7 +209,7 @@ const NotificationCard: React.FC<NotificationCardProps> = ({
               e.stopPropagation();
               onRead(notification.id);
             }}
-            className="p-1.5 rounded-md border-none bg-transparent cursor-pointer text-ak-text-secondary hover:bg-ak-surface-subtle"
+            className="p-1.5 rounded-md border-none bg-transparent cursor-pointer text-tier-text-secondary hover:bg-tier-surface-base"
             title="Merk som lest"
           >
             <Check size={16} />
@@ -220,7 +220,7 @@ const NotificationCard: React.FC<NotificationCardProps> = ({
             e.stopPropagation();
             onDelete(notification.id);
           }}
-          className="p-1.5 rounded-md border-none bg-transparent cursor-pointer text-ak-text-secondary hover:bg-ak-surface-subtle"
+          className="p-1.5 rounded-md border-none bg-transparent cursor-pointer text-tier-text-secondary hover:bg-tier-surface-base"
           title="Slett"
         >
           <Trash2 size={16} />
@@ -361,20 +361,21 @@ const VarslerContainer: React.FC = () => {
 
   if (loading) {
     return (
-      <div className="min-h-screen bg-ak-surface-subtle flex items-center justify-center">
+      <div className="min-h-screen bg-tier-surface-base flex items-center justify-center">
         <div className="text-center">
-          <Loader2 size={32} className="text-ak-primary animate-spin mx-auto" />
-          <p className="mt-4 text-ak-text-secondary">Laster varsler...</p>
+          <Loader2 size={32} className="text-tier-navy animate-spin mx-auto" />
+          <p className="mt-4 text-tier-text-secondary">Laster varsler...</p>
         </div>
       </div>
     );
   }
 
   return (
-    <div className="min-h-screen bg-ak-surface-subtle">
+    <div className="min-h-screen bg-tier-surface-base">
       <PageHeader
         title="Varsler"
         subtitle={`${unreadCount} uleste varsler`}
+        helpText="Oversikt over alle systemvarsler og viktige oppdateringer. Se varsler om nye meldinger, treningsplanendringer, testresultater og andre hendelser."
         actions={null}
       />
 
@@ -389,8 +390,8 @@ const VarslerContainer: React.FC = () => {
                 className={`
                   px-3.5 py-2 rounded-lg border-none text-[13px] font-medium cursor-pointer whitespace-nowrap
                   ${filter === f.key
-                    ? 'bg-ak-primary text-white'
-                    : 'bg-ak-surface-base text-ak-text-primary'
+                    ? 'bg-tier-navy text-white'
+                    : 'bg-tier-white text-tier-navy'
                   }
                 `}
               >
@@ -401,7 +402,7 @@ const VarslerContainer: React.FC = () => {
                       ml-1.5 px-1.5 py-0.5 rounded-[10px] text-[11px]
                       ${filter === f.key
                         ? 'bg-white/30 text-white'
-                        : 'bg-ak-status-error text-white'
+                        : 'bg-tier-error text-white'
                       }
                     `}
                   >
@@ -436,9 +437,9 @@ const VarslerContainer: React.FC = () => {
           ))}
 
           {filteredNotifications.length === 0 && (
-            <div className="bg-ak-surface-base rounded-[14px] p-10 text-center">
-              <Bell size={40} className="text-ak-text-secondary mb-3 mx-auto" />
-              <p className="text-sm text-ak-text-secondary m-0">
+            <div className="bg-tier-white rounded-[14px] p-10 text-center">
+              <Bell size={40} className="text-tier-text-secondary mb-3 mx-auto" />
+              <p className="text-sm text-tier-text-secondary m-0">
                 {filter === 'unread' ? 'Ingen uleste varsler' : 'Ingen varsler funnet'}
               </p>
             </div>

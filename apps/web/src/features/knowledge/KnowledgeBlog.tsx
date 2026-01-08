@@ -10,7 +10,7 @@
 import React, { useState, useMemo } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { Search } from 'lucide-react';
-import { PageTitle, SubSectionTitle } from '../../components/typography';
+import { PageTitle, SubSectionTitle } from '../../components/typography/Headings';
 
 // ============================================================================
 // TYPES
@@ -137,32 +137,32 @@ export function KnowledgeBlog() {
   }, [activeCategory, searchQuery]);
 
   return (
-    <div className="bg-ak-surface-base min-h-screen py-8 px-4">
+    <div className="bg-tier-white min-h-screen py-8 px-4">
       <div className="max-w-[1200px] mx-auto">
         {/* Header */}
         <div className="text-center mb-10">
-          <PageTitle className="text-[32px] font-bold text-ak-text-primary m-0 mb-3">
+          <PageTitle className="text-[32px] font-bold text-tier-navy m-0 mb-3">
             Kunnskapsbase
           </PageTitle>
-          <p className="text-lg text-ak-text-secondary m-0 max-w-[600px] mx-auto">
+          <p className="text-lg text-tier-text-secondary m-0 max-w-[600px] mx-auto">
             Lær deg nye teknikker, mentale strategier og analysemetoder.
           </p>
         </div>
 
         {/* Filter section */}
-        <div className="flex flex-col gap-5 mb-8 pb-6 border-b border-ak-border-subtle">
+        <div className="flex flex-col gap-5 mb-8 pb-6 border-b border-tier-border-default">
           {/* Search */}
           <div className="relative max-w-[400px] w-full mx-auto">
             <Search
               size={18}
-              className="absolute left-3.5 top-1/2 -translate-y-1/2 text-ak-text-tertiary"
+              className="absolute left-3.5 top-1/2 -translate-y-1/2 text-tier-text-tertiary"
             />
             <input
               type="text"
               placeholder="Søk i artikler..."
               value={searchQuery}
               onChange={(e) => setSearchQuery(e.target.value)}
-              className="w-full py-3 pr-3.5 pl-11 text-[15px] border border-ak-border-default rounded-[10px] bg-ak-surface-base text-ak-text-primary outline-none focus:border-ak-primary"
+              className="w-full py-3 pr-3.5 pl-11 text-[15px] border border-tier-border-default rounded-[10px] bg-tier-white text-tier-navy outline-none focus:border-tier-navy"
             />
           </div>
 
@@ -174,8 +174,8 @@ export function KnowledgeBlog() {
                 onClick={() => setActiveCategory(category.id)}
                 className={`px-4 py-2 text-sm font-medium rounded-full cursor-pointer transition-all border ${
                   activeCategory === category.id
-                    ? 'bg-ak-primary border-ak-primary text-white'
-                    : 'bg-ak-surface-subtle border-ak-border-subtle text-ak-text-secondary hover:border-ak-primary'
+                    ? 'bg-tier-navy border-tier-navy text-white'
+                    : 'bg-tier-surface-base border-tier-border-default text-tier-text-secondary hover:border-tier-navy'
                 }`}
               >
                 {category.title}
@@ -189,47 +189,47 @@ export function KnowledgeBlog() {
           {filteredArticles.map(article => (
             <article
               key={article.id}
-              className="flex flex-col bg-ak-surface-elevated rounded-xl border border-ak-border-subtle p-6"
+              className="flex flex-col bg-tier-white rounded-xl border border-tier-border-default p-6"
             >
               {/* Meta */}
               <div className="flex items-center gap-3 mb-4">
-                <time dateTime={article.datetime} className="text-[13px] text-ak-text-tertiary">
+                <time dateTime={article.datetime} className="text-[13px] text-tier-text-tertiary">
                   {article.date}
                 </time>
-                <span className="px-3 py-1 text-xs font-medium text-ak-text-secondary bg-ak-surface-subtle rounded-full">
+                <span className="px-3 py-1 text-xs font-medium text-tier-text-secondary bg-tier-surface-base rounded-full">
                   {article.category.title}
                 </span>
               </div>
 
               {/* Content */}
               <div className="flex-1 mb-5">
-                <SubSectionTitle className="text-lg font-semibold text-ak-text-primary m-0 mb-2.5 leading-tight">
+                <SubSectionTitle className="text-lg font-semibold text-tier-navy m-0 mb-2.5 leading-tight">
                   <a
                     href={`/ressurser/${article.id}`}
                     onClick={(e) => { e.preventDefault(); navigate(`/ressurser/${article.id}`); }}
-                    className="text-inherit no-underline hover:text-ak-primary"
+                    className="text-inherit no-underline hover:text-tier-navy"
                   >
                     {article.title}
                   </a>
                 </SubSectionTitle>
-                <p className="text-sm leading-relaxed text-ak-text-secondary m-0 mb-3">
+                <p className="text-sm leading-relaxed text-tier-text-secondary m-0 mb-3">
                   {article.description}
                 </p>
-                <p className="text-[13px] text-ak-text-tertiary m-0">
+                <p className="text-[13px] text-tier-text-tertiary m-0">
                   {article.readTime} lesetid
                 </p>
               </div>
 
               {/* Author */}
-              <div className="flex items-center gap-3 pt-4 border-t border-ak-border-subtle">
-                <div className="w-10 h-10 rounded-full bg-ak-primary/10 text-ak-primary flex items-center justify-center text-sm font-semibold">
+              <div className="flex items-center gap-3 pt-4 border-t border-tier-border-default">
+                <div className="w-10 h-10 rounded-full bg-tier-navy/10 text-tier-navy flex items-center justify-center text-sm font-semibold">
                   {getInitials(article.author.name)}
                 </div>
                 <div className="flex flex-col gap-0.5">
-                  <p className="text-sm font-semibold text-ak-text-primary m-0">
+                  <p className="text-sm font-semibold text-tier-navy m-0">
                     {article.author.name}
                   </p>
-                  <p className="text-[13px] text-ak-text-tertiary m-0">
+                  <p className="text-[13px] text-tier-text-tertiary m-0">
                     {article.author.role}
                   </p>
                 </div>

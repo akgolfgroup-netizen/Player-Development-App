@@ -1,6 +1,6 @@
 {
-  "short_name": "AK Golf",
-  "name": "AK Golf Academy - IUP",
+  "short_name": "TIER Golf",
+  "name": "TIER Golf Academy - IUP",
   "description": "Individuell Utviklingsplan for golfspillere",
   "icons": [
     {
@@ -48,7 +48,7 @@
   ],
   "start_url": "/",
   "display": "standalone",
-  "theme_color": "#1A3D2E",
+  "theme_color": "#0A2540",
   "background_color": "#F8FAFC",
   "orientation": "portrait-primary",
   "scope": "/",

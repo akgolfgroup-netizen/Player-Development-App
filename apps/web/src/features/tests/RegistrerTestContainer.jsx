@@ -13,6 +13,7 @@ import { SubSectionTitle } from '../../components/typography';
 import Button from '../../ui/primitives/Button';
 import apiClient from '../../services/apiClient';
 import { getTestCategoryIcon } from '../../constants/icons';
+import { PageHeader } from '../../ui/raw-blocks';
 
 // ============================================================================
 // CLASS MAPPINGS
@@ -20,28 +21,28 @@ import { getTestCategoryIcon } from '../../constants/icons';
 
 const CATEGORY_CLASSES = {
   driving: {
-    text: 'text-ak-primary',
-    bg: 'bg-ak-primary/15',
-    activeBg: 'bg-ak-primary',
-    border: 'border-ak-primary',
+    text: 'text-tier-navy',
+    bg: 'bg-tier-navy/15',
+    activeBg: 'bg-tier-navy',
+    border: 'border-tier-navy',
   },
   iron_play: {
-    text: 'text-ak-status-success',
-    bg: 'bg-ak-status-success/15',
-    activeBg: 'bg-ak-status-success',
-    border: 'border-ak-status-success',
+    text: 'text-tier-success',
+    bg: 'bg-tier-success/15',
+    activeBg: 'bg-tier-success',
+    border: 'border-tier-success',
   },
   short_game: {
-    text: 'text-ak-status-warning',
-    bg: 'bg-ak-status-warning/15',
-    activeBg: 'bg-ak-status-warning',
-    border: 'border-ak-status-warning',
+    text: 'text-tier-warning',
+    bg: 'bg-tier-warning/15',
+    activeBg: 'bg-tier-warning',
+    border: 'border-tier-warning',
   },
   putting: {
-    text: 'text-ak-status-error',
-    bg: 'bg-ak-status-error/15',
-    activeBg: 'bg-ak-status-error',
-    border: 'border-ak-status-error',
+    text: 'text-tier-error',
+    bg: 'bg-tier-error/15',
+    activeBg: 'bg-tier-error',
+    border: 'border-tier-error',
   },
   physical: {
     text: 'text-gold-500',
@@ -131,7 +132,7 @@ const TestCategoryCard = ({ category, selected, onSelect }) => {
       className={`flex flex-col items-center gap-2 py-4 px-3 rounded-xl border-2 cursor-pointer transition-all ${
         isSelected
           ? `${classes.border} ${classes.bg}`
-          : 'border-transparent bg-ak-surface-base'
+          : 'border-transparent bg-tier-white'
       }`}
     >
       <div className={`w-10 h-10 rounded-[10px] flex items-center justify-center ${
@@ -143,7 +144,7 @@ const TestCategoryCard = ({ category, selected, onSelect }) => {
         />
       </div>
       <span className={`text-xs font-medium ${
-        isSelected ? classes.text : 'text-ak-text-primary'
+        isSelected ? classes.text : 'text-tier-navy'
       }`}>
         {category.name}
       </span>
@@ -169,9 +170,9 @@ const TestInput = ({ test, value, onChange, onRemove }) => {
   };
 
   return (
-    <div className="flex items-center gap-3 p-3 bg-ak-surface-base rounded-[10px] shadow-sm">
+    <div className="flex items-center gap-3 p-3 bg-tier-white rounded-[10px] shadow-sm">
       <div className="flex-1">
-        <label className="block text-[13px] font-medium text-ak-text-primary mb-1">
+        <label className="block text-[13px] font-medium text-tier-navy mb-1">
           {test.name}
         </label>
         <div className="flex items-center gap-2">
@@ -181,10 +182,10 @@ const TestInput = ({ test, value, onChange, onRemove }) => {
             onChange={handleChange}
             placeholder="0"
             step={test.type === 'decimal' ? '0.1' : '1'}
-            className="flex-1 py-2 px-3 rounded-lg border border-ak-border-default text-base font-medium outline-none focus:border-ak-primary"
+            className="flex-1 py-2 px-3 rounded-lg border border-tier-border-default text-base font-medium outline-none focus:border-tier-navy"
           />
           {test.unit && (
-            <span className="text-sm text-ak-text-secondary min-w-[40px]">
+            <span className="text-sm text-tier-text-secondary min-w-[40px]">
               {test.unit}
             </span>
           )}
@@ -192,9 +193,9 @@ const TestInput = ({ test, value, onChange, onRemove }) => {
       </div>
       <button
         onClick={onRemove}
-        className="p-2 rounded-lg border-none bg-ak-status-error/10 cursor-pointer"
+        className="p-2 rounded-lg border-none bg-tier-error/10 cursor-pointer"
       >
-        <Trash2 size={16} className="text-ak-status-error" />
+        <Trash2 size={16} className="text-tier-error" />
       </button>
     </div>
   );
@@ -210,8 +211,8 @@ const TestSelector = ({ category, selectedTests, onToggle }) => {
   const classes = CATEGORY_CLASSES[category.id] || CATEGORY_CLASSES.driving;
 
   return (
-    <div className="bg-ak-surface-base rounded-[14px] p-4 mb-5">
-      <SubSectionTitle className="text-sm font-semibold text-ak-text-primary m-0 mb-3">
+    <div className="bg-tier-white rounded-[14px] p-4 mb-5">
+      <SubSectionTitle className="text-sm font-semibold text-tier-navy m-0 mb-3">
         Velg tester - {category.name}
       </SubSectionTitle>
       <div className="flex flex-wrap gap-2">
@@ -225,7 +226,7 @@ const TestSelector = ({ category, selectedTests, onToggle }) => {
               className={`py-2 px-3 rounded-lg text-[13px] font-medium cursor-pointer flex items-center gap-1 ${
                 isSelected
                   ? `border-2 ${classes.border} ${classes.bg} ${classes.text}`
-                  : 'border border-ak-border-default bg-ak-surface-subtle text-ak-text-primary'
+                  : 'border border-tier-border-default bg-tier-surface-base text-tier-navy'
               }`}
             >
               {isSelected ? <CheckCircle size={14} /> : <Plus size={14} />}
@@ -243,25 +244,25 @@ const TestSelector = ({ category, selectedTests, onToggle }) => {
 // ============================================================================
 
 const RecentTests = ({ tests }) => (
-  <div className="bg-ak-surface-base rounded-[14px] p-4">
-    <SubSectionTitle className="text-sm font-semibold text-ak-text-primary m-0 mb-3">
+  <div className="bg-tier-white rounded-[14px] p-4">
+    <SubSectionTitle className="text-sm font-semibold text-tier-navy m-0 mb-3">
       Siste registreringer
     </SubSectionTitle>
     <div className="flex flex-col gap-2">
       {tests.map((test) => (
         <div
           key={test.id}
-          className="flex items-center justify-between py-2 px-3 bg-ak-surface-subtle rounded-lg"
+          className="flex items-center justify-between py-2 px-3 bg-tier-surface-base rounded-lg"
         >
           <div>
-            <div className="text-[13px] font-medium text-ak-text-primary">
+            <div className="text-[13px] font-medium text-tier-navy">
               {test.name}
             </div>
-            <div className="text-[11px] text-ak-text-secondary">
+            <div className="text-[11px] text-tier-text-secondary">
               {new Date(test.date).toLocaleDateString('nb-NO')}
             </div>
           </div>
-          <div className="text-base font-semibold text-ak-primary">
+          <div className="text-base font-semibold text-tier-navy">
             {test.value}{test.unit}
           </div>
         </div>
@@ -344,9 +345,15 @@ const RegistrerTestContainer = () => {
 
   return (
     <div className="w-full">
+      <PageHeader
+        title="Registrer testresultat"
+        subtitle="Logg testresultater for sporing av fremgang"
+        helpText="Registrer testresultater innen kategoriene driving, jern, naerspill, putting, fysisk og mental. Velg testkategori, legg til tester fra listen og registrer verdier. Se tidligere resultater, trender og sammenlign med benchmarks. Resultater lagres automatisk i testprotokollen."
+        showBackButton={true}
+      />
       {/* Category Selection */}
-      <div className="bg-ak-surface-base rounded-[14px] p-4 mb-5">
-        <SubSectionTitle className="text-sm font-semibold text-ak-text-primary m-0 mb-3">
+      <div className="bg-tier-white rounded-[14px] p-4 mb-5">
+        <SubSectionTitle className="text-sm font-semibold text-tier-navy m-0 mb-3">
           Velg testkategori
         </SubSectionTitle>
         <div className="grid grid-cols-[repeat(auto-fit,minmax(100px,1fr))] gap-2">
@@ -371,7 +378,7 @@ const RegistrerTestContainer = () => {
       {/* Selected Tests with Inputs */}
       {selectedTests.length > 0 && (
         <div className="mb-5">
-          <SubSectionTitle className="text-sm font-semibold text-ak-text-primary m-0 mb-3">
+          <SubSectionTitle className="text-sm font-semibold text-tier-navy m-0 mb-3">
             Registrer verdier
           </SubSectionTitle>
           <div className="flex flex-col gap-2">
@@ -390,8 +397,8 @@ const RegistrerTestContainer = () => {
 
       {/* Notes */}
       {selectedTests.length > 0 && (
-        <div className="bg-ak-surface-base rounded-[14px] p-4 mb-5">
-          <label className="block text-sm font-semibold text-ak-text-primary mb-2">
+        <div className="bg-tier-white rounded-[14px] p-4 mb-5">
+          <label className="block text-sm font-semibold text-tier-navy mb-2">
             Notater (valgfritt)
           </label>
           <textarea
@@ -399,7 +406,7 @@ const RegistrerTestContainer = () => {
             onChange={(e) => setNotes(e.target.value)}
             placeholder="Legg til eventuelle notater om testen..."
             rows={3}
-            className="w-full py-3 px-3 rounded-lg border border-ak-border-default text-sm outline-none resize-y font-inherit focus:border-ak-primary"
+            className="w-full py-3 px-3 rounded-lg border border-tier-border-default text-sm outline-none resize-y font-inherit focus:border-tier-navy"
           />
         </div>
       )}

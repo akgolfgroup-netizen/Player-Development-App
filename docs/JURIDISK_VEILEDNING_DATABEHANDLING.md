@@ -1,6 +1,6 @@
 # Juridisk Veiledning: Datalagring og Behandling
 
-**IUP Golf Academy Platform**
+**IUP Golf Platform**
 **Versjon:** 1.0
 **Dato:** 27. desember 2025
 **Status:** Veiledende dokument - ikke juridisk rådgivning
@@ -34,7 +34,7 @@
 
 ### 1.3 Territorielt Virkeområde
 
-GDPR gjelder for IUP Golf Academy fordi:
+GDPR gjelder for IUP Golf fordi:
 - Behandlingsansvarlig er etablert i Norge
 - Tjenesten tilbys til personer i EØS
 - Personopplysninger behandles i EØS (AWS Ireland)
@@ -57,7 +57,7 @@ GDPR gjelder for IUP Golf Academy fordi:
 
 ### 2.2 Databehandler (Processor)
 
-**Hvem:** IUP Golf Academy (plattformleverandør)
+**Hvem:** IUP Golf (plattformleverandør)
 
 **Ansvar:**
 - Behandler kun etter dokumenterte instrukser
@@ -83,7 +83,7 @@ GDPR gjelder for IUP Golf Academy fordi:
 
 ### 3.1 Lovlige Grunnlag (GDPR Art. 6)
 
-For IUP Golf Academy er følgende grunnlag relevante:
+For IUP Golf er følgende grunnlag relevante:
 
 | Grunnlag | Anvendelse | Eksempler |
 |----------|------------|-----------|
@@ -146,7 +146,7 @@ Samtykkeformular for mindreårige må inneholde:
 
 ```
 [ ] Jeg har lest og forstått personvernerklæringen
-[ ] Jeg samtykker til at [barnets navn] kan bruke IUP Golf Academy
+[ ] Jeg samtykker til at [barnets navn] kan bruke IUP Golf
 [ ] Jeg forstår at følgende data samles inn: [liste]
 [ ] Jeg forstår at trener vil ha tilgang til treningsdata
 [ ] Jeg er kjent med min rett til å:
@@ -183,7 +183,7 @@ Strømming kan være lovlig ved:
 | Deling i lukket gruppe | Ja | Samtykke, tilgangskontroll |
 | Publisering på sosiale medier | Nei | Hovedregel: Ikke tillatt |
 
-### 5.3 IUP Golf Academy - Videobehandling
+### 5.3 IUP Golf - Videobehandling
 
 **Anbefalt praksis:**
 
@@ -461,7 +461,7 @@ DPIA er påkrevd ved behandling som sannsynligvis medfører høy risiko, inklude
 
 ## 14. OPPSUMMERING - VIKTIGSTE PUNKTER
 
-### For IUP Golf Academy som Databehandler
+### For IUP Golf som Databehandler
 
 1. **Behandle kun etter instruks** fra behandlingsansvarlig (kunden)
 2. **Dokumenter alt** - avtaler, samtykker, avvik

@@ -7,6 +7,34 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+### Added
+- Developer handoff documentation for team onboarding (DEVELOPER_HANDOFF.md)
+- Project status dashboard (PROJECT_STATUS.md)
+- Development roadmap Q1 2026 (ROADMAP.md)
+- Technical highlights showcase (docs/HIGHLIGHTS.md)
+- Technology choices documentation (docs/architecture/TECHNOLOGY_CHOICES.md)
+- Archive structure for historical documentation (docs/archive/)
+- Quick navigation for new developers in docs/README.md
+- "Project at a Glance" section in README.md
+- Code quality indicators section in README.md
+- Common setup issues troubleshooting in README.md
+
+### Changed
+- Reorganized root directory (18 → 12 markdown files)
+- Moved TIER migration documentation to docs/archive/tier-migration/
+- Moved migration scripts to docs/archive/tier-migration/scripts/
+- Moved presentations to docs/archive/presentations/
+- Moved phase status documents to docs/archive/phase-status/
+- Moved DataGolf integration docs to docs/features/datagolf/
+- Moved OAuth/Stripe docs to docs/features/oauth/
+- Updated README.md "Latest Updates" to January 2026
+- Enhanced documentation navigation with developer-focused quick links
+
+### Removed
+- Temporary build artifacts (tsconfig.tsbuildinfo, .DS_Store)
+- Temporary archive files (files.zip, ui_audit_bundle.zip)
+- 7 completed migration scripts from root (now archived)
+
 ## [1.1.0] - 2025-12-25
 
 ### Added

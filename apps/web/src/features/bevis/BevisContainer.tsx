@@ -7,7 +7,7 @@ import {
   MessageSquare, Clock, Tag
 } from 'lucide-react';
 import { listVideos } from '../../services/videoApi';
-import { CardTitle } from '../../components/typography';
+import { CardTitle } from '../../components/typography/Headings';
 import {
   Card,
   CardContent,
@@ -26,6 +26,7 @@ import {
   TabsTrigger,
 } from '../../components/shadcn';
 import { cn } from 'lib/utils';
+import { PageHeader } from '../../ui/raw-blocks';
 
 // ============================================================================
 // TYPES
@@ -164,7 +165,7 @@ const getCategoryColor = (category: string): string => {
     Putting: 'bg-purple-500/15 text-purple-600 border-purple-500/30',
     Fysisk: 'bg-red-500/15 text-red-600 border-red-500/30',
   };
-  return colors[category] || 'bg-ak-primary/15 text-ak-primary border-ak-primary/30';
+  return colors[category] || 'bg-tier-navy/15 text-tier-navy border-tier-navy/30';
 };
 
 // ============================================================================
@@ -177,7 +178,7 @@ interface StatCardProps {
   color?: string;
 }
 
-const StatCard: React.FC<StatCardProps> = ({ value, label, color = 'text-ak-primary' }) => (
+const StatCard: React.FC<StatCardProps> = ({ value, label, color = 'text-tier-navy' }) => (
   <Card className="p-4 text-center">
     <div className={cn("text-2xl font-bold", color)}>{value}</div>
     <div className="text-xs text-text-secondary">{label}</div>
@@ -280,9 +281,9 @@ const VideoCard: React.FC<VideoCardProps> = ({ video, onClick }) => (
 // ============================================================================
 
 const UploadCard: React.FC = () => (
-  <Card className="border-2 border-dashed border-border-default h-full min-h-[200px] flex flex-col items-center justify-center cursor-pointer hover:border-ak-primary hover:bg-ak-primary/5 transition-colors group">
-    <div className="w-12 h-12 rounded-full bg-ak-primary/15 flex items-center justify-center mb-3 group-hover:bg-ak-primary/25 transition-colors">
-      <Upload className="w-6 h-6 text-ak-primary" />
+  <Card className="border-2 border-dashed border-border-default h-full min-h-[200px] flex flex-col items-center justify-center cursor-pointer hover:border-tier-navy hover:bg-tier-navy/5 transition-colors group">
+    <div className="w-12 h-12 rounded-full bg-tier-navy/15 flex items-center justify-center mb-3 group-hover:bg-tier-navy/25 transition-colors">
+      <Upload className="w-6 h-6 text-tier-navy" />
     </div>
     <span className="text-sm font-medium text-text-primary">Last opp video</span>
     <span className="text-xs text-text-secondary mt-1">MP4, MOV (maks 100MB)</span>
@@ -555,9 +556,14 @@ const BevisContainer: React.FC = () => {
   return (
     <div className="min-h-screen bg-background-default">
       <div className="px-6 pb-6 max-w-7xl mx-auto space-y-5">
+        <PageHeader
+          title="Videobevis"
+          subtitle="Dokumenter og verifiser ferdighetsfremgang"
+          helpText="Oversikt over alle videobevis for ferdighetsdokumentasjon. Filtrer på kategori (putting, chipping, pitching, bunker, driver, jern, hybrid), søk etter tittel eller tags. Se verifiserte videoer med trenerfeedback, last opp nye bevis og få veiledning fra trener."
+        />
         {/* Stats */}
         <div className="grid grid-cols-3 gap-3">
-          <StatCard value={videos.length} label="Totalt" color="text-ak-primary" />
+          <StatCard value={videos.length} label="Totalt" color="text-tier-navy" />
           <StatCard value={verifiedCount} label="Verifisert" color="text-success" />
           <StatCard value={feedbackCount} label="Med feedback" color="text-achievement" />
         </div>

@@ -18,9 +18,11 @@
  * 6. Comments should load and allow posting
  */
 
-import React, { useCallback, useMemo, useState, useEffect } from 'react';
+import React, { useCallback, useMemo, useState, useEffect, useRef } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import { VideoAnalyzer } from '../../components/video/VideoAnalyzer';
+import { KeyframeExtractor } from '../../components/video/KeyframeExtractor';
+import { KeyframeGallery } from '../../components/video/KeyframeGallery';
 import { useVideo } from '../../hooks/useVideos';
 import { useVideoAnnotations, useVideoComments } from '../../hooks/useVideoAnnotations';
 import { useAuth } from '../../contexts/AuthContext';
@@ -37,33 +39,36 @@ import { SubSectionTitle } from '../../components/typography';
 // ═══════════════════════════════════════════
 
 const tw = {
-  container: 'flex flex-col h-full bg-[var(--ak-surface-dark-base)]',
+  container: 'flex flex-col h-full bg-[var(--tier-navy)]',
   main: 'flex-1 flex gap-4 p-4 overflow-hidden',
   videoSection: 'flex-1 flex flex-col gap-3 min-w-0',
   header: 'flex items-center gap-3',
-  backButton: 'flex items-center gap-1 py-2 px-3 bg-surface border border-border rounded-ak-md text-[var(--video-text-secondary)] text-[13px] cursor-pointer',
+  backButton: 'flex items-center gap-1 py-2 px-3 bg-surface border border-border rounded-lg text-[var(--video-text-secondary)] text-[13px] cursor-pointer',
   title: 'm-0 text-lg font-semibold text-[var(--text-inverse)] overflow-hidden text-ellipsis whitespace-nowrap flex-1',
   headerActions: 'flex gap-2 ml-auto',
-  markReviewedButton: 'flex items-center gap-1 py-2 px-4 bg-ak-status-success border-none rounded-ak-md text-white text-[13px] font-medium cursor-pointer',
-  reviewedBadge: 'flex items-center gap-1 py-1.5 px-3 bg-ak-status-success/20 border border-ak-status-success rounded-ak-md text-ak-status-success text-xs font-medium',
-  analyzerWrapper: 'flex-1 rounded-ak-lg overflow-hidden',
-  sidebar: 'w-80 flex flex-col gap-3 bg-surface rounded-ak-lg border border-border overflow-hidden',
+  markReviewedButton: 'flex items-center gap-1 py-2 px-4 bg-tier-success border-none rounded-lg text-white text-[13px] font-medium cursor-pointer',
+  reviewedBadge: 'flex items-center gap-1 py-1.5 px-3 bg-tier-success/20 border border-tier-success rounded-lg text-tier-success text-xs font-medium',
+  analyzerWrapper: 'flex-1 rounded-xl overflow-hidden',
+  sidebar: 'w-80 flex flex-col gap-3 bg-surface rounded-xl border border-border overflow-hidden',
   sidebarHeader: 'py-3 px-4 border-b border-border',
   sidebarTitle: 'm-0 text-sm font-semibold text-[var(--text-inverse)]',
+  tabs: 'flex gap-1 p-1 bg-surface-elevated rounded-lg',
+  tab: 'flex-1 py-2 px-3 text-sm font-medium text-[var(--video-text-secondary)] bg-transparent border-none rounded-md cursor-pointer transition-all hover:bg-surface-elevated-hover',
+  tabActive: 'flex-1 py-2 px-3 text-sm font-medium text-[var(--text-inverse)] bg-surface border-none rounded-md cursor-pointer',
   commentsList: 'flex-1 overflow-y-auto p-3',
-  commentItem: 'p-3 bg-[var(--ak-surface-dark-elevated)] rounded-ak-md mb-2',
+  commentItem: 'p-3 bg-[rgb(var(--tier-navy-dark))] rounded-lg mb-2',
   commentAuthor: 'text-xs font-semibold text-primary mb-1',
   commentBody: 'text-[13px] text-[var(--text-inverse)] leading-snug',
   commentTime: 'text-[11px] text-[var(--video-text-tertiary)] mt-1',
   commentInput: 'flex gap-2 p-3 border-t border-border',
-  textarea: 'flex-1 py-2 px-3 bg-[var(--ak-surface-dark-elevated)] border border-border rounded-ak-md text-[var(--text-inverse)] text-[13px] resize-none min-h-[60px]',
-  sendButton: 'py-2 px-4 bg-primary border-none rounded-ak-md text-white text-[13px] font-medium cursor-pointer self-end',
+  textarea: 'flex-1 py-2 px-3 bg-[rgb(var(--tier-navy-dark))] border border-border rounded-lg text-[var(--text-inverse)] text-[13px] resize-none min-h-[60px]',
+  sendButton: 'py-2 px-4 bg-primary border-none rounded-lg text-white text-[13px] font-medium cursor-pointer self-end',
   loadingContainer: 'flex-1 flex items-center justify-center flex-col gap-4 text-[var(--video-text-secondary)]',
   spinner: 'w-10 h-10 border-[3px] border-border border-t-primary rounded-full animate-spin',
   errorContainer: 'flex-1 flex items-center justify-center flex-col gap-4 p-6 text-center',
   errorText: 'text-base text-[var(--text-inverse)] m-0',
   errorSubtext: 'text-[13px] text-[var(--video-text-secondary)] m-0',
-  retryButton: 'py-2.5 px-5 bg-primary border-none rounded-ak-md text-white text-sm font-medium cursor-pointer',
+  retryButton: 'py-2.5 px-5 bg-primary border-none rounded-lg text-white text-sm font-medium cursor-pointer',
   emptyComments: 'p-4 text-center text-[var(--video-text-tertiary)] text-[13px]',
 };
 
@@ -82,7 +87,7 @@ function apiToAnalyzerAnnotation(apiAnnotation) {
     duration: apiAnnotation.duration || 0,
     // Drawing data from API
     tool: apiAnnotation.drawingData?.tool || 'line',
-    color: apiAnnotation.drawingData?.color || 'var(--error)',
+    color: apiAnnotation.drawingData?.color || 'var(--status-error)',
     strokeWidth: apiAnnotation.drawingData?.strokeWidth || 3,
     points: apiAnnotation.drawingData?.points || [],
     // Text content if applicable
@@ -139,6 +144,8 @@ export function VideoAnalysisPage({ showComments = true }) {
   const { user } = useAuth();
   const [newComment, setNewComment] = useState('');
   const [markingReviewed, setMarkingReviewed] = useState(false);
+  const [activeTab, setActiveTab] = useState('comments'); // 'comments' | 'keyframes'
+  const videoElementRef = useRef(null);
 
   // Check if current user is coach
   const isCoach = user?.role === 'coach';
@@ -298,6 +305,7 @@ export function VideoAnalysisPage({ showComments = true }) {
           {/* Header */}
           <PageHeader
             title={video.title || 'Video'}
+            helpText="Analyser videoer av svingen din med sammenligningsverktøy, tegne på skjermen og sakte avspilling. Sammenlign med tidligere videoer eller profesjonelle svinger."
             onBack={handleBack}
             divider={false}
             actions={isCoach ? (
@@ -320,6 +328,7 @@ export function VideoAnalysisPage({ showComments = true }) {
           {/* Video Analyzer */}
           <div className={tw.analyzerWrapper}>
             <VideoAnalyzer
+              ref={videoElementRef}
               src={playbackUrl}
               poster={video.thumbnailUrl}
               videoId={videoId}
@@ -330,16 +339,31 @@ export function VideoAnalysisPage({ showComments = true }) {
           </div>
         </div>
 
-        {/* Comments Sidebar */}
+        {/* Sidebar with Tabs */}
         {showComments && (
           <div className={tw.sidebar}>
             <div className={tw.sidebarHeader}>
-              <SubSectionTitle className={tw.sidebarTitle}>
-                Kommentarer ({comments.length})
-              </SubSectionTitle>
+              {/* Tabs */}
+              <div className={tw.tabs}>
+                <button
+                  className={activeTab === 'comments' ? tw.tabActive : tw.tab}
+                  onClick={() => setActiveTab('comments')}
+                >
+                  💬 Kommentarer ({comments.length})
+                </button>
+                <button
+                  className={activeTab === 'keyframes' ? tw.tabActive : tw.tab}
+                  onClick={() => setActiveTab('keyframes')}
+                >
+                  📸 Keyframes
+                </button>
+              </div>
             </div>
 
-            <div className={tw.commentsList}>
+            {/* Comments Tab Content */}
+            {activeTab === 'comments' && (
+              <>
+                <div className={tw.commentsList}>
               {commentsLoading ? (
                 <div className={tw.emptyComments}>Laster kommentarer...</div>
               ) : comments.length === 0 ? (
@@ -361,24 +385,52 @@ export function VideoAnalysisPage({ showComments = true }) {
               )}
             </div>
 
-            <div className={tw.commentInput}>
-              <textarea
-                className={tw.textarea}
-                placeholder="Skriv en kommentar..."
-                value={newComment}
-                onChange={(e) => setNewComment(e.target.value)}
-                disabled={commentsSaving}
-              />
-              <Button
-                variant="primary"
-                size="sm"
-                onClick={handleSubmitComment}
-                disabled={!newComment.trim() || commentsSaving}
-                loading={commentsSaving}
-              >
-                {commentsSaving ? 'Sender...' : 'Send'}
-              </Button>
-            </div>
+                <div className={tw.commentInput}>
+                  <textarea
+                    className={tw.textarea}
+                    placeholder="Skriv en kommentar..."
+                    value={newComment}
+                    onChange={(e) => setNewComment(e.target.value)}
+                    disabled={commentsSaving}
+                  />
+                  <Button
+                    variant="primary"
+                    size="sm"
+                    onClick={handleSubmitComment}
+                    disabled={!newComment.trim() || commentsSaving}
+                    loading={commentsSaving}
+                  >
+                    {commentsSaving ? 'Sender...' : 'Send'}
+                  </Button>
+                </div>
+              </>
+            )}
+
+            {/* Keyframes Tab Content */}
+            {activeTab === 'keyframes' && (
+              <div className="flex-1 overflow-y-auto p-3 flex flex-col gap-3">
+                <KeyframeExtractor
+                  videoId={videoId}
+                  videoElement={videoElementRef.current?.videoElement}
+                  currentTime={videoElementRef.current?.currentTime || 0}
+                  onKeyframeCreated={() => {
+                    // Refresh keyframe gallery if needed
+                    track('keyframe_created_from_extractor', {
+                      screen: 'VideoAnalysisPage',
+                      videoId,
+                    });
+                  }}
+                />
+                <KeyframeGallery
+                  videoId={videoId}
+                  onJumpToTimestamp={(timestamp) => {
+                    if (videoElementRef.current?.seek) {
+                      videoElementRef.current.seek(timestamp);
+                    }
+                  }}
+                />
+              </div>
+            )}
           </div>
         )}
       </div>

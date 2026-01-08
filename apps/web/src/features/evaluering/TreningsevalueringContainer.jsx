@@ -1,5 +1,5 @@
 /**
- * AK Golf Academy - Treningsevaluering Container
+ * TIER Golf Academy - Treningsevaluering Container
  * Design System v3.0 - Premium Light
  *
  * Training session evaluations with session type filtering.
@@ -104,17 +104,17 @@ const STATS = {
 const getSessionTypeConfig = (type) => {
   switch (type) {
     case 'technical':
-      return { label: 'Teknikk', colorClasses: { bg: 'bg-ak-primary/15', text: 'text-ak-primary' }, icon: Target };
+      return { label: 'Teknikk', colorClasses: { bg: 'bg-tier-navy/15', text: 'text-tier-navy' }, icon: Target };
     case 'short_game':
-      return { label: 'Kortspill', colorClasses: { bg: 'bg-ak-status-success/15', text: 'text-ak-status-success' }, icon: Flag };
+      return { label: 'Kortspill', colorClasses: { bg: 'bg-tier-success/15', text: 'text-tier-success' }, icon: Flag };
     case 'physical':
-      return { label: 'Fysisk', colorClasses: { bg: 'bg-ak-status-error/15', text: 'text-ak-status-error' }, icon: Dumbbell };
+      return { label: 'Fysisk', colorClasses: { bg: 'bg-tier-error/15', text: 'text-tier-error' }, icon: Dumbbell };
     case 'mental':
       return { label: 'Mental', colorClasses: { bg: 'bg-amber-500/15', text: 'text-amber-600' }, icon: Brain };
     case 'warmup':
-      return { label: 'Oppvarming', colorClasses: { bg: 'bg-ak-status-warning/15', text: 'text-ak-status-warning' }, icon: Flame };
+      return { label: 'Oppvarming', colorClasses: { bg: 'bg-tier-warning/15', text: 'text-tier-warning' }, icon: Flame };
     default:
-      return { label: type, colorClasses: { bg: 'bg-ak-surface-subtle', text: 'text-ak-text-secondary' }, icon: Dumbbell };
+      return { label: type, colorClasses: { bg: 'bg-tier-surface-base', text: 'text-tier-text-secondary' }, icon: Dumbbell };
   }
 };
 
@@ -133,8 +133,8 @@ const RatingStars = ({ rating, size = 14 }) => (
       <Star
         key={star}
         size={size}
-        fill={star <= rating ? '#f59e0b' : 'none'}
-        className={star <= rating ? 'text-amber-500' : 'text-ak-border-default'}
+        fill={star <= rating ? 'rgb(var(--tier-gold))' : 'none'}
+        className={star <= rating ? 'text-tier-gold' : 'text-tier-border-default'}
       />
     ))}
   </div>
@@ -151,7 +151,7 @@ const TrainingEvaluationCard = ({ evaluation, onClick }) => {
   return (
     <div
       onClick={() => onClick(evaluation)}
-      className="bg-ak-surface-base rounded-[14px] p-4 cursor-pointer transition-all shadow-sm hover:-translate-y-0.5 hover:shadow-md"
+      className="bg-tier-white rounded-[14px] p-4 cursor-pointer transition-all shadow-sm hover:-translate-y-0.5 hover:shadow-md"
     >
       <div className="flex items-start gap-3.5">
         <div className={`w-11 h-11 rounded-[10px] ${typeConfig.colorClasses.bg} flex items-center justify-center flex-shrink-0`}>
@@ -161,17 +161,17 @@ const TrainingEvaluationCard = ({ evaluation, onClick }) => {
         <div className="flex-1 min-w-0">
           <div className="flex items-center justify-between mb-1.5">
             <div>
-              <SubSectionTitle className="text-[15px] font-semibold text-ak-text-primary m-0">
+              <SubSectionTitle className="text-[15px] font-semibold text-tier-navy m-0">
                 {evaluation.sessionName}
               </SubSectionTitle>
               <div className="flex items-center gap-2.5 mt-1">
                 <span className={`text-[11px] font-medium py-0.5 px-2 rounded ${typeConfig.colorClasses.bg} ${typeConfig.colorClasses.text}`}>
                   {typeConfig.label}
                 </span>
-                <span className="text-xs text-ak-text-secondary">
+                <span className="text-xs text-tier-text-secondary">
                   {formatDate(evaluation.date)}
                 </span>
-                <span className="text-xs text-ak-text-secondary flex items-center gap-1">
+                <span className="text-xs text-tier-text-secondary flex items-center gap-1">
                   <Clock size={12} />
                   {evaluation.duration} min
                 </span>
@@ -180,7 +180,7 @@ const TrainingEvaluationCard = ({ evaluation, onClick }) => {
             <RatingStars rating={evaluation.rating} />
           </div>
 
-          <p className="text-[13px] text-ak-text-primary my-2 leading-snug">
+          <p className="text-[13px] text-tier-navy my-2 leading-snug">
             {evaluation.notes}
           </p>
 
@@ -190,7 +190,7 @@ const TrainingEvaluationCard = ({ evaluation, onClick }) => {
               {evaluation.achievements.slice(0, 2).map((achievement, idx) => (
                 <span
                   key={idx}
-                  className="text-[11px] text-ak-status-success bg-ak-status-success/10 py-1 px-2 rounded-md flex items-center gap-1"
+                  className="text-[11px] text-tier-success bg-tier-success/10 py-1 px-2 rounded-md flex items-center gap-1"
                 >
                   <CheckCircle size={10} />
                   {achievement}
@@ -201,14 +201,14 @@ const TrainingEvaluationCard = ({ evaluation, onClick }) => {
 
           {/* Coach Feedback Indicator */}
           {evaluation.coachFeedback && (
-            <div className="mt-2.5 text-xs text-ak-primary flex items-center gap-1.5">
-              <div className="w-1.5 h-1.5 rounded-full bg-ak-primary" />
+            <div className="mt-2.5 text-xs text-tier-navy flex items-center gap-1.5">
+              <div className="w-1.5 h-1.5 rounded-full bg-tier-navy" />
               Trener-feedback tilgjengelig
             </div>
           )}
         </div>
 
-        <ChevronRight size={18} className="text-ak-text-secondary flex-shrink-0" />
+        <ChevronRight size={18} className="text-tier-text-secondary flex-shrink-0" />
       </div>
     </div>
   );
@@ -220,39 +220,39 @@ const TrainingEvaluationCard = ({ evaluation, onClick }) => {
 
 const StatsOverview = ({ stats }) => (
   <div className="grid grid-cols-[repeat(auto-fit,minmax(100px,1fr))] gap-2.5 mb-6">
-    <div className="bg-ak-surface-base rounded-xl p-3.5 text-center">
-      <div className="text-[22px] font-bold text-ak-primary">
+    <div className="bg-tier-white rounded-xl p-3.5 text-center">
+      <div className="text-[22px] font-bold text-tier-navy">
         {stats.totalSessions}
       </div>
-      <div className="text-[11px] text-ak-text-secondary">Totalt</div>
+      <div className="text-[11px] text-tier-text-secondary">Totalt</div>
     </div>
-    <div className="bg-ak-surface-base rounded-xl p-3.5 text-center">
-      <div className="text-[22px] font-bold text-ak-status-success">
+    <div className="bg-tier-white rounded-xl p-3.5 text-center">
+      <div className="text-[22px] font-bold text-tier-success">
         {stats.thisMonth}
       </div>
-      <div className="text-[11px] text-ak-text-secondary">Denne mnd</div>
+      <div className="text-[11px] text-tier-text-secondary">Denne mnd</div>
     </div>
-    <div className="bg-ak-surface-base rounded-xl p-3.5 text-center">
+    <div className="bg-tier-white rounded-xl p-3.5 text-center">
       <div className="flex items-center justify-center gap-0.5">
         <span className="text-[22px] font-bold text-amber-500">
           {stats.avgRating}
         </span>
-        <Star size={14} fill="#f59e0b" className="text-amber-500" />
+        <Star size={14} fill="rgb(var(--tier-gold))" className="text-tier-gold" />
       </div>
-      <div className="text-[11px] text-ak-text-secondary">Gj.sn.</div>
+      <div className="text-[11px] text-tier-text-secondary">Gj.sn.</div>
     </div>
-    <div className="bg-ak-surface-base rounded-xl p-3.5 text-center">
-      <div className="text-[22px] font-bold text-ak-text-primary">
+    <div className="bg-tier-white rounded-xl p-3.5 text-center">
+      <div className="text-[22px] font-bold text-tier-navy">
         {stats.avgDuration}
       </div>
-      <div className="text-[11px] text-ak-text-secondary">Min/okt</div>
+      <div className="text-[11px] text-tier-text-secondary">Min/okt</div>
     </div>
-    <div className="bg-ak-surface-base rounded-xl p-3.5 text-center">
-      <div className="text-base font-bold text-ak-status-success flex items-center justify-center gap-1">
+    <div className="bg-tier-white rounded-xl p-3.5 text-center">
+      <div className="text-base font-bold text-tier-success flex items-center justify-center gap-1">
         <TrendingUp size={16} />
         {stats.improvement}
       </div>
-      <div className="text-[11px] text-ak-text-secondary">Trend</div>
+      <div className="text-[11px] text-tier-text-secondary">Trend</div>
     </div>
   </div>
 );
@@ -277,10 +277,11 @@ const TreningsevalueringContainer = () => {
   );
 
   return (
-    <div className="min-h-screen bg-ak-surface-subtle">
+    <div className="min-h-screen bg-tier-surface-base">
       <PageHeader
         title="Treningsevalueringer"
         subtitle="Evaluering av dine treningsokter"
+        helpText="Detaljerte evalueringer av alle dine treningsøkter med vurderinger av intensitet, kvalitet, energi og fokus. Filtrer på treningstype og se trender i din utvikling."
       />
 
       <div className="p-4 px-6 pb-6 w-full">
@@ -296,8 +297,8 @@ const TreningsevalueringContainer = () => {
                 onClick={() => setFilter(f.key)}
                 className={`py-2 px-3.5 rounded-lg border-none text-[13px] font-medium cursor-pointer whitespace-nowrap transition-colors ${
                   filter === f.key
-                    ? 'bg-ak-primary text-white'
-                    : 'bg-ak-surface-base text-ak-text-primary hover:bg-ak-surface-subtle'
+                    ? 'bg-tier-navy text-white'
+                    : 'bg-tier-white text-tier-navy hover:bg-tier-surface-base'
                 }`}
               >
                 {f.label}

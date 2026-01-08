@@ -12,6 +12,7 @@ import {
 } from 'lucide-react';
 import Button from '../../ui/primitives/Button';
 import { SectionTitle, SubSectionTitle } from '../../components/typography';
+import { PageHeader } from '../../ui/raw-blocks';
 
 // ============================================================================
 // MOCK DATA - Will be replaced with API data
@@ -117,26 +118,26 @@ const TODAY_PLAN = {
 
 const SESSION_TYPE_CLASSES = {
   warmup: {
-    text: 'text-ak-status-warning',
-    bg: 'bg-ak-status-warning/15',
+    text: 'text-tier-warning',
+    bg: 'bg-tier-warning/15',
     icon: Flame,
     label: 'Oppvarming',
   },
   technical: {
-    text: 'text-ak-primary',
-    bg: 'bg-ak-primary/15',
+    text: 'text-tier-navy',
+    bg: 'bg-tier-navy/15',
     icon: Target,
     label: 'Teknikk',
   },
   short_game: {
-    text: 'text-ak-status-success',
-    bg: 'bg-ak-status-success/15',
+    text: 'text-tier-success',
+    bg: 'bg-tier-success/15',
     icon: Flag,
     label: 'Kortspill',
   },
   physical: {
-    text: 'text-ak-status-error',
-    bg: 'bg-ak-status-error/15',
+    text: 'text-tier-error',
+    bg: 'bg-tier-error/15',
     icon: Dumbbell,
     label: 'Fysisk',
   },
@@ -147,8 +148,8 @@ const SESSION_TYPE_CLASSES = {
     label: 'Mental',
   },
   cooldown: {
-    text: 'text-ak-text-secondary',
-    bg: 'bg-ak-surface-subtle',
+    text: 'text-tier-text-secondary',
+    bg: 'bg-tier-surface-base',
     icon: RotateCcw,
     label: 'Avslutning',
   },
@@ -156,23 +157,23 @@ const SESSION_TYPE_CLASSES = {
 
 const STATUS_CLASSES = {
   completed: {
-    text: 'text-ak-status-success',
-    bg: 'bg-ak-status-success/15',
-    progressBg: 'bg-ak-status-success',
+    text: 'text-tier-success',
+    bg: 'bg-tier-success/15',
+    progressBg: 'bg-tier-success',
     icon: CheckCircle,
     label: 'Fullført',
   },
   in_progress: {
-    text: 'text-ak-primary',
-    bg: 'bg-ak-primary/15',
-    progressBg: 'bg-ak-primary',
+    text: 'text-tier-navy',
+    bg: 'bg-tier-navy/15',
+    progressBg: 'bg-tier-navy',
     icon: Play,
     label: 'Pågår',
   },
   pending: {
-    text: 'text-ak-text-secondary',
-    bg: 'bg-ak-surface-subtle',
-    progressBg: 'bg-ak-text-secondary',
+    text: 'text-tier-text-secondary',
+    bg: 'bg-tier-surface-base',
+    progressBg: 'bg-tier-text-secondary',
     icon: Clock,
     label: 'Venter',
   },
@@ -193,8 +194,8 @@ const SessionCard = ({ session, onStart, onComplete }) => {
   const progressWidth = (completedExercises / totalExercises) * 100;
 
   return (
-    <div className={`bg-ak-surface-base rounded-2xl overflow-hidden shadow-sm border-2 ${
-      session.status === 'in_progress' ? 'border-ak-primary' : 'border-transparent'
+    <div className={`bg-tier-white rounded-2xl overflow-hidden shadow-sm border-2 ${
+      session.status === 'in_progress' ? 'border-tier-navy' : 'border-transparent'
     } ${session.status === 'completed' ? 'opacity-80' : 'opacity-100'}`}>
       {/* Header */}
       <div
@@ -203,7 +204,7 @@ const SessionCard = ({ session, onStart, onComplete }) => {
       >
         <div className={`w-11 h-11 rounded-xl ${typeConfig.bg} flex items-center justify-center`}>
           {session.status === 'completed' ? (
-            <CheckCircle size={22} className="text-ak-status-success" />
+            <CheckCircle size={22} className="text-tier-success" />
           ) : (
             <TypeIcon size={22} className={typeConfig.text} />
           )}
@@ -220,22 +221,22 @@ const SessionCard = ({ session, onStart, onComplete }) => {
               {statusConfig.label}
             </span>
           </div>
-          <div className="text-xs text-ak-text-secondary mt-0.5">
+          <div className="text-xs text-tier-text-secondary mt-0.5">
             {session.duration} min - {completedExercises}/{totalExercises} øvelser
           </div>
         </div>
 
-        <div className={`w-7 h-7 rounded-lg bg-ak-surface-subtle flex items-center justify-center transition-transform duration-200 ${
+        <div className={`w-7 h-7 rounded-lg bg-tier-surface-base flex items-center justify-center transition-transform duration-200 ${
           isExpanded ? 'rotate-90' : 'rotate-0'
         }`}>
-          <ChevronRight size={16} className="text-ak-text-secondary" />
+          <ChevronRight size={16} className="text-tier-text-secondary" />
         </div>
       </div>
 
       {/* Progress bar */}
       {session.status !== 'pending' && (
         <div className="px-4 pb-2">
-          <div className="h-1 bg-ak-surface-subtle rounded-sm overflow-hidden">
+          <div className="h-1 bg-tier-surface-base rounded-sm overflow-hidden">
             <div
               className={`h-full rounded-sm transition-[width] duration-300 ${statusConfig.progressBg}`}
               style={{ width: `${progressWidth}%` }}
@@ -246,8 +247,8 @@ const SessionCard = ({ session, onStart, onComplete }) => {
 
       {/* Expanded Content */}
       {isExpanded && (
-        <div className="px-4 pb-4 border-t border-ak-border-default mt-2">
-          <p className="text-[13px] text-ak-text-secondary my-3 leading-relaxed">
+        <div className="px-4 pb-4 border-t border-tier-border-default mt-2">
+          <p className="text-[13px] text-tier-text-secondary my-3 leading-relaxed">
             {session.description}
           </p>
 
@@ -257,29 +258,29 @@ const SessionCard = ({ session, onStart, onComplete }) => {
               <div
                 key={idx}
                 className={`flex items-center gap-2.5 py-2.5 px-3 rounded-lg ${
-                  exercise.completed ? 'bg-ak-status-success/10' : 'bg-ak-surface-subtle'
+                  exercise.completed ? 'bg-tier-success/10' : 'bg-tier-surface-base'
                 }`}
               >
                 <div className={`w-[22px] h-[22px] rounded-full flex items-center justify-center cursor-pointer ${
                   exercise.completed
-                    ? 'bg-ak-status-success border-0'
-                    : 'bg-ak-surface-base border-2 border-ak-border-default'
+                    ? 'bg-tier-success border-0'
+                    : 'bg-tier-white border-2 border-tier-border-default'
                 }`}>
                   {exercise.completed && <CheckCircle size={14} className="text-white" />}
                 </div>
                 <div className="flex-1">
                   <div className={`text-[13px] ${
-                    exercise.completed ? 'text-ak-text-secondary line-through' : 'text-ak-text-primary'
+                    exercise.completed ? 'text-tier-text-secondary line-through' : 'text-tier-navy'
                   }`}>
                     {exercise.name}
                   </div>
                   {exercise.notes && (
-                    <div className="text-[11px] text-ak-text-secondary">
+                    <div className="text-[11px] text-tier-text-secondary">
                       {exercise.notes}
                     </div>
                   )}
                 </div>
-                <span className="text-xs text-ak-text-secondary bg-ak-surface-base py-1 px-2 rounded-md">
+                <span className="text-xs text-tier-text-secondary bg-tier-white py-1 px-2 rounded-md">
                   {exercise.reps}
                 </span>
               </div>
@@ -288,18 +289,18 @@ const SessionCard = ({ session, onStart, onComplete }) => {
 
           {/* Trackman Data (if available) */}
           {session.trackmanData && (
-            <div className="mt-3 p-3 bg-ak-primary/10 rounded-[10px]">
-              <div className="text-xs font-semibold text-ak-primary mb-2 flex items-center gap-1.5">
+            <div className="mt-3 p-3 bg-tier-navy/10 rounded-[10px]">
+              <div className="text-xs font-semibold text-tier-navy mb-2 flex items-center gap-1.5">
                 <Video size={14} />
                 TrackMan Data
               </div>
               <div className="grid grid-cols-4 gap-2">
                 {Object.entries(session.trackmanData).map(([key, value]) => (
                   <div key={key} className="text-center">
-                    <div className="text-sm font-semibold text-ak-text-primary">
+                    <div className="text-sm font-semibold text-tier-navy">
                       {value}
                     </div>
-                    <div className="text-[10px] text-ak-text-secondary">
+                    <div className="text-[10px] text-tier-text-secondary">
                       {key.replace('avg', 'Gj.sn ')}
                     </div>
                   </div>
@@ -330,7 +331,7 @@ const SessionCard = ({ session, onStart, onComplete }) => {
                 e.stopPropagation();
                 onComplete(session.id);
               }}
-              className="w-full mt-3 justify-center !bg-ak-status-success"
+              className="w-full mt-3 justify-center !bg-tier-success"
             >
               Marker som fullført
             </Button>
@@ -376,42 +377,48 @@ const DagensTreningsplanContainer = () => {
   };
 
   return (
-    <div className="min-h-screen bg-ak-surface-subtle">
+    <div className="min-h-screen bg-tier-surface-base">
+      <PageHeader
+        title="Dagens treningsplan"
+        subtitle="Oversikt over planlagte økter for i dag"
+        helpText="Komplett oversikt over dagens treningsplan med alle planlagte økter. Se dagens tema, total varighet, fremgang og fullføringsgrad. Start økter direkte, marker som fullført og spor gjennomføring. Les trenernoten for dagens fokusområder og prioriteringer."
+        showBackButton={false}
+      />
       {/* Context info - theme and day */}
-      <div className="text-[13px] text-ak-text-secondary mb-4">
+      <div className="text-[13px] text-tier-text-secondary mb-4">
         {plan.dayName.charAt(0).toUpperCase() + plan.dayName.slice(1)} - {plan.theme}
       </div>
 
       {/* Two-column layout: Sessions left, Coach note top-right */}
       <div className="grid grid-cols-[1fr_320px] gap-6 mb-5">
         {/* Left column: Progress Overview */}
-        <div className="bg-ak-surface-base rounded-2xl p-5 shadow-sm">
+        <div className="bg-tier-white rounded-2xl p-5 shadow-sm">
           <div className="flex items-center justify-between mb-4">
             <div>
               <SectionTitle className="text-lg m-0">
                 Dagens fremgang
               </SectionTitle>
-              <div className="text-[13px] text-ak-text-secondary mt-0.5">
+              <div className="text-[13px] text-tier-text-secondary mt-0.5">
                 {completedSessions}/{plan.sessions.length} økter fullført
               </div>
             </div>
             <div className={`text-[28px] font-bold ${
-              progressPercent >= 100 ? 'text-ak-status-success' : 'text-ak-primary'
+              progressPercent >= 100 ? 'text-tier-success' : 'text-tier-navy'
             }`}>
               {progressPercent}%
             </div>
           </div>
 
-          <div className="h-2 bg-ak-surface-subtle rounded overflow-hidden">
+          <div className="h-2 bg-tier-surface-base rounded overflow-hidden">
             <div
               className={`h-full rounded transition-[width] duration-500 ${
-                progressPercent >= 100 ? 'bg-ak-status-success' : 'bg-ak-primary'
+                progressPercent >= 100 ? 'bg-tier-success' : 'bg-tier-navy'
               }`}
               style={{ width: `${progressPercent}%` }}
             />
           </div>
 
-          <div className="flex justify-between mt-3 text-xs text-ak-text-secondary">
+          <div className="flex justify-between mt-3 text-xs text-tier-text-secondary">
             <span>{plan.completedDuration} min fullført</span>
             <span>{plan.totalDuration - plan.completedDuration} min gjenstår</span>
           </div>
@@ -419,14 +426,14 @@ const DagensTreningsplanContainer = () => {
 
         {/* Right column: Coach Note (top-right position) */}
         {plan.coachNote && (
-          <div className="bg-ak-primary/10 rounded-xl p-4 border-l-4 border-ak-primary self-start">
+          <div className="bg-tier-navy/10 rounded-xl p-4 border-l-4 border-tier-navy self-start">
             <div className="flex items-center gap-2 mb-2">
-              <MessageCircle size={16} className="text-ak-primary" />
-              <span className="text-[13px] font-semibold text-ak-primary">
+              <MessageCircle size={16} className="text-tier-navy" />
+              <span className="text-[13px] font-semibold text-tier-navy">
                 Beskjed fra trener
               </span>
             </div>
-            <p className="text-[13px] text-ak-text-primary m-0 leading-relaxed">
+            <p className="text-[13px] text-tier-navy m-0 leading-relaxed">
               {plan.coachNote}
             </p>
           </div>
@@ -434,10 +441,10 @@ const DagensTreningsplanContainer = () => {
       </div>
 
       {/* Today's Goals */}
-      <div className="bg-ak-surface-base rounded-xl p-4 mb-5">
+      <div className="bg-tier-white rounded-xl p-4 mb-5">
         <div className="flex items-center gap-2 mb-3">
-          <Award size={16} className="text-ak-status-warning" />
-          <span className="text-[13px] font-semibold text-ak-text-primary">
+          <Award size={16} className="text-tier-warning" />
+          <span className="text-[13px] font-semibold text-tier-navy">
             Dagens mål
           </span>
         </div>
@@ -445,9 +452,9 @@ const DagensTreningsplanContainer = () => {
           {plan.goals.map((goal, idx) => (
             <div
               key={idx}
-              className="flex items-center gap-2 text-[13px] text-ak-text-primary"
+              className="flex items-center gap-2 text-[13px] text-tier-navy"
             >
-              <Target size={12} className="text-ak-status-warning" />
+              <Target size={12} className="text-tier-warning" />
               {goal}
             </div>
           ))}
@@ -474,7 +481,7 @@ const DagensTreningsplanContainer = () => {
       <Button
         variant="secondary"
         leftIcon={<Plus size={18} />}
-        className="w-full mt-4 justify-center border-2 border-dashed border-ak-border-default !bg-transparent"
+        className="w-full mt-4 justify-center border-2 border-dashed border-tier-border-default !bg-transparent"
       >
         Legg til egen økt
       </Button>

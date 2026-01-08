@@ -1,5 +1,5 @@
 /**
- * AK Golf Academy - Coach Booking Settings
+ * TIER Golf Academy - Coach Booking Settings
  * Design System v3.0 - Premium Light
  *
  * MIGRATED TO PAGE ARCHITECTURE - Zero inline styles
@@ -28,7 +28,7 @@ import {
 } from 'lucide-react';
 import PageHeader from '../../ui/raw-blocks/PageHeader.raw';
 import Button from '../../ui/primitives/Button';
-import { SectionTitle } from '../../components/typography';
+import { SectionTitle } from '../../components/typography/Headings';
 
 // ============================================================================
 // COMPONENTS
@@ -43,11 +43,11 @@ const ToggleSwitch: React.FC<ToggleSwitchProps> = ({ enabled, onToggle }) => (
   <button
     onClick={onToggle}
     className={`w-11 h-6 rounded-xl border-none relative cursor-pointer transition-colors ${
-      enabled ? 'bg-ak-primary' : 'bg-ak-border-default'
+      enabled ? 'bg-tier-navy' : 'bg-tier-border-default'
     }`}
   >
     <div
-      className={`w-5 h-5 rounded-full bg-ak-surface-base absolute top-0.5 shadow transition-all ${
+      className={`w-5 h-5 rounded-full bg-tier-white absolute top-0.5 shadow transition-all ${
         enabled ? 'left-[22px]' : 'left-0.5'
       }`}
     />
@@ -318,18 +318,19 @@ export default function CoachBookingSettings() {
 
   if (loading || !settings) {
     return (
-      <div className="min-h-screen bg-ak-surface-subtle flex items-center justify-center">
-        <div className="w-12 h-12 border-4 border-ak-border-default border-t-ak-primary rounded-full animate-spin" />
+      <div className="min-h-screen bg-tier-surface-base flex items-center justify-center">
+        <div className="w-12 h-12 border-4 border-tier-border-default border-t-tier-navy rounded-full animate-spin" />
       </div>
     );
   }
 
   return (
-    <div className="min-h-screen bg-ak-surface-subtle font-sans">
+    <div className="min-h-screen bg-tier-surface-base font-sans">
       {/* Header */}
       <PageHeader
         title="Tilgjengelighet"
         subtitle="Konfigurer arbeidstider og bookingpreferanser"
+        helpText="Konfigurer når du er tilgjengelig for bookinger. Sett opp arbeidstider per dag, økttyper med varighet, blokker datoer og administrer notifikasjonsinnstillinger for bookingforespørsler."
         onBack={() => navigate('/coach/booking')}
         actions={
           <Button
@@ -338,7 +339,7 @@ export default function CoachBookingSettings() {
             disabled={saving}
             loading={saving}
             leftIcon={saved ? <CheckCircle size={18} /> : <Save size={18} />}
-            className={saved ? 'bg-ak-status-success' : ''}
+            className={saved ? 'bg-tier-success' : ''}
           >
             {saved ? 'Lagret!' : 'Lagre endringer'}
           </Button>
@@ -347,9 +348,9 @@ export default function CoachBookingSettings() {
 
       <div className="p-6 w-full">
         {/* Weekly Schedule */}
-        <div className="bg-ak-surface-base rounded-xl shadow-sm mb-6 overflow-hidden">
-          <div className="py-4 px-5 border-b border-ak-border-default flex items-center gap-3">
-            <Clock size={20} className="text-ak-primary" />
+        <div className="bg-tier-white rounded-xl shadow-sm mb-6 overflow-hidden">
+          <div className="py-4 px-5 border-b border-tier-border-default flex items-center gap-3">
+            <Clock size={20} className="text-tier-navy" />
             <SectionTitle className="m-0">
               Ukentlig tilgjengelighet
             </SectionTitle>
@@ -361,26 +362,26 @@ export default function CoachBookingSettings() {
               const isExpanded = expandedDay === key;
 
               return (
-                <div key={key} className="border-b border-ak-surface-subtle">
-                  <div className={`py-3.5 px-5 flex items-center justify-between ${isExpanded ? 'bg-ak-surface-subtle' : ''}`}>
+                <div key={key} className="border-b border-tier-surface-base">
+                  <div className={`py-3.5 px-5 flex items-center justify-between ${isExpanded ? 'bg-tier-surface-base' : ''}`}>
                     <div className="flex items-center gap-3">
                       <ToggleSwitch
                         enabled={daySchedule.enabled}
                         onToggle={() => toggleDayEnabled(key)}
                       />
-                      <span className={`text-[15px] font-medium ${daySchedule.enabled ? 'text-ak-text-primary' : 'text-ak-text-secondary'}`}>
+                      <span className={`text-[15px] font-medium ${daySchedule.enabled ? 'text-tier-navy' : 'text-tier-text-secondary'}`}>
                         {label}
                       </span>
                     </div>
 
                     <div className="flex items-center gap-2">
                       {daySchedule.enabled && daySchedule.slots.length > 0 && (
-                        <span className="text-[13px] text-ak-text-secondary">
+                        <span className="text-[13px] text-tier-text-secondary">
                           {daySchedule.slots.map((s) => `${s.start}-${s.end}`).join(', ')}
                         </span>
                       )}
                       {!daySchedule.enabled && (
-                        <span className="text-[13px] text-ak-text-secondary italic">
+                        <span className="text-[13px] text-tier-text-secondary italic">
                           Ikke tilgjengelig
                         </span>
                       )}
@@ -389,38 +390,51 @@ export default function CoachBookingSettings() {
                         className="w-8 h-8 rounded bg-transparent border-none flex items-center justify-center cursor-pointer"
                       >
                         {isExpanded ? (
-                          <ChevronUp size={18} className="text-ak-text-secondary" />
+                          <ChevronUp size={18} className="text-tier-text-secondary" />
                         ) : (
-                          <ChevronDown size={18} className="text-ak-text-secondary" />
+                          <ChevronDown size={18} className="text-tier-text-secondary" />
                         )}
                       </button>
                     </div>
                   </div>
 
                   {isExpanded && daySchedule.enabled && (
-                    <div className="py-4 px-5 bg-ak-surface-subtle">
+                    <div className="py-4 px-5 bg-gradient-to-br from-tier-white via-tier-surface-base to-tier-surface-base">
                       {daySchedule.slots.map((slot, idx) => (
-                        <div key={idx} className="flex items-center gap-3 mb-3">
-                          <span className="text-[13px] text-ak-text-secondary">Fra</span>
-                          <input
-                            type="time"
-                            value={slot.start}
-                            onChange={(e) => updateTimeSlot(key, idx, 'start', e.target.value)}
-                            className="py-2 px-3 border border-ak-border-default rounded-lg text-sm text-ak-text-primary"
-                          />
-                          <span className="text-[13px] text-ak-text-secondary">til</span>
-                          <input
-                            type="time"
-                            value={slot.end}
-                            onChange={(e) => updateTimeSlot(key, idx, 'end', e.target.value)}
-                            className="py-2 px-3 border border-ak-border-default rounded-lg text-sm text-ak-text-primary"
-                          />
+                        <div
+                          key={idx}
+                          className="flex items-center gap-3 mb-3 p-3 bg-white rounded-xl border border-tier-border-default shadow-sm hover:shadow-md hover:border-tier-navy/30 transition-all"
+                        >
+                          <div className="w-10 h-10 rounded-lg bg-tier-navy/10 flex items-center justify-center shrink-0">
+                            <Clock size={18} className="text-tier-navy" />
+                          </div>
+                          <div className="flex items-center gap-3 flex-1">
+                            <div className="flex items-center gap-2">
+                              <span className="text-[13px] font-medium text-tier-text-secondary">Fra</span>
+                              <input
+                                type="time"
+                                value={slot.start}
+                                onChange={(e) => updateTimeSlot(key, idx, 'start', e.target.value)}
+                                className="py-2 px-3 border-2 border-tier-border-default rounded-lg text-sm text-tier-navy font-semibold focus:border-tier-navy focus:outline-none bg-tier-white"
+                              />
+                            </div>
+                            <div className="w-8 h-0.5 bg-tier-border-default rounded-full" />
+                            <div className="flex items-center gap-2">
+                              <span className="text-[13px] font-medium text-tier-text-secondary">til</span>
+                              <input
+                                type="time"
+                                value={slot.end}
+                                onChange={(e) => updateTimeSlot(key, idx, 'end', e.target.value)}
+                                className="py-2 px-3 border-2 border-tier-border-default rounded-lg text-sm text-tier-navy font-semibold focus:border-tier-navy focus:outline-none bg-tier-white"
+                              />
+                            </div>
+                          </div>
                           {daySchedule.slots.length > 1 && (
                             <button
                               onClick={() => removeTimeSlot(key, idx)}
-                              className="w-8 h-8 rounded bg-ak-status-error/10 border-none flex items-center justify-center cursor-pointer"
+                              className="w-9 h-9 rounded-lg bg-tier-error/10 border-none flex items-center justify-center cursor-pointer hover:bg-tier-error/20 transition-colors shrink-0"
                             >
-                              <Trash2 size={16} className="text-ak-status-error" />
+                              <Trash2 size={16} className="text-tier-error" />
                             </button>
                           )}
                         </div>
@@ -432,7 +446,7 @@ export default function CoachBookingSettings() {
                           size="sm"
                           onClick={() => addTimeSlot(key)}
                           leftIcon={<Plus size={16} />}
-                          className="border border-dashed border-ak-primary"
+                          className="border border-dashed border-tier-navy"
                         >
                           Legg til tidsluke
                         </Button>
@@ -456,16 +470,16 @@ export default function CoachBookingSettings() {
         </div>
 
         {/* Session Types */}
-        <div className="bg-ak-surface-base rounded-xl shadow-sm mb-6 overflow-hidden">
-          <div className="py-4 px-5 border-b border-ak-border-default flex items-center gap-3">
-            <Calendar size={20} className="text-ak-primary" />
+        <div className="bg-tier-white rounded-xl shadow-sm mb-6 overflow-hidden">
+          <div className="py-4 px-5 border-b border-tier-border-default flex items-center gap-3">
+            <Calendar size={20} className="text-tier-navy" />
             <SectionTitle className="m-0">
               Økttyper
             </SectionTitle>
           </div>
 
           <div className="py-4 px-5">
-            <p className="text-[13px] text-ak-text-secondary m-0 mb-4">
+            <p className="text-[13px] text-tier-text-secondary m-0 mb-4">
               Velg hvilke økttyper spillere kan booke
             </p>
 
@@ -473,19 +487,23 @@ export default function CoachBookingSettings() {
               {settings.sessionTypes.map((session) => (
                 <div
                   key={session.id}
-                  className={`flex items-center justify-between p-3 px-4 rounded-lg border ${
+                  className={`flex items-center justify-between p-4 px-5 rounded-xl border-2 shadow-sm hover:shadow-md transition-all cursor-pointer ${
                     session.enabled
-                      ? 'bg-ak-primary/5 border-ak-primary'
-                      : 'bg-ak-surface-subtle border-ak-border-default'
+                      ? 'bg-gradient-to-br from-tier-navy/10 via-ak-primary/5 to-transparent border-tier-navy/40 hover:border-tier-navy'
+                      : 'bg-white border-tier-border-default hover:border-tier-border-default/80'
                   }`}
+                  onClick={() => toggleSessionType(session.id)}
                 >
-                  <div className="flex items-center gap-3">
+                  <div className="flex items-center gap-4">
                     <button
-                      onClick={() => toggleSessionType(session.id)}
-                      className={`w-6 h-6 rounded-md flex items-center justify-center cursor-pointer border-2 ${
+                      onClick={(e) => {
+                        e.stopPropagation();
+                        toggleSessionType(session.id);
+                      }}
+                      className={`w-7 h-7 rounded-lg flex items-center justify-center cursor-pointer border-2 transition-all shadow-sm ${
                         session.enabled
-                          ? 'bg-ak-primary border-ak-primary'
-                          : 'bg-ak-surface-base border-ak-border-default'
+                          ? 'bg-tier-navy border-tier-navy scale-105'
+                          : 'bg-tier-white border-tier-border-default hover:border-tier-navy/30'
                       }`}
                     >
                       {session.enabled && (
@@ -493,7 +511,7 @@ export default function CoachBookingSettings() {
                           <path
                             d="M11.5 4L5.5 10L2.5 7"
                             stroke="white"
-                            strokeWidth="2"
+                            strokeWidth="2.5"
                             strokeLinecap="round"
                             strokeLinejoin="round"
                           />
@@ -501,17 +519,21 @@ export default function CoachBookingSettings() {
                       )}
                     </button>
                     <div>
-                      <p className={`text-sm font-medium m-0 ${session.enabled ? 'text-ak-text-primary' : 'text-ak-text-secondary'}`}>
+                      <p className={`text-[15px] font-semibold m-0 ${session.enabled ? 'text-tier-navy' : 'text-tier-text-secondary'}`}>
                         {session.name}
                       </p>
                       {session.description && (
-                        <p className="text-xs text-ak-text-secondary mt-0.5 m-0">
+                        <p className="text-xs text-tier-text-secondary mt-1 m-0">
                           {session.description}
                         </p>
                       )}
                     </div>
                   </div>
-                  <span className="text-[13px] text-ak-text-secondary bg-ak-surface-subtle py-1 px-2.5 rounded-full">
+                  <span className={`text-[13px] font-semibold py-1.5 px-3 rounded-full ${
+                    session.enabled
+                      ? 'text-tier-navy bg-white border border-tier-navy/20'
+                      : 'text-tier-text-secondary bg-tier-surface-base'
+                  }`}>
                     {session.duration} min
                   </span>
                 </div>
@@ -521,10 +543,10 @@ export default function CoachBookingSettings() {
         </div>
 
         {/* Blocked Dates */}
-        <div className="bg-ak-surface-base rounded-xl shadow-sm mb-6 overflow-hidden">
-          <div className="py-4 px-5 border-b border-ak-border-default flex items-center justify-between">
+        <div className="bg-tier-white rounded-xl shadow-sm mb-6 overflow-hidden">
+          <div className="py-4 px-5 border-b border-tier-border-default flex items-center justify-between">
             <div className="flex items-center gap-3">
-              <Lock size={20} className="text-ak-primary" />
+              <Lock size={20} className="text-tier-navy" />
               <SectionTitle className="m-0">
                 Blokkerte datoer
               </SectionTitle>
@@ -541,19 +563,19 @@ export default function CoachBookingSettings() {
 
           <div className="py-4 px-5">
             {showAddBlockedDate && (
-              <div className="flex gap-3 mb-4 p-3 bg-ak-surface-subtle rounded-lg">
+              <div className="flex gap-3 mb-4 p-3 bg-tier-surface-base rounded-lg">
                 <input
                   type="date"
                   value={newBlockedDate.date}
                   onChange={(e) => setNewBlockedDate({ ...newBlockedDate, date: e.target.value })}
-                  className="py-2 px-3 border border-ak-border-default rounded-lg text-sm"
+                  className="py-2 px-3 border border-tier-border-default rounded-lg text-sm"
                 />
                 <input
                   type="text"
                   placeholder="Årsak (valgfritt)"
                   value={newBlockedDate.reason}
                   onChange={(e) => setNewBlockedDate({ ...newBlockedDate, reason: e.target.value })}
-                  className="flex-1 py-2 px-3 border border-ak-border-default rounded-lg text-sm"
+                  className="flex-1 py-2 px-3 border border-tier-border-default rounded-lg text-sm"
                 />
                 <Button
                   variant="primary"
@@ -567,13 +589,13 @@ export default function CoachBookingSettings() {
                   onClick={() => setShowAddBlockedDate(false)}
                   className="w-9 h-9 rounded bg-transparent border-none flex items-center justify-center cursor-pointer"
                 >
-                  <X size={18} className="text-ak-text-secondary" />
+                  <X size={18} className="text-tier-text-secondary" />
                 </button>
               </div>
             )}
 
             {settings.blockedDates.length === 0 ? (
-              <p className="text-[15px] text-ak-text-secondary text-center py-6">
+              <p className="text-[15px] text-tier-text-secondary text-center py-6">
                 Ingen blokkerte datoer
               </p>
             ) : (
@@ -581,11 +603,11 @@ export default function CoachBookingSettings() {
                 {settings.blockedDates.map((blocked) => (
                   <div
                     key={blocked.id}
-                    className="flex items-center justify-between py-2.5 px-3.5 bg-ak-surface-subtle rounded-lg"
+                    className="flex items-center justify-between py-2.5 px-3.5 bg-tier-surface-base rounded-lg"
                   >
                     <div className="flex items-center gap-3">
-                      <Calendar size={16} className="text-ak-text-secondary" />
-                      <span className="text-sm font-medium text-ak-text-primary">
+                      <Calendar size={16} className="text-tier-text-secondary" />
+                      <span className="text-sm font-medium text-tier-navy">
                         {new Date(blocked.date).toLocaleDateString('nb-NO', {
                           weekday: 'long',
                           day: 'numeric',
@@ -594,7 +616,7 @@ export default function CoachBookingSettings() {
                         })}
                       </span>
                       {blocked.reason && (
-                        <span className="text-[13px] text-ak-text-secondary italic">
+                        <span className="text-[13px] text-tier-text-secondary italic">
                           — {blocked.reason}
                         </span>
                       )}
@@ -603,7 +625,7 @@ export default function CoachBookingSettings() {
                       onClick={() => removeBlockedDate(blocked.id)}
                       className="w-7 h-7 rounded bg-transparent border-none flex items-center justify-center cursor-pointer"
                     >
-                      <X size={16} className="text-ak-text-secondary" />
+                      <X size={16} className="text-tier-text-secondary" />
                     </button>
                   </div>
                 ))}
@@ -613,9 +635,9 @@ export default function CoachBookingSettings() {
         </div>
 
         {/* Booking Preferences */}
-        <div className="bg-ak-surface-base rounded-xl shadow-sm overflow-hidden">
-          <div className="py-4 px-5 border-b border-ak-border-default flex items-center gap-3">
-            <Settings size={20} className="text-ak-primary" />
+        <div className="bg-tier-white rounded-xl shadow-sm overflow-hidden">
+          <div className="py-4 px-5 border-b border-tier-border-default flex items-center gap-3">
+            <Settings size={20} className="text-tier-navy" />
             <SectionTitle className="m-0">
               Bookinginnstillinger
             </SectionTitle>
@@ -624,7 +646,7 @@ export default function CoachBookingSettings() {
           <div className="p-5">
             {/* Advance booking days */}
             <div className="mb-5">
-              <label className="block text-sm font-medium text-ak-text-primary mb-2">
+              <label className="block text-sm font-medium text-tier-navy mb-2">
                 Hvor langt frem kan spillere booke?
               </label>
               <div className="flex items-center gap-3">
@@ -636,15 +658,15 @@ export default function CoachBookingSettings() {
                   onChange={(e) =>
                     setSettings({ ...settings, advanceBookingDays: parseInt(e.target.value) || 14 })
                   }
-                  className="w-20 py-2 px-3 border border-ak-border-default rounded-lg text-sm text-center"
+                  className="w-20 py-2 px-3 border border-tier-border-default rounded-lg text-sm text-center"
                 />
-                <span className="text-sm text-ak-text-secondary">dager</span>
+                <span className="text-sm text-tier-text-secondary">dager</span>
               </div>
             </div>
 
             {/* Minimum notice */}
             <div className="mb-5">
-              <label className="block text-sm font-medium text-ak-text-primary mb-2">
+              <label className="block text-sm font-medium text-tier-navy mb-2">
                 Minimum varslingstid
               </label>
               <div className="flex items-center gap-3">
@@ -656,15 +678,15 @@ export default function CoachBookingSettings() {
                   onChange={(e) =>
                     setSettings({ ...settings, minNoticeHours: parseInt(e.target.value) || 24 })
                   }
-                  className="w-20 py-2 px-3 border border-ak-border-default rounded-lg text-sm text-center"
+                  className="w-20 py-2 px-3 border border-tier-border-default rounded-lg text-sm text-center"
                 />
-                <span className="text-sm text-ak-text-secondary">timer før økt</span>
+                <span className="text-sm text-tier-text-secondary">timer før økt</span>
               </div>
             </div>
 
             {/* Buffer time */}
             <div className="mb-5">
-              <label className="block text-sm font-medium text-ak-text-primary mb-2">
+              <label className="block text-sm font-medium text-tier-navy mb-2">
                 Buffer mellom økter
               </label>
               <div className="flex items-center gap-3">
@@ -677,26 +699,26 @@ export default function CoachBookingSettings() {
                   onChange={(e) =>
                     setSettings({ ...settings, bufferMinutes: parseInt(e.target.value) || 0 })
                   }
-                  className="w-20 py-2 px-3 border border-ak-border-default rounded-lg text-sm text-center"
+                  className="w-20 py-2 px-3 border border-tier-border-default rounded-lg text-sm text-center"
                 />
-                <span className="text-sm text-ak-text-secondary">minutter</span>
+                <span className="text-sm text-tier-text-secondary">minutter</span>
               </div>
             </div>
 
             {/* Toggle options */}
             <div className="flex flex-col gap-4">
-              <div className="flex items-center justify-between p-3 px-4 bg-ak-surface-subtle rounded-lg">
+              <div className="flex items-center justify-between p-3 px-4 bg-tier-surface-base rounded-lg">
                 <div className="flex items-center gap-3">
                   {settings.autoApprove ? (
-                    <Unlock size={18} className="text-ak-primary" />
+                    <Unlock size={18} className="text-tier-navy" />
                   ) : (
-                    <Lock size={18} className="text-ak-text-secondary" />
+                    <Lock size={18} className="text-tier-text-secondary" />
                   )}
                   <div>
-                    <p className="text-sm font-medium text-ak-text-primary m-0">
+                    <p className="text-sm font-medium text-tier-navy m-0">
                       Automatisk godkjenning
                     </p>
-                    <p className="text-xs text-ak-text-secondary mt-0.5 m-0">
+                    <p className="text-xs text-tier-text-secondary mt-0.5 m-0">
                       Godkjenn bookinger automatisk uten manuell gjennomgang
                     </p>
                   </div>
@@ -707,14 +729,14 @@ export default function CoachBookingSettings() {
                 />
               </div>
 
-              <div className="flex items-center justify-between p-3 px-4 bg-ak-surface-subtle rounded-lg">
+              <div className="flex items-center justify-between p-3 px-4 bg-tier-surface-base rounded-lg">
                 <div className="flex items-center gap-3">
-                  <Bell size={18} className={settings.notifyOnRequest ? 'text-ak-primary' : 'text-ak-text-secondary'} />
+                  <Bell size={18} className={settings.notifyOnRequest ? 'text-tier-navy' : 'text-tier-text-secondary'} />
                   <div>
-                    <p className="text-sm font-medium text-ak-text-primary m-0">
+                    <p className="text-sm font-medium text-tier-navy m-0">
                       Varsler ved nye forespørsler
                     </p>
-                    <p className="text-xs text-ak-text-secondary mt-0.5 m-0">
+                    <p className="text-xs text-tier-text-secondary mt-0.5 m-0">
                       Få varsel når en spiller sender en bookingforespørsel
                     </p>
                   </div>

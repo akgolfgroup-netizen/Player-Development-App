@@ -36,7 +36,7 @@ import Modal from '../../ui/composites/Modal.composite';
 import PageHeader from '../../ui/raw-blocks/PageHeader.raw';
 import Button from '../../ui/primitives/Button';
 import MembersList, { Member } from '../../ui/composites/MembersList.composite';
-import { SectionTitle, SubSectionTitle, CardTitle } from '../../components/typography';
+import { SectionTitle, SubSectionTitle, CardTitle } from '../../components/typography/Headings';
 
 interface GroupMember {
   id: string;
@@ -122,12 +122,12 @@ interface GroupDetail {
 // Exercise category colors
 const categoryColors: Record<string, { bg: string; text: string; label: string }> = {
   teknikk: { bg: 'rgba(var(--accent-rgb), 0.15)', text: 'var(--accent)', label: 'Teknikk' },
-  putting: { bg: 'rgba(var(--success-rgb), 0.15)', text: 'var(--success)', label: 'Putting' },
+  putting: { bg: 'rgba(var(--success-rgb), 0.15)', text: 'var(--status-success)', label: 'Putting' },
   kort_spill: { bg: 'rgba(var(--achievement-rgb), 0.15)', text: 'var(--achievement)', label: 'Kort spill' },
   langt_spill: { bg: 'rgba(var(--accent-rgb), 0.15)', text: 'var(--accent)', label: 'Langt spill' },
-  bane: { bg: 'rgba(var(--warning-rgb), 0.15)', text: 'var(--warning)', label: 'Bane' },
-  mental: { bg: 'rgba(139, 92, 246, 0.15)', text: 'var(--ak-accent-purple)', label: 'Mental' },
-  fysisk: { bg: 'rgba(var(--error-rgb), 0.15)', text: 'var(--error)', label: 'Fysisk' },
+  bane: { bg: 'rgba(var(--warning-rgb), 0.15)', text: 'var(--status-warning)', label: 'Bane' },
+  mental: { bg: 'rgba(var(--category-j), 0.15)', text: 'rgb(var(--category-j))', label: 'Mental' },
+  fysisk: { bg: 'rgba(var(--error-rgb), 0.15)', text: 'var(--status-error)', label: 'Fysisk' },
 };
 
 const dayNames = ['Mandag', 'Tirsdag', 'Onsdag', 'Torsdag', 'Fredag', 'Lørdag', 'Søndag'];
@@ -190,7 +190,7 @@ export default function CoachGroupDetail() {
               id: 'p3',
               name: 'Erik Johansen',
               avatarInitials: 'EJ',
-              avatarColor: 'var(--success)',
+              avatarColor: 'var(--status-success)',
               category: 'B',
               lastActive: '2025-12-19',
               sessionsThisWeek: 2,
@@ -210,7 +210,7 @@ export default function CoachGroupDetail() {
               id: 'p5',
               name: 'Lars Olsen',
               avatarInitials: 'LO',
-              avatarColor: 'var(--error)',
+              avatarColor: 'var(--status-error)',
               category: 'A',
               lastActive: '2025-12-18',
               sessionsThisWeek: 3,
@@ -362,9 +362,9 @@ export default function CoachGroupDetail() {
   const getTrendStyle = (trend: string) => {
     switch (trend) {
       case 'up':
-        return { color: 'var(--success)', rotation: '-45deg' };
+        return { color: 'var(--status-success)', rotation: '-45deg' };
       case 'down':
-        return { color: 'var(--error)', rotation: '45deg' };
+        return { color: 'var(--status-error)', rotation: '45deg' };
       default:
         return { color: 'var(--text-secondary)', rotation: '0deg' };
     }
@@ -403,8 +403,8 @@ export default function CoachGroupDetail() {
 
   if (loading) {
     return (
-      <div className="min-h-screen bg-ak-surface-subtle flex items-center justify-center">
-        <div className="w-12 h-12 border-4 border-ak-border-default border-t-ak-primary rounded-full animate-spin" />
+      <div className="min-h-screen bg-tier-surface-base flex items-center justify-center">
+        <div className="w-12 h-12 border-4 border-tier-border-default border-t-tier-navy rounded-full animate-spin" />
       </div>
     );
   }
@@ -419,11 +419,11 @@ export default function CoachGroupDetail() {
   }
 
   return (
-    <div className="min-h-screen bg-ak-surface-subtle font-sans">
+    <div className="min-h-screen bg-tier-surface-base font-sans">
       {/* Header - using PageHeader from design system */}
       <div className="flex items-start gap-4 p-6 pb-0">
         <div
-          className="w-14 h-14 rounded-lg flex items-center justify-center text-ak-surface-base font-bold text-xl shrink-0"
+          className="w-14 h-14 rounded-lg flex items-center justify-center text-tier-white font-bold text-xl shrink-0"
           style={{ backgroundColor: group.avatarColor }}
         >
           {group.avatarInitials}
@@ -432,6 +432,7 @@ export default function CoachGroupDetail() {
           <PageHeader
             title={group.name}
             subtitle={group.description}
+            helpText="Detaljer om treningsgruppen, medlemmer og planlagte aktiviteter. Administrer gruppens innhold og fremgang."
             onBack={() => navigate('/coach/groups')}
             actions={
               <Button
@@ -449,7 +450,7 @@ export default function CoachGroupDetail() {
       </div>
 
       {/* Quick actions */}
-      <div className="flex gap-2.5 py-4 px-6 border-b border-ak-border-default">
+      <div className="flex gap-2.5 py-4 px-6 border-b border-tier-border-default">
         <Button
           variant="primary"
           leftIcon={<ClipboardList size={18} />}
@@ -474,37 +475,37 @@ export default function CoachGroupDetail() {
       </div>
 
       {/* Stats bar */}
-      <div className="py-4 px-6 bg-ak-surface-base">
+      <div className="py-4 px-6 bg-tier-white">
         <div className="grid grid-cols-4 gap-4">
           <div className="text-center">
-            <p className="text-2xl font-bold text-ak-primary m-0">
+            <p className="text-2xl font-bold text-tier-navy m-0">
               {group.members.length}
             </p>
-            <p className="text-[13px] leading-[18px] text-ak-text-secondary mt-1 mb-0">
+            <p className="text-[13px] leading-[18px] text-tier-text-secondary mt-1 mb-0">
               Medlemmer
             </p>
           </div>
           <div className="text-center">
-            <p className="text-2xl font-bold text-ak-status-success m-0">
+            <p className="text-2xl font-bold text-tier-success m-0">
               {group.stats.avgAttendance}%
             </p>
-            <p className="text-[13px] leading-[18px] text-ak-text-secondary mt-1 mb-0">
+            <p className="text-[13px] leading-[18px] text-tier-text-secondary mt-1 mb-0">
               Snitt oppmøte
             </p>
           </div>
           <div className="text-center">
-            <p className="text-2xl font-bold text-ak-status-warning m-0">
+            <p className="text-2xl font-bold text-tier-warning m-0">
               {group.stats.totalSessions}
             </p>
-            <p className="text-[13px] leading-[18px] text-ak-text-secondary mt-1 mb-0">
+            <p className="text-[13px] leading-[18px] text-tier-text-secondary mt-1 mb-0">
               Økter totalt
             </p>
           </div>
           <div className="text-center">
-            <p className="text-2xl font-bold text-ak-primary m-0">
+            <p className="text-2xl font-bold text-tier-navy m-0">
               {group.stats.avgSessionsPerWeek}
             </p>
-            <p className="text-[13px] leading-[18px] text-ak-text-secondary mt-1 mb-0">
+            <p className="text-[13px] leading-[18px] text-tier-text-secondary mt-1 mb-0">
               Økter/uke
             </p>
           </div>
@@ -512,7 +513,7 @@ export default function CoachGroupDetail() {
       </div>
 
       {/* Tabs */}
-      <div className="flex gap-1 py-4 px-6 bg-ak-surface-base border-b border-ak-border-default">
+      <div className="flex gap-1 py-4 px-6 bg-tier-white border-b border-tier-border-default">
         {[
           { key: 'members', label: 'Medlemmer', icon: Users },
           { key: 'sessions', label: 'Økter', icon: Calendar },
@@ -524,8 +525,8 @@ export default function CoachGroupDetail() {
             onClick={() => setActiveTab(tab.key as 'members' | 'sessions' | 'plan' | 'stats')}
             className={`flex items-center gap-2 py-2.5 px-[18px] border-none rounded-lg text-sm font-medium cursor-pointer ${
               activeTab === tab.key
-                ? 'bg-ak-primary text-white'
-                : 'bg-transparent text-ak-text-primary'
+                ? 'bg-tier-navy text-white'
+                : 'bg-transparent text-tier-navy'
             }`}
           >
             <tab.icon size={18} />
@@ -540,12 +541,12 @@ export default function CoachGroupDetail() {
         {activeTab === 'members' && (
           <div>
             <div className="flex items-center justify-between mb-4">
-              <SectionTitle className="text-[17px] leading-[22px] font-semibold text-ak-text-primary m-0">
+              <SectionTitle className="text-[17px] leading-[22px] font-semibold text-tier-navy m-0">
                 Gruppemedlemmer ({group.members.length})
               </SectionTitle>
               <button
                 onClick={() => navigate(`/coach/groups/${groupId}/members/add`)}
-                className="flex items-center gap-1.5 py-2 px-3.5 bg-ak-primary text-white border-none rounded-lg text-[13px] font-semibold cursor-pointer"
+                className="flex items-center gap-1.5 py-2 px-3.5 bg-tier-navy text-white border-none rounded-lg text-[13px] font-semibold cursor-pointer"
               >
                 <Plus size={16} />
                 Legg til medlem
@@ -553,7 +554,7 @@ export default function CoachGroupDetail() {
             </div>
 
             {/* Members List using reusable component */}
-            <div className="bg-ak-surface-base rounded-xl shadow-sm overflow-hidden">
+            <div className="bg-tier-white rounded-xl shadow-sm overflow-hidden">
               <MembersList
                 members={group.members.map((m): Member => ({
                   id: m.id,
@@ -579,16 +580,16 @@ export default function CoachGroupDetail() {
                 return (
                   <div
                     key={`actions-${member.id}`}
-                    className="flex items-center justify-between py-3 px-4 bg-ak-surface-base rounded-lg shadow-sm"
+                    className="flex items-center justify-between py-3 px-4 bg-tier-white rounded-lg shadow-sm"
                   >
                     <div className="flex items-center gap-3">
                       <div
-                        className="w-9 h-9 rounded-full flex items-center justify-center text-ak-surface-base font-semibold text-xs"
+                        className="w-9 h-9 rounded-full flex items-center justify-center text-tier-white font-semibold text-xs"
                         style={{ backgroundColor: member.avatarColor }}
                       >
                         {member.avatarInitials}
                       </div>
-                      <span className="text-sm font-medium text-ak-text-primary">
+                      <span className="text-sm font-medium text-tier-navy">
                         {member.name}
                       </span>
                     </div>
@@ -600,14 +601,14 @@ export default function CoachGroupDetail() {
                           color={trendStyle.color}
                           style={{ transform: `rotate(${trendStyle.rotation})` }}
                         />
-                        <span className="text-[13px] text-ak-text-secondary">
+                        <span className="text-[13px] text-tier-text-secondary">
                           {member.sessionsThisWeek} økter
                         </span>
                       </div>
 
                       <button
                         onClick={() => navigate(`/coach/athletes/${member.id}`)}
-                        className="py-1.5 px-3 bg-ak-surface-subtle border-none rounded text-xs font-medium text-ak-text-primary cursor-pointer"
+                        className="py-1.5 px-3 bg-tier-surface-base border-none rounded text-xs font-medium text-tier-navy cursor-pointer"
                       >
                         Se profil
                       </button>
@@ -617,7 +618,7 @@ export default function CoachGroupDetail() {
                         className="w-8 h-8 rounded bg-transparent border-none flex items-center justify-center cursor-pointer opacity-60"
                         title="Fjern fra gruppe"
                       >
-                        <UserMinus size={16} className="text-ak-status-error" />
+                        <UserMinus size={16} className="text-tier-error" />
                       </button>
                     </div>
                   </div>
@@ -632,11 +633,11 @@ export default function CoachGroupDetail() {
           <div>
             {/* Upcoming sessions */}
             <div className="mb-8">
-              <SectionTitle className="text-[17px] leading-[22px] font-semibold text-ak-text-primary m-0 mb-4">
+              <SectionTitle className="text-[17px] leading-[22px] font-semibold text-tier-navy m-0 mb-4">
                 Kommende økter
               </SectionTitle>
               {group.upcomingSessions.length === 0 ? (
-                <p className="text-[15px] leading-5 text-ak-text-secondary">
+                <p className="text-[15px] leading-5 text-tier-text-secondary">
                   Ingen planlagte økter
                 </p>
               ) : (
@@ -644,28 +645,28 @@ export default function CoachGroupDetail() {
                   {group.upcomingSessions.map((session) => (
                     <div
                       key={session.id}
-                      className="flex items-center gap-3.5 py-3.5 px-4 bg-ak-surface-base rounded-lg shadow-sm border-l-[3px] border-l-ak-primary"
+                      className="flex items-center gap-3.5 py-3.5 px-4 bg-tier-white rounded-lg shadow-sm border-l-[3px] border-l-tier-navy"
                     >
-                      <div className="w-12 h-12 rounded-lg bg-ak-primary flex flex-col items-center justify-center text-white">
+                      <div className="w-12 h-12 rounded-lg bg-tier-navy flex flex-col items-center justify-center text-white">
                         <span className="text-sm font-bold">{session.time}</span>
                       </div>
                       <div className="flex-1">
-                        <p className="text-[17px] leading-[22px] font-semibold text-ak-text-primary m-0">
+                        <p className="text-[17px] leading-[22px] font-semibold text-tier-navy m-0">
                           {session.title}
                         </p>
-                        <p className="text-[13px] leading-[18px] text-ak-text-secondary mt-0.5 mb-0">
+                        <p className="text-[13px] leading-[18px] text-tier-text-secondary mt-0.5 mb-0">
                           {formatDate(session.date)} · {session.duration} min
                         </p>
                       </div>
                       <div className="text-right">
-                        <p className="text-[17px] leading-[22px] font-semibold text-ak-status-success m-0">
+                        <p className="text-[17px] leading-[22px] font-semibold text-tier-success m-0">
                           {session.attendees}/{session.totalMembers}
                         </p>
-                        <p className="text-[13px] leading-[18px] text-ak-text-secondary m-0">
+                        <p className="text-[13px] leading-[18px] text-tier-text-secondary m-0">
                           bekreftet
                         </p>
                       </div>
-                      <ChevronRight size={18} className="text-ak-text-secondary" />
+                      <ChevronRight size={18} className="text-tier-text-secondary" />
                     </div>
                   ))}
                 </div>
@@ -674,31 +675,31 @@ export default function CoachGroupDetail() {
 
             {/* Recent sessions */}
             <div>
-              <SectionTitle className="text-[17px] leading-[22px] font-semibold text-ak-text-primary m-0 mb-4">
+              <SectionTitle className="text-[17px] leading-[22px] font-semibold text-tier-navy m-0 mb-4">
                 Tidligere økter
               </SectionTitle>
               <div className="flex flex-col gap-2.5">
                 {group.recentSessions.map((session) => (
                   <div
                     key={session.id}
-                    className="flex items-center gap-3.5 py-3.5 px-4 bg-ak-surface-base rounded-lg shadow-sm opacity-80"
+                    className="flex items-center gap-3.5 py-3.5 px-4 bg-tier-white rounded-lg shadow-sm opacity-80"
                   >
-                    <div className="w-12 h-12 rounded-lg bg-ak-border-default flex flex-col items-center justify-center text-ak-text-secondary">
+                    <div className="w-12 h-12 rounded-lg bg-tier-border-default flex flex-col items-center justify-center text-tier-text-secondary">
                       <span className="text-sm font-bold">{session.time}</span>
                     </div>
                     <div className="flex-1">
-                      <p className="text-[17px] leading-[22px] font-semibold text-ak-text-primary m-0">
+                      <p className="text-[17px] leading-[22px] font-semibold text-tier-navy m-0">
                         {session.title}
                       </p>
-                      <p className="text-[13px] leading-[18px] text-ak-text-secondary mt-0.5 mb-0">
+                      <p className="text-[13px] leading-[18px] text-tier-text-secondary mt-0.5 mb-0">
                         {formatDate(session.date)} · {session.duration} min
                       </p>
                     </div>
                     <div className="text-right">
-                      <p className="text-[17px] leading-[22px] font-semibold text-ak-text-primary m-0">
+                      <p className="text-[17px] leading-[22px] font-semibold text-tier-navy m-0">
                         {session.attendees}/{session.totalMembers}
                       </p>
-                      <p className="text-[13px] leading-[18px] text-ak-text-secondary m-0">
+                      <p className="text-[13px] leading-[18px] text-tier-text-secondary m-0">
                         deltok
                       </p>
                     </div>
@@ -715,11 +716,11 @@ export default function CoachGroupDetail() {
             {/* Plan header */}
             <div className="flex items-center justify-between mb-5">
               <div>
-                <SectionTitle className="text-[17px] leading-[22px] font-semibold text-ak-text-primary m-0">
+                <SectionTitle className="text-[17px] leading-[22px] font-semibold text-tier-navy m-0">
                   {group.trainingPlan?.name || 'Treningsplan'}
                 </SectionTitle>
                 {group.trainingPlan && (
-                  <p className="text-[13px] leading-[18px] text-ak-text-secondary mt-1 mb-0">
+                  <p className="text-[13px] leading-[18px] text-tier-text-secondary mt-1 mb-0">
                     Aktiv plan: {new Date(group.trainingPlan.startDate).toLocaleDateString('nb-NO')} - {new Date(group.trainingPlan.endDate).toLocaleDateString('nb-NO')}
                   </p>
                 )}
@@ -727,14 +728,14 @@ export default function CoachGroupDetail() {
               <div className="flex gap-2">
                 <button
                   onClick={() => navigate(`/coach/groups/${groupId}/plan/edit`)}
-                  className="flex items-center gap-1.5 py-2 px-3.5 bg-ak-surface-subtle text-ak-text-primary border-none rounded-lg text-[13px] font-medium cursor-pointer"
+                  className="flex items-center gap-1.5 py-2 px-3.5 bg-tier-surface-base text-tier-navy border-none rounded-lg text-[13px] font-medium cursor-pointer"
                 >
                   <Edit3 size={16} />
                   Rediger plan
                 </button>
                 <button
                   onClick={() => setShowAddSessionModal(true)}
-                  className="flex items-center gap-1.5 py-2 px-3.5 bg-ak-primary text-white border-none rounded-lg text-[13px] font-semibold cursor-pointer"
+                  className="flex items-center gap-1.5 py-2 px-3.5 bg-tier-navy text-white border-none rounded-lg text-[13px] font-semibold cursor-pointer"
                 >
                   <Plus size={16} />
                   Legg til økt
@@ -743,17 +744,17 @@ export default function CoachGroupDetail() {
             </div>
 
             {/* Week navigation */}
-            <div className="flex items-center justify-between py-4 px-5 bg-ak-surface-base rounded-xl mb-4 shadow-sm">
+            <div className="flex items-center justify-between py-4 px-5 bg-tier-white rounded-xl mb-4 shadow-sm">
               <button
                 onClick={() => setCurrentWeekOffset((prev) => prev - 1)}
-                className="flex items-center gap-1.5 py-2 px-3 bg-ak-surface-subtle border-none rounded-lg text-[13px] font-medium text-ak-text-primary cursor-pointer"
+                className="flex items-center gap-1.5 py-2 px-3 bg-tier-surface-base border-none rounded-lg text-[13px] font-medium text-tier-navy cursor-pointer"
               >
                 <ChevronLeft size={16} />
                 Forrige uke
               </button>
 
               <div className="text-center">
-                <p className="text-[17px] leading-[22px] font-semibold text-ak-text-primary m-0">
+                <p className="text-[17px] leading-[22px] font-semibold text-tier-navy m-0">
                   Uke {(() => {
                     const now = new Date();
                     now.setDate(now.getDate() + currentWeekOffset * 7);
@@ -762,7 +763,7 @@ export default function CoachGroupDetail() {
                     return Math.ceil((pastDaysOfYear + firstDayOfYear.getDay() + 1) / 7);
                   })()}
                 </p>
-                <p className="text-[13px] leading-[18px] text-ak-text-secondary mt-0.5 mb-0">
+                <p className="text-[13px] leading-[18px] text-tier-text-secondary mt-0.5 mb-0">
                   {(() => {
                     const now = new Date();
                     now.setDate(now.getDate() + currentWeekOffset * 7);
@@ -777,7 +778,7 @@ export default function CoachGroupDetail() {
 
               <button
                 onClick={() => setCurrentWeekOffset((prev) => prev + 1)}
-                className="flex items-center gap-1.5 py-2 px-3 bg-ak-surface-subtle border-none rounded-lg text-[13px] font-medium text-ak-text-primary cursor-pointer"
+                className="flex items-center gap-1.5 py-2 px-3 bg-tier-surface-base border-none rounded-lg text-[13px] font-medium text-tier-navy cursor-pointer"
               >
                 Neste uke
                 <ChevronRight size={16} />
@@ -793,14 +794,14 @@ export default function CoachGroupDetail() {
                 <>
                   {/* Week theme/focus */}
                   {(currentWeek.theme || currentWeek.focus) && (
-                    <div className="py-4 px-5 bg-ak-primary/10 rounded-xl mb-4 border-l-4 border-l-ak-primary">
+                    <div className="py-4 px-5 bg-tier-navy/10 rounded-xl mb-4 border-l-4 border-l-tier-navy">
                       {currentWeek.theme && (
-                        <p className="text-[17px] leading-[22px] font-semibold text-ak-primary m-0">
+                        <p className="text-[17px] leading-[22px] font-semibold text-tier-navy m-0">
                           {currentWeek.theme}
                         </p>
                       )}
                       {currentWeek.focus && (
-                        <p className="text-[15px] leading-5 text-ak-text-primary mt-1 mb-0">
+                        <p className="text-[15px] leading-5 text-tier-navy mt-1 mb-0">
                           Fokus: {currentWeek.focus}
                         </p>
                       )}
@@ -820,19 +821,19 @@ export default function CoachGroupDetail() {
                       return (
                         <div
                           key={day}
-                          className={`bg-ak-surface-base rounded-lg overflow-hidden shadow-sm ${
-                            isToday ? 'border-2 border-ak-primary' : ''
+                          className={`bg-tier-white rounded-lg overflow-hidden shadow-sm ${
+                            isToday ? 'border-2 border-tier-navy' : ''
                           }`}
                         >
                           {/* Day header */}
                           <div
-                            className={`py-2.5 px-3 border-b border-ak-border-default ${
-                              isToday ? 'bg-ak-primary' : 'bg-ak-surface-subtle'
+                            className={`py-2.5 px-3 border-b border-tier-border-default ${
+                              isToday ? 'bg-tier-navy' : 'bg-tier-surface-base'
                             }`}
                           >
                             <p
                               className={`text-[13px] leading-[18px] font-semibold m-0 text-center ${
-                                isToday ? 'text-white' : 'text-ak-text-primary'
+                                isToday ? 'text-white' : 'text-tier-navy'
                               }`}
                             >
                               {day.slice(0, 3)}
@@ -847,7 +848,7 @@ export default function CoachGroupDetail() {
                                   setSelectedDay(index);
                                   setShowAddSessionModal(true);
                                 }}
-                                className="w-full p-3 bg-ak-surface-subtle border border-dashed border-ak-border-default rounded text-ak-text-secondary text-[11px] cursor-pointer flex items-center justify-center gap-1"
+                                className="w-full p-3 bg-tier-surface-base border border-dashed border-tier-border-default rounded text-tier-text-secondary text-[11px] cursor-pointer flex items-center justify-center gap-1"
                               >
                                 <Plus size={12} />
                                 Legg til
@@ -856,13 +857,13 @@ export default function CoachGroupDetail() {
                               sessionsForDay.map((session) => (
                                 <div
                                   key={session.id}
-                                  className="p-2 bg-ak-primary/5 rounded mb-1.5 cursor-pointer border-l-[3px] border-l-ak-primary"
+                                  className="p-2 bg-tier-navy/5 rounded mb-1.5 cursor-pointer border-l-[3px] border-l-tier-navy"
                                   onClick={() => setEditingSession(session.id)}
                                 >
-                                  <p className="text-[13px] leading-[18px] font-semibold text-ak-text-primary m-0">
+                                  <p className="text-[13px] leading-[18px] font-semibold text-tier-navy m-0">
                                     {session.time}
                                   </p>
-                                  <p className="text-[11px] text-ak-text-primary mt-0.5 mb-0 whitespace-nowrap overflow-hidden text-ellipsis">
+                                  <p className="text-[11px] text-tier-navy mt-0.5 mb-0 whitespace-nowrap overflow-hidden text-ellipsis">
                                     {session.title}
                                   </p>
                                   <div className="flex gap-0.5 mt-1 flex-wrap">
@@ -879,7 +880,7 @@ export default function CoachGroupDetail() {
                                       );
                                     })}
                                     {session.exercises.length > 2 && (
-                                      <span className="text-[9px] py-px px-1 bg-ak-surface-subtle text-ak-text-secondary rounded-sm">
+                                      <span className="text-[9px] py-px px-1 bg-tier-surface-base text-tier-text-secondary rounded-sm">
                                         +{session.exercises.length - 2}
                                       </span>
                                     )}
@@ -899,8 +900,8 @@ export default function CoachGroupDetail() {
                     if (!session) return null;
 
                     return (
-                      <div className="mt-6 bg-ak-surface-base rounded-xl shadow-sm overflow-hidden">
-                        <div className="py-4 px-5 bg-ak-primary flex items-center justify-between">
+                      <div className="mt-6 bg-tier-white rounded-xl shadow-sm overflow-hidden">
+                        <div className="py-4 px-5 bg-tier-navy flex items-center justify-between">
                           <div>
                             <SubSectionTitle className="text-[17px] leading-[22px] font-semibold text-white m-0">
                               {session.title}
@@ -918,7 +919,7 @@ export default function CoachGroupDetail() {
                         </div>
 
                         <div className="p-5">
-                          <CardTitle className="text-[13px] leading-[18px] text-ak-text-secondary uppercase tracking-wide m-0 mb-3">
+                          <CardTitle className="text-[13px] leading-[18px] text-tier-text-secondary uppercase tracking-wide m-0 mb-3">
                             Øvelser ({session.exercises.length})
                           </CardTitle>
 
@@ -930,13 +931,13 @@ export default function CoachGroupDetail() {
                                 return (
                                   <div
                                     key={exercise.id}
-                                    className="flex items-center gap-3 py-3 px-3.5 bg-ak-surface-subtle rounded-lg"
+                                    className="flex items-center gap-3 py-3 px-3.5 bg-tier-surface-base rounded-lg"
                                   >
-                                    <div className="w-7 h-7 rounded-full bg-ak-primary text-white flex items-center justify-center text-xs font-semibold shrink-0">
+                                    <div className="w-7 h-7 rounded-full bg-tier-navy text-white flex items-center justify-center text-xs font-semibold shrink-0">
                                       {index + 1}
                                     </div>
                                     <div className="flex-1">
-                                      <p className="text-[15px] leading-5 font-medium text-ak-text-primary m-0">
+                                      <p className="text-[15px] leading-5 font-medium text-tier-navy m-0">
                                         {exercise.name}
                                       </p>
                                       <div className="flex items-center gap-2 mt-0.5">
@@ -946,31 +947,31 @@ export default function CoachGroupDetail() {
                                         >
                                           {catStyle.label}
                                         </span>
-                                        <span className="text-[11px] text-ak-text-secondary">
+                                        <span className="text-[11px] text-tier-text-secondary">
                                           {exercise.duration} min
                                         </span>
                                       </div>
                                     </div>
-                                    <GripVertical size={16} className="text-ak-border-default cursor-grab" />
+                                    <GripVertical size={16} className="text-tier-border-default cursor-grab" />
                                   </div>
                                 );
                               })}
                           </div>
 
-                          <div className="flex gap-2.5 mt-4 pt-4 border-t border-ak-border-default">
-                            <button className="flex items-center gap-1.5 py-2 px-3.5 bg-ak-primary text-white border-none rounded-lg text-[13px] font-medium cursor-pointer">
+                          <div className="flex gap-2.5 mt-4 pt-4 border-t border-tier-border-default">
+                            <button className="flex items-center gap-1.5 py-2 px-3.5 bg-tier-navy text-white border-none rounded-lg text-[13px] font-medium cursor-pointer">
                               <Play size={16} />
                               Start økt
                             </button>
-                            <button className="flex items-center gap-1.5 py-2 px-3.5 bg-ak-surface-subtle text-ak-text-primary border-none rounded-lg text-[13px] font-medium cursor-pointer">
+                            <button className="flex items-center gap-1.5 py-2 px-3.5 bg-tier-surface-base text-tier-navy border-none rounded-lg text-[13px] font-medium cursor-pointer">
                               <Edit3 size={16} />
                               Rediger
                             </button>
-                            <button className="flex items-center gap-1.5 py-2 px-3.5 bg-ak-surface-subtle text-ak-text-primary border-none rounded-lg text-[13px] font-medium cursor-pointer">
+                            <button className="flex items-center gap-1.5 py-2 px-3.5 bg-tier-surface-base text-tier-navy border-none rounded-lg text-[13px] font-medium cursor-pointer">
                               <Copy size={16} />
                               Kopier
                             </button>
-                            <button className="flex items-center gap-1.5 py-2 px-3.5 bg-ak-status-error/10 text-ak-status-error border-none rounded-lg text-[13px] font-medium cursor-pointer ml-auto">
+                            <button className="flex items-center gap-1.5 py-2 px-3.5 bg-tier-error/10 text-tier-error border-none rounded-lg text-[13px] font-medium cursor-pointer ml-auto">
                               <Trash2 size={16} />
                               Slett
                             </button>
@@ -985,17 +986,17 @@ export default function CoachGroupDetail() {
 
             {/* No plan message */}
             {!group.trainingPlan && (
-              <div className="bg-ak-surface-base rounded-xl py-12 px-6 text-center shadow-sm">
-                <ClipboardList size={48} className="text-ak-border-default mb-4" />
-                <SubSectionTitle className="text-[17px] leading-[22px] font-semibold text-ak-text-primary m-0">
+              <div className="bg-tier-white rounded-xl py-12 px-6 text-center shadow-sm">
+                <ClipboardList size={48} className="text-tier-border-default mb-4" />
+                <SubSectionTitle className="text-[17px] leading-[22px] font-semibold text-tier-navy m-0">
                   Ingen treningsplan
                 </SubSectionTitle>
-                <p className="text-[15px] leading-5 text-ak-text-secondary mt-2 mb-5">
+                <p className="text-[15px] leading-5 text-tier-text-secondary mt-2 mb-5">
                   Opprett en treningsplan for å strukturere gruppens økter
                 </p>
                 <button
                   onClick={() => navigate(`/coach/groups/${groupId}/plan/create`)}
-                  className="inline-flex items-center gap-2 py-3 px-5 bg-ak-primary text-white border-none rounded-lg text-sm font-semibold cursor-pointer"
+                  className="inline-flex items-center gap-2 py-3 px-5 bg-tier-navy text-white border-none rounded-lg text-sm font-semibold cursor-pointer"
                 >
                   <Plus size={18} />
                   Opprett treningsplan
@@ -1008,55 +1009,55 @@ export default function CoachGroupDetail() {
         {/* Stats tab */}
         {activeTab === 'stats' && (
           <div>
-            <SectionTitle className="text-[17px] leading-[22px] font-semibold text-ak-text-primary m-0 mb-4">
+            <SectionTitle className="text-[17px] leading-[22px] font-semibold text-tier-navy m-0 mb-4">
               Gruppestatistikk
             </SectionTitle>
 
             <div className="grid grid-cols-2 gap-4">
-              <div className="p-5 bg-ak-surface-base rounded-xl shadow-sm">
+              <div className="p-5 bg-tier-white rounded-xl shadow-sm">
                 <div className="flex items-center gap-2.5 mb-3">
-                  <Trophy size={20} className="text-ak-status-warning" />
-                  <span className="text-[15px] leading-5 text-ak-text-secondary">
+                  <Trophy size={20} className="text-tier-warning" />
+                  <span className="text-[15px] leading-5 text-tier-text-secondary">
                     Topp utøver denne måneden
                   </span>
                 </div>
-                <p className="text-[22px] leading-7 font-bold text-ak-text-primary m-0">
+                <p className="text-[22px] leading-7 font-bold text-tier-navy m-0">
                   {group.stats.topPerformer}
                 </p>
               </div>
 
-              <div className="p-5 bg-ak-surface-base rounded-xl shadow-sm">
+              <div className="p-5 bg-tier-white rounded-xl shadow-sm">
                 <div className="flex items-center gap-2.5 mb-3">
-                  <Target size={20} className="text-ak-status-success" />
-                  <span className="text-[15px] leading-5 text-ak-text-secondary">
+                  <Target size={20} className="text-tier-success" />
+                  <span className="text-[15px] leading-5 text-tier-text-secondary">
                     Gjennomsnittlig oppmøte
                   </span>
                 </div>
-                <p className="text-[22px] leading-7 font-bold text-ak-text-primary m-0">
+                <p className="text-[22px] leading-7 font-bold text-tier-navy m-0">
                   {group.stats.avgAttendance}%
                 </p>
               </div>
 
-              <div className="p-5 bg-ak-surface-base rounded-xl shadow-sm">
+              <div className="p-5 bg-tier-white rounded-xl shadow-sm">
                 <div className="flex items-center gap-2.5 mb-3">
-                  <Clock size={20} className="text-ak-primary" />
-                  <span className="text-[15px] leading-5 text-ak-text-secondary">
+                  <Clock size={20} className="text-tier-navy" />
+                  <span className="text-[15px] leading-5 text-tier-text-secondary">
                     Økter per uke (snitt)
                   </span>
                 </div>
-                <p className="text-[22px] leading-7 font-bold text-ak-text-primary m-0">
+                <p className="text-[22px] leading-7 font-bold text-tier-navy m-0">
                   {group.stats.avgSessionsPerWeek}
                 </p>
               </div>
 
-              <div className="p-5 bg-ak-surface-base rounded-xl shadow-sm">
+              <div className="p-5 bg-tier-white rounded-xl shadow-sm">
                 <div className="flex items-center gap-2.5 mb-3">
-                  <Calendar size={20} className="text-ak-primary" />
-                  <span className="text-[15px] leading-5 text-ak-text-secondary">
+                  <Calendar size={20} className="text-tier-navy" />
+                  <span className="text-[15px] leading-5 text-tier-text-secondary">
                     Totalt antall økter
                   </span>
                 </div>
-                <p className="text-[22px] leading-7 font-bold text-ak-text-primary m-0">
+                <p className="text-[22px] leading-7 font-bold text-tier-navy m-0">
                   {group.stats.totalSessions}
                 </p>
               </div>
@@ -1075,21 +1076,21 @@ export default function CoachGroupDetail() {
           <div className="flex gap-3 justify-end">
             <button
               onClick={() => setMemberToRemove(null)}
-              className="py-2.5 px-[18px] bg-transparent border border-ak-border-default rounded-lg text-ak-text-primary text-sm font-medium cursor-pointer"
+              className="py-2.5 px-[18px] bg-transparent border border-tier-border-default rounded-lg text-tier-navy text-sm font-medium cursor-pointer"
             >
               Avbryt
             </button>
             <button
               onClick={handleConfirmRemoveMember}
-              className="py-2.5 px-[18px] bg-ak-status-error border-none rounded-lg text-white text-sm font-semibold cursor-pointer"
+              className="py-2.5 px-[18px] bg-tier-error border-none rounded-lg text-white text-sm font-semibold cursor-pointer"
             >
               Fjern medlem
             </button>
           </div>
         }
       >
-        <p className="m-0 text-ak-text-secondary leading-relaxed">
-          Er du sikker på at du vil fjerne <strong className="text-ak-text-primary">{memberToRemove?.name}</strong> fra gruppen?
+        <p className="m-0 text-tier-text-secondary leading-relaxed">
+          Er du sikker på at du vil fjerne <strong className="text-tier-navy">{memberToRemove?.name}</strong> fra gruppen?
         </p>
       </Modal>
     </div>

@@ -21,15 +21,15 @@ const colors = {
   forestLight: '#5B9A6F',
   foam: '#E8F0ED',
   ivory: '#FAF9F7',
-  gold: '#C9A227',
-  white: '#FFFFFF',
+  gold: 'rgb(var(--tier-gold))',
+  white: 'rgb(var(--tier-white))',
   textPrimary: '#2C2C2E',
   textSecondary: '#8E8E93',
   border: '#E5E5E5'
 };
 
-// AK Golf Logo Component with automatic sizing
-const AKGolfLogo = ({ variant = 'medium', size, color = colors.forest, style = {} }) => {
+// TIER Golf Logo Component with automatic sizing
+const TIERGolfLogo = ({ variant = 'medium', size, color = colors.forest, style = {} }) => {
   const sizeMap = { icon: 24, small: 32, medium: 44, large: 56, xlarge: 80, hero: 120 };
   const computedSize = size || sizeMap[variant] || sizeMap.medium;
   const aspectRatio = 196.41 / 204.13;
@@ -49,7 +49,7 @@ const AKGolfLogo = ({ variant = 'medium', size, color = colors.forest, style = {
 };
 
 // Full logo with wordmark
-const AKGolfLogoFull = ({ variant = 'medium', color = colors.forest }) => {
+const TIERGolfLogoFull = ({ variant = 'medium', color = colors.forest }) => {
   const sizeMap = {
     small: { logo: 32, title: 14, subtitle: 9, gap: 8 },
     medium: { logo: 44, title: 18, subtitle: 11, gap: 10 },
@@ -60,7 +60,7 @@ const AKGolfLogoFull = ({ variant = 'medium', color = colors.forest }) => {
   
   return (
     <div style={{ display: 'inline-flex', alignItems: 'center', gap: sizes.gap }}>
-      <AKGolfLogo size={sizes.logo} color={color} />
+      <TIERGolfLogo size={sizes.logo} color={color} />
       <div style={{ display: 'flex', flexDirection: 'column' }}>
         <span style={{ fontSize: sizes.title, fontWeight: 700, color, letterSpacing: '0.05em', lineHeight: 1.1 }}>AK GOLF</span>
         <span style={{ fontSize: sizes.subtitle, fontWeight: 600, color, opacity: 0.7, letterSpacing: '0.15em', lineHeight: 1.2 }}>ACADEMY</span>
@@ -70,9 +70,9 @@ const AKGolfLogoFull = ({ variant = 'medium', color = colors.forest }) => {
 };
 
 // Badge variant
-const AKGolfLogoBadge = ({ size = 56, backgroundColor = colors.forest, logoColor = colors.white, borderRadius = 12 }) => (
+const TIERGolfLogoBadge = ({ size = 56, backgroundColor = colors.forest, logoColor = colors.white, borderRadius = 12 }) => (
   <div style={{ width: size, height: size, borderRadius, backgroundColor, display: 'flex', alignItems: 'center', justifyContent: 'center', flexShrink: 0 }}>
-    <AKGolfLogo size={size * 0.6} color={logoColor} />
+    <TIERGolfLogo size={size * 0.6} color={logoColor} />
   </div>
 );
 
@@ -93,7 +93,7 @@ export default function App() {
       
       {/* Header */}
       <div style={{ background: colors.forest, color: colors.white, padding: '16px 20px', display: 'flex', alignItems: 'center', gap: 12 }}>
-        <AKGolfLogo variant="medium" color={colors.white} />
+        <TIERGolfLogo variant="medium" color={colors.white} />
         <div>
           <div style={{ fontSize: 15, fontWeight: 700 }}>Design System</div>
           <div style={{ fontSize: 11, opacity: 0.7 }}>Logo & Branding</div>
@@ -138,7 +138,7 @@ export default function App() {
                   }}
                 >
                   <div style={{ width: 80, display: 'flex', justifyContent: 'center' }}>
-                    <AKGolfLogo variant={s.name} color={colors.forest} />
+                    <TIERGolfLogo variant={s.name} color={colors.forest} />
                   </div>
                   <div style={{ flex: 1 }}>
                     <div style={{ fontSize: 15, fontWeight: 600, color: colors.textPrimary }}>{s.name}</div>
@@ -158,8 +158,8 @@ export default function App() {
                 Bruk <code style={{ backgroundColor: colors.foam, padding: '2px 6px', borderRadius: 4 }}>size</code> prop for eksakt pikselverdi
               </p>
               <div style={{ display: 'flex', alignItems: 'center', gap: 16 }}>
-                <AKGolfLogo size={100} color={colors.gold} />
-                <code style={{ fontSize: 12, color: colors.textSecondary }}>size={'{100}'} color="#C9A227"</code>
+                <TIERGolfLogo size={100} color={colors.gold} />
+                <code style={{ fontSize: 12, color: colors.textSecondary }}>size={'{100}'} color="rgb(var(--tier-gold))"</code>
               </div>
             </div>
           </div>
@@ -172,21 +172,21 @@ export default function App() {
 
             {/* Icon Only */}
             <div style={{ backgroundColor: colors.ivory, borderRadius: 16, padding: 20, marginBottom: 16, textAlign: 'center' }}>
-              <AKGolfLogo variant="xlarge" color={colors.forest} />
+              <TIERGolfLogo variant="xlarge" color={colors.forest} />
               <div style={{ fontSize: 14, fontWeight: 600, color: colors.textPrimary, marginTop: 12 }}>Icon Only</div>
               <div style={{ fontSize: 12, color: colors.textSecondary }}>Standard logo mark</div>
             </div>
 
             {/* Full Logo */}
             <div style={{ backgroundColor: colors.ivory, borderRadius: 16, padding: 20, marginBottom: 16, textAlign: 'center' }}>
-              <AKGolfLogoFull variant="large" color={colors.forest} />
+              <TIERGolfLogoFull variant="large" color={colors.forest} />
               <div style={{ fontSize: 14, fontWeight: 600, color: colors.textPrimary, marginTop: 12 }}>Full Logo</div>
               <div style={{ fontSize: 12, color: colors.textSecondary }}>Med wordmark</div>
             </div>
 
             {/* Reversed */}
             <div style={{ background: `linear-gradient(135deg, ${colors.forest} 0%, ${colors.forestLight} 100%)`, borderRadius: 16, padding: 20, marginBottom: 16, textAlign: 'center' }}>
-              <AKGolfLogoFull variant="large" color={colors.white} />
+              <TIERGolfLogoFull variant="large" color={colors.white} />
               <div style={{ fontSize: 14, fontWeight: 600, color: colors.white, marginTop: 12 }}>Reversed</div>
               <div style={{ fontSize: 12, color: 'rgba(255,255,255,0.7)' }}>På mørk bakgrunn</div>
             </div>
@@ -195,20 +195,20 @@ export default function App() {
             <SubSectionTitle style={{ fontSize: 14, fontWeight: 600, color: colors.textPrimary, margin: '20px 0 12px' }}>Badge Varianter</SubSectionTitle>
             <div style={{ display: 'grid', gridTemplateColumns: 'repeat(4, 1fr)', gap: 12 }}>
               <div style={{ textAlign: 'center' }}>
-                <AKGolfLogoBadge size={56} backgroundColor={colors.forest} logoColor={colors.white} borderRadius={12} />
+                <TIERGolfLogoBadge size={56} backgroundColor={colors.forest} logoColor={colors.white} borderRadius={12} />
                 <div style={{ fontSize: 10, color: colors.textSecondary, marginTop: 6 }}>Standard</div>
               </div>
               <div style={{ textAlign: 'center' }}>
-                <AKGolfLogoBadge size={56} backgroundColor={colors.gold} logoColor={colors.white} borderRadius={12} />
+                <TIERGolfLogoBadge size={56} backgroundColor={colors.gold} logoColor={colors.white} borderRadius={12} />
                 <div style={{ fontSize: 10, color: colors.textSecondary, marginTop: 6 }}>Gold</div>
               </div>
               <div style={{ textAlign: 'center' }}>
-                <AKGolfLogoBadge size={56} backgroundColor={colors.forest} logoColor={colors.white} borderRadius={28} />
+                <TIERGolfLogoBadge size={56} backgroundColor={colors.forest} logoColor={colors.white} borderRadius={28} />
                 <div style={{ fontSize: 10, color: colors.textSecondary, marginTop: 6 }}>Circle</div>
               </div>
               <div style={{ textAlign: 'center' }}>
                 <div style={{ width: 56, height: 56, borderRadius: 12, backgroundColor: colors.ivory, border: `2px solid ${colors.forest}`, display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
-                  <AKGolfLogo size={34} color={colors.forest} />
+                  <TIERGolfLogo size={34} color={colors.forest} />
                 </div>
                 <div style={{ fontSize: 10, color: colors.textSecondary, marginTop: 6 }}>Outline</div>
               </div>
@@ -224,7 +224,7 @@ export default function App() {
                 { name: 'Black', color: colors.textPrimary, bg: colors.ivory },
               ].map(v => (
                 <div key={v.name} style={{ flex: 1, minWidth: 80, backgroundColor: v.bg, borderRadius: 12, padding: 12, textAlign: 'center', border: v.bg === colors.ivory ? `1px solid ${colors.border}` : 'none' }}>
-                  <AKGolfLogo variant="medium" color={v.color} />
+                  <TIERGolfLogo variant="medium" color={v.color} />
                   <div style={{ fontSize: 10, color: v.bg === colors.forest ? colors.white : colors.textSecondary, marginTop: 6 }}>{v.name}</div>
                 </div>
               ))}
@@ -241,7 +241,7 @@ export default function App() {
             <div style={{ marginBottom: 16 }}>
               <div style={{ fontSize: 12, fontWeight: 600, color: colors.textSecondary, marginBottom: 8 }}>APP HEADER</div>
               <div style={{ backgroundColor: colors.forest, borderRadius: 12, padding: 12, display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
-                <AKGolfLogoFull variant="small" color={colors.white} />
+                <TIERGolfLogoFull variant="small" color={colors.white} />
                 <div style={{ display: 'flex', gap: 8 }}>
                   <div style={{ width: 32, height: 32, borderRadius: 8, backgroundColor: 'rgba(255,255,255,0.15)', display: 'flex', alignItems: 'center', justifyContent: 'center', color: colors.white }}>🔔</div>
                 </div>
@@ -254,7 +254,7 @@ export default function App() {
               <div style={{ backgroundColor: colors.ivory, borderRadius: 12, padding: 8, display: 'flex', justifyContent: 'space-around' }}>
                 {['Hjem', 'Trening', 'Profil'].map((label, i) => (
                   <div key={label} style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: 4, padding: 8 }}>
-                    {i === 0 ? <AKGolfLogo variant="icon" color={colors.forest} /> : 
+                    {i === 0 ? <TIERGolfLogo variant="icon" color={colors.forest} /> : 
                      <div style={{ width: 24, height: 24, borderRadius: 6, backgroundColor: colors.border }} />}
                     <span style={{ fontSize: 10, color: i === 0 ? colors.forest : colors.textSecondary }}>{label}</span>
                   </div>
@@ -267,9 +267,9 @@ export default function App() {
               <div style={{ fontSize: 12, fontWeight: 600, color: colors.textSecondary, marginBottom: 8 }}>CARD HEADER</div>
               <div style={{ backgroundColor: colors.ivory, borderRadius: 12, padding: 16 }}>
                 <div style={{ display: 'flex', alignItems: 'center', gap: 12, marginBottom: 12 }}>
-                  <AKGolfLogoBadge size={40} borderRadius={10} />
+                  <TIERGolfLogoBadge size={40} borderRadius={10} />
                   <div>
-                    <div style={{ fontSize: 14, fontWeight: 600, color: colors.textPrimary }}>AK Golf Academy</div>
+                    <div style={{ fontSize: 14, fontWeight: 600, color: colors.textPrimary }}>TIER Golf Academy</div>
                     <div style={{ fontSize: 12, color: colors.textSecondary }}>Treningsprogram</div>
                   </div>
                 </div>
@@ -281,7 +281,7 @@ export default function App() {
             <div style={{ marginBottom: 16 }}>
               <div style={{ fontSize: 12, fontWeight: 600, color: colors.textSecondary, marginBottom: 8 }}>SPLASH SCREEN</div>
               <div style={{ background: `linear-gradient(180deg, ${colors.forest} 0%, ${colors.forestLight} 100%)`, borderRadius: 12, padding: 40, textAlign: 'center' }}>
-                <AKGolfLogo variant="hero" color={colors.white} />
+                <TIERGolfLogo variant="hero" color={colors.white} />
                 <div style={{ fontSize: 22, fontWeight: 700, color: colors.white, marginTop: 16, letterSpacing: 1 }}>AK GOLF</div>
                 <div style={{ fontSize: 12, fontWeight: 600, color: 'rgba(255,255,255,0.7)', letterSpacing: 3 }}>ACADEMY</div>
               </div>
@@ -292,13 +292,13 @@ export default function App() {
               <div style={{ fontSize: 12, fontWeight: 600, color: colors.textSecondary, marginBottom: 8 }}>KODE</div>
               <div style={{ backgroundColor: '#1C1C1E', borderRadius: 12, padding: 16, fontFamily: 'monospace', fontSize: 11, color: '#A9DC76', overflow: 'auto' }}>
                 <div style={{ color: '#78DCE8' }}>{'// Importer komponenten'}</div>
-                <div><span style={{ color: '#FF6188' }}>import</span> {'{AKGolfLogo}'} <span style={{ color: '#FF6188' }}>from</span> <span style={{ color: '#FFD866' }}>'./AKGolfLogo'</span></div>
+                <div><span style={{ color: '#FF6188' }}>import</span> {'{TIERGolfLogo}'} <span style={{ color: '#FF6188' }}>from</span> <span style={{ color: '#FFD866' }}>'./TIERGolfLogo'</span></div>
                 <br />
                 <div style={{ color: '#78DCE8' }}>{'// Bruk med variant (anbefalt)'}</div>
-                <div>{'<AKGolfLogo variant="medium" />'}</div>
+                <div>{'<TIERGolfLogo variant="medium" />'}</div>
                 <br />
                 <div style={{ color: '#78DCE8' }}>{'// Eller med eksakt størrelse'}</div>
-                <div>{'<AKGolfLogo size={64} color="#C9A227" />'}</div>
+                <div>{'<TIERGolfLogo size={64} color="rgb(var(--tier-gold))" />'}</div>
               </div>
             </div>
           </div>

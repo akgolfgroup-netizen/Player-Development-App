@@ -1,5 +1,5 @@
 /**
- * AK Golf Academy - Coach Alerts Page
+ * TIER Golf Academy - Coach Alerts Page
  *
  * Archetype: A - List/Index Page
  * Purpose: Display actionable alerts for coach attention
@@ -115,31 +115,31 @@ const getAlertConfig = (type: Alert['type']) => {
     case 'proof_uploaded':
       return {
         icon: CheckCircle,
-        colorClass: 'text-ak-status-success bg-ak-status-success/15',
+        colorClass: 'text-tier-success bg-tier-success/15',
         label: 'Dokumentasjon',
       };
     case 'plan_pending':
       return {
         icon: Clock,
-        colorClass: 'text-ak-status-warning bg-ak-status-warning/15',
+        colorClass: 'text-tier-warning bg-tier-warning/15',
         label: 'Treningsplan',
       };
     case 'note_request':
       return {
         icon: AlertCircle,
-        colorClass: 'text-ak-primary bg-ak-primary/15',
+        colorClass: 'text-tier-navy bg-tier-navy/15',
         label: 'Tilbakemelding',
       };
     case 'milestone':
       return {
         icon: Bell,
-        colorClass: 'text-ak-status-warning bg-ak-status-warning/15',
+        colorClass: 'text-tier-warning bg-tier-warning/15',
         label: 'Milepæl',
       };
     default:
       return {
         icon: Bell,
-        colorClass: 'text-ak-text-secondary bg-ak-surface-subtle',
+        colorClass: 'text-tier-text-secondary bg-tier-surface-base',
         label: 'Varsel',
       };
   }
@@ -249,17 +249,18 @@ export default function CoachAlertsPage({
   return (
     <section
       aria-label="Coach alerts"
-      className="min-h-screen bg-ak-surface-subtle font-sans"
+      className="min-h-screen bg-tier-surface-base font-sans"
     >
       {/* Header - Standardized layout matching other coach pages */}
       <PageHeader
         title="Varsler"
         subtitle={`${unreadCount} uleste av ${alerts.length} totalt`}
+        helpText="Intelligente varsler om spillere som trenger oppfølging. Se avvik fra treningsplan, manglende evalueringer, dårlig form og andre viktige hendelser."
         actions={
           unreadCount > 0 && (
-            <div className="flex items-center gap-2 py-2 px-4 bg-ak-status-error/15 rounded-lg">
-              <Bell size={18} className="text-ak-status-error" />
-              <span className="text-sm font-semibold text-ak-status-error">
+            <div className="flex items-center gap-2 py-2 px-4 bg-tier-error/15 rounded-lg">
+              <Bell size={18} className="text-tier-error" />
+              <span className="text-sm font-semibold text-tier-error">
                 {unreadCount} uleste
               </span>
             </div>
@@ -275,8 +276,8 @@ export default function CoachAlertsPage({
             className={`
               flex items-center gap-1.5 px-4 py-2.5 rounded-lg border-none cursor-pointer shadow-sm text-[15px] font-medium
               ${filter === 'all'
-                ? 'bg-ak-primary text-white'
-                : 'bg-ak-surface-base text-ak-text-primary'
+                ? 'bg-tier-navy text-white'
+                : 'bg-tier-white text-tier-navy'
               }
             `}
           >
@@ -288,8 +289,8 @@ export default function CoachAlertsPage({
             className={`
               flex items-center gap-1.5 px-4 py-2.5 rounded-lg border-none cursor-pointer shadow-sm text-[15px] font-medium
               ${filter === 'unread'
-                ? 'bg-ak-primary text-white'
-                : 'bg-ak-surface-base text-ak-text-primary'
+                ? 'bg-tier-navy text-white'
+                : 'bg-tier-white text-tier-navy'
               }
             `}
           >
@@ -300,7 +301,7 @@ export default function CoachAlertsPage({
                   px-2 py-0.5 rounded text-xs font-semibold
                   ${filter === 'unread'
                     ? 'bg-white/20 text-white'
-                    : 'bg-ak-status-error/15 text-ak-status-error'
+                    : 'bg-tier-error/15 text-tier-error'
                   }
                 `}
               >
@@ -315,17 +316,17 @@ export default function CoachAlertsPage({
       <div className="px-6 pb-6">
         {loading ? (
           <div className="py-12 text-center">
-            <p className="text-[15px] text-ak-text-secondary">Laster varsler...</p>
+            <p className="text-[15px] text-tier-text-secondary">Laster varsler...</p>
           </div>
         ) : filteredAlerts.length === 0 ? (
-          <div className="bg-ak-surface-base rounded-xl shadow-sm py-12 px-6 text-center">
-            <Bell size={40} className="text-ak-border-default mb-3 mx-auto" />
-            <p className="text-[15px] text-ak-text-secondary">
+          <div className="bg-tier-white rounded-xl shadow-sm py-12 px-6 text-center">
+            <Bell size={40} className="text-tier-border-default mb-3 mx-auto" />
+            <p className="text-[15px] text-tier-text-secondary">
               {filter === 'unread' ? 'Ingen uleste varsler' : 'Ingen varsler'}
             </p>
           </div>
         ) : (
-          <div className="bg-ak-surface-base rounded-xl shadow-sm overflow-hidden">
+          <div className="bg-tier-white rounded-xl shadow-sm overflow-hidden">
             {filteredAlerts.map((alert, index) => {
               const config = getAlertConfig(alert.type);
               const AlertIcon = config.icon;
@@ -337,9 +338,9 @@ export default function CoachAlertsPage({
                   onClick={() => handleAlertClick(alert)}
                   className={`
                     w-full flex items-center gap-4 px-5 py-4 border-none cursor-pointer text-left transition-colors
-                    ${alert.read ? 'bg-transparent' : 'bg-ak-primary/5'}
-                    ${index < filteredAlerts.length - 1 ? 'border-b border-ak-border-default' : ''}
-                    hover:bg-ak-surface-subtle
+                    ${alert.read ? 'bg-transparent' : 'bg-tier-navy/5'}
+                    ${index < filteredAlerts.length - 1 ? 'border-b border-tier-border-default' : ''}
+                    hover:bg-tier-surface-base
                   `}
                 >
                   {/* Alert Icon */}
@@ -353,7 +354,7 @@ export default function CoachAlertsPage({
                   <div className="flex-1 min-w-0">
                     <div className="flex items-center gap-2 mb-1">
                       <span
-                        className={`text-[15px] text-ak-text-primary ${alert.read ? 'font-normal' : 'font-semibold'}`}
+                        className={`text-[15px] text-tier-navy ${alert.read ? 'font-normal' : 'font-semibold'}`}
                       >
                         {alert.athleteName}
                       </span>
@@ -363,20 +364,20 @@ export default function CoachAlertsPage({
                         {config.label}
                       </span>
                     </div>
-                    <p className="text-xs text-ak-text-secondary m-0 truncate">
+                    <p className="text-xs text-tier-text-secondary m-0 truncate">
                       {alert.message}
                     </p>
                   </div>
 
                   {/* Time & Arrow */}
                   <div className="flex items-center gap-3 flex-shrink-0">
-                    <span className="text-xs text-ak-text-secondary">
+                    <span className="text-xs text-tier-text-secondary">
                       {formatTimeAgo(alert.createdAt)}
                     </span>
                     {!alert.read && (
-                      <div className="w-2 h-2 rounded-full bg-ak-primary" />
+                      <div className="w-2 h-2 rounded-full bg-tier-navy" />
                     )}
-                    <ChevronRight size={18} className="text-ak-text-secondary" />
+                    <ChevronRight size={18} className="text-tier-text-secondary" />
                   </div>
                 </button>
               );

@@ -1,7 +1,7 @@
 # AKGolfDashboard - Visuell Spesifikasjon v1.0
 
 > **KILDE:** `/Design/figma/ak_golf_complete_figma_kit.svg`
-> **Design System:** AK Golf Academy v2.1 - Blue Palette 01
+> **Design System:** TIER Golf v2.1 - Blue Palette 01
 > **Font:** Inter (Open Source, Cross-Platform)
 > **Typografi:** Apple Human Interface Guidelines Scale
 > **Ikoner:** 24×24px, 1.5px stroke, Round caps
@@ -130,7 +130,7 @@ Dashboard for spillere med fokus på dagens trening, progresjon og kommunikasjon
 ┌────────────────────────────────────────────────────────────┐
 │  ┌──────┐                                         ┌────┐   │
 │  │ LOGO │  IUP                                    │ 👤 │   │
-│  │  AK  │  AK Golf Academy                        │    │   │
+│  │  AK  │  TIER Golf                        │    │   │
 │  └──────┘                                         └────┘   │
 └────────────────────────────────────────────────────────────┘
 ```

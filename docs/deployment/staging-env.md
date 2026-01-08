@@ -57,7 +57,7 @@ All `REACT_APP_*` variables are **baked into the build** at build time. You cann
 | `S3_FORCE_PATH_STYLE` | `false` | `true` | For MinIO |
 | `DB_POOL_MIN` | `2` | `2` | Min DB connections |
 | `DB_POOL_MAX` | `10` | `20` | Max DB connections |
-| `DEFAULT_TENANT_NAME` | `AK Golf Academy` | `AK Golf Academy` | Tenant name |
+| `DEFAULT_TENANT_NAME` | `TIER Golf` | `TIER Golf` | Tenant name |
 | `DEFAULT_TENANT_SLUG` | `ak-golf` | `ak-golf` | Tenant slug |
 | `GOOGLE_CLIENT_ID` | _(empty)_ | `xxx.apps.googleusercontent.com` | For Google Calendar |
 | `GOOGLE_CLIENT_SECRET` | _(empty)_ | `GOCSPX-...` | For Google Calendar |

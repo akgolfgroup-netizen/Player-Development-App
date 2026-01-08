@@ -15,10 +15,10 @@ import { SectionTitle, SubSectionTitle } from '../../components/typography/Headi
 
 // Color class mapping for tools
 const COLOR_CLASSES = {
-  brand: { text: 'text-ak-primary', bg: 'bg-ak-primary/15' },
-  success: { text: 'text-ak-status-success', bg: 'bg-ak-status-success/15' },
-  warning: { text: 'text-ak-status-warning', bg: 'bg-ak-status-warning/15' },
-  error: { text: 'text-ak-status-error', bg: 'bg-ak-status-error/15' },
+  brand: { text: 'text-tier-navy', bg: 'bg-tier-navy/15' },
+  success: { text: 'text-tier-success', bg: 'bg-tier-success/15' },
+  warning: { text: 'text-tier-warning', bg: 'bg-tier-warning/15' },
+  error: { text: 'text-tier-error', bg: 'bg-tier-error/15' },
 };
 
 // ============================================================================
@@ -120,7 +120,7 @@ const ToolCard = ({ tool, onClick }) => {
   return (
     <div
       onClick={() => onClick(tool)}
-      className="bg-ak-surface-base rounded-2xl p-5 cursor-pointer transition-all duration-200 shadow-sm hover:-translate-y-0.5 hover:shadow-md"
+      className="bg-tier-white rounded-2xl p-5 cursor-pointer transition-all duration-200 shadow-sm hover:-translate-y-0.5 hover:shadow-md"
     >
       <div className="flex items-start gap-4">
         <div className={`w-12 h-12 rounded-xl ${colors.bg} flex items-center justify-center shrink-0`}>
@@ -130,11 +130,11 @@ const ToolCard = ({ tool, onClick }) => {
           <SubSectionTitle className="text-[15px] m-0 mb-1">
             {tool.name}
           </SubSectionTitle>
-          <p className="text-[13px] text-ak-text-secondary m-0 leading-[1.4]">
+          <p className="text-[13px] text-tier-text-secondary m-0 leading-[1.4]">
             {tool.description}
           </p>
         </div>
-        <ChevronRight size={20} className="text-ak-text-secondary" />
+        <ChevronRight size={20} className="text-tier-text-secondary" />
       </div>
     </div>
   );
@@ -149,17 +149,17 @@ const ClubDistancesWidget = () => {
   const displayedClubs = showAll ? CLUB_DISTANCES : CLUB_DISTANCES.slice(0, 6);
 
   return (
-    <div className="bg-ak-surface-base rounded-2xl p-5 shadow-sm">
+    <div className="bg-tier-white rounded-2xl p-5 shadow-sm">
       <div className="flex items-center justify-between mb-4">
         <div className="flex items-center gap-2.5">
-          <BarChart2 size={18} className="text-ak-primary" />
+          <BarChart2 size={18} className="text-tier-navy" />
           <SubSectionTitle className="text-[15px] m-0">
             Mine kollelengder
           </SubSectionTitle>
         </div>
         <button
           onClick={() => setShowAll(!showAll)}
-          className="text-xs text-ak-primary bg-transparent border-none cursor-pointer font-medium"
+          className="text-xs text-tier-navy bg-transparent border-none cursor-pointer font-medium"
         >
           {showAll ? 'Vis mindre' : 'Vis alle'}
         </button>
@@ -167,26 +167,26 @@ const ClubDistancesWidget = () => {
 
       <div className="flex flex-col gap-1.5">
         {/* Header */}
-        <div className="grid grid-cols-[80px_1fr_1fr] gap-2 py-2 border-b border-ak-border-default">
-          <span className="text-[11px] text-ak-text-secondary font-medium">Kolle</span>
-          <span className="text-[11px] text-ak-text-secondary font-medium text-center">Carry</span>
-          <span className="text-[11px] text-ak-text-secondary font-medium text-center">Total</span>
+        <div className="grid grid-cols-[80px_1fr_1fr] gap-2 py-2 border-b border-tier-border-default">
+          <span className="text-[11px] text-tier-text-secondary font-medium">Kolle</span>
+          <span className="text-[11px] text-tier-text-secondary font-medium text-center">Carry</span>
+          <span className="text-[11px] text-tier-text-secondary font-medium text-center">Total</span>
         </div>
 
         {displayedClubs.map((club, idx) => (
           <div
             key={idx}
             className={`grid grid-cols-[80px_1fr_1fr] gap-2 py-2 ${
-              idx < displayedClubs.length - 1 ? 'border-b border-ak-border-default' : ''
+              idx < displayedClubs.length - 1 ? 'border-b border-tier-border-default' : ''
             }`}
           >
-            <span className="text-[13px] font-medium text-ak-text-primary">
+            <span className="text-[13px] font-medium text-tier-navy">
               {club.club}
             </span>
-            <span className="text-[13px] text-ak-text-primary text-center">
+            <span className="text-[13px] text-tier-navy text-center">
               {club.avgCarry}m
             </span>
-            <span className="text-[13px] text-ak-text-primary text-center">
+            <span className="text-[13px] text-tier-navy text-center">
               {club.avgTotal}m
             </span>
           </div>
@@ -202,17 +202,17 @@ const ClubDistancesWidget = () => {
 
 const StrokesGainedWidget = () => {
   return (
-    <div className="bg-ak-surface-base rounded-2xl p-5 shadow-sm">
+    <div className="bg-tier-white rounded-2xl p-5 shadow-sm">
       <div className="flex items-center gap-2.5 mb-4">
-        <TrendingUp size={18} className="text-ak-status-success" />
+        <TrendingUp size={18} className="text-tier-success" />
         <SubSectionTitle className="text-[15px] m-0">
           Strokes Gained
         </SubSectionTitle>
         <div className={`ml-auto py-1 px-2.5 rounded-md ${
-          STROKES_GAINED.total >= 0 ? 'bg-ak-status-success/15' : 'bg-ak-status-error/15'
+          STROKES_GAINED.total >= 0 ? 'bg-tier-success/15' : 'bg-tier-error/15'
         }`}>
           <span className={`text-sm font-semibold ${
-            STROKES_GAINED.total >= 0 ? 'text-ak-status-success' : 'text-ak-status-error'
+            STROKES_GAINED.total >= 0 ? 'text-tier-success' : 'text-tier-error'
           }`}>
             {STROKES_GAINED.total >= 0 ? '+' : ''}{STROKES_GAINED.total}
           </span>
@@ -222,13 +222,13 @@ const StrokesGainedWidget = () => {
       <div className="flex flex-col gap-2.5">
         {STROKES_GAINED.categories.map((cat, idx) => (
           <div key={idx} className="flex items-center gap-3">
-            <span className="text-[13px] text-ak-text-primary flex-1">
+            <span className="text-[13px] text-tier-navy flex-1">
               {cat.name}
             </span>
-            <div className="w-[100px] h-2 bg-ak-surface-subtle rounded overflow-hidden relative">
+            <div className="w-[100px] h-2 bg-tier-surface-base rounded overflow-hidden relative">
               <div
                 className={`absolute top-0 h-full rounded ${
-                  cat.value >= 0 ? 'bg-ak-status-success left-1/2' : 'bg-ak-status-error right-1/2'
+                  cat.value >= 0 ? 'bg-tier-success left-1/2' : 'bg-tier-error right-1/2'
                 }`}
                 style={{
                   width: `${Math.abs(cat.value) * 25}%`,
@@ -237,7 +237,7 @@ const StrokesGainedWidget = () => {
               />
             </div>
             <span className={`text-[13px] font-semibold w-10 text-right ${
-              cat.value >= 0 ? 'text-ak-status-success' : 'text-ak-status-error'
+              cat.value >= 0 ? 'text-tier-success' : 'text-tier-error'
             }`}>
               {cat.value >= 0 ? '+' : ''}{cat.value}
             </span>
@@ -245,9 +245,9 @@ const StrokesGainedWidget = () => {
         ))}
       </div>
 
-      <div className="mt-4 p-2.5 bg-ak-primary/5 rounded-lg flex items-center gap-2">
-        <Info size={14} className="text-ak-primary" />
-        <span className="text-xs text-ak-text-primary">
+      <div className="mt-4 p-2.5 bg-tier-navy/5 rounded-lg flex items-center gap-2">
+        <Info size={14} className="text-tier-navy" />
+        <span className="text-xs text-tier-navy">
           Basert pa dine siste 10 turneringsrunder
         </span>
       </div>
@@ -261,35 +261,35 @@ const StrokesGainedWidget = () => {
 
 const QuickStatsWidget = ({ stats }) => {
   return (
-    <div className="bg-ak-surface-base rounded-2xl p-5 shadow-sm">
+    <div className="bg-tier-white rounded-2xl p-5 shadow-sm">
       <SubSectionTitle className="text-[15px] m-0 mb-4">
         Hurtigstatistikk
       </SubSectionTitle>
 
       <div className="grid grid-cols-2 gap-3">
-        <div className="p-3.5 bg-ak-primary/10 rounded-xl text-center">
-          <div className="text-[22px] font-bold text-ak-primary">
+        <div className="p-3.5 bg-tier-navy/10 rounded-xl text-center">
+          <div className="text-[22px] font-bold text-tier-navy">
             {stats.currentHandicap}
           </div>
-          <div className="text-[11px] text-ak-text-secondary">Handicap</div>
+          <div className="text-[11px] text-tier-text-secondary">Handicap</div>
         </div>
-        <div className="p-3.5 bg-ak-status-success/10 rounded-xl text-center">
-          <div className="text-[22px] font-bold text-ak-status-success">
+        <div className="p-3.5 bg-tier-success/10 rounded-xl text-center">
+          <div className="text-[22px] font-bold text-tier-success">
             {stats.avgScore}
           </div>
-          <div className="text-[11px] text-ak-text-secondary">Gj.sn. score</div>
+          <div className="text-[11px] text-tier-text-secondary">Gj.sn. score</div>
         </div>
-        <div className="p-3.5 bg-ak-status-warning/10 rounded-xl text-center">
-          <div className="text-[22px] font-bold text-ak-status-warning">
+        <div className="p-3.5 bg-tier-warning/10 rounded-xl text-center">
+          <div className="text-[22px] font-bold text-tier-warning">
             {stats.bestRound}
           </div>
-          <div className="text-[11px] text-ak-text-secondary">Beste runde</div>
+          <div className="text-[11px] text-tier-text-secondary">Beste runde</div>
         </div>
-        <div className="p-3.5 bg-ak-surface-subtle rounded-xl text-center">
-          <div className="text-[22px] font-bold text-ak-text-primary">
+        <div className="p-3.5 bg-tier-surface-base rounded-xl text-center">
+          <div className="text-[22px] font-bold text-tier-navy">
             {stats.roundsThisYear}
           </div>
-          <div className="text-[11px] text-ak-text-secondary">Runder i ar</div>
+          <div className="text-[11px] text-tier-text-secondary">Runder i ar</div>
         </div>
       </div>
     </div>
@@ -325,10 +325,11 @@ const StatsVerktoyContainer = () => {
   };
 
   return (
-    <div className="min-h-screen bg-ak-surface-subtle">
+    <div className="min-h-screen bg-tier-surface-base">
       <PageHeader
         title="Stats verktoy"
         subtitle="Analyser og forbedre spillet ditt"
+        helpText="Verktøy for å analysere din spillstatistikk i detalj. Identifiser styrker og svakheter, sammenlign prestasjoner og få innsikt i forbedringsområder."
       />
 
       <div className="p-6 w-full">

@@ -1,5 +1,5 @@
 # Database Formler - Komplett Oversikt
-> IUP Golf Academy - Alle formler for test-database implementering
+> IUP Golf - Alle formler for test-database implementering
 > Versjon: 1.0 | Dato: 15. desember 2025
 
 ---
@@ -2089,4 +2089,4 @@ WHERE p.status = 'active';
 **Dokumentversjon**: 1.0
 **Status**: ✅ Komplett for database-implementering
 **Sist oppdatert**: 15. desember 2025
-**Forfatter**: AK Golf Academy & Team Norway Golf
+**Forfatter**: TIER Golf & Team Norway Golf

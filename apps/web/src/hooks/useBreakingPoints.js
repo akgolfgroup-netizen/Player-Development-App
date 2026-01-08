@@ -126,4 +126,50 @@ function calculateDuration(startDate, endDate) {
   }
 }
 
+/**
+ * Hook for fetching specific breaking point details
+ * @param {string} playerId - Player ID
+ * @param {string} breakingPointId - Breaking point ID
+ */
+export function useBreakingPointDetail(playerId, breakingPointId) {
+  const [data, setData] = useState(null);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
+
+  const fetchDetail = useCallback(async () => {
+    if (!playerId || !breakingPointId) return;
+
+    try {
+      setLoading(true);
+      setError(null);
+
+      const response = await api.get(`/breaking-points/${breakingPointId}`, {
+        params: { playerId },
+      });
+
+      if (response.data.success) {
+        setData(response.data.data);
+      } else {
+        throw new Error(response.data.error || 'Failed to fetch breaking point details');
+      }
+    } catch (err) {
+      console.error('[BreakingPoints] Error fetching detail:', err);
+      setError(err.message || 'Kunne ikke laste detaljer');
+    } finally {
+      setLoading(false);
+    }
+  }, [playerId, breakingPointId]);
+
+  useEffect(() => {
+    fetchDetail();
+  }, [fetchDetail]);
+
+  return {
+    breakingPoint: data || null,
+    loading,
+    error,
+    refetch: fetchDetail,
+  };
+}
+
 export default useBreakingPoints;

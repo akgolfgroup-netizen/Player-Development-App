@@ -1,6 +1,6 @@
 # Project Structure - Complete Guide for Senior Engineers
 
-> Comprehensive guide to understanding the IUP Golf Academy codebase architecture
+> Comprehensive guide to understanding the IUP Golf codebase architecture
 > **For**: Senior engineers taking over or reviewing the project
 > **Updated**: December 16, 2025
 

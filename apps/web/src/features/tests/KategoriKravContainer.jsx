@@ -10,6 +10,7 @@ import Button from '../../ui/primitives/Button';
 import StateCard from '../../ui/composites/StateCard';
 import { AICoachGuide } from '../ai-coach';
 import { GUIDE_PRESETS } from '../ai-coach/types';
+import { PageHeader } from '../../ui/raw-blocks';
 
 // ============================================================================
 // MOCK DATA
@@ -177,7 +178,7 @@ const RequirementCard = ({ test }) => {
           }}>
             <Badge variant="accent" size="sm">{test.category}</Badge>
             {test.met ? (
-              <CheckCircle size={14} color="var(--success)" />
+              <CheckCircle size={14} color="var(--status-success)" />
             ) : (
               <Circle size={14} color="var(--text-tertiary)" />
             )}
@@ -211,8 +212,8 @@ const RequirementCard = ({ test }) => {
           <div style={{
             height: '100%',
             width: `${progressPercent}%`,
-            backgroundColor: test.met ? 'var(--success)' :
-                           progressPercent >= 80 ? 'var(--warning)' : 'var(--error)',
+            backgroundColor: test.met ? 'var(--status-success)' :
+                           progressPercent >= 80 ? 'var(--status-warning)' : 'var(--status-error)',
             borderRadius: '3px',
           }} />
         </div>
@@ -235,7 +236,7 @@ const RequirementCard = ({ test }) => {
           <div style={{
             fontSize: '14px',
             fontWeight: 600,
-            color: test.met ? 'var(--success)' : 'var(--error)',
+            color: test.met ? 'var(--status-success)' : 'var(--status-error)',
           }}>
             {test.current}{test.unit}
           </div>
@@ -245,7 +246,7 @@ const RequirementCard = ({ test }) => {
           <div style={{
             fontSize: '14px',
             fontWeight: 600,
-            color: difference >= 0 ? 'var(--success)' : 'var(--error)',
+            color: difference >= 0 ? 'var(--status-success)' : 'var(--status-error)',
           }}>
             {difference >= 0 ? '+' : ''}{difference.toFixed(1)}{test.unit}
           </div>
@@ -288,7 +289,7 @@ const CategorySelector = ({ selected, onChange }) => (
             style={{
               border: isSelected ? '2px solid var(--accent)' : '2px solid transparent',
               backgroundColor: isCurrent && !isSelected ? 'var(--bg-success-subtle)' : undefined,
-              color: isCurrent && !isSelected ? 'var(--success)' : undefined,
+              color: isCurrent && !isSelected ? 'var(--status-success)' : undefined,
             }}
           >
             {cat.level}
@@ -327,7 +328,7 @@ const SummaryCard = ({ requirements, targetCategory }) => {
           alignItems: 'center',
           justifyContent: 'center',
         }}>
-          <Award size={24} color="var(--warning)" />
+          <Award size={24} color="var(--status-warning)" />
         </div>
         <div>
           <SectionTitle style={{
@@ -363,7 +364,7 @@ const SummaryCard = ({ requirements, targetCategory }) => {
           <div style={{
             fontSize: '24px',
             fontWeight: 700,
-            color: metCount === totalCount ? 'var(--success)' : 'var(--accent)',
+            color: metCount === totalCount ? 'var(--status-success)' : 'var(--accent)',
           }}>
             {metCount}/{totalCount}
           </div>
@@ -383,7 +384,7 @@ const SummaryCard = ({ requirements, targetCategory }) => {
               <div style={{
                 fontSize: '24px',
                 fontWeight: 700,
-                color: rounds.completed >= rounds.required ? 'var(--success)' : 'var(--warning)',
+                color: rounds.completed >= rounds.required ? 'var(--status-success)' : 'var(--status-warning)',
               }}>
                 {rounds.completed}/{rounds.required}
               </div>
@@ -401,7 +402,7 @@ const SummaryCard = ({ requirements, targetCategory }) => {
               <div style={{
                 fontSize: '24px',
                 fontWeight: 700,
-                color: rounds.currentHandicap <= rounds.handicapRequired ? 'var(--success)' : 'var(--error)',
+                color: rounds.currentHandicap <= rounds.handicapRequired ? 'var(--status-success)' : 'var(--status-error)',
               }}>
                 {rounds.currentHandicap}
               </div>
@@ -431,7 +432,13 @@ const KategoriKravContainer = () => {
   }, {}) || {};
 
   return (
-    <div style={{ width: '100%' }}>
+    <div className="w-full">
+        <PageHeader
+          title="Kategorikrav (A-K)"
+          subtitle="Spor fremgang mot neste kategori"
+          helpText="Oversikt over krav for kategoriopprykk i A-K systemet. Se din nåværende kategori, målkategori og fremgang mot neste nivå. Spor testresultater for driving, jern, naerspill, putting og turneringer. Se hvilke krav som er oppfylt og hva som gjenstår."
+          showBackButton={false}
+        />
         {/* AI Coach Guide */}
         <AICoachGuide config={GUIDE_PRESETS.categoryRequirements} />
 

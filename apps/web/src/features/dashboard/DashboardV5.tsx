@@ -1,6 +1,6 @@
 // @ts-nocheck
 /**
- * Dashboard V5 - AK Golf Academy
+ * Dashboard V5 - TIER Golf Academy
  *
  * Clean, modern player dashboard using the design system.
  * Mobile-first responsive layout with semantic tokens.
@@ -40,7 +40,7 @@ import { useAuth } from '../../contexts/AuthContext';
 import Button from '../../ui/primitives/Button';
 import Badge from '../../ui/primitives/Badge.primitive';
 import StateCard from '../../ui/composites/StateCard';
-import { PageTitle, SectionTitle, CardTitle } from '../../components/typography';
+import { PageTitle, SectionTitle, CardTitle } from '../../components/typography/Headings';
 
 // AI Coach
 import { AICoachGuide } from '../ai-coach';
@@ -119,8 +119,8 @@ const StatsGrid: React.FC<{ stats: QuickStat[] }> = ({ stats }) => (
         {stat.change && (
           <span style={{
             ...styles.statChange,
-            color: stat.trend === 'up' ? 'var(--success)' :
-                   stat.trend === 'down' ? 'var(--error)' : 'var(--text-secondary)',
+            color: stat.trend === 'up' ? 'var(--status-success)' :
+                   stat.trend === 'down' ? 'var(--status-error)' : 'var(--text-secondary)',
           }}>
             {stat.change}
           </span>
@@ -180,7 +180,7 @@ const TodaysSessions: React.FC<{
             </div>
             <div style={styles.sessionStatus}>
               {session.status === 'completed' ? (
-                <CheckCircle2 size={20} style={{ color: 'var(--success)' }} />
+                <CheckCircle2 size={20} style={{ color: 'var(--status-success)' }} />
               ) : session.status === 'in_progress' ? (
                 <Play size={20} style={{ color: 'var(--accent)' }} />
               ) : (
@@ -230,8 +230,8 @@ const GoalsProgress: React.FC<{
           <div key={task.id} style={styles.taskItem}>
             <div style={{
               ...styles.taskCheckbox,
-              backgroundColor: task.completed ? 'var(--success)' : 'transparent',
-              borderColor: task.completed ? 'var(--success)' : 'var(--border-default)',
+              backgroundColor: task.completed ? 'var(--status-success)' : 'transparent',
+              borderColor: task.completed ? 'var(--status-success)' : 'var(--border-default)',
             }}>
               {task.completed && <CheckCircle2 size={12} style={{ color: 'white' }} />}
             </div>
@@ -243,7 +243,7 @@ const GoalsProgress: React.FC<{
               {task.title}
             </span>
             {task.priority === 'high' && !task.completed && (
-              <AlertCircle size={14} style={{ color: 'var(--warning)' }} />
+              <AlertCircle size={14} style={{ color: 'var(--status-warning)' }} />
             )}
           </div>
         ))}
@@ -375,7 +375,7 @@ export default function DashboardV5() {
       id: 'streak',
       label: 'Streak',
       value: data.stats?.streak || 0,
-      icon: <Flame size={20} style={{ color: 'var(--warning)' }} />,
+      icon: <Flame size={20} style={{ color: 'var(--status-warning)' }} />,
       trend: 'up',
       change: '+2',
     },
@@ -389,7 +389,7 @@ export default function DashboardV5() {
       id: 'hours',
       label: 'Timer denne uka',
       value: data.stats?.hoursThisWeek?.toFixed(1) || '0',
-      icon: <Clock size={20} style={{ color: 'var(--success)' }} />,
+      icon: <Clock size={20} style={{ color: 'var(--status-success)' }} />,
     },
     {
       id: 'level',
@@ -401,10 +401,10 @@ export default function DashboardV5() {
 
   // Quick actions - aligned with 4+1 navigation structure
   const quickActions: QuickAction[] = [
-    { id: 'log-training', label: 'Logg trening', icon: <Play size={20} color="white" />, href: '/trening/logg', color: 'var(--success)' },
+    { id: 'log-training', label: 'Logg trening', icon: <Play size={20} color="white" />, href: '/trening/logg', color: 'var(--status-success)' },
     { id: 'take-test', label: 'Ta test', icon: <Target size={20} color="white" />, href: '/testprotokoll', color: 'var(--accent)' },
     { id: 'view-stats', label: 'Statistikk', icon: <TrendingUp size={20} color="white" />, href: '/stats', color: 'var(--text-brand)' },
-    { id: 'calendar', label: 'Kalender', icon: <Calendar size={20} color="white" />, href: '/kalender', color: 'var(--warning)' },
+    { id: 'calendar', label: 'Kalender', icon: <Calendar size={20} color="white" />, href: '/kalender', color: 'var(--status-warning)' },
   ];
 
   // Loading state
@@ -475,7 +475,7 @@ export default function DashboardV5() {
                 eventName={data.nextTournament.title}
                 date={data.nextTournament.date}
                 location={data.nextTournament.location}
-                icon={<Trophy size={16} style={{ color: 'var(--warning)' }} />}
+                icon={<Trophy size={16} style={{ color: 'var(--status-warning)' }} />}
                 onView={() => navigate('/turneringer')}
               />
             )}
@@ -710,7 +710,7 @@ const styles: Record<string, React.CSSProperties> = {
   },
   progressFill: {
     height: '100%',
-    backgroundColor: 'var(--success)',
+    backgroundColor: 'var(--status-success)',
     borderRadius: 'var(--radius-full)',
     transition: 'width 0.3s ease',
   },

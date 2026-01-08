@@ -1,4 +1,4 @@
-# AK Golf Academy - Komplett Funksjonsoversikt 2025
+# TIER Golf - Komplett Funksjonsoversikt 2025
 
 > **Sist oppdatert:** 31. desember 2024
 > **Versjon:** 2.0

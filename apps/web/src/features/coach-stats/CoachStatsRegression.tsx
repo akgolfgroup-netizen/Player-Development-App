@@ -1,5 +1,5 @@
 /**
- * AK Golf Academy - Coach Stats Regression
+ * TIER Golf Academy - Coach Stats Regression
  * Design System v3.0 - Premium Light
  *
  * Shows players who need attention due to negative trends.
@@ -24,7 +24,7 @@ import {
 import StateCard from '../../ui/composites/StateCard';
 import Button from '../../ui/primitives/Button';
 import PageHeader from '../../ui/raw-blocks/PageHeader.raw';
-import { SubSectionTitle } from '../../components/typography';
+import { SubSectionTitle } from "../../ui/components/typography";
 
 interface PlayerRegression {
   id: string;
@@ -181,19 +181,19 @@ export const CoachStatsRegression: React.FC = () => {
 
   const getCategoryClasses = (category: string) => {
     switch (category) {
-      case 'A': return { bg: 'bg-ak-status-success/10', text: 'text-ak-status-success' };
-      case 'B': return { bg: 'bg-ak-primary/10', text: 'text-ak-primary' };
-      case 'C': return { bg: 'bg-ak-status-warning/10', text: 'text-ak-status-warning' };
-      default: return { bg: 'bg-ak-surface-base', text: 'text-ak-text-secondary' };
+      case 'A': return { bg: 'bg-tier-success/10', text: 'text-tier-success' };
+      case 'B': return { bg: 'bg-tier-navy/10', text: 'text-tier-navy' };
+      case 'C': return { bg: 'bg-tier-warning/10', text: 'text-tier-warning' };
+      default: return { bg: 'bg-tier-white', text: 'text-tier-text-secondary' };
     }
   };
 
   const getRiskClasses = (risk: string) => {
     switch (risk) {
-      case 'high': return { bg: 'bg-ak-status-error/15', border: 'border-ak-status-error/30', text: 'text-ak-status-error' };
-      case 'medium': return { bg: 'bg-ak-status-warning/15', border: 'border-ak-status-warning/30', text: 'text-ak-status-warning' };
-      case 'low': return { bg: 'bg-ak-status-success/15', border: 'border-ak-status-success/30', text: 'text-ak-status-success' };
-      default: return { bg: 'bg-ak-surface-base', border: 'border-ak-border-default', text: 'text-ak-text-secondary' };
+      case 'high': return { bg: 'bg-tier-error/15', border: 'border-tier-error/30', text: 'text-tier-error' };
+      case 'medium': return { bg: 'bg-tier-warning/15', border: 'border-tier-warning/30', text: 'text-tier-warning' };
+      case 'low': return { bg: 'bg-tier-success/15', border: 'border-tier-success/30', text: 'text-tier-success' };
+      default: return { bg: 'bg-tier-white', border: 'border-tier-border-default', text: 'text-tier-text-secondary' };
     }
   };
 
@@ -212,16 +212,17 @@ export const CoachStatsRegression: React.FC = () => {
   };
 
   return (
-    <div className="p-6 bg-ak-surface-base min-h-screen">
+    <div className="p-6 bg-tier-white min-h-screen">
       {/* Header with icon */}
       <div className="flex items-start gap-4 mb-6">
-        <div className="w-12 h-12 rounded-xl bg-gradient-to-br from-ak-status-error to-ak-status-error flex items-center justify-center flex-shrink-0">
+        <div className="w-12 h-12 rounded-xl bg-gradient-to-br from-tier-error to-tier-error flex items-center justify-center flex-shrink-0">
           <TrendingDown size={24} className="text-white" />
         </div>
         <div className="flex-1">
           <PageHeader
             title="Oppfølging påkrevd"
             subtitle="Spillere med negativ utvikling som trenger oppmerksomhet"
+            helpText="Alfabetisk liste over spillere med tilbakegang i handicap, manglende trening eller andre bekymringer. Se risikonivå, kontaktinfo og foreslåtte oppfølgingstiltak."
             divider={false}
           />
         </div>
@@ -229,36 +230,36 @@ export const CoachStatsRegression: React.FC = () => {
 
       {/* Risk Summary Cards */}
       <div className="grid grid-cols-4 gap-4 mb-6">
-        <div className="bg-ak-surface-base rounded-xl p-4 border border-ak-border-default">
-          <p className="text-xs text-ak-text-tertiary m-0 mb-1">
+        <div className="bg-tier-white rounded-xl p-4 border border-tier-border-default">
+          <p className="text-xs text-tier-text-tertiary m-0 mb-1">
             Totalt
           </p>
-          <p className="text-[28px] font-bold text-ak-text-primary m-0">
+          <p className="text-[28px] font-bold text-tier-navy m-0">
             {stats.total}
           </p>
         </div>
-        <div className="bg-ak-status-error/5 rounded-xl p-4 border border-ak-status-error/20">
+        <div className="bg-tier-error/5 rounded-xl p-4 border border-tier-error/20">
           <div className="flex items-center gap-1.5 mb-1">
-            <AlertTriangle size={14} className="text-ak-status-error" />
-            <p className="text-xs text-ak-status-error m-0">Høy risiko</p>
+            <AlertTriangle size={14} className="text-tier-error" />
+            <p className="text-xs text-tier-error m-0">Høy risiko</p>
           </div>
-          <p className="text-[28px] font-bold text-ak-status-error m-0">
+          <p className="text-[28px] font-bold text-tier-error m-0">
             {stats.highRisk}
           </p>
         </div>
-        <div className="bg-ak-status-warning/5 rounded-xl p-4 border border-ak-status-warning/20">
-          <p className="text-xs text-ak-status-warning m-0 mb-1">
+        <div className="bg-tier-warning/5 rounded-xl p-4 border border-tier-warning/20">
+          <p className="text-xs text-tier-warning m-0 mb-1">
             Medium risiko
           </p>
-          <p className="text-[28px] font-bold text-ak-status-warning m-0">
+          <p className="text-[28px] font-bold text-tier-warning m-0">
             {stats.mediumRisk}
           </p>
         </div>
-        <div className="bg-ak-status-success/5 rounded-xl p-4 border border-ak-status-success/20">
-          <p className="text-xs text-ak-status-success m-0 mb-1">
+        <div className="bg-tier-success/5 rounded-xl p-4 border border-tier-success/20">
+          <p className="text-xs text-tier-success m-0 mb-1">
             Lav risiko
           </p>
-          <p className="text-[28px] font-bold text-ak-status-success m-0">
+          <p className="text-[28px] font-bold text-tier-success m-0">
             {stats.lowRisk}
           </p>
         </div>
@@ -269,14 +270,14 @@ export const CoachStatsRegression: React.FC = () => {
         <div className="relative flex-1 min-w-[200px]">
           <Search
             size={18}
-            className="absolute left-3 top-1/2 -translate-y-1/2 text-ak-text-tertiary"
+            className="absolute left-3 top-1/2 -translate-y-1/2 text-tier-text-tertiary"
           />
           <input
             type="text"
             placeholder="Søk etter spiller..."
             value={searchQuery}
             onChange={(e) => setSearchQuery(e.target.value)}
-            className="w-full py-3 pr-3 pl-10 rounded-[10px] border border-ak-border-default bg-ak-surface-base text-sm text-ak-text-primary outline-none"
+            className="w-full py-3 pr-3 pl-10 rounded-[10px] border border-tier-border-default bg-tier-white text-sm text-tier-navy outline-none"
           />
         </div>
         <div className="flex gap-2">
@@ -301,8 +302,8 @@ export const CoachStatsRegression: React.FC = () => {
           return (
             <div
               key={player.id}
-              className={`bg-ak-surface-base rounded-2xl p-5 border ${riskClasses.border} border-l-4`}
-              style={{ borderLeftColor: player.riskLevel === 'high' ? 'rgb(var(--ak-status-error-rgb))' : player.riskLevel === 'medium' ? 'rgb(var(--ak-status-warning-rgb))' : 'rgb(var(--ak-status-success-rgb))' }}
+              className={`bg-tier-white rounded-2xl p-5 border ${riskClasses.border} border-l-4`}
+              style={{ borderLeftColor: player.riskLevel === 'high' ? 'rgb(var(--status-error-rgb))' : player.riskLevel === 'medium' ? 'rgb(var(--status-warning-rgb))' : 'rgb(var(--status-success-rgb))' }}
             >
               <div className="flex justify-between items-start">
                 {/* Left side - Player info */}
@@ -327,20 +328,20 @@ export const CoachStatsRegression: React.FC = () => {
                     {/* Warning stats */}
                     <div className="flex gap-5 mb-3 flex-wrap">
                       <div className="flex items-center gap-1.5">
-                        <Clock size={14} className="text-ak-status-error" />
-                        <span className="text-[13px] text-ak-status-error font-medium">
+                        <Clock size={14} className="text-tier-error" />
+                        <span className="text-[13px] text-tier-error font-medium">
                           {player.daysSinceSession} dager siden sist
                         </span>
                       </div>
                       <div className="flex items-center gap-1.5">
-                        <XCircle size={14} className="text-ak-text-tertiary" />
-                        <span className="text-[13px] text-ak-text-secondary">
+                        <XCircle size={14} className="text-tier-text-tertiary" />
+                        <span className="text-[13px] text-tier-text-secondary">
                           {player.missedSessions} økter avlyst/uteblitt
                         </span>
                       </div>
                       <div className="flex items-center gap-1.5">
-                        <Calendar size={14} className="text-ak-text-tertiary" />
-                        <span className="text-[13px] text-ak-text-secondary">
+                        <Calendar size={14} className="text-tier-text-tertiary" />
+                        <span className="text-[13px] text-tier-text-secondary">
                           Sist: {formatDate(player.lastSession)}
                         </span>
                       </div>
@@ -349,7 +350,7 @@ export const CoachStatsRegression: React.FC = () => {
                     {/* Concerns */}
                     <div className="flex gap-2 flex-wrap mb-3">
                       {player.concerns.map((concern, idx) => (
-                        <span key={idx} className="text-[11px] py-1 px-2.5 rounded-md bg-ak-status-error/15 text-ak-status-error font-medium">
+                        <span key={idx} className="text-[11px] py-1 px-2.5 rounded-md bg-tier-error/15 text-tier-error font-medium">
                           {concern}
                         </span>
                       ))}
@@ -357,8 +358,8 @@ export const CoachStatsRegression: React.FC = () => {
 
                     {/* Notes if any */}
                     {player.notes && (
-                      <div className="py-2.5 px-3 bg-ak-status-warning/15 rounded-lg border-l-[3px] border-ak-status-warning mb-3">
-                        <p className="text-[13px] text-ak-status-warning m-0 italic">
+                      <div className="py-2.5 px-3 bg-tier-warning/15 rounded-lg border-l-[3px] border-tier-warning mb-3">
+                        <p className="text-[13px] text-tier-warning m-0 italic">
                           {player.notes}
                         </p>
                       </div>
@@ -393,14 +394,14 @@ export const CoachStatsRegression: React.FC = () => {
 
                 {/* Right side - HCP change */}
                 <div className="flex flex-col items-end gap-2">
-                  <div className="flex items-center gap-1 py-2 px-4 bg-ak-status-error/15 rounded-[10px]">
-                    <ArrowDownRight size={18} className="text-ak-status-error" />
-                    <span className="text-xl font-bold text-ak-status-error">
+                  <div className="flex items-center gap-1 py-2 px-4 bg-tier-error/15 rounded-[10px]">
+                    <ArrowDownRight size={18} className="text-tier-error" />
+                    <span className="text-xl font-bold text-tier-error">
                       +{player.hcpChange}
                     </span>
                   </div>
                   <div className="text-right">
-                    <p className="text-xs text-ak-text-tertiary m-0">
+                    <p className="text-xs text-tier-text-tertiary m-0">
                       HCP: {player.previousHcp} → {player.currentHcp}
                     </p>
                   </div>

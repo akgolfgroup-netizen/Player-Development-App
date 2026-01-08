@@ -1,8 +1,8 @@
 # API Documentation
 
-**IUP Golf Academy API - Complete Documentation Suite**
+**IUP Golf API - Complete Documentation Suite**
 
-Welcome to the IUP Golf Academy API documentation! This directory contains comprehensive guides for using and integrating with our REST API.
+Welcome to the IUP Golf API documentation! This directory contains comprehensive guides for using and integrating with our REST API.
 
 ---
 
@@ -126,7 +126,7 @@ curl -X POST http://localhost:3000/api/v1/auth/register \
     "firstName": "John",
     "lastName": "Doe",
     "role": "coach",
-    "organizationName": "My Golf Academy",
+    "organizationName": "My Golf",
     "organizationSlug": "my-academy"
   }'
 

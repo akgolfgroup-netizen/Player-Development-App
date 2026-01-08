@@ -10,7 +10,7 @@ Accepted
 
 ## Context
 
-The IUP Golf Academy application requires a consistent, premium visual identity across web and mobile platforms. The previous approach used ad-hoc hex color values scattered throughout components, leading to:
+The IUP Golf application requires a consistent, premium visual identity across web and mobile platforms. The previous approach used ad-hoc hex color values scattered throughout components, leading to:
 
 1. **Inconsistent branding** - Different shades of green used across components
 2. **Maintenance burden** - Updating a brand color required changes in many files

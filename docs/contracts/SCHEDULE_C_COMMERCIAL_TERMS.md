@@ -1,6 +1,6 @@
 # Schedule C: Commercial Terms
 
-**IUP Golf Academy Platform**
+**IUP Golf Platform**
 **Version:** 1.0
 **Effective Date:** [TBD]
 **Document Status:** Draft for Review
@@ -11,7 +11,7 @@
 
 ### 1.1 License Grant
 
-Subject to payment of applicable fees, Customer is granted a non-exclusive, non-transferable license to access and use the IUP Golf Academy Platform for the duration of the subscription term.
+Subject to payment of applicable fees, Customer is granted a non-exclusive, non-transferable license to access and use the IUP Golf Platform for the duration of the subscription term.
 
 ### 1.2 License Scope
 
@@ -506,7 +506,7 @@ Customer agrees to:
 
 ## APPENDIX B: ORDER FORM TEMPLATE
 
-### IUP Golf Academy - Order Form
+### IUP Golf - Order Form
 
 **Customer Information:**
 - Organization: ____________________

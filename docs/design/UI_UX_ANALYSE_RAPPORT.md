@@ -388,11 +388,11 @@ color: active ? '#EAF3EF' : 'rgba(234, 243, 239, 0.55)'
 
 ```jsx
 // AKGolfLogo - god SVG accessibility
-<svg aria-label="AK Golf Academy logo" role="img">
+<svg aria-label="TIER Golf logo" role="img">
 ```
 ❌ **MANGLER** aria-label! Burde være:
 ```jsx
-<svg aria-label="AK Golf Academy" role="img">
+<svg aria-label="TIER Golf" role="img">
 ```
 
 **P1: Manglende ARIA labels på interaktive elementer**

@@ -17,23 +17,23 @@ import { SectionTitle, SubSectionTitle } from '../../components/typography';
 // Status configuration
 const STATUS_CLASSES = {
   completed: {
-    text: 'text-ak-status-success',
-    bg: 'bg-ak-status-success/15',
-    activeBg: 'bg-ak-status-success',
+    text: 'text-tier-success',
+    bg: 'bg-tier-success/15',
+    activeBg: 'bg-tier-success',
     icon: CheckCircle,
     label: 'Fullfort',
   },
   in_progress: {
-    text: 'text-ak-primary',
-    bg: 'bg-ak-primary/15',
-    activeBg: 'bg-ak-primary',
+    text: 'text-tier-navy',
+    bg: 'bg-tier-navy/15',
+    activeBg: 'bg-tier-navy',
     icon: Play,
     label: 'Pagar',
   },
   pending: {
-    text: 'text-ak-text-secondary',
-    bg: 'bg-ak-surface-subtle',
-    activeBg: 'bg-ak-text-secondary',
+    text: 'text-tier-text-secondary',
+    bg: 'bg-tier-surface-base',
+    activeBg: 'bg-tier-text-secondary',
     icon: Clock,
     label: 'Venter',
   },
@@ -136,8 +136,8 @@ const AreaCard = ({ area }) => {
   const progressPercent = (completedCheckpoints / totalCheckpoints) * 100;
 
   return (
-    <div className={`bg-ak-surface-base rounded-2xl overflow-hidden shadow-sm ${
-      area.status === 'in_progress' ? 'border-2 border-ak-primary' : 'border-2 border-transparent'
+    <div className={`bg-tier-white rounded-2xl overflow-hidden shadow-sm ${
+      area.status === 'in_progress' ? 'border-2 border-tier-navy' : 'border-2 border-transparent'
     }`}>
       {/* Header */}
       <div
@@ -157,29 +157,29 @@ const AreaCard = ({ area }) => {
               {statusConfig.label}
             </span>
           </div>
-          <div className="text-[13px] text-ak-text-secondary mt-1">
+          <div className="text-[13px] text-tier-text-secondary mt-1">
             {area.focus}
           </div>
         </div>
 
         <div className="flex items-center gap-3">
           <div className="text-right">
-            <div className="text-sm font-semibold text-ak-text-primary">
+            <div className="text-sm font-semibold text-tier-navy">
               {completedCheckpoints}/{totalCheckpoints}
             </div>
-            <div className="text-[11px] text-ak-text-secondary">checkpoints</div>
+            <div className="text-[11px] text-tier-text-secondary">checkpoints</div>
           </div>
-          <div className={`w-7 h-7 rounded-lg bg-ak-surface-subtle flex items-center justify-center transition-transform duration-200 ${
+          <div className={`w-7 h-7 rounded-lg bg-tier-surface-base flex items-center justify-center transition-transform duration-200 ${
             isExpanded ? 'rotate-180' : ''
           }`}>
-            <ChevronDown size={16} className="text-ak-text-secondary" />
+            <ChevronDown size={16} className="text-tier-text-secondary" />
           </div>
         </div>
       </div>
 
       {/* Progress bar */}
       <div className="px-5 pb-3">
-        <div className="h-1 bg-ak-surface-subtle rounded-sm overflow-hidden">
+        <div className="h-1 bg-tier-surface-base rounded-sm overflow-hidden">
           <div
             className={`h-full ${statusConfig.activeBg} rounded-sm transition-all duration-300`}
             style={{ width: `${progressPercent}%` }}
@@ -189,10 +189,10 @@ const AreaCard = ({ area }) => {
 
       {/* Expanded Content */}
       {isExpanded && (
-        <div className="px-5 pb-5 border-t border-ak-border-default">
+        <div className="px-5 pb-5 border-t border-tier-border-default">
           {/* Checkpoints */}
           <div className="mt-4">
-            <div className="text-[13px] font-semibold text-ak-text-primary mb-2.5 flex items-center gap-1.5">
+            <div className="text-[13px] font-semibold text-tier-navy mb-2.5 flex items-center gap-1.5">
               <Target size={14} />
               Checkpoints
             </div>
@@ -201,20 +201,20 @@ const AreaCard = ({ area }) => {
                 <div
                   key={checkpoint.id}
                   className={`flex items-center gap-2.5 py-2.5 px-3 rounded-lg ${
-                    checkpoint.completed ? 'bg-ak-status-success/10' : 'bg-ak-surface-subtle'
+                    checkpoint.completed ? 'bg-tier-success/10' : 'bg-tier-surface-base'
                   }`}
                 >
                   <div className={`w-[22px] h-[22px] rounded-full flex items-center justify-center ${
                     checkpoint.completed
-                      ? 'bg-ak-status-success'
-                      : 'bg-ak-surface-base border-2 border-ak-border-default'
+                      ? 'bg-tier-success'
+                      : 'bg-tier-white border-2 border-tier-border-default'
                   }`}>
                     {checkpoint.completed && <CheckCircle size={14} className="text-white" />}
                   </div>
                   <span className={`text-[13px] ${
                     checkpoint.completed
-                      ? 'text-ak-text-secondary line-through'
-                      : 'text-ak-text-primary'
+                      ? 'text-tier-text-secondary line-through'
+                      : 'text-tier-navy'
                   }`}>
                     {checkpoint.text}
                   </span>
@@ -225,7 +225,7 @@ const AreaCard = ({ area }) => {
 
           {/* Drills */}
           <div className="mt-4">
-            <div className="text-[13px] font-semibold text-ak-text-primary mb-2.5 flex items-center gap-1.5">
+            <div className="text-[13px] font-semibold text-tier-navy mb-2.5 flex items-center gap-1.5">
               <Repeat size={14} />
               Drills
             </div>
@@ -233,13 +233,13 @@ const AreaCard = ({ area }) => {
               {area.drills.map((drill, idx) => (
                 <div
                   key={idx}
-                  className="flex items-center gap-2 py-2 px-3 bg-ak-surface-subtle rounded-lg cursor-pointer"
+                  className="flex items-center gap-2 py-2 px-3 bg-tier-surface-base rounded-lg cursor-pointer"
                 >
-                  <Video size={14} className="text-ak-primary" />
-                  <span className="text-xs text-ak-text-primary">
+                  <Video size={14} className="text-tier-navy" />
+                  <span className="text-xs text-tier-navy">
                     {drill.name}
                   </span>
-                  <span className="text-[11px] text-ak-text-secondary bg-ak-surface-base py-0.5 px-1.5 rounded">
+                  <span className="text-[11px] text-tier-text-secondary bg-tier-white py-0.5 px-1.5 rounded">
                     {drill.duration}
                   </span>
                 </div>
@@ -249,14 +249,14 @@ const AreaCard = ({ area }) => {
 
           {/* Coach Feedback */}
           {area.coachFeedback && (
-            <div className="mt-4 p-3 bg-ak-primary/10 rounded-[10px] border-l-[3px] border-ak-primary">
+            <div className="mt-4 p-3 bg-tier-navy/10 rounded-[10px] border-l-[3px] border-tier-navy">
               <div className="flex items-center gap-1.5 mb-1.5">
-                <MessageCircle size={14} className="text-ak-primary" />
-                <span className="text-xs font-semibold text-ak-primary">
+                <MessageCircle size={14} className="text-tier-navy" />
+                <span className="text-xs font-semibold text-tier-navy">
                   Trener-feedback
                 </span>
               </div>
-              <p className="text-[13px] text-ak-text-primary m-0 leading-relaxed">
+              <p className="text-[13px] text-tier-navy m-0 leading-relaxed">
                 {area.coachFeedback}
               </p>
             </div>
@@ -264,11 +264,11 @@ const AreaCard = ({ area }) => {
 
           {/* Notes */}
           {area.notes && !area.coachFeedback && (
-            <div className="mt-4 p-3 bg-ak-surface-subtle rounded-[10px]">
-              <div className="text-[11px] text-ak-text-secondary mb-1">
+            <div className="mt-4 p-3 bg-tier-surface-base rounded-[10px]">
+              <div className="text-[11px] text-tier-text-secondary mb-1">
                 Notater
               </div>
-              <p className="text-[13px] text-ak-text-primary m-0 leading-relaxed">
+              <p className="text-[13px] text-tier-navy m-0 leading-relaxed">
                 {area.notes}
               </p>
             </div>
@@ -285,9 +285,9 @@ const AreaCard = ({ area }) => {
 
 const MetricsCard = ({ metrics }) => {
   return (
-    <div className="bg-ak-surface-base rounded-2xl p-5 shadow-sm">
+    <div className="bg-tier-white rounded-2xl p-5 shadow-sm">
       <div className="flex items-center gap-2 mb-4">
-        <TrendingUp size={16} className="text-ak-status-warning" />
+        <TrendingUp size={16} className="text-tier-warning" />
         <SubSectionTitle className="text-sm">
           Nokkeltall
         </SubSectionTitle>
@@ -297,23 +297,23 @@ const MetricsCard = ({ metrics }) => {
         {metrics.map((metric, idx) => (
           <div key={idx}>
             <div className="flex items-center justify-between mb-1.5">
-              <span className="text-[13px] text-ak-text-primary">
+              <span className="text-[13px] text-tier-navy">
                 {metric.name}
               </span>
               <div className="flex items-center gap-2">
-                <span className="text-[13px] font-semibold text-ak-text-primary">
+                <span className="text-[13px] font-semibold text-tier-navy">
                   {metric.current}
                 </span>
-                <span className="text-[11px] text-ak-text-secondary">
+                <span className="text-[11px] text-tier-text-secondary">
                   / {metric.target}
                 </span>
               </div>
             </div>
-            <div className="h-1.5 bg-ak-surface-subtle rounded-sm overflow-hidden">
+            <div className="h-1.5 bg-tier-surface-base rounded-sm overflow-hidden">
               <div
                 className={`h-full rounded-sm ${
-                  metric.progress >= 80 ? 'bg-ak-status-success' :
-                  metric.progress >= 50 ? 'bg-ak-primary' : 'bg-ak-status-warning'
+                  metric.progress >= 80 ? 'bg-tier-success' :
+                  metric.progress >= 50 ? 'bg-tier-navy' : 'bg-tier-warning'
                 }`}
                 style={{ width: `${metric.progress}%` }}
               />
@@ -331,10 +331,10 @@ const MetricsCard = ({ metrics }) => {
 
 const RecentVideosCard = ({ videos }) => {
   return (
-    <div className="bg-ak-surface-base rounded-2xl p-5 shadow-sm">
+    <div className="bg-tier-white rounded-2xl p-5 shadow-sm">
       <div className="flex items-center justify-between mb-4">
         <div className="flex items-center gap-2">
-          <Camera size={16} className="text-ak-primary" />
+          <Camera size={16} className="text-tier-navy" />
           <SubSectionTitle className="text-sm">
             Siste videoer
           </SubSectionTitle>
@@ -348,20 +348,20 @@ const RecentVideosCard = ({ videos }) => {
         {videos.map((video) => (
           <div
             key={video.id}
-            className="flex items-center gap-3 p-2.5 bg-ak-surface-subtle rounded-[10px] cursor-pointer"
+            className="flex items-center gap-3 p-2.5 bg-tier-surface-base rounded-[10px] cursor-pointer"
           >
-            <div className="w-12 h-9 rounded-md bg-ak-text-primary flex items-center justify-center">
+            <div className="w-12 h-9 rounded-md bg-tier-navy flex items-center justify-center">
               <Play size={16} className="text-white" />
             </div>
             <div className="flex-1">
-              <div className="text-[13px] font-medium text-ak-text-primary">
+              <div className="text-[13px] font-medium text-tier-navy">
                 {video.title}
               </div>
-              <div className="text-[11px] text-ak-text-secondary">
+              <div className="text-[11px] text-tier-text-secondary">
                 {video.date} - {video.duration}
               </div>
             </div>
-            <ChevronRight size={16} className="text-ak-text-secondary" />
+            <ChevronRight size={16} className="text-tier-text-secondary" />
           </div>
         ))}
       </div>
@@ -378,42 +378,43 @@ const TekniskPlanContainer = () => {
   const completedAreas = plan.areas.filter(a => a.status === 'completed').length;
 
   return (
-    <div className="min-h-screen bg-ak-surface-subtle">
+    <div className="min-h-screen bg-tier-surface-base">
       <PageHeader
         title="Teknisk plan"
         subtitle={`Fokus: ${plan.currentFocus}`}
+        helpText="Din individuelle tekniske treningsplan med fokusområder, oppgaver og mål. Følg trenerens anbefalinger for å forbedre teknikken din systematisk."
       />
 
       <div className="p-6">
         {/* Progress Overview */}
-        <div className="bg-ak-surface-base rounded-2xl p-5 mb-5 shadow-sm">
+        <div className="bg-tier-white rounded-2xl p-5 mb-5 shadow-sm">
           <div className="flex items-center justify-between mb-4">
             <div>
               <SectionTitle className="text-lg">
                 Teknisk utviklingsplan
               </SectionTitle>
-              <div className="text-[13px] text-ak-text-secondary mt-1">
+              <div className="text-[13px] text-tier-text-secondary mt-1">
                 Trener: {plan.coach} - Maldat: {new Date(plan.targetDate).toLocaleDateString('nb-NO', { day: 'numeric', month: 'long' })}
               </div>
             </div>
             <div className="flex items-center gap-4">
               <div className="text-right">
-                <div className="text-2xl font-bold text-ak-primary">
+                <div className="text-2xl font-bold text-tier-navy">
                   {plan.progress}%
                 </div>
-                <div className="text-[11px] text-ak-text-secondary">total fremgang</div>
+                <div className="text-[11px] text-tier-text-secondary">total fremgang</div>
               </div>
             </div>
           </div>
 
-          <div className="h-2 bg-ak-surface-subtle rounded overflow-hidden">
+          <div className="h-2 bg-tier-surface-base rounded overflow-hidden">
             <div
-              className="h-full bg-ak-primary rounded"
+              className="h-full bg-tier-navy rounded"
               style={{ width: `${plan.progress}%` }}
             />
           </div>
 
-          <div className="flex justify-between mt-2 text-xs text-ak-text-secondary">
+          <div className="flex justify-between mt-2 text-xs text-tier-text-secondary">
             <span>{completedAreas}/{plan.areas.length} omrader fullfort</span>
             <span>Startet {new Date(plan.startDate).toLocaleDateString('nb-NO', { day: 'numeric', month: 'short' })}</span>
           </div>
@@ -439,9 +440,9 @@ const TekniskPlanContainer = () => {
             <RecentVideosCard videos={plan.recentVideos} />
 
             {/* Resources */}
-            <div className="bg-ak-surface-base rounded-2xl p-5 shadow-sm">
+            <div className="bg-tier-white rounded-2xl p-5 shadow-sm">
               <div className="flex items-center gap-2 mb-3">
-                <BookOpen size={16} className="text-ak-status-success" />
+                <BookOpen size={16} className="text-tier-success" />
                 <SubSectionTitle className="text-sm">
                   Ressurser
                 </SubSectionTitle>

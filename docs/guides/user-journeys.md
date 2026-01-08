@@ -1,8 +1,8 @@
-# IUP Golf Academy - User Journey Flow Diagrams
+# IUP Golf - User Journey Flow Diagrams
 
 **Document Version:** 1.0
 **Created:** 2025-12-20
-**Purpose:** Visual representation of all user flows through the IUP Golf Academy application
+**Purpose:** Visual representation of all user flows through the IUP Golf application
 
 ---
 

@@ -1,5 +1,5 @@
 /**
- * AK Golf Academy - Coach Stats Overview
+ * TIER Golf Academy - Coach Stats Overview
  * Design System v3.0 - Premium Light
  *
  * Hovedoversikt over spillerstatistikk for trenere.
@@ -20,7 +20,7 @@ import {
 import Card from '../../ui/primitives/Card';
 import Button from '../../ui/primitives/Button';
 import PageHeader from '../../ui/raw-blocks/PageHeader.raw';
-import { SectionTitle, SubSectionTitle } from '../../components/typography';
+import { SectionTitle, SubSectionTitle } from '../../components/typography/Headings';
 
 interface PlayerStat {
   id: string;
@@ -125,7 +125,7 @@ export default function CoachStatsOverview() {
         id: 'p4',
         name: 'Maria Berg',
         initials: 'MB',
-        avatarColor: 'var(--error)',
+        avatarColor: 'var(--status-error)',
         category: 'C',
         handicap: 15.4,
         handicapChange: -2.1,
@@ -236,28 +236,62 @@ export default function CoachStatsOverview() {
   const getTrendConfig = (trend: string) => {
     switch (trend) {
       case 'up':
-        return { icon: TrendingUp, colorClass: 'bg-ak-status-success text-white' };
+        return { icon: TrendingUp, colorClass: 'bg-tier-success text-white' };
       case 'down':
-        return { icon: TrendingDown, colorClass: 'bg-ak-status-error text-white' };
+        return { icon: TrendingDown, colorClass: 'bg-tier-error text-white' };
       default:
-        return { icon: Minus, colorClass: 'bg-ak-text-secondary text-white' };
+        return { icon: Minus, colorClass: 'bg-tier-text-secondary text-white' };
+    }
+  };
+
+  const getCategoryColors = (category: string) => {
+    switch (category) {
+      case 'A':
+        return {
+          bg: 'bg-blue-500/10',
+          border: 'border-blue-500',
+          text: 'text-blue-600',
+          bgActive: 'bg-blue-500/15',
+        };
+      case 'B':
+        return {
+          bg: 'bg-green-500/10',
+          border: 'border-green-500',
+          text: 'text-green-600',
+          bgActive: 'bg-green-500/15',
+        };
+      case 'C':
+        return {
+          bg: 'bg-orange-500/10',
+          border: 'border-orange-500',
+          text: 'text-orange-600',
+          bgActive: 'bg-orange-500/15',
+        };
+      default:
+        return {
+          bg: 'bg-tier-surface-base',
+          border: 'border-transparent',
+          text: 'text-tier-navy',
+          bgActive: 'bg-tier-navy/5',
+        };
     }
   };
 
   if (loading) {
     return (
-      <div className="min-h-screen bg-ak-surface-subtle flex items-center justify-center">
-        <div className="w-12 h-12 border-4 border-ak-border-default border-t-ak-primary rounded-full animate-spin" />
+      <div className="min-h-screen bg-tier-surface-base flex items-center justify-center">
+        <div className="w-12 h-12 border-4 border-tier-border-default border-t-tier-navy rounded-full animate-spin" />
       </div>
     );
   }
 
   return (
-    <div className="min-h-screen bg-ak-surface-subtle font-[Inter,-apple-system,BlinkMacSystemFont,system-ui,sans-serif]">
+    <div className="min-h-screen bg-tier-surface-base font-[Inter,-apple-system,BlinkMacSystemFont,system-ui,sans-serif]">
       {/* Header - using PageHeader from design system */}
       <PageHeader
         title="Spillerstatistikk"
         subtitle="Oversikt over fremgang og utvikling"
+        helpText="Alfabetisk oversikt over spillernes statistikk og utvikling. Se handicap, treningsfrekvens, trender og høydepunkter for hver spiller. Filtrer og sorter for å identifisere spillere som trenger oppfølging."
         actions={
           <div className="flex gap-2.5">
             <Button variant="ghost" size="sm" onClick={() => navigate('/coach/stats/progress')} leftIcon={<TrendingUp size={18} />}>
@@ -273,102 +307,117 @@ export default function CoachStatsOverview() {
         }
         divider={false}
       />
-      <div className="bg-ak-surface-base border-b border-ak-border-default px-6 pb-5">
+      <div className="bg-tier-white border-b border-tier-border-default px-6 pb-5">
 
         {/* Quick stats */}
         <div className="grid grid-cols-[repeat(auto-fit,minmax(150px,1fr))] gap-3">
-          <div className="p-4 bg-ak-status-success/10 rounded-lg text-center">
-            <div className="text-[28px] font-bold text-ak-status-success">{overallStats.improving}</div>
-            <div className="text-[13px] text-ak-text-primary">Spillere i fremgang</div>
+          <div className="p-4 bg-tier-success/10 rounded-lg text-center">
+            <div className="text-[28px] font-bold text-tier-success">{overallStats.improving}</div>
+            <div className="text-[13px] text-tier-navy">Spillere i fremgang</div>
           </div>
-          <div className="p-4 bg-ak-status-error/10 rounded-lg text-center">
-            <div className="text-[28px] font-bold text-ak-status-error">{overallStats.declining}</div>
-            <div className="text-[13px] text-ak-text-primary">Trenger oppfølging</div>
+          <div className="p-4 bg-tier-error/10 rounded-lg text-center">
+            <div className="text-[28px] font-bold text-tier-error">{overallStats.declining}</div>
+            <div className="text-[13px] text-tier-navy">Trenger oppfølging</div>
           </div>
-          <div className="p-4 bg-ak-primary/10 rounded-lg text-center">
-            <div className="text-[28px] font-bold text-ak-primary">
+          <div className="p-4 bg-tier-navy/10 rounded-lg text-center">
+            <div className="text-[28px] font-bold text-tier-navy">
               {overallStats.avgHandicapChange > 0 ? '+' : ''}{overallStats.avgHandicapChange}
             </div>
-            <div className="text-[13px] text-ak-text-primary">Snitt HCP-endring</div>
+            <div className="text-[13px] text-tier-navy">Snitt HCP-endring</div>
           </div>
-          <div className="p-4 bg-ak-surface-muted rounded-lg text-center">
-            <div className="text-[28px] font-bold text-ak-text-primary">{overallStats.totalSessions}</div>
-            <div className="text-[13px] text-ak-text-primary">Økter denne mnd</div>
+          <div className="p-4 bg-tier-surface-base rounded-lg text-center">
+            <div className="text-[28px] font-bold text-tier-navy">{overallStats.totalSessions}</div>
+            <div className="text-[13px] text-tier-navy">Økter denne mnd</div>
           </div>
         </div>
       </div>
 
       {/* Category summary */}
-      <div className="p-6 border-b border-ak-border-default bg-ak-surface-base">
+      <div className="p-6 border-b border-tier-border-default bg-tier-white">
         <SectionTitle className="m-0 mb-4">Kategori-oversikt</SectionTitle>
         <div className="grid grid-cols-[repeat(auto-fit,minmax(200px,1fr))] gap-4">
-          {categorySummary.map((cat) => (
-            <div
-              key={cat.category}
-              onClick={() => setCategoryFilter(cat.category)}
-              className={`p-4 rounded-lg cursor-pointer border-2 ${
-                categoryFilter === cat.category
-                  ? 'bg-ak-primary/5 border-ak-primary'
-                  : 'bg-ak-surface-muted border-transparent'
-              }`}
-            >
-              <div className="flex items-center justify-between mb-3">
-                <span className="text-lg font-bold text-ak-primary">Kategori {cat.category}</span>
-                <span className="text-sm text-ak-text-secondary">{cat.playerCount} spillere</span>
-              </div>
+          {categorySummary.map((cat) => {
+            const colors = getCategoryColors(cat.category);
+            return (
+              <div
+                key={cat.category}
+                onClick={() => setCategoryFilter(cat.category)}
+                className={`p-4 rounded-lg cursor-pointer border-2 transition-all ${
+                  categoryFilter === cat.category
+                    ? `${colors.bgActive} ${colors.border}`
+                    : `${colors.bg} border-transparent`
+                }`}
+              >
+                <div className="flex items-center justify-between mb-3">
+                  <span className={`text-lg font-bold ${colors.text}`}>Kategori {cat.category}</span>
+                  <span className="text-sm text-tier-text-secondary">{cat.playerCount} spillere</span>
+                </div>
               <div className="grid grid-cols-2 gap-2">
                 <div>
-                  <div className="text-xs text-ak-text-secondary">Snitt HCP</div>
-                  <div className="text-base font-semibold text-ak-text-primary">{cat.avgHandicap}</div>
+                  <div className="text-xs text-tier-text-secondary">Snitt HCP</div>
+                  <div className="text-base font-semibold text-tier-navy">{cat.avgHandicap}</div>
                 </div>
                 <div>
-                  <div className="text-xs text-ak-text-secondary">Økter/uke</div>
-                  <div className="text-base font-semibold text-ak-text-primary">{cat.avgSessions}</div>
+                  <div className="text-xs text-tier-text-secondary">Økter/uke</div>
+                  <div className="text-base font-semibold text-tier-navy">{cat.avgSessions}</div>
                 </div>
                 <div>
-                  <div className="text-xs text-ak-text-secondary">I fremgang</div>
-                  <div className="text-base font-semibold text-ak-status-success">{cat.improving}</div>
+                  <div className="text-xs text-tier-text-secondary">I fremgang</div>
+                  <div className="text-base font-semibold text-tier-success">{cat.improving}</div>
                 </div>
                 <div>
-                  <div className="text-xs text-ak-text-secondary">Tilbakegang</div>
-                  <div className="text-base font-semibold text-ak-status-error">{cat.declining}</div>
+                  <div className="text-xs text-tier-text-secondary">Tilbakegang</div>
+                  <div className="text-base font-semibold text-tier-error">{cat.declining}</div>
                 </div>
               </div>
             </div>
-          ))}
+            );
+          })}
         </div>
       </div>
 
       {/* Filters */}
-      <div className="py-4 px-6 bg-ak-surface-base border-b border-ak-border-default flex gap-3 flex-wrap">
-        <div className="flex items-center gap-2 py-2 px-3 bg-ak-surface-muted rounded-lg flex-1 max-w-[250px]">
-          <Search size={18} className="text-ak-text-secondary" />
+      <div className="py-4 px-6 bg-tier-white border-b border-tier-border-default flex gap-3 flex-wrap">
+        <div className="flex items-center gap-2 py-2 px-3 bg-tier-surface-base rounded-lg flex-1 max-w-[250px]">
+          <Search size={18} className="text-tier-text-secondary" />
           <input
             type="text"
             placeholder="Søk spiller..."
             value={searchQuery}
             onChange={(e) => setSearchQuery(e.target.value)}
-            className="flex-1 border-none bg-transparent text-sm text-ak-text-primary outline-none"
+            className="flex-1 border-none bg-transparent text-sm text-tier-navy outline-none"
           />
         </div>
 
         <div className="flex gap-2">
-          {['all', 'A', 'B', 'C'].map((cat) => (
-            <Button
-              key={cat}
-              variant={categoryFilter === cat ? 'primary' : 'secondary'}
-              size="sm"
-              onClick={() => setCategoryFilter(cat)}
-            >
-              {cat === 'all' ? 'Alle' : `Kat. ${cat}`}
-            </Button>
-          ))}
+          {['all', 'A', 'B', 'C'].map((cat) => {
+            const colors = cat !== 'all' ? getCategoryColors(cat) : null;
+            const isActive = categoryFilter === cat;
+
+            return (
+              <button
+                key={cat}
+                onClick={() => setCategoryFilter(cat)}
+                className={`px-3 py-1.5 text-sm font-medium rounded-lg transition-all ${
+                  isActive
+                    ? colors
+                      ? `${colors.bgActive} ${colors.border} border-2 ${colors.text}`
+                      : 'bg-tier-navy text-white border-2 border-tier-navy'
+                    : colors
+                    ? `${colors.bg} ${colors.text} border-2 border-transparent hover:${colors.border}`
+                    : 'bg-tier-surface-base text-tier-navy border-2 border-transparent hover:border-tier-border-default'
+                }`}
+              >
+                {cat === 'all' ? 'Alle' : `Kat. ${cat}`}
+              </button>
+            );
+          })}
         </div>
 
         <select
           value={sortBy}
           onChange={(e) => setSortBy(e.target.value as typeof sortBy)}
-          className="py-2 px-3 bg-ak-surface-base border border-ak-border-default rounded-lg text-[13px] text-ak-text-primary"
+          className="py-2 px-3 bg-tier-white border border-tier-border-default rounded-lg text-[13px] text-tier-navy"
         >
           <option value="trend">Sorter: Trend</option>
           <option value="name">Sorter: Navn</option>
@@ -388,17 +437,17 @@ export default function CoachStatsOverview() {
               <div
                 key={player.id}
                 onClick={() => navigate(`/coach/athletes/${player.id}`)}
-                className={`bg-ak-surface-base rounded-xl shadow-sm p-4 px-5 cursor-pointer border ${
+                className={`bg-tier-white rounded-xl shadow-sm p-4 px-5 cursor-pointer border ${
                   player.trend === 'down'
-                    ? 'border-2 border-ak-status-error'
-                    : 'border-ak-border-default'
+                    ? 'border-2 border-tier-error'
+                    : 'border-tier-border-default'
                 }`}
               >
                 <div className="flex items-center justify-between">
                   <div className="flex items-center gap-3.5">
                     <div className="relative">
                       <div
-                        className="w-12 h-12 rounded-full flex items-center justify-center text-base font-semibold text-ak-surface-base"
+                        className="w-12 h-12 rounded-full flex items-center justify-center text-base font-semibold text-tier-white"
                         style={{ backgroundColor: player.avatarColor }}
                       >
                         {player.initials}
@@ -410,7 +459,7 @@ export default function CoachStatsOverview() {
                     <div>
                       <SubSectionTitle className="m-0">{player.name}</SubSectionTitle>
                       <div className="flex items-center gap-2 mt-1">
-                        <span className="text-xs font-semibold text-ak-primary bg-ak-primary/15 py-0.5 px-2 rounded">
+                        <span className="text-xs font-semibold text-tier-navy bg-tier-navy/15 py-0.5 px-2 rounded">
                           Kategori {player.category}
                         </span>
                         {player.highlights.map((h, i) => (
@@ -424,28 +473,28 @@ export default function CoachStatsOverview() {
 
                   <div className="flex items-center gap-6">
                     <div className="text-center">
-                      <div className="text-xs text-ak-text-secondary">Handicap</div>
-                      <div className="text-lg font-bold text-ak-text-primary">{player.handicap}</div>
+                      <div className="text-xs text-tier-text-secondary">Handicap</div>
+                      <div className="text-lg font-bold text-tier-navy">{player.handicap}</div>
                       <div className={`text-xs font-medium ${
                         player.handicapChange < 0
-                          ? 'text-ak-status-success'
+                          ? 'text-tier-success'
                           : player.handicapChange > 0
-                            ? 'text-ak-status-error'
-                            : 'text-ak-text-secondary'
+                            ? 'text-tier-error'
+                            : 'text-tier-text-secondary'
                       }`}>
                         {player.handicapChange > 0 ? '+' : ''}{player.handicapChange}
                       </div>
                     </div>
                     <div className="text-center">
-                      <div className="text-xs text-ak-text-secondary">Økter/mnd</div>
-                      <div className="text-lg font-bold text-ak-text-primary">{player.sessionsThisMonth}</div>
-                      <div className="text-xs text-ak-text-secondary">{player.avgSessionsPerWeek}/uke</div>
+                      <div className="text-xs text-tier-text-secondary">Økter/mnd</div>
+                      <div className="text-lg font-bold text-tier-navy">{player.sessionsThisMonth}</div>
+                      <div className="text-xs text-tier-text-secondary">{player.avgSessionsPerWeek}/uke</div>
                     </div>
                     <div className="text-center">
-                      <div className="text-xs text-ak-text-secondary">Snitt score</div>
-                      <div className="text-lg font-bold text-ak-text-primary">{player.tournamentScore}</div>
+                      <div className="text-xs text-tier-text-secondary">Snitt score</div>
+                      <div className="text-lg font-bold text-tier-navy">{player.tournamentScore}</div>
                     </div>
-                    <ChevronRight size={20} className="text-ak-text-secondary" />
+                    <ChevronRight size={20} className="text-tier-text-secondary" />
                   </div>
                 </div>
               </div>

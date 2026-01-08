@@ -1,10 +1,10 @@
 /**
- * AK Golf Academy - Tournament Planner Page (PLANLEGGER)
+ * TIER Golf Academy - Tournament Planner Page (PLANLEGGER)
  *
  * Subsection "MIN TURNERINGSPLAN" for planning tournament participation.
  * Allows players to plan their tournament season with coach guidance.
  *
- * Design System: AK Golf Premium Light
+ * Design System: TIER Golf Premium Light
  * - Semantic tokens only (no raw hex)
  * - Gold reserved for earned achievements only
  */
@@ -25,7 +25,7 @@ import {
 import Button from '../../ui/primitives/Button';
 import Badge from '../../ui/primitives/Badge.primitive';
 import StateCard from '../../ui/composites/StateCard';
-import { SectionTitle, SubSectionTitle } from '../../components/typography';
+import { SectionTitle, SubSectionTitle } from '../../components/typography/Headings';
 import {
   Tournament,
   TournamentPurpose,
@@ -49,7 +49,7 @@ interface PlannedTournament {
 // CONSTANTS
 // ============================================================================
 
-const LOCAL_STORAGE_KEY = 'ak_golf_tournament_plan';
+const LOCAL_STORAGE_KEY = 'tier_golf_tournament_plan';
 
 // ============================================================================
 // HELPER FUNCTIONS
@@ -264,7 +264,7 @@ function PlanSummary({ planned }: { planned: PlannedTournament[] }) {
         <div style={styles.summaryLabel}>Resultat</div>
       </div>
       <div style={styles.summaryCard}>
-        <div style={{ ...styles.summaryValue, color: 'var(--success)' }}>
+        <div style={{ ...styles.summaryValue, color: 'var(--status-success)' }}>
           {stats.utvikling}
         </div>
         <div style={styles.summaryLabel}>Utvikling</div>

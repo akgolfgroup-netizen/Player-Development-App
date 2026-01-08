@@ -1,6 +1,6 @@
 # Error Code Reference
 
-**IUP Golf Academy API**
+**IUP Golf API**
 
 This document provides a complete reference of all error codes returned by the API.
 

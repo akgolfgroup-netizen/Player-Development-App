@@ -18,6 +18,18 @@ export async function seedSkole() {
     throw new Error('Player user not found. Run demo-users seed first.');
   }
 
+  // Get the player profile for this user
+  const player = await prisma.player.findFirst({
+    where: { userId: playerUser.id },
+  });
+
+  if (!player) {
+    throw new Error('Player profile not found for player@demo.com. Run demo-users seed first.');
+  }
+
+  const playerId = player.id;
+  const tenantId = player.tenantId;
+
   // ============================================
   // FAG (Subjects)
   // ============================================
@@ -37,7 +49,8 @@ export async function seedSkole() {
   for (const fag of fagData) {
     const existing = await prisma.fag.findFirst({
       where: {
-        userId: playerUser.id,
+        playerId,
+        tenantId,
         navn: fag.navn,
       },
     });
@@ -45,7 +58,8 @@ export async function seedSkole() {
     if (!existing) {
       const created = await prisma.fag.create({
         data: {
-          userId: playerUser.id,
+          playerId,
+          tenantId,
           ...fag,
         },
       });
@@ -113,6 +127,19 @@ export async function seedSkole() {
     }
   }
   console.log(`   ✅ Created ${timerCreated} skoletimer`);
+
+  // ============================================
+  // GET TEST PROTOCOLS for test-linked assignments
+  // ============================================
+  const tests = await prisma.test.findMany({
+    where: { tenantId },
+    select: { id: true, testNumber: true, name: true }
+  });
+
+  const testMap: { [key: number]: string } = {};
+  tests.forEach(test => {
+    testMap[test.testNumber] = test.id;
+  });
 
   // ============================================
   // OPPGAVER (Assignments)
@@ -201,10 +228,51 @@ export async function seedSkole() {
       frist: new Date(now.getTime() + 6 * 24 * 60 * 60 * 1000),
       prioritet: 'high',
     },
+
+    // TEST-LINKED ASSIGNMENTS (Idrettsfag)
+    {
+      fag: 'Idrettsfag',
+      tittel: 'Forberedelse til Test 1 - Driver Speed',
+      beskrivelse: 'Tren på driver clubhead speed. Fokuser på timing og rotasjon. Test er onsdag.',
+      frist: new Date(now.getTime() + 2 * 24 * 60 * 60 * 1000),
+      testDate: new Date(now.getTime() + 3 * 24 * 60 * 60 * 1000), // Day after assignment deadline
+      prioritet: 'high',
+      estimatedMinutes: 90,
+      testNumber: 1, // Link to Test 1
+    },
+    {
+      fag: 'Idrettsfag',
+      tittel: 'Analyse av Test 4 Resultater - PEI',
+      beskrivelse: 'Gjennomgå dine siste Test 4 (PEI) resultater og identifiser forbedringsområder for nøyaktighet',
+      frist: new Date(now.getTime() + 5 * 24 * 60 * 60 * 1000),
+      prioritet: 'medium',
+      estimatedMinutes: 60,
+      testNumber: 4, // Link to Test 4
+    },
+    {
+      fag: 'Idrettsfag',
+      tittel: '8 Ballstest - Forberedelse',
+      beskrivelse: 'Øv på kort-spill scenarier. Test er planlagt for neste uke.',
+      frist: new Date(now.getTime() + 7 * 24 * 60 * 60 * 1000),
+      testDate: new Date(now.getTime() + 8 * 24 * 60 * 60 * 1000),
+      prioritet: 'high',
+      estimatedMinutes: 120,
+      testNumber: 7, // Link to Test 7
+    },
+    {
+      fag: 'Kroppsøving',
+      tittel: 'Fysisk Test - Smidighet',
+      beskrivelse: 'Forbered deg til smidighetstest. Gjør utstrekkingsøvelser daglig.',
+      frist: new Date(now.getTime() + 9 * 24 * 60 * 60 * 1000),
+      testDate: new Date(now.getTime() + 10 * 24 * 60 * 60 * 1000),
+      prioritet: 'medium',
+      estimatedMinutes: 45,
+      testNumber: 12, // Link to Test 12 (Flexibility)
+    },
   ];
 
   let oppgaverCreated = 0;
-  for (const oppgave of oppgaver) {
+  for (const oppgave of oppgaver as any[]) {
     const fagId = createdFag[oppgave.fag];
     if (!fagId) continue;
 
@@ -216,13 +284,19 @@ export async function seedSkole() {
     });
 
     if (!existing) {
+      // Get testId if testNumber is provided
+      const testId = oppgave.testNumber ? testMap[oppgave.testNumber] : undefined;
+
       await prisma.oppgave.create({
         data: {
           fagId,
+          testId,
           tittel: oppgave.tittel,
           beskrivelse: oppgave.beskrivelse,
           frist: oppgave.frist,
+          testDate: oppgave.testDate,
           prioritet: oppgave.prioritet,
+          estimatedMinutes: oppgave.estimatedMinutes,
           status: 'pending',
         },
       });
@@ -230,4 +304,5 @@ export async function seedSkole() {
     }
   }
   console.log(`   ✅ Created ${oppgaverCreated} oppgaver`);
+  console.log(`   📊 ${oppgaver.filter((o: any) => o.testNumber).length} assignments linked to test protocols`);
 }

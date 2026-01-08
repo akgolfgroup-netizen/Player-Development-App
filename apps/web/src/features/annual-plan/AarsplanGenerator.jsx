@@ -161,9 +161,9 @@ const TournamentList = ({ tournaments, onAdd, onRemove }) => {
 
   // Map importance to semantic class strings
   const importanceStyles = {
-    A: { classes: 'bg-danger-muted text-danger', iconColor: 'var(--error)', label: 'A - Hovedmål' },
-    B: { classes: 'bg-warning-muted text-warning', iconColor: 'var(--warning)', label: 'B - Viktig' },
-    C: { classes: 'bg-success-muted text-success', iconColor: 'var(--success)', label: 'C - Forberedelse' },
+    A: { classes: 'bg-danger-muted text-danger', iconColor: 'var(--status-error)', label: 'A - Hovedmål' },
+    B: { classes: 'bg-warning-muted text-warning', iconColor: 'var(--status-warning)', label: 'B - Viktig' },
+    C: { classes: 'bg-success-muted text-success', iconColor: 'var(--status-success)', label: 'C - Forberedelse' },
   };
 
   return (
@@ -505,7 +505,7 @@ const Step4Review = ({ formData }) => {
       </FormCard>
 
       <div className="p-5 rounded-xl text-center bg-success-muted border border-success-muted">
-        <Sparkles size={32} color="var(--success)" className="mb-3" />
+        <Sparkles size={32} color="var(--status-success)" className="mb-3" />
         <h3 className="text-lg font-semibold mb-2 m-0 text-text-primary">
           Klar til å generere!
         </h3>
@@ -541,7 +541,7 @@ const SuccessScreen = ({ result, planId, onViewPlan, onViewCalendar, onSyncToSes
   return (
   <div className="text-center py-10 px-5">
     <div className="w-20 h-20 rounded-full flex items-center justify-center mx-auto mb-6 bg-success-muted">
-      <CheckCircle size={40} color="var(--success)" />
+      <CheckCircle size={40} color="var(--status-success)" />
     </div>
 
     <h2 className="text-2xl font-semibold mb-2 m-0 text-text-primary">
@@ -586,7 +586,7 @@ const SuccessScreen = ({ result, planId, onViewPlan, onViewCalendar, onSyncToSes
       }`}
     >
       <div className="flex gap-3 items-start">
-        <Calendar size={20} color={syncResult ? 'var(--success)' : 'var(--accent)'} className="shrink-0 mt-0.5" />
+        <Calendar size={20} color={syncResult ? 'var(--status-success)' : 'var(--accent)'} className="shrink-0 mt-0.5" />
         <div>
           <p className="text-sm font-medium mb-1 m-0 text-text-primary">
             {syncResult ? `${syncResult.syncedCount} økter synkronisert!` : 'Klar til synkronisering'}
@@ -786,6 +786,7 @@ const AarsplanGenerator = () => {
       <PageHeader
         title="Årsplan Generator"
         subtitle="Lag din personlige 12-måneders treningsplan"
+        helpText="Generer en komplett årsplan basert på dine mål, tilgjengelighet og treningsnivå. Systemet lager en periodisert plan med anbefalt fokus for hver måned."
         showBackButton
         onBack={() => navigate('/aarsplan')}
       />

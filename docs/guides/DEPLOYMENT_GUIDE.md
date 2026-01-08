@@ -189,7 +189,7 @@ SMTP_SECURE=false
 SMTP_USER=your-email@gmail.com
 SMTP_PASS=your-16-char-app-password
 SMTP_FROM_EMAIL=noreply@akgolf.com
-SMTP_FROM_NAME=AK Golf IUP
+SMTP_FROM_NAME=TIER Golf IUP
 FRONTEND_URL=http://localhost:3001
 ```
 

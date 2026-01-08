@@ -27,7 +27,7 @@ import {
 import Card from '../../ui/primitives/Card';
 import Badge from '../../ui/primitives/Badge.primitive';
 import Button from '../../ui/primitives/Button';
-import { SectionTitle, SubSectionTitle } from '../../components/typography';
+import { SectionTitle, SubSectionTitle } from '../../components/typography/Headings';
 import useTestResults, { TestResult, PlayerCategory } from '../../hooks/useTestResults';
 
 // ============================================================================
@@ -42,17 +42,17 @@ interface CategoryInfo {
 }
 
 const CATEGORY_INFO: Record<PlayerCategory, CategoryInfo> = {
-  K: { level: 'K', name: 'Rekrutt', description: 'Startpunkt', color: '#94a3b8' },
-  J: { level: 'J', name: 'Junior 3', description: 'Grunnleggende', color: '#64748b' },
-  I: { level: 'I', name: 'Junior 2', description: 'Utviklende', color: '#475569' },
-  H: { level: 'H', name: 'Junior 1', description: 'Progresjon', color: '#22c55e' },
-  G: { level: 'G', name: 'Aspirant', description: 'Fremadstormende', color: '#16a34a' },
-  F: { level: 'F', name: 'Klubb', description: 'Konkurransenivå', color: 'var(--ak-status-info-light)' },
-  E: { level: 'E', name: 'Region', description: 'Regionalt nivå', color: 'var(--ak-status-info)' },
-  D: { level: 'D', name: 'Nasjonal', description: 'Nasjonalt nivå', color: '#8b5cf6' },
-  C: { level: 'C', name: 'Talent', description: 'Høyt talent', color: '#7c3aed' },
-  B: { level: 'B', name: 'Elite', description: 'Elitenivå', color: 'var(--ak-status-warning-light)' },
-  A: { level: 'A', name: 'Proff', description: 'Profesjonelt', color: '#eab308' },
+  K: { level: 'K', name: 'Rekrutt', description: 'Startpunkt', color: 'rgb(var(--text-tertiary))' },
+  J: { level: 'J', name: 'Junior 3', description: 'Grunnleggende', color: 'rgb(var(--text-secondary))' },
+  I: { level: 'I', name: 'Junior 2', description: 'Utviklende', color: 'rgb(var(--tier-navy))' },
+  H: { level: 'H', name: 'Junior 1', description: 'Progresjon', color: 'rgb(var(--status-success))' },
+  G: { level: 'G', name: 'Aspirant', description: 'Fremadstormende', color: 'rgb(var(--status-success))' },
+  F: { level: 'F', name: 'Klubb', description: 'Konkurransenivå', color: 'rgb(var(--status-info))' },
+  E: { level: 'E', name: 'Region', description: 'Regionalt nivå', color: 'rgb(var(--status-info))' },
+  D: { level: 'D', name: 'Nasjonal', description: 'Nasjonalt nivå', color: 'rgb(var(--category-j))' },
+  C: { level: 'C', name: 'Talent', description: 'Høyt talent', color: 'rgb(var(--category-j))' },
+  B: { level: 'B', name: 'Elite', description: 'Elitenivå', color: 'rgb(var(--status-warning))' },
+  A: { level: 'A', name: 'Proff', description: 'Profesjonelt', color: 'rgb(var(--tier-gold))' },
 };
 
 const CATEGORY_ORDER: PlayerCategory[] = ['K', 'J', 'I', 'H', 'G', 'F', 'E', 'D', 'C', 'B', 'A'];
@@ -178,7 +178,7 @@ const TestProgressItem: React.FC<TestProgressItemProps> = ({ test, onViewDetails
         <div style={styles.testHeader}>
           <span style={styles.testName}>{test.name}</span>
           {test.meetsTarget ? (
-            <CheckCircle2 size={16} color="var(--success)" />
+            <CheckCircle2 size={16} color="var(--status-success)" />
           ) : (
             <span style={styles.testRemaining}>
               {remaining.toFixed(test.unit === '' ? 1 : 0)}{test.unit} igjen
@@ -191,8 +191,8 @@ const TestProgressItem: React.FC<TestProgressItemProps> = ({ test, onViewDetails
               style={{
                 ...styles.testProgressFill,
                 width: `${progress}%`,
-                backgroundColor: progress >= 100 ? 'var(--success)' :
-                  progress >= 80 ? 'var(--warning)' : 'var(--accent)',
+                backgroundColor: progress >= 100 ? 'var(--status-success)' :
+                  progress >= 80 ? 'var(--status-warning)' : 'var(--accent)',
               }}
             />
           </div>
@@ -395,7 +395,7 @@ const CategoryProgressionWidget: React.FC<CategoryProgressionWidgetProps> = ({
         {tests.filter(t => t.meetsTarget).length > 0 && (
           <Card padding="md" style={styles.completedCard}>
             <div style={styles.completedHeader}>
-              <CheckCircle2 size={18} color="var(--success)" />
+              <CheckCircle2 size={18} color="var(--status-success)" />
               <SubSectionTitle style={styles.completedTitle}>
                 Oppfylte krav ({tests.filter(t => t.meetsTarget).length})
               </SubSectionTitle>
@@ -456,7 +456,7 @@ const CategoryProgressionWidget: React.FC<CategoryProgressionWidgetProps> = ({
                   </span>
                   {(categoryProgress.additionalRequirements.roundsCompleted ?? 0) >=
                     (categoryProgress.additionalRequirements.roundsRequired ?? 0) ? (
-                    <CheckCircle2 size={14} color="var(--success)" />
+                    <CheckCircle2 size={14} color="var(--status-success)" />
                   ) : (
                     <Circle size={14} color="var(--text-tertiary)" />
                   )}
@@ -471,7 +471,7 @@ const CategoryProgressionWidget: React.FC<CategoryProgressionWidgetProps> = ({
                   </span>
                   {(categoryProgress.additionalRequirements.currentHandicap ?? 999) <=
                     (categoryProgress.additionalRequirements.handicapRequired ?? 0) ? (
-                    <CheckCircle2 size={14} color="var(--success)" />
+                    <CheckCircle2 size={14} color="var(--status-success)" />
                   ) : (
                     <Circle size={14} color="var(--text-tertiary)" />
                   )}
@@ -616,7 +616,7 @@ const styles: Record<string, React.CSSProperties> = {
   },
   completedCard: {
     backgroundColor: 'var(--bg-success-subtle)',
-    border: '1px solid var(--success)',
+    border: '1px solid var(--status-success)',
   },
   completedHeader: {
     display: 'flex',
@@ -626,7 +626,7 @@ const styles: Record<string, React.CSSProperties> = {
   },
   completedTitle: {
     margin: 0,
-    color: 'var(--success)',
+    color: 'var(--status-success)',
   },
   completedGrid: {
     display: 'flex',
@@ -682,7 +682,7 @@ const styles: Record<string, React.CSSProperties> = {
   },
   testRemaining: {
     fontSize: 'var(--font-size-caption1)',
-    color: 'var(--warning)',
+    color: 'var(--status-warning)',
     fontWeight: 500,
   },
   testProgress: {
@@ -745,7 +745,7 @@ const styles: Record<string, React.CSSProperties> = {
     color: 'var(--text-primary)',
   },
   motivationCard: {
-    background: 'linear-gradient(135deg, var(--accent) 0%, var(--success) 100%)',
+    background: 'linear-gradient(135deg, var(--accent) 0%, var(--status-success) 100%)',
   },
   motivationContent: {
     display: 'flex',

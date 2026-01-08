@@ -2,7 +2,7 @@
 
 ## Overview
 
-This guide covers monitoring, observability, and alerting for the IUP Golf Academy platform. It provides instructions for setting up dashboards, understanding metrics, and responding to alerts.
+This guide covers monitoring, observability, and alerting for the IUP Golf platform. It provides instructions for setting up dashboards, understanding metrics, and responding to alerts.
 
 ## Table of Contents
 

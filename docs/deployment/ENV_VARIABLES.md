@@ -1,4 +1,4 @@
-# Environment Variables - IUP Golf Academy
+# Environment Variables - IUP Golf
 
 Komplett oversikt over alle environment variables som kreves for deployment.
 

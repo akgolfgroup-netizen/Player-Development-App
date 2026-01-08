@@ -104,7 +104,7 @@ console.log(document.querySelectorAll('[class*="blaze"], [id*="blaze"]'));
 3. ✅ Detects Grammarly injection
 4. ✅ Detects generic extension patterns
 5. ✅ Verifies `/aarsplan` route is clean
-6. ✅ Validates only AK Golf Academy elements present
+6. ✅ Validates only TIER Golf elements present
 7. ✅ Logs suspicious elements for debugging
 8. ✅ Ensures no external resource loading
 

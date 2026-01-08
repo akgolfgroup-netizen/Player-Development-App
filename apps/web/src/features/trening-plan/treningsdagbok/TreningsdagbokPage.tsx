@@ -14,8 +14,10 @@
 
 import React, { useState, useCallback } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { Plus } from 'lucide-react';
+import { Plus, BookOpen } from 'lucide-react';
 
+import { StandardPageHeader } from '../../../components/layout/StandardPageHeader';
+import Button from '../../../ui/primitives/Button';
 import { useDagbokState } from './hooks/useDagbokState';
 import { useDagbokFilters } from './hooks/useDagbokFilters';
 import { useDagbokSessions } from './hooks/useDagbokSessions';
@@ -97,17 +99,24 @@ export const TreningsdagbokPage: React.FC = () => {
       {/* Inject media query styles */}
       <style>{mediaStyles}</style>
 
-      <div className="flex flex-col h-full min-h-screen bg-ak-surface-base">
-        {/* Top bar with action button */}
-        <div className="flex items-center justify-end pb-4">
-          <button
-            onClick={handleNewSession}
-            className="flex items-center gap-1.5 px-4 py-2 bg-ak-primary text-white border-none rounded-lg text-sm font-medium cursor-pointer"
-          >
-            <Plus size={18} />
-            Ny økt
-          </button>
-        </div>
+      <div className="flex flex-col h-full min-h-screen bg-tier-white">
+        {/* Page Header */}
+        <StandardPageHeader
+          icon={BookOpen}
+          title="Treningsdagbok"
+          subtitle="Oversikt over dine fullførte treningsøkter"
+          helpText="Komplett logg over alle gjennomførte treningsøkter. Filtrer på AK-hierarki (pyramide, L-fase, CS-nivå), se ukentlig heatmap og spor etterlevelse av treningsplanen. Detaljert visning av øvelser, repetisjoner og notater."
+          actions={
+            <Button
+              variant="primary"
+              size="sm"
+              leftIcon={<Plus size={18} />}
+              onClick={handleNewSession}
+            >
+              Ny økt
+            </Button>
+          }
+        />
 
         {/* Filter bar */}
         <DagbokFilterBar
@@ -130,15 +139,15 @@ export const TreningsdagbokPage: React.FC = () => {
         )}
 
         {/* Mobile visuals (hidden on desktop) */}
-        <div className="dagbok-mobile-visuals hidden p-4 bg-ak-surface-subtle border-b border-ak-border-default flex-col gap-4">
+        <div className="dagbok-mobile-visuals hidden p-4 bg-tier-surface-base border-b border-tier-border-default flex-col gap-4">
           <DagbokSummarySection stats={stats} isLoading={isLoading} />
         </div>
 
         {/* Main content area */}
-        <div className="flex flex-1 overflow-hidden">
+        <div className="flex flex-1 overflow-hidden" style={{ minHeight: '500px' }}>
           {/* Main column - session list */}
           <div className="flex-1 flex flex-col overflow-hidden">
-            <div className="flex-1 overflow-hidden">
+            <div className="flex-1 overflow-hidden" style={{ minHeight: '400px' }}>
               <DagbokSessionList
                 sessions={sessions}
                 isLoading={isLoading}
@@ -153,7 +162,7 @@ export const TreningsdagbokPage: React.FC = () => {
           </div>
 
           {/* Side column - visuals (hidden on mobile) */}
-          <div className="dagbok-side-column w-80 border-l border-ak-border-default bg-ak-surface-subtle p-4 overflow-auto flex flex-col gap-4">
+          <div className="dagbok-side-column w-80 border-l border-tier-border-default bg-tier-surface-base p-4 overflow-auto flex flex-col gap-4" style={{ minHeight: '500px' }}>
             {/* Summary stats */}
             <DagbokSummarySection stats={stats} isLoading={isLoading} />
 

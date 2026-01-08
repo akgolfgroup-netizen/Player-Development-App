@@ -24,7 +24,7 @@ import {
 } from 'lucide-react';
 import Card from '../../ui/primitives/Card';
 import Badge from '../../ui/primitives/Badge.primitive';
-import { SectionTitle, SubSectionTitle } from '../../components/typography';
+import { SectionTitle, SubSectionTitle } from '../../components/typography/Headings';
 import useTestResults, { TestResult } from '../../hooks/useTestResults';
 
 // ============================================================================
@@ -167,16 +167,16 @@ const VelocityCard: React.FC<VelocityCardProps> = ({ data, onViewDetails }) => {
   };
 
   const trendIcon = velocityTrend === 'accelerating' ? (
-    <TrendingUp size={14} color="var(--success)" />
+    <TrendingUp size={14} color="var(--status-success)" />
   ) : velocityTrend === 'decelerating' ? (
-    <TrendingDown size={14} color="var(--warning)" />
+    <TrendingDown size={14} color="var(--status-warning)" />
   ) : (
     <Minus size={14} color="var(--text-tertiary)" />
   );
 
   const confidenceColors = {
-    high: 'var(--success)',
-    medium: 'var(--warning)',
+    high: 'var(--status-success)',
+    medium: 'var(--status-warning)',
     low: 'var(--text-tertiary)',
   };
 
@@ -209,7 +209,7 @@ const VelocityCard: React.FC<VelocityCardProps> = ({ data, onViewDetails }) => {
           </div>
           <span style={{
             ...styles.metricValue,
-            color: weeklyRate > 0 ? 'var(--success)' : weeklyRate < 0 ? 'var(--error)' : 'var(--text-tertiary)',
+            color: weeklyRate > 0 ? 'var(--status-success)' : weeklyRate < 0 ? 'var(--status-error)' : 'var(--text-tertiary)',
           }}>
             {weeklyRate > 0 ? '+' : ''}{weeklyRate}{test.unit}
           </span>
@@ -235,7 +235,7 @@ const VelocityCard: React.FC<VelocityCardProps> = ({ data, onViewDetails }) => {
           </div>
           <span style={{
             ...styles.metricValue,
-            color: weeksToGoal === 0 ? 'var(--success)' : 'var(--text-primary)',
+            color: weeksToGoal === 0 ? 'var(--status-success)' : 'var(--text-primary)',
           }}>
             {formatTimeRemaining()}
           </span>
@@ -270,7 +270,7 @@ const VelocityCard: React.FC<VelocityCardProps> = ({ data, onViewDetails }) => {
               width: `${Math.min(100, test.lowerIsBetter
                 ? (test.requirement / test.currentValue) * 100
                 : (test.currentValue / test.requirement) * 100)}%`,
-              backgroundColor: test.meetsCurrent ? 'var(--success)' : 'var(--accent)',
+              backgroundColor: test.meetsCurrent ? 'var(--status-success)' : 'var(--accent)',
             }}
           />
         </div>
@@ -315,7 +315,7 @@ const SummaryStats: React.FC<SummaryStatsProps> = ({ velocityData }) => {
       <div style={styles.summaryGrid}>
         <div style={styles.summaryStat}>
           <div style={{ ...styles.summaryIcon, backgroundColor: 'var(--bg-success-subtle)' }}>
-            <TrendingUp size={20} color="var(--success)" />
+            <TrendingUp size={20} color="var(--status-success)" />
           </div>
           <div style={styles.summaryContent}>
             <span style={styles.summaryValue}>{stats.improving}</span>
@@ -335,7 +335,7 @@ const SummaryStats: React.FC<SummaryStatsProps> = ({ velocityData }) => {
 
         <div style={styles.summaryStat}>
           <div style={{ ...styles.summaryIcon, backgroundColor: 'var(--bg-warning-subtle)' }}>
-            <Clock size={20} color="var(--warning)" />
+            <Clock size={20} color="var(--status-warning)" />
           </div>
           <div style={styles.summaryContent}>
             <span style={styles.summaryValue}>{stats.avgWeeksToGoal || '-'}</span>
@@ -346,7 +346,7 @@ const SummaryStats: React.FC<SummaryStatsProps> = ({ velocityData }) => {
         {stats.closestToGoal && (
           <div style={styles.summaryStat}>
             <div style={{ ...styles.summaryIcon, backgroundColor: 'var(--bg-success-subtle)' }}>
-              <Award size={20} color="var(--success)" />
+              <Award size={20} color="var(--status-success)" />
             </div>
             <div style={styles.summaryContent}>
               <span style={styles.summaryValue}>{stats.closestToGoal.test.icon}</span>
@@ -358,7 +358,7 @@ const SummaryStats: React.FC<SummaryStatsProps> = ({ velocityData }) => {
 
       {stats.declining > 0 && (
         <div style={styles.warningBanner}>
-          <AlertTriangle size={16} color="var(--warning)" />
+          <AlertTriangle size={16} color="var(--status-warning)" />
           <span>{stats.declining} test{stats.declining > 1 ? 'er' : ''} viser nedgang. Vurder å justere treningsplanen.</span>
         </div>
       )}
@@ -425,7 +425,7 @@ const ImprovementVelocityWidget: React.FC<ImprovementVelocityWidgetProps> = ({
       {achieved.length > 0 && (
         <section style={styles.section}>
           <div style={styles.sectionHeader}>
-            <CheckCircle2 size={18} color="var(--success)" />
+            <CheckCircle2 size={18} color="var(--status-success)" />
             <SectionTitle style={styles.sectionTitle}>Oppnådde mål ({achieved.length})</SectionTitle>
           </div>
           <div style={styles.achievedGrid}>
@@ -433,7 +433,7 @@ const ImprovementVelocityWidget: React.FC<ImprovementVelocityWidgetProps> = ({
               <Card key={d.test.id} padding="sm" style={styles.achievedCard}>
                 <span style={styles.achievedIcon}>{d.test.icon}</span>
                 <span style={styles.achievedName}>{d.test.name}</span>
-                <CheckCircle2 size={14} color="var(--success)" />
+                <CheckCircle2 size={14} color="var(--status-success)" />
               </Card>
             ))}
           </div>
@@ -538,7 +538,7 @@ const styles: Record<string, React.CSSProperties> = {
     alignItems: 'center',
     gap: 'var(--spacing-2)',
     backgroundColor: 'var(--bg-success-subtle)',
-    border: '1px solid var(--success)',
+    border: '1px solid var(--status-success)',
   },
   achievedIcon: {
     fontSize: '16px',

@@ -14,11 +14,11 @@ import { SectionTitle, SubSectionTitle } from '../../components/typography';
 
 // Color class mapping
 const COLOR_CLASSES = {
-  brand: { text: 'text-ak-primary', bg: 'bg-ak-primary/15' },
-  success: { text: 'text-ak-status-success', bg: 'bg-ak-status-success/15' },
-  warning: { text: 'text-ak-status-warning', bg: 'bg-ak-status-warning/15' },
-  error: { text: 'text-ak-status-error', bg: 'bg-ak-status-error/15' },
-  secondary: { text: 'text-ak-text-secondary', bg: 'bg-ak-surface-subtle' },
+  brand: { text: 'text-tier-navy', bg: 'bg-tier-navy/15' },
+  success: { text: 'text-tier-success', bg: 'bg-tier-success/15' },
+  warning: { text: 'text-tier-warning', bg: 'bg-tier-warning/15' },
+  error: { text: 'text-tier-error', bg: 'bg-tier-error/15' },
+  secondary: { text: 'text-tier-text-secondary', bg: 'bg-tier-surface-base' },
 };
 
 // ============================================================================
@@ -129,16 +129,16 @@ const StatCard = ({ label, value, subValue, icon: Icon, colorKey }) => {
   const colors = COLOR_CLASSES[colorKey] || COLOR_CLASSES.brand;
 
   return (
-    <div className="bg-ak-surface-base rounded-xl p-4 text-center">
+    <div className="bg-tier-white rounded-xl p-4 text-center">
       <div className={`w-9 h-9 rounded-[10px] ${colors.bg} flex items-center justify-center mx-auto mb-2.5`}>
         <Icon size={18} className={colors.text} />
       </div>
-      <div className="text-[22px] font-bold text-ak-text-primary">
+      <div className="text-[22px] font-bold text-tier-navy">
         {value}
       </div>
-      <div className="text-xs text-ak-text-secondary">{label}</div>
+      <div className="text-xs text-tier-text-secondary">{label}</div>
       {subValue && (
-        <div className="text-[11px] text-ak-primary mt-1">
+        <div className="text-[11px] text-tier-navy mt-1">
           {subValue}
         </div>
       )}
@@ -155,23 +155,23 @@ const TrendIndicator = ({ trend, current, previous, label, unit = '' }) => {
   const diff = Math.abs(current - previous).toFixed(1);
 
   return (
-    <div className="bg-ak-surface-base rounded-xl py-3.5 px-4 flex items-center justify-between">
+    <div className="bg-tier-white rounded-xl py-3.5 px-4 flex items-center justify-between">
       <div>
-        <div className="text-[13px] text-ak-text-secondary">{label}</div>
-        <div className="text-lg font-semibold text-ak-text-primary">
+        <div className="text-[13px] text-tier-text-secondary">{label}</div>
+        <div className="text-lg font-semibold text-tier-navy">
           {current}{unit}
         </div>
       </div>
       <div className={`flex items-center gap-1 py-1 px-2 rounded-md ${
-        isImproving ? 'bg-ak-status-success/15' : 'bg-ak-status-error/15'
+        isImproving ? 'bg-tier-success/15' : 'bg-tier-error/15'
       }`}>
         {isImproving ? (
-          <TrendingUp size={14} className="text-ak-status-success" />
+          <TrendingUp size={14} className="text-tier-success" />
         ) : (
-          <TrendingDown size={14} className="text-ak-status-error" />
+          <TrendingDown size={14} className="text-tier-error" />
         )}
         <span className={`text-xs font-medium ${
-          isImproving ? 'text-ak-status-success' : 'text-ak-status-error'
+          isImproving ? 'text-tier-success' : 'text-tier-error'
         }`}>
           {diff}{unit}
         </span>
@@ -188,15 +188,15 @@ const TournamentRow = ({ tournament }) => {
   const isTopThree = tournament.position <= 3;
 
   return (
-    <div className="bg-ak-surface-base rounded-xl p-4 flex items-center gap-4">
+    <div className="bg-tier-white rounded-xl p-4 flex items-center gap-4">
       {/* Position */}
       <div className={`w-11 h-11 rounded-[10px] flex items-center justify-center ${
-        isTopThree ? 'bg-ak-status-warning/15' : 'bg-ak-surface-subtle'
+        isTopThree ? 'bg-tier-warning/15' : 'bg-tier-surface-base'
       }`}>
         {isTopThree ? (
-          <Award size={20} className="text-ak-status-warning" />
+          <Award size={20} className="text-tier-warning" />
         ) : (
-          <span className="text-base font-semibold text-ak-text-primary">
+          <span className="text-base font-semibold text-tier-navy">
             {tournament.position}
           </span>
         )}
@@ -204,10 +204,10 @@ const TournamentRow = ({ tournament }) => {
 
       {/* Info */}
       <div className="flex-1">
-        <div className="text-sm font-medium text-ak-text-primary">
+        <div className="text-sm font-medium text-tier-navy">
           {tournament.name}
         </div>
-        <div className="flex items-center gap-3 mt-1 text-xs text-ak-text-secondary">
+        <div className="flex items-center gap-3 mt-1 text-xs text-tier-text-secondary">
           <span className="flex items-center gap-1">
             <Calendar size={12} />
             {tournament.date}
@@ -224,8 +224,8 @@ const TournamentRow = ({ tournament }) => {
         {tournament.rounds.map((round, idx) => (
           <span
             key={idx}
-            className={`text-xs font-medium bg-ak-surface-subtle py-1 px-2 rounded-md ${
-              round <= 72 ? 'text-ak-status-success' : 'text-ak-text-primary'
+            className={`text-xs font-medium bg-tier-surface-base py-1 px-2 rounded-md ${
+              round <= 72 ? 'text-tier-success' : 'text-tier-navy'
             }`}
           >
             {round}
@@ -235,11 +235,11 @@ const TournamentRow = ({ tournament }) => {
 
       {/* Score */}
       <div className="text-right min-w-[80px]">
-        <div className="text-base font-semibold text-ak-text-primary">
+        <div className="text-base font-semibold text-tier-navy">
           {tournament.total}
         </div>
         <div className={`text-xs ${
-          tournament.toPar.startsWith('-') ? 'text-ak-status-success' : 'text-ak-status-error'
+          tournament.toPar.startsWith('-') ? 'text-tier-success' : 'text-tier-error'
         }`}>
           {tournament.toPar}
         </div>
@@ -247,12 +247,12 @@ const TournamentRow = ({ tournament }) => {
 
       {/* Earnings */}
       {tournament.earnings > 0 && (
-        <div className="text-[13px] font-medium text-ak-status-warning min-w-[70px] text-right">
+        <div className="text-[13px] font-medium text-tier-warning min-w-[70px] text-right">
           {tournament.earnings.toLocaleString('nb-NO')} kr
         </div>
       )}
 
-      <ChevronRight size={16} className="text-ak-text-secondary" />
+      <ChevronRight size={16} className="text-tier-text-secondary" />
     </div>
   );
 };
@@ -262,22 +262,22 @@ const TournamentRow = ({ tournament }) => {
 // ============================================================================
 
 const CategoryStatsCard = ({ title, stats, fields }) => (
-  <div className="bg-ak-surface-base rounded-xl p-4">
+  <div className="bg-tier-white rounded-xl p-4">
     <SubSectionTitle className="text-sm m-0 mb-3">
       {title}
     </SubSectionTitle>
     <div className="flex flex-col gap-2.5">
       {fields.map((field, idx) => (
         <div key={idx} className="flex items-center justify-between">
-          <span className="text-[13px] text-ak-text-secondary">{field.label}</span>
-          <span className="text-sm font-medium text-ak-text-primary">
+          <span className="text-[13px] text-tier-text-secondary">{field.label}</span>
+          <span className="text-sm font-medium text-tier-navy">
             {field.value}{field.unit || ''}
           </span>
         </div>
       ))}
-      <div className="flex items-center justify-between pt-2 border-t border-ak-border-default">
-        <span className="text-xs text-ak-text-secondary">Tour-ranking</span>
-        <span className="text-[13px] font-semibold text-ak-primary">
+      <div className="flex items-center justify-between pt-2 border-t border-tier-border-default">
+        <span className="text-xs text-tier-text-secondary">Tour-ranking</span>
+        <span className="text-[13px] font-semibold text-tier-navy">
           #{stats.ranking}
         </span>
       </div>
@@ -294,10 +294,11 @@ const TurneringsstatistikkContainer = () => {
   const stats = TOURNAMENT_STATS;
 
   return (
-    <div className="min-h-screen bg-ak-surface-subtle">
+    <div className="min-h-screen bg-tier-surface-base">
       <PageHeader
         title="Turneringsstatistikk"
         subtitle={`Sesong ${selectedSeason}`}
+        helpText="Omfattende statistikk fra dine turneringer. Se gjennomsnittlig score, beste runder, GIR, FIR og andre nøkkelindikatorer per sesong."
       />
 
       <div className="p-6 w-full">
@@ -309,8 +310,8 @@ const TurneringsstatistikkContainer = () => {
               onClick={() => setSelectedSeason(year)}
               className={`py-2 px-4 rounded-lg border-none text-[13px] font-medium cursor-pointer ${
                 selectedSeason === year
-                  ? 'bg-ak-primary text-white'
-                  : 'bg-ak-surface-base text-ak-text-primary'
+                  ? 'bg-tier-navy text-white'
+                  : 'bg-tier-white text-tier-navy'
               }`}
             >
               {year}

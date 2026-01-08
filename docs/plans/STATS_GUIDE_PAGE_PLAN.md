@@ -53,7 +53,7 @@
 **Innhold:**
 - **Overskrift:** "Din golfutvikling - målt og analysert"
 - **Introduksjon:**
-  - "AK Golf bruker Team Norway Golf Testing Protocol for å måle alle aspekter av golfspillet ditt."
+  - "TIER Golf bruker Team Norway Golf Testing Protocol for å måle alle aspekter av golfspillet ditt."
   - "Basert på dine testresultater tilpasser vi treningsplanen automatisk til dine styrker og forbedringsområder."
 
 - **3 Hovedpunkter (med ikoner):**
@@ -264,7 +264,7 @@ Stats
 **Undertittel:** "Forstå hvordan vi måler og utvikler ditt golfspill"
 
 ### Intro
-> AK Golf Academy bruker et vitenskapelig testsystem for å kartlegge alle aspekter av golfspillet ditt. Basert på testresultatene dine lager vi en personlig treningsplan som fokuserer på det som gir deg størst forbedring.
+> TIER Golf bruker et vitenskapelig testsystem for å kartlegge alle aspekter av golfspillet ditt. Basert på testresultatene dine lager vi en personlig treningsplan som fokuserer på det som gir deg størst forbedring.
 
 ### Test-intro
 > Vi måler 20 ulike ferdigheter - fra driver-distanse til putting-presisjon. Hver test har klare krav for hver spillerkategori, så du alltid vet hva du jobber mot.

@@ -1,6 +1,6 @@
 # Technical Appendix
 
-**IUP Golf Academy Platform**
+**IUP Golf Platform**
 **Version:** 1.0
 **Effective Date:** [TBD]
 **Document Status:** Draft for Review
@@ -648,4 +648,4 @@ pnpm start                    # http://localhost:3001
 
 ---
 
-*This Technical Appendix provides detailed specifications for the IUP Golf Academy Platform. All specifications are based on actual implementation and may evolve as the platform develops.*
+*This Technical Appendix provides detailed specifications for the IUP Golf Platform. All specifications are based on actual implementation and may evolve as the platform develops.*

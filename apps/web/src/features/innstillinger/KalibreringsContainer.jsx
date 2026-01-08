@@ -1,5 +1,5 @@
 /**
- * AK Golf Academy - Kalibrerings Container
+ * TIER Golf Academy - Kalibrerings Container
  * Design System v3.0 - Premium Light
  *
  * Calibration settings for player metrics and club distances.
@@ -20,7 +20,7 @@ import { useAuth } from '../../contexts/AuthContext';
 // STORAGE KEY & DEFAULT DATA
 // ============================================================================
 
-const STORAGE_KEY = 'ak_golf_calibration';
+const STORAGE_KEY = 'tier_golf_calibration';
 
 const DEFAULT_CALIBRATION = {
   driving: {
@@ -33,9 +33,11 @@ const DEFAULT_CALIBRATION = {
     'gapping': { value: 12, unit: 'm', lastUpdated: null },
   },
   physical: {
-    coreStrength: { value: 90, unit: 'sek', lastUpdated: null },
-    flexibility: { value: 45, unit: 'cm', lastUpdated: null },
-    rotationSpeed: { value: 650, unit: '°/s', lastUpdated: null },
+    benchPress: { value: 60, unit: 'kg', lastUpdated: null },
+    trapBarDeadlift: { value: 100, unit: 'kg', lastUpdated: null },
+    medicineBallThrow: { value: 8, unit: 'm', lastUpdated: null },
+    standingLongJump: { value: 200, unit: 'cm', lastUpdated: null },
+    running3000m: { value: 720, unit: 'sek', lastUpdated: null },
   },
 };
 
@@ -86,12 +88,12 @@ const saveCalibrationToStorage = (userId, data) => {
 // ============================================================================
 
 const CalibrationInput = ({ label, value, unit, lastUpdated, onChange }) => (
-  <div className="flex items-center justify-between py-3 px-3.5 bg-ak-surface-subtle rounded-[10px] mb-2">
+  <div className="flex items-center justify-between py-3 px-3.5 bg-tier-surface-base rounded-[10px] mb-2">
     <div>
-      <div className="text-[13px] font-medium text-ak-text-primary">
+      <div className="text-[13px] font-medium text-tier-navy">
         {label}
       </div>
-      <div className="text-[11px] text-ak-text-secondary">
+      <div className="text-[11px] text-tier-text-secondary">
         Oppdatert: {new Date(lastUpdated).toLocaleDateString('nb-NO')}
       </div>
     </div>
@@ -100,9 +102,9 @@ const CalibrationInput = ({ label, value, unit, lastUpdated, onChange }) => (
         type="number"
         value={value}
         onChange={(e) => onChange(parseFloat(e.target.value))}
-        className="w-20 py-2 px-3 rounded-md border border-ak-border-default text-sm font-medium text-right outline-none focus:border-ak-primary bg-ak-surface-base"
+        className="w-20 py-2 px-3 rounded-md border border-tier-border-default text-sm font-medium text-right outline-none focus:border-tier-navy bg-tier-white"
       />
-      <span className="text-[13px] text-ak-text-secondary min-w-[40px]">
+      <span className="text-[13px] text-tier-text-secondary min-w-[40px]">
         {unit}
       </span>
     </div>
@@ -114,17 +116,17 @@ const CalibrationInput = ({ label, value, unit, lastUpdated, onChange }) => (
 // ============================================================================
 
 const ClubSpeedRow = ({ club, clubSpeed, onChange }) => (
-  <div className="grid grid-cols-[100px_1fr_60px] gap-3 items-center py-2.5 border-b border-ak-border-default">
-    <span className="text-[13px] font-medium text-ak-text-primary">
+  <div className="grid grid-cols-[100px_1fr_60px] gap-3 items-center py-2.5 border-b border-tier-border-default">
+    <span className="text-[13px] font-medium text-tier-navy">
       {club}
     </span>
     <input
       type="number"
       value={clubSpeed}
       onChange={(e) => onChange(parseInt(e.target.value))}
-      className="py-2 px-3 rounded-md border border-ak-border-default text-sm text-center outline-none focus:border-ak-primary bg-ak-surface-base"
+      className="py-2 px-3 rounded-md border border-tier-border-default text-sm text-center outline-none focus:border-tier-navy bg-tier-white"
     />
-    <span className="text-[13px] text-ak-text-secondary">mph</span>
+    <span className="text-[13px] text-tier-text-secondary">mph</span>
   </div>
 );
 
@@ -216,31 +218,32 @@ const KalibreringsContainer = () => {
 
   if (loading) {
     return (
-      <div className="min-h-screen bg-ak-surface-subtle flex items-center justify-center">
+      <div className="min-h-screen bg-tier-surface-base flex items-center justify-center">
         <div className="text-center">
-          <div className="w-10 h-10 border-[3px] border-ak-border-default border-t-ak-primary rounded-full animate-spin mx-auto mb-4" />
-          <p className="text-ak-text-secondary">Laster kalibrering...</p>
+          <div className="w-10 h-10 border-[3px] border-tier-border-default border-t-tier-navy rounded-full animate-spin mx-auto mb-4" />
+          <p className="text-tier-text-secondary">Laster kalibrering...</p>
         </div>
       </div>
     );
   }
 
   return (
-    <div className="min-h-screen bg-ak-surface-subtle">
+    <div className="min-h-screen bg-tier-surface-base">
       <PageHeader
         title="Kalibrering"
         subtitle="Juster dine personlige mål og verdier"
+        helpText="Konfigurer personlige referanseverdier for tester og prestasjoner. Juster målverdier basert på din kategori og ambisjonsnivå."
       />
 
       <div className="p-4 px-6 pb-6 max-w-[800px] mx-auto">
         {/* Info Banner */}
-        <div className="flex items-start gap-3 p-3.5 bg-ak-primary/10 rounded-xl mb-6">
-          <Info size={20} className="text-ak-primary flex-shrink-0 mt-0.5" />
+        <div className="flex items-start gap-3 p-3.5 bg-tier-navy/10 rounded-xl mb-6">
+          <Info size={20} className="text-tier-navy flex-shrink-0 mt-0.5" />
           <div>
-            <CardTitle className="text-sm font-semibold text-ak-text-primary m-0 mb-1">
+            <CardTitle className="text-sm font-semibold text-tier-navy m-0 mb-1">
               Viktig for presise mål
             </CardTitle>
-            <p className="text-[13px] text-ak-text-secondary m-0 leading-snug">
+            <p className="text-[13px] text-tier-text-secondary m-0 leading-snug">
               Oppdater disse verdiene regelmessig for a fa mest mulig noyaktige treningsmal og analyser.
               Verdiene brukes til a beregne fremgang og sammenligne med benchmark.
             </p>
@@ -249,9 +252,9 @@ const KalibreringsContainer = () => {
 
         {/* Success Banner */}
         {success && (
-          <div className="flex items-center gap-2.5 py-3 px-3.5 bg-ak-status-success/15 rounded-[10px] mb-4">
-            <Check size={18} className="text-ak-status-success" />
-            <span className="text-sm text-ak-status-success font-medium">
+          <div className="flex items-center gap-2.5 py-3 px-3.5 bg-tier-success/15 rounded-[10px] mb-4">
+            <Check size={18} className="text-tier-success" />
+            <span className="text-sm text-tier-success font-medium">
               Kalibrering lagret!
             </span>
           </div>
@@ -259,21 +262,21 @@ const KalibreringsContainer = () => {
 
         {/* Error Banner */}
         {error && (
-          <div className="flex items-center gap-2.5 py-3 px-3.5 bg-ak-status-error/15 rounded-[10px] mb-4">
-            <Info size={18} className="text-ak-status-error" />
-            <span className="text-sm text-ak-status-error font-medium">
+          <div className="flex items-center gap-2.5 py-3 px-3.5 bg-tier-error/15 rounded-[10px] mb-4">
+            <Info size={18} className="text-tier-error" />
+            <span className="text-sm text-tier-error font-medium">
               {error}
             </span>
           </div>
         )}
 
         {/* Driving Settings */}
-        <div className="bg-ak-surface-base rounded-[14px] p-4 mb-5">
+        <div className="bg-tier-white rounded-[14px] p-4 mb-5">
           <div className="flex items-center gap-2.5 mb-3.5">
-            <div className="w-9 h-9 rounded-lg bg-ak-primary/15 flex items-center justify-center">
-              <Gauge size={18} className="text-ak-primary" />
+            <div className="w-9 h-9 rounded-lg bg-tier-navy/15 flex items-center justify-center">
+              <Gauge size={18} className="text-tier-navy" />
             </div>
-            <SubSectionTitle className="text-[15px] font-semibold text-ak-text-primary m-0">
+            <SubSectionTitle className="text-[15px] font-semibold text-tier-navy m-0">
               Driver-verdier
             </SubSectionTitle>
           </div>
@@ -301,20 +304,20 @@ const KalibreringsContainer = () => {
         </div>
 
         {/* Club Speeds */}
-        <div className="bg-ak-surface-base rounded-[14px] p-4 mb-5">
+        <div className="bg-tier-white rounded-[14px] p-4 mb-5">
           <div className="flex items-center gap-2.5 mb-3.5">
-            <div className="w-9 h-9 rounded-lg bg-ak-status-success/15 flex items-center justify-center">
-              <Gauge size={18} className="text-ak-status-success" />
+            <div className="w-9 h-9 rounded-lg bg-tier-success/15 flex items-center justify-center">
+              <Gauge size={18} className="text-tier-success" />
             </div>
-            <SubSectionTitle className="text-[15px] font-semibold text-ak-text-primary m-0">
+            <SubSectionTitle className="text-[15px] font-semibold text-tier-navy m-0">
               Klubbfart per kølle
             </SubSectionTitle>
           </div>
 
-          <div className="grid grid-cols-[100px_1fr_60px] gap-3 py-2 border-b-2 border-ak-border-default mb-2">
-            <span className="text-xs font-semibold text-ak-text-secondary">Klubb</span>
-            <span className="text-xs font-semibold text-ak-text-secondary text-center">Club Speed</span>
-            <span className="text-xs font-semibold text-ak-text-secondary"></span>
+          <div className="grid grid-cols-[100px_1fr_60px] gap-3 py-2 border-b-2 border-tier-border-default mb-2">
+            <span className="text-xs font-semibold text-tier-text-secondary">Klubb</span>
+            <span className="text-xs font-semibold text-tier-text-secondary text-center">Club Speed</span>
+            <span className="text-xs font-semibold text-tier-text-secondary"></span>
           </div>
 
           {clubSpeeds.map((club, idx) => (
@@ -333,43 +336,63 @@ const KalibreringsContainer = () => {
         </div>
 
         {/* Physical Settings */}
-        <div className="bg-ak-surface-base rounded-[14px] p-4 mb-5">
+        <div className="bg-tier-white rounded-[14px] p-4 mb-5">
           <div className="flex items-center gap-2.5 mb-3.5">
-            <div className="w-9 h-9 rounded-lg bg-ak-status-error/15 flex items-center justify-center">
-              <Activity size={18} className="text-ak-status-error" />
+            <div className="w-9 h-9 rounded-lg bg-tier-error/15 flex items-center justify-center">
+              <Activity size={18} className="text-tier-error" />
             </div>
-            <SubSectionTitle className="text-[15px] font-semibold text-ak-text-primary m-0">
+            <SubSectionTitle className="text-[15px] font-semibold text-tier-navy m-0">
               Fysiske verdier
             </SubSectionTitle>
           </div>
 
           <CalibrationInput
-            label="Core-styrke (planke)"
-            value={physicalSettings.coreStrength.value}
-            unit={physicalSettings.coreStrength.unit}
-            lastUpdated={physicalSettings.coreStrength.lastUpdated}
+            label="Benkpress"
+            value={physicalSettings.benchPress.value}
+            unit={physicalSettings.benchPress.unit}
+            lastUpdated={physicalSettings.benchPress.lastUpdated}
             onChange={(val) => {
-              setPhysicalSettings({ ...physicalSettings, coreStrength: { ...physicalSettings.coreStrength, value: val } });
+              setPhysicalSettings({ ...physicalSettings, benchPress: { ...physicalSettings.benchPress, value: val } });
               setHasChanges(true);
             }}
           />
           <CalibrationInput
-            label="Fleksibilitet"
-            value={physicalSettings.flexibility.value}
-            unit={physicalSettings.flexibility.unit}
-            lastUpdated={physicalSettings.flexibility.lastUpdated}
+            label="Markløft m/ trapbar"
+            value={physicalSettings.trapBarDeadlift.value}
+            unit={physicalSettings.trapBarDeadlift.unit}
+            lastUpdated={physicalSettings.trapBarDeadlift.lastUpdated}
             onChange={(val) => {
-              setPhysicalSettings({ ...physicalSettings, flexibility: { ...physicalSettings.flexibility, value: val } });
+              setPhysicalSettings({ ...physicalSettings, trapBarDeadlift: { ...physicalSettings.trapBarDeadlift, value: val } });
               setHasChanges(true);
             }}
           />
           <CalibrationInput
-            label="Rotasjonshastighet"
-            value={physicalSettings.rotationSpeed.value}
-            unit={physicalSettings.rotationSpeed.unit}
-            lastUpdated={physicalSettings.rotationSpeed.lastUpdated}
+            label="Medisinballkast"
+            value={physicalSettings.medicineBallThrow.value}
+            unit={physicalSettings.medicineBallThrow.unit}
+            lastUpdated={physicalSettings.medicineBallThrow.lastUpdated}
             onChange={(val) => {
-              setPhysicalSettings({ ...physicalSettings, rotationSpeed: { ...physicalSettings.rotationSpeed, value: val } });
+              setPhysicalSettings({ ...physicalSettings, medicineBallThrow: { ...physicalSettings.medicineBallThrow, value: val } });
+              setHasChanges(true);
+            }}
+          />
+          <CalibrationInput
+            label="Stille stående lengde"
+            value={physicalSettings.standingLongJump.value}
+            unit={physicalSettings.standingLongJump.unit}
+            lastUpdated={physicalSettings.standingLongJump.lastUpdated}
+            onChange={(val) => {
+              setPhysicalSettings({ ...physicalSettings, standingLongJump: { ...physicalSettings.standingLongJump, value: val } });
+              setHasChanges(true);
+            }}
+          />
+          <CalibrationInput
+            label="3000 m løping"
+            value={physicalSettings.running3000m.value}
+            unit={physicalSettings.running3000m.unit}
+            lastUpdated={physicalSettings.running3000m.lastUpdated}
+            onChange={(val) => {
+              setPhysicalSettings({ ...physicalSettings, running3000m: { ...physicalSettings.running3000m, value: val } });
               setHasChanges(true);
             }}
           />
@@ -379,7 +402,7 @@ const KalibreringsContainer = () => {
         <div className="flex gap-3">
           <button
             onClick={handleReset}
-            className="flex-1 flex items-center justify-center gap-2 py-3.5 rounded-[10px] border border-ak-border-default bg-ak-surface-base text-ak-text-primary text-[15px] font-medium cursor-pointer hover:bg-ak-surface-subtle transition-colors"
+            className="flex-1 flex items-center justify-center gap-2 py-3.5 rounded-[10px] border border-tier-border-default bg-tier-white text-tier-navy text-[15px] font-medium cursor-pointer hover:bg-tier-surface-base transition-colors"
           >
             <RotateCcw size={18} />
             Tilbakestill
@@ -389,8 +412,8 @@ const KalibreringsContainer = () => {
             disabled={!hasChanges}
             className={`flex-[2] flex items-center justify-center gap-2 py-3.5 rounded-[10px] border-none text-[15px] font-semibold transition-colors ${
               hasChanges
-                ? 'bg-ak-primary text-white cursor-pointer hover:bg-ak-primary/90'
-                : 'bg-ak-border-default text-ak-text-secondary cursor-not-allowed'
+                ? 'bg-tier-navy text-white cursor-pointer hover:bg-tier-navy/90'
+                : 'bg-tier-border-default text-tier-text-secondary cursor-not-allowed'
             }`}
           >
             <Save size={18} />

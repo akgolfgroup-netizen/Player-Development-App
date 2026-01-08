@@ -26,7 +26,7 @@ import React, { useState } from "react";
 import { ArrowLeft, ClipboardList, Plus, Trash2, Calendar, Clock, CheckCircle, Lock, Sparkles, X } from "lucide-react";
 import Card from '../../ui/primitives/Card';
 import Button from '../../ui/primitives/Button';
-import { PageTitle, SectionTitle } from '../../components/typography';
+import { PageTitle, SectionTitle } from '../../components/typography/Headings';
 import AIPlanSuggestions, { SuggestionToApply } from './AIPlanSuggestions';
 
 //////////////////////////////

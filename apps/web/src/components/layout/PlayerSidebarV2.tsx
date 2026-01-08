@@ -1,7 +1,7 @@
 /**
  * ============================================================
  * PlayerSidebarV2 - Forenklet 5-modus sidebar
- * AK Golf Academy Design System v3.0
+ * TIER Golf Academy Design System v3.0
  *
  * MIGRATED TO PAGE ARCHITECTURE - Minimal inline styles (dynamic colors)
  * ============================================================
@@ -31,8 +31,8 @@ import { AKLogo } from '../branding/AKLogo';
 // Design token values (hex for inline styles)
 const tokenColors = {
   primary: '#10456A',
-  white: '#FFFFFF',
-  gold: '#C9A227',
+  white: 'rgb(var(--tier-white))',
+  gold: 'rgb(var(--tier-gold))',
   ink: '#1C1C1E',
   error: '#C45B4E',
 };
@@ -375,13 +375,17 @@ export default function PlayerSidebarV2({
       }}
       aria-label="Gå til Hjem"
     >
-      <AKLogo size={40} />
+      <img
+        src="/assets/tier-golf/tier-golf-icon.svg"
+        alt="TIER Golf"
+        style={{ width: '40px', height: '40px' }}
+      />
       <div>
         <div style={{ color: tokenColors.white, fontWeight: 600, fontSize: '16px' }}>
-          AK Golf
+          TIER Golf
         </div>
         <div style={{ color: 'rgba(255, 255, 255, 0.5)', fontSize: '12px' }}>
-          Spillerportal
+          Academy
         </div>
       </div>
     </Link>
@@ -412,9 +416,13 @@ export default function PlayerSidebarV2({
             style={{ display: 'flex', alignItems: 'center', gap: '10px', textDecoration: 'none' }}
             aria-label="Gå til Hjem"
           >
-            <AKLogo size={32} />
+            <img
+              src="/assets/tier-golf/tier-golf-icon.svg"
+              alt="TIER Golf"
+              style={{ width: '32px', height: '32px' }}
+            />
             <span style={{ color: tokenColors.white, fontWeight: 600, fontSize: '16px' }}>
-              AK Golf
+              TIER Golf
             </span>
           </Link>
 

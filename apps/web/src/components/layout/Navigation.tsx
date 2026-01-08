@@ -59,7 +59,7 @@ const trainingNavItems: NavItem[] = [
   { path: '/testprotokoll', icon: ClipboardList, label: 'Testprotokoll' },
   { path: '/testresultater', icon: TrendingUp, label: 'Testresultater' },
   { path: '/treningsprotokoll', icon: Activity, label: 'Treningsprotokoll' },
-  { path: '/treningsstatistikk', icon: BarChart3, label: 'Treningsstatistikk' },
+  { path: '/training/statistics', icon: BarChart3, label: 'Treningsstatistikk' },
 ];
 
 const progressNavItems: NavItem[] = [
@@ -166,7 +166,7 @@ const Navigation: React.FC = () => {
           <div className="w-8 h-8 rounded-lg bg-white/20 flex items-center justify-center">
             <Target className="w-5 h-5 text-white" />
           </div>
-          <span className="text-lg font-bold text-white">AK Golf</span>
+          <span className="text-lg font-bold text-white">TIER Golf</span>
         </Link>
       </div>
 

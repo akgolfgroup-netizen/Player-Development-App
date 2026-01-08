@@ -1,8 +1,8 @@
-# IUP Golf Academy - FAQ for Partnere
+# IUP Golf - FAQ for Partnere
 
 **Sist oppdatert:** 25. desember 2025
 
-Vanlige spørsmål fra partnere om IUP Golf Academy plattformen, med detaljerte svar.
+Vanlige spørsmål fra partnere om IUP Golf plattformen, med detaljerte svar.
 
 ---
 
@@ -383,7 +383,7 @@ Breakdown:
 
 **Fase 2: Content marketing (Q2 2026)**
 - Blogg med coaching-tips
-- YouTube tutorials ("Hvordan bruke IUP Golf Academy")
+- YouTube tutorials ("Hvordan bruke IUP Golf")
 - Case studies fra pilot-klubber
 
 **Fase 3: Paid marketing (Q3 2026)**

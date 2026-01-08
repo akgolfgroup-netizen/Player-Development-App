@@ -1,0 +1,1068 @@
+/**
+ * UkensTreningsplanContainer.jsx
+ * Design System v3.0 - Premium Light
+ *
+ * Integrert med AK_GOLF_KATEGORI_HIERARKI_v2.0
+ * Bruker pyramide-systemet: FYS → TEK → SLAG → SPILL → TURN
+ *
+ * MIGRATED TO PAGE ARCHITECTURE - Zero inline styles
+ * UPDATED: Integrated with CalendarWeekGrid for time-based view
+ */
+import React, { useState, useEffect, useCallback, useRef, useMemo } from 'react';
+import {
+  Calendar, Clock, Target, CheckCircle, ChevronRight, ChevronLeft,
+  Dumbbell, Brain, Flag, RotateCcw, Flame, X, Plus, FileText,
+  MoreHorizontal, Trophy, Crosshair, Grid, List
+} from 'lucide-react';
+import { PageHeader } from '../../components/layout/PageHeader';
+import { AICoachGuide } from '../ai-coach';
+import { GUIDE_PRESETS } from '../ai-coach/types';
+import { CalendarWeekGrid } from '../calendar/components/enhanced/CalendarWeekGrid';
+
+// =============================================================================
+// AK HIERARCHY CONFIGURATION (from AK_GOLF_KATEGORI_HIERARKI_v2.0)
+// =============================================================================
+
+// Pyramid-based session types (replaces old SESSION_TYPE_CLASSES)
+const PYRAMID_CLASSES = {
+  FYS: {
+    text: 'text-red-600',
+    bg: 'bg-red-500/10',
+    activeBg: 'bg-red-500',
+    icon: Dumbbell,
+    emoji: '🏋️',
+    label: 'Fysisk',
+    description: 'Styrke, power, mobilitet',
+  },
+  TEK: {
+    text: 'text-ak-primary',
+    bg: 'bg-ak-primary/10',
+    activeBg: 'bg-ak-primary',
+    icon: Target,
+    emoji: '🎯',
+    label: 'Teknikk',
+    description: 'Bevegelsesmønster, posisjoner',
+  },
+  SLAG: {
+    text: 'text-emerald-600',
+    bg: 'bg-emerald-500/10',
+    activeBg: 'bg-emerald-500',
+    icon: Crosshair,
+    emoji: '⛳',
+    label: 'Golfslag',
+    description: 'Slagkvalitet, nøyaktighet',
+  },
+  SPILL: {
+    text: 'text-amber-600',
+    bg: 'bg-amber-500/10',
+    activeBg: 'bg-amber-500',
+    icon: Flag,
+    emoji: '🏌️',
+    label: 'Spill',
+    description: 'Strategi, banehåndtering',
+  },
+  TURN: {
+    text: 'text-purple-600',
+    bg: 'bg-purple-500/10',
+    activeBg: 'bg-purple-500',
+    icon: Trophy,
+    emoji: '🏆',
+    label: 'Turnering',
+    description: 'Mental prestasjon',
+  },
+  REST: {
+    text: 'text-ak-text-secondary',
+    bg: 'bg-ak-surface-subtle',
+    activeBg: 'bg-ak-text-secondary',
+    icon: RotateCcw,
+    emoji: '😴',
+    label: 'Hvile',
+    description: 'Restitusjon',
+  },
+};
+
+// L-Phase labels for display
+const L_PHASE_LABELS = {
+  'L-KROPP': 'Kropp',
+  'L-ARM': 'Arm',
+  'L-KØLLE': 'Kølle',
+  'L-BALL': 'Ball',
+  'L-AUTO': 'Auto',
+};
+
+// Environment labels
+const ENVIRONMENT_LABELS = {
+  M0: 'Gym',
+  M1: 'Simulator',
+  M2: 'Range',
+  M3: 'Øvingsfelt',
+  M4: 'Bane',
+  M5: 'Turnering',
+};
+
+// Legacy mapping for backwards compatibility
+const SESSION_TYPE_CLASSES = {
+  technical: PYRAMID_CLASSES.TEK,
+  physical: PYRAMID_CLASSES.FYS,
+  mental: PYRAMID_CLASSES.TURN, // Mental maps to TURN
+  short_game: PYRAMID_CLASSES.SLAG,
+  warmup: { ...PYRAMID_CLASSES.FYS, label: 'Oppvarming' },
+  rest: PYRAMID_CLASSES.REST,
+  // Direct pyramid mappings
+  FYS: PYRAMID_CLASSES.FYS,
+  TEK: PYRAMID_CLASSES.TEK,
+  SLAG: PYRAMID_CLASSES.SLAG,
+  SPILL: PYRAMID_CLASSES.SPILL,
+  TURN: PYRAMID_CLASSES.TURN,
+  REST: PYRAMID_CLASSES.REST,
+};
+
+// ============================================================================
+// MOCK DATA - Will be replaced with API data
+// ============================================================================
+
+const getWeekDates = (weekOffset = 0) => {
+  const now = new Date();
+  const currentDay = now.getDay();
+  const monday = new Date(now);
+  monday.setDate(now.getDate() - (currentDay === 0 ? 6 : currentDay - 1) + (weekOffset * 7));
+
+  const dates = [];
+  for (let i = 0; i < 7; i++) {
+    const date = new Date(monday);
+    date.setDate(monday.getDate() + i);
+    dates.push(date);
+  }
+  return dates;
+};
+
+const WEEK_DATA = {
+  weekNumber: 1,
+  theme: 'Langt spill og styrke',
+  period: 'Vintertrening',
+  totalPlannedHours: 12,
+  completedHours: 5.5,
+  days: [
+    {
+      dayName: 'Mandag',
+      date: '2025-12-29',
+      isToday: false,
+      isCompleted: true,
+      sessions: [
+        {
+          id: 's1',
+          type: 'FYS',
+          pyramid: 'FYS',
+          name: 'Styrketrening',
+          formula: 'FYS_STYRKE_M0',
+          lPhase: null,
+          csLevel: null,
+          environment: 'M0',
+          pressure: 'PR1',
+          duration: 60,
+          startTime: '07:00',
+          status: 'completed',
+          description: 'Fokus på core og rotasjon. 3 sett av hver øvelse.',
+          exercises: ['Planke 3x60s', 'Russian twists 3x20', 'Cable rotations 3x15'],
+        },
+        {
+          id: 's2',
+          type: 'TURN',
+          pyramid: 'TURN',
+          name: 'Visualisering',
+          formula: 'TURN_UTV_M0_PR1',
+          duration: 20,
+          startTime: '18:00',
+          status: 'completed',
+          description: 'Visualiser perfekte slag på driving range.',
+        },
+      ],
+    },
+    {
+      dayName: 'Tirsdag',
+      date: '2025-12-30',
+      isToday: false,
+      isCompleted: true,
+      sessions: [
+        {
+          id: 's3',
+          type: 'TEK',
+          pyramid: 'TEK',
+          name: 'Simulator - Driver',
+          formula: 'TEK_TEE_L-BALL_CS60_M1_PR2',
+          lPhase: 'L-BALL',
+          csLevel: 60,
+          environment: 'M1',
+          pressure: 'PR2',
+          duration: 90,
+          startTime: '09:00',
+          status: 'completed',
+          description: 'Fokus på konsistent kontakt og ballbane.',
+          exercises: ['Oppvarming 20 baller', 'Alignment drill', 'Tempo drill 1-2-3', 'Full sving med mål'],
+        },
+        {
+          id: 's4',
+          type: 'SLAG',
+          pyramid: 'SLAG',
+          name: 'Putting drill',
+          formula: 'SLAG_PUTT5-10_M3_PR2_SPEED',
+          environment: 'M3',
+          pressure: 'PR2',
+          duration: 30,
+          startTime: '14:00',
+          status: 'completed',
+          description: 'Gate putting og avstandskontroll.',
+        },
+      ],
+    },
+    {
+      dayName: 'Onsdag',
+      date: '2025-12-31',
+      isToday: true,
+      isCompleted: false,
+      sessions: [
+        { id: 's5', type: 'REST', pyramid: 'REST', name: 'Hviledag', duration: 0, status: 'pending' },
+      ],
+    },
+    {
+      dayName: 'Torsdag',
+      date: '2026-01-01',
+      isToday: false,
+      isCompleted: false,
+      sessions: [
+        {
+          id: 's6',
+          type: 'TEK',
+          pyramid: 'TEK',
+          name: 'Lange jern',
+          formula: 'TEK_INN150_L-BALL_CS70_M2_PR2_P4.0-P7.0',
+          lPhase: 'L-BALL',
+          csLevel: 70,
+          environment: 'M2',
+          pressure: 'PR2',
+          positionStart: 'P4.0',
+          positionEnd: 'P7.0',
+          duration: 120,
+          startTime: '09:00',
+          status: 'pending',
+          description: 'Presisjon og avstandskontroll med 4-6 jern.',
+          exercises: ['6-jern til mål 147m', '5-jern til mål 160m', '4-jern til mål 175m'],
+        },
+        {
+          id: 's7',
+          type: 'SLAG',
+          pyramid: 'SLAG',
+          name: 'Chipping',
+          formula: 'SLAG_CHIP_M3_PR2_P6.0-P8.0',
+          environment: 'M3',
+          pressure: 'PR2',
+          duration: 40,
+          startTime: '14:00',
+          status: 'pending',
+          description: 'Chip fra tight lie og fringe.',
+        },
+      ],
+    },
+    {
+      dayName: 'Fredag',
+      date: '2026-01-02',
+      isToday: false,
+      isCompleted: false,
+      sessions: [
+        {
+          id: 's8',
+          type: 'FYS',
+          pyramid: 'FYS',
+          name: 'Mobilitet',
+          formula: 'FYS_MOBILITET_M0',
+          environment: 'M0',
+          duration: 45,
+          startTime: '07:00',
+          status: 'pending',
+          description: 'Dynamisk stretching og mobilitetstrening.',
+        },
+        {
+          id: 's9',
+          type: 'TURN',
+          pyramid: 'TURN',
+          name: 'Mental forberedelse',
+          formula: 'TURN_UTV_M0_PR2',
+          duration: 30,
+          startTime: '18:00',
+          status: 'pending',
+          description: 'Pre-round rutine og fokusøvelser.',
+        },
+      ],
+    },
+    {
+      dayName: 'Lørdag',
+      date: '2026-01-03',
+      isToday: false,
+      isCompleted: false,
+      sessions: [
+        {
+          id: 's10',
+          type: 'SPILL',
+          pyramid: 'SPILL',
+          name: 'Simulert runde',
+          formula: 'SPILL_BANE_CS90_M4_PR4_STRATEGI',
+          csLevel: 90,
+          environment: 'M4',
+          pressure: 'PR4',
+          duration: 150,
+          startTime: '10:00',
+          status: 'pending',
+          description: 'Full 18-hulls simulering på TrackMan.',
+          exercises: ['Pre-shot rutine', 'Course management', 'Scoring fokus'],
+        },
+      ],
+    },
+    {
+      dayName: 'Søndag',
+      date: '2026-01-04',
+      isToday: false,
+      isCompleted: false,
+      sessions: [
+        { id: 's11', type: 'REST', pyramid: 'REST', name: 'Hviledag', duration: 0, status: 'pending' },
+      ],
+    },
+  ],
+  weeklyGoals: [
+    { text: 'Gjennomføre alle planlagte styrkeøkter', progress: 50 },
+    { text: 'Minimum 200 baller med driver', progress: 75 },
+    { text: '2 timer putting-trening', progress: 30 },
+  ],
+  stats: {
+    technicalHours: 6,
+    physicalHours: 2,
+    mentalHours: 1,
+    shortGameHours: 1.5,
+    restDays: 2,
+  },
+};
+
+// ============================================================================
+// HELPER FUNCTIONS
+// ============================================================================
+
+const getSessionTypeConfig = (type) => {
+  return SESSION_TYPE_CLASSES[type] || SESSION_TYPE_CLASSES.rest;
+};
+
+const formatDate = (dateStr) => {
+  const date = new Date(dateStr);
+  return date.toLocaleDateString('nb-NO', { day: 'numeric' });
+};
+
+const formatFullDate = (dateStr) => {
+  const date = new Date(dateStr);
+  return date.toLocaleDateString('nb-NO', { weekday: 'long', day: 'numeric', month: 'long' });
+};
+
+// ============================================================================
+// SESSION TO CALENDAR EVENT TRANSFORMATION
+// ============================================================================
+
+/**
+ * Convert training plan sessions to calendar events
+ * Assigns default times based on session type and order
+ */
+const sessionsToCalendarEvents = (weekData) => {
+  const events = [];
+
+  // Default time assignments by session type
+  const defaultTimes = {
+    FYS: '07:00',      // Fysisk - morning
+    TEK: '09:00',      // Teknikk - mid-morning
+    SLAG: '14:00',     // Golfslag - afternoon
+    SPILL: '10:00',    // Spill - morning
+    TURN: '18:00',     // Turnering/mental - evening
+    REST: null,        // Rest days - no time
+  };
+
+  weekData.days.forEach((day) => {
+    let currentHour = 7; // Start assigning from 7:00
+
+    day.sessions.forEach((session, idx) => {
+      if (session.type === 'REST') return; // Skip rest days
+
+      // Use session's assigned time or calculate based on order
+      const startTime = session.startTime || defaultTimes[session.type] || `${String(currentHour).padStart(2, '0')}:00`;
+      const [startHour, startMin] = startTime.split(':').map(Number);
+
+      const durationHours = Math.floor(session.duration / 60);
+      const durationMins = session.duration % 60;
+
+      let endHour = startHour + durationHours;
+      let endMin = startMin + durationMins;
+
+      if (endMin >= 60) {
+        endHour += 1;
+        endMin -= 60;
+      }
+
+      const endTime = `${String(endHour).padStart(2, '0')}:${String(endMin).padStart(2, '0')}`;
+
+      // Map session type to calendar category
+      const categoryMap = {
+        FYS: 'trening',
+        TEK: 'trening',
+        SLAG: 'trening',
+        SPILL: 'trening',
+        TURN: 'mental',
+      };
+
+      // Map status
+      const statusMap = {
+        completed: 'completed',
+        in_progress: 'in_progress',
+        pending: 'planned',
+      };
+
+      events.push({
+        id: session.id,
+        title: session.name,
+        date: day.date,
+        start: startTime,
+        end: endTime,
+        location: session.environment ? ENVIRONMENT_LABELS[session.environment] : undefined,
+        category: categoryMap[session.type] || 'trening',
+        status: statusMap[session.status] || 'planned',
+        // Store original session for details
+        _originalSession: session,
+      });
+
+      // Increment time for next session (add buffer time)
+      currentHour = endHour + 1;
+      if (currentHour > 21) currentHour = 7; // Wrap around
+    });
+  });
+
+  return events;
+};
+
+// ============================================================================
+// SESSION CHIP COMPONENT (Notion-style)
+// ============================================================================
+
+const SessionChip = ({ session, isSelected, onClick }) => {
+  const config = getSessionTypeConfig(session.type);
+  const Icon = config.icon;
+  const isRest = session.type === 'rest' || session.type === 'REST';
+  const isCompleted = session.status === 'completed';
+  const pyramidConfig = session.pyramid ? PYRAMID_CLASSES[session.pyramid] : null;
+
+  if (isRest) {
+    return (
+      <div className="py-1.5 px-2.5 text-xs text-ak-text-secondary italic">
+        Hviledag
+      </div>
+    );
+  }
+
+  // Build subtitle from AK hierarchy data
+  const subtitleParts = [];
+  if (session.lPhase && L_PHASE_LABELS[session.lPhase]) {
+    subtitleParts.push(L_PHASE_LABELS[session.lPhase]);
+  }
+  if (session.csLevel) {
+    subtitleParts.push(`CS${session.csLevel}`);
+  }
+  if (session.environment && ENVIRONMENT_LABELS[session.environment]) {
+    subtitleParts.push(ENVIRONMENT_LABELS[session.environment]);
+  }
+
+  return (
+    <button
+      onClick={(e) => {
+        e.stopPropagation();
+        onClick(session);
+      }}
+      data-session-chip
+      className={`flex flex-col gap-0.5 py-1.5 px-2.5 border-none rounded-md text-xs font-medium cursor-pointer w-full text-left transition-all duration-150 ${
+        isSelected
+          ? `${config.activeBg} text-white`
+          : `${config.bg} ${config.text} hover:opacity-80`
+      } ${isCompleted ? 'opacity-70' : ''}`}
+    >
+      <div className="flex items-center gap-1.5">
+        {pyramidConfig?.emoji && <span className="text-sm">{pyramidConfig.emoji}</span>}
+        {!pyramidConfig?.emoji && (isCompleted ? <CheckCircle size={12} /> : <Icon size={12} />)}
+        <span className={`flex-1 overflow-hidden text-ellipsis whitespace-nowrap ${isCompleted ? 'line-through' : ''}`}>
+          {session.name}
+        </span>
+        <span className="text-[10px] opacity-80">
+          {session.duration}m
+        </span>
+      </div>
+      {subtitleParts.length > 0 && (
+        <div className={`text-[10px] opacity-70 ${isSelected ? 'text-white/80' : ''}`}>
+          {subtitleParts.join(' • ')}
+        </div>
+      )}
+    </button>
+  );
+};
+
+// ============================================================================
+// DAY COLUMN COMPONENT (Notion-style)
+// ============================================================================
+
+const DayColumn = ({ day, selectedSessionId, onSessionClick }) => {
+  const isToday = day.isToday;
+  const dayNumber = formatDate(day.date);
+  const dayName = day.dayName.slice(0, 3);
+
+  return (
+    <div className="flex-1 min-w-0 border-r border-ak-border-default flex flex-col">
+      {/* Day Header */}
+      <div className={`py-3 px-2 border-b border-ak-border-default text-center relative ${
+        isToday ? 'bg-ak-primary/5' : ''
+      }`}>
+        {isToday && (
+          <div className="absolute left-0 top-0 bottom-0 w-[3px] bg-ak-primary" />
+        )}
+        <div className={`text-[11px] font-medium uppercase tracking-wide ${
+          isToday ? 'text-ak-primary' : 'text-ak-text-secondary'
+        }`}>
+          {dayName}
+        </div>
+        <div className={`text-xl font-semibold mt-0.5 ${
+          isToday ? 'text-ak-primary' : 'text-ak-text-primary'
+        }`}>
+          {dayNumber}
+        </div>
+        {isToday && (
+          <div className="mt-1 text-[9px] font-semibold text-ak-primary uppercase tracking-wide">
+            I dag
+          </div>
+        )}
+      </div>
+
+      {/* Sessions */}
+      <div className={`flex-1 p-2 flex flex-col gap-1.5 min-h-[120px] ${
+        day.isCompleted ? 'bg-ak-surface-subtle' : ''
+      }`}>
+        {day.sessions.map((session) => (
+          <SessionChip
+            key={session.id}
+            session={session}
+            isSelected={selectedSessionId === session.id}
+            onClick={onSessionClick}
+          />
+        ))}
+      </div>
+    </div>
+  );
+};
+
+// ============================================================================
+// SESSION SIDEBAR DRAWER COMPONENT
+// ============================================================================
+
+const SessionSidebarDrawer = ({ isOpen, session, onClose, allSessions, onSessionSelect }) => {
+  const drawerRef = useRef(null);
+  const config = session ? getSessionTypeConfig(session.type) : null;
+
+  // Handle ESC key
+  useEffect(() => {
+    const handleKeyDown = (e) => {
+      if (e.key === 'Escape' && isOpen) {
+        onClose();
+      }
+    };
+    document.addEventListener('keydown', handleKeyDown);
+    return () => document.removeEventListener('keydown', handleKeyDown);
+  }, [isOpen, onClose]);
+
+  // Handle click outside
+  useEffect(() => {
+    const handleClickOutside = (e) => {
+      if (drawerRef.current && !drawerRef.current.contains(e.target) && isOpen) {
+        if (e.target.closest('[data-session-chip]')) return;
+        onClose();
+      }
+    };
+    document.addEventListener('mousedown', handleClickOutside);
+    return () => document.removeEventListener('mousedown', handleClickOutside);
+  }, [isOpen, onClose]);
+
+  return (
+    <>
+      {/* Backdrop */}
+      <div
+        className={`fixed inset-0 bg-black/10 transition-all duration-200 z-40 ${
+          isOpen ? 'opacity-100 visible' : 'opacity-0 invisible'
+        }`}
+        onClick={onClose}
+      />
+
+      {/* Drawer */}
+      <aside
+        ref={drawerRef}
+        role="complementary"
+        aria-label="Øktdetaljer"
+        className={`fixed top-0 left-0 bottom-0 w-[380px] bg-ak-surface-base z-50 flex flex-col overflow-hidden transition-transform duration-[250ms] ${
+          isOpen ? 'translate-x-0 shadow-xl' : '-translate-x-full'
+        }`}
+      >
+        {/* Header */}
+        <div className="flex items-center justify-between py-4 px-5 border-b border-ak-border-default">
+          <h2 className="text-sm font-semibold text-ak-text-primary m-0">
+            {session ? 'Øktdetaljer' : 'Oversikt'}
+          </h2>
+          <button
+            onClick={onClose}
+            aria-label="Lukk sidebar"
+            className="flex items-center justify-center w-8 h-8 border-none bg-transparent rounded-md cursor-pointer text-ak-text-secondary hover:bg-ak-surface-subtle"
+          >
+            <X size={18} />
+          </button>
+        </div>
+
+        {/* Content */}
+        <div className="flex-1 overflow-auto p-5">
+          {session ? (
+            // Session Details View
+            <div>
+              {/* Session Title */}
+              <div className="mb-5">
+                <div className={`inline-flex items-center gap-1.5 py-1 px-2.5 ${config.bg} ${config.text} rounded-md text-[11px] font-semibold mb-3`}>
+                  {React.createElement(config.icon, { size: 12 })}
+                  {config.label}
+                </div>
+                <h3 className="text-xl font-semibold text-ak-text-primary m-0">
+                  {session.name}
+                </h3>
+              </div>
+
+              {/* Metadata */}
+              <div className="flex flex-col gap-3 p-4 bg-ak-surface-subtle rounded-lg mb-5">
+                <div className="flex items-center gap-2.5">
+                  <Calendar size={14} className="text-ak-text-secondary" />
+                  <span className="text-[13px] text-ak-text-primary">
+                    {formatFullDate(WEEK_DATA.days.find(d => d.sessions.some(s => s.id === session.id))?.date)}
+                  </span>
+                </div>
+                <div className="flex items-center gap-2.5">
+                  <Clock size={14} className="text-ak-text-secondary" />
+                  <span className="text-[13px] text-ak-text-primary">
+                    {session.duration} minutter
+                  </span>
+                </div>
+                <div className="flex items-center gap-2.5">
+                  {session.status === 'completed' ? (
+                    <>
+                      <CheckCircle size={14} className="text-ak-status-success" />
+                      <span className="text-[13px] text-ak-status-success font-medium">
+                        Fullført
+                      </span>
+                    </>
+                  ) : session.status === 'in_progress' ? (
+                    <>
+                      <div className="w-3.5 h-3.5 rounded-full bg-ak-info" />
+                      <span className="text-[13px] text-ak-info font-medium">
+                        Pågår
+                      </span>
+                    </>
+                  ) : (
+                    <>
+                      <div className="w-3.5 h-3.5 rounded-full border-2 border-ak-text-secondary" />
+                      <span className="text-[13px] text-ak-text-secondary">
+                        Planlagt
+                      </span>
+                    </>
+                  )}
+                </div>
+              </div>
+
+              {/* Description */}
+              {session.description && (
+                <div className="mb-5">
+                  <h4 className="text-xs font-semibold text-ak-text-secondary uppercase tracking-wide mb-2">
+                    Beskrivelse
+                  </h4>
+                  <p className="text-sm text-ak-text-primary leading-relaxed m-0">
+                    {session.description}
+                  </p>
+                </div>
+              )}
+
+              {/* Exercises */}
+              {session.exercises && session.exercises.length > 0 && (
+                <div className="mb-5">
+                  <h4 className="text-xs font-semibold text-ak-text-secondary uppercase tracking-wide mb-2">
+                    Øvelser
+                  </h4>
+                  <ul className="m-0 p-0 list-none">
+                    {session.exercises.map((exercise, idx) => (
+                      <li
+                        key={idx}
+                        className={`flex items-center gap-2.5 py-2.5 ${
+                          idx < session.exercises.length - 1 ? 'border-b border-ak-border-default' : ''
+                        }`}
+                      >
+                        <div className={`w-1.5 h-1.5 rounded-full ${config.activeBg} shrink-0`} />
+                        <span className="text-[13px] text-ak-text-primary">
+                          {exercise}
+                        </span>
+                      </li>
+                    ))}
+                  </ul>
+                </div>
+              )}
+
+              {/* Actions */}
+              <div className="flex flex-col gap-2">
+                {session.status !== 'completed' && (
+                  <button className="flex items-center justify-center gap-2 py-3 px-4 bg-ak-primary text-white border-none rounded-lg text-sm font-medium cursor-pointer">
+                    <CheckCircle size={16} />
+                    Marker som fullført
+                  </button>
+                )}
+                <button className="flex items-center justify-center gap-2 py-3 px-4 bg-transparent text-ak-text-primary border border-ak-border-default rounded-lg text-sm font-medium cursor-pointer">
+                  <FileText size={16} />
+                  Legg til notat
+                </button>
+              </div>
+            </div>
+          ) : (
+            // Overview View (when no session selected)
+            <div>
+              {/* Today's Sessions */}
+              <div className="mb-6">
+                <h4 className="text-xs font-semibold text-ak-text-secondary uppercase tracking-wide mb-3">
+                  Dagens økter
+                </h4>
+                <div className="flex flex-col gap-2">
+                  {allSessions
+                    .filter(s => {
+                      const day = WEEK_DATA.days.find(d => d.sessions.some(sess => sess.id === s.id));
+                      return day?.isToday;
+                    })
+                    .map(sess => {
+                      const cfg = getSessionTypeConfig(sess.type);
+                      return (
+                        <button
+                          key={sess.id}
+                          onClick={() => onSessionSelect(sess)}
+                          className="flex items-center gap-2.5 p-3 bg-ak-surface-subtle border-none rounded-lg cursor-pointer text-left w-full"
+                        >
+                          <div className={`w-8 h-8 rounded-md ${cfg.bg} flex items-center justify-center`}>
+                            {React.createElement(cfg.icon, { size: 16, className: cfg.text })}
+                          </div>
+                          <div className="flex-1">
+                            <div className="text-[13px] font-medium text-ak-text-primary">
+                              {sess.name}
+                            </div>
+                            <div className="text-xs text-ak-text-secondary">
+                              {sess.duration} min
+                            </div>
+                          </div>
+                          <ChevronRight size={16} className="text-ak-text-secondary" />
+                        </button>
+                      );
+                    })}
+                  {allSessions.filter(s => {
+                    const day = WEEK_DATA.days.find(d => d.sessions.some(sess => sess.id === s.id));
+                    return day?.isToday;
+                  }).length === 0 && (
+                    <p className="text-[13px] text-ak-text-secondary italic">
+                      Ingen økter planlagt i dag
+                    </p>
+                  )}
+                </div>
+              </div>
+
+              {/* Week Summary */}
+              <div className="mb-6">
+                <h4 className="text-xs font-semibold text-ak-text-secondary uppercase tracking-wide mb-3">
+                  Ukeoversikt
+                </h4>
+                <div className="p-4 bg-ak-surface-subtle rounded-lg">
+                  <div className="flex justify-between mb-3">
+                    <span className="text-[13px] text-ak-text-secondary">Fullført</span>
+                    <span className="text-sm font-semibold text-ak-text-primary">
+                      {WEEK_DATA.completedHours}t / {WEEK_DATA.totalPlannedHours}t
+                    </span>
+                  </div>
+                  <div className="h-1.5 bg-ak-border-default rounded-sm overflow-hidden">
+                    <div
+                      className="h-full bg-ak-primary rounded-sm"
+                      style={{ width: `${(WEEK_DATA.completedHours / WEEK_DATA.totalPlannedHours) * 100}%` }}
+                    />
+                  </div>
+                </div>
+              </div>
+
+              {/* Category Filter */}
+              <div>
+                <h4 className="text-xs font-semibold text-ak-text-secondary uppercase tracking-wide mb-3">
+                  Kategorier
+                </h4>
+                <div className="flex flex-wrap gap-2">
+                  {['technical', 'physical', 'mental', 'short_game'].map(type => {
+                    const cfg = getSessionTypeConfig(type);
+                    return (
+                      <div
+                        key={type}
+                        className={`flex items-center gap-1.5 py-1.5 px-3 ${cfg.bg} rounded-md text-xs font-medium ${cfg.text}`}
+                      >
+                        {React.createElement(cfg.icon, { size: 12 })}
+                        {cfg.label}
+                      </div>
+                    );
+                  })}
+                </div>
+              </div>
+            </div>
+          )}
+        </div>
+      </aside>
+    </>
+  );
+};
+
+// ============================================================================
+// WEEK STATS BAR (Notion-style minimal)
+// ============================================================================
+
+const WeekStatsBar = ({ stats, completedHours, totalHours }) => {
+  const progressPercent = Math.round((completedHours / totalHours) * 100);
+
+  return (
+    <div className="flex items-center gap-6 py-3 px-5 bg-ak-surface-base border-b border-ak-border-default text-[13px]">
+      <div className="flex items-center gap-2">
+        <span className="text-ak-text-secondary">Fremgang:</span>
+        <span className="font-semibold text-ak-text-primary">{progressPercent}%</span>
+        <div className="w-20 h-1 bg-ak-border-default rounded-sm overflow-hidden">
+          <div
+            className="h-full bg-ak-primary rounded-sm"
+            style={{ width: `${progressPercent}%` }}
+          />
+        </div>
+      </div>
+
+      <div className="w-px h-4 bg-ak-border-default" />
+
+      <div className="flex items-center gap-1.5">
+        <Clock size={14} className="text-ak-text-secondary" />
+        <span className="text-ak-text-secondary">{completedHours}t fullført</span>
+        <span className="text-ak-text-secondary/50">/</span>
+        <span className="text-ak-text-secondary">{totalHours}t planlagt</span>
+      </div>
+
+      <div className="w-px h-4 bg-ak-border-default" />
+
+      <div className="flex items-center gap-3">
+        {[
+          { type: 'technical', hours: stats.technicalHours },
+          { type: 'physical', hours: stats.physicalHours },
+          { type: 'mental', hours: stats.mentalHours },
+          { type: 'short_game', hours: stats.shortGameHours },
+        ].map(({ type, hours }) => {
+          const cfg = getSessionTypeConfig(type);
+          return (
+            <div key={type} className="flex items-center gap-1">
+              <div className={`w-2 h-2 rounded-sm ${cfg.activeBg}`} />
+              <span className="text-ak-text-secondary">{hours}t</span>
+            </div>
+          );
+        })}
+      </div>
+    </div>
+  );
+};
+
+// ============================================================================
+// MAIN COMPONENT
+// ============================================================================
+
+const UkensTreningsplanContainer = () => {
+  const [weekOffset, setWeekOffset] = useState(0);
+  const [selectedSessionId, setSelectedSessionId] = useState(null);
+  const [isSidebarOpen, setIsSidebarOpen] = useState(false);
+  const [viewMode, setViewMode] = useState('calendar'); // 'calendar' or 'list'
+
+  const weekDates = getWeekDates(weekOffset);
+  const startDate = weekDates[0].toLocaleDateString('nb-NO', { day: 'numeric', month: 'short' });
+  const endDate = weekDates[6].toLocaleDateString('nb-NO', { day: 'numeric', month: 'short' });
+
+  // Get all sessions flat
+  const allSessions = WEEK_DATA.days.flatMap(day => day.sessions);
+  const selectedSession = allSessions.find(s => s.id === selectedSessionId);
+
+  // Convert sessions to calendar events
+  const calendarEvents = useMemo(() => {
+    return sessionsToCalendarEvents(WEEK_DATA);
+  }, []);
+
+  const handleSessionClick = useCallback((session) => {
+    setSelectedSessionId(session.id);
+    setIsSidebarOpen(true);
+  }, []);
+
+  const handleCalendarEventClick = useCallback((event) => {
+    // If event has original session data, use that
+    const session = event._originalSession || allSessions.find(s => s.id === event.id);
+    if (session) {
+      handleSessionClick(session);
+    }
+  }, [allSessions, handleSessionClick]);
+
+  const handleCloseSidebar = useCallback(() => {
+    setIsSidebarOpen(false);
+    setTimeout(() => setSelectedSessionId(null), 200);
+  }, []);
+
+  const handleToggleSidebar = useCallback(() => {
+    if (isSidebarOpen) {
+      handleCloseSidebar();
+    } else {
+      setSelectedSessionId(null);
+      setIsSidebarOpen(true);
+    }
+  }, [isSidebarOpen, handleCloseSidebar]);
+
+  return (
+    <div className="min-h-screen bg-ak-surface-base">
+      {/* Page Header */}
+      <PageHeader
+        title="Ukens treningsplan"
+        subtitle="Din plan for denne uken"
+      />
+
+      {/* AI Coach Guide */}
+      <div className="px-5 mb-3">
+        <AICoachGuide config={GUIDE_PRESETS.weeklyPlan} variant="compact" />
+      </div>
+
+      {/* Navigation Bar */}
+      <div className="flex items-center justify-between py-3 px-5 border-b border-ak-border-default bg-ak-surface-base">
+        <div className="flex items-center gap-3">
+          {/* Sidebar Toggle */}
+          <button
+            onClick={handleToggleSidebar}
+            className={`flex items-center justify-center w-8 h-8 border border-ak-border-default rounded-md cursor-pointer text-ak-text-secondary ${
+              isSidebarOpen ? 'bg-ak-surface-subtle' : 'bg-ak-surface-base'
+            }`}
+            aria-label="Toggle sidebar"
+          >
+            <MoreHorizontal size={16} />
+          </button>
+
+          {/* Week Navigation */}
+          <button
+            onClick={() => setWeekOffset(weekOffset - 1)}
+            className="flex items-center justify-center w-8 h-8 border border-ak-border-default rounded-md bg-ak-surface-base cursor-pointer text-ak-text-primary"
+            aria-label="Forrige uke"
+          >
+            <ChevronLeft size={16} />
+          </button>
+          <button
+            onClick={() => setWeekOffset(weekOffset + 1)}
+            className="flex items-center justify-center w-8 h-8 border border-ak-border-default rounded-md bg-ak-surface-base cursor-pointer text-ak-text-primary"
+            aria-label="Neste uke"
+          >
+            <ChevronRight size={16} />
+          </button>
+
+          {/* Week Info */}
+          <div className="ml-2">
+            <span className="text-[15px] font-semibold text-ak-text-primary">
+              Uke {WEEK_DATA.weekNumber}
+            </span>
+            <span className="text-sm text-ak-text-secondary ml-2">
+              {startDate} – {endDate}
+            </span>
+          </div>
+        </div>
+
+        {/* Right Side */}
+        <div className="flex items-center gap-3">
+          {/* View Toggle */}
+          <div className="flex items-center gap-1 p-1 bg-ak-surface-subtle rounded-md">
+            <button
+              onClick={() => setViewMode('calendar')}
+              className={`flex items-center gap-1.5 py-1.5 px-3 border-none rounded text-xs font-medium cursor-pointer transition-colors ${
+                viewMode === 'calendar'
+                  ? 'bg-ak-surface-base text-ak-text-primary shadow-sm'
+                  : 'bg-transparent text-ak-text-secondary hover:text-ak-text-primary'
+              }`}
+              aria-label="Kalendervisning"
+            >
+              <Grid size={14} />
+              Kalender
+            </button>
+            <button
+              onClick={() => setViewMode('list')}
+              className={`flex items-center gap-1.5 py-1.5 px-3 border-none rounded text-xs font-medium cursor-pointer transition-colors ${
+                viewMode === 'list'
+                  ? 'bg-ak-surface-base text-ak-text-primary shadow-sm'
+                  : 'bg-transparent text-ak-text-secondary hover:text-ak-text-primary'
+              }`}
+              aria-label="Listevisning"
+            >
+              <List size={14} />
+              Liste
+            </button>
+          </div>
+
+          <div className="flex items-center gap-1.5 py-1.5 px-3 bg-ak-primary/10 rounded-md text-xs font-medium text-ak-primary">
+            <Calendar size={12} />
+            {WEEK_DATA.period}
+          </div>
+
+          <button className="flex items-center gap-1.5 py-2 px-3.5 bg-ak-text-primary text-white border-none rounded-md text-[13px] font-medium cursor-pointer">
+            <Plus size={14} />
+            Legg til økt
+          </button>
+        </div>
+      </div>
+
+      {/* Stats Bar */}
+      <WeekStatsBar
+        stats={WEEK_DATA.stats}
+        completedHours={WEEK_DATA.completedHours}
+        totalHours={WEEK_DATA.totalPlannedHours}
+      />
+
+      {/* View Content */}
+      {viewMode === 'calendar' ? (
+        /* Calendar Week Grid View */
+        <div className="h-[calc(100vh-340px)]">
+          <CalendarWeekGrid
+            weekDates={weekDates}
+            events={calendarEvents}
+            onEventClick={handleCalendarEventClick}
+            startHour={6}
+            endHour={22}
+          />
+        </div>
+      ) : (
+        /* Original List View */
+        <div className="flex border-b border-ak-border-default min-h-[calc(100vh-280px)]">
+          {WEEK_DATA.days.map((day, idx) => (
+            <DayColumn
+              key={idx}
+              day={day}
+              selectedSessionId={selectedSessionId}
+              onSessionClick={handleSessionClick}
+            />
+          ))}
+        </div>
+      )}
+
+      {/* Sidebar Drawer */}
+      <SessionSidebarDrawer
+        isOpen={isSidebarOpen}
+        session={selectedSession}
+        onClose={handleCloseSidebar}
+        allSessions={allSessions}
+        onSessionSelect={handleSessionClick}
+      />
+    </div>
+  );
+};
+
+export default UkensTreningsplanContainer;

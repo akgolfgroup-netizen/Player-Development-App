@@ -34,7 +34,7 @@ const MOCK_TOURNAMENTS = [
   },
   {
     id: 't2',
-    name: 'AK Golf Academy Cup',
+    name: 'TIER Golf Academy Cup',
     type: 'club',
     category: 'open',
     startDate: '2025-04-20',
@@ -46,7 +46,7 @@ const MOCK_TOURNAMENTS = [
     currentParticipants: 45,
     status: 'registration_open',
     isRegistered: true,
-    description: 'Intern turnering for AK Golf Academy medlemmer.',
+    description: 'Intern turnering for TIER Golf Academy medlemmer.',
     format: '18 hull stableford',
     fee: 350,
   },
@@ -155,7 +155,7 @@ const getStatusConfig = (status, isRegistered) => {
   if (isRegistered) {
     return {
       label: 'Påmeldt',
-      color: 'var(--success)',
+      color: 'var(--status-success)',
       bg: 'rgba(var(--success-rgb), 0.15)',
       icon: CheckCircle,
     };
@@ -172,7 +172,7 @@ const getStatusConfig = (status, isRegistered) => {
     case 'registration_closed':
       return {
         label: 'Fullt',
-        color: 'var(--error)',
+        color: 'var(--status-error)',
         bg: 'rgba(var(--error-rgb), 0.15)',
         icon: AlertCircle,
       };
@@ -200,7 +200,7 @@ const getCategoryConfig = (category) => {
     case 'elite':
       return { label: 'Elite', color: 'var(--achievement)' };
     case 'open':
-      return { label: 'Åpen', color: 'var(--success)' };
+      return { label: 'Åpen', color: 'var(--status-success)' };
     default:
       return { label: category, color: 'var(--text-secondary)' };
   }
@@ -238,7 +238,7 @@ const TournamentCard = ({ tournament, onSelect }) => {
         boxShadow: '0 2px 8px rgba(0,0,0,0.06)',
         cursor: 'pointer',
         transition: 'all 0.2s ease',
-        border: tournament.isRegistered ? '2px solid var(--success)' : '2px solid transparent',
+        border: tournament.isRegistered ? '2px solid var(--status-success)' : '2px solid transparent',
       }}
       onMouseEnter={(e) => {
         e.currentTarget.style.transform = 'translateY(-2px)';
@@ -331,7 +331,7 @@ const TournamentCard = ({ tournament, onSelect }) => {
           {tournament.currentParticipants >= tournament.maxParticipants && (
             <span style={{
               fontSize: '11px',
-              color: 'var(--error)',
+              color: 'var(--status-error)',
               fontWeight: 500,
             }}>
               (Fullt)
@@ -720,7 +720,7 @@ const TournamentDetailModal = ({ tournament, onClose, onRegister }) => {
               padding: '14px',
               borderRadius: '12px',
               backgroundColor: 'rgba(var(--success-rgb), 0.15)',
-              color: 'var(--success)',
+              color: 'var(--status-success)',
               fontSize: '15px',
               fontWeight: 600,
             }}>
@@ -862,6 +862,12 @@ const TurneringskalenderContainer = () => {
 
   return (
     <div style={{ minHeight: '100vh', backgroundColor: 'var(--bg-secondary)' }}>
+      <PageHeader
+        title="Turneringskalender"
+        subtitle="Finn og meld deg på turneringer"
+        helpText="Oversikt over kommende golfsturneringer. Se åpne påmeldinger, filtrer på kategori (junior, elite, åpen), meld deg på turneringer og se dine tidligere resultater. Se startavgift, format og deltakerinformasjon."
+        showBackButton={false}
+      />
       <div style={{ padding: '0' }}>
         {/* Stats Row */}
         <div style={{
@@ -887,7 +893,7 @@ const TurneringskalenderContainer = () => {
             padding: '16px',
             textAlign: 'center',
           }}>
-            <div style={{ fontSize: '24px', fontWeight: 700, color: 'var(--success)' }}>
+            <div style={{ fontSize: '24px', fontWeight: 700, color: 'var(--status-success)' }}>
               {tournaments.filter(t => t.isRegistered).length}
             </div>
             <div style={{ fontSize: '12px', color: 'var(--text-secondary)' }}>Påmeldt</div>

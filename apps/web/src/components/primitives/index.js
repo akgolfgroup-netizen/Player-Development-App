@@ -1,5 +1,5 @@
 /**
- * AK GOLF ACADEMY — DESIGN SYSTEM v3.0
+ * TIER GOLF — DESIGN SYSTEM v3.0
  * Primitive Components
  *
  * These are the recommended building blocks for all UI.

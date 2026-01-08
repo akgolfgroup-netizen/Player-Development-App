@@ -29,7 +29,7 @@ import {
   LucideIcon,
 } from 'lucide-react';
 import Button from '../../ui/primitives/Button';
-import { SectionTitle } from '../../components/typography';
+import { SectionTitle } from '../../components/typography/Headings';
 
 // ============================================================================
 // TYPES
@@ -114,7 +114,7 @@ const StepItem = memo(({ step, isCompleted, onNavigate }: StepItemProps) => {
 
   return (
     <button
-      className={`w-full flex items-center gap-4 px-6 py-4 cursor-pointer transition-colors min-h-[72px] border-none bg-transparent text-left hover:bg-ak-surface-subtle ${
+      className={`w-full flex items-center gap-4 px-6 py-4 cursor-pointer transition-colors min-h-[72px] border-none bg-transparent text-left hover:bg-tier-surface-base ${
         isCompleted ? 'opacity-70' : ''
       }`}
       onClick={() => onNavigate(step.route)}
@@ -126,8 +126,8 @@ const StepItem = memo(({ step, isCompleted, onNavigate }: StepItemProps) => {
       <div
         className={`w-7 h-7 rounded-full flex items-center justify-center flex-shrink-0 transition-all ${
           isCompleted
-            ? 'bg-ak-status-success text-white border-none'
-            : 'bg-transparent text-ak-text-tertiary border-2 border-ak-border-default'
+            ? 'bg-tier-success text-white border-none'
+            : 'bg-transparent text-tier-text-tertiary border-2 border-tier-border-default'
         }`}
         aria-hidden="true"
       >
@@ -142,8 +142,8 @@ const StepItem = memo(({ step, isCompleted, onNavigate }: StepItemProps) => {
       <div
         className={`w-10 h-10 rounded-[10px] flex items-center justify-center flex-shrink-0 ${
           isCompleted
-            ? 'bg-ak-status-success/10 text-ak-status-success'
-            : 'bg-ak-primary/10 text-ak-primary'
+            ? 'bg-tier-success/10 text-tier-success'
+            : 'bg-tier-navy/10 text-tier-navy'
         }`}
         aria-hidden="true"
       >
@@ -152,22 +152,22 @@ const StepItem = memo(({ step, isCompleted, onNavigate }: StepItemProps) => {
 
       {/* Step content */}
       <div className="flex-1 min-w-0">
-        <div className={`text-[15px] font-semibold text-ak-text-primary mb-0.5 ${isCompleted ? 'line-through text-ak-text-tertiary' : ''}`}>
+        <div className={`text-[15px] font-semibold text-tier-navy mb-0.5 ${isCompleted ? 'line-through text-tier-text-tertiary' : ''}`}>
           {step.title}
           {step.optional && (
-            <span className="ml-2 text-[11px] font-medium text-ak-text-tertiary bg-ak-surface-subtle px-2 py-0.5 rounded">
+            <span className="ml-2 text-[11px] font-medium text-tier-text-tertiary bg-tier-surface-base px-2 py-0.5 rounded">
               Valgfritt
             </span>
           )}
         </div>
-        <div className="text-[13px] text-ak-text-secondary">
+        <div className="text-[13px] text-tier-text-secondary">
           {step.description}
         </div>
       </div>
 
       {/* Arrow */}
       {!isCompleted && (
-        <ChevronRight size={20} className="text-ak-text-tertiary flex-shrink-0" aria-hidden="true" />
+        <ChevronRight size={20} className="text-tier-text-tertiary flex-shrink-0" aria-hidden="true" />
       )}
     </button>
   );
@@ -219,27 +219,27 @@ const OnboardingChecklist = memo(({
 
   return (
     <div
-      className="bg-ak-surface-base rounded-2xl border border-ak-border-subtle shadow-sm overflow-hidden"
+      className="bg-tier-white rounded-2xl border border-tier-border-default shadow-sm overflow-hidden"
       role="region"
-      aria-label="Kom i gang med AK Golf"
+      aria-label="Kom i gang med TIER Golf"
     >
       {/* Header */}
-      <div className="flex items-start justify-between px-6 py-5 pb-4 border-b border-ak-border-subtle bg-ak-primary/5">
+      <div className="flex items-start justify-between px-6 py-5 pb-4 border-b border-tier-border-default bg-tier-navy/5">
         <div className="flex items-center gap-3">
-          <div className="w-10 h-10 rounded-[10px] bg-ak-primary flex items-center justify-center text-white" aria-hidden="true">
+          <div className="w-10 h-10 rounded-[10px] bg-tier-navy flex items-center justify-center text-white" aria-hidden="true">
             <Sparkles size={22} />
           </div>
           <div className="flex-1">
-            <div className="text-xs font-semibold text-ak-primary uppercase tracking-wider mb-0.5">
+            <div className="text-xs font-semibold text-tier-navy uppercase tracking-wider mb-0.5">
               Velkommen!
             </div>
-            <SectionTitle className="text-lg font-bold text-ak-text-primary m-0 p-0">Kom i gang</SectionTitle>
+            <SectionTitle className="text-lg font-bold text-tier-navy m-0 p-0">Kom i gang</SectionTitle>
           </div>
         </div>
 
         {showDismissButton && (
           <button
-            className="bg-transparent border-none p-2 cursor-pointer text-ak-text-tertiary rounded-lg min-w-[44px] min-h-[44px] flex items-center justify-center transition-colors hover:bg-ak-surface-subtle"
+            className="bg-transparent border-none p-2 cursor-pointer text-tier-text-tertiary rounded-lg min-w-[44px] min-h-[44px] flex items-center justify-center transition-colors hover:bg-tier-surface-base"
             onClick={onDismiss}
             onKeyDown={handleDismissKeyDown}
             aria-label="Lukk kom i gang-guiden"
@@ -250,10 +250,10 @@ const OnboardingChecklist = memo(({
       </div>
 
       {/* Progress bar */}
-      <div className="px-6 py-3 border-b border-ak-border-subtle bg-ak-surface-subtle">
+      <div className="px-6 py-3 border-b border-tier-border-default bg-tier-surface-base">
         <div className="h-2 bg-gray-200 rounded overflow-hidden mb-2">
           <div
-            className="h-full bg-ak-status-success rounded transition-[width] duration-300"
+            className="h-full bg-tier-success rounded transition-[width] duration-300"
             style={{ width: `${progressPercent}%` }}
             role="progressbar"
             aria-valuenow={progressPercent}
@@ -262,7 +262,7 @@ const OnboardingChecklist = memo(({
             aria-label={`Fremgang: ${progressPercent}%`}
           />
         </div>
-        <div className="text-[13px] text-ak-text-secondary font-medium">
+        <div className="text-[13px] text-tier-text-secondary font-medium">
           {allRequiredComplete
             ? 'Alt klart! Du er klar til å begynne.'
             : `${completedCount} av ${requiredCount} steg fullført`}
@@ -282,9 +282,9 @@ const OnboardingChecklist = memo(({
       </div>
 
       {/* Footer */}
-      <div className="px-6 py-4 border-t border-ak-border-subtle bg-ak-surface-subtle flex justify-between items-center">
+      <div className="px-6 py-4 border-t border-tier-border-default bg-tier-surface-base flex justify-between items-center">
         <button
-          className="text-[13px] text-ak-text-tertiary bg-none border-none cursor-pointer px-3 py-2 min-h-[44px] flex items-center hover:text-ak-text-secondary"
+          className="text-[13px] text-tier-text-tertiary bg-none border-none cursor-pointer px-3 py-2 min-h-[44px] flex items-center hover:text-tier-text-secondary"
           onClick={onDismiss}
           onKeyDown={handleDismissKeyDown}
           aria-label="Hopp over guiden og gå til dashbordet"

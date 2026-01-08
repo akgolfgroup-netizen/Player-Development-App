@@ -1,4 +1,4 @@
-# AK Golf Academy - Coach Groups API
+# TIER Golf - Coach Groups API
 
 ## Oversikt
 

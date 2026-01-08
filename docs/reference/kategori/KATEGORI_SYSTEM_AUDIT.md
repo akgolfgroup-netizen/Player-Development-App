@@ -1,5 +1,5 @@
 # AUDIT: KATEGORI-SYSTEM A-K
-**AK Golf Academy × Team Norway Golf**
+**TIER Golf × Team Norway Golf**
 **Dato**: 13. desember 2025
 **Auditor**: Claude Code Analysis
 

@@ -1,4 +1,4 @@
-# 🔍 AK Golf Academy - Kvalitetskontroll Sjekkliste
+# 🔍 TIER Golf - Kvalitetskontroll Sjekkliste
 
 **Dato:** 2025-12-17
 **Versjon:** Beta v1.0

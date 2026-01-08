@@ -1,5 +1,5 @@
 /**
- * AK Golf Academy - Coach Session Template Editor
+ * TIER Golf Academy - Coach Session Template Editor
  * Design System v3.0 - Blue Palette 01
  *
  * Drag-and-drop editor for creating and editing training session templates.
@@ -22,7 +22,7 @@ import {
   Dumbbell,
 } from 'lucide-react';
 import Button from '../../ui/primitives/Button';
-import { PageTitle, SectionTitle, SubSectionTitle, CardTitle } from '../../components/typography';
+import { PageTitle, SectionTitle, SubSectionTitle, CardTitle } from '../../components/typography/Headings';
 // Types
 interface Exercise {
   id: string;
@@ -65,12 +65,12 @@ const exerciseLibrary: Omit<Exercise, 'order'>[] = [
 // Category config
 const categoryConfig: Record<string, { bg: string; text: string; label: string }> = {
   teknikk: { bg: 'rgba(var(--accent-rgb), 0.15)', text: 'var(--accent)', label: 'Teknikk' },
-  putting: { bg: 'rgba(var(--success-rgb), 0.15)', text: 'var(--success)', label: 'Putting' },
+  putting: { bg: 'rgba(var(--success-rgb), 0.15)', text: 'var(--status-success)', label: 'Putting' },
   kort_spill: { bg: 'rgba(var(--achievement-rgb), 0.15)', text: 'var(--achievement)', label: 'Kort spill' },
   langt_spill: { bg: 'rgba(var(--accent-light-rgb), 0.15)', text: 'var(--accent-light)', label: 'Langt spill' },
-  bane: { bg: 'rgba(var(--warning-rgb), 0.15)', text: 'var(--warning)', label: 'Bane' },
-  mental: { bg: 'rgba(139, 92, 246, 0.15)', text: 'rgb(139, 92, 246)', label: 'Mental' },
-  fysisk: { bg: 'rgba(var(--error-rgb), 0.15)', text: 'var(--error)', label: 'Fysisk' },
+  bane: { bg: 'rgba(var(--warning-rgb), 0.15)', text: 'var(--status-warning)', label: 'Bane' },
+  mental: { bg: 'rgba(var(--category-j), 0.15)', text: 'rgb(var(--category-j))', label: 'Mental' },
+  fysisk: { bg: 'rgba(var(--error-rgb), 0.15)', text: 'var(--status-error)', label: 'Fysisk' },
 };
 
 export default function CoachSessionTemplateEditor() {
@@ -607,7 +607,7 @@ export default function CoachSessionTemplateEditor() {
                               onClick={() => setEditingExercise(null)}
                               style={{
                                 padding: '6px',
-                                backgroundColor: 'var(--success)',
+                                backgroundColor: 'var(--status-success)',
                                 color: 'var(--bg-primary)',
                                 border: 'none',
                                 borderRadius: 'var(--radius-sm)',
@@ -728,7 +728,7 @@ export default function CoachSessionTemplateEditor() {
                               cursor: 'pointer',
                             }}
                           >
-                            <Trash2 size={14} color={'var(--error)'} />
+                            <Trash2 size={14} color={'var(--status-error)'} />
                           </button>
                         </div>
                       )}

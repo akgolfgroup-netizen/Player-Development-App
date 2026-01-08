@@ -36,7 +36,7 @@ export const ANNOTATION_COLORS = [
   '#E5D49B', // Yellow (warningLight)
   '#E5B5B0', // Magenta/Pink (errorLight)
   '#B5CCD6', // Cyan (infoLight)
-  '#FFFFFF', // White
+  'rgb(var(--tier-white))', // White
   '#D4A84B', // Orange (warning)
 ];
 

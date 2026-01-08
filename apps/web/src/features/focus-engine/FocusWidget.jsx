@@ -17,9 +17,9 @@ const COMPONENT_LABELS = {
 
 const COMPONENT_COLORS = {
   OTT: 'var(--info)', // Blue
-  APP: 'var(--success)', // Green
-  ARG: 'var(--warning)', // Amber
-  PUTT: 'var(--ak-accent-purple)', // Purple
+  APP: 'var(--status-success)', // Green
+  ARG: 'var(--status-warning)', // Amber
+  PUTT: 'rgb(var(--category-j))', // Purple
 };
 
 const REASON_MESSAGES = {

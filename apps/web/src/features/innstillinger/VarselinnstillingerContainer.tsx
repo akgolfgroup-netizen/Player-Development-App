@@ -148,8 +148,8 @@ const SettingRow: React.FC<SettingRowProps> = ({
   >
     <div className="flex items-center gap-3">
       {Icon && (
-        <div className="w-8 h-8 rounded-lg bg-ak-primary/10 flex items-center justify-center">
-          <Icon className="w-4 h-4 text-ak-primary" />
+        <div className="w-8 h-8 rounded-lg bg-tier-navy/10 flex items-center justify-center">
+          <Icon className="w-4 h-4 text-tier-navy" />
         </div>
       )}
       <div className="space-y-0.5">
@@ -198,8 +198,8 @@ const Section: React.FC<SectionProps> = ({
     <CardHeader className="pb-3">
       <div className="flex items-center justify-between">
         <div className="flex items-center gap-3">
-          <div className="w-9 h-9 rounded-lg bg-ak-primary/15 flex items-center justify-center">
-            <Icon className="w-5 h-5 text-ak-primary" />
+          <div className="w-9 h-9 rounded-lg bg-tier-navy/15 flex items-center justify-center">
+            <Icon className="w-5 h-5 text-tier-navy" />
           </div>
           <CardTitle className="text-base font-semibold">{title}</CardTitle>
         </div>
@@ -293,6 +293,7 @@ const VarselinnstillingerContainer: React.FC = () => {
       <PageHeader
         title="Varselinnstillinger"
         subtitle="Tilpass hvordan du mottar varsler"
+        helpText="Administrer hvilke varsler du vil motta via e-post, push-notifikasjoner eller i appen. Velg varslingskanaler for ulike hendelser og oppdateringer."
       />
 
       <div className="px-6 pb-6 max-w-2xl mx-auto space-y-4">

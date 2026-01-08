@@ -1,4 +1,4 @@
-# AK Golf Academy - Detaljerte Funksjonsbeskrivelser 2025
+# TIER Golf - Detaljerte Funksjonsbeskrivelser 2025
 
 > **Sist oppdatert:** 31. desember 2024
 > **Tilhører:** FEATURE_OVERVIEW_2025.md

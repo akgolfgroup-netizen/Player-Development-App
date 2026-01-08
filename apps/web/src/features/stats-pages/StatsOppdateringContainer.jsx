@@ -14,10 +14,10 @@ import { SectionTitle, SubSectionTitle } from '../../components/typography/Headi
 
 // Color class mapping for categories
 const COLOR_CLASSES = {
-  brand: { text: 'text-ak-primary', bg: 'bg-ak-primary/15' },
-  success: { text: 'text-ak-status-success', bg: 'bg-ak-status-success/15' },
-  warning: { text: 'text-ak-status-warning', bg: 'bg-ak-status-warning/15' },
-  error: { text: 'text-ak-status-error', bg: 'bg-ak-status-error/15' },
+  brand: { text: 'text-tier-navy', bg: 'bg-tier-navy/15' },
+  success: { text: 'text-tier-success', bg: 'bg-tier-success/15' },
+  warning: { text: 'text-tier-warning', bg: 'bg-tier-warning/15' },
+  error: { text: 'text-tier-error', bg: 'bg-tier-error/15' },
 };
 
 // ============================================================================
@@ -85,7 +85,7 @@ const CategoryCard = ({ category, values, onChange, isExpanded, onToggle }) => {
   const colors = COLOR_CLASSES[category.colorKey] || COLOR_CLASSES.brand;
 
   return (
-    <div className="bg-ak-surface-base rounded-2xl overflow-hidden shadow-sm">
+    <div className="bg-tier-white rounded-2xl overflow-hidden shadow-sm">
       <div
         onClick={onToggle}
         className="py-4 px-5 cursor-pointer flex items-center gap-3"
@@ -97,21 +97,21 @@ const CategoryCard = ({ category, values, onChange, isExpanded, onToggle }) => {
           <SubSectionTitle className="text-[15px] m-0">
             {category.name}
           </SubSectionTitle>
-          <div className="text-xs text-ak-text-secondary">
+          <div className="text-xs text-tier-text-secondary">
             {category.fields.length} felt
           </div>
         </div>
-        <div className={`w-7 h-7 rounded-lg bg-ak-surface-subtle flex items-center justify-center transition-transform duration-200 ${isExpanded ? 'rotate-90' : 'rotate-0'}`}>
-          <ChevronRight size={16} className="text-ak-text-secondary" />
+        <div className={`w-7 h-7 rounded-lg bg-tier-surface-base flex items-center justify-center transition-transform duration-200 ${isExpanded ? 'rotate-90' : 'rotate-0'}`}>
+          <ChevronRight size={16} className="text-tier-text-secondary" />
         </div>
       </div>
 
       {isExpanded && (
-        <div className="px-5 pb-5 border-t border-ak-border-default">
+        <div className="px-5 pb-5 border-t border-tier-border-default">
           <div className="flex flex-col gap-3 mt-4">
             {category.fields.map((field) => (
               <div key={field.id}>
-                <label className="text-[13px] text-ak-text-primary mb-1.5 block">
+                <label className="text-[13px] text-tier-navy mb-1.5 block">
                   {field.label}
                 </label>
                 {field.type === 'fraction' ? (
@@ -126,9 +126,9 @@ const CategoryCard = ({ category, values, onChange, isExpanded, onToggle }) => {
                         numerator: e.target.value,
                       })}
                       placeholder="0"
-                      className="w-[60px] py-2.5 px-3 rounded-lg border border-ak-border-default text-sm text-center"
+                      className="w-[60px] py-2.5 px-3 rounded-lg border border-tier-border-default text-sm text-center"
                     />
-                    <span className="text-ak-text-secondary">/</span>
+                    <span className="text-tier-text-secondary">/</span>
                     <input
                       type="number"
                       min="1"
@@ -139,10 +139,10 @@ const CategoryCard = ({ category, values, onChange, isExpanded, onToggle }) => {
                         denominator: e.target.value,
                       })}
                       placeholder={field.max?.toString() || ''}
-                      className="w-[60px] py-2.5 px-3 rounded-lg border border-ak-border-default text-sm text-center"
+                      className="w-[60px] py-2.5 px-3 rounded-lg border border-tier-border-default text-sm text-center"
                     />
                     {values[field.id]?.numerator && values[field.id]?.denominator && (
-                      <span className="text-[13px] text-ak-primary ml-2">
+                      <span className="text-[13px] text-tier-navy ml-2">
                         = {Math.round((values[field.id].numerator / values[field.id].denominator) * 100)}%
                       </span>
                     )}
@@ -155,15 +155,15 @@ const CategoryCard = ({ category, values, onChange, isExpanded, onToggle }) => {
                       value={values[field.id] || ''}
                       onChange={(e) => onChange(field.id, e.target.value)}
                       placeholder="0"
-                      className="w-[100px] py-2.5 px-3 rounded-lg border border-ak-border-default text-sm"
+                      className="w-[100px] py-2.5 px-3 rounded-lg border border-tier-border-default text-sm"
                     />
                     {field.unit && (
-                      <span className="text-[13px] text-ak-text-secondary">
+                      <span className="text-[13px] text-tier-text-secondary">
                         {field.unit}
                       </span>
                     )}
                     {field.type === 'percentage' && (
-                      <span className="text-[13px] text-ak-text-secondary">%</span>
+                      <span className="text-[13px] text-tier-text-secondary">%</span>
                     )}
                   </div>
                 )}
@@ -235,28 +235,29 @@ const StatsOppdateringContainer = () => {
   ];
 
   return (
-    <div className="min-h-screen bg-ak-surface-subtle">
+    <div className="min-h-screen bg-tier-surface-base">
       <PageHeader
         title="Ny statistikk"
         subtitle="Registrer nye prestasjonsdata"
+        helpText="Registrer nye prestasjonsdata og statistikk fra treningsøkter eller runder. Hold statistikken din oppdatert for best mulig analyse av utviklingen."
       />
 
       <div className="p-6 w-full">
         {/* Session Info */}
-        <div className="bg-ak-surface-base rounded-2xl p-5 mb-5 shadow-sm">
+        <div className="bg-tier-white rounded-2xl p-5 mb-5 shadow-sm">
           <SectionTitle className="text-base m-0 mb-4">
             Okt-informasjon
           </SectionTitle>
 
           <div className="grid grid-cols-[repeat(auto-fit,minmax(200px,1fr))] gap-4">
             <div>
-              <label className="text-[13px] text-ak-text-primary mb-1.5 block">
+              <label className="text-[13px] text-tier-navy mb-1.5 block">
                 Type okt
               </label>
               <select
                 value={sessionType}
                 onChange={(e) => setSessionType(e.target.value)}
-                className="w-full py-2.5 px-3 rounded-lg border border-ak-border-default text-sm bg-ak-surface-base"
+                className="w-full py-2.5 px-3 rounded-lg border border-tier-border-default text-sm bg-tier-white"
               >
                 <option value="">Velg type...</option>
                 {sessionTypes.map((type) => (
@@ -266,7 +267,7 @@ const StatsOppdateringContainer = () => {
             </div>
 
             <div>
-              <label className="text-[13px] text-ak-text-primary mb-1.5 block">
+              <label className="text-[13px] text-tier-navy mb-1.5 block">
                 Bane / Sted
               </label>
               <input
@@ -274,24 +275,24 @@ const StatsOppdateringContainer = () => {
                 value={course}
                 onChange={(e) => setCourse(e.target.value)}
                 placeholder="F.eks. Miklagard Golf"
-                className="w-full py-2.5 px-3 rounded-lg border border-ak-border-default text-sm"
+                className="w-full py-2.5 px-3 rounded-lg border border-tier-border-default text-sm"
               />
             </div>
 
             <div>
-              <label className="text-[13px] text-ak-text-primary mb-1.5 block">
+              <label className="text-[13px] text-tier-navy mb-1.5 block">
                 Dato
               </label>
               <input
                 type="date"
                 value={date}
                 onChange={(e) => setDate(e.target.value)}
-                className="w-full py-2.5 px-3 rounded-lg border border-ak-border-default text-sm"
+                className="w-full py-2.5 px-3 rounded-lg border border-tier-border-default text-sm"
               />
             </div>
 
             <div>
-              <label className="text-[13px] text-ak-text-primary mb-1.5 block">
+              <label className="text-[13px] text-tier-navy mb-1.5 block">
                 Score (valgfritt)
               </label>
               <input
@@ -299,7 +300,7 @@ const StatsOppdateringContainer = () => {
                 value={score}
                 onChange={(e) => setScore(e.target.value)}
                 placeholder="F.eks. 72"
-                className="w-full py-2.5 px-3 rounded-lg border border-ak-border-default text-sm"
+                className="w-full py-2.5 px-3 rounded-lg border border-tier-border-default text-sm"
               />
             </div>
           </div>
@@ -327,13 +328,13 @@ const StatsOppdateringContainer = () => {
 
         {/* Actions */}
         <div className="flex gap-3 justify-end">
-          <button className="py-3 px-6 rounded-[10px] border border-ak-border-default bg-ak-surface-base text-ak-text-primary text-sm font-medium cursor-pointer flex items-center gap-2">
+          <button className="py-3 px-6 rounded-[10px] border border-tier-border-default bg-tier-white text-tier-navy text-sm font-medium cursor-pointer flex items-center gap-2">
             <X size={16} />
             Avbryt
           </button>
           <button
             onClick={handleSave}
-            className="py-3 px-6 rounded-[10px] border-none bg-ak-primary text-white text-sm font-semibold cursor-pointer flex items-center gap-2"
+            className="py-3 px-6 rounded-[10px] border-none bg-tier-navy text-white text-sm font-semibold cursor-pointer flex items-center gap-2"
           >
             <Save size={16} />
             Lagre statistikk
@@ -350,25 +351,25 @@ const StatsOppdateringContainer = () => {
             {RECENT_ENTRIES.map((entry) => (
               <div
                 key={entry.id}
-                className="bg-ak-surface-base rounded-xl py-3.5 px-4 flex items-center gap-3"
+                className="bg-tier-white rounded-xl py-3.5 px-4 flex items-center gap-3"
               >
-                <div className="w-9 h-9 rounded-lg bg-ak-surface-subtle flex items-center justify-center">
-                  <BarChart2 size={18} className="text-ak-primary" />
+                <div className="w-9 h-9 rounded-lg bg-tier-surface-base flex items-center justify-center">
+                  <BarChart2 size={18} className="text-tier-navy" />
                 </div>
                 <div className="flex-1">
-                  <div className="text-sm font-medium text-ak-text-primary">
+                  <div className="text-sm font-medium text-tier-navy">
                     {entry.type} - {entry.course}
                   </div>
-                  <div className="text-xs text-ak-text-secondary">
+                  <div className="text-xs text-tier-text-secondary">
                     {entry.date}
                   </div>
                 </div>
                 {entry.score && (
-                  <div className="text-base font-semibold text-ak-text-primary">
+                  <div className="text-base font-semibold text-tier-navy">
                     {entry.score}
                   </div>
                 )}
-                <ChevronRight size={16} className="text-ak-text-secondary" />
+                <ChevronRight size={16} className="text-tier-text-secondary" />
               </div>
             ))}
           </div>

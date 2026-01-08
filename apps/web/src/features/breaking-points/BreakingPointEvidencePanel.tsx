@@ -4,7 +4,7 @@ import { useToast } from '../../components/shadcn/use-toast';
 import Button from '../../ui/primitives/Button';
 import Card from '../../ui/primitives/Card';
 import { TextInput, Select } from '../../ui/primitives/Input';
-import { SectionTitle, SubSectionTitle } from '../../components/typography';
+import { SectionTitle, SubSectionTitle } from '../../components/typography/Headings';
 import { Target, Activity, TrendingUp, Settings, CheckCircle, AlertCircle } from 'lucide-react';
 
 interface EvidenceData {
@@ -132,7 +132,7 @@ export const BreakingPointEvidencePanel: React.FC<BreakingPointEvidencePanelProp
 
       {/* Config Panel */}
       {showConfig && (
-        <div className="mb-6 p-4 bg-ak-surface-subtle rounded-lg">
+        <div className="mb-6 p-4 bg-tier-surface-base rounded-lg">
           <SubSectionTitle className="mb-3">Konfigurasjon</SubSectionTitle>
           <div className="grid grid-cols-2 gap-4">
             <Select
@@ -177,18 +177,18 @@ export const BreakingPointEvidencePanel: React.FC<BreakingPointEvidencePanelProp
         <div>
           <div className="flex items-center justify-between mb-2">
             <div className="flex items-center gap-2">
-              <Activity size={16} className="text-ak-primary" />
-              <span className="font-medium text-ak-text-primary">Treningsinnsats</span>
+              <Activity size={16} className="text-tier-navy" />
+              <span className="font-medium text-tier-navy">Treningsinnsats</span>
             </div>
-            <span className="text-sm font-semibold text-ak-primary">{effortProgress}%</span>
+            <span className="text-sm font-semibold text-tier-navy">{effortProgress}%</span>
           </div>
-          <div className="h-3 bg-ak-surface-subtle rounded-full overflow-hidden">
+          <div className="h-3 bg-tier-surface-base rounded-full overflow-hidden">
             <div
-              className="h-full bg-ak-primary rounded-full transition-all"
+              className="h-full bg-tier-navy rounded-full transition-all"
               style={{ width: `${Math.min(effortProgress, 100)}%` }}
             />
           </div>
-          <p className="text-xs text-ak-text-secondary mt-1">
+          <p className="text-xs text-tier-text-secondary mt-1">
             {evidence?.sessionsCompleted || 0} okter fullfort
           </p>
         </div>
@@ -197,14 +197,14 @@ export const BreakingPointEvidencePanel: React.FC<BreakingPointEvidencePanelProp
         <div>
           <div className="flex items-center justify-between mb-2">
             <div className="flex items-center gap-2">
-              <TrendingUp size={16} className="text-ak-success" />
-              <span className="font-medium text-ak-text-primary">Faktisk fremgang</span>
+              <TrendingUp size={16} className="text-tier-success" />
+              <span className="font-medium text-tier-navy">Faktisk fremgang</span>
             </div>
-            <span className="text-sm font-semibold text-ak-success">{progressProgress}%</span>
+            <span className="text-sm font-semibold text-tier-success">{progressProgress}%</span>
           </div>
-          <div className="h-3 bg-ak-surface-subtle rounded-full overflow-hidden">
+          <div className="h-3 bg-tier-surface-base rounded-full overflow-hidden">
             <div
-              className="h-full bg-ak-success rounded-full transition-all"
+              className="h-full bg-tier-success rounded-full transition-all"
               style={{ width: `${Math.min(progressProgress, 100)}%` }}
             />
           </div>
@@ -217,20 +217,20 @@ export const BreakingPointEvidencePanel: React.FC<BreakingPointEvidencePanelProp
           <SubSectionTitle className="mb-3">Benchmark resultater</SubSectionTitle>
           <div className="space-y-2">
             {evidence.benchmarkResults.slice(0, 5).map((result, index) => (
-              <div key={index} className="flex items-center justify-between p-3 bg-ak-surface-subtle rounded-lg">
+              <div key={index} className="flex items-center justify-between p-3 bg-tier-surface-base rounded-lg">
                 <div className="flex items-center gap-2">
                   {result.improved ? (
-                    <CheckCircle size={16} className="text-ak-success" />
+                    <CheckCircle size={16} className="text-tier-success" />
                   ) : (
-                    <AlertCircle size={16} className="text-ak-warning" />
+                    <AlertCircle size={16} className="text-tier-warning" />
                   )}
-                  <span className="font-medium text-ak-text-primary">{result.testName}</span>
+                  <span className="font-medium text-tier-navy">{result.testName}</span>
                 </div>
                 <div className="text-right">
-                  <span className={`font-semibold ${result.improved ? 'text-ak-success' : 'text-ak-text-secondary'}`}>
+                  <span className={`font-semibold ${result.improved ? 'text-tier-success' : 'text-tier-text-secondary'}`}>
                     {result.value}
                   </span>
-                  <p className="text-xs text-ak-text-secondary">
+                  <p className="text-xs text-tier-text-secondary">
                     {new Date(result.date).toLocaleDateString('nb-NO')}
                   </p>
                 </div>

@@ -96,20 +96,20 @@ const NotionWeekView: React.FC<NotionWeekViewProps> = ({
   // Get session type color - uses semantic tokens from design system
   const getSessionColor = (meta?: string) => {
     const colors: Record<string, string> = {
-      training: 'var(--ak-session-spill)',
-      tournament: 'var(--ak-status-warning)',
-      test: 'var(--ak-session-test)',
-      session: 'var(--ak-primary)',
-      teknikk: 'var(--ak-session-teknikk)',
-      golfslag: 'var(--ak-session-golfslag)',
-      spill: 'var(--ak-session-spill)',
-      fysisk: 'var(--ak-session-fysisk)',
-      mental: 'var(--ak-session-funksjonell)',
-      kompetanse: 'var(--ak-session-kompetanse)',
-      funksjonell: 'var(--ak-session-funksjonell)',
-      hjemme: 'var(--ak-session-hjemme)',
+      training: 'rgb(var(--status-success))',
+      tournament: 'rgb(var(--status-warning))',
+      test: 'rgb(var(--category-j))',
+      session: 'rgb(var(--tier-navy))',
+      teknikk: 'rgb(var(--tier-gold))',
+      golfslag: 'rgb(var(--tier-navy))',
+      spill: 'rgb(var(--status-success))',
+      fysisk: 'rgb(var(--tier-gold))',
+      mental: 'rgb(var(--tier-navy))',
+      kompetanse: 'rgb(var(--status-info))',
+      funksjonell: 'rgb(var(--tier-navy))',
+      hjemme: 'rgb(var(--status-success))',
     };
-    return colors[meta || ''] || 'var(--ak-text-tertiary)';
+    return colors[meta || ''] || 'rgb(var(--text-tertiary))';
   };
 
   // Calculate session position (top offset based on time)
@@ -140,30 +140,30 @@ const NotionWeekView: React.FC<NotionWeekViewProps> = ({
   const monthYear = currentDate.toLocaleDateString('nb-NO', { month: 'long', year: 'numeric' });
 
   return (
-    <div className="flex flex-col h-full bg-ak-surface-card">
+    <div className="flex flex-col h-full bg-tier-white">
       {/* Header with navigation */}
-      <div className="flex items-center justify-between px-4 py-3 border-b border-ak-border-default">
+      <div className="flex items-center justify-between px-4 py-3 border-b border-tier-border-default">
         <div className="flex items-center gap-4">
           <div className="flex items-center gap-1">
             <button
               onClick={() => navigateWeek(-1)}
-              className="p-2 hover:bg-ak-surface-elevated rounded-lg transition-colors"
+              className="p-2 hover:bg-tier-white rounded-lg transition-colors"
             >
-              <ChevronLeft size={20} className="text-ak-text-tertiary" />
+              <ChevronLeft size={20} className="text-tier-text-tertiary" />
             </button>
             <button
               onClick={() => navigateWeek(1)}
-              className="p-2 hover:bg-ak-surface-elevated rounded-lg transition-colors"
+              className="p-2 hover:bg-tier-white rounded-lg transition-colors"
             >
-              <ChevronRight size={20} className="text-ak-text-tertiary" />
+              <ChevronRight size={20} className="text-tier-text-tertiary" />
             </button>
           </div>
 
-          <SectionTitle className="text-lg font-semibold text-ak-text-primary capitalize">
+          <SectionTitle className="text-lg font-semibold text-tier-navy capitalize">
             {monthYear}
           </SectionTitle>
 
-          <span className="text-sm text-ak-text-muted bg-ak-surface-elevated px-2 py-1 rounded">
+          <span className="text-sm text-tier-text-tertiary bg-tier-white px-2 py-1 rounded">
             Uke {weekNumber}
           </span>
         </div>
@@ -171,14 +171,14 @@ const NotionWeekView: React.FC<NotionWeekViewProps> = ({
         <div className="flex items-center gap-3">
           <button
             onClick={goToToday}
-            className="px-3 py-1.5 text-sm font-medium text-ak-text-secondary hover:bg-ak-surface-elevated rounded-lg transition-colors"
+            className="px-3 py-1.5 text-sm font-medium text-tier-text-secondary hover:bg-tier-white rounded-lg transition-colors"
           >
             I dag
           </button>
           {onAddSession && (
             <button
               onClick={() => onAddSession(currentDate, '09:00')}
-              className="flex items-center gap-1.5 px-3 py-1.5 bg-ak-primary text-white text-sm font-medium rounded-lg hover:bg-ak-primary-light transition-colors"
+              className="flex items-center gap-1.5 px-3 py-1.5 bg-tier-navy text-white text-sm font-medium rounded-lg hover:bg-tier-navy-light transition-colors"
             >
               <Plus size={16} />
               Ny økt
@@ -190,13 +190,13 @@ const NotionWeekView: React.FC<NotionWeekViewProps> = ({
       {/* Calendar grid */}
       <div className="flex flex-1 overflow-hidden">
         {/* Time column */}
-        <div className="w-16 flex-shrink-0 border-r border-ak-border-default">
-          <div className="h-14 border-b border-ak-border-default" /> {/* Empty header space */}
+        <div className="w-16 flex-shrink-0 border-r border-tier-border-default">
+          <div className="h-14 border-b border-tier-border-default" /> {/* Empty header space */}
           <div className="relative">
             {TIME_SLOTS.map((time, idx) => (
               <div
                 key={time}
-                className="h-[60px] flex items-start justify-end pr-2 text-xs text-ak-text-muted"
+                className="h-[60px] flex items-start justify-end pr-2 text-xs text-tier-text-tertiary"
                 style={{ marginTop: idx === 0 ? '-6px' : 0 }}
               >
                 {time}
@@ -215,21 +215,21 @@ const NotionWeekView: React.FC<NotionWeekViewProps> = ({
             return (
               <div
                 key={dayIdx}
-                className={`flex-1 min-w-[120px] border-r border-ak-border-default last:border-r-0 ${
-                  isWeekend ? 'bg-ak-surface-base' : ''
+                className={`flex-1 min-w-[120px] border-r border-tier-border-default last:border-r-0 ${
+                  isWeekend ? 'bg-tier-white' : ''
                 }`}
               >
                 {/* Day header */}
-                <div className={`h-14 flex flex-col items-center justify-center border-b border-ak-border-default ${
-                  isWeekend ? 'bg-ak-surface-elevated' : 'bg-ak-surface-card'
+                <div className={`h-14 flex flex-col items-center justify-center border-b border-tier-border-default ${
+                  isWeekend ? 'bg-tier-white' : 'bg-tier-white'
                 }`}>
-                  <span className={`text-xs font-medium ${isWeekend ? 'text-ak-text-muted' : 'text-ak-text-tertiary'}`}>
+                  <span className={`text-xs font-medium ${isWeekend ? 'text-tier-text-tertiary' : 'text-tier-text-tertiary'}`}>
                     {DAY_NAMES[dayIdx]}
                   </span>
                   <span className={`text-lg font-semibold ${
                     isToday
-                      ? 'w-8 h-8 flex items-center justify-center bg-ak-primary text-white rounded-full'
-                      : isWeekend ? 'text-ak-text-muted' : 'text-ak-text-primary'
+                      ? 'w-8 h-8 flex items-center justify-center bg-tier-navy text-white rounded-full'
+                      : isWeekend ? 'text-tier-text-tertiary' : 'text-tier-navy'
                   }`}>
                     {date.getDate()}
                   </span>
@@ -241,7 +241,7 @@ const NotionWeekView: React.FC<NotionWeekViewProps> = ({
                   {TIME_SLOTS.map((_, idx) => (
                     <div
                       key={idx}
-                      className="absolute w-full border-t border-ak-border-muted"
+                      className="absolute w-full border-t border-tier-border-default"
                       style={{ top: `${idx * 60}px` }}
                     />
                   ))}
@@ -262,14 +262,14 @@ const NotionWeekView: React.FC<NotionWeekViewProps> = ({
                         }}
                         onClick={() => onSessionClick?.(session)}
                       >
-                        <div className="text-[10px] font-medium text-ak-text-tertiary">
+                        <div className="text-[10px] font-medium text-tier-text-tertiary">
                           {session.start}
                         </div>
-                        <div className="text-xs font-medium text-ak-text-primary truncate">
+                        <div className="text-xs font-medium text-tier-navy truncate">
                           {session.title}
                         </div>
                         {session.location && (
-                          <div className="text-[10px] text-ak-text-muted truncate">
+                          <div className="text-[10px] text-tier-text-tertiary truncate">
                             {session.location}
                           </div>
                         )}

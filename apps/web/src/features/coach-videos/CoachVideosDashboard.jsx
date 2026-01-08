@@ -1,5 +1,5 @@
 /**
- * AK Golf Academy - Coach Videos Dashboard
+ * TIER Golf Academy - Coach Videos Dashboard
  * Design System v3.0 - Premium Light
  *
  * Main dashboard for coaches to review and manage player videos
@@ -43,41 +43,41 @@ const tw = {
   title: 'm-0 text-2xl font-bold text-[var(--text-primary,white)]',
   subtitle: 'm-0 text-sm text-[var(--text-secondary,rgba(255,255,255,0.7))]',
   headerActions: 'flex gap-2',
-  requestButton: 'flex items-center gap-2 py-2.5 px-5 bg-primary text-white border-none rounded-ak-md text-sm font-semibold cursor-pointer transition-colors duration-200',
+  requestButton: 'flex items-center gap-2 py-2.5 px-5 bg-primary text-white border-none rounded-lg text-sm font-semibold cursor-pointer transition-colors duration-200',
   statsRow: 'grid grid-cols-[repeat(auto-fit,minmax(150px,1fr))] gap-3',
-  statCard: 'flex flex-col gap-1 p-4 bg-surface rounded-ak-lg border border-border',
+  statCard: 'flex flex-col gap-1 p-4 bg-surface rounded-xl border border-border',
   statValue: 'text-[28px] font-bold text-[var(--text-primary,white)]',
   statLabel: 'text-xs text-[var(--text-secondary,rgba(255,255,255,0.7))] uppercase tracking-wide',
-  filtersRow: 'flex flex-wrap gap-3 p-4 bg-surface rounded-ak-lg border border-border',
+  filtersRow: 'flex flex-wrap gap-3 p-4 bg-surface rounded-xl border border-border',
   filterGroup: 'flex flex-col gap-1',
   filterLabel: 'text-[11px] font-semibold text-[var(--text-tertiary,rgba(255,255,255,0.5))] uppercase tracking-wide',
-  filterSelect: "py-2 pl-3 pr-8 bg-[var(--ak-surface-dark-elevated)] border border-border rounded-ak-md text-[var(--text-primary,white)] text-[13px] cursor-pointer appearance-none bg-no-repeat bg-[right_8px_center] min-w-[140px]",
-  searchInput: 'py-2 px-3 bg-[var(--ak-surface-dark-elevated)] border border-border rounded-ak-md text-[var(--text-primary,white)] text-[13px] min-w-[200px]',
-  bulkActionsBar: 'flex items-center gap-4 py-3 px-4 bg-primary rounded-ak-lg text-white',
+  filterSelect: "py-2 pl-3 pr-8 bg-[rgb(var(--tier-navy-dark))] border border-border rounded-lg text-[var(--text-primary,white)] text-[13px] cursor-pointer appearance-none bg-no-repeat bg-[right_8px_center] min-w-[140px]",
+  searchInput: 'py-2 px-3 bg-[rgb(var(--tier-navy-dark))] border border-border rounded-lg text-[var(--text-primary,white)] text-[13px] min-w-[200px]',
+  bulkActionsBar: 'flex items-center gap-4 py-3 px-4 bg-primary rounded-xl text-white',
   bulkCount: 'text-sm font-semibold',
   bulkActions: 'flex gap-2 ml-auto',
-  bulkButton: 'flex items-center gap-1 py-1.5 px-3 bg-white/20 text-white border-none rounded-ak-md text-[13px] font-medium cursor-pointer transition-colors duration-200',
-  cancelButton: 'py-1.5 px-3 bg-transparent text-white border border-white/30 rounded-ak-md text-[13px] cursor-pointer',
+  bulkButton: 'flex items-center gap-1 py-1.5 px-3 bg-white/20 text-white border-none rounded-lg text-[13px] font-medium cursor-pointer transition-colors duration-200',
+  cancelButton: 'py-1.5 px-3 bg-transparent text-white border border-white/30 rounded-lg text-[13px] cursor-pointer',
   section: 'flex flex-col gap-3',
   sectionHeader: 'flex items-center justify-between',
   sectionTitle: 'm-0 text-base font-semibold text-[var(--text-primary,white)]',
-  errorBar: 'p-4 bg-ak-status-error/10 rounded-ak-lg border border-ak-status-error flex items-center justify-between',
+  errorBar: 'p-4 bg-tier-error/10 rounded-xl border border-tier-error flex items-center justify-between',
   errorText: 'text-[var(--text-primary,white)] text-sm',
-  retryButton: 'py-2 px-4 bg-ak-status-error border-none rounded-ak-md text-white text-[13px] font-medium cursor-pointer',
+  retryButton: 'py-2 px-4 bg-tier-error border-none rounded-lg text-white text-[13px] font-medium cursor-pointer',
   // Request Modal
   modalOverlay: 'fixed inset-0 bg-black/70 flex items-center justify-center z-[1000] p-4',
-  modal: 'w-full max-w-[480px] bg-surface rounded-ak-xl border border-border shadow-2xl overflow-hidden',
+  modal: 'w-full max-w-[480px] bg-surface rounded-2xl border border-border shadow-2xl overflow-hidden',
   modalHeader: 'flex items-center justify-between p-4 border-b border-border',
   modalTitle: 'm-0 text-lg font-semibold text-[var(--text-primary,white)]',
-  modalClose: 'p-2 bg-transparent border-none rounded-ak-md text-[var(--text-tertiary,rgba(255,255,255,0.4))] cursor-pointer',
+  modalClose: 'p-2 bg-transparent border-none rounded-lg text-[var(--text-tertiary,rgba(255,255,255,0.4))] cursor-pointer',
   modalContent: 'p-4 flex flex-col gap-4',
   formGroup: 'flex flex-col gap-2',
   formLabel: 'text-[13px] font-medium text-[var(--text-secondary,rgba(255,255,255,0.7))]',
-  formInput: 'py-2.5 px-3 bg-[var(--ak-surface-dark-elevated)] border border-border rounded-ak-md text-[var(--text-primary,white)] text-sm',
-  formTextarea: 'py-2.5 px-3 bg-[var(--ak-surface-dark-elevated)] border border-border rounded-ak-md text-[var(--text-primary,white)] text-sm min-h-[100px] resize-y',
+  formInput: 'py-2.5 px-3 bg-[rgb(var(--tier-navy-dark))] border border-border rounded-lg text-[var(--text-primary,white)] text-sm',
+  formTextarea: 'py-2.5 px-3 bg-[rgb(var(--tier-navy-dark))] border border-border rounded-lg text-[var(--text-primary,white)] text-sm min-h-[100px] resize-y',
   modalFooter: 'flex justify-end gap-2 p-4 border-t border-border',
-  modalCancelButton: 'py-2.5 px-5 bg-transparent border border-border rounded-ak-md text-[var(--text-secondary,rgba(255,255,255,0.7))] text-sm font-medium cursor-pointer',
-  modalSubmitButton: 'py-2.5 px-5 bg-primary border-none rounded-ak-md text-white text-sm font-semibold cursor-pointer',
+  modalCancelButton: 'py-2.5 px-5 bg-transparent border border-border rounded-lg text-[var(--text-secondary,rgba(255,255,255,0.7))] text-sm font-medium cursor-pointer',
+  modalSubmitButton: 'py-2.5 px-5 bg-primary border-none rounded-lg text-white text-sm font-semibold cursor-pointer',
 };
 
 // Select dropdown arrow SVG as background
@@ -384,6 +384,7 @@ export function CoachVideosDashboard({
       <PageHeader
         title="Spillervideoer"
         subtitle="Gjennomgå og annotér videoer fra dine spillere"
+        helpText="Alfabetisk oversikt over videoer lastet opp av dine spillere. Se ventende videoer som trenger gjennomgang, legg til kommentarer og gi tekniske tilbakemeldinger. Be om spesifikke videoer fra spillere."
         actions={
           <Button
             variant="primary"
@@ -403,19 +404,19 @@ export function CoachVideosDashboard({
           <span className={tw.statLabel}>Totalt</span>
         </div>
         <div className={tw.statCard}>
-          <span className={`${tw.statValue} text-ak-warning`}>
+          <span className={`${tw.statValue} text-tier-warning`}>
             {stats.pending}
           </span>
           <span className={tw.statLabel}>Venter</span>
         </div>
         <div className={tw.statCard}>
-          <span className={`${tw.statValue} text-ak-status-success`}>
+          <span className={`${tw.statValue} text-tier-success`}>
             {stats.reviewed}
           </span>
           <span className={tw.statLabel}>Gjennomgått</span>
         </div>
         <div className={tw.statCard}>
-          <span className={`${tw.statValue} text-ak-status-error`}>
+          <span className={`${tw.statValue} text-tier-error`}>
             {stats.needsFollowup}
           </span>
           <span className={tw.statLabel}>Oppfølging</span>

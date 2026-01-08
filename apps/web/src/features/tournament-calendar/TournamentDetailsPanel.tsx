@@ -1,6 +1,6 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 /**
- * AK Golf Academy - Tournament Details Panel
+ * TIER Golf Academy - Tournament Details Panel
  *
  * Side panel (desktop) / bottom sheet (mobile) for tournament details.
  * Shows full tournament info with action buttons.
@@ -24,7 +24,7 @@ import {
 } from 'lucide-react';
 import Button from '../../ui/primitives/Button';
 import Badge from '../../ui/primitives/Badge.primitive';
-import { SectionTitle } from '../../components/typography';
+import { SectionTitle } from '../../components/typography/Headings';
 import { tournamentsAPI } from '../../services/api';
 import {
   Tournament,
@@ -677,7 +677,7 @@ const styles: Record<string, React.CSSProperties> = {
     padding: 'var(--spacing-3)',
     borderRadius: 'var(--radius-md)',
     backgroundColor: 'var(--success-muted)',
-    color: 'var(--success)',
+    color: 'var(--status-success)',
     fontSize: '15px',
     fontWeight: 600,
   },

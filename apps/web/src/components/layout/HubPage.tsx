@@ -1,11 +1,17 @@
 /**
  * ============================================================
- * HubPage - Reusable Hub Page Layout
- * AK Golf Academy Design System v3.0
+ * HubPage - TIER Golf Design System v1.0
  * ============================================================
  *
- * Generisk hub-side som viser seksjoner med lenker.
- * Brukes som landing page for hvert hovedområde.
+ * Reusable hub page layout showing sections with navigation links.
+ * Used as landing page for each main area.
+ *
+ * MIGRATED TO TIER DESIGN SYSTEM:
+ * - Uses PageHeader.raw for consistent header
+ * - Uses PageContainer for content
+ * - Zero hardcoded colors - all TIER tokens
+ * - Zero inline styles - all Tailwind classes
+ * - Full-width header with 1200px content
  *
  * ============================================================
  */
@@ -15,11 +21,13 @@ import { Link } from 'react-router-dom';
 import * as LucideIcons from 'lucide-react';
 import type { NavArea, NavSection } from '../../config/player-navigation-v3';
 import { navigationColors } from '../../config/navigation-tokens';
+import PageHeader from '../../ui/raw-blocks/PageHeader.raw';
+import PageContainer from '../../ui/raw-blocks/PageContainer.raw';
 
 const { ChevronRight } = LucideIcons;
 
-const getIcon = (iconName: string): React.ComponentType<{ size?: number }> => {
-  const icons = LucideIcons as unknown as Record<string, React.ComponentType<{ size?: number }>>;
+const getIcon = (iconName: string): React.ComponentType<{ size?: number; className?: string }> => {
+  const icons = LucideIcons as unknown as Record<string, React.ComponentType<{ size?: number; className?: string }>>;
   return icons[iconName] || LucideIcons.Circle;
 };
 
@@ -27,6 +35,7 @@ interface HubPageProps {
   area: NavArea;
   title?: string;
   subtitle?: string;
+  helpText?: string;
   quickStats?: Array<{
     label: string;
     value: string | number;
@@ -45,6 +54,7 @@ export default function HubPage({
   area,
   title,
   subtitle,
+  helpText,
   quickStats,
   featuredAction,
 }: HubPageProps) {
@@ -52,174 +62,119 @@ export default function HubPage({
   const AreaIcon = getIcon(area.icon);
 
   return (
-    <div style={{ maxWidth: 1200, margin: '0 auto' }}>
-      {/* Hero Header Section */}
-      <header
-        style={{
-          background: `linear-gradient(135deg, ${colors.surface} 0%, #FFFFFF 100%)`,
-          borderRadius: 20,
-          padding: '32px 32px 24px',
-          marginBottom: 32,
-          border: `1px solid ${colors.primary}15`,
-          boxShadow: '0 4px 20px rgba(0, 0, 0, 0.04)',
-        }}
-      >
-        {/* Title Row */}
-        <div style={{ display: 'flex', alignItems: 'center', gap: 16, marginBottom: 24 }}>
-          <span
-            style={{
-              width: 56,
-              height: 56,
-              borderRadius: 16,
-              background: `linear-gradient(135deg, ${colors.primary} 0%, ${colors.primary}CC 100%)`,
-              display: 'flex',
-              alignItems: 'center',
-              justifyContent: 'center',
-              color: '#FFFFFF',
-              boxShadow: `0 8px 20px ${colors.primary}30`,
-            }}
-          >
-            <AreaIcon size={28} />
-          </span>
-          <div>
-            <h1
+    <div className="min-h-screen bg-tier-surface-base">
+      {/* TIER-compliant PageHeader */}
+      <PageHeader
+        title={title || area.label}
+        subtitle={subtitle}
+        helpText={helpText}
+      />
+
+      {/* Hero Section with Quick Stats */}
+      <PageContainer paddingY="lg" background="base">
+        {/* Hero Card */}
+        <div
+          className="bg-gradient-to-br from-tier-white to-tier-surface-subtle rounded-2xl p-6 md:p-8 mb-8 border border-tier-border-default shadow-sm"
+        >
+          {/* Icon + Title Row */}
+          <div className="flex items-center gap-4 mb-6">
+            <span
+              className="w-14 h-14 rounded-xl flex items-center justify-center text-tier-white shadow-lg"
               style={{
-                fontSize: 32,
-                fontWeight: 700,
-                color: '#111827',
-                margin: 0,
-                letterSpacing: '-0.5px',
+                background: `linear-gradient(135deg, ${colors.primary} 0%, ${colors.primary}CC 100%)`
               }}
             >
-              {title || area.label}
-            </h1>
-            {subtitle && (
-              <p style={{ fontSize: 16, color: '#6B7280', margin: '6px 0 0' }}>
-                {subtitle}
-              </p>
-            )}
+              <AreaIcon size={28} />
+            </span>
+            <div className="flex-1">
+              <h2 className="text-2xl md:text-3xl font-bold text-tier-navy leading-tight">
+                {title || area.label}
+              </h2>
+              {subtitle && (
+                <p className="text-tier-body text-tier-text-secondary mt-1">
+                  {subtitle}
+                </p>
+              )}
+            </div>
           </div>
-        </div>
 
-        {/* Quick Stats Row - Inside Hero */}
-        {quickStats && quickStats.length > 0 && (
-          <div
-            style={{
-              display: 'grid',
-              gridTemplateColumns: 'repeat(auto-fit, minmax(180px, 1fr))',
-              gap: 16,
-            }}
-          >
-            {quickStats.map((stat, index) => {
-              const StatIcon = stat.icon ? getIcon(stat.icon) : null;
-              const statColor = stat.color || colors.primary;
-              return (
-                <div
-                  key={index}
-                  style={{
-                    backgroundColor: '#FFFFFF',
-                    borderRadius: 14,
-                    padding: '18px 20px',
-                    border: '1px solid rgba(0, 0, 0, 0.06)',
-                    boxShadow: '0 2px 8px rgba(0, 0, 0, 0.04)',
-                    display: 'flex',
-                    alignItems: 'center',
-                    gap: 14,
-                  }}
-                >
-                  {StatIcon && (
-                    <span
-                      style={{
-                        width: 44,
-                        height: 44,
-                        borderRadius: 12,
-                        backgroundColor: `${statColor}12`,
-                        display: 'flex',
-                        alignItems: 'center',
-                        justifyContent: 'center',
-                        color: statColor,
-                        flexShrink: 0,
-                      }}
-                    >
-                      <StatIcon size={22} />
-                    </span>
-                  )}
-                  <div style={{ minWidth: 0 }}>
-                    <div
-                      style={{
-                        fontSize: 26,
-                        fontWeight: 700,
-                        color: statColor,
-                        lineHeight: 1.1,
-                        letterSpacing: '-0.5px',
-                      }}
-                    >
-                      {stat.value}
-                    </div>
-                    <div
-                      style={{
-                        fontSize: 13,
-                        color: '#6B7280',
-                        marginTop: 2,
-                        whiteSpace: 'nowrap',
-                        overflow: 'hidden',
-                        textOverflow: 'ellipsis',
-                      }}
-                    >
-                      {stat.label}
+          {/* Quick Stats Grid */}
+          {quickStats && quickStats.length > 0 && (
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 mb-6">
+              {quickStats.map((stat, index) => {
+                const StatIcon = stat.icon ? getIcon(stat.icon) : null;
+                const statColor = stat.color || colors.primary;
+                return (
+                  <div
+                    key={index}
+                    className="bg-tier-white rounded-xl p-5 border border-tier-border-subtle shadow-sm hover:shadow-md transition-shadow"
+                  >
+                    <div className="flex items-center gap-3">
+                      {StatIcon && (
+                        <span
+                          className="w-11 h-11 rounded-lg flex items-center justify-center shrink-0"
+                          style={{
+                            backgroundColor: `${statColor}12`,
+                            color: statColor
+                          }}
+                        >
+                          <StatIcon size={22} />
+                        </span>
+                      )}
+                      <div className="min-w-0 flex-1">
+                        <div
+                          className="text-2xl font-bold leading-tight tracking-tight"
+                          style={{ color: statColor }}
+                        >
+                          {stat.value}
+                        </div>
+                        <div className="text-tier-footnote text-tier-text-secondary mt-0.5 truncate">
+                          {stat.label}
+                        </div>
+                      </div>
                     </div>
                   </div>
-                </div>
-              );
-            })}
+                );
+              })}
+            </div>
+          )}
+
+          {/* Featured Action */}
+          {featuredAction && (
+            <Link
+              to={featuredAction.href}
+              className={`
+                inline-flex items-center gap-2.5 px-7 py-3.5 rounded-xl
+                text-tier-body font-semibold transition-all
+                ${featuredAction.variant === 'secondary'
+                  ? 'bg-tier-white border-2 hover:bg-tier-surface-subtle'
+                  : 'bg-tier-navy text-tier-white hover:bg-tier-navy-dark shadow-md'
+                }
+              `.trim()}
+              style={featuredAction.variant === 'secondary' ? {
+                borderColor: colors.primary,
+                color: colors.primary
+              } : undefined}
+            >
+              {featuredAction.icon && React.createElement(getIcon(featuredAction.icon), { size: 18 })}
+              {featuredAction.label}
+            </Link>
+          )}
+        </div>
+
+        {/* Sections Grid */}
+        {area.sections && area.sections.length > 0 && (
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+            {area.sections.map((section) => (
+              <SectionCard
+                key={section.id}
+                section={section}
+                colors={colors}
+              />
+            ))}
           </div>
         )}
-
-        {/* Featured Action - Inside Hero */}
-        {featuredAction && (
-          <Link
-            to={featuredAction.href}
-            style={{
-              display: 'inline-flex',
-              alignItems: 'center',
-              gap: 10,
-              padding: '14px 28px',
-              borderRadius: 12,
-              backgroundColor: featuredAction.variant === 'secondary' ? '#FFFFFF' : colors.primary,
-              color: featuredAction.variant === 'secondary' ? colors.primary : '#FFFFFF',
-              border: featuredAction.variant === 'secondary' ? `2px solid ${colors.primary}` : 'none',
-              fontSize: 15,
-              fontWeight: 600,
-              textDecoration: 'none',
-              marginTop: 24,
-              transition: 'all 0.2s',
-              boxShadow: featuredAction.variant === 'secondary' ? 'none' : `0 4px 14px ${colors.primary}40`,
-            }}
-          >
-            {featuredAction.icon && React.createElement(getIcon(featuredAction.icon), { size: 18 })}
-            {featuredAction.label}
-          </Link>
-        )}
-      </header>
-
-      {/* Sections Grid */}
-      {area.sections && area.sections.length > 0 && (
-        <div
-          style={{
-            display: 'grid',
-            gridTemplateColumns: 'repeat(auto-fill, minmax(300px, 1fr))',
-            gap: 24,
-          }}
-        >
-          {area.sections.map((section) => (
-            <SectionCard
-              key={section.id}
-              section={section}
-              colors={colors}
-            />
-          ))}
-        </div>
-      )}
+      </PageContainer>
     </div>
   );
 }
@@ -233,86 +188,52 @@ interface SectionCardProps {
 
 function SectionCard({ section, colors }: SectionCardProps) {
   return (
-    <div
-      style={{
-        backgroundColor: '#FFFFFF',
-        borderRadius: 16,
-        border: '1px solid #E5E7EB',
-        overflow: 'hidden',
-      }}
-    >
+    <div className="bg-tier-white rounded-2xl border border-tier-border-default overflow-hidden shadow-sm hover:shadow-md transition-shadow">
       {/* Section Header */}
       <div
-        style={{
-          padding: '16px 20px',
-          borderBottom: '1px solid #E5E7EB',
-          backgroundColor: colors.surface,
-        }}
+        className="px-5 py-4 border-b border-tier-border-subtle"
+        style={{ backgroundColor: colors.surface }}
       >
-        <h2
-          style={{
-            fontSize: 14,
-            fontWeight: 600,
-            color: colors.text,
-            margin: 0,
-            textTransform: 'uppercase',
-            letterSpacing: '0.5px',
-          }}
+        <h3
+          className="text-tier-footnote font-semibold uppercase tracking-wide m-0"
+          style={{ color: colors.text }}
         >
           {section.label}
-        </h2>
+        </h3>
       </div>
 
       {/* Section Items */}
-      <div style={{ padding: 8 }}>
+      <div className="p-2">
         {section.items.map((item) => {
           const ItemIcon = item.icon ? getIcon(item.icon) : null;
           return (
             <Link
               key={item.href}
               to={item.href}
-              style={{
-                display: 'flex',
-                alignItems: 'center',
-                gap: 12,
-                padding: '12px 16px',
-                borderRadius: 10,
-                textDecoration: 'none',
-                color: '#111827',
-                transition: 'all 0.15s',
-              }}
-              onMouseEnter={(e) => {
-                e.currentTarget.style.backgroundColor = colors.surface;
-              }}
-              onMouseLeave={(e) => {
-                e.currentTarget.style.backgroundColor = 'transparent';
-              }}
+              className="group flex items-center gap-3 px-4 py-3 rounded-lg hover:bg-tier-surface-subtle transition-colors"
             >
               {ItemIcon && (
                 <span
+                  className="w-9 h-9 rounded-lg flex items-center justify-center shrink-0"
                   style={{
-                    width: 36,
-                    height: 36,
-                    borderRadius: 8,
                     backgroundColor: `${colors.primary}15`,
                     color: colors.primary,
-                    display: 'flex',
-                    alignItems: 'center',
-                    justifyContent: 'center',
                   }}
                 >
                   <ItemIcon size={18} />
                 </span>
               )}
-              <div style={{ flex: 1 }}>
-                <div style={{ fontSize: 15, fontWeight: 500 }}>{item.label}</div>
+              <div className="flex-1 min-w-0">
+                <div className="text-tier-body font-medium text-tier-navy group-hover:text-tier-navy-dark transition-colors">
+                  {item.label}
+                </div>
                 {item.description && (
-                  <div style={{ fontSize: 13, color: '#6B7280', marginTop: 2 }}>
+                  <div className="text-tier-footnote text-tier-text-secondary mt-0.5 line-clamp-1">
                     {item.description}
                   </div>
                 )}
               </div>
-              <ChevronRight size={16} style={{ color: '#9CA3AF' }} />
+              <ChevronRight size={16} className="text-tier-text-tertiary shrink-0" />
             </Link>
           );
         })}

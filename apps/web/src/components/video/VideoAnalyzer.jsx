@@ -1,5 +1,5 @@
 /**
- * AK GOLF ACADEMY — VIDEO ANALYSIS SYSTEM
+ * TIER GOLF — VIDEO ANALYSIS SYSTEM
  * VideoAnalyzer Component
  *
  * Integrated video player with annotation canvas for swing analysis:

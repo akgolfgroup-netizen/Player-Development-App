@@ -16,7 +16,7 @@ import Button from '../../ui/primitives/Button';
 const TOURNAMENT_TYPES = [
   { id: 'ranking', label: 'Ranking', color: 'var(--achievement)' },
   { id: 'tour', label: 'Tour', color: 'var(--accent)' },
-  { id: 'club', label: 'Klubbturnering', color: 'var(--success)' },
+  { id: 'club', label: 'Klubbturnering', color: 'var(--status-success)' },
   { id: 'friendly', label: 'Vennskapelig', color: 'var(--text-secondary)' },
 ];
 
@@ -93,7 +93,7 @@ const RoundInput = ({ roundNumber, score, onChange, onRemove, canRemove }) => (
           cursor: 'pointer',
         }}
       >
-        <Trash2 size={16} color={'var(--error)'} />
+        <Trash2 size={16} color={'var(--status-error)'} />
       </button>
     )}
   </div>
@@ -236,6 +236,7 @@ const RegistrerTurneringsResultatContainer = () => {
       <PageHeader
         title="Registrer resultat"
         subtitle="Legg inn et nytt turneringsresultat"
+        helpText="Registrer resultat fra turneringer, treningsrunder eller interne konkurranser. Legg inn score, statistikk og noter for hver runde."
       />
 
       <div style={{ padding: '16px 24px 24px', maxWidth: '800px', margin: '0 auto' }}>
@@ -460,8 +461,8 @@ const RegistrerTurneringsResultatContainer = () => {
                 <div style={{
                   fontSize: '20px',
                   fontWeight: 700,
-                  color: scoreToPar < 0 ? 'var(--success)' :
-                         scoreToPar > 0 ? 'var(--error)' : 'var(--text-primary)',
+                  color: scoreToPar < 0 ? 'var(--status-success)' :
+                         scoreToPar > 0 ? 'var(--status-error)' : 'var(--text-primary)',
                 }}>
                   {scoreToPar === 0 ? 'E' : scoreToPar > 0 ? `+${scoreToPar}` : scoreToPar}
                 </div>
@@ -591,8 +592,8 @@ const RegistrerTurneringsResultatContainer = () => {
             backgroundColor: 'rgba(34, 197, 94, 0.15)',
             marginBottom: '20px',
           }}>
-            <CheckCircle size={20} color="var(--success)" />
-            <span style={{ fontSize: '14px', color: 'var(--success)', fontWeight: 500 }}>
+            <CheckCircle size={20} color="var(--status-success)" />
+            <span style={{ fontSize: '14px', color: 'var(--status-success)', fontWeight: 500 }}>
               Resultatet ble lagret! Videresender...
             </span>
           </div>
@@ -608,8 +609,8 @@ const RegistrerTurneringsResultatContainer = () => {
             backgroundColor: 'rgba(239, 68, 68, 0.15)',
             marginBottom: '20px',
           }}>
-            <AlertCircle size={20} color="var(--error)" />
-            <span style={{ fontSize: '14px', color: 'var(--error)', fontWeight: 500 }}>
+            <AlertCircle size={20} color="var(--status-error)" />
+            <span style={{ fontSize: '14px', color: 'var(--status-error)', fontWeight: 500 }}>
               {errorMessage}
             </span>
           </div>

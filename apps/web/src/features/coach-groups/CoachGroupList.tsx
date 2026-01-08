@@ -28,7 +28,7 @@ import Card from '../../ui/primitives/Card';
 import Button from '../../ui/primitives/Button';
 import StateCard from '../../ui/composites/StateCard';
 import PageHeader from '../../ui/raw-blocks/PageHeader.raw';
-import { SubSectionTitle } from '../../components/typography';
+import { SubSectionTitle } from "../../ui/components/typography";
 
 interface GroupMember {
   id: string;
@@ -96,7 +96,7 @@ export default function CoachGroupList() {
             name: 'Team Norway U18',
             description: 'Landslagskandidater under 18 år',
             type: 'team_norway',
-            avatarColor: 'var(--error)',
+            avatarColor: 'var(--status-error)',
             avatarInitials: 'TN',
             memberCount: 5,
             members: [
@@ -128,7 +128,7 @@ export default function CoachGroupList() {
             name: 'Nybegynnere 2025',
             description: 'Nye spillere i programmet',
             type: 'custom',
-            avatarColor: 'var(--success)',
+            avatarColor: 'var(--status-success)',
             avatarInitials: 'NB',
             memberCount: 6,
             members: [
@@ -175,7 +175,7 @@ export default function CoachGroupList() {
   const getTypeBadge = (type: string) => {
     const styles: Record<string, { bg: string; text: string; label: string }> = {
       wang: { bg: 'rgba(var(--accent-rgb), 0.15)', text: 'var(--accent)', label: 'WANG' },
-      team_norway: { bg: 'rgba(var(--error-rgb), 0.15)', text: 'var(--error)', label: 'Team Norway' },
+      team_norway: { bg: 'rgba(var(--error-rgb), 0.15)', text: 'var(--status-error)', label: 'Team Norway' },
       custom: { bg: 'rgba(var(--text-secondary-rgb), 0.15)', text: 'var(--text-secondary)', label: 'Egendefinert' },
     };
     return styles[type] || styles.custom;
@@ -219,18 +219,19 @@ export default function CoachGroupList() {
 
   if (loading) {
     return (
-      <div className="min-h-screen bg-ak-surface-subtle flex items-center justify-center">
-        <div className="w-12 h-12 border-4 border-ak-border-default border-t-ak-primary rounded-full animate-spin" />
+      <div className="min-h-screen bg-tier-surface-base flex items-center justify-center">
+        <div className="w-12 h-12 border-4 border-tier-border-default border-t-tier-navy rounded-full animate-spin" />
       </div>
     );
   }
 
   return (
-    <div className="min-h-screen bg-ak-surface-subtle font-sans">
+    <div className="min-h-screen bg-tier-surface-base font-sans">
       {/* Header - using PageHeader from design system */}
       <PageHeader
         title="Mine grupper"
         subtitle={`${groups.length} grupper · ${totalMembers} spillere totalt`}
+        helpText="Administrer alle dine treningsgrupper. Opprett nye grupper, legg til medlemmer og planlegg gruppeaktiviteter."
         actions={
           <Button
             variant="primary"
@@ -247,18 +248,18 @@ export default function CoachGroupList() {
         {/* Quick stats */}
         <div className="grid grid-cols-3 gap-3 mb-5">
           {[
-            { label: 'Totalt grupper', value: groups.length, colorClass: 'text-ak-primary' },
-            { label: 'Spillere', value: totalMembers, colorClass: 'text-ak-status-success' },
-            { label: 'Med treningsplan', value: groupsWithPlans, colorClass: 'text-ak-status-warning' },
+            { label: 'Totalt grupper', value: groups.length, colorClass: 'text-tier-navy' },
+            { label: 'Spillere', value: totalMembers, colorClass: 'text-tier-success' },
+            { label: 'Med treningsplan', value: groupsWithPlans, colorClass: 'text-tier-warning' },
           ].map((stat, index) => (
             <div
               key={index}
-              className="p-4 bg-ak-surface-base rounded-lg shadow-sm text-center"
+              className="p-4 bg-tier-white rounded-lg shadow-sm text-center"
             >
               <p className={`text-2xl font-bold m-0 ${stat.colorClass}`}>
                 {stat.value}
               </p>
-              <p className="text-xs leading-4 text-ak-text-secondary mt-1 mb-0">
+              <p className="text-xs leading-4 text-tier-text-secondary mt-1 mb-0">
                 {stat.label}
               </p>
             </div>
@@ -271,14 +272,14 @@ export default function CoachGroupList() {
           <div className="flex-1 relative">
             <Search
               size={18}
-              className="absolute left-3 top-1/2 -translate-y-1/2 text-ak-text-secondary"
+              className="absolute left-3 top-1/2 -translate-y-1/2 text-tier-text-secondary"
             />
             <input
               type="text"
               placeholder="Søk i grupper..."
               value={searchQuery}
               onChange={(e) => setSearchQuery(e.target.value)}
-              className="w-full py-2.5 pl-10 pr-3 bg-ak-surface-base border border-ak-border-default rounded-lg text-sm outline-none focus:border-ak-primary"
+              className="w-full py-2.5 pl-10 pr-3 bg-tier-white border border-tier-border-default rounded-lg text-sm outline-none focus:border-tier-navy"
             />
           </div>
 
@@ -295,8 +296,8 @@ export default function CoachGroupList() {
                 onClick={() => setFilterType(filter.key as 'all' | 'wang' | 'team_norway' | 'custom')}
                 className={`py-2 px-3.5 rounded text-[13px] font-medium cursor-pointer whitespace-nowrap ${
                   filterType === filter.key
-                    ? 'bg-ak-primary text-white border border-ak-primary'
-                    : 'bg-ak-surface-base text-ak-text-primary border border-ak-border-default'
+                    ? 'bg-tier-navy text-white border border-tier-navy'
+                    : 'bg-tier-white text-tier-navy border border-tier-border-default'
                 }`}
               >
                 {filter.label}
@@ -309,12 +310,12 @@ export default function CoachGroupList() {
       {/* Groups list */}
       <div className="px-6 pb-6">
         {filteredGroups.length === 0 ? (
-          <div className="py-12 px-6 bg-ak-surface-base rounded-xl text-center shadow-sm">
-            <Users size={48} className="text-ak-border-default mb-4" />
-            <p className="text-[17px] leading-[22px] font-semibold text-ak-text-primary m-0 mb-2">
+          <div className="py-12 px-6 bg-tier-white rounded-xl text-center shadow-sm">
+            <Users size={48} className="text-tier-border-default mb-4" />
+            <p className="text-[17px] leading-[22px] font-semibold text-tier-navy m-0 mb-2">
               {searchQuery ? 'Ingen grupper funnet' : 'Ingen grupper ennå'}
             </p>
-            <p className="text-[15px] leading-5 text-ak-text-secondary m-0 mb-5">
+            <p className="text-[15px] leading-5 text-tier-text-secondary m-0 mb-5">
               {searchQuery
                 ? 'Prøv et annet søkeord'
                 : 'Opprett din første gruppe for å komme i gang'}
@@ -322,7 +323,7 @@ export default function CoachGroupList() {
             {!searchQuery && (
               <button
                 onClick={() => navigate('/coach/groups/create')}
-                className="inline-flex items-center gap-2 py-2.5 px-5 bg-ak-primary text-white border-none rounded-lg text-sm font-semibold cursor-pointer"
+                className="inline-flex items-center gap-2 py-2.5 px-5 bg-tier-navy text-white border-none rounded-lg text-sm font-semibold cursor-pointer"
               >
                 <Plus size={18} />
                 Opprett gruppe
@@ -338,7 +339,7 @@ export default function CoachGroupList() {
               return (
                 <div
                   key={group.id}
-                  className="bg-ak-surface-base rounded-xl shadow-sm overflow-hidden"
+                  className="bg-tier-white rounded-xl shadow-sm overflow-hidden"
                 >
                   {/* Main content - clickable */}
                   <div
@@ -368,27 +369,27 @@ export default function CoachGroupList() {
                       </div>
 
                       {group.description && (
-                        <p className="text-[15px] leading-5 text-ak-text-secondary m-0 mb-2 overflow-hidden text-ellipsis whitespace-nowrap">
+                        <p className="text-[15px] leading-5 text-tier-text-secondary m-0 mb-2 overflow-hidden text-ellipsis whitespace-nowrap">
                           {group.description}
                         </p>
                       )}
 
                       {/* Meta info */}
                       <div className="flex items-center gap-4">
-                        <span className="flex items-center gap-1 text-xs leading-4 text-ak-text-secondary">
+                        <span className="flex items-center gap-1 text-xs leading-4 text-tier-text-secondary">
                           <Users size={14} />
                           {group.memberCount} spillere
                         </span>
 
                         {group.hasTrainingPlan && (
-                          <span className="flex items-center gap-1 text-xs leading-4 text-ak-status-success">
+                          <span className="flex items-center gap-1 text-xs leading-4 text-tier-success">
                             <ClipboardList size={14} />
                             Treningsplan
                           </span>
                         )}
 
                         {nextSession && (
-                          <span className="flex items-center gap-1 text-xs leading-4 text-ak-primary">
+                          <span className="flex items-center gap-1 text-xs leading-4 text-tier-navy">
                             <Calendar size={14} />
                             Neste: {nextSession}
                           </span>
@@ -402,13 +403,13 @@ export default function CoachGroupList() {
                         <div
                           key={member.id}
                           title={member.name}
-                          className={`w-8 h-8 rounded-full bg-ak-primary text-white flex items-center justify-center text-[11px] font-semibold border-2 border-ak-surface-base ${index > 0 ? '-ml-2.5' : ''}`}
+                          className={`w-8 h-8 rounded-full bg-tier-navy text-white flex items-center justify-center text-[11px] font-semibold border-2 border-tier-white ${index > 0 ? '-ml-2.5' : ''}`}
                         >
                           {member.avatarInitials}
                         </div>
                       ))}
                       {group.memberCount > 4 && (
-                        <div className="w-8 h-8 rounded-full bg-ak-surface-subtle text-ak-text-secondary flex items-center justify-center text-[10px] font-semibold -ml-2.5 border-2 border-ak-surface-base">
+                        <div className="w-8 h-8 rounded-full bg-tier-surface-base text-tier-text-secondary flex items-center justify-center text-[10px] font-semibold -ml-2.5 border-2 border-tier-white">
                           +{group.memberCount - 4}
                         </div>
                       )}
@@ -422,21 +423,21 @@ export default function CoachGroupList() {
                           setActiveMenu(activeMenu === group.id ? null : group.id);
                         }}
                         className={`w-9 h-9 rounded flex items-center justify-center border-none cursor-pointer ${
-                          activeMenu === group.id ? 'bg-ak-surface-subtle' : 'bg-transparent'
+                          activeMenu === group.id ? 'bg-tier-surface-base' : 'bg-transparent'
                         }`}
                       >
-                        <MoreVertical size={18} className="text-ak-text-secondary" />
+                        <MoreVertical size={18} className="text-tier-text-secondary" />
                       </button>
 
                       {/* Dropdown menu */}
                       {activeMenu === group.id && (
-                        <div className="absolute top-full right-0 mt-1 w-[180px] bg-ak-surface-base rounded-lg shadow-lg border border-ak-surface-subtle z-[100] overflow-hidden">
+                        <div className="absolute top-full right-0 mt-1 w-[180px] bg-tier-white rounded-lg shadow-lg border border-tier-surface-base z-[100] overflow-hidden">
                           <button
                             onClick={(e) => {
                               e.stopPropagation();
                               navigate(`/coach/groups/${group.id}/edit`);
                             }}
-                            className="flex items-center gap-2.5 w-full py-2.5 px-3.5 bg-transparent border-none text-[13px] text-ak-text-primary cursor-pointer text-left hover:bg-ak-surface-subtle"
+                            className="flex items-center gap-2.5 w-full py-2.5 px-3.5 bg-transparent border-none text-[13px] text-tier-navy cursor-pointer text-left hover:bg-tier-surface-base"
                           >
                             <Edit size={16} />
                             Rediger gruppe
@@ -446,7 +447,7 @@ export default function CoachGroupList() {
                               e.stopPropagation();
                               navigate(`/coach/groups/${group.id}/members`);
                             }}
-                            className="flex items-center gap-2.5 w-full py-2.5 px-3.5 bg-transparent border-none text-[13px] text-ak-text-primary cursor-pointer text-left hover:bg-ak-surface-subtle"
+                            className="flex items-center gap-2.5 w-full py-2.5 px-3.5 bg-transparent border-none text-[13px] text-tier-navy cursor-pointer text-left hover:bg-tier-surface-base"
                           >
                             <UserPlus size={16} />
                             Administrer medlemmer
@@ -456,18 +457,18 @@ export default function CoachGroupList() {
                               e.stopPropagation();
                               navigate(`/coach/groups/${group.id}/plan`);
                             }}
-                            className="flex items-center gap-2.5 w-full py-2.5 px-3.5 bg-transparent border-none text-[13px] text-ak-text-primary cursor-pointer text-left hover:bg-ak-surface-subtle"
+                            className="flex items-center gap-2.5 w-full py-2.5 px-3.5 bg-transparent border-none text-[13px] text-tier-navy cursor-pointer text-left hover:bg-tier-surface-base"
                           >
                             <ClipboardList size={16} />
                             Treningsplan
                           </button>
-                          <div className="h-px bg-ak-surface-subtle my-1" />
+                          <div className="h-px bg-tier-surface-base my-1" />
                           <button
                             onClick={(e) => {
                               e.stopPropagation();
                               handleDeleteGroup(group);
                             }}
-                            className="flex items-center gap-2.5 w-full py-2.5 px-3.5 bg-transparent border-none text-[13px] text-ak-status-error cursor-pointer text-left hover:bg-ak-surface-subtle"
+                            className="flex items-center gap-2.5 w-full py-2.5 px-3.5 bg-transparent border-none text-[13px] text-tier-error cursor-pointer text-left hover:bg-tier-surface-base"
                           >
                             <Trash2 size={16} />
                             Slett gruppe
@@ -476,7 +477,7 @@ export default function CoachGroupList() {
                       )}
                     </div>
 
-                    <ChevronRight size={20} className="text-ak-text-secondary" />
+                    <ChevronRight size={20} className="text-tier-text-secondary" />
                   </div>
                 </div>
               );
@@ -503,21 +504,21 @@ export default function CoachGroupList() {
           <div className="flex gap-3 justify-end">
             <button
               onClick={() => setGroupToDelete(null)}
-              className="py-2.5 px-[18px] bg-transparent border border-ak-border-default rounded-lg text-ak-text-primary text-sm font-medium cursor-pointer"
+              className="py-2.5 px-[18px] bg-transparent border border-tier-border-default rounded-lg text-tier-navy text-sm font-medium cursor-pointer"
             >
               Avbryt
             </button>
             <button
               onClick={handleConfirmDeleteGroup}
-              className="py-2.5 px-[18px] bg-ak-status-error border-none rounded-lg text-white text-sm font-semibold cursor-pointer"
+              className="py-2.5 px-[18px] bg-tier-error border-none rounded-lg text-white text-sm font-semibold cursor-pointer"
             >
               Slett gruppe
             </button>
           </div>
         }
       >
-        <p className="m-0 text-ak-text-secondary leading-relaxed">
-          Er du sikker på at du vil slette gruppen <strong className="text-ak-text-primary">{groupToDelete?.name}</strong>? Denne handlingen kan ikke angres.
+        <p className="m-0 text-tier-text-secondary leading-relaxed">
+          Er du sikker på at du vil slette gruppen <strong className="text-tier-navy">{groupToDelete?.name}</strong>? Denne handlingen kan ikke angres.
         </p>
       </Modal>
     </div>

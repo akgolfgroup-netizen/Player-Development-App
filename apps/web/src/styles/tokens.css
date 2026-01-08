@@ -1,4 +1,4 @@
-/* AK Design Tokens — Premium Light
+/* TIER Golf Design Tokens — Premium Light
    Stone × Midnight Blue × Emerald × Soft Gold
    Stored as RGB triplets so Tailwind opacity modifiers work (e.g. /10).
 */
@@ -27,8 +27,8 @@
 
   /* Status */
   --status-success: 5 150 105; /* #059669 */
-  --status-warning: 217 119 6; /* #D97706 */
-  --status-error: 220 38 38; /* #DC2626 */
+  --status-warning: 217 119 6; /* rgb(var(--status-warning)) */
+  --status-error: 220 38 38; /* rgb(var(--status-error)) */
   --status-info: 2 132 199; /* #0284C7 */
 
   /* Category hues (labels only) */
@@ -46,39 +46,41 @@
   --cat-test-muted: 238 241 244;
 
   /* Semantic aliases (preferred) */
-  --ak-bg-app: var(--stone-50);
-  --ak-surface-card: var(--stone-200);
-  --ak-surface-elevated: var(--stone-100);
-  --ak-border: var(--stone-300);
+  --tier-primary: 10 37 64; /* Navy blue for sidebar */
+  --tier-surface-page: 245 247 249; /* Light gray page background */
+  --tier-bg-app: var(--stone-50);
+  --tier-surface-card: var(--stone-200);
+  --tier-surface-elevated: var(--stone-100);
+  --tier-border: var(--stone-300);
 
-  --ak-text-primary: var(--stone-800);
-  --ak-text-body: var(--stone-700);
-  --ak-text-muted: var(--stone-500);
+  --tier-text-primary: var(--stone-800);
+  --tier-text-body: var(--stone-700);
+  --tier-text-muted: var(--stone-500);
 
-  --ak-action-primary: var(--blue-700);
-  --ak-action-hover: var(--blue-600);
-  --ak-action-active: var(--blue-500);
+  --tier-action-primary: var(--blue-700);
+  --tier-action-hover: var(--blue-600);
+  --tier-action-active: var(--blue-500);
 
-  --ak-progress: var(--emerald-600);
-  --ak-progress-soft: var(--emerald-500);
+  --tier-progress: var(--emerald-600);
+  --tier-progress-soft: var(--emerald-500);
 
-  --ak-prestige: var(--gold-500);
-  --ak-prestige-strong: var(--gold-600);
+  --tier-prestige: var(--gold-500);
+  --tier-prestige-strong: var(--gold-600);
 
-  --ak-status-success: var(--status-success);
-  --ak-status-warning: var(--status-warning);
-  --ak-status-error: var(--status-error);
-  --ak-status-info: var(--status-info);
+  --tier-status-success: var(--status-success);
+  --tier-status-warning: var(--status-warning);
+  --tier-status-error: var(--status-error);
+  --tier-status-info: var(--status-info);
 
-  --ak-category-teknikk: var(--cat-teknikk);
-  --ak-category-fysisk: var(--cat-fysisk);
-  --ak-category-mental: var(--cat-mental);
-  --ak-category-spill: var(--cat-spill);
-  --ak-category-test: var(--cat-test);
+  --tier-category-teknikk: var(--cat-teknikk);
+  --tier-category-fysisk: var(--cat-fysisk);
+  --tier-category-mental: var(--cat-mental);
+  --tier-category-spill: var(--cat-spill);
+  --tier-category-test: var(--cat-test);
 
-  --ak-category-teknikk-muted: var(--cat-teknikk-muted);
-  --ak-category-fysisk-muted: var(--cat-fysisk-muted);
-  --ak-category-mental-muted: var(--cat-mental-muted);
-  --ak-category-spill-muted: var(--cat-spill-muted);
-  --ak-category-test-muted: var(--cat-test-muted);
+  --tier-category-teknikk-muted: var(--cat-teknikk-muted);
+  --tier-category-fysisk-muted: var(--cat-fysisk-muted);
+  --tier-category-mental-muted: var(--cat-mental-muted);
+  --tier-category-spill-muted: var(--cat-spill-muted);
+  --tier-category-test-muted: var(--cat-test-muted);
 }

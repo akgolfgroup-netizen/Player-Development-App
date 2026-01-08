@@ -1,5 +1,5 @@
 # Spiller Progresjon - Arbeidsskjema for Trenere
-> AK Golf Academy | Utviklet for Spania Treningssamling Januar 2026
+> TIER Golf | Utviklet for Spania Treningssamling Januar 2026
 > Versjon: 1.0 | Dato: 2. januar 2026
 
 ---
@@ -107,7 +107,7 @@ Der:
 
 ## 3. Progresjons-formel
 
-### AK Golf Progresjon Estimator (APE)
+### TIER Golf Progresjon Estimator (APE)
 
 **Grunnformel:**
 

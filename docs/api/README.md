@@ -1,4 +1,4 @@
-# AK Golf Academy - Complete API Reference
+# TIER Golf - Complete API Reference
 
 > Backend API Documentation v2.0
 > Last Updated: December 2025
@@ -7,7 +7,7 @@
 
 ## Overview
 
-The AK Golf Academy API provides endpoints for managing golf training, player development, and coach-player interactions.
+The TIER Golf API provides endpoints for managing golf training, player development, and coach-player interactions.
 
 **Base URL:** `/api/v1`
 
@@ -812,5 +812,5 @@ All list endpoints support pagination:
 
 ---
 
-*AK Golf Academy - API Reference v2.0*
+*TIER Golf - API Reference v2.0*
 *Generated: December 2025*

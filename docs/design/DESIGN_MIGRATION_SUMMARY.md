@@ -8,7 +8,7 @@
 
 ## 📊 Summary
 
-Successfully migrated AK Golf Academy design system from the original Forest/Green theme to the professional **Blue Palette 01** from the Figma kit.
+Successfully migrated TIER Golf design system from the original Forest/Green theme to the professional **Blue Palette 01** from the Figma kit.
 
 ---
 

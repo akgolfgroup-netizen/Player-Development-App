@@ -1,7 +1,7 @@
 // @ts-nocheck
 /* eslint-disable @typescript-eslint/no-explicit-any */
 /**
- * AK Golf Academy - Coach Statistics Dashboard
+ * TIER Golf Academy - Coach Statistics Dashboard
  * Design System v3.0 - Premium Light
  *
  * MIGRATED TO PAGE ARCHITECTURE - Zero inline styles
@@ -20,7 +20,7 @@ import { analyticsAPI, coachesAPI } from '../../services/api';
 import Card from '../../ui/primitives/Card';
 import Button from '../../ui/primitives/Button';
 import StateCard from '../../ui/composites/StateCard';
-import { PageTitle, SectionTitle } from '../../components/typography';
+import { PageTitle, SectionTitle } from '../../components/typography/Headings';
 
 // Types
 interface TeamAnalytics {
@@ -58,15 +58,15 @@ interface PlayerSummary {
 const getVariantClasses = (variant: 'primary' | 'success' | 'warning' | 'gold') => {
   switch (variant) {
     case 'primary':
-      return { text: 'text-ak-primary', bg: 'bg-ak-primary/10' };
+      return { text: 'text-tier-navy', bg: 'bg-tier-navy/10' };
     case 'success':
-      return { text: 'text-ak-status-success', bg: 'bg-ak-status-success/10' };
+      return { text: 'text-tier-success', bg: 'bg-tier-success/10' };
     case 'warning':
-      return { text: 'text-ak-status-warning', bg: 'bg-ak-status-warning/10' };
+      return { text: 'text-tier-warning', bg: 'bg-tier-warning/10' };
     case 'gold':
       return { text: 'text-amber-500', bg: 'bg-amber-500/10' };
     default:
-      return { text: 'text-ak-primary', bg: 'bg-ak-primary/10' };
+      return { text: 'text-tier-navy', bg: 'bg-tier-navy/10' };
   }
 };
 
@@ -84,14 +84,14 @@ const StatCard: React.FC<{
     <Card variant="default" padding="lg">
       <div className="flex justify-between items-start">
         <div>
-          <p className="text-[13px] leading-[18px] text-ak-text-secondary mb-2">
+          <p className="text-[13px] leading-[18px] text-tier-text-secondary mb-2">
             {label}
           </p>
           <p className={`text-[32px] font-bold m-0 ${variantClasses.text}`}>
             {value}
           </p>
           {trend && (
-            <div className={`flex items-center gap-1 mt-2 ${trend.direction === 'up' ? 'text-ak-status-success' : 'text-ak-status-error'}`}>
+            <div className={`flex items-center gap-1 mt-2 ${trend.direction === 'up' ? 'text-tier-success' : 'text-tier-error'}`}>
               {trend.direction === 'up' ? <TrendingUp size={14} /> : <TrendingDown size={14} />}
               <span className="text-xs font-medium">
                 {trend.value}% fra forrige maned
@@ -111,9 +111,9 @@ const StatCard: React.FC<{
 const ProgressBar: React.FC<{ value: number; max?: number; colorClass?: string }> = ({
   value,
   max = 100,
-  colorClass = 'bg-ak-primary',
+  colorClass = 'bg-tier-navy',
 }) => (
-  <div className="w-full h-2 bg-ak-surface-muted rounded overflow-hidden">
+  <div className="w-full h-2 bg-tier-surface-base rounded overflow-hidden">
     <div
       className={`h-full ${colorClass} rounded transition-all duration-300`}
       style={{ width: `${Math.min((value / max) * 100, 100)}%` }}
@@ -128,14 +128,14 @@ const CategoryChart: React.FC<{ data: Record<string, number> }> = ({ data }) => 
 
   const getCategoryColorClass = (cat: string) => {
     const colors: Record<string, string> = {
-      A: 'bg-ak-primary',
-      B: 'bg-ak-primary/70',
-      C: 'bg-ak-status-success',
+      A: 'bg-tier-navy',
+      B: 'bg-tier-navy/70',
+      C: 'bg-tier-success',
       D: 'bg-amber-500',
       E: 'bg-orange-500',
       F: 'bg-red-500',
     };
-    return colors[cat] || 'bg-ak-text-secondary';
+    return colors[cat] || 'bg-tier-text-secondary';
   };
 
   return (
@@ -146,9 +146,9 @@ const CategoryChart: React.FC<{ data: Record<string, number> }> = ({ data }) => 
         <div key={category}>
           <div className="flex justify-between mb-1">
             <span className="text-[15px] leading-[22px] font-medium">Kategori {category}</span>
-            <span className="text-[15px] leading-[22px] text-ak-text-secondary">{countNum} spillere</span>
+            <span className="text-[15px] leading-[22px] text-tier-text-secondary">{countNum} spillere</span>
           </div>
-          <div className="w-full h-6 bg-ak-surface-subtle rounded-md overflow-hidden">
+          <div className="w-full h-6 bg-tier-surface-base rounded-md overflow-hidden">
             <div
               className={`h-full ${getCategoryColorClass(category)} rounded-md transition-all duration-500`}
               style={{ width: `${(countNum / maxValue) * 100}%` }}
@@ -166,38 +166,38 @@ const TestPerformanceTable: React.FC<{ data: TestStatistic[] }> = ({ data }) => 
   const getTrendIcon = (trend: string) => {
     switch (trend) {
       case 'up':
-        return <TrendingUp size={16} className="text-ak-status-success" />;
+        return <TrendingUp size={16} className="text-tier-success" />;
       case 'down':
-        return <TrendingDown size={16} className="text-ak-status-error" />;
+        return <TrendingDown size={16} className="text-tier-error" />;
       default:
-        return <Activity size={16} className="text-ak-text-secondary" />;
+        return <Activity size={16} className="text-tier-text-secondary" />;
     }
   };
 
   const getPassRateColorClass = (rate: number) => {
-    if (rate >= 80) return 'text-ak-status-success';
-    if (rate >= 60) return 'text-ak-status-warning';
-    return 'text-ak-status-error';
+    if (rate >= 80) return 'text-tier-success';
+    if (rate >= 60) return 'text-tier-warning';
+    return 'text-tier-error';
   };
 
   return (
     <div className="overflow-x-auto">
       <table className="w-full border-collapse">
         <thead>
-          <tr className="border-b border-ak-border-default">
-            <th className="p-3 text-left text-[13px] leading-[18px] text-ak-text-secondary">
+          <tr className="border-b border-tier-border-default">
+            <th className="p-3 text-left text-[13px] leading-[18px] text-tier-text-secondary">
               Test
             </th>
-            <th className="p-3 text-center text-[13px] leading-[18px] text-ak-text-secondary">
+            <th className="p-3 text-center text-[13px] leading-[18px] text-tier-text-secondary">
               Gjennomsnitt
             </th>
-            <th className="p-3 text-center text-[13px] leading-[18px] text-ak-text-secondary">
+            <th className="p-3 text-center text-[13px] leading-[18px] text-tier-text-secondary">
               Bestattprosent
             </th>
-            <th className="p-3 text-center text-[13px] leading-[18px] text-ak-text-secondary">
+            <th className="p-3 text-center text-[13px] leading-[18px] text-tier-text-secondary">
               Antall forsok
             </th>
-            <th className="p-3 text-center text-[13px] leading-[18px] text-ak-text-secondary">
+            <th className="p-3 text-center text-[13px] leading-[18px] text-tier-text-secondary">
               Trend
             </th>
           </tr>
@@ -206,14 +206,14 @@ const TestPerformanceTable: React.FC<{ data: TestStatistic[] }> = ({ data }) => 
           {data.map((test) => (
             <tr
               key={test.testNumber}
-              className="border-b border-ak-surface-subtle"
+              className="border-b border-tier-surface-base"
             >
               <td className="py-3.5 px-3">
                 <div>
                   <p className="text-[15px] leading-[22px] font-medium m-0">
                     Test {test.testNumber}
                   </p>
-                  <p className="text-xs leading-4 text-ak-text-secondary m-0">
+                  <p className="text-xs leading-4 text-tier-text-secondary m-0">
                     {test.testName}
                   </p>
                 </div>
@@ -250,11 +250,11 @@ const PlayerSummaryList: React.FC<{
   const getTrendIcon = (trend: string) => {
     switch (trend) {
       case 'improving':
-        return <TrendingUp size={16} className="text-ak-status-success" />;
+        return <TrendingUp size={16} className="text-tier-success" />;
       case 'declining':
-        return <TrendingDown size={16} className="text-ak-status-error" />;
+        return <TrendingDown size={16} className="text-tier-error" />;
       default:
-        return <Activity size={16} className="text-ak-text-secondary" />;
+        return <Activity size={16} className="text-tier-text-secondary" />;
     }
   };
 
@@ -264,19 +264,19 @@ const PlayerSummaryList: React.FC<{
         <div
           key={player.playerId}
           onClick={() => onPlayerClick(player.playerId)}
-          className="flex items-center py-3.5 border-b border-ak-surface-subtle cursor-pointer"
+          className="flex items-center py-3.5 border-b border-tier-surface-base cursor-pointer"
         >
           <div className="flex-1">
             <p className="text-[15px] leading-[22px] font-medium m-0">
               {player.playerName}
             </p>
-            <p className="text-xs leading-4 text-ak-text-secondary m-0">
+            <p className="text-xs leading-4 text-tier-text-secondary m-0">
               Kategori {player.category}
             </p>
           </div>
           <div className="w-[120px] mr-4">
             <div className="flex justify-between mb-1">
-              <span className="text-xs leading-4 text-ak-text-secondary">
+              <span className="text-xs leading-4 text-tier-text-secondary">
                 {player.testsCompleted}/{player.totalTests}
               </span>
               <span className="text-xs leading-4 font-medium">
@@ -371,7 +371,7 @@ export default function CoachStatistics() {
 
   if (loading) {
     return (
-      <div className="min-h-screen bg-ak-surface-subtle flex items-center justify-center">
+      <div className="min-h-screen bg-tier-surface-base flex items-center justify-center">
         <StateCard variant="loading" title="Laster statistikk..." />
       </div>
     );
@@ -380,15 +380,15 @@ export default function CoachStatistics() {
   const data = mockAnalytics;
 
   return (
-    <div className="min-h-screen bg-ak-surface-subtle font-sans">
+    <div className="min-h-screen bg-tier-surface-base font-sans">
       {/* Header */}
-      <div className="p-6 bg-ak-surface-base border-b border-ak-border-default">
+      <div className="p-6 bg-tier-white border-b border-tier-border-default">
         <div className="flex justify-between items-center">
           <div>
-            <PageTitle className="text-[34px] leading-[41px] font-bold tracking-tight text-ak-text-primary m-0">
+            <PageTitle className="text-[34px] leading-[41px] font-bold tracking-tight text-tier-navy m-0">
               Statistikk
             </PageTitle>
-            <p className="text-[15px] leading-[22px] text-ak-text-secondary mt-1">
+            <p className="text-[15px] leading-[22px] text-tier-text-secondary mt-1">
               Oversikt over dine spilleres prestasjoner
             </p>
           </div>
@@ -397,7 +397,7 @@ export default function CoachStatistics() {
             <select
               value={timeRange}
               onChange={(e) => setTimeRange(e.target.value as 'week' | 'month' | 'quarter' | 'year')}
-              className="py-2.5 px-4 rounded-lg border border-ak-border-default bg-ak-surface-base text-[15px] leading-[22px] cursor-pointer"
+              className="py-2.5 px-4 rounded-lg border border-tier-border-default bg-tier-white text-[15px] leading-[22px] cursor-pointer"
             >
               <option value="week">Siste uke</option>
               <option value="month">Siste maned</option>
@@ -451,10 +451,10 @@ export default function CoachStatistics() {
             {/* Test Performance */}
             <Card variant="default" padding="lg">
               <div className="flex justify-between items-center mb-5">
-                <SectionTitle className="text-[22px] leading-7 font-bold text-ak-text-primary m-0">
+                <SectionTitle className="text-[22px] leading-7 font-bold text-tier-navy m-0">
                   Testprestasjoner
                 </SectionTitle>
-                <BarChart3 size={20} className="text-ak-text-secondary" />
+                <BarChart3 size={20} className="text-tier-text-secondary" />
               </div>
               <TestPerformanceTable data={data.testStatistics} />
             </Card>
@@ -462,7 +462,7 @@ export default function CoachStatistics() {
             {/* Player Progress */}
             <Card variant="default" padding="lg">
               <div className="flex justify-between items-center mb-5">
-                <SectionTitle className="text-[22px] leading-7 font-bold text-ak-text-primary m-0">
+                <SectionTitle className="text-[22px] leading-7 font-bold text-tier-navy m-0">
                   Spillerfremdrift
                 </SectionTitle>
                 <Button variant="ghost" size="sm" onClick={() => navigate('/coach/athletes')}>
@@ -480,7 +480,7 @@ export default function CoachStatistics() {
           <div className="flex flex-col gap-5">
             {/* Category Distribution */}
             <Card variant="default" padding="lg">
-              <SectionTitle className="text-[22px] leading-7 font-bold text-ak-text-primary m-0 mb-5">
+              <SectionTitle className="text-[22px] leading-7 font-bold text-tier-navy m-0 mb-5">
                 Kategorifordeling
               </SectionTitle>
               <CategoryChart data={data.playersByCategory} />
@@ -488,39 +488,39 @@ export default function CoachStatistics() {
 
             {/* Quick Insights */}
             <Card variant="default" padding="lg">
-              <SectionTitle className="text-[22px] leading-7 font-bold text-ak-text-primary m-0 mb-5">
+              <SectionTitle className="text-[22px] leading-7 font-bold text-tier-navy m-0 mb-5">
                 Innsikt
               </SectionTitle>
               <div className="flex flex-col gap-3">
-                <div className="flex items-start gap-3 p-3.5 bg-ak-status-success/10 rounded-lg">
-                  <TrendingUp size={20} className="text-ak-status-success" />
+                <div className="flex items-start gap-3 p-3.5 bg-tier-success/10 rounded-lg">
+                  <TrendingUp size={20} className="text-tier-success" />
                   <div>
                     <p className="text-[15px] leading-[22px] font-medium m-0">
                       Positiv trend
                     </p>
-                    <p className="text-xs leading-4 text-ak-text-secondary m-0">
+                    <p className="text-xs leading-4 text-tier-text-secondary m-0">
                       3 spillere har forbedret seg betydelig denne maneden
                     </p>
                   </div>
                 </div>
-                <div className="flex items-start gap-3 p-3.5 bg-ak-status-warning/10 rounded-lg">
-                  <AlertTriangle size={20} className="text-ak-status-warning" />
+                <div className="flex items-start gap-3 p-3.5 bg-tier-warning/10 rounded-lg">
+                  <AlertTriangle size={20} className="text-tier-warning" />
                   <div>
                     <p className="text-[15px] leading-[22px] font-medium m-0">
                       Oppmerksomhet nodvendig
                     </p>
-                    <p className="text-xs leading-4 text-ak-text-secondary m-0">
+                    <p className="text-xs leading-4 text-tier-text-secondary m-0">
                       2 spillere har ikke vart aktive pa over 2 uker
                     </p>
                   </div>
                 </div>
-                <div className="flex items-start gap-3 p-3.5 bg-ak-primary/10 rounded-lg">
-                  <Award size={20} className="text-ak-primary" />
+                <div className="flex items-start gap-3 p-3.5 bg-tier-navy/10 rounded-lg">
+                  <Award size={20} className="text-tier-navy" />
                   <div>
                     <p className="text-[15px] leading-[22px] font-medium m-0">
                       Kategoriopprykksklar
                     </p>
-                    <p className="text-xs leading-4 text-ak-text-secondary m-0">
+                    <p className="text-xs leading-4 text-tier-text-secondary m-0">
                       Lars Olsen er klar for opprykk til kategori A
                     </p>
                   </div>
@@ -530,29 +530,29 @@ export default function CoachStatistics() {
 
             {/* Export Options */}
             <Card variant="default" padding="lg">
-              <SectionTitle className="text-[22px] leading-7 font-bold text-ak-text-primary m-0 mb-4">
+              <SectionTitle className="text-[22px] leading-7 font-bold text-tier-navy m-0 mb-4">
                 Eksporter data
               </SectionTitle>
               <div className="flex flex-col gap-2">
                 <button
                   onClick={() => window.open('/api/v1/export/test-results', '_blank')}
-                  className="flex items-center gap-3 p-3 bg-ak-surface-subtle border-none rounded-lg cursor-pointer w-full text-left hover:bg-ak-surface-muted transition-colors"
+                  className="flex items-center gap-3 p-3 bg-tier-surface-base border-none rounded-lg cursor-pointer w-full text-left hover:bg-tier-surface-base transition-colors"
                 >
-                  <Download size={18} className="text-ak-primary" />
+                  <Download size={18} className="text-tier-navy" />
                   <span className="text-[15px] leading-[22px]">Testresultater (Excel)</span>
                 </button>
                 <button
                   onClick={() => window.open('/api/v1/export/training-sessions', '_blank')}
-                  className="flex items-center gap-3 p-3 bg-ak-surface-subtle border-none rounded-lg cursor-pointer w-full text-left hover:bg-ak-surface-muted transition-colors"
+                  className="flex items-center gap-3 p-3 bg-tier-surface-base border-none rounded-lg cursor-pointer w-full text-left hover:bg-tier-surface-base transition-colors"
                 >
-                  <Download size={18} className="text-ak-primary" />
+                  <Download size={18} className="text-tier-navy" />
                   <span className="text-[15px] leading-[22px]">Treningsokter (Excel)</span>
                 </button>
                 <button
                   onClick={() => window.open('/api/v1/export/statistics', '_blank')}
-                  className="flex items-center gap-3 p-3 bg-ak-surface-subtle border-none rounded-lg cursor-pointer w-full text-left hover:bg-ak-surface-muted transition-colors"
+                  className="flex items-center gap-3 p-3 bg-tier-surface-base border-none rounded-lg cursor-pointer w-full text-left hover:bg-tier-surface-base transition-colors"
                 >
-                  <Download size={18} className="text-ak-primary" />
+                  <Download size={18} className="text-tier-navy" />
                   <span className="text-[15px] leading-[22px]">Full statistikk (Excel)</span>
                 </button>
               </div>

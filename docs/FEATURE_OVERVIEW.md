@@ -1,4 +1,4 @@
-# AK Golf IUP - Komplett Funksjonsoversikt
+# TIER Golf IUP - Komplett Funksjonsoversikt
 
 Sist oppdatert: 2024-12-30
 

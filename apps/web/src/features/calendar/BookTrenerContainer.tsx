@@ -15,7 +15,7 @@ import {
 import { PageHeader } from '../../components/layout/PageHeader';
 import apiClient from '../../services/apiClient';
 import Button from '../../ui/primitives/Button';
-import { SubSectionTitle, CardTitle } from '../../components/typography';
+import { SubSectionTitle, CardTitle } from '../../components/typography/Headings';
 
 // ============================================================================
 // TYPES
@@ -126,34 +126,34 @@ const CoachCard: React.FC<CoachCardProps> = ({ coach, selected, onSelect }) => (
   <div
     onClick={() => onSelect(coach)}
     className={`
-      bg-ak-surface-base rounded-xl p-3.5 cursor-pointer transition-all shadow-sm
+      bg-tier-white rounded-xl p-3.5 cursor-pointer transition-all shadow-sm
       hover:-translate-y-0.5 border-2
-      ${selected ? 'border-ak-primary' : 'border-transparent'}
+      ${selected ? 'border-tier-navy' : 'border-transparent'}
     `}
   >
     <div className="flex items-center gap-3">
-      <div className="w-12 h-12 rounded-full bg-ak-primary flex items-center justify-center text-white text-lg font-semibold">
+      <div className="w-12 h-12 rounded-full bg-tier-navy flex items-center justify-center text-white text-lg font-semibold">
         {coach.name.split(' ').map((n) => n[0]).join('')}
       </div>
       <div className="flex-1">
-        <CardTitle className="text-sm font-semibold text-ak-text-primary m-0">
+        <CardTitle className="text-sm font-semibold text-tier-navy m-0">
           {coach.name}
         </CardTitle>
-        <p className="text-xs text-ak-text-secondary mt-0.5 mb-0">
+        <p className="text-xs text-tier-text-secondary mt-0.5 mb-0">
           {coach.role}
         </p>
         <div className="flex items-center gap-1 mt-1">
-          <Star size={12} className="fill-ak-status-warning text-ak-status-warning" />
-          <span className="text-xs font-medium text-ak-text-primary">
+          <Star size={12} className="fill-tier-warning text-tier-warning" />
+          <span className="text-xs font-medium text-tier-navy">
             {coach.rating}
           </span>
-          <span className="text-[11px] text-ak-text-secondary">
+          <span className="text-[11px] text-tier-text-secondary">
             ({coach.reviews} anmeldelser)
           </span>
         </div>
       </div>
       {selected && (
-        <div className="w-6 h-6 rounded-full bg-ak-primary flex items-center justify-center">
+        <div className="w-6 h-6 rounded-full bg-tier-navy flex items-center justify-center">
           <Check size={14} className="text-white" />
         </div>
       )}
@@ -162,7 +162,7 @@ const CoachCard: React.FC<CoachCardProps> = ({ coach, selected, onSelect }) => (
       {coach.specialties.map((specialty, idx) => (
         <span
           key={idx}
-          className="text-[10px] px-2 py-0.5 rounded bg-ak-surface-subtle text-ak-text-secondary"
+          className="text-[10px] px-2 py-0.5 rounded bg-tier-surface-base text-tier-text-secondary"
         >
           {specialty}
         </span>
@@ -198,22 +198,22 @@ const DateSelector: React.FC<DateSelectorProps> = ({ selectedDate, onSelectDate 
   const weekDates = getWeekDates();
 
   return (
-    <div className="bg-ak-surface-base rounded-[14px] p-4 mb-5">
+    <div className="bg-tier-white rounded-[14px] p-4 mb-5">
       <div className="flex items-center justify-between mb-3">
         <button
           onClick={() => setWeekOffset(weekOffset - 1)}
-          className="p-2 rounded-lg border-none bg-ak-surface-subtle cursor-pointer"
+          className="p-2 rounded-lg border-none bg-tier-surface-base cursor-pointer"
         >
-          <ChevronLeft size={18} className="text-ak-text-primary" />
+          <ChevronLeft size={18} className="text-tier-navy" />
         </button>
-        <SubSectionTitle className="text-sm font-semibold text-ak-text-primary m-0">
+        <SubSectionTitle className="text-sm font-semibold text-tier-navy m-0">
           {weekDates[0].toLocaleDateString('nb-NO', { month: 'long', year: 'numeric' })}
         </SubSectionTitle>
         <button
           onClick={() => setWeekOffset(weekOffset + 1)}
-          className="p-2 rounded-lg border-none bg-ak-surface-subtle cursor-pointer"
+          className="p-2 rounded-lg border-none bg-tier-surface-base cursor-pointer"
         >
-          <ChevronRight size={18} className="text-ak-text-primary" />
+          <ChevronRight size={18} className="text-tier-navy" />
         </button>
       </div>
 
@@ -232,22 +232,22 @@ const DateSelector: React.FC<DateSelectorProps> = ({ selectedDate, onSelectDate 
               disabled={isPast}
               className={`
                 flex flex-col items-center py-2.5 px-1 rounded-[10px] border-2 cursor-pointer
-                ${isSelected ? 'border-ak-primary bg-ak-primary/15' : 'border-transparent'}
-                ${!isSelected && isToday ? 'bg-ak-surface-subtle' : ''}
+                ${isSelected ? 'border-tier-navy bg-tier-navy/15' : 'border-transparent'}
+                ${!isSelected && isToday ? 'bg-tier-surface-base' : ''}
                 ${isPast ? 'cursor-not-allowed opacity-40' : ''}
               `}
             >
-              <span className="text-[10px] text-ak-text-secondary uppercase">
+              <span className="text-[10px] text-tier-text-secondary uppercase">
                 {date.toLocaleDateString('nb-NO', { weekday: 'short' })}
               </span>
               <span className={`
                 text-base font-semibold my-1
-                ${isSelected ? 'text-ak-primary' : 'text-ak-text-primary'}
+                ${isSelected ? 'text-tier-navy' : 'text-tier-navy'}
               `}>
                 {date.getDate()}
               </span>
               {hasSlots && !isPast && (
-                <div className="w-1.5 h-1.5 rounded-full bg-ak-status-success" />
+                <div className="w-1.5 h-1.5 rounded-full bg-tier-success" />
               )}
             </button>
           );
@@ -272,9 +272,9 @@ const TimeSlots: React.FC<TimeSlotsProps> = ({ date, selectedSlot, onSelectSlot 
 
   if (!date) {
     return (
-      <div className="bg-ak-surface-base rounded-[14px] p-6 text-center">
-        <Calendar size={32} className="text-ak-text-secondary mb-2 mx-auto" />
-        <p className="text-sm text-ak-text-secondary m-0">
+      <div className="bg-tier-white rounded-[14px] p-6 text-center">
+        <Calendar size={32} className="text-tier-text-secondary mb-2 mx-auto" />
+        <p className="text-sm text-tier-text-secondary m-0">
           Velg en dato for å se tilgjengelige tider
         </p>
       </div>
@@ -282,8 +282,8 @@ const TimeSlots: React.FC<TimeSlotsProps> = ({ date, selectedSlot, onSelectSlot 
   }
 
   return (
-    <div className="bg-ak-surface-base rounded-[14px] p-4 mb-5">
-      <SubSectionTitle className="text-sm font-semibold text-ak-text-primary mb-3">
+    <div className="bg-tier-white rounded-[14px] p-4 mb-5">
+      <SubSectionTitle className="text-sm font-semibold text-tier-navy mb-3">
         Tilgjengelige tider - {new Date(date).toLocaleDateString('nb-NO', { weekday: 'long', day: 'numeric', month: 'long' })}
       </SubSectionTitle>
 
@@ -297,10 +297,10 @@ const TimeSlots: React.FC<TimeSlotsProps> = ({ date, selectedSlot, onSelectSlot 
               className={`
                 py-3 px-2 rounded-lg border-2 text-sm font-medium
                 ${!slot.available
-                  ? 'bg-ak-border-default text-ak-text-secondary cursor-not-allowed line-through border-transparent'
+                  ? 'bg-tier-border-default text-tier-text-secondary cursor-not-allowed line-through border-transparent'
                   : selectedSlot?.time === slot.time
-                    ? 'border-ak-primary bg-ak-primary/15 text-ak-text-primary cursor-pointer'
-                    : 'bg-ak-surface-subtle text-ak-text-primary cursor-pointer border-transparent'
+                    ? 'border-tier-navy bg-tier-navy/15 text-tier-navy cursor-pointer'
+                    : 'bg-tier-surface-base text-tier-navy cursor-pointer border-transparent'
                 }
               `}
             >
@@ -309,7 +309,7 @@ const TimeSlots: React.FC<TimeSlotsProps> = ({ date, selectedSlot, onSelectSlot 
           ))}
         </div>
       ) : (
-        <p className="text-sm text-ak-text-secondary m-0">
+        <p className="text-sm text-tier-text-secondary m-0">
           Ingen tilgjengelige tider denne dagen
         </p>
       )}
@@ -327,8 +327,8 @@ interface SessionTypeSelectorProps {
 }
 
 const SessionTypeSelector: React.FC<SessionTypeSelectorProps> = ({ selected, onSelect }) => (
-  <div className="bg-ak-surface-base rounded-[14px] p-4 mb-5">
-    <SubSectionTitle className="text-sm font-semibold text-ak-text-primary mb-3">
+  <div className="bg-tier-white rounded-[14px] p-4 mb-5">
+    <SubSectionTitle className="text-sm font-semibold text-tier-navy mb-3">
       Type økt
     </SubSectionTitle>
     <div className="flex flex-col gap-2">
@@ -339,25 +339,25 @@ const SessionTypeSelector: React.FC<SessionTypeSelectorProps> = ({ selected, onS
           className={`
             flex items-center justify-between py-3 px-3.5 rounded-[10px] cursor-pointer
             ${selected?.id === type.id
-              ? 'border-2 border-ak-primary bg-ak-primary/10'
-              : 'border border-ak-border-default bg-ak-surface-base'
+              ? 'border-2 border-tier-navy bg-tier-navy/10'
+              : 'border border-tier-border-default bg-tier-white'
             }
           `}
         >
           <div className="flex items-center gap-2.5">
-            {type.id === 'online' ? <Video size={18} className="text-ak-primary" /> :
-             type.id === 'on_course' ? <MapPin size={18} className="text-ak-status-success" /> :
-             <User size={18} className="text-ak-text-primary" />}
+            {type.id === 'online' ? <Video size={18} className="text-tier-navy" /> :
+             type.id === 'on_course' ? <MapPin size={18} className="text-tier-success" /> :
+             <User size={18} className="text-tier-navy" />}
             <div className="text-left">
-              <div className="text-sm font-medium text-ak-text-primary">
+              <div className="text-sm font-medium text-tier-navy">
                 {type.label}
               </div>
-              <div className="text-xs text-ak-text-secondary">
+              <div className="text-xs text-tier-text-secondary">
                 {type.duration} min
               </div>
             </div>
           </div>
-          <div className="text-sm font-semibold text-ak-primary">
+          <div className="text-sm font-semibold text-tier-navy">
             {type.price} kr
           </div>
         </button>
@@ -382,42 +382,42 @@ const BookingSummary: React.FC<BookingSummaryProps> = ({ coach, date, slot, sess
   const canBook = coach && date && slot && sessionType;
 
   return (
-    <div className="bg-ak-surface-base rounded-[14px] p-4 sticky top-5">
-      <SubSectionTitle className="text-[15px] font-semibold text-ak-text-primary mb-4">
+    <div className="bg-tier-white rounded-[14px] p-4 sticky top-5">
+      <SubSectionTitle className="text-[15px] font-semibold text-tier-navy mb-4">
         Bookingoppsummering
       </SubSectionTitle>
 
       {coach && (
-        <div className="flex items-center gap-2.5 mb-3 p-2.5 bg-ak-surface-subtle rounded-lg">
-          <User size={16} className="text-ak-text-secondary" />
-          <span className="text-[13px] text-ak-text-primary">
+        <div className="flex items-center gap-2.5 mb-3 p-2.5 bg-tier-surface-base rounded-lg">
+          <User size={16} className="text-tier-text-secondary" />
+          <span className="text-[13px] text-tier-navy">
             {coach.name}
           </span>
         </div>
       )}
 
       {date && slot && (
-        <div className="flex items-center gap-2.5 mb-3 p-2.5 bg-ak-surface-subtle rounded-lg">
-          <Calendar size={16} className="text-ak-text-secondary" />
-          <span className="text-[13px] text-ak-text-primary">
+        <div className="flex items-center gap-2.5 mb-3 p-2.5 bg-tier-surface-base rounded-lg">
+          <Calendar size={16} className="text-tier-text-secondary" />
+          <span className="text-[13px] text-tier-navy">
             {new Date(date).toLocaleDateString('nb-NO', { weekday: 'long', day: 'numeric', month: 'long' })} kl. {slot.time}
           </span>
         </div>
       )}
 
       {sessionType && (
-        <div className="flex items-center gap-2.5 mb-4 p-2.5 bg-ak-surface-subtle rounded-lg">
-          <Clock size={16} className="text-ak-text-secondary" />
-          <span className="text-[13px] text-ak-text-primary">
+        <div className="flex items-center gap-2.5 mb-4 p-2.5 bg-tier-surface-base rounded-lg">
+          <Clock size={16} className="text-tier-text-secondary" />
+          <span className="text-[13px] text-tier-navy">
             {sessionType.label} ({sessionType.duration} min)
           </span>
         </div>
       )}
 
       {sessionType && (
-        <div className="flex justify-between items-center py-3 border-t border-ak-border-default mb-4">
-          <span className="text-sm text-ak-text-secondary">Total</span>
-          <span className="text-lg font-bold text-ak-text-primary">
+        <div className="flex justify-between items-center py-3 border-t border-tier-border-default mb-4">
+          <span className="text-sm text-tier-text-secondary">Total</span>
+          <span className="text-lg font-bold text-tier-navy">
             {sessionType.price} kr
           </span>
         </div>
@@ -483,10 +483,11 @@ const BookTrenerContainer: React.FC = () => {
   void bookingError;
 
   return (
-    <div className="min-h-screen bg-ak-surface-subtle">
+    <div className="min-h-screen bg-tier-surface-base">
       <PageHeader
         title="Book trener"
         subtitle="Reserver en time med din trener"
+        helpText="Book en individuell treningstime eller veiledning med din trener. Velg tilgjengelig tidspunkt i trenerens kalender og bekreft reservasjonen."
         actions={null}
       />
 
@@ -494,7 +495,7 @@ const BookTrenerContainer: React.FC = () => {
         <div>
           {/* Coach Selection */}
           <div className="mb-6">
-            <SubSectionTitle className="text-sm font-semibold text-ak-text-primary mb-3">
+            <SubSectionTitle className="text-sm font-semibold text-tier-navy mb-3">
               Velg trener
             </SubSectionTitle>
             <div className="flex flex-col gap-2.5">

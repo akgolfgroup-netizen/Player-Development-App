@@ -1,8 +1,8 @@
-# AK Golf Academy IUP - Komplett Skjermoversikt
+# TIER Golf IUP - Komplett Skjermoversikt
 
 ## Prosjektinformasjon
 - **Prosjekt:** Individuell Utviklingsplan (IUP) App
-- **Klient:** AK Golf Academy × Team Norway Golf
+- **Klient:** TIER Golf × Team Norway Golf
 - **Teknologi:** React + Tailwind CSS
 - **Totalt antall skjermer:** 14
 

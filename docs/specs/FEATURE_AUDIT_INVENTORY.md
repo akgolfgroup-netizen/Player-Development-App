@@ -1,4 +1,4 @@
-# AK Golf Academy - Feature Audit & Inventory
+# TIER Golf - Feature Audit & Inventory
 
 **Date**: December 17, 2025
 **Application**: IUP Master (Individuell Utviklingsplan)
@@ -9,7 +9,7 @@
 
 ## Executive Summary
 
-This document provides a comprehensive feature inventory of the AK Golf Academy application based on a systematic walkthrough of all major screens and user journeys. The audit covers affordances, behaviors, states, edge cases, and identifies gaps with priority ratings (P0/P1/P2).
+This document provides a comprehensive feature inventory of the TIER Golf application based on a systematic walkthrough of all major screens and user journeys. The audit covers affordances, behaviors, states, edge cases, and identifies gaps with priority ratings (P0/P1/P2).
 
 **Screens Audited**: 9 major screens
 **Total Features Documented**: 120+
@@ -1052,7 +1052,7 @@ This document provides a comprehensive feature inventory of the AK Golf Academy 
 
 ## Conclusion
 
-The AK Golf Academy application has a **solid foundation** with well-designed UI components and a comprehensive feature set. However, there are **critical gaps** in core CRUD operations (Notes, Calendar sessions) and important missing features (Progress updates, Plan editing, Coach collaboration).
+The TIER Golf application has a **solid foundation** with well-designed UI components and a comprehensive feature set. However, there are **critical gaps** in core CRUD operations (Notes, Calendar sessions) and important missing features (Progress updates, Plan editing, Coach collaboration).
 
 **Key Priorities**:
 1. Fix broken core features (P0)

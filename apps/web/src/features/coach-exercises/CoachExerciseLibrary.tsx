@@ -14,7 +14,7 @@ import { useNavigate } from 'react-router-dom';
 import Card from '../../ui/primitives/Card';
 import Button from '../../ui/primitives/Button';
 import PageHeader from '../../ui/raw-blocks/PageHeader.raw';
-import { SubSectionTitle } from '../../components/typography';
+import { SubSectionTitle } from "../../ui/components/typography";
 
 interface Exercise {
   id: string;
@@ -198,13 +198,13 @@ export const CoachExerciseLibrary: React.FC = () => {
 
   const getCategoryColor = (cat: string) => {
     const colors: Record<string, { bg: string; text: string }> = {
-      putting: { bg: 'rgba(34, 197, 94, 0.1)', text: 'var(--success)' },
+      putting: { bg: 'rgba(34, 197, 94, 0.1)', text: 'var(--status-success)' },
       driving: { bg: 'rgba(59, 130, 246, 0.1)', text: 'var(--info)' },
       iron: { bg: 'rgba(99, 102, 241, 0.1)', text: 'var(--accent)' },
-      wedge: { bg: 'rgba(168, 85, 247, 0.1)', text: 'var(--ak-accent-purple)' },
-      bunker: { bg: 'rgba(245, 158, 11, 0.1)', text: 'var(--warning)' },
-      mental: { bg: 'rgba(236, 72, 153, 0.1)', text: 'var(--ak-accent-pink)' },
-      fitness: { bg: 'rgba(239, 68, 68, 0.1)', text: 'var(--error)' }
+      wedge: { bg: 'rgba(var(--category-j), 0.1)', text: 'rgb(var(--category-j))' },
+      bunker: { bg: 'rgba(245, 158, 11, 0.1)', text: 'var(--status-warning)' },
+      mental: { bg: 'rgba(var(--category-j), 0.1)', text: 'rgb(var(--category-j))' },
+      fitness: { bg: 'rgba(239, 68, 68, 0.1)', text: 'var(--status-error)' }
     };
     return colors[cat] || { bg: 'var(--card)', text: 'var(--text-tertiary)' };
   };
@@ -220,9 +220,9 @@ export const CoachExerciseLibrary: React.FC = () => {
 
   const getDifficultyColor = (diff: string) => {
     switch (diff) {
-      case 'beginner': return 'var(--success)';
-      case 'intermediate': return 'var(--warning)';
-      case 'advanced': return 'var(--error)';
+      case 'beginner': return 'var(--status-success)';
+      case 'intermediate': return 'var(--status-warning)';
+      case 'advanced': return 'var(--status-error)';
       default: return 'var(--text-tertiary)';
     }
   };
@@ -233,6 +233,7 @@ export const CoachExerciseLibrary: React.FC = () => {
       <PageHeader
         title="Øvelsesbank"
         subtitle={`${mockExercises.length} øvelser tilgjengelig`}
+        helpText="Øvelsesbanken inneholder alle tilgjengelige øvelser. Du kan opprette nye øvelser, bruke eksisterende maler eller favorittmarkere øvelser du bruker ofte."
         actions={
           <Button variant="primary" onClick={() => navigate('/coach/exercises/create')} leftIcon={<Plus size={18} />}>
             Ny øvelse
@@ -408,7 +409,7 @@ export const CoachExerciseLibrary: React.FC = () => {
                   </span>
                 </div>
                 {exercise.isFavorite && (
-                  <Star size={18} color="var(--warning)" fill="var(--warning)" />
+                  <Star size={18} color="var(--status-warning)" fill="var(--status-warning)" />
                 )}
               </div>
 
@@ -456,7 +457,7 @@ export const CoachExerciseLibrary: React.FC = () => {
                   </span>
                 </div>
                 <div style={{ display: 'flex', alignItems: 'center', gap: '4px' }}>
-                  <Star size={14} color="var(--warning)" fill="var(--warning)" />
+                  <Star size={14} color="var(--status-warning)" fill="var(--status-warning)" />
                   <span style={{ fontSize: '12px', color: 'var(--text-secondary)' }}>
                     {exercise.rating}
                   </span>
@@ -479,7 +480,7 @@ export const CoachExerciseLibrary: React.FC = () => {
                     borderRadius: '8px',
                     border: 'none',
                     backgroundColor: 'rgba(239, 68, 68, 0.1)',
-                    color: 'var(--error)',
+                    color: 'var(--status-error)',
                     fontSize: '12px',
                     fontWeight: '500',
                     cursor: 'pointer'

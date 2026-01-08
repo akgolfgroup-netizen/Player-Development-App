@@ -1,4 +1,4 @@
-# Presentation Guide - IUP Golf Academy
+# Presentation Guide - IUP Golf
 
 ## 🎉 Your Presentation is Ready!
 
@@ -35,9 +35,9 @@ The presentation has been created at:
 
 ## 📊 Slide Structure (15 Slides Total)
 
-1. **Title Slide** - IUP Golf Academy introduction
+1. **Title Slide** - IUP Golf introduction
 2. **Problem** - Current challenges in golf coaching
-3. **Solution** - IUP Golf Academy reveal
+3. **Solution** - IUP Golf reveal
 4. **Dashboard** - Player perspective (Andreas Holm)
 5. **Training Plan** - Automated planning features
 6. **Badges** - Gamification system
@@ -155,7 +155,7 @@ To add a logo to all slides:
    - **Margins:** None
    - **Background graphics:** Checked
 
-**File saved as:** `IUP-Golf-Academy-Presentation.pdf`
+**File saved as:** `TIER-Golf-Presentation.pdf`
 
 ### Option 2: PowerPoint/Keynote
 

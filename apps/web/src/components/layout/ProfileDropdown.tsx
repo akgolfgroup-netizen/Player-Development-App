@@ -1,5 +1,5 @@
 /**
- * AK Golf Academy - Profile Dropdown
+ * TIER Golf Academy - Profile Dropdown
  * Design System v3.0 - Forest Green (Premium Light)
  *
  * Avatar dropdown-meny med profil og innstillinger.
@@ -10,12 +10,13 @@ import React, { useState, useRef, useEffect } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import * as LucideIcons from 'lucide-react';
 import { settingsMenuItems } from '../../config/player-navigation-v2';
+import { Avatar } from '../../ui/primitives/Avatar';
 
 // Design token values (hex for inline styles)
 const tokenColors = {
-  gold: '#C9A227',
+  gold: 'rgb(var(--tier-gold))',
   ink: '#1C1C1E',
-  white: '#FFFFFF',
+  white: 'rgb(var(--tier-white))',
   error: '#C45B4E',
   gray100: '#F3F4F6',
   gray200: '#E5E7EB',
@@ -83,7 +84,6 @@ export default function ProfileDropdown({
     navigate('/login');
   };
 
-  const initials = user?.firstName?.[0]?.toUpperCase() || 'S';
   const displayName = user?.firstName
     ? `${user.firstName}${user.lastName ? ' ' + user.lastName : ''}`
     : 'Spiller';
@@ -104,18 +104,6 @@ export default function ProfileDropdown({
       backgroundColor: isDark ? 'rgba(255, 255, 255, 0.08)' : 'rgba(0, 0, 0, 0.04)',
       cursor: 'pointer',
       transition: 'all 0.2s',
-    },
-    avatar: {
-      width: 32,
-      height: 32,
-      borderRadius: '8px',
-      backgroundColor: tokenColors.gold,
-      display: 'flex',
-      alignItems: 'center',
-      justifyContent: 'center',
-      color: tokenColors.ink,
-      fontWeight: 700,
-      fontSize: '14px',
     },
     name: {
       color: isDark ? tokenColors.white : tokenColors.ink,
@@ -212,7 +200,7 @@ export default function ProfileDropdown({
         aria-haspopup="true"
         aria-label="Åpne profilmeny"
       >
-        <div style={styles.avatar}>{initials}</div>
+        <Avatar name={displayName} size="sm" />
         <span style={styles.name}>{displayName}</span>
         <ChevronDown size={16} style={styles.chevron} />
       </button>

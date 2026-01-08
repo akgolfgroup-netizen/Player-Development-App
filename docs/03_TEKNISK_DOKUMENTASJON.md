@@ -1,4 +1,4 @@
-# Teknisk Dokumentasjon - IUP Golf Academy
+# Teknisk Dokumentasjon - IUP Golf
 
 **For Senior Software Engineers**
 
@@ -1389,7 +1389,7 @@ railway up --detach
 
 ## Konklusjon
 
-IUP Golf Academy er en produksjonsklar, skalerbar coaching-plattform som demonstrerer:
+IUP Golf er en produksjonsklar, skalerbar coaching-plattform som demonstrerer:
 
 1. **Modern API Design:** RESTful endpoints med clear separation of concerns
 2. **Enterprise Security:** JWT auth, RBAC, input validation, rate limiting

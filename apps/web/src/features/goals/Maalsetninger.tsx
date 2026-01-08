@@ -4,7 +4,7 @@
  */
 import React, { useState } from 'react';
 import { PageHeader } from '../../components/layout/PageHeader';
-import { SectionTitle, SubSectionTitle, CardTitle as TypographyCardTitle } from '../../components/typography';
+import { SectionTitle, SubSectionTitle, CardTitle as TypographyCardTitle } from '../../components/typography/Headings';
 import {
   Target, Trophy, Dumbbell, Brain, TrendingUp,
   Plus, Pencil, Trash2, Check, Users, X, Lightbulb, Calendar
@@ -179,8 +179,8 @@ const GoalCard: React.FC<GoalCardProps> = ({
         {/* Header */}
         <div className="flex items-start justify-between mb-3">
           <div className="flex items-center gap-3">
-            <div className="w-10 h-10 rounded-lg bg-ak-primary/10 flex items-center justify-center">
-              <CategoryIcon className="w-5 h-5 text-ak-primary" />
+            <div className="w-10 h-10 rounded-lg bg-tier-navy/10 flex items-center justify-center">
+              <CategoryIcon className="w-5 h-5 text-tier-navy" />
             </div>
             <div>
               <SubSectionTitle className={cn(
@@ -217,7 +217,7 @@ const GoalCard: React.FC<GoalCardProps> = ({
               variant="ghost"
               size="icon"
               onClick={() => onShareWithCoach(goal.id)}
-              className={cn(goal.sharedWithCoach && "text-ak-primary")}
+              className={cn(goal.sharedWithCoach && "text-tier-navy")}
             >
               <Users className="h-4 w-4" />
             </Button>
@@ -250,7 +250,7 @@ const GoalCard: React.FC<GoalCardProps> = ({
               </span>
               <span className={cn(
                 "font-medium",
-                progressPercentage >= 100 ? "text-ak-success" : "text-ak-primary"
+                progressPercentage >= 100 ? "text-tier-success" : "text-tier-navy"
               )}>
                 {Math.round(progressPercentage)}%
               </span>
@@ -302,7 +302,7 @@ const GoalCard: React.FC<GoalCardProps> = ({
               {goal.coachComments.map(comment => (
                 <div
                   key={comment.id}
-                  className="p-2 rounded-lg bg-ak-primary/5 border-l-2 border-ak-primary"
+                  className="p-2 rounded-lg bg-tier-navy/5 border-l-2 border-tier-navy"
                 >
                   <div className="flex items-center justify-between mb-1">
                     <span className="text-xs font-medium">{comment.author}</span>
@@ -672,6 +672,7 @@ const Maalsetninger: React.FC<MaalsetningerProps> = ({ goals: apiGoals }) => {
       <PageHeader
         title="Mine Målsetninger"
         subtitle={`${activeGoals.length} aktive mål`}
+        helpText="Sett og følg opp dine golfmål. Del mål med trener og spor fremgang over tid med milepæler og deadlines."
         action={
           <Button onClick={() => { setEditingGoal(null); setShowModal(true); }} className="gap-2">
             <Plus className="h-4 w-4" />
@@ -772,10 +773,10 @@ const Maalsetninger: React.FC<MaalsetningerProps> = ({ goals: apiGoals }) => {
 
         {/* Tips card */}
         {viewMode === 'active' && activeGoals.length > 0 && (
-          <Card className="mt-6 bg-ak-warning/10 border-ak-warning/20">
+          <Card className="mt-6 bg-tier-warning/10 border-tier-warning/20">
             <CardContent className="pt-4">
               <div className="flex items-start gap-3">
-                <Lightbulb className="h-6 w-6 text-ak-warning flex-shrink-0" />
+                <Lightbulb className="h-6 w-6 text-tier-warning flex-shrink-0" />
                 <div>
                   <CardTitle className="font-semibold text-text-primary mb-1">
                     Tips for gode mål

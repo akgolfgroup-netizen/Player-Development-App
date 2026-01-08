@@ -1,6 +1,6 @@
 /**
- * AK GOLF ACADEMY — DESIGN SYSTEM v3.0
- * Premium Light: Stone × Midnight Blue × Emerald × Soft Gold
+ * TIER GOLF ACADEMY — DESIGN SYSTEM v3.0
+ * Navy × Gold × Category A-K System
  *
  * This file is the SINGLE SOURCE OF TRUTH for all design tokens.
  * Do NOT hardcode colors, spacing, or other values in components.
@@ -8,13 +8,17 @@
  */
 
 @import "./styles/tokens.css";
+@import "./styles/tier-tokens.css";
+@import "./styles/tier-animations.css";
+@import "./styles/tier-components.css";
 
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
 
-@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap');
-@import url('https://fonts.googleapis.com/css2?family=DM+Sans:wght@300;400;500&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;600&display=swap');
 
 /* ═══════════════════════════════════════════
    AK GOLF ACADEMY - CSS VARIABLES
@@ -39,22 +43,22 @@
      Source: tokens.css
      ───────────────────────────────────────── */
 
-  /* Action tokens (buttons, links, focus, tabs) - Midnight Blue */
-  --ak-primary: rgb(16 69 106);           /* --blue-700 */
-  --ak-primary-light: rgb(26 90 138);     /* --blue-600 */
-  --ak-primary-dark: rgb(16 69 106);      /* --blue-700 */
-  --ak-primary-hover: rgb(26 90 138);     /* --blue-600 */
-  --ak-primary-active: rgb(36 90 133);    /* --blue-500 */
+  /* Action tokens (buttons, links, focus, tabs) - TIER Golf Navy */
+  --ak-primary: rgb(var(--tier-navy));            /* TIER Golf Navy rgb(var(--tier-navy)) */
+  --ak-primary-light: rgb(13 48 80);      /* TIER Golf Navy Light rgb(var(--tier-navy-light)) */
+  --ak-primary-dark: rgb(6 24 41);        /* TIER Golf Navy Dark rgb(var(--tier-navy-dark)) */
+  --ak-primary-hover: rgb(13 48 80);      /* TIER Golf Navy Light rgb(var(--tier-navy-light)) */
+  --ak-primary-active: rgb(17 45 78);     /* TIER Golf Navy Active */
 
   /* Surface tokens (backgrounds) - Stone */
   --ak-snow: rgb(250 250 248);            /* --stone-50 */
   --ak-surface: rgb(244 243 239);         /* --stone-100 */
-  --ak-white: #FFFFFF;
+  --ak-white: rgb(var(--tier-white));
   --ak-ink: rgb(44 46 51);                /* --stone-800 */
 
-  /* Prestige tokens (achievements/badges ONLY) - Soft Gold */
-  --ak-gold: rgb(198 162 77);             /* --gold-500 */
-  --ak-gold-light: rgb(158 124 47);       /* --gold-600 */
+  /* Prestige tokens (achievements/badges ONLY) - TIER Golf Gold */
+  --ak-gold: rgb(var(--tier-gold));             /* TIER Golf Gold rgb(var(--tier-gold)) */
+  --ak-gold-light: rgb(212 181 69);       /* TIER Golf Gold Light rgb(var(--tier-gold-light)) */
 
   /* Legacy aliases - DO NOT USE IN NEW CODE */
   --ak-forest: rgb(16 69 106);            /* --blue-700 (was Forest Green) */
@@ -95,7 +99,7 @@
   --background-muted: rgb(218 216 210);   /* --stone-300 */
   --background-inverse: rgb(44 46 51);    /* --stone-800 */
   --background-accent: rgb(16 69 106);    /* --blue-700 / --ak-action-primary */
-  --background-white: #FFFFFF;
+  --background-white: rgb(var(--tier-white));
 
   /* ─────────────────────────────────────────
      SEMANTIC TOKENS - TEXT
@@ -107,7 +111,7 @@
   --text-muted: rgb(107 110 116);         /* --stone-500 */
   --text-faint: rgb(218 216 210);         /* --stone-300 */
   --text-brand: rgb(16 69 106);           /* --blue-700 / --ak-action-primary */
-  --text-inverse: #FFFFFF;
+  --text-inverse: rgb(var(--tier-white));
   --text-accent: rgb(198 162 77);         /* --gold-500 / --ak-prestige */
 
   /* ─────────────────────────────────────────
@@ -122,15 +126,15 @@
   --border-accent: rgb(198 162 77);       /* --gold-500 / --ak-prestige */
 
   /* ─────────────────────────────────────────
-     STANDARDIZED COLOR TOKENS
+     STANDARDIZED COLOR TOKENS - TIER GOLF
      ───────────────────────────────────────── */
-  --color-primary: rgb(16 69 106);        /* --blue-700 */
-  --color-primary-foreground: #FFFFFF;
-  --color-surface: #FFFFFF;
-  --color-surface-2: rgb(244 243 239);    /* --stone-100 */
-  --color-border: rgb(218 216 210);       /* --stone-300 */
-  --color-text: rgb(44 46 51);            /* --stone-800 */
-  --color-text-muted: rgb(68 70 75);      /* --stone-700 */
+  --color-primary: rgb(var(--tier-navy));         /* TIER Golf Navy rgb(var(--tier-navy)) */
+  --color-primary-foreground: rgb(var(--tier-white));
+  --color-surface: rgb(var(--tier-white));
+  --color-surface-2: rgb(248 250 252);    /* Light surface */
+  --color-border: rgb(226 232 240);       /* Subtle border */
+  --color-text: rgb(var(--tier-navy));            /* TIER Navy for text */
+  --color-text-muted: rgb(71 85 105);     /* Secondary text */
   --color-success: rgb(5 150 105);        /* --status-success */
   --color-warning: rgb(217 119 6);        /* --status-warning */
   --color-danger: rgb(220 38 38);         /* --status-error */
@@ -138,16 +142,17 @@
   /* ─────────────────────────────────────────
      COMPONENT LEGACY ALIASES
      For backward compatibility - DO NOT USE IN NEW CODE
+     UPDATED TO TIER GOLF NAVY × GOLD
      ───────────────────────────────────────── */
-  --accent: rgb(16 69 106);               /* --blue-700 */
-  --accent-hover: rgb(26 90 138);         /* --blue-600 */
-  --accent-dark: rgb(16 69 106);          /* --blue-700 */
-  --accent-muted: rgb(16 69 106 / 0.08);
-  --accent-soft: rgb(16 69 106 / 0.12);
-  --accent-rgb: 16, 69, 106;              /* For rgba() usage */
-  --bg-primary: #FFFFFF;
-  --bg-secondary: rgb(250 250 248);       /* --stone-50 */
-  --bg-tertiary: rgb(244 243 239);        /* --stone-100 */
+  --accent: rgb(var(--tier-navy));                /* TIER Golf Navy rgb(var(--tier-navy)) */
+  --accent-hover: rgb(13 48 80);          /* TIER Golf Navy Light rgb(var(--tier-navy-light)) */
+  --accent-dark: rgb(6 24 41);            /* TIER Golf Navy Dark rgb(var(--tier-navy-dark)) */
+  --accent-muted: rgb(10 37 64 / 0.08);
+  --accent-soft: rgb(10 37 64 / 0.12);
+  --accent-rgb: 10, 37, 64;               /* TIER Navy RGB for rgba() usage */
+  --bg-primary: rgb(var(--tier-white));
+  --bg-secondary: rgb(248 250 252);       /* Light surface */
+  --bg-tertiary: rgb(237 240 242);        /* Subtle surface */
   --success: rgb(5 150 105);              /* --status-success */
   --success-muted: rgb(5 150 105 / 0.1);
   --warning: rgb(217 119 6);              /* --status-warning */
@@ -157,12 +162,12 @@
   --error-rgb: 220, 38, 38;               /* For rgba() usage */
   --info: rgb(2 132 199);                 /* --status-info */
   --info-muted: rgb(2 132 199 / 0.1);
-  --card: #FFFFFF;
+  --card: rgb(var(--tier-white));
 
   /* Achievement/Prestige tokens - ONLY for badges */
-  --achievement: rgb(198 162 77);         /* --gold-500 */
-  --achievement-light: rgb(158 124 47);   /* --gold-600 */
-  --achievement-muted: rgb(198 162 77 / 0.1);
+  --achievement: rgb(var(--tier-gold));         /* TIER Golf Gold rgb(var(--tier-gold)) */
+  --achievement-light: rgb(212 181 69);   /* TIER Golf Gold Light rgb(var(--tier-gold-light)) */
+  --achievement-muted: rgb(201 162 39 / 0.1);
 
   /* Overlay/Backdrop tokens */
   --overlay-backdrop: rgba(0, 0, 0, 0.5);
@@ -195,12 +200,12 @@
   --video-shadow-xl: 0 24px 48px rgba(0, 0, 0, 0.4);
 
   /* Social Sharing Tokens (for share dialogs) */
-  --share-whatsapp: #25D366;
-  --share-whatsapp-muted: rgba(37, 211, 102, 0.1);
-  --share-whatsapp-border: rgba(37, 211, 102, 0.3);
-  --share-email: #3B82F6;
-  --share-email-muted: rgba(59, 130, 246, 0.1);
-  --share-email-border: rgba(59, 130, 246, 0.3);
+  --share-whatsapp: rgb(var(--status-success));
+  --share-whatsapp-muted: rgba(var(--status-success), 0.1);
+  --share-whatsapp-border: rgba(var(--status-success), 0.3);
+  --share-email: rgb(var(--status-info));
+  --share-email-muted: rgba(var(--status-info), 0.1);
+  --share-email-border: rgba(var(--status-info), 0.3);
 
   /* Table/List interaction tokens */
   --table-hover: rgba(0, 0, 0, 0.02);
@@ -211,50 +216,50 @@
      Semantic colors for training pyramid levels
      ───────────────────────────────────────── */
   /* FYS (Fysisk) - Physical training */
-  --category-fys: #DC2626;
+  --category-fys: rgb(var(--status-error));
   --category-fys-muted: rgba(220, 38, 38, 0.1);
   /* TEK (Teknikk) - Technical training */
-  --category-tek: #2563EB;
+  --category-tek: rgb(var(--status-info));
   --category-tek-muted: rgba(37, 99, 235, 0.1);
   /* SLAG (Golfslag) - Golf shots */
-  --category-slag: #059669;
-  --category-slag-muted: rgba(5, 150, 105, 0.1);
+  --category-slag: rgb(var(--status-success));
+  --category-slag-muted: rgba(var(--status-success), 0.1);
   /* SPILL (Spill) - Game play */
-  --category-spill: #7C3AED;
-  --category-spill-muted: rgba(124, 58, 237, 0.1);
+  --category-spill: rgb(var(--category-j));
+  --category-spill-muted: rgba(var(--category-j), 0.1);
   /* TURN (Turnering) - Tournament */
-  --category-turn: #D97706;
+  --category-turn: rgb(var(--status-warning));
   --category-turn-muted: rgba(217, 119, 6, 0.1);
 
   /* Advanced filter tokens */
-  --filter-lfase: #7C3AED;
-  --filter-miljo: #0D9488;
-  --filter-press: #EA580C;
+  --filter-lfase: rgb(var(--category-j));
+  --filter-miljo: rgb(var(--status-success));
+  --filter-press: rgb(var(--status-warning));
 
   /* Group color picker tokens */
-  --group-lightblue: #60A5FA;
-  --group-purple: #7C3AED;
-  --group-pink: #EC4899;
-  --group-teal: #14B8A6;
-  --group-warmearth: #8E6E53;
+  --group-lightblue: rgb(var(--status-info));
+  --group-purple: rgb(var(--category-j));
+  --group-pink: rgb(var(--status-error));
+  --group-teal: rgb(var(--status-success));
+  --group-warmearth: rgb(var(--tier-navy));
 
   /* Medal/Rank tokens */
-  --medal-gold: #FFD700;
-  --medal-silver: #C0C0C0;
-  --medal-bronze: #CD7F32;
-  --medal-platinum: #E5E4E2;
-  --rank-legendary: #9333EA;
-  --rank-rookie: #9CA3AF;
+  --medal-gold: rgb(var(--tier-gold));
+  --medal-silver: rgb(var(--text-secondary));
+  --medal-bronze: rgb(var(--status-warning));
+  --medal-platinum: rgb(var(--border-default));
+  --rank-legendary: rgb(var(--category-j));
+  --rank-rookie: rgb(var(--text-tertiary));
 
   /* SG Journey Level tokens */
   --sg-pga-elite: var(--medal-gold);
   --sg-pga-top50: var(--medal-silver);
   --sg-pga-average: var(--medal-bronze);
-  --sg-mini-tour: #4A90D9;
-  --sg-scratch: #50C878;
-  --sg-single-digit: #87CEEB;
-  --sg-mid-handicap: #DDA0DD;
-  --sg-beginner: #98FB98;
+  --sg-mini-tour: rgb(var(--status-info));
+  --sg-scratch: rgb(var(--status-success));
+  --sg-single-digit: rgb(var(--status-info));
+  --sg-mid-handicap: rgb(var(--category-j));
+  --sg-beginner: rgb(var(--status-success));
 
   /* Message category tokens */
   --msg-training: var(--accent);
@@ -269,22 +274,22 @@
   /* Exercise category tokens */
   --ex-putting: var(--success);
   --ex-putting-muted: var(--success-muted);
-  --ex-driving: #2563EB;
+  --ex-driving: rgb(var(--status-info));
   --ex-driving-muted: rgba(37, 99, 235, 0.1);
-  --ex-iron: #4F46E5;
-  --ex-iron-muted: rgba(79, 70, 229, 0.1);
-  --ex-wedge: #7C3AED;
-  --ex-wedge-muted: rgba(124, 58, 237, 0.1);
+  --ex-iron: rgb(var(--status-info));
+  --ex-iron-muted: rgba(var(--status-info), 0.1);
+  --ex-wedge: rgb(var(--category-j));
+  --ex-wedge-muted: rgba(var(--category-j), 0.1);
   --ex-bunker: var(--warning);
   --ex-bunker-muted: var(--warning-muted);
-  --ex-mental: #DB2777;
-  --ex-mental-muted: rgba(219, 39, 119, 0.1);
+  --ex-mental: rgb(var(--status-error));
+  --ex-mental-muted: rgba(var(--status-error), 0.1);
   --ex-fitness: var(--error);
   --ex-fitness-muted: var(--error-muted);
   --ex-fullspill: var(--accent);
   --ex-fullspill-muted: var(--accent-muted);
-  --ex-kortspill: #7C3AED;
-  --ex-kortspill-muted: rgba(124, 58, 237, 0.1);
+  --ex-kortspill: rgb(var(--category-j));
+  --ex-kortspill-muted: rgba(var(--category-j), 0.1);
   --ex-blandet: var(--text-tertiary);
   --ex-blandet-muted: rgba(107, 114, 128, 0.1);
 
@@ -293,32 +298,32 @@
   --warning-rgb: 217, 119, 6;
 
   /* Streak/achievement badge tokens */
-  --streak-gold: #eab308;
-  --streak-gold-muted: rgba(234, 179, 8, 0.15);
-  --streak-gold-border: rgba(234, 179, 8, 0.3);
-  --streak-gold-text: #b45309;
+  --streak-gold: rgb(var(--tier-gold));
+  --streak-gold-muted: rgba(var(--tier-gold), 0.15);
+  --streak-gold-border: rgba(var(--tier-gold), 0.3);
+  --streak-gold-text: rgb(var(--tier-gold-dark));
 
   /* Booking/pending status tokens */
-  --status-pending: #8B6914;
-  --status-pending-muted: rgba(139, 105, 20, 0.1);
+  --status-pending: rgb(var(--status-warning));
+  --status-pending-muted: rgba(var(--status-warning), 0.1);
 
   /* Grade color tokens (A-F scale) */
-  --grade-e: #FF9800;
-  --grade-f: #FF5722;
+  --grade-e: rgb(var(--status-warning));
+  --grade-f: rgb(var(--status-error));
 
   /* School/course color tokens */
-  --course-purple: #6B5B95;
-  --course-green: #88B04B;
-  --course-pink: #F7CAC9;
-  --course-blue: #92A8D1;
-  --course-maroon: #955251;
-  --course-teal: #009B77;
+  --course-purple: rgb(var(--category-j));
+  --course-green: rgb(var(--status-success));
+  --course-pink: rgb(var(--status-error));
+  --course-blue: rgb(var(--status-info));
+  --course-maroon: rgb(var(--status-error));
+  --course-teal: rgb(var(--status-success));
 
   /* Data Golf feature tokens (indigo) */
-  --datagolf-accent: #6366f1;
-  --datagolf-accent-dark: #4f46e5;
-  --datagolf-accent-muted: rgba(99, 102, 241, 0.1);
-  --datagolf-accent-border: rgba(99, 102, 241, 0.2);
+  --datagolf-accent: rgb(var(--status-info));
+  --datagolf-accent-dark: rgb(var(--tier-navy));
+  --datagolf-accent-muted: rgba(var(--status-info), 0.1);
+  --datagolf-accent-border: rgba(var(--status-info), 0.2);
 
   /* Badge background tokens */
   --bg-neutral-subtle: var(--gray-100);
@@ -383,10 +388,10 @@
   --calendar-event-external-text: var(--text-secondary);
 
   /* Calendar event - Category colors */
-  --calendar-event-mental-bg: rgba(219, 39, 119, 0.08);
-  --calendar-event-mental-border: #DB2777;
-  --calendar-event-testing-bg: rgba(220, 38, 38, 0.08);
-  --calendar-event-testing-border: #DC2626;
+  --calendar-event-mental-bg: rgba(var(--status-error), 0.08);
+  --calendar-event-mental-border: rgb(var(--status-error));
+  --calendar-event-testing-bg: rgba(var(--status-error), 0.08);
+  --calendar-event-testing-border: rgb(var(--status-error));
 
   /* Calendar today marker */
   --calendar-today-marker-bg: var(--ak-primary);

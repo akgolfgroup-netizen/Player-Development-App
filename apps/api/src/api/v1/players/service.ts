@@ -1,6 +1,6 @@
 import { PrismaClient, Prisma } from '@prisma/client';
 import { NotFoundError, ConflictError, BadRequestError } from '../../../middleware/errors';
-import { CreatePlayerInput, UpdatePlayerInput, ListPlayersQuery } from './schema';
+import { CreatePlayerInput, UpdatePlayerInput, ListPlayersQuery, PlayerOnboardingInput } from './schema';
 
 /**
  * Player with coach and parent relations
@@ -458,6 +458,80 @@ export class PlayerService {
         inProgress,
       },
     };
+  }
+
+  /**
+   * Complete player onboarding - update player profile with onboarding data
+   */
+  async completeOnboarding(
+    tenantId: string,
+    playerId: string,
+    input: PlayerOnboardingInput
+  ): Promise<PlayerWithRelations> {
+    // Check if player exists
+    const existingPlayer = await this.prisma.player.findFirst({
+      where: { id: playerId, tenantId },
+    });
+
+    if (!existingPlayer) {
+      throw new NotFoundError('Player not found');
+    }
+
+    // Verify coach exists if coachId provided
+    if (input.coachId) {
+      const coach = await this.prisma.coach.findFirst({
+        where: { id: input.coachId, tenantId },
+      });
+
+      if (!coach) {
+        throw new BadRequestError('Coach not found');
+      }
+    }
+
+    // Convert goals array of strings to goals array of objects
+    const goalsData = input.goals.map((goalTitle) => ({
+      title: goalTitle,
+      completed: false,
+    }));
+
+    // Update player with onboarding data
+    const player = await this.prisma.player.update({
+      where: { id: playerId },
+      data: {
+        firstName: input.firstName,
+        lastName: input.lastName,
+        dateOfBirth: new Date(input.dateOfBirth),
+        gender: input.gender,
+        phone: input.phone,
+        handicap: input.handicap,
+        category: input.category || 'D',
+        club: input.club,
+        coachId: input.coachId,
+        emergencyContact: input.emergencyContact as any,
+        goals: goalsData,
+      },
+      include: {
+        coach: {
+          select: {
+            id: true,
+            firstName: true,
+            lastName: true,
+            email: true,
+          },
+        },
+        parent: {
+          select: {
+            id: true,
+            firstName: true,
+            lastName: true,
+            email: true,
+            phone: true,
+          },
+        },
+      },
+    });
+
+    return player;
   }
 
   /**

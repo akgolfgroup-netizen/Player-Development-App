@@ -1,7 +1,7 @@
 // @ts-nocheck
 /* eslint-disable @typescript-eslint/no-explicit-any */
 /**
- * AK Golf Academy - Coach Session Evaluations
+ * TIER Golf Academy - Coach Session Evaluations
  * Design System v3.0 - Blue Palette 01
  *
  * Purpose:
@@ -23,7 +23,7 @@ import Card from '../../ui/primitives/Card';
 import Button from '../../ui/primitives/Button';
 import StateCard from '../../ui/composites/StateCard';
 import PageHeader from '../../ui/raw-blocks/PageHeader.raw';
-import { SectionTitle } from '../../components/typography';
+import { SectionTitle } from '../../components/typography/Headings';
 
 // Semantic color mappings
 const colors = {
@@ -34,9 +34,9 @@ const colors = {
   charcoal: 'var(--text-primary)',
   steel: 'var(--text-secondary)',
   mist: 'var(--border-default)',
-  success: 'var(--success)',
-  warning: 'var(--warning)',
-  error: 'var(--error)',
+  success: 'var(--status-success)',
+  warning: 'var(--status-warning)',
+  error: 'var(--status-error)',
   gold: 'var(--achievement)',
 };
 
@@ -384,6 +384,7 @@ export function CoachSessionEvaluations() {
       <PageHeader
         title="Øktevalueringer"
         subtitle="Se dine spilleres evalueringer"
+        helpText="Oversikt over spillernes egenevalueringer av treningsøkter. Se vurderinger av intensitet, kvalitet, energi og motivasjon for å følge opp spillerne bedre."
         onBack={handleBack}
         divider={false}
       />

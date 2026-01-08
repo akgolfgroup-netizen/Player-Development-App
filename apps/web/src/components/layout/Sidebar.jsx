@@ -18,7 +18,7 @@ import { useNotifications } from '../../hooks/useNotifications';
 const tokenColors = {
   primary: '#10456A',
   primaryLight: '#2C5F7F',
-  white: '#FFFFFF',
+  white: 'rgb(var(--tier-white))',
   ivory: '#FAF9F7',
   error: '#C45B4E',
 };
@@ -173,7 +173,7 @@ export default function Sidebar() {
           onClose={() => setShowLogoutConfirm(false)}
           onConfirm={handleLogout}
           title="Logg ut"
-          message="Er du sikker på at du vil logge ut av AK Golf Academy?"
+          message="Er du sikker på at du vil logge ut av TIER Golf Academy?"
           confirmLabel="Logg ut"
           cancelLabel="Avbryt"
           variant="warning"
@@ -255,11 +255,20 @@ export default function Sidebar() {
             {isOpen && (
               <div
                 id={`submenu-${item.label.toLowerCase().replace(/\s/g, '-')}`}
-                style={{ marginLeft: '32px', marginTop: '4px', marginBottom: '4px' }}
+                style={{
+                  marginLeft: '8px',
+                  marginRight: '8px',
+                  marginTop: '8px',
+                  marginBottom: '8px',
+                  display: 'grid',
+                  gridTemplateColumns: 'repeat(2, 1fr)',
+                  gap: '8px',
+                }}
                 role="menu"
               >
                 {item.submenu.map(subItem => {
                   const active = pathname === subItem.href;
+                  const SubIcon = subItem.icon ? getIcon(subItem.icon) : null;
                   return (
                     <Link
                       key={subItem.href}
@@ -268,19 +277,39 @@ export default function Sidebar() {
                       aria-current={active ? 'page' : undefined}
                       style={{
                         display: 'flex',
+                        flexDirection: 'column',
                         alignItems: 'center',
-                        gap: '12px',
+                        justifyContent: 'center',
+                        gap: '6px',
                         borderRadius: '12px',
-                        padding: '8px 12px',
+                        padding: '12px 8px',
                         textDecoration: 'none',
-                        color: active ? tokenColors.white : 'rgba(255, 255, 255, 0.65)',
-                        backgroundColor: active ? `${tokenColors.primaryLight}80` : 'transparent',
+                        color: active ? tokenColors.white : 'rgba(255, 255, 255, 0.75)',
+                        backgroundColor: active ? tokenColors.primaryLight : 'rgba(255, 255, 255, 0.06)',
+                        border: active ? '1px solid rgba(255, 255, 255, 0.2)' : '1px solid rgba(255, 255, 255, 0.08)',
                         transition: 'all 0.2s',
-                        fontSize: '14px',
-                        fontWeight: 400,
+                        fontSize: '12px',
+                        fontWeight: 500,
+                        textAlign: 'center',
+                        minHeight: '60px',
+                      }}
+                      onMouseEnter={(e) => {
+                        if (!active) {
+                          e.currentTarget.style.backgroundColor = 'rgba(255, 255, 255, 0.12)';
+                          e.currentTarget.style.borderColor = 'rgba(255, 255, 255, 0.15)';
+                          e.currentTarget.style.color = tokenColors.white;
+                        }
+                      }}
+                      onMouseLeave={(e) => {
+                        if (!active) {
+                          e.currentTarget.style.backgroundColor = 'rgba(255, 255, 255, 0.06)';
+                          e.currentTarget.style.borderColor = 'rgba(255, 255, 255, 0.08)';
+                          e.currentTarget.style.color = 'rgba(255, 255, 255, 0.75)';
+                        }
                       }}
                     >
-                      {subItem.label}
+                      {SubIcon && <SubIcon size={18} style={{ opacity: 0.85 }} />}
+                      <span style={{ lineHeight: '1.2' }}>{subItem.label}</span>
                     </Link>
                   );
                 })}
@@ -430,7 +459,7 @@ export default function Sidebar() {
         onClose={() => setShowLogoutConfirm(false)}
         onConfirm={handleLogout}
         title="Logg ut"
-        message="Er du sikker på at du vil logge ut av AK Golf Academy?"
+        message="Er du sikker på at du vil logge ut av TIER Golf Academy?"
         confirmLabel="Logg ut"
         cancelLabel="Avbryt"
         variant="warning"

@@ -1,0 +1,356 @@
+/**
+ * DayView Component
+ * Design System v3.0 - Premium Light
+ *
+ * MIGRATED TO PAGE ARCHITECTURE - Minimal inline styles (dynamic positioning)
+ */
+
+import React, { useRef, useEffect } from 'react';
+import { ChevronLeft, ChevronRight, MapPin, Play, Check, Clock, MoreVertical } from 'lucide-react';
+import { SectionTitle, SubSectionTitle, CardTitle } from '../../../components/typography';
+
+function classNames(...classes) {
+  return classes.filter(Boolean).join(' ');
+}
+
+const DayView = ({
+  date,
+  sessions = [],
+  onSessionClick,
+  onTimeSlotClick,
+  onNavigate,
+  onAddEvent,
+  onStartSession,
+}) => {
+  const container = useRef(null);
+  const hours = Array.from({ length: 18 }, (_, i) => i + 5); // 05:00 - 22:00
+
+  const dayNames = ['Søndag', 'Mandag', 'Tirsdag', 'Onsdag', 'Torsdag', 'Fredag', 'Lørdag'];
+  const monthNames = ['januar', 'februar', 'mars', 'april', 'mai', 'juni',
+                      'juli', 'august', 'september', 'oktober', 'november', 'desember'];
+
+  const today = new Date();
+  const isToday = date.toDateString() === today.toDateString();
+
+  // Scroll to current time on mount
+  useEffect(() => {
+    if (container.current && isToday) {
+      const currentMinute = new Date().getHours() * 60 + new Date().getMinutes();
+      container.current.scrollTop =
+        ((currentMinute - 5 * 60) / (18 * 60)) * container.current.scrollHeight - 200;
+    }
+  }, [isToday]);
+
+  const formatHour = (hour) => `${hour.toString().padStart(2, '0')}:00`;
+
+  // Session colors using semantic tokens (see COLOR_USAGE_RULES.md)
+  const getSessionColor = (type) => {
+    const colors = {
+      teknikk: { bg: 'bg-ak-session-teknikk-muted', border: 'border-ak-session-teknikk', text: 'text-ak-text-primary', accent: 'bg-ak-session-teknikk' },
+      golfslag: { bg: 'bg-ak-session-golfslag-muted', border: 'border-ak-session-golfslag', text: 'text-ak-text-primary', accent: 'bg-ak-session-golfslag' },
+      spill: { bg: 'bg-ak-session-spill-muted', border: 'border-ak-session-spill', text: 'text-ak-text-primary', accent: 'bg-ak-session-spill' },
+      konkurranse: { bg: 'bg-ak-session-kompetanse-muted', border: 'border-ak-session-kompetanse', text: 'text-ak-text-primary', accent: 'bg-ak-session-kompetanse' },
+      fysisk: { bg: 'bg-ak-session-fysisk-muted', border: 'border-ak-session-fysisk', text: 'text-ak-text-primary', accent: 'bg-ak-session-fysisk' },
+      mental: { bg: 'bg-ak-surface-elevated', border: 'border-ak-border-default', text: 'text-ak-text-secondary', accent: 'bg-ak-text-tertiary' },
+    };
+    return colors[type] || { bg: 'bg-ak-surface-elevated', border: 'border-ak-border-default', text: 'text-ak-text-secondary', accent: 'bg-ak-text-tertiary' };
+  };
+
+  const getSessionsForHour = (hour) => {
+    return sessions.filter(session => {
+      const sessionHour = parseInt(session.time?.split(':')[0] || 0);
+      return sessionHour === hour;
+    });
+  };
+
+  // Calculate session position and height for time grid view
+  const getSessionStyle = (session) => {
+    const [hours, minutes] = (session.time || '09:00').split(':').map(Number);
+    const startMinutes = (hours - 5) * 60 + minutes;
+    const duration = session.duration || 60;
+
+    return {
+      top: `${(startMinutes / (18 * 60)) * 100}%`,
+      height: `${(duration / (18 * 60)) * 100}%`,
+    };
+  };
+
+  // Get current time indicator position
+  const getCurrentTimePosition = () => {
+    const now = new Date();
+    const currentMinutes = (now.getHours() - 5) * 60 + now.getMinutes();
+    return `${(currentMinutes / (18 * 60)) * 100}%`;
+  };
+
+  return (
+    <div className="flex h-full flex-col bg-ak-surface-card rounded-xl shadow-sm ring-1 ring-ak-border-default overflow-hidden">
+      {/* Header */}
+      <header className="flex flex-none items-center justify-between border-b border-ak-border-default px-6 py-4">
+        <div>
+          <SectionTitle className="text-base font-semibold leading-6 text-ak-text-primary">
+            {dayNames[date.getDay()]}
+          </SectionTitle>
+          <p className="mt-1 text-sm text-ak-text-secondary">
+            <time dateTime={date.toISOString().split('T')[0]}>
+              {date.getDate()}. {monthNames[date.getMonth()]} {date.getFullYear()}
+            </time>
+          </p>
+        </div>
+        <div className="flex items-center">
+          <div className="relative flex items-center rounded-lg bg-ak-surface-card shadow-sm ring-1 ring-ak-border-default md:items-stretch">
+            <button
+              type="button"
+              onClick={() => onNavigate?.(-1)}
+              className="flex h-9 w-9 items-center justify-center rounded-l-lg text-ak-text-secondary hover:text-ak-text-primary focus:relative md:hover:bg-ak-surface-subtle"
+            >
+              <span className="sr-only">Forrige dag</span>
+              <ChevronLeft className="h-5 w-5" aria-hidden="true" />
+            </button>
+            <button
+              type="button"
+              onClick={() => {
+                // Navigate to today - parent handles this
+                onNavigate?.(0, true);
+              }}
+              className="hidden px-3.5 text-sm font-semibold text-ak-text-primary hover:bg-ak-surface-subtle focus:relative md:block"
+            >
+              I dag
+            </button>
+            <button
+              type="button"
+              onClick={() => onNavigate?.(1)}
+              className="flex h-9 w-9 items-center justify-center rounded-r-lg text-ak-text-secondary hover:text-ak-text-primary focus:relative md:hover:bg-ak-surface-subtle"
+            >
+              <span className="sr-only">Neste dag</span>
+              <ChevronRight className="h-5 w-5" aria-hidden="true" />
+            </button>
+          </div>
+          {onAddEvent && (
+            <div className="hidden md:ml-4 md:flex md:items-center">
+              <div className="ml-6 h-6 w-px bg-ak-border-default" />
+              <button
+                type="button"
+                onClick={onAddEvent}
+                className="ml-6 rounded-lg bg-ak-primary px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-ak-primary/90"
+              >
+                Ny hendelse
+              </button>
+            </div>
+          )}
+        </div>
+      </header>
+
+      {/* Today indicator badge */}
+      {isToday && (
+        <div className="flex-none bg-ak-primary text-white px-6 py-2 text-sm font-medium">
+          I dag
+        </div>
+      )}
+
+      {/* Time Grid */}
+      <div
+        ref={container}
+        className="flex flex-auto overflow-auto max-h-[calc(100vh-280px)]"
+      >
+        <div className="flex flex-auto">
+          {/* Time Labels */}
+          <div className="sticky left-0 z-10 w-16 flex-none bg-ak-surface-card">
+            <div className="relative" style={{ height: `${hours.length * 4}rem` }}>
+              {hours.map((hour) => (
+                <div
+                  key={hour}
+                  className="absolute w-full text-right pr-3"
+                  style={{ top: `${((hour - 5) / 18) * 100}%` }}
+                >
+                  <span className="relative -top-2 text-xs font-medium text-ak-text-tertiary">
+                    {formatHour(hour)}
+                  </span>
+                </div>
+              ))}
+            </div>
+          </div>
+
+          {/* Events Column */}
+          <div className="flex-auto border-l border-ak-border-default">
+            <div
+              className="relative"
+              style={{ height: `${hours.length * 4}rem` }}
+            >
+              {/* Hour grid lines */}
+              {hours.map((hour) => (
+                <div
+                  key={hour}
+                  onClick={() => onTimeSlotClick?.(hour)}
+                  className="absolute w-full border-b border-ak-border-subtle hover:bg-ak-surface-subtle/50 cursor-pointer transition-colors"
+                  style={{
+                    top: `${((hour - 5) / 18) * 100}%`,
+                    height: `${(1 / 18) * 100}%`,
+                  }}
+                />
+              ))}
+
+              {/* Current time indicator - uses brand primary for visibility */}
+              {isToday && (
+                <div
+                  className="absolute left-0 right-0 z-20 flex items-center"
+                  style={{ top: getCurrentTimePosition() }}
+                >
+                  <div className="h-3 w-3 rounded-full bg-ak-primary -ml-1.5" />
+                  <div className="flex-auto h-0.5 bg-ak-primary" />
+                </div>
+              )}
+
+              {/* Sessions */}
+              {sessions.map((session) => {
+                const colors = getSessionColor(session.type);
+                const style = getSessionStyle(session);
+                const isCompleted = session.status === 'completed';
+                const isRest = session.status === 'rest';
+
+                return (
+                  <div
+                    key={session.id}
+                    className={classNames(
+                      'absolute left-2 right-2 rounded-lg overflow-hidden shadow-sm',
+                      colors.bg,
+                      'border-l-4',
+                      colors.border,
+                      isCompleted && 'opacity-60',
+                      'hover:shadow-md transition-shadow cursor-pointer'
+                    )}
+                    style={{
+                      top: style.top,
+                      height: style.height,
+                      minHeight: '3.5rem',
+                    }}
+                    onClick={() => onSessionClick?.(session)}
+                  >
+                    <div className="flex h-full p-3">
+                      <div className="flex-1 min-w-0">
+                        <div className="flex items-center gap-2 mb-1">
+                          <span className={classNames('text-xs font-medium', colors.text)}>
+                            {session.time}
+                          </span>
+                          {session.duration > 0 && (
+                            <span className={classNames('text-xs', colors.text)}>
+                              · {session.duration} min
+                            </span>
+                          )}
+                        </div>
+                        <CardTitle className={classNames('text-sm font-semibold truncate', colors.text)}>
+                          {session.name}
+                        </CardTitle>
+                        {session.location && (
+                          <div className="flex items-center gap-1 mt-1">
+                            <MapPin className={classNames('h-3 w-3', colors.text)} />
+                            <span className={classNames('text-xs truncate', colors.text)}>
+                              {session.location}
+                            </span>
+                          </div>
+                        )}
+                      </div>
+
+                      {/* Action buttons */}
+                      <div className="flex items-start gap-2 ml-2">
+                        {isCompleted ? (
+                          <div className="flex h-8 w-8 items-center justify-center rounded-full bg-ak-status-success">
+                            <Check className="h-4 w-4 text-white" />
+                          </div>
+                        ) : !isRest && onStartSession && (
+                          <button
+                            onClick={(e) => {
+                              e.stopPropagation();
+                              onStartSession?.(session);
+                            }}
+                            className="flex h-8 w-8 items-center justify-center rounded-full bg-ak-primary hover:bg-ak-primary/90 transition-colors"
+                          >
+                            <Play className="h-4 w-4 text-white ml-0.5" />
+                          </button>
+                        )}
+                        <button
+                          onClick={(e) => {
+                            e.stopPropagation();
+                            onSessionClick?.(session);
+                          }}
+                          className="flex h-8 w-8 items-center justify-center rounded-full hover:bg-white/50 transition-colors"
+                        >
+                          <MoreVertical className={classNames('h-4 w-4', colors.text)} />
+                        </button>
+                      </div>
+                    </div>
+                  </div>
+                );
+              })}
+            </div>
+          </div>
+        </div>
+      </div>
+
+      {/* Session Summary (Mobile) */}
+      {sessions.length > 0 && (
+        <div className="flex-none border-t border-ak-border-default p-4 sm:hidden">
+          <SubSectionTitle className="text-sm font-semibold text-ak-text-primary mb-3">
+            {sessions.length} {sessions.length === 1 ? 'hendelse' : 'hendelser'} i dag
+          </SubSectionTitle>
+          <div className="space-y-2">
+            {sessions.slice(0, 3).map((session) => {
+              const colors = getSessionColor(session.type);
+              return (
+                <button
+                  key={session.id}
+                  onClick={() => onSessionClick?.(session)}
+                  className={classNames(
+                    'w-full flex items-center gap-3 p-3 rounded-lg text-left',
+                    colors.bg,
+                    'hover:opacity-80 transition-opacity'
+                  )}
+                >
+                  <div className={classNames('h-10 w-1 rounded-full', colors.accent)} />
+                  <div className="flex-1 min-w-0">
+                    <p className={classNames('text-sm font-semibold truncate', colors.text)}>
+                      {session.name}
+                    </p>
+                    <p className={classNames('text-xs', colors.text)}>
+                      {session.time} · {session.duration} min
+                    </p>
+                  </div>
+                  {session.status === 'completed' && (
+                    <Check className="h-5 w-5 text-ak-status-success" />
+                  )}
+                </button>
+              );
+            })}
+            {sessions.length > 3 && (
+              <p className="text-xs text-ak-text-tertiary text-center pt-1">
+                + {sessions.length - 3} flere hendelser
+              </p>
+            )}
+          </div>
+        </div>
+      )}
+
+      {/* Empty state */}
+      {sessions.length === 0 && (
+        <div className="flex-1 flex flex-col items-center justify-center p-8 text-center">
+          <Clock className="h-12 w-12 text-ak-text-tertiary mb-4" />
+          <SubSectionTitle className="text-lg font-semibold text-ak-text-primary mb-2">
+            Ingen hendelser
+          </SubSectionTitle>
+          <p className="text-sm text-ak-text-secondary mb-4">
+            Du har ingen planlagte hendelser denne dagen.
+          </p>
+          {onAddEvent && (
+            <button
+              onClick={onAddEvent}
+              className="rounded-lg bg-ak-primary px-4 py-2 text-sm font-semibold text-white shadow-sm hover:bg-ak-primary/90"
+            >
+              Legg til hendelse
+            </button>
+          )}
+        </div>
+      )}
+    </div>
+  );
+};
+
+export default DayView;

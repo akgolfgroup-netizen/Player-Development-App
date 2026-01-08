@@ -6,7 +6,7 @@ import {
 import {
   GolfslagIcon, GolfTarget, GolfFlag, GolfPutter, FysiskIcon, MentalIcon, GolfBunker
 } from '../../components/icons';
-import { SubSectionTitle } from '../../components/typography';
+import { SubSectionTitle } from "../../ui/components/typography";
 import {
   Card,
   CardContent,
@@ -274,7 +274,7 @@ const LevelTag: React.FC<LevelTagProps> = ({ level }) => {
     L2: { className: 'bg-blue-50 text-blue-600 border-blue-200' },
     L3: { className: 'bg-emerald-50 text-emerald-600 border-emerald-200' },
     L4: { className: 'bg-amber-50 text-amber-600 border-amber-200' },
-    L5: { className: 'bg-ak-primary/15 text-ak-primary border-ak-primary/30' },
+    L5: { className: 'bg-tier-navy/15 text-tier-navy border-tier-navy/30' },
   };
 
   const { className } = config[level] || config.L3;
@@ -359,8 +359,8 @@ const ExerciseCard: React.FC<ExerciseCardProps> = ({
       >
         <CardContent className="p-4">
           <div className="flex items-center gap-4">
-            <div className="w-14 h-14 rounded-lg bg-gradient-to-br from-ak-primary/10 to-success/10 flex items-center justify-center flex-shrink-0">
-              <Icon size={28} className="text-ak-primary" />
+            <div className="w-14 h-14 rounded-lg bg-gradient-to-br from-tier-navy/10 to-success/10 flex items-center justify-center flex-shrink-0">
+              <Icon size={28} className="text-tier-navy" />
             </div>
             <div className="flex-1 min-w-0">
               <div className="flex items-center gap-2 mb-1">
@@ -402,11 +402,11 @@ const ExerciseCard: React.FC<ExerciseCardProps> = ({
       onClick={() => onClick(exercise)}
     >
       {/* Thumbnail */}
-      <div className="h-32 bg-gradient-to-br from-ak-primary/10 to-success/10 flex items-center justify-center relative">
-        <Icon size={48} className="text-ak-primary" />
+      <div className="h-32 bg-gradient-to-br from-tier-navy/10 to-success/10 flex items-center justify-center relative">
+        <Icon size={48} className="text-tier-navy" />
 
         {/* Hover overlay */}
-        <div className="absolute inset-0 bg-ak-primary/80 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity">
+        <div className="absolute inset-0 bg-tier-navy/80 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity">
           <div className="w-12 h-12 rounded-full bg-white/20 flex items-center justify-center">
             <Play className="w-5 h-5 text-white fill-white" />
           </div>
@@ -473,7 +473,7 @@ const ExerciseDialog: React.FC<ExerciseDialogProps> = ({
     <Dialog open={open} onOpenChange={onOpenChange}>
       <DialogContent className="max-w-2xl p-0 overflow-hidden max-h-[90vh]">
         {/* Header with icon */}
-        <div className="h-48 bg-gradient-to-br from-ak-primary to-ak-primary/70 flex items-center justify-center relative">
+        <div className="h-48 bg-gradient-to-br from-tier-navy to-tier-navy/70 flex items-center justify-center relative">
           <Icon size={72} className="text-white" />
           <Button
             variant="ghost"
@@ -526,7 +526,7 @@ const ExerciseDialog: React.FC<ExerciseDialogProps> = ({
               <ol className="space-y-3">
                 {exercise.instructions.map((step, idx) => (
                   <li key={idx} className="flex items-start gap-3">
-                    <span className="w-6 h-6 rounded-full bg-ak-primary text-white text-xs flex items-center justify-center flex-shrink-0 font-medium">
+                    <span className="w-6 h-6 rounded-full bg-tier-navy text-white text-xs flex items-center justify-center flex-shrink-0 font-medium">
                       {idx + 1}
                     </span>
                     <span className="text-sm text-text-primary pt-0.5">{step}</span>
@@ -602,7 +602,7 @@ const CategorySidebar: React.FC<CategorySidebarProps> = ({
                 className={cn(
                   "w-full flex items-center justify-between px-4 py-2.5 text-left transition-colors",
                   selectedCategory === cat.id
-                    ? "bg-ak-primary/5 text-ak-primary border-l-2 border-ak-primary"
+                    ? "bg-tier-navy/5 text-tier-navy border-l-2 border-tier-navy"
                     : "text-text-primary hover:bg-background-elevated"
                 )}
               >
@@ -637,7 +637,7 @@ const CategorySidebar: React.FC<CategorySidebarProps> = ({
                   onClick={() => onSelectExercise(ex)}
                   className="flex items-center gap-2 p-2 rounded-lg bg-background-elevated cursor-pointer hover:bg-border-subtle transition-colors"
                 >
-                  <Icon size={16} className="text-ak-primary" />
+                  <Icon size={16} className="text-tier-navy" />
                   <span className="text-xs text-text-primary line-clamp-1">{ex.name}</span>
                 </div>
               );

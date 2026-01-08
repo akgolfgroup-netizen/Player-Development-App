@@ -15,7 +15,7 @@
  */
 
 import React from 'react';
-import { PageTitle, SectionTitle, SubSectionTitle, CardTitle } from '../../components/typography';
+import { PageTitle, SectionTitle, SubSectionTitle, CardTitle } from '../../components/typography/Headings';
 
 interface Feature {
   /** Feature title */
@@ -142,11 +142,11 @@ const LandingHero: React.FC<LandingHeroProps> = ({
     <div className="min-h-screen bg-white flex flex-col">
       {/* Header with navigation */}
       {(navigation || userMenu) && (
-        <header className="py-4 px-6 border-b border-ak-border-subtle">
+        <header className="py-4 px-6 border-b border-tier-border-default">
           <nav className="flex items-center justify-between max-w-[1536px] mx-auto w-full">
             {/* Logo area */}
             <div className="shrink-0">
-              <span className="text-xl font-bold text-ak-primary tracking-tight">AK Golf</span>
+              <span className="text-xl font-bold text-tier-navy tracking-tight">TIER Golf</span>
             </div>
 
             {/* Navigation links */}
@@ -157,8 +157,8 @@ const LandingHero: React.FC<LandingHeroProps> = ({
                     key={index}
                     className={`inline-flex items-center h-11 px-4 text-sm font-medium bg-transparent border-none rounded cursor-pointer transition-colors ${
                       item.isActive
-                        ? 'text-ak-primary bg-ak-primary/10'
-                        : 'text-ak-text-secondary hover:text-ak-text-primary hover:bg-ak-surface-subtle'
+                        ? 'text-tier-navy bg-tier-navy/10'
+                        : 'text-tier-text-secondary hover:text-tier-navy hover:bg-tier-surface-base'
                     }`}
                     onClick={item.onClick}
                   >
@@ -180,15 +180,15 @@ const LandingHero: React.FC<LandingHeroProps> = ({
         <div className="flex-1 max-w-[640px]">
           {/* Tagline */}
           {tagline && (
-            <p className="text-sm font-semibold text-ak-primary uppercase tracking-widest mb-3">{tagline}</p>
+            <p className="text-sm font-semibold text-tier-navy uppercase tracking-widest mb-3">{tagline}</p>
           )}
 
           {/* Headline */}
-          <PageTitle className="text-4xl md:text-5xl leading-tight font-bold text-ak-text-primary mb-4 tracking-tight">
+          <PageTitle className="text-4xl md:text-5xl leading-tight font-bold text-tier-navy mb-4 tracking-tight">
             {headlineHighlight ? (
               <>
                 {headline.split(headlineHighlight)[0]}
-                <span className="text-ak-primary">{headlineHighlight}</span>
+                <span className="text-tier-navy">{headlineHighlight}</span>
                 {headline.split(headlineHighlight)[1]}
               </>
             ) : (
@@ -198,7 +198,7 @@ const LandingHero: React.FC<LandingHeroProps> = ({
 
           {/* Description */}
           {description && (
-            <p className="text-base leading-relaxed text-ak-text-secondary mb-6 max-w-[520px] max-md:mx-auto">{description}</p>
+            <p className="text-base leading-relaxed text-tier-text-secondary mb-6 max-w-[520px] max-md:mx-auto">{description}</p>
           )}
 
           {/* CTAs */}
@@ -207,7 +207,7 @@ const LandingHero: React.FC<LandingHeroProps> = ({
               {primaryAction && (
                 <button
                   onClick={primaryAction.onClick}
-                  className="inline-flex items-center justify-center h-12 px-6 bg-ak-primary text-white border-none rounded font-semibold cursor-pointer transition-all shadow-sm hover:opacity-90 active:scale-[0.98]"
+                  className="inline-flex items-center justify-center h-12 px-6 bg-tier-navy text-white border-none rounded font-semibold cursor-pointer transition-all shadow-sm hover:opacity-90 active:scale-[0.98]"
                 >
                   {primaryAction.label}
                 </button>
@@ -215,7 +215,7 @@ const LandingHero: React.FC<LandingHeroProps> = ({
               {secondaryAction && (
                 <button
                   onClick={secondaryAction.onClick}
-                  className="inline-flex items-center justify-center h-12 px-4 bg-transparent text-ak-primary border-none rounded font-semibold cursor-pointer transition-colors gap-2 hover:bg-ak-surface-subtle"
+                  className="inline-flex items-center justify-center h-12 px-4 bg-transparent text-tier-navy border-none rounded font-semibold cursor-pointer transition-colors gap-2 hover:bg-tier-surface-base"
                 >
                   {secondaryAction.label}
                   <span className="text-sm" aria-hidden="true">→</span>
@@ -235,16 +235,16 @@ const LandingHero: React.FC<LandingHeroProps> = ({
 
       {/* Features Section */}
       {features && features.items.length > 0 && (
-        <section className="bg-ak-surface-subtle border-t border-ak-border-subtle py-10 px-6">
+        <section className="bg-tier-surface-base border-t border-tier-border-default py-10 px-6">
           <div className="max-w-[1536px] mx-auto">
             {/* Section header */}
             {(features.title || features.subtitle) && (
               <div className="text-center mb-8">
                 {features.title && (
-                  <SectionTitle className="text-2xl md:text-3xl font-bold text-ak-text-primary mb-3 tracking-tight">{features.title}</SectionTitle>
+                  <SectionTitle className="text-2xl md:text-3xl font-bold text-tier-navy mb-3 tracking-tight">{features.title}</SectionTitle>
                 )}
                 {features.subtitle && (
-                  <p className="text-base leading-relaxed text-ak-text-secondary max-w-[600px] mx-auto">{features.subtitle}</p>
+                  <p className="text-base leading-relaxed text-tier-text-secondary max-w-[600px] mx-auto">{features.subtitle}</p>
                 )}
               </div>
             )}
@@ -255,13 +255,13 @@ const LandingHero: React.FC<LandingHeroProps> = ({
                 <div key={index} className="bg-white rounded-xl p-6 shadow-sm transition-all hover:shadow-md hover:-translate-y-0.5">
                   {/* Icon */}
                   {feature.icon && (
-                    <div className="flex items-center justify-center w-12 h-12 bg-ak-primary/10 rounded-lg text-ak-primary mb-4">
+                    <div className="flex items-center justify-center w-12 h-12 bg-tier-navy/10 rounded-lg text-tier-navy mb-4">
                       {feature.icon}
                     </div>
                   )}
                   {/* Content */}
-                  <SubSectionTitle className="text-lg font-semibold text-ak-text-primary mb-2">{feature.title}</SubSectionTitle>
-                  <p className="text-sm leading-relaxed text-ak-text-secondary m-0">{feature.description}</p>
+                  <SubSectionTitle className="text-lg font-semibold text-tier-navy mb-2">{feature.title}</SubSectionTitle>
+                  <p className="text-sm leading-relaxed text-tier-text-secondary m-0">{feature.description}</p>
                 </div>
               ))}
             </div>
@@ -271,13 +271,13 @@ const LandingHero: React.FC<LandingHeroProps> = ({
 
       {/* Footer */}
       {footer && (
-        <footer className="bg-ak-primary text-white py-10 px-6 pb-6">
+        <footer className="bg-tier-navy text-white py-10 px-6 pb-6">
           <div className="max-w-[1536px] mx-auto">
             {/* Main footer content */}
             <div className="grid grid-cols-[repeat(auto-fit,minmax(200px,1fr))] gap-8 mb-8">
               {/* Brand column */}
               <div className="max-w-[280px]">
-                <span className="block text-xl font-bold text-white tracking-tight mb-3">AK Golf</span>
+                <span className="block text-xl font-bold text-white tracking-tight mb-3">TIER Golf</span>
                 <p className="text-sm leading-relaxed text-white/80 mb-4">
                   Systematisk talentutvikling for ambisiøse golfspillere.
                 </p>
@@ -290,7 +290,7 @@ const LandingHero: React.FC<LandingHeroProps> = ({
                         href={item.href}
                         target="_blank"
                         rel="noopener noreferrer"
-                        className="flex items-center justify-center w-10 h-10 bg-white text-ak-primary rounded-full transition-all hover:scale-105 hover:opacity-90"
+                        className="flex items-center justify-center w-10 h-10 bg-white text-tier-navy rounded-full transition-all hover:scale-105 hover:opacity-90"
                         aria-label={item.platform}
                       >
                         {getSocialIcon(item.platform)}
@@ -368,7 +368,7 @@ const LandingHero: React.FC<LandingHeroProps> = ({
             {/* Footer bottom */}
             <div className="border-t border-white/20 pt-6">
               <p className="text-xs leading-relaxed text-white/60 m-0 text-center">
-                {footer.copyright || `© ${new Date().getFullYear()} AK Golf. Alle rettigheter reservert.`}
+                {footer.copyright || `© ${new Date().getFullYear()} TIER Golf. Alle rettigheter reservert.`}
               </p>
             </div>
           </div>

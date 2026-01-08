@@ -1,10 +1,10 @@
-# AK Golf Brand Guidelines
+# TIER Golf Brand Guidelines
 
 > Version 3.0 | Premium Light Design System
 
 ## Overview
 
-AK Golf Academy's brand identity represents elite golf training with a premium, professional aesthetic. The visual language emphasizes clarity, precision, and growth.
+TIER Golf's brand identity represents elite golf training with a premium, professional aesthetic. The visual language emphasizes clarity, precision, and growth.
 
 ## Contents
 

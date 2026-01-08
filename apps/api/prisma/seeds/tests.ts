@@ -110,7 +110,7 @@ export async function seedTests() {
     },
     {
       testNumber: 7,
-      name: 'Short Game Up & Down',
+      name: '8 Ballstest',
       category: 'short_game',
       testType: 'scoring_test',
       protocolName: 'Up & Down Protocol',
@@ -123,57 +123,54 @@ export async function seedTests() {
     },
     {
       testNumber: 8,
-      name: 'Bunker Proximity',
-      category: 'short_game',
+      name: 'Approach 25m (PEI)',
+      category: 'accuracy',
       testType: 'accuracy_measurement',
-      protocolName: 'Bunker Test Protocol',
-      description: 'Slå 10 bunkerslag. Mål gjennomsnittlig avstand til hull.',
+      protocolName: 'Approach 25m Protocol',
+      description: 'Slå 10 slag fra 25m. Mål avstand til flagg. Beregn PEI.',
       testDetails: {
-        equipment: ['Sand Wedge'],
+        equipment: ['Wedge', 'Laseravstandsmåler', 'Måltavle eller flagg'],
         attempts: 10,
-        scoring: 'Gjennomsnittlig avstand til hull (meter)',
+        scoring: 'PEI (Proximity to Efficiency Index)',
       },
     },
     {
       testNumber: 9,
-      name: 'Putting - 1.5m',
-      category: 'putting',
-      testType: 'putting_test',
-      protocolName: 'Short Putt Protocol',
-      description: 'Putt 20 baller fra 1.5 meter. Tell holed putts.',
+      name: 'Approach 50m (PEI)',
+      category: 'accuracy',
+      testType: 'accuracy_measurement',
+      protocolName: 'Approach 50m Protocol',
+      description: 'Slå 10 slag fra 50m. Mål avstand til flagg. Beregn PEI.',
       testDetails: {
-        equipment: ['Putter'],
-        distance: 1.5,
-        attempts: 20,
-        scoring: 'Prosent holed',
+        equipment: ['Wedge', 'Laseravstandsmåler', 'Måltavle eller flagg'],
+        attempts: 10,
+        scoring: 'PEI (Proximity to Efficiency Index)',
       },
     },
     {
       testNumber: 10,
-      name: 'Putting - 3m',
-      category: 'putting',
-      testType: 'putting_test',
-      protocolName: 'Medium Putt Protocol',
-      description: 'Putt 20 baller fra 3 meter. Tell holed putts.',
+      name: 'Approach 75m (PEI)',
+      category: 'accuracy',
+      testType: 'accuracy_measurement',
+      protocolName: 'Approach 75m Protocol',
+      description: 'Slå 10 slag fra 75m. Mål avstand til flagg. Beregn PEI.',
       testDetails: {
-        equipment: ['Putter'],
-        distance: 3,
-        attempts: 20,
-        scoring: 'Prosent holed',
+        equipment: ['Wedge eller kort jern', 'Laseravstandsmåler', 'Måltavle eller flagg'],
+        attempts: 10,
+        scoring: 'PEI (Proximity to Efficiency Index)',
       },
     },
     {
       testNumber: 11,
-      name: 'Lag Putting - 10m',
-      category: 'putting',
-      testType: 'putting_test',
-      protocolName: 'Lag Putt Protocol',
-      description: 'Putt 10 baller fra 10 meter. Mål gjennomsnittlig avstand til hull.',
+      name: 'Approach 100m (PEI)',
+      category: 'accuracy',
+      testType: 'accuracy_measurement',
+      protocolName: 'Approach 100m Protocol',
+      description: 'Slå 10 slag fra 100m. Mål avstand til flagg. Beregn PEI.',
       testDetails: {
-        equipment: ['Putter', 'Measuring tape'],
-        distance: 10,
+        equipment: ['Wedge eller kort jern', 'Laseravstandsmåler', 'Måltavle eller flagg'],
         attempts: 10,
-        scoring: 'Gjennomsnittlig avstand forbi/kort (cm)',
+        scoring: 'PEI (Proximity to Efficiency Index)',
       },
     },
     {
@@ -216,26 +213,30 @@ export async function seedTests() {
     },
     {
       testNumber: 15,
-      name: 'Thoracic Rotation',
-      category: 'physical',
-      testType: 'mobility_test',
-      protocolName: 'Thoracic Mobility Protocol',
-      description: 'Mål thoracic rotasjon i sittende posisjon.',
+      name: 'Putting 1-3 meter',
+      category: 'putting',
+      testType: 'putting_test',
+      protocolName: 'Medium Putt Protocol',
+      description: 'Putt 20 baller fra 3 meter. Tell holed putts.',
       testDetails: {
-        equipment: ['Goniometer'],
-        scoring: 'Grader rotasjon',
+        equipment: ['Putter', '20 baller', 'Målebånd'],
+        distance: 3,
+        attempts: 20,
+        scoring: 'Prosent holed',
       },
     },
     {
       testNumber: 16,
-      name: 'Plank Hold',
-      category: 'physical',
-      testType: 'physical_test',
-      protocolName: 'Core Endurance Protocol',
-      description: 'Hold plankeposisjon så lenge som mulig med god form.',
+      name: 'Lengdekontroll',
+      category: 'putting',
+      testType: 'putting_test',
+      protocolName: 'Long Putt Protocol',
+      description: 'Putt 20 baller fra 6 meter. Tell holed putts.',
       testDetails: {
-        equipment: ['Stoppeklokke', 'Matte'],
-        scoring: 'Tid i sekunder',
+        equipment: ['Putter', '20 baller', 'Målebånd'],
+        distance: 6,
+        attempts: 20,
+        scoring: 'Prosent holed',
       },
     },
     {
@@ -289,8 +290,9 @@ export async function seedTests() {
     },
   ];
 
-  // Create tests
+  // Create or update tests
   let testsCreated = 0;
+  let testsUpdated = 0;
   for (const test of testProtocols) {
     const existing = await prisma.test.findFirst({
       where: {
@@ -299,7 +301,17 @@ export async function seedTests() {
       },
     });
 
-    if (!existing) {
+    if (existing) {
+      // Update existing test
+      await prisma.test.update({
+        where: { id: existing.id },
+        data: {
+          ...test,
+        },
+      });
+      testsUpdated++;
+    } else {
+      // Create new test
       await prisma.test.create({
         data: {
           tenantId: tenant.id,
@@ -309,7 +321,7 @@ export async function seedTests() {
       testsCreated++;
     }
   }
-  console.log(`   ✅ Created ${testsCreated} test protocols`);
+  console.log(`   ✅ Created ${testsCreated} test protocols, updated ${testsUpdated}`);
 
   // Create sample test results for the demo player
   const tests = await prisma.test.findMany({

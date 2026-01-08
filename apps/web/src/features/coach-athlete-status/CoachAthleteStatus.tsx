@@ -1,6 +1,6 @@
 /* eslint-disable @typescript-eslint/no-explicit-any, @typescript-eslint/no-unused-vars */
 /**
- * AK Golf Academy - Coach Athlete Status
+ * TIER Golf Academy - Coach Athlete Status
  * Design System v3.0 - Premium Light
  *
  * MIGRATED TO PAGE ARCHITECTURE - Zero inline styles
@@ -25,7 +25,10 @@ import {
   Search,
   ChevronRight,
   Bell,
-  MessageCircle
+  MessageCircle,
+  Utensils,
+  Battery,
+  Brain
 } from 'lucide-react';
 import { useNavigate } from 'react-router-dom';
 import { useAuth } from '../../contexts/AuthContext';
@@ -33,7 +36,7 @@ import { coachesAPI } from '../../services/api';
 import Button from '../../ui/primitives/Button';
 import Card from '../../ui/primitives/Card';
 import StateCard from '../../ui/composites/StateCard';
-import { PageTitle, SubSectionTitle } from '../../components/typography';
+import { PageTitle, SubSectionTitle } from '../../components/typography/Headings';
 
 // ============================================================================
 // CLASS MAPPINGS
@@ -41,47 +44,47 @@ import { PageTitle, SubSectionTitle } from '../../components/typography';
 
 const STATUS_CLASSES = {
   green: {
-    bg: 'bg-ak-status-success/10',
-    text: 'text-ak-status-success',
-    border: 'border-ak-status-success',
+    bg: 'bg-tier-success/10',
+    text: 'text-tier-success',
+    border: 'border-tier-success',
   },
   yellow: {
-    bg: 'bg-ak-status-warning/10',
-    text: 'text-ak-status-warning',
-    border: 'border-ak-status-warning',
+    bg: 'bg-tier-warning/10',
+    text: 'text-tier-warning',
+    border: 'border-tier-warning',
   },
   red: {
-    bg: 'bg-ak-status-error/10',
-    text: 'text-ak-status-error',
-    border: 'border-ak-status-error',
+    bg: 'bg-tier-error/10',
+    text: 'text-tier-error',
+    border: 'border-tier-error',
   },
   good: {
-    bg: 'bg-ak-status-success/10',
-    text: 'text-ak-status-success',
-    border: 'border-ak-status-success',
+    bg: 'bg-tier-success/10',
+    text: 'text-tier-success',
+    border: 'border-tier-success',
   },
   warning: {
-    bg: 'bg-ak-status-warning/10',
-    text: 'text-ak-status-warning',
-    border: 'border-ak-status-warning',
+    bg: 'bg-tier-warning/10',
+    text: 'text-tier-warning',
+    border: 'border-tier-warning',
   },
   critical: {
-    bg: 'bg-ak-status-error/10',
-    text: 'text-ak-status-error',
-    border: 'border-ak-status-error',
+    bg: 'bg-tier-error/10',
+    text: 'text-tier-error',
+    border: 'border-tier-error',
   },
 };
 
 const CATEGORY_CLASSES = {
-  A: { bg: 'bg-ak-status-success/15', text: 'text-ak-status-success' },
-  B: { bg: 'bg-ak-primary/15', text: 'text-ak-primary' },
-  C: { bg: 'bg-ak-status-warning/15', text: 'text-ak-status-warning' },
+  A: { bg: 'bg-tier-success/15', text: 'text-tier-success' },
+  B: { bg: 'bg-tier-navy/15', text: 'text-tier-navy' },
+  C: { bg: 'bg-tier-warning/15', text: 'text-tier-warning' },
 };
 
 const PROGRESS_BAR_COLORS = {
-  high: 'bg-ak-status-success',
-  medium: 'bg-ak-status-warning',
-  low: 'bg-ak-status-error',
+  high: 'bg-tier-success',
+  medium: 'bg-tier-warning',
+  low: 'bg-tier-error',
 };
 
 interface PlayerStatus {
@@ -100,6 +103,7 @@ interface PlayerStatus {
   };
   alerts: {
     type: 'warning' | 'info' | 'critical';
+    metric: 'training' | 'sleep' | 'energy' | 'stress' | 'injury';
     message: string;
   }[];
   upcomingSession?: string;
@@ -142,8 +146,8 @@ const mockPlayerStatuses: PlayerStatus[] = [
       injury: { value: false, status: 'good', label: 'Ingen skader' }
     },
     alerts: [
-      { type: 'critical', message: '28 dager siden sist aktivitet' },
-      { type: 'warning', message: 'Rapportert hoyt stressniva' }
+      { type: 'critical', metric: 'training', message: '28 dager siden sist aktivitet' },
+      { type: 'warning', metric: 'stress', message: 'Rapportert hoyt stressniva' }
     ],
     weeklyTrainingMinutes: 60,
     weeklyGoal: 300
@@ -182,7 +186,7 @@ const mockPlayerStatuses: PlayerStatus[] = [
       injury: { value: false, status: 'good', label: 'Ingen skader' }
     },
     alerts: [
-      { type: 'warning', message: 'Lavere treningsvolum enn normalt' }
+      { type: 'warning', metric: 'training', message: 'Lavere treningsvolum enn normalt' }
     ],
     upcomingSession: '2025-01-22T14:00:00',
     weeklyTrainingMinutes: 240,
@@ -203,8 +207,8 @@ const mockPlayerStatuses: PlayerStatus[] = [
       injury: { value: true, status: 'critical', label: 'Handledd' }
     },
     alerts: [
-      { type: 'critical', message: 'Rapportert skade: Handledd' },
-      { type: 'warning', message: 'Lite sovn siste uke' }
+      { type: 'critical', metric: 'injury', message: 'Rapportert skade: Handledd' },
+      { type: 'warning', metric: 'sleep', message: 'Lite sovn siste uke' }
     ],
     weeklyTrainingMinutes: 180,
     weeklyGoal: 480
@@ -259,6 +263,7 @@ export const CoachAthleteStatus: React.FC = () => {
             (a: any) => a.playerId === athlete.id || a.player?.id === athlete.id
           ).map((a: any) => ({
             type: a.severity === 'critical' || a.priority === 'high' ? 'critical' as const : 'warning' as const,
+            metric: (a.metric || a.category || 'training') as 'training' | 'sleep' | 'energy' | 'stress' | 'injury',
             message: a.message || a.description || 'Ukjent varsel',
           }));
 
@@ -358,7 +363,7 @@ export const CoachAthleteStatus: React.FC = () => {
   // Show loading state
   if (isLoading) {
     return (
-      <div className="p-6 bg-ak-surface-subtle min-h-screen flex items-center justify-center">
+      <div className="p-6 bg-tier-surface-base min-h-screen flex items-center justify-center">
         <StateCard variant="loading" title="Laster spillerstatus..." />
       </div>
     );
@@ -366,16 +371,16 @@ export const CoachAthleteStatus: React.FC = () => {
 
   const getStatusClasses = (status: string) => {
     return STATUS_CLASSES[status as keyof typeof STATUS_CLASSES] || {
-      bg: 'bg-ak-surface-subtle',
-      text: 'text-ak-text-secondary',
-      border: 'border-ak-border-default',
+      bg: 'bg-tier-surface-base',
+      text: 'text-tier-text-secondary',
+      border: 'border-tier-border-default',
     };
   };
 
   const getCategoryClasses = (category: string) => {
     return CATEGORY_CLASSES[category as keyof typeof CATEGORY_CLASSES] || {
-      bg: 'bg-ak-surface-subtle',
-      text: 'text-ak-text-primary',
+      bg: 'bg-tier-surface-base',
+      text: 'text-tier-navy',
     };
   };
 
@@ -409,18 +414,18 @@ export const CoachAthleteStatus: React.FC = () => {
   };
 
   return (
-    <div className="p-6 bg-ak-surface-subtle min-h-screen">
+    <div className="p-6 bg-tier-surface-base min-h-screen">
       {/* Header */}
       <div className="mb-6">
         <div className="flex items-center gap-3 mb-2">
-          <div className="w-12 h-12 rounded-lg bg-ak-primary flex items-center justify-center">
+          <div className="w-12 h-12 rounded-lg bg-tier-navy flex items-center justify-center">
             <Activity size={24} className="text-white" />
           </div>
           <div>
-            <PageTitle className="text-[28px] font-bold text-ak-text-primary m-0">
+            <PageTitle className="text-[28px] font-bold text-tier-navy m-0">
               Spillerstatus
             </PageTitle>
-            <p className="text-sm text-ak-text-secondary m-0">
+            <p className="text-sm text-tier-text-secondary m-0">
               Sanntidsoversikt over spillernes tilstand og varsler
             </p>
           </div>
@@ -431,43 +436,43 @@ export const CoachAthleteStatus: React.FC = () => {
       <div className="grid grid-cols-5 gap-3 mb-6">
         <Card variant="default" padding="none">
           <div className="p-4">
-            <p className="text-xs text-ak-text-secondary m-0 mb-1">
+            <p className="text-xs text-tier-text-secondary m-0 mb-1">
               Totalt
             </p>
-            <p className="text-[28px] font-bold text-ak-text-primary m-0">
+            <p className="text-[28px] font-bold text-tier-navy m-0">
               {stats.total}
             </p>
           </div>
         </Card>
         <Card variant="default" padding="none">
-          <div className="p-4 bg-ak-status-success/5 rounded-xl border border-ak-status-success/20">
+          <div className="p-4 bg-tier-success/5 rounded-xl border border-tier-success/20">
             <div className="flex items-center gap-1.5 mb-1">
-              <CheckCircle size={14} className="text-ak-status-success" />
-              <p className="text-xs text-ak-status-success m-0">Alt OK</p>
+              <CheckCircle size={14} className="text-tier-success" />
+              <p className="text-xs text-tier-success m-0">Alt OK</p>
             </div>
-            <p className="text-[28px] font-bold text-ak-status-success m-0">
+            <p className="text-[28px] font-bold text-tier-success m-0">
               {stats.green}
             </p>
           </div>
         </Card>
         <Card variant="default" padding="none">
-          <div className="p-4 bg-ak-status-warning/5 rounded-xl border border-ak-status-warning/20">
+          <div className="p-4 bg-tier-warning/5 rounded-xl border border-tier-warning/20">
             <div className="flex items-center gap-1.5 mb-1">
-              <Clock size={14} className="text-ak-status-warning" />
-              <p className="text-xs text-ak-status-warning m-0">Følg opp</p>
+              <Clock size={14} className="text-tier-warning" />
+              <p className="text-xs text-tier-warning m-0">Følg opp</p>
             </div>
-            <p className="text-[28px] font-bold text-ak-status-warning m-0">
+            <p className="text-[28px] font-bold text-tier-warning m-0">
               {stats.yellow}
             </p>
           </div>
         </Card>
         <Card variant="default" padding="none">
-          <div className="p-4 bg-ak-status-error/5 rounded-xl border border-ak-status-error/20">
+          <div className="p-4 bg-tier-error/5 rounded-xl border border-tier-error/20">
             <div className="flex items-center gap-1.5 mb-1">
-              <AlertTriangle size={14} className="text-ak-status-error" />
-              <p className="text-xs text-ak-status-error m-0">Kritisk</p>
+              <AlertTriangle size={14} className="text-tier-error" />
+              <p className="text-xs text-tier-error m-0">Kritisk</p>
             </div>
-            <p className="text-[28px] font-bold text-ak-status-error m-0">
+            <p className="text-[28px] font-bold text-tier-error m-0">
               {stats.red}
             </p>
           </div>
@@ -475,10 +480,10 @@ export const CoachAthleteStatus: React.FC = () => {
         <Card variant="default" padding="none">
           <div className="p-4">
             <div className="flex items-center gap-1.5 mb-1">
-              <Bell size={14} className="text-ak-text-secondary" />
-              <p className="text-xs text-ak-text-secondary m-0">Varsler</p>
+              <Bell size={14} className="text-tier-text-secondary" />
+              <p className="text-xs text-tier-text-secondary m-0">Varsler</p>
             </div>
-            <p className="text-[28px] font-bold text-ak-text-primary m-0">
+            <p className="text-[28px] font-bold text-tier-navy m-0">
               {stats.totalAlerts}
             </p>
           </div>
@@ -490,14 +495,14 @@ export const CoachAthleteStatus: React.FC = () => {
         <div className="relative flex-1 min-w-[200px] max-w-[400px]">
           <Search
             size={18}
-            className="absolute left-3 top-1/2 -translate-y-1/2 text-ak-text-secondary"
+            className="absolute left-3 top-1/2 -translate-y-1/2 text-tier-text-secondary"
           />
           <input
             type="text"
             placeholder="Søk etter spiller..."
             value={searchQuery}
             onChange={(e) => setSearchQuery(e.target.value)}
-            className="w-full py-3 pl-10 pr-3 rounded-lg border border-ak-border-default bg-ak-surface-base text-sm text-ak-text-primary outline-none focus:border-ak-primary"
+            className="w-full py-3 pl-10 pr-3 rounded-lg border border-tier-border-default bg-tier-white text-sm text-tier-navy outline-none focus:border-tier-navy"
           />
         </div>
         <div className="flex gap-2">
@@ -537,22 +542,22 @@ export const CoachAthleteStatus: React.FC = () => {
                     </div>
                     <div>
                       <div className="flex items-center gap-2 mb-1">
-                        <SubSectionTitle className="text-[16px] font-semibold text-ak-text-primary m-0">
+                        <SubSectionTitle className="text-[16px] font-semibold text-tier-navy m-0">
                           {player.name}
                         </SubSectionTitle>
                         <span className={`text-[10px] font-semibold py-0.5 px-2 rounded ${catClasses.bg} ${catClasses.text}`}>
                           Kat. {player.category}
                         </span>
-                        <span className="text-[11px] text-ak-text-secondary">
+                        <span className="text-[11px] text-tier-text-secondary">
                           HCP {player.hcp}
                         </span>
                       </div>
                       <div className="flex items-center gap-3">
-                        <span className="text-xs text-ak-text-secondary">
+                        <span className="text-xs text-tier-text-secondary">
                           Sist aktiv: {formatLastActive(player.lastActive)}
                         </span>
                         {player.upcomingSession && (
-                          <span className="text-xs text-ak-primary flex items-center gap-1">
+                          <span className="text-xs text-tier-navy flex items-center gap-1">
                             <Calendar size={12} />
                             Neste økt: {new Date(player.upcomingSession).toLocaleDateString('nb-NO', { day: 'numeric', month: 'short' })}
                           </span>
@@ -598,16 +603,16 @@ export const CoachAthleteStatus: React.FC = () => {
                 </div>
 
                 {/* Weekly Training Progress */}
-                <div className="mt-3 p-3 bg-ak-surface-subtle rounded-lg">
+                <div className="mt-3 p-3 bg-tier-surface-base rounded-lg">
                   <div className="flex justify-between items-center mb-2">
-                    <span className="text-xs text-ak-text-secondary">
+                    <span className="text-xs text-tier-text-secondary">
                       Ukentlig trening
                     </span>
-                    <span className="text-xs font-semibold text-ak-text-primary">
+                    <span className="text-xs font-semibold text-tier-navy">
                       {Math.round(player.weeklyTrainingMinutes / 60)}t / {Math.round(player.weeklyGoal / 60)}t
                     </span>
                   </div>
-                  <div className="h-2 bg-ak-border-default rounded overflow-hidden">
+                  <div className="h-2 bg-tier-border-default rounded overflow-hidden">
                     <div
                       className={`h-full ${getProgressBarColor(progressRatio)} rounded transition-all duration-300`}
                       style={{ width: `${Math.min(progressRatio * 100, 100)}%` }}
@@ -617,18 +622,21 @@ export const CoachAthleteStatus: React.FC = () => {
 
                 {/* Alerts */}
                 {player.alerts.length > 0 && (
-                  <div className="mt-3 p-3 bg-ak-status-error/5 rounded-lg border border-ak-status-error/20">
-                    {player.alerts.map((alert, idx) => (
-                      <div key={idx} className={`flex items-center gap-2 ${idx < player.alerts.length - 1 ? 'mb-2' : ''}`}>
-                        <AlertTriangle
-                          size={14}
-                          className={alert.type === 'critical' ? 'text-ak-status-error' : 'text-ak-status-warning'}
-                        />
-                        <span className={`text-[13px] font-medium ${alert.type === 'critical' ? 'text-ak-status-error' : 'text-ak-status-warning'}`}>
-                          {alert.message}
-                        </span>
-                      </div>
-                    ))}
+                  <div className="mt-3 p-3 bg-tier-error/5 rounded-lg border border-tier-error/20">
+                    {player.alerts.map((alert, idx) => {
+                      const MetricIcon = getMetricIcon(alert.metric);
+                      return (
+                        <div key={idx} className={`flex items-center gap-2 ${idx < player.alerts.length - 1 ? 'mb-2' : ''}`}>
+                          <MetricIcon
+                            size={14}
+                            className={alert.type === 'critical' ? 'text-tier-error' : 'text-tier-warning'}
+                          />
+                          <span className={`text-[13px] font-medium ${alert.type === 'critical' ? 'text-tier-error' : 'text-tier-warning'}`}>
+                            {alert.message}
+                          </span>
+                        </div>
+                      );
+                    })}
                   </div>
                 )}
               </div>

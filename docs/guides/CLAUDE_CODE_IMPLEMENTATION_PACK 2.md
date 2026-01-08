@@ -1,4 +1,4 @@
-# Claude Code Implementation Pack — AK Golf IUP (Web + Mobile Player Flow)
+# Claude Code Implementation Pack — TIER Golf IUP (Web + Mobile Player Flow)
 
 This file is an **implementation directive** for Claude Code. Apply all changes exactly, minimizing churn and maximizing reuse via **design tokens**.
 

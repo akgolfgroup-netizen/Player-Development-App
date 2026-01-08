@@ -1,5 +1,5 @@
 /**
- * AK Golf Academy - Goals Page
+ * TIER Golf Academy - Goals Page
  *
  * Archetype: A - List/Index Page
  * Purpose: View and manage player goals
@@ -78,9 +78,9 @@ function GoalCard({ goal }: GoalCardProps) {
               {Math.round(progressPercent)}%
             </Text>
           </div>
-          <div className="h-1.5 bg-ak-surface-subtle rounded-full overflow-hidden">
+          <div className="h-1.5 bg-tier-surface-base rounded-full overflow-hidden">
             <div
-              className="h-full bg-ak-primary rounded-full transition-all duration-300"
+              className="h-full bg-tier-navy rounded-full transition-all duration-300"
               style={{ width: `${progressPercent}%` }}
             />
           </div>
@@ -104,7 +104,7 @@ function StatsGrid({ stats }: StatsGridProps) {
   return (
     <div className="grid grid-cols-3 gap-4">
       {stats.map((stat, index) => (
-        <div key={index} className="p-4 bg-ak-surface-subtle rounded-lg text-center">
+        <div key={index} className="p-4 bg-tier-surface-base rounded-lg text-center">
           <Text variant="caption1" color="secondary" className="uppercase tracking-wide">
             {stat.label}
           </Text>
@@ -161,6 +161,7 @@ const GoalsPage: React.FC = () => {
       <Page.Header
         title="Mine mål"
         subtitle="Denne uken"
+        helpText="Sett og spor dine golfmål. Se kortsiktige ukentlige mål og langsiktige sesongmål. Spor fremgang med prosent fullført, trender og statistikk. Opprett nye mål, marker som fullført eller pause midlertidig. Få AI-coach veiledning for målsetting."
         actions={
           <Button size="sm" leftIcon={<Plus size={16} />}>
             Nytt mål

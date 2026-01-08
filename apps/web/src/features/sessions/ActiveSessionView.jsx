@@ -1,5 +1,5 @@
 /**
- * AK Golf Academy - Active Session View
+ * TIER Golf Academy - Active Session View
  * Design System v3.0 - Premium Light
  *
  * Focused training view with timer and block navigation.
@@ -24,12 +24,12 @@ function formatTime(seconds) {
 function ProgressBar({ current, total, color }) {
   const percentage = (current / total) * 100;
   return (
-    <div className="w-full h-2 bg-ak-border-default rounded-full overflow-hidden">
+    <div className="w-full h-2 bg-tier-border-default rounded-full overflow-hidden">
       <div
         className="h-full transition-all duration-300 ease-out"
         style={{
           width: `${percentage}%`,
-          backgroundColor: color || 'var(--ak-primary)',
+          backgroundColor: color || 'var(--tier-navy)',
         }}
       />
     </div>
@@ -39,26 +39,26 @@ function ProgressBar({ current, total, color }) {
 // Rep counter component
 function RepCounter({ current, target, onIncrement, onDecrement }) {
   return (
-    <div className="bg-ak-surface-base rounded-xl p-6 text-center">
-      <span className="text-xs text-ak-text-secondary">
+    <div className="bg-tier-white rounded-xl p-6 text-center">
+      <span className="text-xs text-tier-text-secondary">
         Repetisjonsteller
       </span>
 
       <div className="flex items-center justify-center gap-8 mt-4">
         <button
           onClick={onDecrement}
-          className="w-14 h-14 rounded-lg bg-ak-surface-subtle border-none text-2xl text-ak-primary cursor-pointer hover:bg-ak-surface-base transition-colors"
+          className="w-14 h-14 rounded-lg bg-tier-surface-base border-none text-2xl text-tier-navy cursor-pointer hover:bg-tier-white transition-colors"
         >
           −
         </button>
 
-        <span className="text-5xl font-bold text-ak-text-primary">
+        <span className="text-5xl font-bold text-tier-navy">
           {current}
         </span>
 
         <button
           onClick={onIncrement}
-          className="w-14 h-14 rounded-lg bg-ak-primary border-none text-2xl text-white cursor-pointer hover:opacity-90 transition-opacity"
+          className="w-14 h-14 rounded-lg bg-tier-navy border-none text-2xl text-white cursor-pointer hover:opacity-90 transition-opacity"
         >
           +
         </button>
@@ -68,13 +68,13 @@ function RepCounter({ current, target, onIncrement, onDecrement }) {
       <div className="flex justify-center gap-2 mt-4">
         <button
           onClick={() => onIncrement(10)}
-          className="py-2 px-4 rounded-lg bg-ak-surface-subtle border-none text-ak-primary cursor-pointer text-xs font-medium hover:bg-ak-surface-base transition-colors"
+          className="py-2 px-4 rounded-lg bg-tier-surface-base border-none text-tier-navy cursor-pointer text-xs font-medium hover:bg-tier-white transition-colors"
         >
           + 10
         </button>
         <button
           onClick={() => onIncrement(25)}
-          className="py-2 px-4 rounded-lg bg-ak-surface-subtle border-none text-ak-primary cursor-pointer text-xs font-medium hover:bg-ak-surface-base transition-colors"
+          className="py-2 px-4 rounded-lg bg-tier-surface-base border-none text-tier-navy cursor-pointer text-xs font-medium hover:bg-tier-white transition-colors"
         >
           + 25
         </button>
@@ -83,7 +83,7 @@ function RepCounter({ current, target, onIncrement, onDecrement }) {
       {/* Progress */}
       <div className="mt-4">
         <ProgressBar current={current} total={target} />
-        <span className="text-xs text-ak-text-secondary">
+        <span className="text-xs text-tier-text-secondary">
           {current} / {target} repetisjoner ({Math.round((current / target) * 100)}%)
         </span>
       </div>
@@ -98,17 +98,17 @@ function BlockNavigationChips({ blocks, currentIndex, completedIndices, onSelect
     const isCompleted = completedIndices.includes(index);
 
     if (isActive) {
-      return 'bg-ak-primary text-white border-none';
+      return 'bg-tier-navy text-white border-none';
     }
     if (isCompleted) {
-      return 'bg-ak-status-success text-white border-none';
+      return 'bg-tier-success text-white border-none';
     }
-    return 'bg-ak-surface-base text-ak-text-primary border border-ak-border-default';
+    return 'bg-tier-white text-tier-navy border border-tier-border-default';
   };
 
   return (
     <div className="p-4">
-      <span className="text-xs text-ak-text-secondary mb-2 block">
+      <span className="text-xs text-tier-text-secondary mb-2 block">
         Alle blokker
       </span>
       <div className="flex gap-2 overflow-x-auto pb-2">
@@ -146,15 +146,15 @@ function PauseOverlay({ totalTime, pauseTime, onResume, onEnd }) {
       <span className="text-[28px] font-bold text-white mb-2">
         PAUSE
       </span>
-      <span className="text-[15px] text-ak-text-secondary mb-6">
+      <span className="text-[15px] text-tier-text-secondary mb-6">
         Økten er pauset
       </span>
 
       <div className="text-center mb-8">
-        <div className="text-sm text-ak-text-secondary">
+        <div className="text-sm text-tier-text-secondary">
           Total tid: {formatTime(totalTime)}
         </div>
-        <div className="text-sm text-ak-text-secondary">
+        <div className="text-sm text-tier-text-secondary">
           Pause: {formatTime(pauseTime)}
         </div>
       </div>
@@ -170,7 +170,7 @@ function PauseOverlay({ totalTime, pauseTime, onResume, onEnd }) {
       <Button
         variant="secondary"
         onClick={onEnd}
-        className="w-[200px] py-4 text-ak-status-error border-ak-status-error"
+        className="w-[200px] py-4 text-tier-error border-tier-error"
       >
         Avslutt økt
       </Button>
@@ -275,7 +275,7 @@ export default function ActiveSessionView({ session, onEndSession, onPause: _onP
   if (!session || !currentBlock) {
     return (
       <div className="p-6 text-center">
-        <span className="text-[15px] text-ak-text-secondary">
+        <span className="text-[15px] text-tier-text-secondary">
           Ingen økt aktiv
         </span>
       </div>
@@ -283,7 +283,7 @@ export default function ActiveSessionView({ session, onEndSession, onPause: _onP
   }
 
   return (
-    <div className="bg-ak-surface-base min-h-screen font-sans">
+    <div className="bg-tier-white min-h-screen font-sans">
       {/* Pause overlay */}
       {isPaused && (
         <PauseOverlay
@@ -316,7 +316,7 @@ export default function ActiveSessionView({ session, onEndSession, onPause: _onP
       )}
 
       {/* Header */}
-      <div className="flex justify-between items-center p-4 bg-ak-surface-base border-b border-ak-border-default">
+      <div className="flex justify-between items-center p-4 bg-tier-white border-b border-tier-border-default">
         <Button variant="secondary" size="sm" onClick={togglePause}>
           ← Pause
         </Button>
@@ -324,14 +324,14 @@ export default function ActiveSessionView({ session, onEndSession, onPause: _onP
           variant="primary"
           size="sm"
           onClick={() => handleEndSessionAndEvaluate(totalSeconds, completedBlocks)}
-          className="bg-ak-status-error hover:bg-ak-status-error/90"
+          className="bg-tier-error hover:bg-tier-error/90"
         >
           Avslutt økt
         </Button>
       </div>
 
       {/* Total timer */}
-      <div className="text-center p-6 bg-ak-primary">
+      <div className="text-center p-6 bg-tier-navy">
         <div className="text-5xl font-bold text-white">
           {formatTime(totalSeconds)}
         </div>
@@ -346,47 +346,47 @@ export default function ActiveSessionView({ session, onEndSession, onPause: _onP
           <ProgressBar
             current={currentBlockIndex + 1}
             total={session.blocks.length}
-            color="#f59e0b"
+            color="rgb(var(--status-warning))"
           />
         </div>
       </div>
 
       {/* Block timer */}
-      <div className="text-center p-6 bg-ak-surface-base">
-        <div className="text-[40px] font-bold text-ak-text-primary">
+      <div className="text-center p-6 bg-tier-white">
+        <div className="text-[40px] font-bold text-tier-navy">
           {formatTime(Math.max(0, blockTimeRemaining))}
         </div>
-        <span className="text-xs text-ak-text-secondary">
+        <span className="text-xs text-tier-text-secondary">
           Gjenstående tid
         </span>
       </div>
 
       {/* Current block info */}
       <div className="p-4">
-        <div className="bg-ak-surface-base rounded-xl p-4 mb-4">
-          <span className="text-xl font-semibold text-ak-text-primary">
+        <div className="bg-tier-white rounded-xl p-4 mb-4">
+          <span className="text-xl font-semibold text-tier-navy">
             BLOKK {currentBlockIndex + 1}: {currentBlock.exercise}
           </span>
 
-          <div className="bg-ak-surface-subtle rounded-lg p-4 mt-4">
+          <div className="bg-tier-surface-base rounded-lg p-4 mt-4">
             <div className="flex items-center gap-2">
               <span>🎯</span>
-              <span className="text-xs font-medium text-ak-primary">
+              <span className="text-xs font-medium text-tier-navy">
                 {currentBlock.focus}
               </span>
             </div>
             {currentBlock.instructions && (
-              <div className="text-sm text-ak-text-primary mt-2">
+              <div className="text-sm text-tier-navy mt-2">
                 {currentBlock.instructions}
               </div>
             )}
           </div>
 
           <div className="mt-4">
-            <span className="text-xs text-ak-text-secondary">
+            <span className="text-xs text-tier-text-secondary">
               Treningsområde
             </span>
-            <div className="text-[15px] text-ak-text-primary">
+            <div className="text-[15px] text-tier-navy">
               {currentBlock.trainingArea}
             </div>
           </div>
@@ -419,10 +419,10 @@ export default function ActiveSessionView({ session, onEndSession, onPause: _onP
           {currentBlockIndex < session.blocks.length - 1 ? 'Neste blokk →' : 'Fullfør økt'}
         </Button>
 
-        <div className="bg-ak-surface-base rounded-xl p-4">
+        <div className="bg-tier-white rounded-xl p-4">
           <div className="flex items-center gap-2 mb-2">
             <span>📝</span>
-            <span className="text-xs font-medium text-ak-text-primary">
+            <span className="text-xs font-medium text-tier-navy">
               Legg til notat...
             </span>
           </div>
@@ -430,7 +430,7 @@ export default function ActiveSessionView({ session, onEndSession, onPause: _onP
             value={blockNote}
             onChange={(e) => setBlockNote(e.target.value)}
             placeholder="Notater for denne blokken..."
-            className="w-full min-h-[60px] p-2 bg-ak-surface-subtle border-none rounded-lg resize-none text-sm text-ak-text-primary outline-none focus:ring-1 focus:ring-ak-primary"
+            className="w-full min-h-[60px] p-2 bg-tier-surface-base border-none rounded-lg resize-none text-sm text-tier-navy outline-none focus:ring-1 focus:ring-tier-navy"
           />
         </div>
       </div>

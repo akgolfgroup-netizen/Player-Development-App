@@ -7,14 +7,14 @@ import { AnyFastifyInstance } from '../types/fastify';
  * Rate limit configurations for different endpoints
  */
 export const RateLimitConfig = {
-  // General API rate limit
+  // General API rate limit - increased for development
   default: {
-    max: 100,
+    max: 1000,
     timeWindow: '1 minute',
   },
-  // Auth endpoints (login, register) - stricter
+  // Auth endpoints (login, register) - relaxed for dev
   auth: {
-    max: 5,
+    max: 50,
     timeWindow: '1 minute',
   },
   // Heavy endpoints (reports, exports)

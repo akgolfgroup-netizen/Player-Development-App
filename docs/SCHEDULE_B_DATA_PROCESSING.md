@@ -1,6 +1,6 @@
 # Schedule B: Data Processing Agreement
 
-**IUP Golf Academy Platform**
+**IUP Golf Platform**
 **Version:** 1.0
 **Effective Date:** [TBD]
 **Document Status:** Draft for Review
@@ -11,7 +11,7 @@
 
 ### 1.1 Purpose
 
-This Data Processing Agreement ("DPA") sets forth the terms and conditions under which the Service Provider ("Processor") will process Personal Data on behalf of the Customer ("Controller") in connection with the IUP Golf Academy Platform ("Platform").
+This Data Processing Agreement ("DPA") sets forth the terms and conditions under which the Service Provider ("Processor") will process Personal Data on behalf of the Customer ("Controller") in connection with the IUP Golf Platform ("Platform").
 
 ### 1.2 Definitions
 
@@ -459,7 +459,7 @@ Changes shall be communicated 30 days in advance, except where legally required 
 
 ## APPENDIX A: CONSENT FORM TEMPLATE (MINORS)
 
-### Parental Consent for Minor's Use of IUP Golf Academy
+### Parental Consent for Minor's Use of IUP Golf
 
 **Player Name:** ____________________
 **Date of Birth:** ____________________
@@ -467,7 +467,7 @@ Changes shall be communicated 30 days in advance, except where legally required 
 
 I, the undersigned parent/guardian, hereby:
 
-- [ ] Consent to my child's use of the IUP Golf Academy Platform
+- [ ] Consent to my child's use of the IUP Golf Platform
 - [ ] Consent to the collection and processing of my child's personal data as described in the Privacy Policy
 - [ ] Understand that training data, test results, and achievements will be stored
 - [ ] Understand that assigned coaches will have access to my child's training data

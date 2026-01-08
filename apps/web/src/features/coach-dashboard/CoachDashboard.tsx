@@ -26,21 +26,25 @@ import { useAuth } from '../../contexts/AuthContext';
 import { ProfileOverviewCard } from '../../components/dashboard';
 import { useToast } from '../../components/shadcn/use-toast';
 import { TeamFocusHeatmap } from '../focus-engine';
+import { getNotifications } from '../../services/notificationsApi';
 import StatsGridTemplate from '../../ui/templates/StatsGridTemplate';
 import Button from '../../ui/primitives/Button';
 import Badge from '../../ui/primitives/Badge.primitive';
 import StateCard from '../../ui/composites/StateCard';
 import Card from '../../ui/primitives/Card';
-import { PageTitle, SectionTitle, SubSectionTitle } from '../../components/typography';
+import { PageTitle, SectionTitle, SubSectionTitle } from '../../components/typography/Headings';
+import Avatar from '../../ui/primitives/Avatar';
+import PageHeader from '../../ui/raw-blocks/PageHeader.raw';
+import PageContainer from '../../ui/raw-blocks/PageContainer.raw';
 
-// Mock data for athletes
+// Mock data for athletes (includes profileImageUrl for avatar support)
 const mockAthletes = [
-  { id: '1', firstName: 'Anders', lastName: 'Hansen', category: 'A', lastSession: '2025-12-18' },
-  { id: '2', firstName: 'Erik', lastName: 'Johansen', category: 'B', lastSession: '2025-12-17' },
-  { id: '3', firstName: 'Lars', lastName: 'Olsen', category: 'A', lastSession: '2025-12-19' },
-  { id: '4', firstName: 'Mikkel', lastName: 'Pedersen', category: 'C', lastSession: '2025-12-16' },
-  { id: '5', firstName: 'Sofie', lastName: 'Andersen', category: 'B', lastSession: '2025-12-18' },
-  { id: '6', firstName: 'Emma', lastName: 'Berg', category: 'A', lastSession: '2025-12-19' },
+  { id: '1', firstName: 'Anders', lastName: 'Hansen', category: 'A', lastSession: '2025-12-18', profileImageUrl: null },
+  { id: '2', firstName: 'Erik', lastName: 'Johansen', category: 'B', lastSession: '2025-12-17', profileImageUrl: null },
+  { id: '3', firstName: 'Lars', lastName: 'Olsen', category: 'A', lastSession: '2025-12-19', profileImageUrl: null },
+  { id: '4', firstName: 'Mikkel', lastName: 'Pedersen', category: 'C', lastSession: '2025-12-16', profileImageUrl: null },
+  { id: '5', firstName: 'Sofie', lastName: 'Andersen', category: 'B', lastSession: '2025-12-18', profileImageUrl: null },
+  { id: '6', firstName: 'Emma', lastName: 'Berg', category: 'A', lastSession: '2025-12-19', profileImageUrl: null },
 ];
 
 // Mock pending items
@@ -53,9 +57,10 @@ const mockPendingItems = [
 // Quick action items
 const quickActions = [
   { id: 'athletes', label: 'Spillere', icon: Users, href: '/coach/athletes' },
+  { id: 'alerts', label: 'Varsler', icon: Bell, href: '/coach/alerts' },
+  { id: 'messages', label: 'Meldinger', icon: MessageSquare, href: '/coach/messages' },
   { id: 'calendar', label: 'Kalender', icon: Calendar, href: '/coach/calendar' },
   { id: 'plans', label: 'Treningsplaner', icon: ClipboardList, href: '/coach/training-plans/create' },
-  { id: 'messages', label: 'Meldinger', icon: MessageSquare, href: '/coach/messages' },
   { id: 'stats', label: 'Statistikk', icon: BarChart3, href: '/coach/stats' },
   { id: 'tournaments', label: 'Turneringer', icon: Trophy, href: '/coach/tournaments' },
 ];
@@ -68,7 +73,7 @@ const WidgetHeader: React.FC<{
 }> = ({ title, icon: Icon, action }) => (
   <div className="flex items-center justify-between mb-4">
     <div className="flex items-center gap-2">
-      {Icon && <Icon size={18} className="text-ak-primary" />}
+      {Icon && <Icon size={18} className="text-tier-navy" />}
       <SubSectionTitle>
         {title}
       </SubSectionTitle>
@@ -82,28 +87,7 @@ const WidgetHeader: React.FC<{
   </div>
 );
 
-// Avatar component - use correct Tailwind color classes from tailwind.config.js
-const AVATAR_COLORS = ['bg-ak-primary', 'bg-ak-success', 'bg-ak-warning'];
-
-const Avatar: React.FC<{ name: string; size?: number }> = ({ name, size = 40 }) => {
-  const initials = name.split(' ').map(n => n[0]).join('').slice(0, 2).toUpperCase();
-
-  // Generate consistent color from name
-  let hash = 0;
-  for (let i = 0; i < name.length; i++) {
-    hash = name.charCodeAt(i) + ((hash << 5) - hash);
-  }
-  const bgColorClass = AVATAR_COLORS[Math.abs(hash) % AVATAR_COLORS.length];
-
-  return (
-    <div
-      className={`rounded-full ${bgColorClass} text-white flex items-center justify-center font-semibold shrink-0`}
-      style={{ width: size, height: size, fontSize: size * 0.4 }}
-    >
-      {initials}
-    </div>
-  );
-};
+// Removed local Avatar component - now using Avatar from ui/primitives
 
 // Category badge using primitive
 const CategoryBadge: React.FC<{ category: string }> = ({ category }) => {
@@ -129,14 +113,14 @@ interface CoachDashboardProps {
 
 // Loading component using StateCard
 const LoadingState: React.FC = () => (
-  <div className="min-h-screen flex items-center justify-center bg-ak-surface-subtle">
+  <div className="min-h-screen flex items-center justify-center bg-tier-surface-base">
     <StateCard variant="loading" title="Laster dashboard..." />
   </div>
 );
 
 // Error component using StateCard and Button
 const ErrorState: React.FC<{ error: string; onRetry: () => void }> = ({ error, onRetry }) => (
-  <div className="min-h-screen flex items-center justify-center bg-ak-surface-subtle p-6">
+  <div className="min-h-screen flex items-center justify-center bg-tier-surface-base p-6">
     <StateCard
       variant="error"
       title="Kunne ikke laste dashboard"
@@ -199,7 +183,9 @@ export default function CoachDashboard(props: CoachDashboardProps) {
   const [isRefreshing, setIsRefreshing] = useState(false);
   const [error, setError] = useState<Error | null>(null);
   const [lastUpdated, setLastUpdated] = useState<Date | null>(null);
+  const [unreadNotifications, setUnreadNotifications] = useState(0);
   const mountedRef = useRef(true);
+  const hasShownToastRef = useRef(false);
 
   // Fetch dashboard data
   const fetchDashboardData = useCallback(async (isBackground = false) => {
@@ -214,13 +200,16 @@ export default function CoachDashboard(props: CoachDashboardProps) {
       const coachId = userWithCoach?.coachId || userWithCoach?.id;
 
       let hadApiError = false;
-      const [athletesRes, alertsRes, statsRes] = await Promise.all([
+      const [athletesRes, alertsRes, statsRes, notificationsRes] = await Promise.all([
         coachesAPI.getAthletes().catch(() => { hadApiError = true; return { data: { data: mockAthletes } }; }),
         coachesAPI.getAlerts().catch(() => { hadApiError = true; return { data: { data: { alerts: mockPendingItems } } }; }),
         coachId ? coachesAPI.getWeeklyStats(coachId).catch(() => { hadApiError = true; return { data: null }; }) : Promise.resolve({ data: null }),
+        getNotifications({ unreadOnly: true }).catch(() => ({ unreadCount: 0 })),
       ]);
 
-      if (hadApiError && !isBackground) {
+      // Only show toast once on initial load, not on background refreshes
+      if (hadApiError && !isBackground && !hasShownToastRef.current) {
+        hasShownToastRef.current = true;
         toast({
           title: 'Begrenset data',
           description: 'Noen data kunne ikke lastes. Viser demodata.',
@@ -228,7 +217,7 @@ export default function CoachDashboard(props: CoachDashboardProps) {
         });
       }
 
-      // Transform athletes response
+      // Transform athletes response (includes profile image support)
       const athleteData = athletesRes.data?.data || athletesRes.data || mockAthletes;
       const transformedAthletes = Array.isArray(athleteData) ? athleteData.map((a: any) => ({
         id: a.id,
@@ -236,6 +225,7 @@ export default function CoachDashboard(props: CoachDashboardProps) {
         lastName: a.lastName,
         category: a.category || 'B',
         lastSession: a.nextSession || a.planUpdated || new Date().toISOString().split('T')[0],
+        profileImageUrl: a.profileImageUrl || a.avatar || null,
       })) : mockAthletes;
 
       // Transform alerts to pending items format
@@ -266,6 +256,7 @@ export default function CoachDashboard(props: CoachDashboardProps) {
           todaySchedule: [],
           defaultTeamId: transformedAthletes.length > 0 ? transformedAthletes[0].id : null,
         });
+        setUnreadNotifications(notificationsRes?.unreadCount || 0);
         setLastUpdated(new Date());
         setError(null);
       }
@@ -279,7 +270,7 @@ export default function CoachDashboard(props: CoachDashboardProps) {
         setIsRefreshing(false);
       }
     }
-  }, [user]);
+  }, [user, toast]);
 
   // Initial fetch
   useEffect(() => {
@@ -298,10 +289,15 @@ export default function CoachDashboard(props: CoachDashboardProps) {
     };
   }, []);
 
-  // Manual refresh function
+  // Manual refresh function - MUST BE BEFORE CONDITIONAL RETURNS
   const refresh = useCallback(() => {
     fetchDashboardData(true);
   }, [fetchDashboardData]);
+
+  // Handle notifications button click - MUST BE BEFORE CONDITIONAL RETURNS
+  const handleNotificationsClick = useCallback(() => {
+    navigate('/coach/notifications');
+  }, [navigate]);
 
   // Use prop data or fetched data
   const athletes = propAthletes || dashboardData?.athletes || mockAthletes;
@@ -332,31 +328,39 @@ export default function CoachDashboard(props: CoachDashboardProps) {
   const coachName = user ? `${user.firstName || ''} ${user.lastName || ''}`.trim() : 'Trener';
 
   return (
-    <div className="relative min-h-screen bg-ak-surface-subtle font-sans">
+    <div className="min-h-screen bg-tier-surface-base">
       {/* Refreshing indicator bar */}
       {isRefreshing && (
-        <div className="absolute top-0 left-0 right-0 h-[3px] bg-ak-primary animate-pulse z-50" />
+        <div className="absolute top-0 left-0 right-0 h-[3px] bg-tier-navy animate-pulse z-50" />
       )}
 
-      {/* Profile Overview Card */}
-      <div className="p-6 pb-4">
+      {/* TIER-compliant PageHeader */}
+      <PageHeader
+        title="Dashboard"
+        subtitle="Oversikt over dine spillere og aktiviteter"
+        helpText="Treneroversikt med alfabetisk liste over spillere, varsler som krever oppfølging og rask tilgang til viktige trenerverktøy. Se aktivitet og planlegg oppfølging av spillere."
+      />
+
+      <PageContainer paddingY="md" background="base">
+        {/* Profile Overview Card */}
+        <div className="pb-4">
         <div className="flex items-end justify-between mb-4">
           <div /> {/* Spacer */}
           <div className="flex items-center gap-3">
-            <span className="text-[13px] text-ak-text-secondary">
+            <span className="text-[13px] text-tier-text-secondary">
               {formatLastUpdated(lastUpdated)}
             </span>
             <button
               onClick={refresh}
               disabled={isRefreshing}
-              className={`flex items-center justify-center w-9 h-9 bg-ak-surface-base border border-ak-border-default rounded-lg transition-all ${
-                isRefreshing ? 'cursor-not-allowed opacity-60' : 'cursor-pointer hover:bg-ak-surface-subtle'
+              className={`flex items-center justify-center w-9 h-9 bg-tier-white border border-tier-border-default rounded-lg transition-all ${
+                isRefreshing ? 'cursor-not-allowed opacity-60' : 'cursor-pointer hover:bg-tier-surface-base'
               }`}
               title="Oppdater data"
             >
               <RefreshCw
                 size={18}
-                className={`text-ak-text-secondary ${isRefreshing ? 'animate-spin' : ''}`}
+                className={`text-tier-text-secondary ${isRefreshing ? 'animate-spin' : ''}`}
               />
             </button>
           </div>
@@ -378,22 +382,24 @@ export default function CoachDashboard(props: CoachDashboardProps) {
             { label: 'ventende', value: pendingItems.length },
           ]}
           profileHref="/coach/settings"
+          unreadCount={unreadNotifications}
+          onNotificationsClick={handleNotificationsClick}
         />
       </div>
 
-      {/* Quick Actions */}
-      <div className="px-6 mb-6">
-        <div className="grid grid-cols-6 gap-3">
+        {/* Quick Actions */}
+        <div className="mb-6">
+        <div className="grid grid-cols-3 md:grid-cols-4 lg:grid-cols-7 gap-3">
           {quickActions.map(action => (
             <button
               key={action.id}
               onClick={() => navigate(action.href)}
-              className="flex flex-col items-center gap-2 py-4 px-3 bg-ak-surface-base border-none rounded-lg shadow-sm cursor-pointer transition-all hover:shadow-md"
+              className="flex flex-col items-center gap-2 py-4 px-3 bg-tier-white border-none rounded-lg shadow-sm cursor-pointer transition-all hover:shadow-md"
             >
-              <div className="w-11 h-11 rounded-lg bg-ak-primary/10 flex items-center justify-center">
-                <action.icon size={22} className="text-ak-primary" />
+              <div className="w-11 h-11 rounded-lg bg-tier-navy/10 flex items-center justify-center">
+                <action.icon size={22} className="text-tier-navy" />
               </div>
-              <span className="text-[13px] font-medium text-ak-text-primary">
+              <span className="text-[13px] font-medium text-tier-navy">
                 {action.label}
               </span>
             </button>
@@ -401,8 +407,8 @@ export default function CoachDashboard(props: CoachDashboardProps) {
         </div>
       </div>
 
-      {/* Critical Alerts Section */}
-      <div className="px-6 pb-5">
+        {/* Critical Alerts Section */}
+        <div className="pb-5">
         <Card variant="default" padding="none">
           <div className="p-5">
             <CoachPlayerAlerts
@@ -413,8 +419,8 @@ export default function CoachDashboard(props: CoachDashboardProps) {
         </Card>
       </div>
 
-      {/* Main content grid */}
-      <div className="px-6 pb-6 grid grid-cols-2 gap-5">
+        {/* Main content grid */}
+        <div className="pb-6 grid grid-cols-2 gap-5">
         {/* Athletes List */}
         <Card variant="default" padding="none">
           <div className="p-5">
@@ -424,15 +430,15 @@ export default function CoachDashboard(props: CoachDashboardProps) {
               action={{ label: 'Se alle', onClick: () => navigate('/coach/athletes') }}
             />
 
-            {/* Search */}
-            <div className="flex items-center gap-2 py-2.5 px-3.5 bg-ak-surface-subtle rounded-lg mb-4">
-              <Search size={18} className="text-ak-text-secondary" />
+            {/* Search - Enhanced visibility */}
+            <div className="flex items-center gap-2 py-3 px-4 bg-white border-2 border-tier-navy/20 rounded-lg mb-4 transition-all hover:border-tier-navy/40 focus-within:border-tier-navy focus-within:shadow-sm">
+              <Search size={20} className="text-tier-navy" />
               <input
                 type="text"
                 placeholder="Søk etter spiller..."
                 value={searchTerm}
                 onChange={(e) => setSearchTerm(e.target.value)}
-                className="flex-1 border-none bg-transparent outline-none text-[15px] text-ak-text-primary"
+                className="flex-1 border-none bg-transparent outline-none text-[15px] text-tier-navy placeholder:text-tier-text-secondary"
               />
             </div>
 
@@ -442,19 +448,23 @@ export default function CoachDashboard(props: CoachDashboardProps) {
                 <div
                   key={athlete.id}
                   onClick={() => navigate(`/coach/athlete/${athlete.id}`)}
-                  className="flex items-center gap-3 p-3 bg-ak-surface-subtle rounded-lg cursor-pointer transition-all hover:bg-ak-border-default"
+                  className="flex items-center gap-3 p-3 bg-tier-surface-base rounded-lg cursor-pointer transition-all hover:bg-tier-border-default"
                 >
-                  <Avatar name={`${athlete.firstName} ${athlete.lastName}`} size={40} />
+                  <Avatar
+                    name={`${athlete.firstName} ${athlete.lastName}`}
+                    imageUrl={athlete.profileImageUrl || undefined}
+                    size="md"
+                  />
                   <div className="flex-1">
-                    <p className="text-[15px] font-medium text-ak-text-primary m-0">
+                    <p className="text-[15px] font-medium text-tier-navy m-0">
                       {athlete.lastName}, {athlete.firstName}
                     </p>
-                    <p className="text-[13px] text-ak-text-secondary m-0 mt-0.5">
+                    <p className="text-[13px] text-tier-text-secondary m-0 mt-0.5">
                       Sist aktiv: {new Date(athlete.lastSession).toLocaleDateString('nb-NO')}
                     </p>
                   </div>
                   <CategoryBadge category={athlete.category} />
-                  <ChevronRight size={18} className="text-ak-text-secondary" />
+                  <ChevronRight size={18} className="text-tier-text-secondary" />
                 </div>
               ))}
             </div>
@@ -465,43 +475,53 @@ export default function CoachDashboard(props: CoachDashboardProps) {
         <Card variant="default" padding="none">
           <div className="p-5">
             <WidgetHeader
-              title="Venter pa deg"
+              title="Venter på deg"
               icon={Bell}
               action={{ label: 'Se alle', onClick: () => navigate('/coach/pending') }}
             />
 
             {pendingItems.length === 0 ? (
               <div className="text-center py-8 px-4">
-                <Bell size={32} className="text-ak-border-default mb-2 mx-auto" />
-                <p className="text-[15px] text-ak-text-secondary">
+                <Bell size={32} className="text-tier-border-default mb-2 mx-auto" />
+                <p className="text-[15px] text-tier-text-secondary">
                   Ingen ventende oppgaver
                 </p>
               </div>
             ) : (
               <div className="flex flex-col gap-3">
-                {pendingItems.map(item => (
-                  <div
-                    key={item.id}
-                    className="flex items-start gap-3 p-3.5 bg-ak-primary/5 rounded-lg border-l-[3px] border-ak-primary cursor-pointer"
-                  >
-                    <div className="w-9 h-9 rounded-md bg-ak-surface-base flex items-center justify-center shrink-0">
-                      {item.type === 'proof' && <User size={18} className="text-ak-primary" />}
-                      {item.type === 'note' && <MessageSquare size={18} className="text-ak-primary" />}
-                      {item.type === 'plan' && <ClipboardList size={18} className="text-ak-primary" />}
+                {pendingItems.map(item => {
+                  // Different colors for different types
+                  const colorClass = item.type === 'proof' ? 'bg-blue-50 border-blue-500' :
+                                    item.type === 'note' ? 'bg-amber-50 border-amber-500' :
+                                    'bg-emerald-50 border-emerald-500';
+                  const iconColor = item.type === 'proof' ? 'text-blue-600' :
+                                   item.type === 'note' ? 'text-amber-600' :
+                                   'text-emerald-600';
+
+                  return (
+                    <div
+                      key={item.id}
+                      className={`flex items-start gap-3 p-3.5 ${colorClass} rounded-lg border-l-[3px] cursor-pointer transition-all hover:shadow-sm`}
+                    >
+                      <div className="w-9 h-9 rounded-md bg-white flex items-center justify-center shrink-0">
+                        {item.type === 'proof' && <User size={18} className={iconColor} />}
+                        {item.type === 'note' && <MessageSquare size={18} className={iconColor} />}
+                        {item.type === 'plan' && <ClipboardList size={18} className={iconColor} />}
+                      </div>
+                      <div className="flex-1">
+                        <p className="text-[15px] font-medium text-tier-navy m-0">
+                          {item.athlete}
+                        </p>
+                        <p className="text-[13px] text-tier-text-secondary m-0 mt-0.5">
+                          {item.description}
+                        </p>
+                      </div>
+                      <span className="text-xs text-tier-text-secondary shrink-0">
+                        {item.time}
+                      </span>
                     </div>
-                    <div className="flex-1">
-                      <p className="text-[15px] font-medium text-ak-text-primary m-0">
-                        {item.athlete}
-                      </p>
-                      <p className="text-[13px] text-ak-text-secondary m-0 mt-0.5">
-                        {item.description}
-                      </p>
-                    </div>
-                    <span className="text-xs text-ak-text-secondary shrink-0">
-                      {item.time}
-                    </span>
-                  </div>
-                ))}
+                  );
+                })}
               </div>
             )}
           </div>
@@ -526,16 +546,26 @@ export default function CoachDashboard(props: CoachDashboardProps) {
         </Card>
 
         {/* Team Focus Heatmap */}
-        {user?.id && defaultTeamId && (
-          <Card variant="default" padding="none">
-            <div className="p-5">
+        <Card variant="default" padding="none">
+          <div className="p-5">
+            {user?.id && defaultTeamId ? (
               <TeamFocusHeatmap
                 coachId={user.id}
                 teamId={defaultTeamId}
               />
-            </div>
-          </Card>
-        )}
+            ) : (
+              <div>
+                <WidgetHeader title="Team Focus" />
+                <div className="text-center py-8 px-4">
+                  <Users size={32} className="text-tier-border-default mb-2 mx-auto" />
+                  <p className="text-[15px] text-tier-text-secondary">
+                    Legg til spillere for å se team focus
+                  </p>
+                </div>
+              </div>
+            )}
+          </div>
+        </Card>
 
         {/* Today's Schedule */}
         <Card variant="default" padding="none">
@@ -555,16 +585,16 @@ export default function CoachDashboard(props: CoachDashboardProps) {
               ]).map((event, index) => (
                 <div
                   key={index}
-                  className="flex items-center gap-3 p-3 bg-ak-surface-subtle rounded-lg"
+                  className="flex items-center gap-3 p-3 bg-tier-surface-base rounded-lg"
                 >
-                  <div className="w-12 h-12 rounded-lg bg-ak-primary text-white flex items-center justify-center text-[13px] font-semibold">
+                  <div className="w-12 h-12 rounded-lg bg-tier-navy text-white flex items-center justify-center text-[13px] font-semibold">
                     {event.time}
                   </div>
                   <div className="flex-1">
-                    <p className="text-[15px] font-medium text-ak-text-primary m-0">
+                    <p className="text-[15px] font-medium text-tier-navy m-0">
                       {event.title}
                     </p>
-                    <p className="text-xs text-ak-text-secondary m-0 mt-0.5">
+                    <p className="text-xs text-tier-text-secondary m-0 mt-0.5">
                       {event.athletes} {event.athletes === 1 ? 'spiller' : 'spillere'}
                     </p>
                   </div>
@@ -574,28 +604,9 @@ export default function CoachDashboard(props: CoachDashboardProps) {
           </div>
         </Card>
 
-        {/* Quick Stats */}
-        <Card variant="default" padding="none">
-          <div className="p-5">
-            <WidgetHeader title="Ukens oversikt" />
-
-            <StatsGridTemplate
-              items={(weeklyStats ? [
-                { id: 'active-players', label: 'Aktive spillere', value: weeklyStats.activePlayers || '0' },
-                { id: 'sessions', label: 'Okter denne uke', value: weeklyStats.sessionsThisWeek || '0' },
-                { id: 'hours', label: 'Timer trent', value: weeklyStats.hoursTrained || '0' },
-                { id: 'pending', label: 'Ventende', value: weeklyStats.pendingCount || '0' },
-              ] : [
-                { id: 'active-players', label: 'Aktive spillere', value: '12' },
-                { id: 'sessions', label: 'Okter denne uke', value: '24' },
-                { id: 'hours', label: 'Timer trent', value: '48' },
-                { id: 'pending', label: 'Ventende', value: '3' },
-              ])}
-              columns={2}
-            />
-          </div>
-        </Card>
-      </div>
+{/* Removed "Ukens oversikt" section as per requirements */}
+        </div>
+      </PageContainer>
     </div>
   );
 }

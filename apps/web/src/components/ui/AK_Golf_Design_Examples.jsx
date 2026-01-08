@@ -1,5 +1,5 @@
 /**
- * AK Golf Design Examples
+ * TIER Golf Design Examples
  * Design System v3.0 - Premium Light
  *
  * MIGRATED TO PAGE ARCHITECTURE - Minimal inline styles (dynamic colors)
@@ -19,13 +19,13 @@ const sessionTypeColors = {
   teknikk: '#2C5F7F',
   golfslag: '#4A7C59',
   spill: '#10456A',
-  kompetanse: '#C9A227',
+  kompetanse: 'rgb(var(--tier-gold))',
   fysisk: '#D4A84B',
   funksjonell: '#8E8E93',
 };
 
 // ============================================================================
-// AK GOLF ACADEMY – DESIGN SYSTEM EKSEMPLER v2.1
+// TIER GOLF – DESIGN SYSTEM EKSEMPLER v2.1
 // Forest Theme - Design System v2.1
 // ============================================================================
 

@@ -3,7 +3,7 @@
 **Last Updated:** 2025-12-25
 **Target:** Production deployment on cloud infrastructure
 
-This guide walks you through setting up the production environment for the IUP Golf Academy API.
+This guide walks you through setting up the production environment for the IUP Golf API.
 
 ---
 
@@ -443,7 +443,7 @@ SMTP_SECURE=false
 SMTP_USER=<EMAIL_USERNAME>
 SMTP_PASS=<EMAIL_APP_PASSWORD>
 SMTP_FROM=noreply@iupgolf.com
-SMTP_FROM_NAME=IUP Golf Academy
+SMTP_FROM_NAME=IUP Golf
 
 # =============================================================================
 # QUEUE CONFIGURATION
@@ -455,7 +455,7 @@ QUEUE_CONCURRENCY=10
 # TENANT CONFIGURATION
 # =============================================================================
 DEFAULT_TENANT_ID=00000000-0000-0000-0000-000000000001
-DEFAULT_TENANT_NAME=IUP Golf Academy
+DEFAULT_TENANT_NAME=IUP Golf
 DEFAULT_TENANT_SLUG=iup-golf
 
 # =============================================================================

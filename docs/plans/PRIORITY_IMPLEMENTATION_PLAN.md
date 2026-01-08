@@ -1,4 +1,4 @@
-# PRIORITERT IMPLEMENTERINGSPLAN - AK Golf Academy
+# PRIORITERT IMPLEMENTERINGSPLAN - TIER Golf
 
 > Generert: 2025-12-31
 > Status: Klar for gjennomføring

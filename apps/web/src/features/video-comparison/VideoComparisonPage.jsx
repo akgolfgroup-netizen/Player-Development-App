@@ -25,32 +25,32 @@ import { SubSectionTitle } from '../../components/typography';
 
 // Tailwind classes
 const tw = {
-  container: 'flex flex-col h-full bg-[var(--ak-surface-dark-base)]',
+  container: 'flex flex-col h-full bg-[var(--tier-navy)]',
   header: 'flex items-center gap-3 py-3 px-4 border-b border-border',
-  backButton: 'flex items-center gap-1 py-2 px-3 bg-surface border border-border rounded-ak-md text-[var(--video-text-secondary)] text-[13px] cursor-pointer',
+  backButton: 'flex items-center gap-1 py-2 px-3 bg-surface border border-border rounded-lg text-[var(--video-text-secondary)] text-[13px] cursor-pointer',
   title: 'm-0 text-lg font-semibold text-[var(--text-inverse)] flex-1',
-  saveButton: 'py-2 px-4 bg-primary border-none rounded-ak-md text-white text-[13px] font-medium cursor-pointer',
+  saveButton: 'py-2 px-4 bg-primary border-none rounded-lg text-white text-[13px] font-medium cursor-pointer',
   main: 'flex-1 flex flex-col overflow-hidden',
   comparisonWrapper: 'flex-1 p-4 overflow-hidden',
   selectionContainer: 'flex-1 flex items-center justify-center gap-6 p-6',
-  videoSlot: 'flex-1 max-w-[400px] bg-surface rounded-ak-lg border-2 border-dashed border-border p-6 text-center cursor-pointer transition-all duration-200',
+  videoSlot: 'flex-1 max-w-[400px] bg-surface rounded-xl border-2 border-dashed border-border p-6 text-center cursor-pointer transition-all duration-200',
   videoSlotActive: 'border-primary bg-primary/10',
-  videoSlotFilled: 'border-solid border-ak-status-success',
+  videoSlotFilled: 'border-solid border-tier-success',
   slotLabel: 'block text-xs font-semibold text-[var(--video-text-tertiary)] uppercase tracking-wide mb-3',
   slotIcon: 'w-12 h-12 mx-auto mb-3 text-[var(--video-text-tertiary)]',
   slotText: 'text-sm text-[var(--video-text-secondary)] m-0',
   slotVideoTitle: 'text-base font-semibold text-[var(--text-inverse)] mb-2',
   slotVideoMeta: 'text-[13px] text-[var(--video-text-secondary)] m-0',
   vsLabel: 'text-2xl font-bold text-[var(--video-text-muted)]',
-  startButton: 'mt-4 py-3 px-6 bg-primary border-none rounded-ak-md text-white text-sm font-semibold cursor-pointer',
+  startButton: 'mt-4 py-3 px-6 bg-primary border-none rounded-lg text-white text-sm font-semibold cursor-pointer',
   modal: 'fixed inset-0 bg-black/80 flex items-center justify-center z-[1000] p-4',
-  modalContent: 'bg-surface rounded-ak-xl border border-border max-w-[600px] w-full max-h-[80vh] overflow-hidden flex flex-col',
+  modalContent: 'bg-surface rounded-2xl border border-border max-w-[600px] w-full max-h-[80vh] overflow-hidden flex flex-col',
   modalHeader: 'flex items-center justify-between p-4 border-b border-border',
   modalTitle: 'm-0 text-base font-semibold text-[var(--text-inverse)]',
-  closeButton: 'w-8 h-8 flex items-center justify-center bg-transparent border-none rounded-ak-md text-[var(--video-text-secondary)] cursor-pointer text-xl',
+  closeButton: 'w-8 h-8 flex items-center justify-center bg-transparent border-none rounded-lg text-[var(--video-text-secondary)] cursor-pointer text-xl',
   modalBody: 'flex-1 overflow-y-auto p-4',
   videoGrid: 'grid grid-cols-[repeat(auto-fill,minmax(150px,1fr))] gap-3',
-  videoOption: 'bg-[var(--ak-surface-dark-elevated)] rounded-ak-md border-2 border-transparent overflow-hidden cursor-pointer transition-all duration-200',
+  videoOption: 'bg-[rgb(var(--tier-navy-dark))] rounded-lg border-2 border-transparent overflow-hidden cursor-pointer transition-all duration-200',
   videoOptionSelected: 'border-primary',
   videoThumbnail: 'w-full aspect-video bg-surface flex items-center justify-center text-[var(--video-text-tertiary)]',
   videoOptionTitle: 'p-2 text-xs font-medium text-[var(--text-inverse)] overflow-hidden text-ellipsis whitespace-nowrap',
@@ -285,6 +285,7 @@ export function VideoComparisonPage() {
       {/* Header */}
       <PageHeader
         title="Sammenlign videoer"
+        helpText="Sammenlign to videoer side ved side med synkronisert avspilling. Velg videoer fra biblioteket ditt, juster synkroniseringspunkter og analyser forskjeller i teknikk og utførelse."
         onBack={handleBack}
         actions={comparingMode ? (
           <Button

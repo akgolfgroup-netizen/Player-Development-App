@@ -35,7 +35,7 @@ import {
 } from '../../components/icons';
 import Modal from '../../ui/composites/Modal.composite';
 import Button from '../../ui/primitives/Button';
-import { SectionTitle, SubSectionTitle } from '../../components/typography';
+import { SectionTitle, SubSectionTitle } from '../../components/typography/Headings';
 
 // ============================================================================
 // TYPES
@@ -105,7 +105,7 @@ interface CardProps {
 
 const Card: React.FC<CardProps> = ({ children, className = '', padding = true, onClick }) => (
   <div
-    className={`bg-ak-surface-base border border-ak-border-default rounded-xl shadow-sm ${padding ? 'p-4' : ''} ${className}`}
+    className={`bg-tier-white border border-tier-border-default rounded-xl shadow-sm ${padding ? 'p-4' : ''} ${className}`}
     onClick={onClick}
   >
     {children}
@@ -146,11 +146,11 @@ const Badge: React.FC<BadgeProps> = ({ children, variant = 'neutral', size = 'sm
 
 const TAGS: TagConfig[] = [
   { id: 'all', label: 'Alle', color: 'var(--text-secondary)' },
-  { id: 'trening', label: 'Trening', color: 'var(--success)' },
+  { id: 'trening', label: 'Trening', color: 'var(--status-success)' },
   { id: 'turnering', label: 'Turnering', color: 'var(--achievement)' },
   { id: 'mental', label: 'Mental', color: 'var(--text-secondary)' },
   { id: 'teknikk', label: 'Teknikk', color: 'var(--accent-light)' },
-  { id: 'mål', label: 'Mål', color: 'var(--warning)' },
+  { id: 'mål', label: 'Mål', color: 'var(--status-warning)' },
   { id: 'refleksjon', label: 'Refleksjon', color: 'var(--accent)' },
 ];
 
@@ -212,7 +212,7 @@ const Notater: React.FC<NotaterProps> = ({
 
   // Auto-save note draft
   useEffect(() => {
-    const savedDraft = localStorage.getItem('ak_golf_note_draft');
+    const savedDraft = localStorage.getItem('tier_golf_note_draft');
     if (savedDraft) {
       try {
         const parsed = JSON.parse(savedDraft);
@@ -225,7 +225,7 @@ const Notater: React.FC<NotaterProps> = ({
 
   useEffect(() => {
     if (noteForm.title || noteForm.content) {
-      localStorage.setItem('ak_golf_note_draft', JSON.stringify(noteForm));
+      localStorage.setItem('tier_golf_note_draft', JSON.stringify(noteForm));
     }
   }, [noteForm]);
 
@@ -297,7 +297,7 @@ const Notater: React.FC<NotaterProps> = ({
           mood: noteForm.mood,
         });
         setNoteForm({ title: '', content: '', tags: [], mood: 4 });
-        localStorage.removeItem('ak_golf_note_draft');
+        localStorage.removeItem('tier_golf_note_draft');
         setShowNewNote(false);
       } catch (err) {
         console.error('Error creating note:', err);
@@ -325,7 +325,7 @@ const Notater: React.FC<NotaterProps> = ({
           mood: noteForm.mood,
         });
         setSelectedNote(updated);
-        localStorage.removeItem('ak_golf_note_draft');
+        localStorage.removeItem('tier_golf_note_draft');
         setIsEditing(false);
       } catch (err) {
         console.error('Error updating note:', err);
@@ -356,10 +356,11 @@ const Notater: React.FC<NotaterProps> = ({
   };
 
   return (
-    <div className="min-h-screen bg-ak-surface-subtle">
+    <div className="min-h-screen bg-tier-surface-base">
       <PageHeader
         title="Notater"
         subtitle="Treningsdagbok og refleksjoner"
+        helpText="Skriv ned refleksjoner, erfaringer og tanker fra treninger og turneringer. Merk notater med tags, stemning og del med trener for oppfølging."
         actions={
           <Button
             variant="primary"
@@ -378,7 +379,7 @@ const Notater: React.FC<NotaterProps> = ({
           <div className="hidden lg:block w-56 flex-shrink-0 space-y-4">
             {/* Search */}
             <div className="relative">
-              <div className="absolute left-3 top-1/2 -translate-y-1/2 text-ak-text-secondary">
+              <div className="absolute left-3 top-1/2 -translate-y-1/2 text-tier-text-secondary">
                 <Icons.Search />
               </div>
               <input
@@ -386,14 +387,14 @@ const Notater: React.FC<NotaterProps> = ({
                 placeholder="Søk..."
                 value={searchQuery}
                 onChange={(e) => setSearchQuery(e.target.value)}
-                className="w-full pl-10 pr-4 py-2.5 bg-ak-surface-base border border-ak-border-default rounded-xl text-[13px] focus:outline-none focus:ring-2 focus:ring-ak-primary/20"
+                className="w-full pl-10 pr-4 py-2.5 bg-tier-white border border-tier-border-default rounded-xl text-[13px] focus:outline-none focus:ring-2 focus:ring-tier-navy/20"
               />
             </div>
 
             {/* Tags */}
             <Card padding={false}>
-              <div className="p-4 border-b border-ak-border-default">
-                <SubSectionTitle className="text-[13px] font-semibold text-ak-text-primary">
+              <div className="p-4 border-b border-tier-border-default">
+                <SubSectionTitle className="text-[13px] font-semibold text-tier-navy">
                   Tagger
                 </SubSectionTitle>
               </div>
@@ -404,8 +405,8 @@ const Notater: React.FC<NotaterProps> = ({
                     onClick={() => setSelectedTag(tag.id)}
                     className={`w-full flex items-center gap-2 px-4 py-2.5 text-left transition-colors ${
                       selectedTag === tag.id
-                        ? 'bg-ak-primary/5 text-ak-primary'
-                        : 'text-ak-text-primary hover:bg-ak-surface-subtle'
+                        ? 'bg-tier-navy/5 text-tier-navy'
+                        : 'text-tier-navy hover:bg-tier-surface-base'
                     }`}
                   >
                     <div
@@ -413,7 +414,7 @@ const Notater: React.FC<NotaterProps> = ({
                       style={{ backgroundColor: tag.color }}
                     />
                     <span className="text-[13px]">{tag.label}</span>
-                    <span className="ml-auto text-[11px] text-ak-text-secondary">
+                    <span className="ml-auto text-[11px] text-tier-text-secondary">
                       {tag.id === 'all'
                         ? notes.length
                         : notes.filter((n) => n.tags.includes(tag.id)).length}
@@ -425,19 +426,19 @@ const Notater: React.FC<NotaterProps> = ({
 
             {/* Quick Stats */}
             <Card>
-              <SubSectionTitle className="text-[13px] font-semibold text-ak-text-primary mb-3">
+              <SubSectionTitle className="text-[13px] font-semibold text-tier-navy mb-3">
                 Statistikk
               </SubSectionTitle>
               <div className="space-y-3">
                 <div className="flex items-center justify-between">
-                  <span className="text-[12px] text-ak-text-secondary">Totalt notater</span>
-                  <span className="text-[14px] font-semibold text-ak-text-primary">
+                  <span className="text-[12px] text-tier-text-secondary">Totalt notater</span>
+                  <span className="text-[14px] font-semibold text-tier-navy">
                     {notes.length}
                   </span>
                 </div>
                 <div className="flex items-center justify-between">
-                  <span className="text-[12px] text-ak-text-secondary">Denne uken</span>
-                  <span className="text-[14px] font-semibold text-ak-status-success">
+                  <span className="text-[12px] text-tier-text-secondary">Denne uken</span>
+                  <span className="text-[14px] font-semibold text-tier-success">
                     {
                       notes.filter((n) => {
                         const noteDate = new Date(n.date);
@@ -449,8 +450,8 @@ const Notater: React.FC<NotaterProps> = ({
                   </span>
                 </div>
                 <div className="flex items-center justify-between">
-                  <span className="text-[12px] text-ak-text-secondary">Festet</span>
-                  <span className="text-[14px] font-semibold text-ak-status-warning">
+                  <span className="text-[12px] text-tier-text-secondary">Festet</span>
+                  <span className="text-[14px] font-semibold text-tier-warning">
                     {notes.filter((n) => n.pinned).length}
                   </span>
                 </div>
@@ -463,7 +464,7 @@ const Notater: React.FC<NotaterProps> = ({
             {/* Mobile Search */}
             <div className="lg:hidden mb-4">
               <div className="relative">
-                <div className="absolute left-3 top-1/2 -translate-y-1/2 text-ak-text-secondary">
+                <div className="absolute left-3 top-1/2 -translate-y-1/2 text-tier-text-secondary">
                   <Icons.Search />
                 </div>
                 <input
@@ -471,7 +472,7 @@ const Notater: React.FC<NotaterProps> = ({
                   placeholder="Søk..."
                   value={searchQuery}
                   onChange={(e) => setSearchQuery(e.target.value)}
-                  className="w-full pl-10 pr-4 py-2.5 bg-ak-surface-base border border-ak-border-default rounded-xl text-[13px] focus:outline-none"
+                  className="w-full pl-10 pr-4 py-2.5 bg-tier-white border border-tier-border-default rounded-xl text-[13px] focus:outline-none"
                 />
               </div>
             </div>
@@ -484,8 +485,8 @@ const Notater: React.FC<NotaterProps> = ({
                   onClick={() => setSelectedTag(tag.id)}
                   className={`flex-shrink-0 px-3 py-1.5 rounded-full text-[12px] font-medium transition-colors ${
                     selectedTag === tag.id
-                      ? 'bg-ak-primary text-white'
-                      : 'bg-ak-surface-base text-ak-text-primary border border-ak-border-default'
+                      ? 'bg-tier-navy text-white'
+                      : 'bg-tier-white text-tier-navy border border-tier-border-default'
                   }`}
                 >
                   {tag.label}
@@ -494,7 +495,7 @@ const Notater: React.FC<NotaterProps> = ({
             </div>
 
             {/* Notes Count */}
-            <p className="text-[13px] text-ak-text-secondary mb-4">{sortedNotes.length} notater</p>
+            <p className="text-[13px] text-tier-text-secondary mb-4">{sortedNotes.length} notater</p>
 
             {/* Notes Grid */}
             <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
@@ -502,35 +503,35 @@ const Notater: React.FC<NotaterProps> = ({
                 <Card
                   key={note.id}
                   className={`cursor-pointer hover:shadow-lg transition-all ${
-                    note.pinned ? 'ring-2 ring-ak-status-warning/30' : ''
+                    note.pinned ? 'ring-2 ring-tier-warning/30' : ''
                   }`}
                   onClick={() => setSelectedNote(note)}
                 >
                   <div className="flex items-start justify-between mb-2">
                     <div className="flex items-center gap-2">
                       {note.pinned && (
-                        <span className="text-ak-status-warning">
+                        <span className="text-tier-warning">
                           <Icons.Star />
                         </span>
                       )}
                       {note.sharedWithCoach && (
-                        <span className="text-ak-primary" title="Delt med trener">
+                        <span className="text-tier-navy" title="Delt med trener">
                           <TeamIcon size={14} />
                         </span>
                       )}
-                      <SubSectionTitle className="text-[14px] font-semibold text-ak-text-primary line-clamp-1">
+                      <SubSectionTitle className="text-[14px] font-semibold text-tier-navy line-clamp-1">
                         {note.title}
                       </SubSectionTitle>
                     </div>
-                    <span className="text-ak-status-warning">{renderMoodIcon(note.mood, 20)}</span>
+                    <span className="text-tier-warning">{renderMoodIcon(note.mood, 20)}</span>
                   </div>
 
-                  <p className="text-[12px] text-ak-text-secondary line-clamp-3 mb-3 whitespace-pre-line">
+                  <p className="text-[12px] text-tier-text-secondary line-clamp-3 mb-3 whitespace-pre-line">
                     {note.content}
                   </p>
 
                   <div className="flex items-center justify-between">
-                    <div className="flex items-center gap-1 text-[11px] text-ak-text-secondary">
+                    <div className="flex items-center gap-1 text-[11px] text-tier-text-secondary">
                       <Icons.Calendar />
                       <span>{formatDate(note.date)}</span>
                     </div>
@@ -558,11 +559,11 @@ const Notater: React.FC<NotaterProps> = ({
 
             {sortedNotes.length === 0 && (
               <div className="text-center py-12">
-                <span className="mb-4 block text-ak-text-secondary">
+                <span className="mb-4 block text-tier-text-secondary">
                   <NotesIcon size={48} />
                 </span>
-                <p className="text-[15px] font-medium text-ak-text-primary">Ingen notater</p>
-                <p className="text-[13px] text-ak-text-secondary">
+                <p className="text-[15px] font-medium text-tier-navy">Ingen notater</p>
+                <p className="text-[13px] text-tier-text-secondary">
                   {searchQuery || selectedTag !== 'all'
                     ? 'Prøv et annet søk eller filter'
                     : 'Opprett ditt første notat'}
@@ -578,16 +579,16 @@ const Notater: React.FC<NotaterProps> = ({
         <div className="fixed inset-0 bg-black/50 z-50 flex items-center justify-center p-4">
           <Card className="w-full max-w-2xl max-h-[90vh] overflow-y-auto" padding={false}>
             {/* Modal Header */}
-            <div className="sticky top-0 bg-ak-surface-base border-b border-ak-border-default p-4 flex items-center justify-between">
+            <div className="sticky top-0 bg-tier-white border-b border-tier-border-default p-4 flex items-center justify-between">
               <div className="flex items-center gap-3">
-                <span className="text-ak-status-warning">
+                <span className="text-tier-warning">
                   {renderMoodIcon(selectedNote.mood, 28)}
                 </span>
                 <div>
-                  <SectionTitle className="text-[17px] font-bold text-ak-text-primary">
+                  <SectionTitle className="text-[17px] font-bold text-tier-navy">
                     {selectedNote.title}
                   </SectionTitle>
-                  <div className="flex items-center gap-2 text-[12px] text-ak-text-secondary">
+                  <div className="flex items-center gap-2 text-[12px] text-tier-text-secondary">
                     <Icons.Calendar />
                     <span>{formatDate(selectedNote.date)}</span>
                   </div>
@@ -598,8 +599,8 @@ const Notater: React.FC<NotaterProps> = ({
                   onClick={() => toggleShareWithCoach(selectedNote.id)}
                   className={`p-2 rounded-lg transition-colors ${
                     selectedNote.sharedWithCoach
-                      ? 'bg-ak-primary/10 text-ak-primary'
-                      : 'hover:bg-ak-surface-subtle text-ak-text-secondary'
+                      ? 'bg-tier-navy/10 text-tier-navy'
+                      : 'hover:bg-tier-surface-base text-tier-text-secondary'
                   }`}
                   title={selectedNote.sharedWithCoach ? 'Delt med trener' : 'Del med trener'}
                 >
@@ -613,27 +614,27 @@ const Notater: React.FC<NotaterProps> = ({
                   onClick={() => togglePin(selectedNote.id)}
                   className={`p-2 rounded-lg transition-colors ${
                     selectedNote.pinned
-                      ? 'bg-ak-status-warning/10 text-ak-status-warning'
-                      : 'hover:bg-ak-surface-subtle text-ak-text-secondary'
+                      ? 'bg-tier-warning/10 text-tier-warning'
+                      : 'hover:bg-tier-surface-base text-tier-text-secondary'
                   }`}
                 >
                   <Icons.Pin />
                 </button>
                 <button
                   onClick={() => startEditNote(selectedNote)}
-                  className="p-2 rounded-lg hover:bg-ak-surface-subtle text-ak-text-secondary"
+                  className="p-2 rounded-lg hover:bg-tier-surface-base text-tier-text-secondary"
                 >
                   <Icons.Edit />
                 </button>
                 <button
                   onClick={() => setNoteToDelete(selectedNote)}
-                  className="p-2 rounded-lg hover:bg-ak-status-error/10 text-ak-status-error"
+                  className="p-2 rounded-lg hover:bg-tier-error/10 text-tier-error"
                 >
                   <Icons.Trash />
                 </button>
                 <button
                   onClick={() => setSelectedNote(null)}
-                  className="p-2 rounded-lg hover:bg-ak-surface-subtle text-ak-text-secondary"
+                  className="p-2 rounded-lg hover:bg-tier-surface-base text-tier-text-secondary"
                 >
                   <Icons.X />
                 </button>
@@ -662,7 +663,7 @@ const Notater: React.FC<NotaterProps> = ({
 
               {/* Note Content */}
               <div className="prose prose-sm max-w-none">
-                <p className="text-[14px] text-ak-text-primary whitespace-pre-line leading-relaxed">
+                <p className="text-[14px] text-tier-navy whitespace-pre-line leading-relaxed">
                   {selectedNote.content}
                 </p>
               </div>
@@ -675,13 +676,13 @@ const Notater: React.FC<NotaterProps> = ({
       {isEditing && selectedNote && (
         <div className="fixed inset-0 bg-black/50 z-50 flex items-center justify-center p-4">
           <Card className="w-full max-w-2xl" padding={false}>
-            <div className="p-4 border-b border-ak-border-default flex items-center justify-between">
-              <SectionTitle className="text-[17px] font-bold text-ak-text-primary">
+            <div className="p-4 border-b border-tier-border-default flex items-center justify-between">
+              <SectionTitle className="text-[17px] font-bold text-tier-navy">
                 Rediger notat
               </SectionTitle>
               <button
                 onClick={() => setIsEditing(false)}
-                className="p-2 rounded-lg hover:bg-ak-surface-subtle text-ak-text-secondary"
+                className="p-2 rounded-lg hover:bg-tier-surface-base text-tier-text-secondary"
               >
                 <Icons.X />
               </button>
@@ -690,31 +691,31 @@ const Notater: React.FC<NotaterProps> = ({
             <div className="p-6 space-y-4">
               {/* Title */}
               <div>
-                <label className="block text-[12px] text-ak-text-secondary mb-1">Tittel</label>
+                <label className="block text-[12px] text-tier-text-secondary mb-1">Tittel</label>
                 <input
                   type="text"
                   placeholder="Skriv en tittel..."
                   value={noteForm.title}
                   onChange={(e) => setNoteForm({ ...noteForm, title: e.target.value })}
-                  className="w-full px-4 py-2.5 bg-ak-surface-subtle border border-ak-border-default rounded-xl text-[14px] focus:outline-none focus:ring-2 focus:ring-ak-primary/20"
+                  className="w-full px-4 py-2.5 bg-tier-surface-base border border-tier-border-default rounded-xl text-[14px] focus:outline-none focus:ring-2 focus:ring-tier-navy/20"
                 />
               </div>
 
               {/* Content */}
               <div>
-                <label className="block text-[12px] text-ak-text-secondary mb-1">Innhold</label>
+                <label className="block text-[12px] text-tier-text-secondary mb-1">Innhold</label>
                 <textarea
                   placeholder="Skriv dine tanker, refleksjoner eller notater..."
                   rows={8}
                   value={noteForm.content}
                   onChange={(e) => setNoteForm({ ...noteForm, content: e.target.value })}
-                  className="w-full px-4 py-3 bg-ak-surface-subtle border border-ak-border-default rounded-xl text-[14px] focus:outline-none focus:ring-2 focus:ring-ak-primary/20 resize-none"
+                  className="w-full px-4 py-3 bg-tier-surface-base border border-tier-border-default rounded-xl text-[14px] focus:outline-none focus:ring-2 focus:ring-tier-navy/20 resize-none"
                 />
               </div>
 
               {/* Tags */}
               <div>
-                <label className="block text-[12px] text-ak-text-secondary mb-2">Tagger</label>
+                <label className="block text-[12px] text-tier-text-secondary mb-2">Tagger</label>
                 <div className="flex flex-wrap gap-2">
                   {TAGS.filter((t) => t.id !== 'all').map((tag) => (
                     <button
@@ -722,8 +723,8 @@ const Notater: React.FC<NotaterProps> = ({
                       onClick={() => toggleTag(tag.id)}
                       className={`px-3 py-1.5 rounded-full text-[12px] font-medium border transition-colors ${
                         noteForm.tags.includes(tag.id)
-                          ? 'bg-ak-primary text-white border-ak-primary'
-                          : 'border-ak-border-default hover:bg-ak-surface-subtle'
+                          ? 'bg-tier-navy text-white border-tier-navy'
+                          : 'border-tier-border-default hover:bg-tier-surface-base'
                       }`}
                     >
                       <span className="flex items-center gap-1.5">
@@ -742,7 +743,7 @@ const Notater: React.FC<NotaterProps> = ({
 
               {/* Mood */}
               <div>
-                <label className="block text-[12px] text-ak-text-secondary mb-2">Humør</label>
+                <label className="block text-[12px] text-tier-text-secondary mb-2">Humør</label>
                 <div className="flex gap-3">
                   {[1, 2, 3, 4, 5].map((mood) => (
                     <button
@@ -750,8 +751,8 @@ const Notater: React.FC<NotaterProps> = ({
                       onClick={() => setNoteForm({ ...noteForm, mood })}
                       className={`hover:scale-110 transition-transform ${
                         noteForm.mood === mood
-                          ? 'scale-125 text-ak-status-warning'
-                          : 'opacity-50 text-ak-text-secondary'
+                          ? 'scale-125 text-tier-warning'
+                          : 'opacity-50 text-tier-text-secondary'
                       }`}
                     >
                       {renderMoodIcon(mood, 28)}
@@ -783,13 +784,13 @@ const Notater: React.FC<NotaterProps> = ({
       {showNewNote && (
         <div className="fixed inset-0 bg-black/50 z-50 flex items-center justify-center p-4">
           <Card className="w-full max-w-2xl" padding={false}>
-            <div className="p-4 border-b border-ak-border-default flex items-center justify-between">
-              <SectionTitle className="text-[17px] font-bold text-ak-text-primary">
+            <div className="p-4 border-b border-tier-border-default flex items-center justify-between">
+              <SectionTitle className="text-[17px] font-bold text-tier-navy">
                 Nytt notat
               </SectionTitle>
               <button
                 onClick={() => setShowNewNote(false)}
-                className="p-2 rounded-lg hover:bg-ak-surface-subtle text-ak-text-secondary"
+                className="p-2 rounded-lg hover:bg-tier-surface-base text-tier-text-secondary"
               >
                 <Icons.X />
               </button>
@@ -798,31 +799,31 @@ const Notater: React.FC<NotaterProps> = ({
             <div className="p-6 space-y-4">
               {/* Title */}
               <div>
-                <label className="block text-[12px] text-ak-text-secondary mb-1">Tittel</label>
+                <label className="block text-[12px] text-tier-text-secondary mb-1">Tittel</label>
                 <input
                   type="text"
                   placeholder="Skriv en tittel..."
                   value={noteForm.title}
                   onChange={(e) => setNoteForm({ ...noteForm, title: e.target.value })}
-                  className="w-full px-4 py-2.5 bg-ak-surface-subtle border border-ak-border-default rounded-xl text-[14px] focus:outline-none focus:ring-2 focus:ring-ak-primary/20"
+                  className="w-full px-4 py-2.5 bg-tier-surface-base border border-tier-border-default rounded-xl text-[14px] focus:outline-none focus:ring-2 focus:ring-tier-navy/20"
                 />
               </div>
 
               {/* Content */}
               <div>
-                <label className="block text-[12px] text-ak-text-secondary mb-1">Innhold</label>
+                <label className="block text-[12px] text-tier-text-secondary mb-1">Innhold</label>
                 <textarea
                   placeholder="Skriv dine tanker, refleksjoner eller notater..."
                   rows={8}
                   value={noteForm.content}
                   onChange={(e) => setNoteForm({ ...noteForm, content: e.target.value })}
-                  className="w-full px-4 py-3 bg-ak-surface-subtle border border-ak-border-default rounded-xl text-[14px] focus:outline-none focus:ring-2 focus:ring-ak-primary/20 resize-none"
+                  className="w-full px-4 py-3 bg-tier-surface-base border border-tier-border-default rounded-xl text-[14px] focus:outline-none focus:ring-2 focus:ring-tier-navy/20 resize-none"
                 />
               </div>
 
               {/* Tags */}
               <div>
-                <label className="block text-[12px] text-ak-text-secondary mb-2">Tagger</label>
+                <label className="block text-[12px] text-tier-text-secondary mb-2">Tagger</label>
                 <div className="flex flex-wrap gap-2">
                   {TAGS.filter((t) => t.id !== 'all').map((tag) => (
                     <button
@@ -830,8 +831,8 @@ const Notater: React.FC<NotaterProps> = ({
                       onClick={() => toggleTag(tag.id)}
                       className={`px-3 py-1.5 rounded-full text-[12px] font-medium border transition-colors ${
                         noteForm.tags.includes(tag.id)
-                          ? 'bg-ak-primary text-white border-ak-primary'
-                          : 'border-ak-border-default hover:bg-ak-surface-subtle'
+                          ? 'bg-tier-navy text-white border-tier-navy'
+                          : 'border-tier-border-default hover:bg-tier-surface-base'
                       }`}
                     >
                       <span className="flex items-center gap-1.5">
@@ -850,7 +851,7 @@ const Notater: React.FC<NotaterProps> = ({
 
               {/* Mood */}
               <div>
-                <label className="block text-[12px] text-ak-text-secondary mb-2">Humør</label>
+                <label className="block text-[12px] text-tier-text-secondary mb-2">Humør</label>
                 <div className="flex gap-3">
                   {[1, 2, 3, 4, 5].map((mood) => (
                     <button
@@ -858,8 +859,8 @@ const Notater: React.FC<NotaterProps> = ({
                       onClick={() => setNoteForm({ ...noteForm, mood })}
                       className={`hover:scale-110 transition-transform ${
                         noteForm.mood === mood
-                          ? 'scale-125 text-ak-status-warning'
-                          : 'opacity-50 text-ak-text-secondary'
+                          ? 'scale-125 text-tier-warning'
+                          : 'opacity-50 text-tier-text-secondary'
                       }`}
                     >
                       {renderMoodIcon(mood, 28)}
@@ -910,16 +911,16 @@ const Notater: React.FC<NotaterProps> = ({
                   setNoteToDelete(null);
                 }
               }}
-              className="bg-ak-status-error hover:bg-ak-status-error/90"
+              className="bg-tier-error hover:bg-tier-error/90"
             >
               Slett notat
             </Button>
           </div>
         }
       >
-        <p className="text-ak-text-secondary m-0 leading-relaxed">
+        <p className="text-tier-text-secondary m-0 leading-relaxed">
           Er du sikker på at du vil slette{' '}
-          <strong className="text-ak-text-primary">{noteToDelete?.title}</strong>? Denne handlingen
+          <strong className="text-tier-navy">{noteToDelete?.title}</strong>? Denne handlingen
           kan ikke angres.
         </p>
       </Modal>

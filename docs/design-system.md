@@ -1,4 +1,4 @@
-# AK Golf Academy - Design System & UI Oversikt
+# TIER Golf - Design System & UI Oversikt
 
 **Versjon:** 3.1 (Nordic Minimalism)
 **Sist oppdatert:** 24. desember 2025
@@ -10,7 +10,7 @@
 
 ### Design Filosofi: Nordic Minimalism
 
-AK Golf Academy følger en **Nordic Minimalism** designfilosofi som kombinerer:
+TIER Golf følger en **Nordic Minimalism** designfilosofi som kombinerer:
 
 - 🎨 **Restraint over expression** - Subtil, selvsikker design uten unødvendig pynt
 - 🎯 **Function defines form** - Hvert element har en funksjon
@@ -520,7 +520,7 @@ IUP_Master_V1/
 │                   └── Avatar.tsx        # Avatar component
 │
 ├── docs/
-│   ├── AK_GOLF_DESIGN_SYSTEM_COMPLETE.md  # Komplett design system docs
+│   ├── TIER_GOLF_DESIGN_SYSTEM_COMPLETE.md  # Komplett design system docs
 │   ├── DESIGN_SYSTEM.md                   # Quick reference
 │   └── mockups/
 │       ├── UI_MOCKUP_COMPLETE.html        # Alle mockups
@@ -573,12 +573,12 @@ IUP_Master_V1/
 
 ## 📞 Kontakt & Support
 
-**Design System Eier:** AK Golf Academy
+**Design System Eier:** TIER Golf
 **Versjon:** 3.1 (Nordic Minimalism)
 **Sist oppdatert:** 24. desember 2025
 
 For spørsmål om design system eller mockups, se:
-- `/docs/AK_GOLF_DESIGN_SYSTEM_COMPLETE.md` - Komplett dokumentasjon
+- `/docs/TIER_GOLF_DESIGN_SYSTEM_COMPLETE.md` - Komplett dokumentasjon
 - `/apps/web/src/design-tokens.js` - JavaScript tokens
 - `/Edits (Developemt)/00-REDESIGN-SUMMARY.md` - Redesign rapport
 

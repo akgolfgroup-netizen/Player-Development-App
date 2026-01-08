@@ -1,4 +1,4 @@
-# IUP Golf Academy API Documentation
+# IUP Golf API Documentation
 
 **Version:** 1.0.0
 **Base URL (Development):** `http://localhost:3000`
@@ -103,7 +103,7 @@ The API uses **JWT (JSON Web Token)** based authentication with access and refre
   "firstName": "John",
   "lastName": "Doe",
   "role": "coach",
-  "organizationName": "AK Golf Academy",
+  "organizationName": "TIER Golf",
   "organizationSlug": "ak-golf"
 }
 ```
@@ -603,7 +603,7 @@ const registerResponse = await fetch('/api/v1/auth/register', {
     firstName: 'John',
     lastName: 'Doe',
     role: 'coach',
-    organizationName: 'My Golf Academy',
+    organizationName: 'My Golf',
     organizationSlug: 'my-academy'
   })
 });

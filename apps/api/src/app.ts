@@ -46,6 +46,8 @@ export async function buildApp(opts: BuildAppOptions = {}): Promise<AnyFastifyIn
   // Register plugins
   await app.register(sentryPlugin); // Error tracking
   await app.register(metricsPlugin); // Performance monitoring and metrics
+  await app.register(import('@fastify/multipart'), { limits: { fileSize: 10 * 1024 * 1024 } }); // 10MB limit
+  await app.register(import('./plugins/raw-body').then(m => m.default)); // Raw body for webhooks
   await registerHelmet(app);
   await registerCors(app);
   await registerSwagger(app);
@@ -104,15 +106,32 @@ export async function buildApp(opts: BuildAppOptions = {}): Promise<AnyFastifyIn
   const { annotationRoutes } = await import('./api/v1/annotations');
   const { commentRoutes } = await import('./api/v1/comments');
   const { comparisonRoutes } = await import('./api/v1/comparisons');
+  const { keyframeRoutes } = await import('./api/v1/video-keyframes');
+  const { paymentRoutes } = await import('./api/v1/payments');
+  const { progressReportRoutes } = await import('./api/v1/progress-reports');
+  const { trackmanRoutes } = await import('./api/v1/trackman');
+  const { strokesGainedRoutes } = await import('./api/v1/strokes-gained');
+  const { tournamentPrepRoutes } = await import('./api/v1/tournament-prep');
   const { emailRoutes } = await import('./api/v1/emails');
   const { notificationRoutes } = await import('./api/v1/notifications');
   const { focusEngineRoutes } = await import('./api/v1/focus-engine');
   const { playerInsightsRoutes } = await import('./api/v1/player-insights');
-  const { coachStatsRoutes } = await import('./api/v1/coach');
+  const { coachStatsRoutes, annualPlanRoutes } = await import('./api/v1/coach');
   const adminSeedRoutes = (await import('./api/v1/admin/seed')).default;
   const adminRoutes = (await import('./api/v1/admin')).default;
+  const { registerAdminPaymentAnalyticsRoutes } = await import('./api/v1/admin/payment-analytics.routes');
   const aiRoutes = (await import('./api/v1/ai')).default;
   const collectionsRoutes = (await import('./api/v1/collections')).default;
+
+  // New APIs for orphaned Prisma models
+  const { trainingStatsRoutes } = await import('./api/v1/training-stats');
+  const { chatRoutes } = await import('./api/v1/chat');
+  const { supportRoutes } = await import('./api/v1/support');
+  const { featureFlagRoutes } = await import('./api/v1/feature-flags');
+  const { auditRoutes } = await import('./api/v1/audit');
+  const { aiConversationRoutes } = await import('./api/v1/ai-conversations');
+  const { techniquePlanRoutes } = await import('./api/v1/technique-plan');
+  const { stripeWebhookRoutes } = await import('./api/v1/webhooks');
 
   await app.register(authRoutes, { prefix: `/api/${config.server.apiVersion}/auth` });
   await app.register(playerRoutes, { prefix: `/api/${config.server.apiVersion}/players` });
@@ -138,6 +157,12 @@ export async function buildApp(opts: BuildAppOptions = {}): Promise<AnyFastifyIn
   await app.register(meRoutes, { prefix: `/api/${config.server.apiVersion}/me` });
   await app.register(planRoutes, { prefix: `/api/${config.server.apiVersion}/plan` });
   await app.register(sessionsRoutes, { prefix: `/api/${config.server.apiVersion}/training/sessions` });
+
+  // Training Area Performance routes
+  const { trainingAreaPerformanceRoutes } = await import('./api/v1/training-area-performance');
+  await app.register(trainingAreaPerformanceRoutes, {
+    prefix: `/api/${config.server.apiVersion}/training-area-performance`,
+  });
   await app.register(notesRoutes, { prefix: `/api/${config.server.apiVersion}/notes` });
   await app.register(goalsRoutes, { prefix: `/api/${config.server.apiVersion}/goals` });
   await app.register(archiveRoutes, { prefix: `/api/${config.server.apiVersion}/archive` });
@@ -152,15 +177,35 @@ export async function buildApp(opts: BuildAppOptions = {}): Promise<AnyFastifyIn
   await app.register(annotationRoutes, { prefix: `/api/${config.server.apiVersion}/annotations` });
   await app.register(commentRoutes, { prefix: `/api/${config.server.apiVersion}/comments` });
   await app.register(comparisonRoutes, { prefix: `/api/${config.server.apiVersion}/comparisons` });
+  await app.register(keyframeRoutes, { prefix: `/api/${config.server.apiVersion}/video-keyframes` });
+  await app.register(paymentRoutes, { prefix: `/api/${config.server.apiVersion}/payments` });
+  await app.register(progressReportRoutes, { prefix: `/api/${config.server.apiVersion}/progress-reports` });
+  await app.register(trackmanRoutes, { prefix: `/api/${config.server.apiVersion}/trackman` });
+  await app.register(strokesGainedRoutes, { prefix: `/api/${config.server.apiVersion}/strokes-gained` });
+  await app.register(tournamentPrepRoutes, { prefix: `/api/${config.server.apiVersion}/tournament-prep` });
   await app.register(emailRoutes, { prefix: `/api/${config.server.apiVersion}/emails` });
   await app.register(notificationRoutes, { prefix: `/api/${config.server.apiVersion}/notifications` });
   await app.register(focusEngineRoutes, { prefix: `/api/${config.server.apiVersion}/focus-engine` });
   await app.register(playerInsightsRoutes, { prefix: `/api/${config.server.apiVersion}/player-insights` });
   await app.register(coachStatsRoutes, { prefix: `/api/${config.server.apiVersion}/coach` });
+  await app.register(annualPlanRoutes, { prefix: `/api/${config.server.apiVersion}/coach` });
   await app.register(adminSeedRoutes, { prefix: `/api/${config.server.apiVersion}/admin` });
   await app.register(adminRoutes, { prefix: `/api/${config.server.apiVersion}/admin` });
+  await app.register(registerAdminPaymentAnalyticsRoutes, { prefix: `/api/${config.server.apiVersion}` });
   await app.register(aiRoutes, { prefix: `/api/${config.server.apiVersion}/ai` });
   await app.register(collectionsRoutes, { prefix: `/api/${config.server.apiVersion}/collections` });
+
+  // New APIs for orphaned Prisma models
+  await app.register(trainingStatsRoutes, { prefix: `/api/${config.server.apiVersion}/training-stats` });
+  await app.register(chatRoutes, { prefix: `/api/${config.server.apiVersion}/chat` });
+  await app.register(supportRoutes, { prefix: `/api/${config.server.apiVersion}/support` });
+  await app.register(featureFlagRoutes, { prefix: `/api/${config.server.apiVersion}/feature-flags` });
+  await app.register(auditRoutes, { prefix: `/api/${config.server.apiVersion}/audit` });
+  await app.register(aiConversationRoutes, { prefix: `/api/${config.server.apiVersion}/ai-conversations` });
+  await app.register(techniquePlanRoutes, { prefix: `/api/${config.server.apiVersion}/technique-plan` });
+
+  // Webhooks (no auth required, verified by signature)
+  await app.register(stripeWebhookRoutes, { prefix: `/api/${config.server.apiVersion}/webhooks` });
 
   // ✅ All IUP Golf Academy APIs registered!
   // - Core: Auth, Players, Coaches, Exercises, Tests, Breaking Points

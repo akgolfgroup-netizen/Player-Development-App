@@ -23,19 +23,19 @@ import {
 } from 'lucide-react';
 import { useNavigate } from 'react-router-dom';
 import Button from '../../ui/primitives/Button';
-import { PageTitle, SubSectionTitle, CardTitle } from '../../components/typography';
+import { PageTitle, SubSectionTitle, CardTitle } from '../../components/typography/Headings';
 
 // ============================================================================
 // CLASS MAPPINGS
 // ============================================================================
 
 const CATEGORY_CLASSES = {
-  putting: { bg: 'bg-red-500/15', text: 'text-red-500' },
-  fullspill: { bg: 'bg-ak-primary/15', text: 'text-ak-primary' },
-  kortspill: { bg: 'bg-amber-500/15', text: 'text-amber-500' },
-  fysisk: { bg: 'bg-pink-500/15', text: 'text-pink-500' },
-  mental: { bg: 'bg-purple-500/15', text: 'text-purple-500' },
-  blandet: { bg: 'bg-ak-status-success/15', text: 'text-ak-status-success' },
+  putting: { bg: 'bg-blue-500/15', text: 'text-blue-600' },        // Blue for Putting
+  fullspill: { bg: 'bg-blue-500/15', text: 'text-blue-600' },      // Blue for Full spill
+  kortspill: { bg: 'bg-orange-500/15', text: 'text-orange-600' },  // Orange for Kort spill
+  fysisk: { bg: 'bg-red-500/15', text: 'text-red-600' },           // Red/Rosa for Fysisk
+  mental: { bg: 'bg-purple-600/15', text: 'text-purple-700' },     // Lilla for Mental
+  blandet: { bg: 'bg-green-500/15', text: 'text-green-600' },      // Green for Blandet
 };
 
 interface TrainingTemplate {
@@ -203,8 +203,8 @@ export const CoachExerciseTemplates: React.FC = () => {
 
   const getCategoryClasses = (cat: string) => {
     return CATEGORY_CLASSES[cat as keyof typeof CATEGORY_CLASSES] || {
-      bg: 'bg-ak-surface-subtle',
-      text: 'text-ak-text-secondary'
+      bg: 'bg-tier-surface-base',
+      text: 'text-tier-text-secondary'
     };
   };
 
@@ -224,7 +224,7 @@ export const CoachExerciseTemplates: React.FC = () => {
   };
 
   return (
-    <div className="p-6 bg-ak-surface-subtle min-h-screen">
+    <div className="p-6 bg-tier-surface-base min-h-screen">
       {/* Header */}
       <div className="flex justify-between items-start mb-6">
         <div>
@@ -233,10 +233,10 @@ export const CoachExerciseTemplates: React.FC = () => {
               <BookOpen size={24} className="text-white" />
             </div>
             <div>
-              <PageTitle className="text-[28px] font-bold text-ak-text-primary m-0">
+              <PageTitle className="text-[28px] font-bold text-tier-navy m-0">
                 Treningsplaner
               </PageTitle>
-              <p className="text-sm text-ak-text-secondary m-0">
+              <p className="text-sm text-tier-text-secondary m-0">
                 {mockTemplates.length} maler tilgjengelig
               </p>
             </div>
@@ -244,7 +244,7 @@ export const CoachExerciseTemplates: React.FC = () => {
         </div>
         <button
           onClick={() => navigate('/coach/exercises/templates/create')}
-          className="flex items-center gap-2 py-3 px-5 rounded-[10px] border-none bg-ak-primary text-white text-sm font-semibold cursor-pointer"
+          className="flex items-center gap-2 py-3 px-5 rounded-[10px] border-none bg-tier-navy text-white text-sm font-semibold cursor-pointer"
         >
           <Plus size={18} />
           Ny treningsplan
@@ -256,14 +256,14 @@ export const CoachExerciseTemplates: React.FC = () => {
         <div className="relative flex-1 min-w-[200px] max-w-[400px]">
           <Search
             size={18}
-            className="absolute left-3 top-1/2 -translate-y-1/2 text-ak-text-secondary"
+            className="absolute left-3 top-1/2 -translate-y-1/2 text-tier-text-secondary"
           />
           <input
             type="text"
             placeholder="Søk i treningsplaner..."
             value={searchQuery}
             onChange={(e) => setSearchQuery(e.target.value)}
-            className="w-full py-3 pl-10 pr-3 rounded-[10px] border border-ak-border-default bg-ak-surface-base text-sm text-ak-text-primary outline-none"
+            className="w-full py-3 pl-10 pr-3 rounded-[10px] border border-tier-border-default bg-tier-white text-sm text-tier-navy outline-none"
           />
         </div>
         <div className="flex gap-2">
@@ -279,8 +279,8 @@ export const CoachExerciseTemplates: React.FC = () => {
               onClick={() => setCategoryFilter(cat.key)}
               className={`py-2.5 px-4 rounded-[10px] border-none text-[13px] font-medium cursor-pointer ${
                 categoryFilter === cat.key
-                  ? 'bg-ak-primary text-white'
-                  : 'bg-ak-surface-base text-ak-text-secondary'
+                  ? 'bg-tier-navy text-white'
+                  : 'bg-tier-white text-tier-text-secondary'
               }`}
             >
               {cat.label}
@@ -298,7 +298,7 @@ export const CoachExerciseTemplates: React.FC = () => {
           return (
             <div
               key={template.id}
-              className="bg-ak-surface-base rounded-2xl border border-ak-border-default overflow-hidden"
+              className="bg-tier-white rounded-2xl border border-tier-border-default overflow-hidden"
             >
               {/* Main Content */}
               <div className="p-5 flex items-start gap-4">
@@ -310,54 +310,54 @@ export const CoachExerciseTemplates: React.FC = () => {
                 {/* Content */}
                 <div className="flex-1 min-w-0">
                   <div className="flex items-center gap-2 mb-1.5">
-                    <SubSectionTitle className="text-[17px] font-semibold text-ak-text-primary m-0">
+                    <SubSectionTitle className="text-[17px] font-semibold text-tier-navy m-0">
                       {template.name}
                     </SubSectionTitle>
                     <span className={`text-[10px] font-semibold py-0.5 px-2 rounded ${catClasses.bg} ${catClasses.text}`}>
                       {getCategoryLabel(template.category)}
                     </span>
-                    <span className="text-[10px] font-medium py-0.5 px-2 rounded bg-ak-surface-subtle text-ak-text-secondary">
+                    <span className="text-[10px] font-medium py-0.5 px-2 rounded bg-tier-surface-base text-tier-text-secondary">
                       {getDifficultyLabel(template.difficulty)}
                     </span>
                     {template.isOwn && (
-                      <span className="text-[10px] font-medium py-0.5 px-2 rounded bg-ak-status-success/15 text-ak-status-success">
+                      <span className="text-[10px] font-medium py-0.5 px-2 rounded bg-tier-success/15 text-tier-success">
                         Egen
                       </span>
                     )}
                   </div>
 
-                  <p className="text-[13px] text-ak-text-secondary m-0 mb-3 leading-relaxed">
+                  <p className="text-[13px] text-tier-text-secondary m-0 mb-3 leading-relaxed">
                     {template.description}
                   </p>
 
                   <div className="flex items-center gap-5 flex-wrap">
                     <div className="flex items-center gap-1.5">
-                      <Clock size={14} className="text-ak-text-secondary" />
-                      <span className="text-xs text-ak-text-secondary">
+                      <Clock size={14} className="text-tier-text-secondary" />
+                      <span className="text-xs text-tier-text-secondary">
                         {template.duration} min
                       </span>
                     </div>
                     <div className="flex items-center gap-1.5">
-                      <Dumbbell size={14} className="text-ak-text-secondary" />
-                      <span className="text-xs text-ak-text-secondary">
+                      <Dumbbell size={14} className="text-tier-text-secondary" />
+                      <span className="text-xs text-tier-text-secondary">
                         {template.exerciseCount} øvelser
                       </span>
                     </div>
                     <div className="flex items-center gap-1.5">
-                      <Target size={14} className="text-ak-text-secondary" />
-                      <span className="text-xs text-ak-text-secondary">
+                      <Target size={14} className="text-tier-text-secondary" />
+                      <span className="text-xs text-tier-text-secondary">
                         {template.usageCount}x brukt
                       </span>
                     </div>
                     {template.targetGroup && (
                       <div className="flex items-center gap-1.5">
-                        <Users size={14} className="text-ak-text-secondary" />
-                        <span className="text-xs text-ak-text-secondary">
+                        <Users size={14} className="text-tier-text-secondary" />
+                        <span className="text-xs text-tier-text-secondary">
                           {template.targetGroup}
                         </span>
                       </div>
                     )}
-                    <span className="text-xs text-ak-text-secondary">
+                    <span className="text-xs text-tier-text-secondary">
                       Sist brukt: {formatDate(template.lastUsed)}
                     </span>
                   </div>
@@ -367,7 +367,7 @@ export const CoachExerciseTemplates: React.FC = () => {
                 <div className="flex gap-2 items-center">
                   <button
                     onClick={() => setExpandedTemplate(isExpanded ? null : template.id)}
-                    className="py-2.5 px-4 rounded-lg border border-ak-border-default bg-transparent text-ak-text-secondary text-[13px] font-medium cursor-pointer flex items-center gap-1.5"
+                    className="py-2.5 px-4 rounded-lg border border-tier-border-default bg-transparent text-tier-text-secondary text-[13px] font-medium cursor-pointer flex items-center gap-1.5"
                   >
                     {isExpanded ? 'Skjul' : 'Vis øvelser'}
                     <ChevronRight
@@ -375,36 +375,36 @@ export const CoachExerciseTemplates: React.FC = () => {
                       className={`transition-transform ${isExpanded ? 'rotate-90' : ''}`}
                     />
                   </button>
-                  <button className="py-2.5 px-4 rounded-lg border-none bg-ak-primary text-white text-[13px] font-medium cursor-pointer flex items-center gap-1.5">
+                  <button className="py-2.5 px-4 rounded-lg border-none bg-tier-navy text-white text-[13px] font-medium cursor-pointer flex items-center gap-1.5">
                     <Play size={14} />
                     Bruk
                   </button>
                   <div className="relative">
                     <button
                       onClick={() => setActiveMenu(activeMenu === template.id ? null : template.id)}
-                      className="w-9 h-9 rounded-lg border border-ak-border-default bg-transparent flex items-center justify-center cursor-pointer"
+                      className="w-9 h-9 rounded-lg border border-tier-border-default bg-transparent flex items-center justify-center cursor-pointer"
                     >
-                      <MoreVertical size={16} className="text-ak-text-secondary" />
+                      <MoreVertical size={16} className="text-tier-text-secondary" />
                     </button>
                     {activeMenu === template.id && (
-                      <div className="absolute top-full right-0 mt-1 bg-ak-surface-base rounded-[10px] border border-ak-border-default shadow-lg z-[100] min-w-[160px] overflow-hidden">
+                      <div className="absolute top-full right-0 mt-1 bg-tier-white rounded-[10px] border border-tier-border-default shadow-lg z-[100] min-w-[160px] overflow-hidden">
                         <button
                           onClick={() => setActiveMenu(null)}
-                          className="w-full py-2.5 px-3.5 border-none bg-transparent flex items-center gap-2.5 cursor-pointer text-[13px] text-ak-text-primary hover:bg-ak-surface-subtle"
+                          className="w-full py-2.5 px-3.5 border-none bg-transparent flex items-center gap-2.5 cursor-pointer text-[13px] text-tier-navy hover:bg-tier-surface-base"
                         >
                           <Edit2 size={14} />
                           Rediger
                         </button>
                         <button
                           onClick={() => setActiveMenu(null)}
-                          className="w-full py-2.5 px-3.5 border-none bg-transparent flex items-center gap-2.5 cursor-pointer text-[13px] text-ak-text-primary hover:bg-ak-surface-subtle"
+                          className="w-full py-2.5 px-3.5 border-none bg-transparent flex items-center gap-2.5 cursor-pointer text-[13px] text-tier-navy hover:bg-tier-surface-base"
                         >
                           <Copy size={14} />
                           Dupliser
                         </button>
                         <button
                           onClick={() => setActiveMenu(null)}
-                          className="w-full py-2.5 px-3.5 border-none bg-transparent flex items-center gap-2.5 cursor-pointer text-[13px] text-ak-status-error hover:bg-ak-surface-subtle"
+                          className="w-full py-2.5 px-3.5 border-none bg-transparent flex items-center gap-2.5 cursor-pointer text-[13px] text-tier-error hover:bg-tier-surface-base"
                         >
                           <Trash2 size={14} />
                           Slett
@@ -417,23 +417,23 @@ export const CoachExerciseTemplates: React.FC = () => {
 
               {/* Expanded Exercise List */}
               {isExpanded && (
-                <div className="px-5 pb-5 pt-4 border-t border-ak-border-default -mt-1">
-                  <CardTitle className="text-[13px] font-semibold text-ak-text-secondary m-0 mb-3 uppercase tracking-wide">
+                <div className="px-5 pb-5 pt-4 border-t border-tier-border-default -mt-1">
+                  <CardTitle className="text-[13px] font-semibold text-tier-text-secondary m-0 mb-3 uppercase tracking-wide">
                     Øvelser i denne planen
                   </CardTitle>
                   <div className="flex flex-col gap-2">
                     {template.exercises.map((exercise, idx) => (
                       <div
                         key={idx}
-                        className="flex items-center gap-3 py-2.5 px-3.5 bg-ak-surface-subtle rounded-lg"
+                        className="flex items-center gap-3 py-2.5 px-3.5 bg-tier-surface-base rounded-lg"
                       >
-                        <span className="w-6 h-6 rounded-full bg-ak-primary/15 text-ak-primary flex items-center justify-center text-xs font-semibold">
+                        <span className="w-6 h-6 rounded-full bg-tier-navy/15 text-tier-navy flex items-center justify-center text-xs font-semibold">
                           {idx + 1}
                         </span>
-                        <span className="flex-1 text-sm text-ak-text-primary">
+                        <span className="flex-1 text-sm text-tier-navy">
                           {exercise.name}
                         </span>
-                        <span className="text-xs text-ak-text-secondary">
+                        <span className="text-xs text-tier-text-secondary">
                           {exercise.duration} min
                         </span>
                       </div>
@@ -447,15 +447,15 @@ export const CoachExerciseTemplates: React.FC = () => {
       </div>
 
       {filteredTemplates.length === 0 && (
-        <div className="text-center py-16 px-5 bg-ak-surface-base rounded-2xl border border-ak-border-default">
-          <BookOpen size={48} className="text-ak-text-secondary mb-4 mx-auto" />
-          <p className="text-base text-ak-text-secondary m-0 mb-4">
+        <div className="text-center py-16 px-5 bg-tier-white rounded-2xl border border-tier-border-default">
+          <BookOpen size={48} className="text-tier-text-secondary mb-4 mx-auto" />
+          <p className="text-base text-tier-text-secondary m-0 mb-4">
             {searchQuery ? 'Ingen treningsplaner funnet' : 'Ingen treningsplaner opprettet ennå'}
           </p>
           {!searchQuery && (
             <button
               onClick={() => navigate('/coach/exercises/templates/create')}
-              className="inline-flex items-center gap-2 py-2.5 px-5 rounded-[10px] border-none bg-ak-primary text-white text-sm font-medium cursor-pointer"
+              className="inline-flex items-center gap-2 py-2.5 px-5 rounded-[10px] border-none bg-tier-navy text-white text-sm font-medium cursor-pointer"
             >
               <Plus size={16} />
               Opprett første treningsplan

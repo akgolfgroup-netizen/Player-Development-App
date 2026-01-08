@@ -12,7 +12,7 @@ import {
 import Card from '../../ui/primitives/Card';
 import StateCard from '../../ui/composites/StateCard';
 import { GolfLineChart, GolfAreaChart, GolfBarChart, chartColors } from '../../components/shadcn/chart';
-import { SectionTitle, SubSectionTitle } from '../../components/typography';
+import { SectionTitle, SubSectionTitle } from '../../components/typography/Headings';
 import { useTrainingAnalytics } from '../../hooks/useTrainingAnalytics';
 import { useStrokesGained } from '../../hooks/useStrokesGained';
 
@@ -281,7 +281,7 @@ const TrendsContent: React.FC = () => {
       {overview && overview.longestStreak > 0 && (
         <Card variant="flat" padding="md">
           <div style={styles.streakCard}>
-            <Flame size={24} color="var(--warning)" />
+            <Flame size={24} color="var(--status-warning)" />
             <div>
               <span style={styles.streakValue}>
                 Beste streak: {overview.longestStreak} dager

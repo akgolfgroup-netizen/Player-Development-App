@@ -4,7 +4,7 @@ import { useToast } from '../../components/shadcn/use-toast';
 import Button from '../../ui/primitives/Button';
 import Card from '../../ui/primitives/Card';
 import { Select } from '../../ui/primitives/Input';
-import { SectionTitle, SubSectionTitle } from '../../components/typography';
+import { SectionTitle, SubSectionTitle } from '../../components/typography/Headings';
 import { Users, Filter, ChevronRight } from 'lucide-react';
 
 interface PeerGroupSelectorProps {
@@ -149,29 +149,29 @@ export const PeerGroupSelector: React.FC<PeerGroupSelectorProps> = ({
                     key={player.id}
                     className={`flex items-center gap-3 p-3 rounded-lg cursor-pointer transition-colors ${
                       isSelected
-                        ? 'bg-ak-primary/10 border-2 border-ak-primary'
-                        : 'bg-ak-surface-subtle hover:bg-ak-border-default border-2 border-transparent'
+                        ? 'bg-tier-navy/10 border-2 border-tier-navy'
+                        : 'bg-tier-surface-base hover:bg-tier-border-default border-2 border-transparent'
                     }`}
                     onClick={() => onCompare ? toggleSelect(player.id) : onSelectPlayer?.(player.id)}
                   >
                     <div className={`w-10 h-10 rounded-full flex items-center justify-center text-white font-semibold ${
-                      isSelected ? 'bg-ak-primary' : 'bg-ak-text-secondary'
+                      isSelected ? 'bg-tier-navy' : 'bg-tier-text-secondary'
                     }`}>
                       {player.firstName[0]}{player.lastName[0]}
                     </div>
                     <div className="flex-1">
-                      <p className="font-medium text-ak-text-primary">
+                      <p className="font-medium text-tier-navy">
                         {player.firstName} {player.lastName}
                       </p>
-                      <p className="text-xs text-ak-text-secondary">
+                      <p className="text-xs text-tier-text-secondary">
                         Kat. {player.category} • HCP {player.handicap || '-'}
                       </p>
                     </div>
                     {onSelectPlayer && !onCompare && (
-                      <ChevronRight size={18} className="text-ak-text-secondary" />
+                      <ChevronRight size={18} className="text-tier-text-secondary" />
                     )}
                     {onCompare && isSelected && (
-                      <div className="w-5 h-5 rounded-full bg-ak-primary flex items-center justify-center">
+                      <div className="w-5 h-5 rounded-full bg-tier-navy flex items-center justify-center">
                         <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="white" strokeWidth="3">
                           <polyline points="20 6 9 17 4 12" />
                         </svg>
@@ -183,8 +183,8 @@ export const PeerGroupSelector: React.FC<PeerGroupSelectorProps> = ({
             </div>
           ) : (
             <div className="text-center py-8">
-              <Users size={32} className="mx-auto text-ak-border-default mb-2" />
-              <p className="text-ak-text-secondary">Ingen spillere matcher kriteriene</p>
+              <Users size={32} className="mx-auto text-tier-border-default mb-2" />
+              <p className="text-tier-text-secondary">Ingen spillere matcher kriteriene</p>
             </div>
           )}
         </div>

@@ -8,6 +8,18 @@
 
 ---
 
+## 🎯 Hurtignavigasjon for Nye Utviklere
+
+| Jeg vil... | Start her |
+|------------|-----------|
+| **Komme i gang mandag** | [Developer Handoff](../DEVELOPER_HANDOFF.md) - Complete onboarding guide |
+| **Se hva som er gjort** | [Technical Highlights](./HIGHLIGHTS.md) - Architecture achievements |
+| **Forstå tech stack** | [Technology Choices](./architecture/TECHNOLOGY_CHOICES.md) - Decision rationale |
+| **Se kommende arbeid** | [Roadmap](../ROADMAP.md) - Q1 2026 priorities |
+| **Sjekk prosjektstatus** | [Project Status](../PROJECT_STATUS.md) - Current state overview |
+
+---
+
 ## Quick Links
 
 | I want to... | Go to |
@@ -132,7 +144,7 @@ docs/
 ## Design System
 
 - [Design Tokens](./design/design-system.md) - Colors, typography, spacing
-- [Complete Design System](./AK_GOLF_DESIGN_SYSTEM_COMPLETE.md) - Full UI/UX reference
+- [Complete Design System](./TIER_GOLF_DESIGN_SYSTEM_COMPLETE.md) - Full UI/UX reference
 
 ### Brand Colors
 

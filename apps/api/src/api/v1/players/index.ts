@@ -7,11 +7,13 @@ import {
   listPlayersQuerySchema,
   playerIdParamSchema,
   weeklySummaryQuerySchema,
+  playerOnboardingSchema,
   CreatePlayerInput,
   UpdatePlayerInput,
   ListPlayersQuery,
   PlayerIdParam,
   WeeklySummaryQuery,
+  PlayerOnboardingInput,
 } from './schema';
 import { authenticateUser, requireAdmin } from '../../../middleware/auth';
 import { injectTenantContext } from '../../../middleware/tenant';
@@ -123,6 +125,54 @@ export async function playerRoutes(app: FastifyInstance): Promise<void> {
       const query = validate(listPlayersQuerySchema, request.query);
       const result = await playerService.listPlayers(request.tenant!.id, query);
       return reply.send({ success: true, data: result });
+    }
+  );
+
+  /**
+   * Get current player profile
+   */
+  app.get(
+    '/profile',
+    {
+      preHandler: preHandlers,
+      schema: {
+        description: 'Get current player profile',
+        tags: ['players'],
+        security: [{ bearerAuth: [] }],
+        response: {
+          200: {
+            type: 'object',
+            properties: {
+              success: { type: 'boolean', example: true },
+              data: {
+                type: 'object',
+                properties: {
+                  id: { type: 'string' },
+                  firstName: { type: 'string' },
+                  lastName: { type: 'string' },
+                  email: { type: 'string', nullable: true },
+                  category: { type: 'string' },
+                  handicap: { type: 'number', nullable: true },
+                  status: { type: 'string' },
+                },
+              },
+            },
+          },
+          404: { $ref: 'Error#' },
+        },
+      },
+    },
+    async (request: FastifyRequest, reply: FastifyReply) => {
+      // Get playerId from authenticated user context
+      const playerId = request.user?.playerId;
+      if (!playerId) {
+        return reply.code(401).send({
+          success: false,
+          error: 'Player ID not found in user context'
+        });
+      }
+      const player = await playerService.getPlayerById(request.tenant!.id, playerId);
+      return reply.send({ success: true, data: player });
     }
   );
 
@@ -304,6 +354,62 @@ export async function playerRoutes(app: FastifyInstance): Promise<void> {
         query.weekStart
       );
       return reply.send({ success: true, data: summary });
+    }
+  );
+
+  /**
+   * Complete player onboarding
+   */
+  app.post<{ Body: PlayerOnboardingInput }>(
+    '/onboarding',
+    {
+      preHandler: preHandlers,
+      schema: {
+        description: 'Complete player onboarding with profile information',
+        tags: ['players'],
+        security: [{ bearerAuth: [] }],
+        response: {
+          200: {
+            type: 'object',
+            properties: {
+              success: { type: 'boolean', example: true },
+              data: {
+                type: 'object',
+                properties: {
+                  id: { type: 'string' },
+                  firstName: { type: 'string' },
+                  lastName: { type: 'string' },
+                  email: { type: 'string', nullable: true },
+                  category: { type: 'string' },
+                  handicap: { type: 'number', nullable: true },
+                  status: { type: 'string' },
+                },
+              },
+            },
+          },
+          400: { $ref: 'Error#' },
+          404: { $ref: 'Error#' },
+        },
+      },
+    },
+    async (request: FastifyRequest<{ Body: PlayerOnboardingInput }>, reply: FastifyReply) => {
+      const input = validate(playerOnboardingSchema, request.body);
+
+      // Get playerId from authenticated user context
+      const playerId = request.user?.playerId;
+      if (!playerId) {
+        return reply.code(401).send({
+          success: false,
+          error: 'Player ID not found in user context'
+        });
+      }
+
+      const player = await playerService.completeOnboarding(
+        request.tenant!.id,
+        playerId,
+        input
+      );
+      return reply.send({ success: true, data: player });
     }
   );
 }

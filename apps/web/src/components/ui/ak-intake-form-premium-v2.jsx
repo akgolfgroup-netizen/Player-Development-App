@@ -1,5 +1,5 @@
 /**
- * AK Golf Academy - Premium Intake Form V2
+ * TIER Golf Academy - Premium Intake Form V2
  * Design System v3.0 - Premium Light
  *
  * MIGRATED TO PAGE ARCHITECTURE - Minimal inline styles (dynamic colors)
@@ -10,7 +10,7 @@ import { ChevronRight, ChevronLeft, Check, User, Trophy, Activity, AlertTriangle
 import { PageTitle, SectionTitle, SubSectionTitle, CardTitle } from '../typography';
 
 // ============================================
-// AK GOLF ACADEMY - PREMIUM INTAKE FORM V2
+// TIER GOLF - PREMIUM INTAKE FORM V2
 // Design System v3.0 - Premium Light
 // ============================================
 
@@ -22,7 +22,7 @@ const colors = {
   background: '#F5F5F7',        // Main background (Cloud)
   warmNeutral: '#EDF0F2',       // Warm accent (Foam)
   success: '#4A7C59',           // Success status
-  white: '#FFFFFF',
+  white: 'rgb(var(--tier-white))',
   snow: '#FAF9F7',              // Ivory
   border: '#C7C7CC',            // Mist
   borderLight: '#F5F5F7',       // Cloud

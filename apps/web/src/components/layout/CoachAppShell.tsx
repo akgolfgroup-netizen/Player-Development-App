@@ -1,5 +1,5 @@
 /**
- * AK Golf Academy - Coach App Shell
+ * TIER Golf Academy - Coach App Shell
  * Design System v3.0 - Premium Light
  *
  * Layout wrapper for coach portal routes.
@@ -15,7 +15,7 @@ import { Link, useLocation } from 'react-router-dom';
 import * as LucideIcons from 'lucide-react';
 import CoachSidebar from './CoachSidebar';
 import BackToTop from '../ui/BackToTop';
-import { AKLogo } from '../branding/AKLogo';
+import { TIERGolfFullLogo } from '../branding/TIERGolfFullLogo';
 import { useAuth } from '../../contexts/AuthContext';
 import { coachMobileNavItems } from '../../config/coach-navigation';
 
@@ -33,8 +33,8 @@ const skipLinkStyles: React.CSSProperties = {
   top: '-40px',
   left: '0',
   padding: '8px 16px',
-  backgroundColor: 'var(--ak-primary)',
-  color: 'var(--ak-surface-card)',
+  backgroundColor: 'rgb(var(--tier-primary, 10 37 64))',
+  color: 'var(--tier-surface-card)',
   textDecoration: 'none',
   fontWeight: 600,
   fontSize: '14px',
@@ -70,7 +70,7 @@ function CoachBottomNav({ unreadAlerts }: { unreadAlerts: number }) {
         left: 0,
         right: 0,
         height: '64px',
-        backgroundColor: 'var(--ak-primary, #1A3D2E)',
+        backgroundColor: 'rgb(var(--tier-primary, 10 37 64))',
         borderTop: '1px solid rgba(255,255,255,0.1)',
         display: 'flex',
         alignItems: 'center',
@@ -96,7 +96,7 @@ function CoachBottomNav({ unreadAlerts }: { unreadAlerts: number }) {
               gap: '4px',
               padding: '8px 12px',
               textDecoration: 'none',
-              color: active ? '#FFFFFF' : 'rgba(255,255,255,0.6)',
+              color: active ? 'rgb(var(--tier-white))' : 'rgba(255,255,255,0.6)',
               position: 'relative',
               minWidth: '56px',
             }}
@@ -112,7 +112,7 @@ function CoachBottomNav({ unreadAlerts }: { unreadAlerts: number }) {
                     minWidth: '16px',
                     height: '16px',
                     borderRadius: '8px',
-                    backgroundColor: 'var(--ak-status-error)',
+                    backgroundColor: 'var(--tier-status-error)',
                     color: 'white',
                     fontSize: '10px',
                     fontWeight: 700,
@@ -144,7 +144,7 @@ function CoachBottomNav({ unreadAlerts }: { unreadAlerts: number }) {
                   width: '32px',
                   height: '3px',
                   borderRadius: '0 0 3px 3px',
-                  backgroundColor: 'var(--ak-achievement, #C9A227)',
+                  backgroundColor: 'var(--tier-achievement, rgb(var(--tier-gold)))',
                 }}
               />
             )}
@@ -171,7 +171,7 @@ function CoachMobileHeader({
         left: 0,
         right: 0,
         height: '60px',
-        backgroundColor: 'var(--ak-primary, #1A3D2E)',
+        backgroundColor: 'rgb(var(--tier-primary, 10 37 64))',
         display: 'flex',
         alignItems: 'center',
         justifyContent: 'space-between',
@@ -180,10 +180,7 @@ function CoachMobileHeader({
       }}
     >
       <div style={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
-        <AKLogo size={32} color="#FFFFFF" />
-        <span style={{ color: 'white', fontWeight: 600, fontSize: '16px' }}>
-          AK Golf
-        </span>
+        <TIERGolfFullLogo height={32} variant="light" />
       </div>
 
       <button
@@ -267,7 +264,7 @@ export default function CoachAppShell({ children }: CoachAppShellProps) {
       <div
         style={{
           minHeight: '100vh',
-          backgroundColor: 'var(--ak-surface-page)',
+          backgroundColor: 'rgb(var(--tier-surface-page, 245 247 249))',
         }}
       >
         {/* Skip to content link for accessibility */}
@@ -305,7 +302,7 @@ export default function CoachAppShell({ children }: CoachAppShellProps) {
                 left: 0,
                 bottom: '64px',
                 width: '300px',
-                backgroundColor: 'var(--ak-primary, #1A3D2E)',
+                backgroundColor: 'rgb(var(--tier-primary, 10 37 64))',
                 zIndex: 999,
                 overflowY: 'auto',
               }}
@@ -355,7 +352,7 @@ export default function CoachAppShell({ children }: CoachAppShellProps) {
         height: '100vh',
         display: 'flex',
         flexDirection: 'row',
-        backgroundColor: 'var(--ak-surface-page)',
+        backgroundColor: 'var(--tier-surface-page)',
       }}
     >
       {/* Skip to content link for accessibility */}
