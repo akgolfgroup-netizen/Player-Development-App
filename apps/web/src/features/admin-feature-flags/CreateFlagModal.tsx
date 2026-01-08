@@ -39,9 +39,9 @@ export const CreateFlagModal: React.FC<CreateFlagModalProps> = ({
       return;
     }
 
-    // Validate key format (kebab-case)
-    if (!/^[a-z0-9-]+$/.test(formData.key)) {
-      setError('Key må være i kebab-case format (kun små bokstaver, tall og bindestrek)');
+    // Validate key format (snake_case)
+    if (!/^[a-z0-9_]+$/.test(formData.key)) {
+      setError('Key må være i snake_case format (kun små bokstaver, tall og understrek)');
       return;
     }
 
@@ -118,11 +118,11 @@ export const CreateFlagModal: React.FC<CreateFlagModalProps> = ({
               onChange={(e) =>
                 setFormData({ ...formData, key: e.target.value })
               }
-              placeholder="new-feature-flag"
+              placeholder="new_feature_flag"
               className="w-full px-3 py-2 border border-tier-border-default rounded-lg focus:outline-none focus:ring-2 focus:ring-tier-navy/20"
             />
             <p className="text-xs text-tier-text-secondary">
-              Kebab-case format (kun små bokstaver, tall og bindestrek)
+              Snake_case format (kun små bokstaver, tall og understrek)
             </p>
           </div>
 

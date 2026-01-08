@@ -45,6 +45,7 @@ const TreningTesting = lazy(() => Promise.resolve({ default: () => <PlaceholderP
 const TreningTestRegistrer = lazy(() => Promise.resolve({ default: () => <PlaceholderPage title="Registrer test" /> }));
 const TreningTeknikkplan = lazy(() => import('../features/technique-plan/TechniquePlanPage'));
 const TreningFokus = lazy(() => import('../features/focus-engine/FocusEnginePage'));
+const TreningStatistikk = lazy(() => import('../features/training/TrainingStatsDashboard'));
 
 // Utvikling area
 const UtviklingOversikt = lazy(() => Promise.resolve({ default: () => <PlaceholderPage title="Min utvikling" /> }));
@@ -229,6 +230,7 @@ export function getPlayerRoutesV3() {
       <Route path="/trening/fokus" element={<SuspenseWrapper><TreningFokus /></SuspenseWrapper>} />
       <Route path="/trening/fokus-motor" element={<SuspenseWrapper><FocusEnginePage /></SuspenseWrapper>} />
       <Route path="/trening/video-annotering" element={<SuspenseWrapper><VideoAnnotation /></SuspenseWrapper>} />
+      <Route path="/trening/statistikk" element={<SuspenseWrapper><TreningStatistikk /></SuspenseWrapper>} />
       {/* <Route path="/trening/trackman-sync" element={<SuspenseWrapper><TrackManSyncPage /></SuspenseWrapper>} /> */}
 
       {/* Utvikling */}

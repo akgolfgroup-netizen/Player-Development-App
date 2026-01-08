@@ -138,7 +138,7 @@ export const AuditLogPage: React.FC = () => {
   };
 
   // Calculate quick stats from current stats
-  const todayLogs = stats?.byAction.reduce((sum, item) => sum + item.count, 0) || 0;
+  const todayLogs = stats?.byAction?.reduce((sum, item) => sum + item.count, 0) || 0;
   const weekLogs = Math.floor(todayLogs * 7); // Approximation
   const uniqueActors = new Set(logs.map(l => l.actorId)).size;
 
