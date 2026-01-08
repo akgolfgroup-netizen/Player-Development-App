@@ -1,6 +1,6 @@
 /**
  * ============================================================
- * COACH NAVIGATION CONFIG - AK Golf Academy
+ * COACH NAVIGATION CONFIG - TIER Golf Academy
  * ============================================================
  *
  * Single source of truth for coach navigation.
@@ -33,10 +33,12 @@ export interface NavItem {
   href?: string;
   badge?: string | 'unreadCount';
   mobileNav?: boolean;  // Show in mobile bottom nav
+  hideFromSidebar?: boolean;  // Hide from main navigation sidebar (accessible via Overview)
   submenu?: Array<{
     href: string;
     label: string;
     labelNO: string;
+    icon?: string;  // Icon for card display
     badge?: string;
   }>;
 }
@@ -49,7 +51,7 @@ export const coachNavigationConfig: NavItem[] = [
   {
     label: 'Dashboard',
     labelNO: 'Oversikt',
-    icon: 'LayoutDashboard',
+    icon: 'HomeIcon',
     href: '/coach',
     mobileNav: true,
   },
@@ -57,13 +59,15 @@ export const coachNavigationConfig: NavItem[] = [
   // ────────────────────────────────────────────────────────────
   // 2. SPILLERE (Athletes)
   // Alphabetical list A-Å, neutral presentation, no ranking
+  // Accessible via Overview quick actions
   // ────────────────────────────────────────────────────────────
   {
     label: 'Athletes',
     labelNO: 'Spillere',
-    icon: 'Users',
+    icon: 'ProfileIcon',
     href: '/coach/athletes',
     mobileNav: true,
+    hideFromSidebar: true,
   },
 
   // ────────────────────────────────────────────────────────────
@@ -74,23 +78,29 @@ export const coachNavigationConfig: NavItem[] = [
   {
     label: 'Planning',
     labelNO: 'Planlegging',
-    icon: 'ClipboardList',
+    icon: 'LessonsIcon',
     href: '/coach/planning',
     mobileNav: true,
+    submenu: [
+      { href: '/coach/planning', label: 'Overview', labelNO: 'Oversikt', icon: 'HomeIcon' },
+      { href: '/coach/planning/annual-plan', label: 'Annual Plan', labelNO: 'Årsplan', icon: 'CalendarIcon' },
+    ],
   },
 
   // ────────────────────────────────────────────────────────────
   // 4. VARSLER (Alerts)
   // "What requires coach attention"
   // Always grouped alphabetically by athlete name
+  // Accessible via Overview quick actions
   // ────────────────────────────────────────────────────────────
   {
     label: 'Alerts',
     labelNO: 'Varsler',
-    icon: 'Bell',
+    icon: 'NotificationsIcon',
     href: '/coach/alerts',
     badge: 'unreadCount',
     mobileNav: true,
+    hideFromSidebar: true,
   },
 
   // ────────────────────────────────────────────────────────────
@@ -100,30 +110,32 @@ export const coachNavigationConfig: NavItem[] = [
   {
     label: 'Calendar',
     labelNO: 'Kalender',
-    icon: 'CalendarCheck',
+    icon: 'CalendarIcon',
     href: '/coach/booking',
     mobileNav: true,
     submenu: [
-      { href: '/coach/booking', label: 'Calendar', labelNO: 'Kalender' },
-      { href: '/coach/booking/requests', label: 'Requests', labelNO: 'Forespørsler' },
-      { href: '/coach/booking/settings', label: 'Availability', labelNO: 'Tilgjengelighet' },
+      { href: '/coach/booking', label: 'Calendar', labelNO: 'Kalender', icon: 'CalendarIcon' },
+      { href: '/coach/booking/requests', label: 'Requests', labelNO: 'Forespørsler', icon: 'ChatIcon' },
+      { href: '/coach/booking/settings', label: 'Availability', labelNO: 'Tilgjengelighet', icon: 'SettingsIcon' },
     ],
   },
 
   // ────────────────────────────────────────────────────────────
   // 6. MELDINGER (Messages)
   // Coach outbound messaging
+  // Accessible via Overview quick actions
   // ────────────────────────────────────────────────────────────
   {
     label: 'Messages',
     labelNO: 'Meldinger',
-    icon: 'MessageCircle',
+    icon: 'ChatIcon',
     href: '/coach/messages',
     mobileNav: true,
+    hideFromSidebar: true,
     submenu: [
-      { href: '/coach/messages', label: 'Sent', labelNO: 'Sendt' },
-      { href: '/coach/messages/compose', label: 'Compose', labelNO: 'Ny melding' },
-      { href: '/coach/messages/scheduled', label: 'Scheduled', labelNO: 'Planlagt' },
+      { href: '/coach/messages', label: 'Sent', labelNO: 'Sendt', icon: 'ChatIcon' },
+      { href: '/coach/messages/compose', label: 'Compose', labelNO: 'Ny melding', icon: 'EditIcon' },
+      { href: '/coach/messages/scheduled', label: 'Scheduled', labelNO: 'Planlagt', icon: 'CalendarIcon' },
     ],
   },
 
@@ -134,13 +146,12 @@ export const coachNavigationConfig: NavItem[] = [
   {
     label: 'Library',
     labelNO: 'Bibliotek',
-    icon: 'Dumbbell',
+    icon: 'ClubIcon',
     submenu: [
-      { href: '/coach/exercises', label: 'Exercise Library', labelNO: 'Øvelser' },
-      { href: '/coach/exercises/mine', label: 'My Exercises', labelNO: 'Mine øvelser' },
-      { href: '/coach/exercises/templates', label: 'Templates', labelNO: 'Maler' },
-      { href: '/coach/training-system', label: 'Training System', labelNO: 'Treningssystem' },
-      { href: '/coach/training-areas', label: 'Training Areas', labelNO: 'Treningsområder' },
+      { href: '/coach/exercises', label: 'Exercise Library', labelNO: 'Øvelser', icon: 'ClubIcon' },
+      { href: '/coach/exercises/mine', label: 'My Exercises', labelNO: 'Mine øvelser', icon: 'ProfileIcon' },
+      { href: '/coach/exercises/templates', label: 'Templates', labelNO: 'Maler', icon: 'LessonsIcon' },
+      { href: '/coach/training-system', label: 'Training System', labelNO: 'Treningssystem', icon: 'SettingsIcon' },
     ],
   },
 
@@ -151,12 +162,13 @@ export const coachNavigationConfig: NavItem[] = [
   {
     label: 'Insights',
     labelNO: 'Innsikt',
-    icon: 'BarChart3',
+    icon: 'StatsIcon',
     submenu: [
-      { href: '/coach/stats', label: 'Overview', labelNO: 'Oversikt' },
-      { href: '/coach/stats/progress', label: 'Progress', labelNO: 'Fremgang' },
-      { href: '/coach/stats/regression', label: 'Regression', labelNO: 'Tilbakegang' },
-      { href: '/coach/stats/datagolf', label: 'DataGolf', labelNO: 'DataGolf' },
+      { href: '/coach/stats', label: 'Overview', labelNO: 'Oversikt', icon: 'HomeIcon' },
+      { href: '/coach/stats/progress', label: 'Progress', labelNO: 'Fremgang', icon: 'StatsIcon' },
+      { href: '/coach/stats/regression', label: 'Regression', labelNO: 'Tilbakegang', icon: 'StatsIcon' },
+      { href: '/training/statistics', label: 'Training Analysis', labelNO: 'Treningsanalyse', icon: 'StatsIcon' },
+      { href: '/coach/stats/datagolf', label: 'Tools', labelNO: 'Verktøy', icon: 'ScorecardIcon' },
     ],
   },
 
@@ -167,11 +179,11 @@ export const coachNavigationConfig: NavItem[] = [
   {
     label: 'Tournaments',
     labelNO: 'Turneringer',
-    icon: 'Trophy',
+    icon: 'GolfFlagIcon',
     submenu: [
-      { href: '/coach/tournaments', label: 'Calendar', labelNO: 'Kalender' },
-      { href: '/coach/tournaments/players', label: 'Participants', labelNO: 'Deltakere' },
-      { href: '/coach/tournaments/results', label: 'Results', labelNO: 'Resultater' },
+      { href: '/coach/tournaments', label: 'Calendar', labelNO: 'Kalender', icon: 'CalendarIcon' },
+      { href: '/coach/tournaments/players', label: 'Participants', labelNO: 'Deltakere', icon: 'ProfileIcon' },
+      { href: '/coach/tournaments/results', label: 'Results', labelNO: 'Resultater', icon: 'HandicapIcon' },
     ],
   },
 
@@ -182,14 +194,14 @@ export const coachNavigationConfig: NavItem[] = [
   {
     label: 'More',
     labelNO: 'Mer',
-    icon: 'MoreHorizontal',
+    icon: 'SettingsIcon',
     submenu: [
-      { href: '/coach/groups', label: 'Groups', labelNO: 'Grupper' },
-      { href: '/coach/athlete-status', label: 'Athlete Status', labelNO: 'Spillerstatus' },
-      { href: '/coach/session-evaluations', label: 'Evaluations', labelNO: 'Evalueringer' },
-      { href: '/coach/modification-requests', label: 'Requests', labelNO: 'Forespørsler' },
-      { href: '/coach/samlinger', label: 'Training Camps', labelNO: 'Samlinger' },
-      { href: '/coach/settings', label: 'Settings', labelNO: 'Innstillinger' },
+      { href: '/coach/groups', label: 'Groups', labelNO: 'Grupper', icon: 'ProfileIcon' },
+      { href: '/coach/athlete-status', label: 'Athlete Status', labelNO: 'Spillerstatus', icon: 'StatsIcon' },
+      { href: '/coach/session-evaluations', label: 'Evaluations', labelNO: 'Evalueringer', icon: 'CheckIcon' },
+      { href: '/coach/modification-requests', label: 'Requests', labelNO: 'Forespørsler', icon: 'ChatIcon' },
+      { href: '/coach/samlinger', label: 'Training Camps', labelNO: 'Samlinger', icon: 'GolfFlagIcon' },
+      { href: '/coach/settings', label: 'Settings', labelNO: 'Innstillinger', icon: 'SettingsIcon' },
     ],
   },
 ];
@@ -202,13 +214,13 @@ export const coachNavigationConfig: NavItem[] = [
 export const coachQuickActions = [
   {
     label: 'Ny beskjed',
-    icon: 'Send',
+    icon: 'ChatIcon',
     href: '/coach/messages/compose',
     variant: 'primary' as const,
   },
   {
     label: 'Ny økt',
-    icon: 'Plus',
+    icon: 'AddIcon',
     href: '/coach/planning',
     variant: 'secondary' as const,
   },
@@ -230,46 +242,53 @@ export const coachMobileNavItems = coachNavigationConfig
  * ============================================================
  */
 export const coachAlertTypes = {
-  PROOF_UPLOADED: { label: 'Bevis lastet opp', labelNO: 'Bevis lastet opp', icon: 'Video', color: 'info' },
-  PLAN_PENDING: { label: 'Plan venter', labelNO: 'Plan venter', icon: 'ClipboardList', color: 'warning' },
-  NOTE_REQUEST: { label: 'Notat-forespørsel', labelNO: 'Notat-forespørsel', icon: 'MessageSquare', color: 'info' },
-  MILESTONE: { label: 'Milepæl oppnådd', labelNO: 'Milepæl oppnådd', icon: 'Trophy', color: 'success' },
-  INJURY: { label: 'Sykdom/skade', labelNO: 'Sykdom/skade', icon: 'Stethoscope', color: 'error' },
-  TEST_COMPLETED: { label: 'Test fullført', labelNO: 'Test fullført', icon: 'CheckCircle', color: 'success' },
+  PROOF_UPLOADED: { label: 'Bevis lastet opp', labelNO: 'Bevis lastet opp', icon: 'VideoIcon', color: 'info' },
+  PLAN_PENDING: { label: 'Plan venter', labelNO: 'Plan venter', icon: 'LessonsIcon', color: 'warning' },
+  NOTE_REQUEST: { label: 'Notat-forespørsel', labelNO: 'Notat-forespørsel', icon: 'ChatIcon', color: 'info' },
+  MILESTONE: { label: 'Milepæl oppnådd', labelNO: 'Milepæl oppnådd', icon: 'GolfFlagIcon', color: 'success' },
+  INJURY: { label: 'Sykdom/skade', labelNO: 'Sykdom/skade', icon: 'NotificationsIcon', color: 'error' },
+  TEST_COMPLETED: { label: 'Test fullført', labelNO: 'Test fullført', icon: 'CheckIcon', color: 'success' },
 } as const;
 
 /**
  * ============================================================
  * ATHLETE ACTIONS (for Athlete Detail hub)
- * 4 main actions as tiles
+ * 5 main actions as tiles
  * ============================================================
  */
 export const athleteDetailActions = [
   {
     id: 'proof',
     label: 'Se Bevis',
-    icon: 'Video',
+    icon: 'VideoIcon',
     href: (id: string) => `/coach/athletes/${id}/proof`,
     description: 'Se treningsvideoer og bilder',
   },
   {
     id: 'trajectory',
     label: 'Se Utvikling',
-    icon: 'TrendingUp',
+    icon: 'StatsIcon',
     href: (id: string) => `/coach/athletes/${id}/trajectory`,
     description: 'Historisk progresjon',
   },
   {
+    id: 'tests',
+    label: 'Testprotokoll',
+    icon: 'TargetIcon',
+    href: (id: string) => `/coach/athletes/${id}/tests`,
+    description: 'Se testresultater og progresjon',
+  },
+  {
     id: 'plan',
     label: 'Treningsplan',
-    icon: 'ClipboardList',
+    icon: 'LessonsIcon',
     href: (id: string) => `/coach/athletes/${id}/plan`,
     description: 'Se og rediger treningsplan',
   },
   {
     id: 'notes',
     label: 'Notater',
-    icon: 'FileText',
+    icon: 'ScorecardIcon',
     href: (id: string) => `/coach/athletes/${id}/notes`,
     description: 'Trenernotater',
   },
@@ -282,13 +301,13 @@ export const athleteDetailActions = [
  * ============================================================
  */
 export const exerciseCategories = [
-  { id: 'putting', label: 'Putting', labelNO: 'Putting', icon: '🎯' },
-  { id: 'driving', label: 'Driving', labelNO: 'Driving', icon: '🏌️' },
-  { id: 'iron', label: 'Iron', labelNO: 'Jern', icon: '⛳' },
-  { id: 'wedge', label: 'Wedge', labelNO: 'Wedge', icon: '🔺' },
-  { id: 'bunker', label: 'Bunker', labelNO: 'Bunker', icon: '⛱️' },
-  { id: 'mental', label: 'Mental', labelNO: 'Mental', icon: '🧠' },
-  { id: 'fitness', label: 'Fitness', labelNO: 'Kondisjon', icon: '💪' },
+  { id: 'putting', label: 'Putting', labelNO: 'Putting', icon: 'target' },
+  { id: 'driving', label: 'Driving', labelNO: 'Driving', icon: 'swing' },
+  { id: 'iron', label: 'Iron', labelNO: 'Jern', icon: 'flag' },
+  { id: 'wedge', label: 'Wedge', labelNO: 'Wedge', icon: 'triangle' },
+  { id: 'bunker', label: 'Bunker', labelNO: 'Bunker', icon: 'mountain' },
+  { id: 'mental', label: 'Mental', labelNO: 'Mental', icon: 'brain' },
+  { id: 'fitness', label: 'Fitness', labelNO: 'Kondisjon', icon: 'dumbbell' },
 ] as const;
 
 /**
@@ -308,10 +327,10 @@ export const difficultyLevels = [
  * ============================================================
  */
 export const bookingStatuses = {
-  available: { label: 'Available', labelNO: 'Tilgjengelig', color: 'success', icon: '🟢' },
-  booked: { label: 'Booked', labelNO: 'Booket', color: 'info', icon: '🔵' },
-  pending: { label: 'Pending', labelNO: 'Venter', color: 'warning', icon: '🟡' },
-  blocked: { label: 'Blocked', labelNO: 'Blokkert', color: 'error', icon: '🔴' },
+  available: { label: 'Available', labelNO: 'Tilgjengelig', color: 'success', icon: 'circle-check' },
+  booked: { label: 'Booked', labelNO: 'Booket', color: 'info', icon: 'circle-dot' },
+  pending: { label: 'Pending', labelNO: 'Venter', color: 'warning', icon: 'circle-alert' },
+  blocked: { label: 'Blocked', labelNO: 'Blokkert', color: 'error', icon: 'circle-x' },
 } as const;
 
 /**
@@ -320,10 +339,10 @@ export const bookingStatuses = {
  * ============================================================
  */
 export const messageCategories = [
-  { id: 'training', label: 'Training', labelNO: 'Trening', icon: '🏋️' },
-  { id: 'tournament', label: 'Tournament', labelNO: 'Turnering', icon: '🏆' },
-  { id: 'important', label: 'Important', labelNO: 'Viktig', icon: '⚠️' },
-  { id: 'general', label: 'General', labelNO: 'Generelt', icon: '📢' },
+  { id: 'training', label: 'Training', labelNO: 'Trening', icon: 'dumbbell' },
+  { id: 'tournament', label: 'Tournament', labelNO: 'Turnering', icon: 'trophy' },
+  { id: 'important', label: 'Important', labelNO: 'Viktig', icon: 'alert-triangle' },
+  { id: 'general', label: 'General', labelNO: 'Generelt', icon: 'message-circle' },
 ] as const;
 
 /**
@@ -332,9 +351,9 @@ export const messageCategories = [
  * ============================================================
  */
 export const athleteStatusOptions = [
-  { id: 'ready', label: 'Ready', labelNO: 'Klar', color: 'success', icon: '🟢' },
-  { id: 'limited', label: 'Limited', labelNO: 'Begrenset', color: 'warning', icon: '🟡' },
-  { id: 'injured', label: 'Injured', labelNO: 'Skadet', color: 'error', icon: '🔴' },
+  { id: 'ready', label: 'Ready', labelNO: 'Klar', color: 'success', icon: 'circle-check' },
+  { id: 'limited', label: 'Limited', labelNO: 'Begrenset', color: 'warning', icon: 'circle-alert' },
+  { id: 'injured', label: 'Injured', labelNO: 'Skadet', color: 'error', icon: 'circle-x' },
 ] as const;
 
 /**
@@ -343,10 +362,10 @@ export const athleteStatusOptions = [
  * ============================================================
  */
 export const modificationRequestStatuses = [
-  { id: 'waiting', label: 'Waiting', labelNO: 'Venter', icon: '⏳' },
-  { id: 'in_review', label: 'In Review', labelNO: 'Under vurdering', icon: '🔍' },
-  { id: 'resolved', label: 'Resolved', labelNO: 'Løst', icon: '✅' },
-  { id: 'rejected', label: 'Rejected', labelNO: 'Avvist', icon: '❌' },
+  { id: 'waiting', label: 'Waiting', labelNO: 'Venter', icon: 'clock' },
+  { id: 'in_review', label: 'In Review', labelNO: 'Under vurdering', icon: 'search' },
+  { id: 'resolved', label: 'Resolved', labelNO: 'Løst', icon: 'check-circle' },
+  { id: 'rejected', label: 'Rejected', labelNO: 'Avvist', icon: 'x-circle' },
 ] as const;
 
 /**

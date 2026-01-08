@@ -139,7 +139,8 @@ export const playerNavigationV3: NavArea[] = [
         label: 'Logg',
         items: [
           { href: '/trening/logg', label: 'Logg treningsøkt', icon: 'AddIcon', description: 'Registrer treningsøkt' },
-          { href: '/trening/dagbok', label: 'Treningsstatistikk', icon: 'ScorecardIcon', description: 'Se treningshistorikk' },
+          { href: '/trening/dagbok', label: 'Treningshistorikk', icon: 'ScorecardIcon', description: 'Se treningshistorikk' },
+          { href: '/training/statistics', label: 'Treningsanalyse', icon: 'StatsIcon', description: 'Ukentlig/månedlig statistikk og analyse' },
         ],
       },
       {
@@ -165,6 +166,7 @@ export const playerNavigationV3: NavArea[] = [
         label: 'Kunnskap',
         items: [
           { href: '/trening/kategorisystem', label: 'Kategorisystem', icon: 'LessonsIcon', description: 'Forstå treningssystemet' },
+          { href: '/trening/fokus', label: 'Treningsfokus', icon: 'TargetIcon', description: 'AI-baserte anbefalinger for hva du bør fokusere på' },
         ],
       },
     ],
@@ -187,7 +189,12 @@ export const playerNavigationV3: NavArea[] = [
         items: [
           { href: '/utvikling/oversikt', label: 'Min utvikling', icon: 'StatsIcon', description: 'Din progresjon' },
           { href: '/utvikling/statistikk', label: 'Statistikk', icon: 'ScorecardIcon', description: 'Detaljert statistikk' },
+          { href: '/utvikling/strokes-gained', label: 'Strokes Gained', icon: 'StatsIcon', description: 'Avansert SG-analyse' },
+          { href: '/utvikling/sammenlign-proff', label: 'Sammenlign med proff', icon: 'StatsIcon', description: 'Sammenlign med tour-spillere' },
+          { href: '/utvikling/vendepunkter', label: 'Vendepunkter', icon: 'StatsIcon', description: 'Vendepunkter i prestasjonen' },
+          { href: '/utvikling/innsikter', label: 'Spillerinnsikter', icon: 'StatsIcon', description: 'SG Journey, Skill DNA og Bounty Board' },
           { href: '/utvikling/treningsomrader', label: 'Treningsområder', icon: 'TargetIcon', description: 'Statistikk per treningsområde' },
+          { href: '/utvikling/peer-sammenligning', label: 'Peer sammenligning', icon: 'StatsIcon', description: 'Sammenlign med lignende spillere' },
           { href: '/utvikling/datagolf', label: 'Verktøy', icon: 'TargetIcon', description: 'Avanserte analyseverktøy' },
           { href: '/utvikling/fremgang', label: 'Fremgangsanalyse', icon: 'StatsIcon', description: 'Analyser din fremgang' },
           { href: '/utvikling/historikk', label: 'Historikk', icon: 'RefreshIcon', description: 'Tidligere resultater' },
@@ -231,6 +238,13 @@ export const playerNavigationV3: NavArea[] = [
           { href: '/plan/ukeplan', label: 'Ukeplan', icon: 'CalendarIcon', description: 'Ukentlig oversikt' },
           { href: '/plan/booking', label: 'Booking', icon: 'CalendarIcon', description: 'Book treningstid' },
           { href: '/samlinger', label: 'Samlinger', icon: 'GolfFlagIcon', description: 'Treningssamlinger' },
+        ],
+      },
+      {
+        id: 'skole',
+        label: 'Skole',
+        items: [
+          { href: '/plan/skole', label: 'Skoleplan', icon: 'CalendarIcon', description: 'Skoletimer, fag og oppgaver' },
         ],
       },
       {
@@ -287,6 +301,7 @@ export const playerNavigationV3: NavArea[] = [
         items: [
           { href: '/mer/kunnskap', label: 'Kunnskapsbase', icon: 'LessonsIcon', description: 'Artikler og guider' },
           { href: '/mer/notater', label: 'Notater', icon: 'ScorecardIcon', description: 'Dine notater' },
+          { href: '/mer/baner-vaer', label: 'Baner & Vær', icon: 'CloudIcon', description: 'Finn beste baner basert på værforhold' },
         ],
       },
       {
@@ -296,6 +311,7 @@ export const playerNavigationV3: NavArea[] = [
           { href: '/mer/innstillinger', label: 'Innstillinger', icon: 'SettingsIcon', description: 'App-innstillinger' },
           { href: '/mer/deling', label: 'Deling', icon: 'ShareIcon', description: 'Delingsinnstillinger' },
           { href: '/mer/kalibrering', label: 'Kalibrering', icon: 'SettingsIcon', description: 'Testkalibrering' },
+          { href: '/mer/support', label: 'Support', icon: 'ChatIcon', description: 'Få hjelp og support' },
         ],
       },
     ],
