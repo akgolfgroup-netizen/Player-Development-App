@@ -53,6 +53,8 @@ const TrenerteamContainer = lazy(() => import('./features/coaches/TrenerteamCont
 const MaalsetningerContainer = lazy(() => import('./features/goals/MaalsetningerContainer'));
 const AarsplanContainer = lazy(() => import('./features/annual-plan/AarsplanContainer'));
 const AarsplanGenerator = lazy(() => import('./features/annual-plan/AarsplanGenerator'));
+const PlayerAnnualPlanWizard = lazy(() => import('./features/player-annual-plan/PlayerAnnualPlanWizard'));
+const PlayerAnnualPlanOverview = lazy(() => import('./features/player-annual-plan/PlayerAnnualPlanOverview'));
 const TestprotokollContainer = lazy(() => import('./features/tests/TestprotokollContainer'));
 const TestresultaterContainer = lazy(() => import('./features/tests/TestresultaterContainer'));
 const TreningsprotokollContainer = lazy(() => import('./features/training/TreningsprotokollContainer'));
@@ -782,7 +784,14 @@ function App() {
           <Route path="/plan/aarsplan" element={
             <ProtectedRoute>
               <PlayerLayout>
-                <AarsplanContainer />
+                <PlayerAnnualPlanOverview />
+              </PlayerLayout>
+            </ProtectedRoute>
+          } />
+          <Route path="/plan/aarsplan/ny" element={
+            <ProtectedRoute>
+              <PlayerLayout>
+                <PlayerAnnualPlanWizard />
               </PlayerLayout>
             </ProtectedRoute>
           } />

@@ -18,6 +18,7 @@ import {
 import { authenticateUser, requireAdmin } from '../../../middleware/auth';
 import { injectTenantContext } from '../../../middleware/tenant';
 import { validate } from '../../../utils/validation';
+import { playerAnnualPlanRoutes } from './annual-plan-routes';
 
 // Convert Zod schemas to JSON Schema once at module level
 
@@ -412,4 +413,7 @@ export async function playerRoutes(app: FastifyInstance): Promise<void> {
       return reply.send({ success: true, data: player });
     }
   );
+
+  // Register player annual plan routes
+  await playerAnnualPlanRoutes(app);
 }
