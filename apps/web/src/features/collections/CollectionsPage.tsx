@@ -221,21 +221,21 @@ const CollectionsPage: React.FC = () => {
                 ) : collection ? (
                   <div>
                     <div className="mb-6 pb-4 border-b border-tier-border-default">
-                      <h2 className="text-xl font-bold text-tier-navy mb-2">{collection.name}</h2>
-                      {collection.description && (
+                      <h2 className="text-xl font-bold text-tier-navy mb-2">{collection?.name || 'Untitled'}</h2>
+                      {collection?.description && (
                         <p className="text-sm text-tier-text-secondary mb-3">{collection.description}</p>
                       )}
                       <div className="flex items-center gap-4 text-sm text-tier-text-secondary">
-                        <span>{collection.items?.length || 0} elementer</span>
-                        <span>Opprettet {new Date(collection.createdAt).toLocaleDateString('no-NO')}</span>
-                        {collection.isPublic && (
+                        <span>{collection?.items?.length || 0} elementer</span>
+                        <span>Opprettet {collection?.createdAt ? new Date(collection.createdAt).toLocaleDateString('no-NO') : 'N/A'}</span>
+                        {collection?.isPublic && (
                           <span className="px-2 py-1 bg-tier-info-light text-tier-info rounded text-xs">Offentlig</span>
                         )}
                       </div>
                     </div>
 
                     {/* Items */}
-                    {collection.items && collection.items.length > 0 ? (
+                    {collection?.items && collection.items.length > 0 ? (
                       <div className="space-y-3">
                         {collection.items.map((item: any) => (
                           <div

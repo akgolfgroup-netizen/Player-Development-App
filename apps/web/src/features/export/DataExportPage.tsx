@@ -99,7 +99,8 @@ const DataExportPage: React.FC = () => {
         <PageHeader
           title="Eksporter data"
           subtitle="Last ned dine data som PDF eller Excel"
-          icon={<Download size={28} className="text-tier-navy" />}
+          helpText=""
+          actions={null}
         />
 
         <div className="grid gap-4">

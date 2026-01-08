@@ -14,6 +14,10 @@ interface Props {
   className?: string;
 }
 
+interface ApproachSkill {
+  insights?: string[];
+}
+
 const DISTANCE_BUCKETS = [
   { range: '50-75y', label: '50-75 yards' },
   { range: '75-100y', label: '75-100 yards' },
@@ -25,7 +29,12 @@ const DISTANCE_BUCKETS = [
 ];
 
 const ApproachSkillBreakdown: React.FC<Props> = ({ playerId, className = '' }) => {
-  const { approachSkill, distanceBuckets, loading, error } = useApproachSkill(playerId);
+  const { approachSkill, distanceBuckets, loading, error } = useApproachSkill(playerId) as {
+    approachSkill: ApproachSkill | null;
+    distanceBuckets: any[];
+    loading: boolean;
+    error: any;
+  };
 
   if (loading) {
     return (

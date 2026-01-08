@@ -16,6 +16,18 @@ import LoadingSpinner from '../../components/LoadingSpinner';
 
 type Tour = 'pga' | 'european' | 'lpga';
 
+interface ComparisonData {
+  stats?: Array<any>;
+  playerData?: any;
+  tourData?: any;
+  [key: string]: any;
+}
+
+interface TourAveragesData {
+  stats?: Array<any>;
+  [key: string]: any;
+}
+
 const TOUR_OPTIONS = [
   { value: 'pga' as Tour, label: 'PGA Tour', icon: '🇺🇸' },
   { value: 'european' as Tour, label: 'DP World Tour', icon: '🇪🇺' },
@@ -33,14 +45,29 @@ const PlayerDataGolfPage: React.FC = () => {
   const [showProSearch, setShowProSearch] = useState(false);
 
   const { comparison, loading: comparisonLoading, error: comparisonError } = useCompareToTour(
-    playerId,
+    (playerId || '') as string,
     selectedTour,
     CURRENT_SEASON
-  );
+  ) as { comparison: ComparisonData | null; loading: boolean; error: any };
 
-  const { averages, loading: averagesLoading } = useTourAverages(selectedTour, CURRENT_SEASON);
+  const { averages, loading: averagesLoading } = useTourAverages(selectedTour, CURRENT_SEASON) as {
+    averages: TourAveragesData | null;
+    loading: boolean;
+  };
 
   const loading = comparisonLoading || averagesLoading;
+
+  if (!playerId) {
+    return (
+      <div className="min-h-screen bg-tier-surface-base p-6">
+        <div className="max-w-2xl mx-auto">
+          <div className="bg-white rounded-xl p-8 text-center">
+            <p className="text-tier-error">Ingen bruker funnet. Vennligst logg inn.</p>
+          </div>
+        </div>
+      </div>
+    );
+  }
 
   // Stats to display
   const stats = comparison?.stats || [];
@@ -50,10 +77,12 @@ const PlayerDataGolfPage: React.FC = () => {
       <div className="max-w-7xl mx-auto">
         {/* Page Header */}
         <div className="mb-6">
-          <PageHeader>Sammenlign med proffspillere</PageHeader>
-          <p className="text-tier-text-secondary mt-2">
-            Se hvordan du måler deg mot tour-gjennomsnitt og spesifikke proffspillere
-          </p>
+          <PageHeader
+            title="Sammenlign med proffspillere"
+            subtitle="Se hvordan du måler deg mot tour-gjennomsnitt og spesifikke proffspillere"
+            helpText=""
+            actions={null}
+          />
         </div>
 
         {/* Tour selector */}
