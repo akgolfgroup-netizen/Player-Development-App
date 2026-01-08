@@ -21,6 +21,7 @@ import { track } from '../../analytics/track';
 import Button from '../../ui/primitives/Button';
 import Input from '../../ui/primitives/Input';
 import { SectionTitle, SubSectionTitle } from '../../components/typography';
+import { PageHeader } from '../../ui/raw-blocks';
 
 // Tailwind classes
 const tw = {
@@ -290,6 +291,18 @@ export function VideoLibraryPage() {
 
   return (
     <div className={tw.container}>
+      <PageHeader
+        title="Videobibliotek"
+        subtitle="Dine golfvideoer for analyse og utvikling"
+        helpText="Oversikt over alle dine videoopptak for golfsvinganalyse. Se ventende videoforespørsler fra trener, last opp nye videoer med kategori (full swing, putting, kortspill) og kameravinkel (face on, down the line, ovenfra, siden). Sammenlign videoer side-ved-side og naviger til videoanalyse. Støtter MP4, MOV, WebM (maks 5 min)."
+        showBackButton={false}
+        actions={
+          <Button variant="primary" onClick={handleUploadClick}>
+            Last opp video
+          </Button>
+        }
+      />
+
       {/* Video Request Notifications */}
       {videoRequests.length > 0 && (
         <div className={tw.requestsBanner}>

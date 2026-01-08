@@ -100,12 +100,12 @@ const DataExportPage = lazy(() => import('../features/export/DataExportPage'));
 const SeasonManagementPage = lazy(() => import('../features/season/SeasonManagementPage'));
 const ArchiveBrowserPage = lazy(() => import('../features/archive/ArchiveBrowserPage'));
 const PaymentManagementPage = lazy(() => import('../features/payments/PaymentManagementPage'));
-const TrackManSyncPage = lazy(() => import('../features/trackman-sync/TrackManSyncPage'));
+// const TrackManSyncPage = lazy(() => import('../features/trackman-sync/TrackManSyncPage')); // TODO: Create this feature
 const FocusEnginePage = lazy(() => import('../features/focus-engine/FocusEnginePage'));
-const PerformanceComparisonsPage = lazy(() => import('../features/comparisons/PerformanceComparisonsPage'));
-const ChatSystemPage = lazy(() => import('../features/chat-system/ChatSystemPage'));
-const FeatureFlagsPage = lazy(() => import('../features/feature-flags/FeatureFlagsPage'));
-const AuditLogPage = lazy(() => import('../features/audit/AuditLogPage'));
+// const PerformanceComparisonsPage = lazy(() => import('../features/comparisons/PerformanceComparisonsPage')); // TODO: Create this feature
+// const ChatSystemPage = lazy(() => import('../features/chat-system/ChatSystemPage')); // TODO: Create this feature
+const FeatureFlagsPage = lazy(() => import('../features/admin-feature-flags').then(m => ({ default: m.AdminFeatureFlagsEditor })));
+const AuditLogPage = lazy(() => import('../features/admin-logs/AuditLogPage'));
 
 // ============================================================
 // Placeholder Component
@@ -229,7 +229,7 @@ export function getPlayerRoutesV3() {
       <Route path="/trening/fokus" element={<SuspenseWrapper><TreningFokus /></SuspenseWrapper>} />
       <Route path="/trening/fokus-motor" element={<SuspenseWrapper><FocusEnginePage /></SuspenseWrapper>} />
       <Route path="/trening/video-annotering" element={<SuspenseWrapper><VideoAnnotation /></SuspenseWrapper>} />
-      <Route path="/trening/trackman-sync" element={<SuspenseWrapper><TrackManSyncPage /></SuspenseWrapper>} />
+      {/* <Route path="/trening/trackman-sync" element={<SuspenseWrapper><TrackManSyncPage /></SuspenseWrapper>} /> */}
 
       {/* Utvikling */}
       <Route path="/utvikling" element={<SuspenseWrapper><UtviklingHub /></SuspenseWrapper>} />
@@ -246,7 +246,7 @@ export function getPlayerRoutesV3() {
       <Route path="/utvikling/innsikter" element={<SuspenseWrapper><PlayerInsightsPage /></SuspenseWrapper>} />
       <Route path="/utvikling/treningsomrader" element={<SuspenseWrapper><UtviklingTreningsomrader /></SuspenseWrapper>} />
       <Route path="/utvikling/peer-sammenligning" element={<SuspenseWrapper><UtviklingPeerComparison /></SuspenseWrapper>} />
-      <Route path="/utvikling/sammenligninger" element={<SuspenseWrapper><PerformanceComparisonsPage /></SuspenseWrapper>} />
+      {/* <Route path="/utvikling/sammenligninger" element={<SuspenseWrapper><PerformanceComparisonsPage /></SuspenseWrapper>} /> */}
       <Route path="/utvikling/rapporter" element={<SuspenseWrapper><ProgressReportsPage /></SuspenseWrapper>} />
 
       {/* Plan */}
@@ -263,6 +263,7 @@ export function getPlayerRoutesV3() {
       <Route path="/plan/sesonger" element={<SuspenseWrapper><SeasonManagementPage /></SuspenseWrapper>} />
       <Route path="/plan/turneringer" element={<SuspenseWrapper><PlanTurneringer /></SuspenseWrapper>} />
       <Route path="/plan/turneringer/mine" element={<SuspenseWrapper><PlanMineTurneringer /></SuspenseWrapper>} />
+      <Route path="/plan/turneringsforberedelse" element={<SuspenseWrapper><TournamentPrepPage /></SuspenseWrapper>} />
       <Route path="/plan/turneringer/prep/:prepId" element={<SuspenseWrapper><TournamentPrepPage /></SuspenseWrapper>} />
 
       {/* Mer */}
@@ -271,6 +272,7 @@ export function getPlayerRoutesV3() {
       <Route path="/mer/profil/rediger" element={<SuspenseWrapper><MerProfilRediger /></SuspenseWrapper>} />
       <Route path="/mer/trenerteam" element={<SuspenseWrapper><MerTrenerteam /></SuspenseWrapper>} />
       <Route path="/mer/meldinger" element={<SuspenseWrapper><MerMeldinger /></SuspenseWrapper>} />
+      {/* <Route path="/mer/chat" element={<SuspenseWrapper><ChatSystemPage /></SuspenseWrapper>} /> */}
       <Route path="/mer/feedback" element={<SuspenseWrapper><MerFeedback /></SuspenseWrapper>} />
       <Route path="/mer/kunnskap" element={<SuspenseWrapper><MerKunnskap /></SuspenseWrapper>} />
       <Route path="/mer/notater" element={<SuspenseWrapper><MerNotater /></SuspenseWrapper>} />
@@ -282,6 +284,8 @@ export function getPlayerRoutesV3() {
       <Route path="/mer/ai-historikk" element={<SuspenseWrapper><AIConversationsHistoryPage /></SuspenseWrapper>} />
       <Route path="/mer/samlinger" element={<SuspenseWrapper><CollectionsPage /></SuspenseWrapper>} />
       <Route path="/mer/admin" element={<SuspenseWrapper><AdminPanelPage /></SuspenseWrapper>} />
+      <Route path="/mer/admin/feature-flags" element={<SuspenseWrapper><FeatureFlagsPage /></SuspenseWrapper>} />
+      <Route path="/mer/admin/audit" element={<SuspenseWrapper><AuditLogPage /></SuspenseWrapper>} />
       <Route path="/mer/eksporter" element={<SuspenseWrapper><DataExportPage /></SuspenseWrapper>} />
       <Route path="/mer/arkiv" element={<SuspenseWrapper><ArchiveBrowserPage /></SuspenseWrapper>} />
       <Route path="/mer/betaling" element={<SuspenseWrapper><PaymentManagementPage /></SuspenseWrapper>} />

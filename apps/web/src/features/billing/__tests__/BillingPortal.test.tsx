@@ -219,8 +219,9 @@ describe('BillingPortal', () => {
         expect(screen.getByText('Overview')).toBeInTheDocument();
       });
 
-      const paymentMethodsTab = screen.getByText('Payment Methods');
-      await user.click(paymentMethodsTab);
+      // Get all "Payment Methods" elements and click the first one (the tab button)
+      const paymentMethodsElements = screen.getAllByText('Payment Methods');
+      await user.click(paymentMethodsElements[0]);
 
       await waitFor(() => {
         expect(screen.getByText(/visa/i)).toBeInTheDocument();
@@ -232,8 +233,8 @@ describe('BillingPortal', () => {
       const user = userEvent.setup();
       renderWithRouter(<BillingPortal />);
 
-      const paymentMethodsTab = await screen.findByText('Payment Methods');
-      await user.click(paymentMethodsTab);
+      const paymentMethodsElements = await screen.findAllByText('Payment Methods');
+      await user.click(paymentMethodsElements[0]);
 
       await waitFor(() => {
         expect(screen.getByText('visa')).toBeInTheDocument();
@@ -247,8 +248,8 @@ describe('BillingPortal', () => {
       const user = userEvent.setup();
       renderWithRouter(<BillingPortal />);
 
-      const paymentMethodsTab = await screen.findByText('Payment Methods');
-      await user.click(paymentMethodsTab);
+      const paymentMethodsElements = await screen.findAllByText('Payment Methods');
+      await user.click(paymentMethodsElements[0]);
 
       await waitFor(() => {
         expect(screen.getByText('Default')).toBeInTheDocument();
@@ -259,8 +260,8 @@ describe('BillingPortal', () => {
       const user = userEvent.setup();
       renderWithRouter(<BillingPortal />);
 
-      const paymentMethodsTab = await screen.findByText('Payment Methods');
-      await user.click(paymentMethodsTab);
+      const paymentMethodsElements = await screen.findAllByText('Payment Methods');
+      await user.click(paymentMethodsElements[0]);
 
       await waitFor(() => {
         expect(screen.getByText('Add Payment Method')).toBeInTheDocument();
@@ -271,8 +272,8 @@ describe('BillingPortal', () => {
       const user = userEvent.setup();
       renderWithRouter(<BillingPortal />);
 
-      const paymentMethodsTab = await screen.findByText('Payment Methods');
-      await user.click(paymentMethodsTab);
+      const paymentMethodsElements = await screen.findAllByText('Payment Methods');
+      await user.click(paymentMethodsElements[0]);
 
       await waitFor(() => {
         expect(screen.getByText(/12\/2025/)).toBeInTheDocument();
@@ -395,8 +396,8 @@ describe('BillingPortal', () => {
       const user = userEvent.setup();
       renderWithRouter(<BillingPortal />);
 
-      const paymentMethodsTab = await screen.findByText('Payment Methods');
-      await user.click(paymentMethodsTab);
+      const paymentMethodsElements = await screen.findAllByText('Payment Methods');
+      await user.click(paymentMethodsElements[0]);
 
       await waitFor(() => {
         expect(screen.getByText(/No payment methods/i)).toBeInTheDocument();
@@ -500,7 +501,8 @@ describe('BillingPortal', () => {
 
       await waitFor(() => {
         expect(screen.getByText('Overview')).toBeInTheDocument();
-        expect(screen.getByText('Payment Methods')).toBeInTheDocument();
+        // Use getAllByText since "Payment Methods" appears both as tab and as heading
+        expect(screen.getAllByText('Payment Methods').length).toBeGreaterThanOrEqual(1);
         expect(screen.getByText('Invoices')).toBeInTheDocument();
       });
     });
@@ -514,10 +516,10 @@ describe('BillingPortal', () => {
         expect(overviewTab).toHaveClass('border-tier-navy');
       });
 
-      const paymentTab = screen.getByText('Payment Methods');
-      await user.click(paymentTab);
+      const paymentTabElements = screen.getAllByText('Payment Methods');
+      await user.click(paymentTabElements[0]);
 
-      expect(paymentTab).toHaveClass('border-tier-navy');
+      expect(paymentTabElements[0]).toHaveClass('border-tier-navy');
     });
   });
 });
