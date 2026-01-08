@@ -151,6 +151,7 @@ export const AuditLogPage: React.FC = () => {
         <Page.Header
           title="Audit-logg"
           subtitle="Spor brukeraktiviteter og systemendringer"
+          helpText="Administrator-side for audit-logging av brukeraktiviteter og systemendringer. Se komplett logg med tidspunkt, bruker, hendelsestype (create/update/delete), ressurs (user/player/coach/session), JSON-detaljer. Filtrer etter hendelsestype, ressurs, bruker, datoperiode. Søk i logg-meldinger. Oppdater for sanntids-visning. Eksporter logg for revisjon. Bruk for sikkerhet, debugging og compliance."
           actions={
             <div className="flex gap-2">
               <Button

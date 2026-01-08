@@ -20,9 +20,11 @@ import React from 'react';
 import { Link } from 'react-router-dom';
 import * as LucideIcons from 'lucide-react';
 import type { NavArea, NavSection } from '../../config/player-navigation-v3';
+import { areaTabsConfig } from '../../config/player-navigation-v3';
 import { navigationColors } from '../../config/navigation-tokens';
 import PageHeader from '../../ui/raw-blocks/PageHeader.raw';
 import PageContainer from '../../ui/raw-blocks/PageContainer.raw';
+import { AreaTabs } from '../navigation/AreaTabs';
 
 const { ChevronRight } = LucideIcons;
 
@@ -48,6 +50,10 @@ interface HubPageProps {
     icon?: string;
     variant?: 'primary' | 'secondary';
   };
+  /** Show area tabs for quick navigation to sub-pages */
+  showTabs?: boolean;
+  /** Custom children to render instead of default sections grid */
+  children?: React.ReactNode;
 }
 
 export default function HubPage({
@@ -57,9 +63,17 @@ export default function HubPage({
   helpText,
   quickStats,
   featuredAction,
+  showTabs = true,
+  children,
 }: HubPageProps) {
   const colors = navigationColors[area.id as keyof typeof navigationColors] || navigationColors.dashboard;
   const AreaIcon = getIcon(area.icon);
+
+  // Get tabs for this area (if any)
+  const tabs = areaTabsConfig[area.id as keyof typeof areaTabsConfig] || [];
+
+  // Map area color to AreaTabs color prop
+  const tabColor = area.color as 'green' | 'blue' | 'amber' | 'purple' | 'default';
 
   return (
     <div className="min-h-screen bg-tier-surface-base">
@@ -72,6 +86,11 @@ export default function HubPage({
 
       {/* Hero Section with Quick Stats */}
       <PageContainer paddingY="lg" background="base">
+        {/* Area Tabs for quick navigation */}
+        {showTabs && tabs.length > 0 && (
+          <AreaTabs tabs={tabs} color={tabColor} className="mb-6" />
+        )}
+
         {/* Hero Card */}
         <div
           className="bg-gradient-to-br from-tier-white to-tier-surface-subtle rounded-2xl p-6 md:p-8 mb-8 border border-tier-border-default shadow-sm"
@@ -162,17 +181,21 @@ export default function HubPage({
           )}
         </div>
 
-        {/* Sections Grid */}
-        {area.sections && area.sections.length > 0 && (
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-            {area.sections.map((section) => (
-              <SectionCard
-                key={section.id}
-                section={section}
-                colors={colors}
-              />
-            ))}
-          </div>
+        {/* Custom children or Sections Grid */}
+        {children ? (
+          children
+        ) : (
+          area.sections && area.sections.length > 0 && (
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+              {area.sections.map((section) => (
+                <SectionCard
+                  key={section.id}
+                  section={section}
+                  colors={colors}
+                />
+              ))}
+            </div>
+          )
         )}
       </PageContainer>
     </div>

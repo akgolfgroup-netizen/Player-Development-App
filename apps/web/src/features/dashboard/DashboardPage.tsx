@@ -78,7 +78,11 @@ const DashboardPage: React.FC = () => {
   // Loading state
   if (isLoading && !data) {
     return (
-      <AppShellTemplate title="Oversikt" subtitle="Velkommen tilbake">
+      <AppShellTemplate
+        title="Oversikt"
+        subtitle="Velkommen tilbake"
+        helpText="Hovedoversikt (dashboard) som viser din treningsstatus og aktivitet. KPI-statistikk med totalt antall økter, fullførte økter denne måneden, kommende økter og nåværende streak. Liste over kommende økter med tidspunkt, tittel, kategori, intensitet og varighet. Liste over nylige økter med dato, kategori, intensitet og evalueringsstatus (venter/fullført). Hurtiglenker til nøkkelfunksjoner (Ny økt, Kalender, Statistikk, Breaking Points). Bruk for å få rask oversikt over treningsstatus og planlegge aktiviteter."
+      >
         <section className="mb-6">
           <StateCard
             variant="info"
@@ -97,6 +101,7 @@ const DashboardPage: React.FC = () => {
     <AppShellTemplate
       title="Oversikt"
       subtitle="Velkommen tilbake"
+      helpText="Hovedoversikt (dashboard) som viser din treningsstatus og aktivitet. KPI-statistikk med totalt antall økter, fullførte økter denne måneden, kommende økter og nåværende streak. Liste over kommende økter med tidspunkt, tittel, kategori, intensitet og varighet. Liste over nylige økter med dato, kategori, intensitet og evalueringsstatus (venter/fullført). Hurtiglenker til nøkkelfunksjoner (Ny økt, Kalender, Statistikk, Breaking Points). Bruk for å få rask oversikt over treningsstatus og planlegge aktiviteter."
       actions={headerActions}
     >
       {/* Error message */}

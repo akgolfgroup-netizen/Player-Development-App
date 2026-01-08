@@ -193,6 +193,7 @@ const PlayerCalendarPage: React.FC = () => {
           view={view as CalendarView}
           title={getTitle()}
           subtitle={getSubtitle()}
+          helpText="Spiller-kalender med oversikt over dine økter og aktiviteter. Viser alle planlagte treningsøkter, turneringer og golfaktiviteter. Bytt mellom Dag-, Uke-, Måned- og År-visning for ulik detaljgrad. Naviger med forrige/neste eller hopp til i dag. Klikk 'Ny økt' for å legge til ny treningsøkt. Klikk på økt for å se detaljer, notater, øvelser og evaluering. Mini-kalender i sidebar for rask navigasjon og oversikt. Bruk for å holde styr på treningsprogram og kommende aktiviteter."
           onPrev={goToPrev}
           onNext={goToNext}
           onToday={goToToday}
@@ -245,6 +246,7 @@ const PlayerCalendarPage: React.FC = () => {
         view={view as CalendarView}
         title={getTitle()}
         subtitle={getSubtitle()}
+        helpText="Spiller-kalender med oversikt over dine økter og aktiviteter. Viser alle planlagte treningsøkter, turneringer og golfaktiviteter. Bytt mellom Dag-, Uke-, Måned- og År-visning for ulik detaljgrad. Naviger med forrige/neste eller hopp til i dag. Klikk 'Ny økt' for å legge til ny treningsøkt. Klikk på økt for å se detaljer, notater, øvelser og evaluering. Mini-kalender i sidebar for rask navigasjon og oversikt. Bruk for å holde styr på treningsprogram og kommende aktiviteter."
         onPrev={goToPrev}
         onNext={goToNext}
         onToday={goToToday}

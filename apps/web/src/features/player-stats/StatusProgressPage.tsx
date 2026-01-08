@@ -283,7 +283,11 @@ const StatusProgressPage: React.FC = () => {
 
   if (isLoading) {
     return (
-      <AppShellTemplate title="Status & Mål" subtitle="Din progresjon mot målsetningene">
+      <AppShellTemplate
+        title="Status & Mål"
+        subtitle="Din progresjon mot målsetningene"
+        helpText="Cockpit-visning for din progresjon mot målsetninger med fokus på Breaking Points. KPI-dashboard viser gjennomsnittlig fremgang mot mål, innsats-score (treningsgjennomføring), SG-trend og antall løste Breaking Points. Viktig: Innsats (fullførte økter) vs Fremgang (faktisk forbedring via tester) - høy innsats uten fremgang betyr at treningsmetoden bør evalueres. Liste over aktive Breaking Points med severity-indikator, status (identifisert/pågår/venter bekreftelse/løst/tilbakefall), innsats- og fremgangsbar, og neste benchmark-dato. SG-oversikt og hurtiglenker til målsetninger og fremgangshistorikk. Bruk for å få helhetlig oversikt over din status."
+      >
         <section style={styles.section}>
           <StateCard
             variant="loading"
@@ -297,7 +301,11 @@ const StatusProgressPage: React.FC = () => {
 
   if (bpError && !bpData) {
     return (
-      <AppShellTemplate title="Status & Mål" subtitle="Din progresjon mot målsetningene">
+      <AppShellTemplate
+        title="Status & Mål"
+        subtitle="Din progresjon mot målsetningene"
+        helpText="Cockpit-visning for din progresjon mot målsetninger med fokus på Breaking Points. KPI-dashboard viser gjennomsnittlig fremgang mot mål, innsats-score (treningsgjennomføring), SG-trend og antall løste Breaking Points. Viktig: Innsats (fullførte økter) vs Fremgang (faktisk forbedring via tester) - høy innsats uten fremgang betyr at treningsmetoden bør evalueres. Liste over aktive Breaking Points med severity-indikator, status (identifisert/pågår/venter bekreftelse/løst/tilbakefall), innsats- og fremgangsbar, og neste benchmark-dato. SG-oversikt og hurtiglenker til målsetninger og fremgangshistorikk. Bruk for å få helhetlig oversikt over din status."
+      >
         <section style={styles.section}>
           <StateCard
             variant="error"
@@ -318,6 +326,7 @@ const StatusProgressPage: React.FC = () => {
     <AppShellTemplate
       title="Status & Mål"
       subtitle="Din progresjon mot målsetningene"
+      helpText="Cockpit-visning for din progresjon mot målsetninger med fokus på Breaking Points. KPI-dashboard viser gjennomsnittlig fremgang mot mål, innsats-score (treningsgjennomføring), SG-trend og antall løste Breaking Points. Viktig: Innsats (fullførte økter) vs Fremgang (faktisk forbedring via tester) - høy innsats uten fremgang betyr at treningsmetoden bør evalueres. Liste over aktive Breaking Points med severity-indikator, status (identifisert/pågår/venter bekreftelse/løst/tilbakefall), innsats- og fremgangsbar, og neste benchmark-dato. SG-oversikt og hurtiglenker til målsetninger og fremgangshistorikk. Bruk for å få helhetlig oversikt over din status."
       actions={
         <Button
           variant="ghost"

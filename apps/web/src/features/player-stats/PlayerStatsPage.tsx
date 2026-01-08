@@ -88,7 +88,7 @@ const PlayerStatsPage: React.FC = () => {
       <AppShellTemplate
         title="Statistikk"
         subtitle="Din spillstatistikk"
-        
+        helpText="Spiller-statistikk med Strokes Gained-analyse. Dashboard som viser din nåværende golf-prestasjon med Total SG, SG Approach, SG Around Green og SG Putting. Visualisert med radarchart for rask oversikt over styrker og svakheter. Trendindikator for siste uke. Detaljerte kategorikort med SG-verdi, persentil mot referanse (PGA/Euro/Korn Ferry), og trend. Navigasjon til Strokes Gained-side for full analyse, Benchmark-side for sammenligning med PGA Tour, og Testresultater-side for all testhistorikk. Bruk for å få helhetlig oversikt over din golf-prestasjon."
       >
         <section style={styles.section}>
           <StateCard
@@ -106,7 +106,7 @@ const PlayerStatsPage: React.FC = () => {
       <AppShellTemplate
         title="Statistikk"
         subtitle="Din spillstatistikk"
-        
+        helpText="Spiller-statistikk med Strokes Gained-analyse. Dashboard som viser din nåværende golf-prestasjon med Total SG, SG Approach, SG Around Green og SG Putting. Visualisert med radarchart for rask oversikt over styrker og svakheter. Trendindikator for siste uke. Detaljerte kategorikort med SG-verdi, persentil mot referanse (PGA/Euro/Korn Ferry), og trend. Navigasjon til Strokes Gained-side for full analyse, Benchmark-side for sammenligning med PGA Tour, og Testresultater-side for all testhistorikk. Bruk for å få helhetlig oversikt over din golf-prestasjon."
       >
         <section style={styles.section}>
           <StateCard
@@ -128,7 +128,7 @@ const PlayerStatsPage: React.FC = () => {
     <AppShellTemplate
       title="Statistikk"
       subtitle="Din spillstatistikk og Strokes Gained"
-      
+      helpText="Spiller-statistikk med Strokes Gained-analyse. Dashboard som viser din nåværende golf-prestasjon med Total SG, SG Approach, SG Around Green og SG Putting. Visualisert med radarchart for rask oversikt over styrker og svakheter. Trendindikator for siste uke. Detaljerte kategorikort med SG-verdi, persentil mot referanse (PGA/Euro/Korn Ferry), og trend. Navigasjon til Strokes Gained-side for full analyse, Benchmark-side for sammenligning med PGA Tour, og Testresultater-side for all testhistorikk. Bruk for å få helhetlig oversikt over din golf-prestasjon."
     >
       {/* Demo banner */}
       {sgData?.isDemo && (

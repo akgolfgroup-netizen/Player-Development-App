@@ -168,7 +168,7 @@ const StrokesGainedPage: React.FC = () => {
     <AppShellTemplate
       title="Strokes Gained"
       subtitle="Detaljert analyse og sammenligning"
-      
+      helpText="Strokes Gained-analyse som viser hvor mange slag du tjener eller taper mot referansespillere (PGA Tour, European Tour, Korn Ferry). Detaljert nedbrytning per kategori: Approach (inn mot green), Around Green (kort spill), Putting. Se total SG, trend, persentil, sammenligning med touraverage og PGA Elite. Graf over ukentlig utvikling og liste over siste tester. Bruk for å identifisere styrker og svakheter."
     >
       {/* Info Banner */}
       <section style={styles.section}>

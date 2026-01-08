@@ -1,4 +1,6 @@
 import React, { lazy, Suspense } from 'react';
+import { HelpCircle } from 'lucide-react';
+import * as Tooltip from '@radix-ui/react-tooltip';
 import ThemeSwitcher from '../composites/ThemeSwitcher';
 import { PageTitle } from '../../components/typography';
 
@@ -19,6 +21,8 @@ interface AppShellTemplateProps {
   title?: string;
   /** Optional subtitle displayed below title */
   subtitle?: string;
+  /** Optional help text displayed in tooltip */
+  helpText?: string;
   /** Action buttons or controls displayed on the right side of header */
   actions?: React.ReactNode;
   /** Main content area */
@@ -34,6 +38,7 @@ interface AppShellTemplateProps {
 const AppShellTemplate: React.FC<AppShellTemplateProps> = ({
   title,
   subtitle,
+  helpText,
   actions,
   children,
   bottomNav,
@@ -49,7 +54,63 @@ const AppShellTemplate: React.FC<AppShellTemplateProps> = ({
         <header style={styles.header}>
           <div style={styles.headerContent}>
             <div style={styles.headerTitles}>
-              {title && <PageTitle style={styles.title}>{title}</PageTitle>}
+              {title && (
+                <div style={{ display: 'flex', alignItems: 'center', gap: 'var(--spacing-2)' }}>
+                  <PageTitle style={styles.title}>{title}</PageTitle>
+                  {helpText && (
+                    <Tooltip.Provider delayDuration={200}>
+                      <Tooltip.Root>
+                        <Tooltip.Trigger asChild>
+                          <button
+                            type="button"
+                            style={{
+                              display: 'inline-flex',
+                              alignItems: 'center',
+                              justifyContent: 'center',
+                              width: '20px',
+                              height: '20px',
+                              padding: 0,
+                              border: 'none',
+                              background: 'none',
+                              cursor: 'help',
+                              color: 'var(--text-tertiary)',
+                              transition: 'color 0.2s',
+                            }}
+                            onMouseEnter={(e) => e.currentTarget.style.color = 'var(--text-secondary)'}
+                            onMouseLeave={(e) => e.currentTarget.style.color = 'var(--text-tertiary)'}
+                          >
+                            <HelpCircle size={16} />
+                          </button>
+                        </Tooltip.Trigger>
+                        <Tooltip.Portal>
+                          <Tooltip.Content
+                            style={{
+                              maxWidth: '320px',
+                              padding: '12px 16px',
+                              backgroundColor: 'var(--background-elevated)',
+                              border: '1px solid var(--border-default)',
+                              borderRadius: 'var(--radius-md)',
+                              boxShadow: '0 4px 12px rgba(0, 0, 0, 0.15)',
+                              fontSize: '13px',
+                              lineHeight: '1.5',
+                              color: 'var(--text-primary)',
+                              zIndex: 9999,
+                            }}
+                            sideOffset={5}
+                          >
+                            {helpText}
+                            <Tooltip.Arrow
+                              style={{
+                                fill: 'var(--border-default)',
+                              }}
+                            />
+                          </Tooltip.Content>
+                        </Tooltip.Portal>
+                      </Tooltip.Root>
+                    </Tooltip.Provider>
+                  )}
+                </div>
+              )}
               {subtitle && <p style={styles.subtitle}>{subtitle}</p>}
             </div>
             {(actions || showThemeSwitcher) && (

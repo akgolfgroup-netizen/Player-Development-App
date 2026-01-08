@@ -13,6 +13,7 @@ export const NotificationSettingsPage: React.FC = () => {
       <Page.Header
         title="Varselinnstillinger"
         subtitle="Konfigurer systemvarsler"
+        helpText="Administrator-side for konfigurasjon av varselsystem. Administrer e-post-varsler, push-varsler og in-app varsler. Sett opp varselmaler for ulike hendelser (ny booking, testresultat, påminnelse, oppnåelse). Konfigurer varseltidspunkt, frekvens og prioritet. Angi globale innstillinger og brukerpreferanser. Velg varselkanaler per hendelsetype. Bruk for å sikre riktig kommunikasjon med spillere og trenere."
       />
 
       <Page.Content>

@@ -14,7 +14,8 @@
  */
 
 import React from 'react';
-import { ChevronLeft, ChevronRight, Plus } from 'lucide-react';
+import { ChevronLeft, ChevronRight, Plus, HelpCircle } from 'lucide-react';
+import * as Tooltip from '@radix-ui/react-tooltip';
 import type { CalendarView } from '../hooks/useCalendarState';
 import { SectionTitle } from '../../../components/typography';
 import { InfoTooltip } from '../../../components/InfoTooltip';
@@ -24,6 +25,7 @@ interface CalendarHeaderProps {
   monthName: string;
   year: number;
   weekNumber: number;
+  helpText?: string;
   onViewChange: (view: CalendarView) => void;
   onToday: () => void;
   onPrev: () => void;
@@ -43,6 +45,7 @@ export const CalendarHeader: React.FC<CalendarHeaderProps> = ({
   monthName,
   year,
   weekNumber,
+  helpText,
   onViewChange,
   onToday,
   onPrev,
@@ -88,9 +91,34 @@ export const CalendarHeader: React.FC<CalendarHeaderProps> = ({
         </div>
 
         {/* Title */}
-        <SectionTitle className="text-lg font-semibold capitalize text-tier-navy">
-          {getViewLabel()}
-        </SectionTitle>
+        <div className="flex items-center gap-2">
+          <SectionTitle className="text-lg font-semibold capitalize text-tier-navy">
+            {getViewLabel()}
+          </SectionTitle>
+          {helpText && (
+            <Tooltip.Provider delayDuration={200}>
+              <Tooltip.Root>
+                <Tooltip.Trigger asChild>
+                  <button
+                    type="button"
+                    className="inline-flex items-center justify-center w-5 h-5 p-0 border-0 bg-transparent cursor-help text-tier-text-tertiary hover:text-tier-text-secondary transition-colors"
+                  >
+                    <HelpCircle size={16} />
+                  </button>
+                </Tooltip.Trigger>
+                <Tooltip.Portal>
+                  <Tooltip.Content
+                    className="max-w-[320px] px-4 py-3 bg-tier-white border border-tier-border-default rounded-lg shadow-lg text-[13px] leading-relaxed text-tier-navy z-[9999]"
+                    sideOffset={5}
+                  >
+                    {helpText}
+                    <Tooltip.Arrow className="fill-tier-border-default" />
+                  </Tooltip.Content>
+                </Tooltip.Portal>
+              </Tooltip.Root>
+            </Tooltip.Provider>
+          )}
+        </div>
 
         {/* Week number badge (only for week view) */}
         {view === 'week' && (

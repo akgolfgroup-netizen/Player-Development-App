@@ -90,7 +90,11 @@ const BenchmarkPage: React.FC = () => {
 
   if (loading) {
     return (
-      <AppShellTemplate title="Benchmark" subtitle="Sammenlign med de beste">
+      <AppShellTemplate
+        title="Benchmark"
+        subtitle="Sammenlign med de beste"
+        helpText="Benchmark-analyse som sammenligner din prestasjon mot PGA Tour-profesjonelle og verdens beste amatører (WAGR). Se din posisjon relativt til Tour Average, Top 50 og Top 10. Detaljert kategori-sammenligning for Approach, Putting og Around Green med gap-analyse. Approach-breakdown per avstand (50-200m) fra både fairway og rough med SG, proksimitet og GIR-prosent. Se topp 5 PGA Tour-spillere med totalt SG og turneringsstatistikk. WAGR-rangeringer for menn og kvinner med poeng og trendbevegelse. Bruk for å forstå hvor du ligger an mot de beste og identifisere målsettinger."
+      >
         <StateCard
           variant="loading"
           title="Laster benchmark-data..."
@@ -102,7 +106,11 @@ const BenchmarkPage: React.FC = () => {
 
   if (error) {
     return (
-      <AppShellTemplate title="Benchmark" subtitle="Sammenlign med de beste">
+      <AppShellTemplate
+        title="Benchmark"
+        subtitle="Sammenlign med de beste"
+        helpText="Benchmark-analyse som sammenligner din prestasjon mot PGA Tour-profesjonelle og verdens beste amatører (WAGR). Se din posisjon relativt til Tour Average, Top 50 og Top 10. Detaljert kategori-sammenligning for Approach, Putting og Around Green med gap-analyse. Approach-breakdown per avstand (50-200m) fra både fairway og rough med SG, proksimitet og GIR-prosent. Se topp 5 PGA Tour-spillere med totalt SG og turneringsstatistikk. WAGR-rangeringer for menn og kvinner med poeng og trendbevegelse. Bruk for å forstå hvor du ligger an mot de beste og identifisere målsettinger."
+      >
         <StateCard
           variant="error"
           title="Kunne ikke laste data"
@@ -113,7 +121,11 @@ const BenchmarkPage: React.FC = () => {
   }
 
   return (
-    <AppShellTemplate title="Benchmark" subtitle="Sammenlign med de beste">
+    <AppShellTemplate
+      title="Benchmark"
+      subtitle="Sammenlign med de beste"
+      helpText="Benchmark-analyse som sammenligner din prestasjon mot PGA Tour-profesjonelle og verdens beste amatører (WAGR). Se din posisjon relativt til Tour Average, Top 50 og Top 10. Detaljert kategori-sammenligning for Approach, Putting og Around Green med gap-analyse. Approach-breakdown per avstand (50-200m) fra både fairway og rough med SG, proksimitet og GIR-prosent. Se topp 5 PGA Tour-spillere med totalt SG og turneringsstatistikk. WAGR-rangeringer for menn og kvinner med poeng og trendbevegelse. Bruk for å forstå hvor du ligger an mot de beste og identifisere målsettinger."
+    >
       {/* Hero Section - Your Current Position */}
       <section style={styles.section}>
         <Card variant="elevated" padding="spacious">

@@ -15,7 +15,8 @@
 
 import React, { Fragment } from 'react';
 import { Menu, MenuButton, MenuItem, MenuItems, Transition } from '@headlessui/react';
-import { ChevronLeft, ChevronRight, ChevronDown, MoreHorizontal, Plus } from 'lucide-react';
+import { ChevronLeft, ChevronRight, ChevronDown, MoreHorizontal, Plus, HelpCircle } from 'lucide-react';
+import * as Tooltip from '@radix-ui/react-tooltip';
 import clsx from 'clsx';
 
 export type CalendarView = 'day' | 'week' | 'month' | 'year';
@@ -27,6 +28,8 @@ interface CalendarHeaderProps {
   title: string;
   /** Subtitle (optional, e.g., "Lørdag" for day view) */
   subtitle?: string;
+  /** Optional help text displayed in tooltip */
+  helpText?: string;
   /** Navigate to previous period */
   onPrev: () => void;
   /** Navigate to next period */
@@ -59,6 +62,7 @@ export const CalendarHeader: React.FC<CalendarHeaderProps> = ({
   view,
   title,
   subtitle,
+  helpText,
   onPrev,
   onNext,
   onToday,
@@ -70,9 +74,34 @@ export const CalendarHeader: React.FC<CalendarHeaderProps> = ({
     <header className="flex flex-none items-center justify-between border-b border-tier-border-default px-6 py-4 bg-tier-white">
       {/* Left: Title */}
       <div>
-        <h1 className="text-base font-semibold text-tier-navy">
-          <time>{title}</time>
-        </h1>
+        <div className="flex items-center gap-2">
+          <h1 className="text-base font-semibold text-tier-navy">
+            <time>{title}</time>
+          </h1>
+          {helpText && (
+            <Tooltip.Provider delayDuration={200}>
+              <Tooltip.Root>
+                <Tooltip.Trigger asChild>
+                  <button
+                    type="button"
+                    className="inline-flex items-center justify-center w-5 h-5 p-0 border-0 bg-transparent cursor-help text-tier-text-tertiary hover:text-tier-text-secondary transition-colors"
+                  >
+                    <HelpCircle size={16} />
+                  </button>
+                </Tooltip.Trigger>
+                <Tooltip.Portal>
+                  <Tooltip.Content
+                    className="max-w-[320px] px-4 py-3 bg-tier-white border border-tier-border-default rounded-lg shadow-lg text-[13px] leading-relaxed text-tier-navy z-[9999]"
+                    sideOffset={5}
+                  >
+                    {helpText}
+                    <Tooltip.Arrow className="fill-tier-border-default" />
+                  </Tooltip.Content>
+                </Tooltip.Portal>
+              </Tooltip.Root>
+            </Tooltip.Provider>
+          )}
+        </div>
         {subtitle && (
           <p className="mt-1 text-sm text-tier-text-tertiary">{subtitle}</p>
         )}

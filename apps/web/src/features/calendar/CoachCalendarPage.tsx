@@ -604,6 +604,7 @@ export default function CoachCalendarPage() {
             view={view}
             title={title}
             subtitle={subtitle}
+            helpText="Trener-kalender med booking-administrasjon. Viser dine bookede økter med spillere inkludert navn, tidspunkt, økttype (video, fysisk, fjern) og notater. Sidebar med mini-kalender og ventende booking-forespørsler som kan godkjennes eller avslås. Bytt mellom Dag-, Uke-, Måned- og År-visning. Naviger med forrige/neste eller hopp til i dag. Klikk på økt for å se spillerdetaljer, notater og handlinger. Legg til tilgjengelighet for å åpne for nye bookinger. Støtter både desktop og mobil med responsiv layout."
             onPrev={handlePrev}
             onNext={handleNext}
             onToday={handleToday}

@@ -13,6 +13,7 @@ export const TestConfigPage: React.FC = () => {
       <Page.Header
         title="Testkonfigurasjon"
         subtitle="Administrer testtyper og parametre"
+        helpText="Administrator-side for testsystem-konfigurasjon. Administrer alle testtyper som er tilgjengelige i systemet. Sett opp testparametre: navn, kategori (Approach/Putting/Rundt green), måletype og enhet (meter/prosent/SG), krav for bestått, om lavere er bedre, og beskrivelse. Konfigurer grenseverdier for ulike nivåer (begynner/mellomnivå/avansert). Legg til/rediger/deaktiver tester. Definer teststrukturer for nivåkrav og merker. Bruk for å tilpasse testsystemet til akademiets behov."
       />
 
       <Page.Content>

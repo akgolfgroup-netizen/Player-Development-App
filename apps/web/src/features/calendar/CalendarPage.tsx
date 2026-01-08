@@ -231,6 +231,7 @@ const CalendarPage: React.FC = () => {
           monthName={monthName}
           year={year}
           weekNumber={weekNumber}
+          helpText="Kalender med multi-visning (Dag/Uke/Måned/År). Oversikt over alle dine planlagte økter, turneringer og andre golfaktiviteter. Naviger mellom perioder med forrige/neste eller hopp til i dag. Bytt mellom DAG-visning (detaljert timeplan), UKE-visning (7-dagers oversikt), MÅNED-visning (hele månedens aktiviteter), og ÅR-visning (årsoversikt med treningsfordeling). Klikk 'Ny økt' for å planlegge treningsøkt med TIER treningsformelen. Klikk på økt for detaljer og redigering. Bruk for å planlegge og holde oversikt over treningsprogram."
           onViewChange={setView}
           onToday={handleGoToToday}
           onPrev={goToPrev}
@@ -301,6 +302,7 @@ const CalendarPage: React.FC = () => {
         monthName={monthName}
         year={year}
         weekNumber={weekNumber}
+        helpText="Kalender med multi-visning (Dag/Uke/Måned/År). Oversikt over alle dine planlagte økter, turneringer og andre golfaktiviteter. Naviger mellom perioder med forrige/neste eller hopp til i dag. Bytt mellom DAG-visning (detaljert timeplan), UKE-visning (7-dagers oversikt), MÅNED-visning (hele månedens aktiviteter), og ÅR-visning (årsoversikt med treningsfordeling). Klikk 'Ny økt' for å planlegge treningsøkt med TIER treningsformelen. Klikk på økt for detaljer og redigering. Bruk for å planlegge og holde oversikt over treningsprogram."
         onViewChange={setView}
         onToday={handleGoToToday}
         onPrev={goToPrev}

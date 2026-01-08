@@ -161,7 +161,7 @@ const TestResultsPage: React.FC = () => {
       <AppShellTemplate
         title="Testresultater"
         subtitle="Alle dine resultater"
-        
+        helpText="Fullstendig oversikt over alle dine testresultater. Se statistikk for totalt antall tester, bestått-prosent og antall forbedringer. Søk etter tester eller filtrer på kategori (Approach, Putting, Rundt green osv). Sorter etter dato, navn eller resultat. Hver test viser testnummer, navn, dato, resultat-verdi med enhet, krav, fremgangsindikator, bestått/ikke bestått-status og sammenligning med forrige resultat. Bruk for å se total testhistorikk og spore utvikling over tid."
       >
         <section style={styles.section}>
           <StateCard
@@ -178,7 +178,7 @@ const TestResultsPage: React.FC = () => {
     <AppShellTemplate
       title="Testresultater"
       subtitle="Fullstendig oversikt"
-      
+      helpText="Fullstendig oversikt over alle dine testresultater. Se statistikk for totalt antall tester, bestått-prosent og antall forbedringer. Søk etter tester eller filtrer på kategori (Approach, Putting, Rundt green osv). Sorter etter dato, navn eller resultat. Hver test viser testnummer, navn, dato, resultat-verdi med enhet, krav, fremgangsindikator, bestått/ikke bestått-status og sammenligning med forrige resultat. Bruk for å se total testhistorikk og spore utvikling over tid."
     >
       {/* Stats Overview */}
       <section style={styles.section}>

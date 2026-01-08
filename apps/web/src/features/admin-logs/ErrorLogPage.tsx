@@ -13,6 +13,7 @@ export const ErrorLogPage: React.FC = () => {
       <Page.Header
         title="Feillogg"
         subtitle="Systemfeil og advarsler"
+        helpText="Administrator-side for systemfeillogg. Se alle registrerte feil og advarsler fra backend med tidspunkt, alvorlighetsgrad (error/warning/info), melding, stack trace, kontekst (request URL, user, session). Filtrer etter dato, alvorlighetsgrad, feiltype. Søk i feilmeldinger. Eksporter logg for analyse. Bruk for debugging, feilsøking og overvåking av systemhelse."
       />
 
       <Page.Content>
