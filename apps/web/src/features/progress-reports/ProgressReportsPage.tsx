@@ -5,14 +5,16 @@
 
 import React, { useState } from 'react';
 import { FileText, Calendar, Award, TrendingUp, CheckCircle } from 'lucide-react';
-import { PageHeader } from '../../components/typography';
+import { PageHeader } from '../../components/layout/PageHeader';
 import { useProgressReports } from '../../hooks/useProgressReports';
-import { usePlayer } from '../../hooks/usePlayer';
+import { useAuth } from '../../contexts/AuthContext';
 
 const ProgressReportsPage: React.FC = () => {
-  const { player } = usePlayer();
+  const { user } = useAuth();
+  const player = user;
   const { reports, loading, error } = useProgressReports({
-    playerId: player?.id,
+    playerId: (player?.id || player?.playerId || '') as string,
+    coachId: '', // Not filtering by coach for player view
     status: 'published' // Only show published reports to players
   });
   const [selectedReport, setSelectedReport] = useState<any>(null);
@@ -252,15 +254,12 @@ const ProgressReportsPage: React.FC = () => {
     <div className="min-h-screen bg-tier-surface-base p-6">
       <div className="max-w-7xl mx-auto">
         {/* Header */}
-        <div className="mb-6">
-          <div className="flex items-center gap-3 mb-2">
-            <FileText size={28} className="text-tier-info" />
-            <PageHeader className="mb-0">Fremdriftsrapporter</PageHeader>
-          </div>
-          <p className="text-tier-text-secondary">
-            Oversikt over dine fremdriftsrapporter fra trener
-          </p>
-        </div>
+        <PageHeader
+          title="Fremdriftsrapporter"
+          subtitle="Oversikt over dine fremdriftsrapporter fra trener"
+          helpText=""
+          actions={null}
+        />
 
         {/* Reports Grid */}
         {reports.length > 0 ? (

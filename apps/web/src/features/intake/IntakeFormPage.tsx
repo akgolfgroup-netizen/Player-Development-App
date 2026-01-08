@@ -49,7 +49,7 @@ const IntakeFormPage: React.FC = () => {
   const navigate = useNavigate();
   const playerId = user?.playerId;
 
-  const { intake, loading: loadingIntake, submitIntake, submitting } = useIntake(playerId);
+  const { intake, loading: loadingIntake, fetchIntake, submitIntake, submitting } = useIntake();
 
   const [currentStepIndex, setCurrentStepIndex] = useState(0);
   const [formData, setFormData] = useState<IntakeFormData>({});
@@ -58,7 +58,14 @@ const IntakeFormPage: React.FC = () => {
 
   const currentStep = STEPS[currentStepIndex];
 
-  // Load existing intake data
+  // Load existing intake data on mount
+  useEffect(() => {
+    if (playerId) {
+      fetchIntake(playerId);
+    }
+  }, [playerId, fetchIntake]);
+
+  // Update form data when intake loads
   useEffect(() => {
     if (intake) {
       setFormData({
@@ -106,7 +113,8 @@ const IntakeFormPage: React.FC = () => {
     if (!playerId) return;
 
     try {
-      const result = await submitIntake(formData);
+      const result = await submitIntake(playerId, formData);
+      if (!result) return;
       setCompletionPercentage(result.completionPercentage || 0);
 
       if (isFinalSubmit && result.isComplete) {

@@ -45,7 +45,8 @@ const VideoComparisonPage: React.FC = () => {
         <PageHeader
           title="Video Sammenligning"
           subtitle="Sammenlign videoer side-ved-side med synkronisert avspilling"
-          icon={<Play size={28} className="text-tier-navy" />}
+          helpText=""
+          actions={null}
         />
 
         <div className="mb-6">
@@ -277,7 +278,7 @@ interface CreateComparisonModalProps {
 
 const CreateComparisonModal: React.FC<CreateComparisonModalProps> = ({ onClose, onSuccess }) => {
   const { createComparison, loading } = useCreateVideoComparison();
-  const { videos } = usePlayerVideos({}, { autoLoad: true });
+  const { videos } = usePlayerVideos({});
 
   const [formData, setFormData] = useState({
     primaryVideoId: '',

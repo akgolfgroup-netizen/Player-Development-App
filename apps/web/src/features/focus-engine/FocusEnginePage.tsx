@@ -18,8 +18,20 @@ const FocusEnginePage: React.FC = () => {
   const playerId = user?.playerId || user?.id;
   const [showSelector, setShowSelector] = useState(false);
 
-  const { recommendations, summary, loading, error, refetch } = useFocusRecommendations(playerId);
+  const { recommendations, summary, loading, error, refetch } = useFocusRecommendations((playerId || '') as string);
   const { updatePriorities, loading: updating } = useUpdateFocusPriorities();
+
+  if (!playerId) {
+    return (
+      <div className="min-h-screen bg-tier-surface-base p-6">
+        <div className="max-w-2xl mx-auto">
+          <div className="bg-white rounded-xl p-8 text-center">
+            <p className="text-tier-error">Ingen bruker funnet. Vennligst logg inn.</p>
+          </div>
+        </div>
+      </div>
+    );
+  }
 
   const handleStartTraining = (recommendation: any) => {
     // Navigate to training for this focus area

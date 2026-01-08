@@ -50,7 +50,7 @@ export const TrainingAreaPerformancePage: React.FC = () => {
         title="Treningsområdeprestasjoner"
         subtitle="Spor fremgang på spesifikke treningsområder"
         helpText="Oversikt over prestasjoner og fremgang for ulike treningsområder (chipping, putting, driving, osv.). Logg nye økter med prestasjonsmålinger, se historikk, trender og sammenlign resultater over tid. Bruk pluss-knappen for å registrere ny økt."
-        showBackButton={false}
+        actions={null}
       />
       {/* Floating Action Button */}
       <button

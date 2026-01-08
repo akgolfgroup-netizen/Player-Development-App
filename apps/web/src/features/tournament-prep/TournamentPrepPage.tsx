@@ -60,25 +60,21 @@ const TournamentPrepPage: React.FC = () => {
     <div className="min-h-screen bg-tier-surface-base p-6">
       <div className="max-w-6xl mx-auto">
         {/* Header */}
-        <div className="mb-6">
-          <div className="flex items-center gap-3 mb-2">
-            <Trophy size={28} className="text-tier-warning" />
-            <PageHeader className="mb-0">
-              {selectedPrep?.tournament?.name || 'Turneringsforberedelse'}
-            </PageHeader>
-          </div>
-          {selectedPrep?.tournament && (
-            <p className="text-tier-text-secondary">
-              {new Date(selectedPrep.tournament.date).toLocaleDateString('nb-NO', {
-                weekday: 'long',
-                year: 'numeric',
-                month: 'long',
-                day: 'numeric',
-              })}
-              {selectedPrep.tournament.location && ` • ${selectedPrep.tournament.location}`}
-            </p>
-          )}
-        </div>
+        <PageHeader
+          title={selectedPrep?.tournament?.name || 'Turneringsforberedelse'}
+          subtitle={
+            selectedPrep?.tournament
+              ? `${new Date(selectedPrep.tournament.date).toLocaleDateString('nb-NO', {
+                  weekday: 'long',
+                  year: 'numeric',
+                  month: 'long',
+                  day: 'numeric',
+                })}${selectedPrep.tournament.location ? ` • ${selectedPrep.tournament.location}` : ''}`
+              : ''
+          }
+          helpText=""
+          actions={null}
+        />
 
         {/* Tabs */}
         <div className="bg-white rounded-xl border border-tier-border-default mb-6">
@@ -103,21 +99,25 @@ const TournamentPrepPage: React.FC = () => {
         {/* Tab Content */}
         <div>
           {activeTab === 'overview' && selectedPrep && (
-            <TournamentPrepDashboard prep={selectedPrep} />
+            <TournamentPrepDashboard {...{ prep: selectedPrep } as any} />
           )}
 
           {activeTab === 'strategy' && selectedPrep && (
             <CourseStrategyBuilder
-              prepId={selectedPrep.id}
-              courseStrategies={selectedPrep.courseStrategies || []}
+              {...{
+                prepId: selectedPrep.id,
+                courseStrategies: selectedPrep.courseStrategies || [],
+              } as any}
             />
           )}
 
           {activeTab === 'checklist' && selectedPrep && (
             <PreTournamentChecklist
-              prepId={selectedPrep.id}
-              checklistItems={selectedPrep.checklistItems || { items: [] }}
-              checklistProgress={selectedPrep.checklistProgress || 0}
+              {...{
+                prepId: selectedPrep.id,
+                checklistItems: selectedPrep.checklistItems || { items: [] },
+                checklistProgress: selectedPrep.checklistProgress || 0,
+              } as any}
             />
           )}
         </div>

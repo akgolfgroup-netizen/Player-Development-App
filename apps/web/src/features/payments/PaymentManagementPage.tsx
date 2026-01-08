@@ -33,13 +33,26 @@ const PaymentManagementPage: React.FC = () => {
     { id: 'packages', label: 'Time-pakker', icon: <Package size={16} /> },
   ];
 
+  if (!playerId) {
+    return (
+      <div className="min-h-screen bg-tier-surface-base p-6">
+        <div className="max-w-2xl mx-auto">
+          <Card>
+            <div className="p-8 text-center text-tier-error">Ingen bruker funnet. Vennligst logg inn.</div>
+          </Card>
+        </div>
+      </div>
+    );
+  }
+
   return (
     <div className="min-h-screen bg-tier-surface-base p-6">
       <div className="max-w-7xl mx-auto">
         <PageHeader
           title="Betaling & Fakturering"
           subtitle="Administrer betalingsmåter, fakturaer og abonnementer"
-          icon={<CreditCard size={28} className="text-tier-navy" />}
+          helpText=""
+          actions={null}
         />
 
         {/* Tabs */}
@@ -79,7 +92,7 @@ interface PaymentMethodsTabProps {
 }
 
 const PaymentMethodsTab: React.FC<PaymentMethodsTabProps> = ({ playerId }) => {
-  const { paymentMethods, loading, error, refetch } = usePaymentMethods(playerId);
+  const { paymentMethods, loading, error, refetch } = usePaymentMethods();
   const { deletePaymentMethod, loading: deleting } = useDeletePaymentMethod();
   const [showAddModal, setShowAddModal] = useState(false);
 

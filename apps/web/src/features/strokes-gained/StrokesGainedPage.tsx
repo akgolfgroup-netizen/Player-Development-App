@@ -24,6 +24,16 @@ const StrokesGainedPage: React.FC = () => {
 
   const playerId = user?.playerId || user?.id;
 
+  if (!playerId) {
+    return (
+      <div className="min-h-screen bg-tier-surface-base p-6">
+        <div className="max-w-2xl mx-auto bg-white rounded-xl p-8 text-center">
+          <p className="text-tier-error">Ingen bruker funnet. Vennligst logg inn.</p>
+        </div>
+      </div>
+    );
+  }
+
   return (
     <div className="min-h-screen bg-tier-surface-base p-6">
       <div className="max-w-7xl mx-auto">

@@ -144,7 +144,7 @@ export const VarselinnstillingerContainer = lazy(() => import('../features/innst
 // =============================================================================
 export const VideoAnalysisPage = lazy(() => import('../features/video-analysis/VideoAnalysisPage').then(m => ({ default: m.VideoAnalysisPage })));
 export const VideoLibraryPage = lazy(() => import('../features/video-library/VideoLibraryPage').then(m => ({ default: m.VideoLibraryPage })));
-export const VideoComparisonPage = lazy(() => import('../features/video-comparison/VideoComparisonPage').then(m => ({ default: m.VideoComparisonPage })));
+export const VideoComparisonPage = lazy(() => import('../features/video-comparison/VideoComparisonPage'));
 export const VideoProgressView = lazy(() => import('../features/video-progress').then(m => ({ default: m.VideoProgressView })));
 
 // =============================================================================

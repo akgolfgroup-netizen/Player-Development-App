@@ -37,11 +37,12 @@ const TechniqueProgressionView: React.FC<TechniqueProgressionViewProps> = ({ pla
   });
   const [selectedClub, setSelectedClub] = useState<string | undefined>(undefined);
 
-  const { stats, loading, error } = useTechniqueStats(playerId, {
+  const { stats: statsData, loading, error } = useTechniqueStats(playerId, {
     fromDate: dateRange.fromDate,
     toDate: dateRange.toDate,
     club: selectedClub,
   });
+  const stats = statsData as any; // Type assertion for complex stats structure
 
   const handleDateRangeChange = (days: number) => {
     setDateRange({

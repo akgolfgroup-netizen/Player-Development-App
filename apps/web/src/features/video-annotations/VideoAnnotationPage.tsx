@@ -390,7 +390,7 @@ const VideoAnnotationPage: React.FC = () => {
           onSeek={handleSeek}
           onDelete={handleDeleteAnnotation}
           onSelect={(annotation) => setSelectedAnnotationId(annotation.id)}
-          selectedId={selectedAnnotationId}
+          selectedId={selectedAnnotationId ?? undefined}
         />
       </div>
     </div>
