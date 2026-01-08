@@ -47,6 +47,8 @@ interface PageHeaderProps {
   title: string;
   /** Page subtitle */
   subtitle?: string;
+  /** Optional help text / description */
+  helpText?: string;
   /** Breadcrumb items */
   breadcrumbs?: Array<{ label: string; href?: string; onClick?: () => void }>;
   /** Primary actions (right side) */
@@ -146,6 +148,7 @@ function PageRoot({ children, state = 'idle', maxWidth = 'xl', className = '' }:
 function PageHeader({
   title,
   subtitle,
+  helpText,
   breadcrumbs,
   actions,
   onBack,
@@ -218,6 +221,11 @@ function PageHeader({
             {subtitle && (
               <p className="mt-1 text-sm text-ak-text-secondary">
                 {subtitle}
+              </p>
+            )}
+            {helpText && (
+              <p className="mt-1 text-sm text-ak-text-tertiary">
+                {helpText}
               </p>
             )}
           </div>
@@ -440,7 +448,7 @@ function PageErrorState() {
   return (
     <div className="bg-ak-surface-card p-8 rounded-xl text-center">
       <div className="w-16 h-16 mx-auto mb-4 rounded-full bg-ak-status-error-light flex items-center justify-center">
-        <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="var(--ak-status-error)" strokeWidth="2">
+        <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="var(--tier-status-error)" strokeWidth="2">
           <circle cx="12" cy="12" r="10" />
           <path d="M12 8v4M12 16h.01" />
         </svg>
@@ -465,7 +473,7 @@ function PageEmptyState() {
   return (
     <div className="bg-ak-surface-card p-8 rounded-xl text-center">
       <div className="w-16 h-16 mx-auto mb-4 rounded-full bg-ak-surface-subtle flex items-center justify-center">
-        <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="var(--ak-text-tertiary)" strokeWidth="2">
+        <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="var(--tier-text-tertiary)" strokeWidth="2">
           <path d="M20 13V6a2 2 0 0 0-2-2H6a2 2 0 0 0-2 2v7" />
           <path d="M4 16v2a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2v-2" />
           <path d="M12 10v6M9 13l3-3 3 3" />
@@ -485,7 +493,7 @@ function PageUnauthorizedState() {
   return (
     <div className="bg-ak-surface-card p-8 rounded-xl text-center">
       <div className="w-16 h-16 mx-auto mb-4 rounded-full bg-ak-status-warning-light flex items-center justify-center">
-        <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="var(--ak-status-warning)" strokeWidth="2">
+        <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="var(--tier-status-warning)" strokeWidth="2">
           <rect x="3" y="11" width="18" height="11" rx="2" ry="2" />
           <path d="M7 11V7a5 5 0 0 1 10 0v4" />
         </svg>

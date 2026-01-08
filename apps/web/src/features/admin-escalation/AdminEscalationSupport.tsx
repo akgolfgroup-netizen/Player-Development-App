@@ -1,5 +1,5 @@
 /**
- * AK Golf Academy - Admin Escalation / Support
+ * TIER Golf Academy - Admin Escalation / Support
  *
  * Archetype: A - List/Index Page
  * Purpose: Handle operational issues and escalations
@@ -12,7 +12,7 @@ import { AlertCircle, Clock, CheckCircle } from 'lucide-react';
 import { Page } from '../../ui/components/Page';
 import { Text, Badge, Button } from '../../ui/primitives';
 import { useAuth } from '../../contexts/AuthContext';
-import apiClient from '../../services/apiClient';
+import { supportAPI } from '../../services/api';
 
 // ============================================================================
 // TYPES
@@ -24,16 +24,6 @@ type SupportCase = {
   status: 'open' | 'in_progress' | 'closed';
   createdAt?: string;
 };
-
-// ============================================================================
-// DEFAULTS
-// ============================================================================
-
-const MOCK_CASES: SupportCase[] = [
-  { id: 's1', title: 'Innloggingsproblem rapportert', status: 'open', createdAt: '2024-01-15' },
-  { id: 's2', title: 'Treningsplan lagres ikke', status: 'in_progress', createdAt: '2024-01-14' },
-  { id: 's3', title: 'Kalender synkronisering', status: 'closed', createdAt: '2024-01-10' },
-];
 
 // ============================================================================
 // STATUS CONFIG
@@ -73,7 +63,7 @@ export default function AdminEscalationSupport({ cases: propCases }: AdminEscala
   const fetchCases = useCallback(async () => {
     try {
       setLoading(true);
-      const response = await apiClient.get('/admin/support-cases');
+      const response = await supportAPI.list();
       const casesData = response.data?.data?.cases || response.data?.data || response.data || [];
 
       if (Array.isArray(casesData) && casesData.length > 0) {
@@ -95,11 +85,11 @@ export default function AdminEscalationSupport({ cases: propCases }: AdminEscala
           )
         );
       } else {
-        setCases(MOCK_CASES);
+        setCases([]);
       }
     } catch (err) {
       console.error('Error fetching support cases:', err);
-      setCases(MOCK_CASES);
+      setCases([]);
     } finally {
       setLoading(false);
     }
@@ -113,11 +103,11 @@ export default function AdminEscalationSupport({ cases: propCases }: AdminEscala
 
   const updateStatus = async (id: string, status: SupportCase['status']) => {
     try {
-      await apiClient.patch(`/admin/support-cases/${id}`, { status });
+      await supportAPI.update(id, { status });
+      setCases((prev) => prev.map((c) => (c.id === id ? { ...c, status } : c)));
     } catch (err) {
       console.error('Error updating case status:', err);
     }
-    setCases((prev) => prev.map((c) => (c.id === id ? { ...c, status } : c)));
   };
 
   const openCount = cases.filter((c) => c.status !== 'closed').length;
@@ -134,7 +124,7 @@ export default function AdminEscalationSupport({ cases: propCases }: AdminEscala
 
       <Page.Content>
         <Page.Section title="Saker" description="Åpne og lukkede støttesaker">
-          <div className="divide-y divide-ak-border-default">
+          <div className="divide-y divide-tier-border-default">
             {cases.map((caseItem) => {
               const config = STATUS_CONFIG[caseItem.status];
               const StatusIcon = config.icon;

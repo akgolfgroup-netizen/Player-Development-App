@@ -1,5 +1,5 @@
 /**
- * AK Golf Academy - Admin Coach Management
+ * TIER Golf Academy - Admin Coach Management
  *
  * Archetype: A - List/Index Page
  * Purpose: Manage coach accounts as system users
@@ -53,7 +53,7 @@ function Avatar({ name, size = 'md' }: { name: string; size?: 'sm' | 'md' | 'lg'
     <div
       className={`
         ${sizeClasses[size]}
-        rounded-full bg-ak-primary text-white
+        rounded-full bg-tier-navy text-white
         flex items-center justify-center font-semibold flex-shrink-0
       `}
     >
@@ -154,7 +154,7 @@ export default function AdminCoachManagement() {
 
       <Page.Content>
         <Page.Section title="Trenere" description="Administrer trenerkontoer">
-          <div className="divide-y divide-ak-border-default">
+          <div className="divide-y divide-tier-border-default">
             {coaches.map((coach) => (
               <div
                 key={coach.id}
@@ -167,7 +167,7 @@ export default function AdminCoachManagement() {
                     {coach.name}
                   </Text>
                   <div className="flex items-center gap-1.5 mt-1">
-                    <Mail size={14} className="text-ak-text-secondary" />
+                    <Mail size={14} className="text-tier-text-secondary" />
                     <Text variant="caption1" color="secondary">
                       {coach.email}
                     </Text>

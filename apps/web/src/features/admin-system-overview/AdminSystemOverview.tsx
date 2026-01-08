@@ -1,5 +1,5 @@
 /**
- * AK Golf Academy - Admin System Overview
+ * TIER Golf Academy - Admin System Overview
  *
  * Archetype: A - List/Index Page
  * Purpose: System-level visibility (status, feature flags)
@@ -138,9 +138,9 @@ export default function AdminSystemOverview({
         <Page.Section title="Systemstatus" description="Nåværende miljøinformasjon">
           <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
             {/* Environment */}
-            <div className="p-4 bg-ak-surface-subtle rounded-lg">
+            <div className="p-4 bg-tier-surface-base rounded-lg">
               <div className="flex items-center gap-2 mb-2">
-                <Shield size={16} className="text-ak-text-secondary" />
+                <Shield size={16} className="text-tier-text-secondary" />
                 <Text variant="caption1" color="secondary">Miljø</Text>
               </div>
               <Badge variant={getEnvVariant(systemStatus.environment)} size="md">
@@ -149,9 +149,9 @@ export default function AdminSystemOverview({
             </div>
 
             {/* Version */}
-            <div className="p-4 bg-ak-surface-subtle rounded-lg">
+            <div className="p-4 bg-tier-surface-base rounded-lg">
               <div className="flex items-center gap-2 mb-2">
-                <Activity size={16} className="text-ak-text-secondary" />
+                <Activity size={16} className="text-tier-text-secondary" />
                 <Text variant="caption1" color="secondary">Versjon</Text>
               </div>
               <Text variant="title2" color="primary">
@@ -160,9 +160,9 @@ export default function AdminSystemOverview({
             </div>
 
             {/* Uptime */}
-            <div className="p-4 bg-ak-surface-subtle rounded-lg">
+            <div className="p-4 bg-tier-surface-base rounded-lg">
               <div className="flex items-center gap-2 mb-2">
-                <Clock size={16} className="text-ak-text-secondary" />
+                <Clock size={16} className="text-tier-text-secondary" />
                 <Text variant="caption1" color="secondary">Oppetid</Text>
               </div>
               <Text variant="title2" color="primary">
@@ -174,7 +174,7 @@ export default function AdminSystemOverview({
 
         {/* Feature Flags */}
         <Page.Section title="Feature Flags" description="Aktive systemfunksjoner">
-          <div className="divide-y divide-ak-border-default">
+          <div className="divide-y divide-tier-border-default">
             {featureFlags.map((flag) => (
               <div
                 key={flag.key}
