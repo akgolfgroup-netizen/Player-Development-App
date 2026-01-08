@@ -279,6 +279,12 @@ const CoachAnnualPlanGenerator = lazy(() => import('./features/coach-annual-plan
 // Coach session evaluations (lazy-loaded)
 const CoachSessionEvaluations = lazy(() => import('./features/coach-session-evaluations').then(m => ({ default: m.CoachSessionEvaluations })));
 
+// Coach hub pages V3 (lazy-loaded)
+const CoachSpillereHub = lazy(() => import('./features/coach-hub-pages').then(m => ({ default: m.CoachSpillereHub })));
+const CoachAnalyseHub = lazy(() => import('./features/coach-hub-pages').then(m => ({ default: m.CoachAnalyseHub })));
+const CoachPlanHub = lazy(() => import('./features/coach-hub-pages').then(m => ({ default: m.CoachPlanHub })));
+const CoachMerHub = lazy(() => import('./features/coach-hub-pages').then(m => ({ default: m.CoachMerHub })));
+
 // Admin feature components (lazy-loaded)
 const AdminSystemOverview = lazy(() => import('./features/admin-system-overview').then(m => ({ default: m.AdminSystemOverview })));
 const AdminCoachManagement = lazy(() => import('./features/admin-coach-management').then(m => ({ default: m.AdminCoachManagement })));
@@ -1578,6 +1584,37 @@ function App() {
               </CoachLayout>
             </ProtectedRoute>
           } />
+
+          {/* Coach Hub Pages V3 - Flat 5-item navigation landing pages */}
+          <Route path="/coach/spillere" element={
+            <ProtectedRoute requiredRole="coach">
+              <CoachLayout>
+                <CoachSpillereHub />
+              </CoachLayout>
+            </ProtectedRoute>
+          } />
+          <Route path="/coach/analyse" element={
+            <ProtectedRoute requiredRole="coach">
+              <CoachLayout>
+                <CoachAnalyseHub />
+              </CoachLayout>
+            </ProtectedRoute>
+          } />
+          <Route path="/coach/plan" element={
+            <ProtectedRoute requiredRole="coach">
+              <CoachLayout>
+                <CoachPlanHub />
+              </CoachLayout>
+            </ProtectedRoute>
+          } />
+          <Route path="/coach/mer" element={
+            <ProtectedRoute requiredRole="coach">
+              <CoachLayout>
+                <CoachMerHub />
+              </CoachLayout>
+            </ProtectedRoute>
+          } />
+
           {/* CoachAthleteHub - Consolidated athlete management with tabs */}
           <Route path="/coach/athletes" element={
             <ProtectedRoute requiredRole="coach">

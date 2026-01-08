@@ -1,31 +1,16 @@
 /**
  * TIER Golf Academy - Coach App Shell
- * Design System v3.0 - Premium Light
+ * Design System v3.1 - Navy × Gold (Premium Light)
  *
  * Layout wrapper for coach portal routes.
- * Uses CoachSidebar for desktop, CoachBottomNav for mobile.
- *
- * LAYOUT:
- * - Desktop: left sidebar (icons + labels) + content area
- * - Mobile: top header + content area + bottom nav (6 items)
+ * V3: Uses CoachSidebarV3 with flat 5-item navigation.
  */
 
 import React, { useState, useEffect } from 'react';
-import { Link, useLocation } from 'react-router-dom';
-import * as LucideIcons from 'lucide-react';
-import CoachSidebar from './CoachSidebar';
+import CoachSidebarV3 from './CoachSidebarV3';
 import BackToTop from '../ui/BackToTop';
-import { TIERGolfFullLogo } from '../branding/TIERGolfFullLogo';
 import { useAuth } from '../../contexts/AuthContext';
-import { coachMobileNavItems } from '../../config/coach-navigation';
-
-const { Menu, X } = LucideIcons;
-
-// Helper to get icon from string name
-const getIcon = (iconName: string) => {
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  return (LucideIcons as any)[iconName] || LucideIcons.Circle;
-};
+import { eventClient } from '../../analytics/eventClient';
 
 // Skip to content link styles
 const skipLinkStyles: React.CSSProperties = {
@@ -52,306 +37,81 @@ interface CoachAppShellProps {
   children: React.ReactNode;
 }
 
-// Mobile Bottom Navigation Component
-function CoachBottomNav({ unreadAlerts }: { unreadAlerts: number }) {
-  const location = useLocation();
-  const pathname = location.pathname;
-
-  const isActive = (href: string) => {
-    if (href === '/coach') return pathname === '/coach';
-    return pathname.startsWith(href);
-  };
-
-  return (
-    <nav
-      style={{
-        position: 'fixed',
-        bottom: 0,
-        left: 0,
-        right: 0,
-        height: '64px',
-        backgroundColor: 'rgb(var(--tier-primary, 10 37 64))',
-        borderTop: '1px solid rgba(255,255,255,0.1)',
-        display: 'flex',
-        alignItems: 'center',
-        justifyContent: 'space-around',
-        padding: '0 8px',
-        paddingBottom: 'env(safe-area-inset-bottom)',
-        zIndex: 1000,
-      }}
-    >
-      {coachMobileNavItems.map((item) => {
-        const Icon = getIcon(item.icon);
-        const active = isActive(item.href || '');
-        const showBadge = item.badge === 'unreadCount' && unreadAlerts > 0;
-
-        return (
-          <Link
-            key={item.label}
-            to={item.href || '/coach'}
-            style={{
-              display: 'flex',
-              flexDirection: 'column',
-              alignItems: 'center',
-              gap: '4px',
-              padding: '8px 12px',
-              textDecoration: 'none',
-              color: active ? 'rgb(var(--tier-white))' : 'rgba(255,255,255,0.6)',
-              position: 'relative',
-              minWidth: '56px',
-            }}
-          >
-            <div style={{ position: 'relative' }}>
-              <Icon size={24} />
-              {showBadge && (
-                <span
-                  style={{
-                    position: 'absolute',
-                    top: '-4px',
-                    right: '-8px',
-                    minWidth: '16px',
-                    height: '16px',
-                    borderRadius: '8px',
-                    backgroundColor: 'var(--tier-status-error)',
-                    color: 'white',
-                    fontSize: '10px',
-                    fontWeight: 700,
-                    display: 'flex',
-                    alignItems: 'center',
-                    justifyContent: 'center',
-                    padding: '0 4px',
-                  }}
-                >
-                  {unreadAlerts > 9 ? '9+' : unreadAlerts}
-                </span>
-              )}
-            </div>
-            <span
-              style={{
-                fontSize: '11px',
-                fontWeight: active ? 600 : 400,
-              }}
-            >
-              {item.labelNO}
-            </span>
-            {active && (
-              <div
-                style={{
-                  position: 'absolute',
-                  top: 0,
-                  left: '50%',
-                  transform: 'translateX(-50%)',
-                  width: '32px',
-                  height: '3px',
-                  borderRadius: '0 0 3px 3px',
-                  backgroundColor: 'var(--tier-achievement, rgb(var(--tier-gold)))',
-                }}
-              />
-            )}
-          </Link>
-        );
-      })}
-    </nav>
-  );
-}
-
-// Mobile Header Component
-function CoachMobileHeader({
-  onMenuToggle,
-  isMenuOpen,
-}: {
-  onMenuToggle: () => void;
-  isMenuOpen: boolean;
-}) {
-  return (
-    <header
-      style={{
-        position: 'fixed',
-        top: 0,
-        left: 0,
-        right: 0,
-        height: '60px',
-        backgroundColor: 'rgb(var(--tier-primary, 10 37 64))',
-        display: 'flex',
-        alignItems: 'center',
-        justifyContent: 'space-between',
-        padding: '0 16px',
-        zIndex: 1001,
-      }}
-    >
-      <div style={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
-        <TIERGolfFullLogo height={32} variant="light" />
-      </div>
-
-      <button
-        onClick={onMenuToggle}
-        style={{
-          background: 'none',
-          border: 'none',
-          color: 'white',
-          cursor: 'pointer',
-          padding: '8px',
-          display: 'flex',
-          alignItems: 'center',
-          justifyContent: 'center',
-        }}
-        aria-label={isMenuOpen ? 'Lukk meny' : 'Åpne meny'}
-      >
-        {isMenuOpen ? <X size={24} /> : <Menu size={24} />}
-      </button>
-    </header>
-  );
-}
-
 export default function CoachAppShell({ children }: CoachAppShellProps) {
   const [skipLinkFocused, setSkipLinkFocused] = useState(false);
   const [isMobile, setIsMobile] = useState(false);
-  const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
-  const [unreadAlerts, setUnreadAlerts] = useState(0);
+  const [unreadMessages, setUnreadMessages] = useState(0);
   const { user, logout } = useAuth();
-  const location = useLocation();
 
   useEffect(() => {
     const checkMobile = () => {
-      const mobile = window.innerWidth < 768;
-      setIsMobile(mobile);
-      if (!mobile) {
-        setIsMobileMenuOpen(false);
-      }
+      setIsMobile(window.innerWidth < 768);
     };
     checkMobile();
     window.addEventListener('resize', checkMobile);
     return () => window.removeEventListener('resize', checkMobile);
   }, []);
 
-  // Close mobile menu on route change
+  // Fetch unread messages/alerts count
   useEffect(() => {
-    setIsMobileMenuOpen(false);
-  }, [location.pathname]);
-
-  // Fetch unread alerts count
-  useEffect(() => {
-    const fetchAlerts = async () => {
+    const fetchMessages = async () => {
       try {
         const token = localStorage.getItem('token');
-        const response = await fetch('/api/v1/coaches/me/alerts?unread=true', {
+        // Try alerts first (coach specific)
+        const alertsResponse = await fetch('/api/v1/coaches/me/alerts?unread=true', {
+          headers: {
+            'Authorization': `Bearer ${token}`,
+          },
+        });
+        if (alertsResponse.ok) {
+          const data = await alertsResponse.json();
+          setUnreadMessages(data.data?.alerts?.length || 0);
+          return;
+        }
+
+        // Fallback to general notifications
+        const response = await fetch('/api/v1/notifications?unread=true', {
           headers: {
             'Authorization': `Bearer ${token}`,
           },
         });
         if (response.ok) {
           const data = await response.json();
-          setUnreadAlerts(data.data?.alerts?.length || 0);
+          setUnreadMessages(data.data?.notifications?.length || 0);
         }
       } catch {
-        // Silent fail - alerts are non-critical
+        // Silent fail - messages are non-critical
       }
     };
 
-    fetchAlerts();
+    fetchMessages();
     // Refresh every 5 minutes
-    const interval = setInterval(fetchAlerts, 5 * 60 * 1000);
+    const interval = setInterval(fetchMessages, 5 * 60 * 1000);
     return () => clearInterval(interval);
   }, []);
 
   const handleLogout = async () => {
+    eventClient.reset();
     await logout();
   };
 
-  // Mobile layout
-  if (isMobile) {
-    return (
-      <div
-        style={{
-          minHeight: '100vh',
-          backgroundColor: 'rgb(var(--tier-surface-page, 245 247 249))',
-        }}
-      >
-        {/* Skip to content link for accessibility */}
-        <a
-          href="#main-content"
-          style={skipLinkFocused ? skipLinkFocusStyles : skipLinkStyles}
-          onFocus={() => setSkipLinkFocused(true)}
-          onBlur={() => setSkipLinkFocused(false)}
-        >
-          Hopp til hovedinnhold
-        </a>
+  // Initialize eventClient when user is available
+  useEffect(() => {
+    if (user?.id) {
+      eventClient.init(
+        user.id,
+        (user as { tenantId?: string }).tenantId || 'unknown',
+        'coach'
+      );
+    }
+  }, [user]);
 
-        {/* Mobile Header */}
-        <CoachMobileHeader
-          onMenuToggle={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
-          isMenuOpen={isMobileMenuOpen}
-        />
-
-        {/* Mobile Menu Overlay */}
-        {isMobileMenuOpen && (
-          <>
-            <div
-              style={{
-                position: 'fixed',
-                inset: 0,
-                backgroundColor: 'rgba(0, 0, 0, 0.5)',
-                zIndex: 998,
-              }}
-              onClick={() => setIsMobileMenuOpen(false)}
-            />
-            <aside
-              style={{
-                position: 'fixed',
-                top: '60px',
-                left: 0,
-                bottom: '64px',
-                width: '300px',
-                backgroundColor: 'rgb(var(--tier-primary, 10 37 64))',
-                zIndex: 999,
-                overflowY: 'auto',
-              }}
-            >
-              <CoachSidebar
-                user={user || undefined}
-                unreadAlerts={unreadAlerts}
-                onLogout={handleLogout}
-                isMobileOverlay
-              />
-            </aside>
-          </>
-        )}
-
-        {/* Main Content */}
-        <main
-          id="main-content"
-          style={{
-            paddingTop: '60px',
-            paddingBottom: '80px', // Space for bottom nav
-            minHeight: 'calc(100vh - 140px)',
-          }}
-          tabIndex={-1}
-        >
-          <div
-            style={{
-              width: '100%',
-              padding: '16px',
-            }}
-          >
-            {children}
-          </div>
-        </main>
-
-        {/* Mobile Bottom Navigation */}
-        <CoachBottomNav unreadAlerts={unreadAlerts} />
-
-        <BackToTop />
-      </div>
-    );
-  }
-
-  // Desktop layout
   return (
     <div
       style={{
         height: '100vh',
         display: 'flex',
-        flexDirection: 'row',
+        flexDirection: isMobile ? 'column' : 'row',
         backgroundColor: 'var(--tier-surface-page)',
       }}
     >
@@ -365,9 +125,9 @@ export default function CoachAppShell({ children }: CoachAppShellProps) {
         Hopp til hovedinnhold
       </a>
 
-      <CoachSidebar
+      <CoachSidebarV3
         user={user || undefined}
-        unreadAlerts={unreadAlerts}
+        unreadMessages={unreadMessages}
         onLogout={handleLogout}
       />
 
@@ -376,19 +136,20 @@ export default function CoachAppShell({ children }: CoachAppShellProps) {
         style={{
           flex: 1,
           minWidth: 0,
+          marginTop: isMobile ? '60px' : 0,
         }}
         tabIndex={-1}
       >
         <div
           style={{
-            height: '100vh',
+            height: isMobile ? 'calc(100vh - 60px)' : '100vh',
             overflowY: 'auto',
           }}
         >
           <div
             style={{
               width: '100%',
-              padding: '24px 32px',
+              padding: isMobile ? '16px' : '24px 32px',
             }}
           >
             {children}
