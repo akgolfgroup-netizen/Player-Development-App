@@ -14,8 +14,8 @@ import {
   useSupportCases,
   useUpdateSupportCase,
   useTiers,
-} from '../../hooks/useAdmin.js';
-import { useAuditEvents } from '../../hooks/useAuditLog.js';
+} from '../../hooks/useAdmin';
+import { useAuditEvents } from '../../hooks/useAuditLog';
 import Card from '../../ui/primitives/Card';
 import Button from '../../ui/primitives/Button';
 import PageHeader from '../../components/layout/PageHeader';
@@ -34,11 +34,18 @@ const AdminPanelPage: React.FC = () => {
   return (
     <div className="min-h-screen bg-tier-surface-base p-6">
       <div className="max-w-7xl mx-auto">
-        <PageHeader
-          title="Admin Panel"
-          subtitle="System administration and management"
-          icon={<Shield size={28} className="text-tier-error" />}
-        />
+        <div className="mb-6">
+          <div className="flex items-center gap-3 mb-2">
+            <Shield size={28} className="text-tier-error" />
+            <PageHeader
+              title="Admin Panel"
+              subtitle="System administration and management"
+              helpText=""
+              actions={null}
+              className="mb-0"
+            />
+          </div>
+        </div>
 
         {/* Tab Navigation */}
         <div className="flex gap-2 mb-6 border-b border-tier-border-default">
@@ -63,6 +70,7 @@ const AdminPanelPage: React.FC = () => {
         {activeTab === 'flags' && <FeatureFlagsTab />}
         {activeTab === 'support' && <SupportCasesTab />}
         {activeTab === 'tiers' && <TiersTab />}
+        {activeTab === 'audit' && <AuditLogTab />}
       </div>
     </div>
   );
@@ -108,19 +116,19 @@ const SystemStatusTab: React.FC = () => {
       <Card>
         <div className="p-6">
           <p className="text-sm text-tier-text-secondary mb-1">Total Users</p>
-          <p className="text-2xl font-bold text-tier-navy">{status.counts.users}</p>
+          <p className="text-2xl font-bold text-tier-navy">{status.counts?.users || 0}</p>
         </div>
       </Card>
       <Card>
         <div className="p-6">
           <p className="text-sm text-tier-text-secondary mb-1">Total Coaches</p>
-          <p className="text-2xl font-bold text-tier-navy">{status.counts.coaches}</p>
+          <p className="text-2xl font-bold text-tier-navy">{status.counts?.coaches || 0}</p>
         </div>
       </Card>
       <Card>
         <div className="p-6">
           <p className="text-sm text-tier-text-secondary mb-1">Total Players</p>
-          <p className="text-2xl font-bold text-tier-navy">{status.counts.players}</p>
+          <p className="text-2xl font-bold text-tier-navy">{status.counts?.players || 0}</p>
         </div>
       </Card>
     </div>
@@ -222,13 +230,13 @@ const FeatureFlagsTab: React.FC = () => {
 // ============================================================================
 
 const SupportCasesTab: React.FC = () => {
-  const [statusFilter, setStatusFilter] = useState<string>('');
-  const { cases, loading, error, refetch } = useSupportCases({ status: statusFilter });
+  const [statusFilter, setStatusFilter] = useState<'open' | 'in_progress' | 'resolved' | 'closed' | ''>('');
+  const { cases, loading, error, refetch } = useSupportCases({ status: statusFilter === '' ? undefined : statusFilter });
   const { updateCase } = useUpdateSupportCase();
 
-  const handleStatusChange = async (caseId: string, newStatus: string) => {
+  const handleStatusChange = async (caseId: string, newStatus: 'open' | 'in_progress' | 'resolved' | 'closed') => {
     try {
-      await updateCase(caseId, { status: newStatus });
+      await updateCase(caseId, { status: newStatus as any });
       refetch();
     } catch (err) {
       console.error(err);
@@ -241,7 +249,7 @@ const SupportCasesTab: React.FC = () => {
   return (
     <div>
       <div className="mb-4 flex gap-2">
-        {['', 'open', 'in_progress', 'closed'].map((status) => (
+        {(['', 'open', 'in_progress', 'closed'] as const).map((status) => (
           <Button
             key={status}
             variant={statusFilter === status ? 'primary' : 'secondary'}
@@ -264,7 +272,7 @@ const SupportCasesTab: React.FC = () => {
                 </div>
                 <select
                   value={supportCase.status}
-                  onChange={(e) => handleStatusChange(supportCase.id, e.target.value)}
+                  onChange={(e) => handleStatusChange(supportCase.id, e.target.value as 'open' | 'in_progress' | 'resolved' | 'closed')}
                   className="px-3 py-1 border border-tier-border-default rounded text-sm"
                 >
                   <option value="open">Open</option>
@@ -330,16 +338,20 @@ interface CreateFeatureFlagModalProps {
 }
 
 const CreateFeatureFlagModal: React.FC<CreateFeatureFlagModalProps> = ({ onClose, onSuccess }) => {
-  const { createFlag, loading } = useCreateFeatureFlag();
+  const { createFlag } = useCreateFeatureFlag();
+  const [loading, setLoading] = useState(false);
   const [formData, setFormData] = useState({ key: '', name: '', description: '', enabled: false });
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
+    setLoading(true);
     try {
       await createFlag(formData);
       onSuccess();
     } catch (err) {
       console.error(err);
+    } finally {
+      setLoading(false);
     }
   };
 
@@ -395,6 +407,136 @@ const CreateFeatureFlagModal: React.FC<CreateFeatureFlagModalProps> = ({ onClose
           </div>
         </form>
       </div>
+    </div>
+  );
+};
+
+// ============================================================================
+// Audit Log Tab
+// ============================================================================
+
+const AuditLogTab: React.FC = () => {
+  const [filters, setFilters] = useState({ page: 1, limit: 50, action: '', resourceType: '' });
+  const { events, total, page, totalPages, loading, error } = useAuditEvents(filters);
+
+  const handleFilterChange = (key: string, value: string) => {
+    setFilters({ ...filters, [key]: value, page: 1 });
+  };
+
+  if (loading) return <Card><div className="p-8 text-center text-tier-text-secondary">Loading...</div></Card>;
+  if (error) return <Card><div className="p-8 text-center text-tier-error">{error}</div></Card>;
+
+  return (
+    <div>
+      {/* Filters */}
+      <Card>
+        <div className="p-4 mb-4">
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+            <div>
+              <label className="block text-sm font-medium text-tier-navy mb-1">Action</label>
+              <select
+                value={filters.action}
+                onChange={(e) => handleFilterChange('action', e.target.value)}
+                className="w-full px-3 py-2 border border-tier-border-default rounded"
+              >
+                <option value="">All Actions</option>
+                <option value="create">Create</option>
+                <option value="update">Update</option>
+                <option value="delete">Delete</option>
+                <option value="login">Login</option>
+                <option value="logout">Logout</option>
+              </select>
+            </div>
+            <div>
+              <label className="block text-sm font-medium text-tier-navy mb-1">Resource Type</label>
+              <select
+                value={filters.resourceType}
+                onChange={(e) => handleFilterChange('resourceType', e.target.value)}
+                className="w-full px-3 py-2 border border-tier-border-default rounded"
+              >
+                <option value="">All Resources</option>
+                <option value="user">User</option>
+                <option value="player">Player</option>
+                <option value="coach">Coach</option>
+                <option value="test">Test</option>
+                <option value="session">Session</option>
+              </select>
+            </div>
+            <div className="flex items-end">
+              <p className="text-sm text-tier-text-secondary">
+                Showing {events.length} of {total} events (Page {page}/{totalPages})
+              </p>
+            </div>
+          </div>
+        </div>
+      </Card>
+
+      {/* Audit Events */}
+      <div className="space-y-2">
+        {events.map((event: any) => (
+          <Card key={event.id}>
+            <div className="p-4">
+              <div className="flex items-start justify-between mb-2">
+                <div className="flex-1">
+                  <div className="flex items-center gap-2 mb-1">
+                    <span
+                      className={`px-2 py-1 rounded text-xs font-semibold ${
+                        event.action === 'create'
+                          ? 'bg-tier-success-light text-tier-success'
+                          : event.action === 'delete'
+                          ? 'bg-tier-error-light text-tier-error'
+                          : 'bg-tier-info-light text-tier-info'
+                      }`}
+                    >
+                      {event.action}
+                    </span>
+                    <span className="text-sm font-semibold text-tier-navy">{event.resourceType}</span>
+                  </div>
+                  {event.metadata && (
+                    <p className="text-xs text-tier-text-secondary">
+                      {JSON.stringify(event.metadata)}
+                    </p>
+                  )}
+                </div>
+                <div className="text-right text-xs text-tier-text-secondary">
+                  <p>{new Date(event.createdAt).toLocaleDateString('no-NO')}</p>
+                  <p>{new Date(event.createdAt).toLocaleTimeString('no-NO')}</p>
+                </div>
+              </div>
+              <div className="flex items-center gap-4 text-xs text-tier-text-secondary">
+                {event.actorId && <span>Actor: {event.actorId}</span>}
+                {event.resourceId && <span>Resource: {event.resourceId}</span>}
+                {event.ipAddress && <span>IP: {event.ipAddress}</span>}
+              </div>
+            </div>
+          </Card>
+        ))}
+      </div>
+
+      {/* Pagination */}
+      {totalPages > 1 && (
+        <div className="flex justify-center gap-2 mt-6">
+          <Button
+            variant="secondary"
+            size="sm"
+            disabled={page === 1}
+            onClick={() => setFilters({ ...filters, page: page - 1 })}
+          >
+            Previous
+          </Button>
+          <span className="px-4 py-2 text-sm text-tier-navy">
+            Page {page} of {totalPages}
+          </span>
+          <Button
+            variant="secondary"
+            size="sm"
+            disabled={page === totalPages}
+            onClick={() => setFilters({ ...filters, page: page + 1 })}
+          >
+            Next
+          </Button>
+        </div>
+      )}
     </div>
   );
 };

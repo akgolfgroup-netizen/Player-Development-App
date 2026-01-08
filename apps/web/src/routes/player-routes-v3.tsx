@@ -96,6 +96,10 @@ const AIConversationsHistoryPage = lazy(() => import('../features/ai-conversatio
 const CollectionsPage = lazy(() => import('../features/collections/CollectionsPage'));
 const VideoComparisonPage = lazy(() => import('../features/video-comparison/VideoComparisonPage'));
 const AdminPanelPage = lazy(() => import('../features/admin/AdminPanelPage'));
+const DataExportPage = lazy(() => import('../features/export/DataExportPage'));
+const SeasonManagementPage = lazy(() => import('../features/season/SeasonManagementPage'));
+const ArchiveBrowserPage = lazy(() => import('../features/archive/ArchiveBrowserPage'));
+const PaymentManagementPage = lazy(() => import('../features/payments/PaymentManagementPage'));
 
 // ============================================================
 // Placeholder Component
@@ -245,6 +249,7 @@ export function getPlayerRoutesV3() {
       <Route path="/plan/skole" element={<SuspenseWrapper><PlanSkole /></SuspenseWrapper>} />
       <Route path="/plan/maal" element={<SuspenseWrapper><PlanMaal /></SuspenseWrapper>} />
       <Route path="/plan/aarsplan" element={<SuspenseWrapper><PlanAarsplan /></SuspenseWrapper>} />
+      <Route path="/plan/sesonger" element={<SuspenseWrapper><SeasonManagementPage /></SuspenseWrapper>} />
       <Route path="/plan/turneringer" element={<SuspenseWrapper><PlanTurneringer /></SuspenseWrapper>} />
       <Route path="/plan/turneringer/mine" element={<SuspenseWrapper><PlanMineTurneringer /></SuspenseWrapper>} />
       <Route path="/plan/turneringer/prep/:prepId" element={<SuspenseWrapper><TournamentPrepPage /></SuspenseWrapper>} />
@@ -266,6 +271,9 @@ export function getPlayerRoutesV3() {
       <Route path="/mer/ai-historikk" element={<SuspenseWrapper><AIConversationsHistoryPage /></SuspenseWrapper>} />
       <Route path="/mer/samlinger" element={<SuspenseWrapper><CollectionsPage /></SuspenseWrapper>} />
       <Route path="/mer/admin" element={<SuspenseWrapper><AdminPanelPage /></SuspenseWrapper>} />
+      <Route path="/mer/eksporter" element={<SuspenseWrapper><DataExportPage /></SuspenseWrapper>} />
+      <Route path="/mer/arkiv" element={<SuspenseWrapper><ArchiveBrowserPage /></SuspenseWrapper>} />
+      <Route path="/mer/betaling" element={<SuspenseWrapper><PaymentManagementPage /></SuspenseWrapper>} />
 
       {/* Onboarding */}
       <Route path="/onboarding" element={<SuspenseWrapper><OnboardingPage /></SuspenseWrapper>} />

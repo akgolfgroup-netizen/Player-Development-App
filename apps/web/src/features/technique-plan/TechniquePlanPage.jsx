@@ -15,6 +15,7 @@ import TaskCard from './components/TaskCard';
 import GoalProgressCard from './components/GoalProgressCard';
 import TrackmanImport from './components/TrackmanImport';
 import { TECHNICAL_AREAS, METRIC_LABELS, PRIORITY_LABELS } from './types';
+import { PageHeader } from '../../ui/raw-blocks';
 
 const TABS = [
   { id: 'tasks', label: 'Oppgaver' },
@@ -71,14 +72,13 @@ export default function TechniquePlanPage() {
   };
 
   return (
-    <div style={{ padding: '24px', maxWidth: '1200px', margin: '0 auto' }}>
-      {/* Header */}
-      <div style={{ marginBottom: '24px' }}>
-        <h1 style={{ margin: '0 0 8px 0', fontSize: '24px' }}>Teknikkplan</h1>
-        <p style={{ margin: 0, color: 'var(--color-text-secondary)' }}>
-          Din plan for teknisk utvikling med TrackMan-data
-        </p>
-      </div>
+    <div className="p-6 max-w-7xl mx-auto">
+      <PageHeader
+        title="Teknikkplan"
+        subtitle="Din plan for teknisk utvikling med TrackMan-data"
+        helpText="Dashboard for teknisk utvikling med TrackMan-integrering. Administrer teknikkoppgaver (swing, putting, shortgame, fysisk) med prioritering, sett teknikkmål for metrikker (clubPath, faceToPath, attackAngle osv.), se statistikk over importert TrackMan-data og importer CSV-filer direkte. Bruk fanene for å navigere mellom oppgaver, mål, statistikk og import."
+        showBackButton={false}
+      />
 
       {/* Tabs */}
       <div

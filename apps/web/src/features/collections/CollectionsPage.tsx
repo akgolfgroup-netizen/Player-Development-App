@@ -16,6 +16,15 @@ import {
 import Card from '../../ui/primitives/Card';
 import Button from '../../ui/primitives/Button';
 
+interface Collection {
+  id: string;
+  name: string;
+  description?: string;
+  isPublic?: boolean;
+  createdAt: string;
+  items?: Array<any>;
+}
+
 const CollectionsPage: React.FC = () => {
   const { collections, loading, error, refetch } = useCollections();
   const [selectedCollectionId, setSelectedCollectionId] = useState<string | null>(null);
@@ -25,7 +34,7 @@ const CollectionsPage: React.FC = () => {
 
   const { collection, loading: collectionLoading, refetch: refetchCollection } = useCollection(
     selectedCollectionId || ''
-  );
+  ) as { collection: Collection | null; loading: boolean; refetch: () => void };
   const { createCollection } = useCreateCollection();
   const { updateCollection } = useUpdateCollection();
   const { deleteCollection } = useDeleteCollection();

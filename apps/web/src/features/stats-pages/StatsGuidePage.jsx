@@ -12,6 +12,7 @@ import {
 } from 'lucide-react';
 import { useNavigate } from 'react-router-dom';
 import { SectionTitle, SubSectionTitle, CardTitle } from '../../components/typography/Headings';
+import { PageHeader } from '../../ui/raw-blocks';
 
 // ============================================================================
 // DATA - De 20 Offisielle Testene
@@ -687,6 +688,12 @@ const StatsGuidePage = () => {
   return (
     <div className="min-h-screen bg-tier-surface-base">
       <div className="p-6 max-w-[1200px] mx-auto">
+        <PageHeader
+          title="Statistikkguide"
+          subtitle="Lær om testene og kategoriene i TIER Golf systemet"
+          helpText="Komplett guide til TIER Golf testene, kategoriene (A-K), og Strokes Gained-analyse. Utforsk de 20 offisielle testene, lær hvordan kategorisystemet fungerer, forstå Strokes Gained-metrikker og hvordan du tolker resultatene. Bruk fanene for å navigere mellom temaer."
+          showBackButton={false}
+        />
         {/* Tab Navigation */}
         <div className="flex gap-1.5 mb-6 overflow-x-auto pb-2">
           {TABS.map((tab) => {

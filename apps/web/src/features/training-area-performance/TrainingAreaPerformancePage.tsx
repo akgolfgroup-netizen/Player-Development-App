@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { ProgressTrackingView } from './ProgressTrackingView';
 import { LogTrainingAreaPerformanceForm } from './LogTrainingAreaPerformanceForm';
+import { PageHeader } from '../../ui/raw-blocks';
 
 export const TrainingAreaPerformancePage: React.FC = () => {
   const [showLogForm, setShowLogForm] = useState(false);
@@ -45,6 +46,12 @@ export const TrainingAreaPerformancePage: React.FC = () => {
 
   return (
     <div className="relative">
+      <PageHeader
+        title="Treningsområdeprestasjoner"
+        subtitle="Spor fremgang på spesifikke treningsområder"
+        helpText="Oversikt over prestasjoner og fremgang for ulike treningsområder (chipping, putting, driving, osv.). Logg nye økter med prestasjonsmålinger, se historikk, trender og sammenlign resultater over tid. Bruk pluss-knappen for å registrere ny økt."
+        showBackButton={false}
+      />
       {/* Floating Action Button */}
       <button
         onClick={() => setShowLogForm(true)}

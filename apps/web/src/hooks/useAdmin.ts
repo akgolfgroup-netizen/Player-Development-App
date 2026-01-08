@@ -6,6 +6,10 @@
 import { useState, useCallback, useEffect } from 'react';
 import { adminAPI, SystemStatus, FeatureFlag, SupportCase, SubscriptionTier } from '../services/api';
 
+interface HookOptions {
+  autoLoad?: boolean;
+}
+
 interface UseAdminReturn {
   // System Status
   systemStatus: SystemStatus | null;
@@ -315,6 +319,76 @@ export function useAdmin(): UseAdminReturn {
     // General
     error,
   };
+}
+
+// ============================================================================
+// Individual Hook Exports
+// ============================================================================
+
+export function useSystemStatus(options: HookOptions = {}) {
+  const { systemStatus, loadingStatus, fetchSystemStatus, error } = useAdmin();
+
+  useEffect(() => {
+    if (options.autoLoad !== false) {
+      fetchSystemStatus();
+    }
+  }, [fetchSystemStatus, options.autoLoad]);
+
+  return { status: systemStatus, loading: loadingStatus, error, refetch: fetchSystemStatus };
+}
+
+export function useFeatureFlags(options: HookOptions = {}) {
+  const { featureFlags, loadingFlags, fetchFeatureFlags, error } = useAdmin();
+
+  useEffect(() => {
+    if (options.autoLoad !== false) {
+      fetchFeatureFlags();
+    }
+  }, [fetchFeatureFlags, options.autoLoad]);
+
+  return { flags: featureFlags, loading: loadingFlags, error, refetch: fetchFeatureFlags };
+}
+
+export function useCreateFeatureFlag() {
+  const { createFeatureFlag, error } = useAdmin();
+  return { createFlag: createFeatureFlag, error };
+}
+
+export function useUpdateFeatureFlag() {
+  const { updateFeatureFlag, error } = useAdmin();
+  return { updateFlag: updateFeatureFlag, error };
+}
+
+export function useDeleteFeatureFlag() {
+  const { deleteFeatureFlag, error } = useAdmin();
+  return { deleteFlag: deleteFeatureFlag, error };
+}
+
+export function useSupportCases(options: { status?: string } = {}) {
+  const { supportCases, loadingCases, fetchSupportCases, error } = useAdmin();
+
+  useEffect(() => {
+    fetchSupportCases(options.status);
+  }, [fetchSupportCases, options.status]);
+
+  return { cases: supportCases, loading: loadingCases, error, refetch: () => fetchSupportCases(options.status) };
+}
+
+export function useUpdateSupportCase() {
+  const { updateSupportCase, error } = useAdmin();
+  return { updateCase: updateSupportCase, error };
+}
+
+export function useTiers(options: HookOptions = {}) {
+  const { tiers, loadingTiers, fetchTiers, error } = useAdmin();
+
+  useEffect(() => {
+    if (options.autoLoad !== false) {
+      fetchTiers();
+    }
+  }, [fetchTiers, options.autoLoad]);
+
+  return { tiers, loading: loadingTiers, error, refetch: fetchTiers };
 }
 
 export default useAdmin;

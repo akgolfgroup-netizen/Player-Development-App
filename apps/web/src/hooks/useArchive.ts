@@ -1,140 +1,204 @@
 /**
- * useArchive Hook
- * Manages archived items - listing, archiving, restoring, and deleting
+ * Archive Management Hooks
+ * API integration for archiving and restoring data
  */
 
 import { useState, useCallback, useEffect } from 'react';
-import { archiveAPI, ArchivedItem } from '../services/api';
+import apiClient from '../services/apiClient';
 
-interface UseArchiveReturn {
-  items: ArchivedItem[];
-  total: number;
-  countByType: Record<string, number>;
-  loading: boolean;
-  error: string | null;
-  fetchItems: (entityType?: string) => Promise<void>;
-  fetchCount: () => Promise<void>;
-  archiveItem: (entityType: string, entityId: string, reason?: string) => Promise<ArchivedItem | null>;
-  restoreItem: (id: string) => Promise<boolean>;
-  deleteItem: (id: string) => Promise<boolean>;
-  bulkDelete: (ids: string[]) => Promise<number>;
+// ============================================================================
+// TYPES
+// ============================================================================
+
+export interface ArchiveItem {
+  id: string;
+  entityType: string;
+  entityId: string;
+  entityData: any;
+  archivedBy?: string;
+  archivedAt: string;
+  reason?: string;
+  metadata?: Record<string, any>;
 }
 
-export function useArchive(): UseArchiveReturn {
-  const [items, setItems] = useState<ArchivedItem[]>([]);
-  const [total, setTotal] = useState(0);
-  const [countByType, setCountByType] = useState<Record<string, number>>({});
-  const [loading, setLoading] = useState(false);
+export interface ArchiveCount {
+  total: number;
+  byType?: Record<string, number>;
+}
+
+interface HookOptions {
+  autoLoad?: boolean;
+}
+
+// ============================================================================
+// HOOKS
+// ============================================================================
+
+export function useArchive(entityType: string | null = null, options: HookOptions = {}) {
+  const [data, setData] = useState<ArchiveItem[]>([]);
+  const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
 
-  const fetchItems = useCallback(async (entityType?: string) => {
-    setLoading(true);
-    setError(null);
+  const fetchArchive = useCallback(async () => {
     try {
-      const response = await archiveAPI.list(entityType);
-      if (response.data?.data) {
-        setItems(response.data.data);
-      }
-    } catch (err) {
-      setError(err instanceof Error ? err.message : 'Kunne ikke hente arkiverte elementer');
+      setLoading(true);
+      setError(null);
+      const params = entityType ? { entityType } : {};
+      const response = await apiClient.get('/archive', { params });
+      setData(response.data || []);
+    } catch (err: any) {
+      setError(err.message || 'Failed to load archive');
+    } finally {
+      setLoading(false);
+    }
+  }, [entityType]);
+
+  useEffect(() => {
+    if (options.autoLoad !== false) {
+      fetchArchive();
+    }
+  }, [fetchArchive, options.autoLoad]);
+
+  return { items: data, loading, error, refetch: fetchArchive };
+}
+
+export function useArchiveCount() {
+  const [count, setCount] = useState<ArchiveCount | null>(null);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState<string | null>(null);
+
+  const fetchCount = useCallback(async () => {
+    try {
+      setLoading(true);
+      setError(null);
+      const response = await apiClient.get('/archive/count');
+      setCount(response.data);
+    } catch (err: any) {
+      setError(err.message || 'Failed to load archive count');
     } finally {
       setLoading(false);
     }
   }, []);
 
-  const fetchCount = useCallback(async () => {
-    try {
-      const response = await archiveAPI.getCount();
-      if (response.data?.data) {
-        setTotal(response.data.data.total);
-        setCountByType(response.data.data.byType);
-      }
-    } catch (err) {
-      console.error('Failed to fetch archive count:', err);
-    }
-  }, []);
-
-  const archiveItem = useCallback(async (entityType: string, entityId: string, reason?: string): Promise<ArchivedItem | null> => {
-    try {
-      const response = await archiveAPI.archive({ entityType, entityId, reason });
-      if (response.data?.data) {
-        const newItem = response.data.data;
-        setItems(prev => [newItem, ...prev]);
-        setTotal(prev => prev + 1);
-        return newItem;
-      }
-      return null;
-    } catch (err) {
-      setError(err instanceof Error ? err.message : 'Kunne ikke arkivere element');
-      return null;
-    }
-  }, []);
-
-  const restoreItem = useCallback(async (id: string): Promise<boolean> => {
-    try {
-      const response = await archiveAPI.restore(id);
-      if (response.data?.data?.restored) {
-        setItems(prev => prev.filter(item => item.id !== id));
-        setTotal(prev => Math.max(0, prev - 1));
-        return true;
-      }
-      return false;
-    } catch (err) {
-      setError(err instanceof Error ? err.message : 'Kunne ikke gjenopprette element');
-      return false;
-    }
-  }, []);
-
-  const deleteItem = useCallback(async (id: string): Promise<boolean> => {
-    try {
-      const response = await archiveAPI.delete(id);
-      if (response.data?.data?.deleted) {
-        setItems(prev => prev.filter(item => item.id !== id));
-        setTotal(prev => Math.max(0, prev - 1));
-        return true;
-      }
-      return false;
-    } catch (err) {
-      setError(err instanceof Error ? err.message : 'Kunne ikke slette element');
-      return false;
-    }
-  }, []);
-
-  const bulkDelete = useCallback(async (ids: string[]): Promise<number> => {
-    try {
-      const response = await archiveAPI.bulkDelete(ids);
-      if (response.data?.data) {
-        const deleted = response.data.data.deleted;
-        setItems(prev => prev.filter(item => !ids.includes(item.id)));
-        setTotal(prev => Math.max(0, prev - deleted));
-        return deleted;
-      }
-      return 0;
-    } catch (err) {
-      setError(err instanceof Error ? err.message : 'Kunne ikke slette elementer');
-      return 0;
-    }
-  }, []);
-
-  // Fetch initial data
   useEffect(() => {
-    fetchItems();
     fetchCount();
-  }, [fetchItems, fetchCount]);
+  }, [fetchCount]);
 
-  return {
-    items,
-    total,
-    countByType,
-    loading,
-    error,
-    fetchItems,
-    fetchCount,
-    archiveItem,
-    restoreItem,
-    deleteItem,
-    bulkDelete,
-  };
+  return { count, loading, error, refetch: fetchCount };
 }
 
-export default useArchive;
+export function useArchiveItem(itemId: string, options: HookOptions = {}) {
+  const [data, setData] = useState<ArchiveItem | null>(null);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState<string | null>(null);
+
+  const fetchItem = useCallback(async () => {
+    if (!itemId) {
+      setLoading(false);
+      return;
+    }
+
+    try {
+      setLoading(true);
+      setError(null);
+      const response = await apiClient.get(`/archive/${itemId}`);
+      setData(response.data);
+    } catch (err: any) {
+      setError(err.message || 'Failed to load archived item');
+    } finally {
+      setLoading(false);
+    }
+  }, [itemId]);
+
+  useEffect(() => {
+    if (options.autoLoad !== false) {
+      fetchItem();
+    }
+  }, [fetchItem, options.autoLoad]);
+
+  return { item: data, loading, error, refetch: fetchItem };
+}
+
+export function useCreateArchiveItem() {
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState<string | null>(null);
+
+  const archiveItem = useCallback(async (itemData: Partial<ArchiveItem>) => {
+    try {
+      setLoading(true);
+      setError(null);
+      const response = await apiClient.post('/archive', itemData);
+      return response.data as ArchiveItem;
+    } catch (err: any) {
+      setError(err.message || 'Failed to archive item');
+      throw err;
+    } finally {
+      setLoading(false);
+    }
+  }, []);
+
+  return { archiveItem, loading, error };
+}
+
+export function useRestoreArchiveItem() {
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState<string | null>(null);
+
+  const restoreItem = useCallback(async (itemId: string) => {
+    try {
+      setLoading(true);
+      setError(null);
+      const response = await apiClient.post(`/archive/${itemId}/restore`);
+      return response.data;
+    } catch (err: any) {
+      setError(err.message || 'Failed to restore item');
+      throw err;
+    } finally {
+      setLoading(false);
+    }
+  }, []);
+
+  return { restoreItem, loading, error };
+}
+
+export function useBulkDeleteArchive() {
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState<string | null>(null);
+
+  const bulkDelete = useCallback(async (archiveIds: string[]) => {
+    try {
+      setLoading(true);
+      setError(null);
+      const response = await apiClient.post('/archive/bulk-delete', { archiveIds });
+      return response.data;
+    } catch (err: any) {
+      setError(err.message || 'Failed to bulk delete items');
+      throw err;
+    } finally {
+      setLoading(false);
+    }
+  }, []);
+
+  return { bulkDelete, loading, error };
+}
+
+export function useDeleteArchiveItem() {
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState<string | null>(null);
+
+  const deleteItem = useCallback(async (itemId: string) => {
+    try {
+      setLoading(true);
+      setError(null);
+      const response = await apiClient.delete(`/archive/${itemId}`);
+      return response.data;
+    } catch (err: any) {
+      setError(err.message || 'Failed to delete item');
+      throw err;
+    } finally {
+      setLoading(false);
+    }
+  }, []);
+
+  return { deleteItem, loading, error };
+}

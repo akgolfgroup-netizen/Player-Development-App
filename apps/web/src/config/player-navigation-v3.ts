@@ -306,6 +306,9 @@ export const playerNavigationV3: NavArea[] = [
           { href: '/mer/baner-vaer', label: 'Baner & Vær', icon: 'CloudIcon', description: 'Finn beste baner basert på værforhold' },
           { href: '/mer/ai-historikk', label: 'AI Treningshistorikk', icon: 'ChatIcon', description: 'Se tidligere AI-samtaler' },
           { href: '/mer/samlinger', label: 'Samlinger', icon: 'FolderIcon', description: 'Organiser videoer, øvelser og planer' },
+          { href: '/mer/eksporter', label: 'Eksporter data', icon: 'DownloadIcon', description: 'Last ned dine data som PDF eller Excel' },
+          { href: '/mer/arkiv', label: 'Arkiv', icon: 'ArchiveIcon', description: 'Administrer arkiverte elementer' },
+          { href: '/mer/betaling', label: 'Betaling & Fakturering', icon: 'CreditCardIcon', description: 'Administrer betalingsmåter og abonnementer' },
         ],
       },
       {

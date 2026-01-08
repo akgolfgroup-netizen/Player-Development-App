@@ -11,10 +11,25 @@ import {
   useUpdateCalibration,
   useDeleteCalibration,
 } from '../../hooks/useCalibration';
-import { useUser } from '../../contexts/UserContext';
+import { useAuth } from '../../contexts/AuthContext';
 import Card from '../../ui/primitives/Card';
 import Button from '../../ui/primitives/Button';
 import PageHeader from '../../components/layout/PageHeader';
+
+interface Calibration {
+  id: string;
+  playerId: string;
+  clubType?: string;
+  speed1?: number;
+  speed2?: number;
+  speed3?: number;
+  averageSpeed?: number;
+  calibrationDate: string;
+  notes?: string;
+  driverSpeed?: number;
+  speedProfile?: Record<string, number>;
+  clubs?: Array<any>;
+}
 
 const CLUB_TYPES = [
   { value: 'driver', label: 'Driver', category: 'woods' },
@@ -36,21 +51,45 @@ const CLUB_TYPES = [
 ];
 
 const CalibrationPage: React.FC = () => {
-  const { user } = useUser();
+  const { user } = useAuth();
   const playerId = user?.playerId || user?.id;
 
-  const { calibration, loading, error, refetch } = usePlayerCalibration(playerId);
+  const { calibration, loading, error, refetch } = usePlayerCalibration(playerId) as {
+    calibration: Calibration | null;
+    loading: boolean;
+    error: any;
+    refetch: () => void;
+  };
   const [showCalibrationWizard, setShowCalibrationWizard] = useState(false);
   const [isEditing, setIsEditing] = useState(false);
+
+  if (!playerId) {
+    return (
+      <div className="min-h-screen bg-tier-surface-base p-6">
+        <div className="max-w-2xl mx-auto">
+          <Card>
+            <div className="p-8 text-center text-tier-error">Ingen bruker funnet. Vennligst logg inn.</div>
+          </Card>
+        </div>
+      </div>
+    );
+  }
 
   return (
     <div className="min-h-screen bg-tier-surface-base p-6">
       <div className="max-w-7xl mx-auto">
-        <PageHeader
-          title="Klubbhastighet Kalibrering"
-          subtitle="Kalibrer klubbhastigheter for nøyaktige testberegninger"
-          icon={<Target size={28} className="text-tier-navy" />}
-        />
+        <div className="mb-6">
+          <div className="flex items-center gap-3 mb-2">
+            <Target size={28} className="text-tier-navy" />
+            <PageHeader
+              title="Klubbhastighet Kalibrering"
+              subtitle="Kalibrer klubbhastigheter for nøyaktige testberegninger"
+              helpText=""
+              actions={null}
+              className="mb-0"
+            />
+          </div>
+        </div>
 
         {loading ? (
           <Card>
@@ -131,9 +170,9 @@ const CalibrationPage: React.FC = () => {
                     </div>
                     <div>
                       <p className="text-sm text-tier-text-secondary mb-1">Driver klubbhastighet</p>
-                      <p className="text-4xl font-bold text-tier-navy">{calibration.driverSpeed.toFixed(1)} m/s</p>
+                      <p className="text-4xl font-bold text-tier-navy">{calibration.driverSpeed?.toFixed(1) || '0.0'} m/s</p>
                       <p className="text-xs text-tier-text-secondary mt-1">
-                        ({(calibration.driverSpeed * 2.237).toFixed(1)} mph)
+                        ({((calibration.driverSpeed || 0) * 2.237).toFixed(1)} mph)
                       </p>
                     </div>
                   </div>
@@ -200,7 +239,7 @@ const CalibrationPage: React.FC = () => {
         {showCalibrationWizard && (
           <CalibrationWizard
             existingCalibration={isEditing ? calibration : null}
-            playerId={playerId}
+            playerId={playerId!}
             onClose={() => {
               setShowCalibrationWizard(false);
               setIsEditing(false);
