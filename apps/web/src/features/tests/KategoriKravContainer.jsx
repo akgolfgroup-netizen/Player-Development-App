@@ -437,7 +437,6 @@ const KategoriKravContainer = () => {
           title="Kategorikrav (A-K)"
           subtitle="Spor fremgang mot neste kategori"
           helpText="Oversikt over krav for kategoriopprykk i A-K systemet. Se din nåværende kategori, målkategori og fremgang mot neste nivå. Spor testresultater for driving, jern, naerspill, putting og turneringer. Se hvilke krav som er oppfylt og hva som gjenstår."
-          showBackButton={false}
         />
         {/* AI Coach Guide */}
         <AICoachGuide config={GUIDE_PRESETS.categoryRequirements} />

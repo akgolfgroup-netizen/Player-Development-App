@@ -58,7 +58,6 @@ const UILabContainer = () => {
         title="UI Lab"
         subtitle="Komponentutstilling"
         helpText="Utviklerverktøy for testing og demonstrasjon av alle UI-komponenter i designsystemet. Se shadcn/ui komponenter og eksempler på implementasjon."
-        showBackButton={false}
       />
 
       {/* Toggle between views */}
@@ -164,7 +163,6 @@ const UILabContainer = () => {
           <PageHeader
             title="Side Tittel"
             subtitle="Med undertittel og tilbake-knapp"
-            showBackButton={true}
             onBackClick={() => console.log('Back clicked')}
           />
         </section>

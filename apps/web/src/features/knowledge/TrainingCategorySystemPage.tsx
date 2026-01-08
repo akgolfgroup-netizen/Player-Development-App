@@ -29,6 +29,7 @@ import {
   PlayCircle,
   Video,
 } from 'lucide-react';
+import { PageHeader } from '../../ui/raw-blocks';
 
 // Colors - Using TIER Golf Design System tokens
 const COLORS = {
@@ -295,59 +296,12 @@ function InfoBox({ title, children }: { title: string; children: React.ReactNode
 
 export default function TrainingCategorySystemPage() {
   return (
-    <div style={{ maxWidth: 900, margin: '0 auto', padding: '24px 16px' }}>
-      {/* Header */}
-      <div style={{ marginBottom: 32 }}>
-        <Link
-          to="/trening"
-          style={{
-            display: 'inline-flex',
-            alignItems: 'center',
-            gap: 8,
-            color: COLORS.primary,
-            textDecoration: 'none',
-            fontSize: 14,
-            fontWeight: 500,
-            marginBottom: 20,
-            padding: '8px 0',
-          }}
-        >
-          <ArrowLeft size={18} />
-          Tilbake til Trening
-        </Link>
-
-        <div style={{ display: 'flex', alignItems: 'flex-start', gap: 16 }}>
-          <div
-            style={{
-              width: 56,
-              height: 56,
-              borderRadius: 14,
-              backgroundColor: COLORS.primary,
-              display: 'flex',
-              alignItems: 'center',
-              justifyContent: 'center',
-              flexShrink: 0,
-            }}
-          >
-            <GraduationCap size={28} color={COLORS.white} />
-          </div>
-          <div>
-            <h1
-              style={{
-                fontSize: 28,
-                fontWeight: 700,
-                color: COLORS.textDark,
-                margin: '0 0 8px',
-              }}
-            >
-              Treningskategorisystem
-            </h1>
-            <p style={{ fontSize: 16, color: COLORS.textMuted, margin: 0, lineHeight: 1.5 }}>
-              Forstå hvordan treningsøkter kategoriseres og hvordan dette påvirker din utvikling
-            </p>
-          </div>
-        </div>
-      </div>
+    <div className="max-w-4xl mx-auto p-6">
+      <PageHeader
+        title="Treningskategorisystem"
+        subtitle="Forstå hvordan treningsøkter kategoriseres og hvordan dette påvirker din utvikling"
+        helpText="Komplett guide til treningskategorisystemet med pyramidestrukturen (FYS, TEK, SLAG, SPILL, TURN), 16 treningsområder (TEE, INN200-50, CHIP/PITCH/LOB/BUNKER, PUTT), læringsfaser (L-KROPP til L-AUTO), Club Speed nivåer (CS0-100), miljø (M0-M5), belastning (PR1-PR5), P-posisjoner og formler. Inkluderer forklaringsvideoer, tabeller, eksempler og veiledning for systematisk progresjon."
+      />
 
       {/* Intro Card */}
       <div

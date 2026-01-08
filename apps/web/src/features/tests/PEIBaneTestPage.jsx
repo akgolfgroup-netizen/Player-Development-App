@@ -125,7 +125,6 @@ const PEIBaneTestPage = () => {
         title={TEST_INFO.name}
         subtitle={TEST_INFO.description}
         helpText="PEI (Precision Error Index) test for å måle presisjon fra ulike posisjoner. Test din evne til å komme nær flagget ved å slå 18 slag fra varierte avstander og underlag (Fairway, Rough, Tee, Bunker). Mål avstanden fra ball til hull og få beregnet PEI automatisk. Lavere PEI = bedre presisjon. Varighet: 30-45 minutter. Klikk 'Ta test' for å starte."
-        showBackButton={false}
         actions={
           <Button
             variant="primary"

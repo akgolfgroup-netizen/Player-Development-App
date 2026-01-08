@@ -159,7 +159,6 @@ export function ParentDashboard({ className = '', playerId, playerName }) {
         title="Fremdriftsrapporter"
         subtitle={`Følg ${playerName || 'spillerens'} utvikling og fremgang`}
         helpText="Foresattes portal for å følge spillerens fremgang. Les publiserte fremdriftsrapporter fra trener, se statistikk over økter, mål og prestasjoner. Vis oppsummering av siste rapport, kommende mål og kontakt trener. Kun lesevisning (ingen redigeringsmulighet)."
-        showBackButton={false}
         actions={
           <Button variant="secondary" onClick={refresh}>
             🔄 Oppdater

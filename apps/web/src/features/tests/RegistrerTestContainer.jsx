@@ -349,7 +349,6 @@ const RegistrerTestContainer = () => {
         title="Registrer testresultat"
         subtitle="Logg testresultater for sporing av fremgang"
         helpText="Registrer testresultater innen kategoriene driving, jern, naerspill, putting, fysisk og mental. Velg testkategori, legg til tester fra listen og registrer verdier. Se tidligere resultater, trender og sammenlign med benchmarks. Resultater lagres automatisk i testprotokollen."
-        showBackButton={true}
       />
       {/* Category Selection */}
       <div className="bg-tier-white rounded-[14px] p-4 mb-5">

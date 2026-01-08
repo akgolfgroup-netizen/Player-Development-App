@@ -692,7 +692,6 @@ const StatsGuidePage = () => {
           title="Statistikkguide"
           subtitle="Lær om testene og kategoriene i TIER Golf systemet"
           helpText="Komplett guide til TIER Golf testene, kategoriene (A-K), og Strokes Gained-analyse. Utforsk de 20 offisielle testene, lær hvordan kategorisystemet fungerer, forstå Strokes Gained-metrikker og hvordan du tolker resultatene. Bruk fanene for å navigere mellom temaer."
-          showBackButton={false}
         />
         {/* Tab Navigation */}
         <div className="flex gap-1.5 mb-6 overflow-x-auto pb-2">

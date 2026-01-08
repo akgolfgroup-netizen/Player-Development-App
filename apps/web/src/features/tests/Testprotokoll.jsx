@@ -345,7 +345,6 @@ const TIERGolfTestprotokoll = ({ player: apiPlayer = null, tests: apiTests = nul
         title="Testprotokoll"
         subtitle="Komplett oversikt over tester og resultater"
         helpText="Oversikt over alle testresultater med kategorier (hastighet, avstand, presisjon, naerspill, fysisk, putting, mental). Filtrer på kategori, søk etter tester, se siste resultater og trender. Start nye tester, registrer resultater og sammenlign med tidligere prestasjoner. Se poeng mot neste kategori."
-        showBackButton={false}
       />
       {/* Header Section */}
       <div className="mb-8">

@@ -183,7 +183,6 @@ export function TierBadges() {
           title="Dine Badges"
           subtitle="Samle prestasjoner og lås opp belønninger"
           helpText="Oversikt over alle tilgjengelige prestasjonsmerker (badges) som du kan låse opp gjennom trening og turneringer. Se fremgang mot neste badge, filtrer på kategori og nivå, og spor din badge-samling. Opptjen XP og belønninger."
-          showBackButton={false}
         />
 
         {/* Stats Summary */}

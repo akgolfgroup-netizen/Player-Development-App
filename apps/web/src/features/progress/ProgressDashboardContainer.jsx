@@ -234,7 +234,6 @@ const ProgressDashboardContainer = () => {
         title="Fremdrift"
         subtitle="Spor din treningsfremgang og aktivitetsstatistikk"
         helpText="Komplett oversikt over din treningsfremgang med gjennomføringsgrad, daglig streak, økter fullført og total treningstid. Se 12-ukers aktivitetshistorikk, treningsfokus fordelt på ferdighetsområder (Tee, Innspill, Naerspill, Putting) og kommende planlagte økter."
-        showBackButton={false}
       />
       {state === 'loading' && <LoadingState message="Laster fremdrift..." />}
       {state === 'error' && (

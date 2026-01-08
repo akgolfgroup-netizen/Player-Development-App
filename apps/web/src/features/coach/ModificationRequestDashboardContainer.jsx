@@ -45,7 +45,6 @@ const ModificationRequestDashboardContainer = () => {
         title="Endringsforespørsler"
         subtitle="Gjennomgå og svar på spillernes endringsforespørsler"
         helpText="Oversikt over endringsforespørsler fra spillere angående treningsplaner. Filtrer på status (venter, under behandling, løst, avvist). Se spillerdetaljer, bekymringer, hastegrad og behandlingstidspunkter. Svar på forespørsler direkte fra dashboardet."
-        showBackButton={false}
       />
       {state === 'loading' && <LoadingState message="Laster endringsforespørsler..." />}
       {state === 'error' && (

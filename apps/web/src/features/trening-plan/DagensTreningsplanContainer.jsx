@@ -382,7 +382,6 @@ const DagensTreningsplanContainer = () => {
         title="Dagens treningsplan"
         subtitle="Oversikt over planlagte økter for i dag"
         helpText="Komplett oversikt over dagens treningsplan med alle planlagte økter. Se dagens tema, total varighet, fremgang og fullføringsgrad. Start økter direkte, marker som fullført og spor gjennomføring. Les trenernoten for dagens fokusområder og prioriteringer."
-        showBackButton={false}
       />
       {/* Context info - theme and day */}
       <div className="text-[13px] text-tier-text-secondary mb-4">

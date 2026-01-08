@@ -295,7 +295,6 @@ export function VideoLibraryPage() {
         title="Videobibliotek"
         subtitle="Dine golfvideoer for analyse og utvikling"
         helpText="Oversikt over alle dine videoopptak for golfsvinganalyse. Se ventende videoforespørsler fra trener, last opp nye videoer med kategori (full swing, putting, kortspill) og kameravinkel (face on, down the line, ovenfra, siden). Sammenlign videoer side-ved-side og naviger til videoanalyse. Støtter MP4, MOV, WebM (maks 5 min)."
-        showBackButton={false}
         actions={
           <Button variant="primary" onClick={handleUploadClick}>
             Last opp video

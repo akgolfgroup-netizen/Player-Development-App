@@ -158,7 +158,6 @@ const Badges = () => {
         title="Prestasjonsmerker"
         subtitle="Se dine opptjente badges og tilgjengelige prestasjoner"
         helpText="Komplett oversikt over alle tilgjengelige prestasjonsmerker som du kan låse opp. Badges opptjenes gjennom trening, turneringer og milepæler. Filtrer på kategori, se fremgang og spor din totale XP-samling."
-        showBackButton={false}
       />
       <BadgeGrid
         badges={badges}

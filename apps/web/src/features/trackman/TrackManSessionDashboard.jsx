@@ -142,7 +142,6 @@ export function TrackManSessionDashboard({
         title="Launch Monitor Økter"
         subtitle="TrackMan og launch monitor data for alle dine øvingsøkter"
         helpText="Oversikt over alle launch monitor økter med TrackMan-data. Se carry distance, ball speed, smash factor og andre nøkkelparametre. Opprett nye økter, importer TrackMan-data, analyser club gapping og spor fremgang over tid. Søk etter lokasjon, spiller eller notater."
-        showBackButton={false}
         actions={
           <>
             {onViewGapping && (

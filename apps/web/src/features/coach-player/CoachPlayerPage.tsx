@@ -13,6 +13,7 @@ import Button from '../../ui/primitives/Button';
 import StatsGridTemplate from '../../ui/templates/StatsGridTemplate';
 import StateCard from '../../ui/composites/StateCard';
 import { PageTitle, SectionTitle } from '../../components/typography/Headings';
+import { PageHeader } from '../../ui/raw-blocks';
 
 // ═══════════════════════════════════════════
 // STYLES
@@ -246,18 +247,11 @@ export function CoachPlayerPage() {
 
   return (
     <div style={styles.container}>
-      {/* Header with back button and player info */}
-      <div style={styles.header}>
-        <Button variant="ghost" onClick={() => navigate(-1)}>
-          ← Tilbake
-        </Button>
-        <div style={styles.playerInfo}>
-          <PageTitle style={styles.playerName}>{player.name}</PageTitle>
-          {player.tier && (
-            <p style={styles.playerMeta}>{player.tier}</p>
-          )}
-        </div>
-      </div>
+      <PageHeader
+        title={player.name}
+        subtitle={player.tier || 'Spillerprofil'}
+        helpText="Trenerens visning av spillerprofil med komplett oversikt. Se nøkkeltall (KPI stats), siste videoer med status (venter, gjennomgått, oppfølging), nylige treningsøkter med varighet, og aktive mål med fremgangsvisning. Klikk på videoer for å gå til videoanalyse. Bruk for å følge spillerens utvikling og planlegge neste trinn."
+      />
 
       {/* KPI Stats */}
       <section style={styles.section}>

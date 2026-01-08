@@ -230,7 +230,6 @@ export function SubscriptionDashboard({ className = '' }) {
         title="Abonnement"
         subtitle="Administrer ditt abonnement og faktureringsinformasjon"
         helpText="Oversikt over ditt nåværende abonnement (Basic, Premium eller Elite) med priser, funksjoner og fornyelsesdato. Endre plan, se tilgjengelige oppgraderinger eller kanseller abonnement. Sammenlign alle abonnementsplaner og se besparelser ved årlig betaling."
-        showBackButton={false}
       />
 
       {/* Current Subscription */}

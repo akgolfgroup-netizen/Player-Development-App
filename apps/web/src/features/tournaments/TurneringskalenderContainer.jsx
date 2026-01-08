@@ -866,7 +866,6 @@ const TurneringskalenderContainer = () => {
         title="Turneringskalender"
         subtitle="Finn og meld deg på turneringer"
         helpText="Oversikt over kommende golfsturneringer. Se åpne påmeldinger, filtrer på kategori (junior, elite, åpen), meld deg på turneringer og se dine tidligere resultater. Se startavgift, format og deltakerinformasjon."
-        showBackButton={false}
       />
       <div style={{ padding: '0' }}>
         {/* Stats Row */}

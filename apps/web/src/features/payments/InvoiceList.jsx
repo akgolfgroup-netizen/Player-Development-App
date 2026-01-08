@@ -178,7 +178,6 @@ export function InvoiceList({ className = '' }) {
         title="Invoices"
         subtitle="Manage and pay your invoices"
         helpText="Complete overview of all invoices with status filtering (pending, paid, overdue). Search by invoice number, player name or amount. Pay pending invoices directly, view detailed information and track payment history."
-        showBackButton={false}
       />
 
       {/* Filters and Search */}

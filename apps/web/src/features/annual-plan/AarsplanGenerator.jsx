@@ -763,8 +763,6 @@ const AarsplanGenerator = () => {
         <PageHeader
           title="Årsplan opprettet"
           subtitle="Din treningsplan er klar"
-          showBackButton
-          onBack={() => navigate('/aarsplan')}
         />
         <div className="max-w-xl mx-auto p-6">
           <div className="rounded-2xl shadow-sm bg-bg-primary border border-default">
@@ -787,8 +785,6 @@ const AarsplanGenerator = () => {
         title="Årsplan Generator"
         subtitle="Lag din personlige 12-måneders treningsplan"
         helpText="Generer en komplett årsplan basert på dine mål, tilgjengelighet og treningsnivå. Systemet lager en periodisert plan med anbefalt fokus for hver måned."
-        showBackButton
-        onBack={() => navigate('/aarsplan')}
       />
 
       <div className="max-w-3xl mx-auto p-6">

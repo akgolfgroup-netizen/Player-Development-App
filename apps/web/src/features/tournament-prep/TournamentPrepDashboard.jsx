@@ -187,7 +187,6 @@ export function TournamentPrepDashboard({
         title="Turneringsforberedelse"
         subtitle="Forbered deg til kommende turneringer med banestrategier og sjekklister"
         helpText="Oversikt over turneringsforberedelser. Opprett og administrer forberedelser med banestrategier, hull-for-hull planer, sjekklister og målscore. Se fullføringsgrad, søk etter turnering eller spiller, og spor fremgang mot turneringsdato."
-        showBackButton={false}
         actions={
           <>
             <Button variant="secondary" onClick={refresh}>

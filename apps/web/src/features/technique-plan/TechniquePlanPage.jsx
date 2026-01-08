@@ -77,7 +77,6 @@ export default function TechniquePlanPage() {
         title="Teknikkplan"
         subtitle="Din plan for teknisk utvikling med TrackMan-data"
         helpText="Dashboard for teknisk utvikling med TrackMan-integrering. Administrer teknikkoppgaver (swing, putting, shortgame, fysisk) med prioritering, sett teknikkmål for metrikker (clubPath, faceToPath, attackAngle osv.), se statistikk over importert TrackMan-data og importer CSV-filer direkte. Bruk fanene for å navigere mellom oppgaver, mål, statistikk og import."
-        showBackButton={false}
       />
 
       {/* Tabs */}

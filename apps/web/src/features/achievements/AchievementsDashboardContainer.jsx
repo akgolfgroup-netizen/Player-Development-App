@@ -71,7 +71,6 @@ const AchievementsDashboardContainer = () => {
         title="Prestasjoner"
         subtitle="Dine opptjente badges og prestasjonsmerker"
         helpText="Oversikt over alle prestasjoner og badges. Filtrer på kategori (konsistens, volum, forbedring, milepæler, spesial). Se total XP, opplåste badges, fremgang mot neste nivå og nylige prestasjoner. Spor prestasjonene dine over tid."
-        showBackButton={false}
       />
       {state === 'loading' && <LoadingState message="Laster prestasjoner..." />}
       {state === 'error' && (
