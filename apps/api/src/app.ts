@@ -133,6 +133,9 @@ export async function buildApp(opts: BuildAppOptions = {}): Promise<AnyFastifyIn
   const { techniquePlanRoutes } = await import('./api/v1/technique-plan');
   const { stripeWebhookRoutes } = await import('./api/v1/webhooks');
 
+  // Multi-sport configuration
+  const { sportConfigRoutes } = await import('./api/v1/sport-config');
+
   await app.register(authRoutes, { prefix: `/api/${config.server.apiVersion}/auth` });
   await app.register(playerRoutes, { prefix: `/api/${config.server.apiVersion}/players` });
   await app.register(coachRoutes, { prefix: `/api/${config.server.apiVersion}/coaches` });
@@ -203,6 +206,9 @@ export async function buildApp(opts: BuildAppOptions = {}): Promise<AnyFastifyIn
   await app.register(auditRoutes, { prefix: `/api/${config.server.apiVersion}/audit` });
   await app.register(aiConversationRoutes, { prefix: `/api/${config.server.apiVersion}/ai-conversations` });
   await app.register(techniquePlanRoutes, { prefix: `/api/${config.server.apiVersion}/technique-plan` });
+
+  // Multi-sport configuration
+  await app.register(sportConfigRoutes, { prefix: `/api/${config.server.apiVersion}/sport-config` });
 
   // Webhooks (no auth required, verified by signature)
   await app.register(stripeWebhookRoutes, { prefix: `/api/${config.server.apiVersion}/webhooks` });

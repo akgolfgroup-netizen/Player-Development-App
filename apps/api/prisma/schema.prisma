@@ -12,6 +12,20 @@ datasource db {
 }
 
 // ============================================================================
+// ENUMS
+// ============================================================================
+
+enum SportId {
+  GOLF
+  RUNNING
+  HANDBALL
+  FOOTBALL
+  TENNIS
+  SWIMMING
+  JAVELIN
+}
+
+// ============================================================================
 // MULTI-TENANCY & AUTH
 // ============================================================================
 
@@ -24,10 +38,12 @@ model Tenant {
   maxCoaches       Int      @default(5) @map("max_coaches")
   settings         Json     @default("{}") @db.JsonB
   status           String   @default("active") @db.VarChar(20)
+  sportId          SportId  @default(GOLF) @map("sport_id")
   createdAt        DateTime @default(now()) @map("created_at") @db.Timestamptz(6)
   updatedAt        DateTime @default(now()) @updatedAt @map("updated_at") @db.Timestamptz(6)
 
   // Relations
+  sportConfig           SportConfig?
   coaches               Coach[]
   players               Player[]
   parents               Parent[]
@@ -1838,7 +1854,7 @@ model PlayerIntake {
 
 model AnnualTrainingPlan {
   id       String @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
-  playerId String @unique @map("player_id") @db.Uuid
+  playerId String @map("player_id") @db.Uuid
   tenantId String @map("tenant_id") @db.Uuid
 
   // Plan metadata
@@ -1859,8 +1875,9 @@ model AnnualTrainingPlan {
   tournamentWeeks     Int @map("tournament_weeks")
 
   // Volume and intensity parameters
-  weeklyHoursTarget Int  @map("weekly_hours_target")
-  intensityProfile  Json @map("intensity_profile") @db.JsonB
+  weeklyHoursTarget Int   @map("weekly_hours_target")
+  intensityProfile  Json  @map("intensity_profile") @db.JsonB
+  periods           Json? @map("periods") @db.JsonB
 
   // Generation metadata
   generatedAt         DateTime @map("generated_at") @db.Timestamptz(6)
@@ -4168,4 +4185,43 @@ model TrackmanImport {
   @@unique([playerId, fileHash])
   @@index([playerId])
   @@map("trackman_imports")
+}
+
+// ============================================================================
+// MULTI-SPORT CONFIGURATION
+// ============================================================================
+
+model SportConfig {
+  id       String  @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  tenantId String  @unique @map("tenant_id") @db.Uuid
+  sportId  SportId @map("sport_id")
+
+  // Customizable sport settings (JSON overrides for sport config)
+  trainingAreasOverride Json? @map("training_areas_override") @db.JsonB
+  environmentsOverride  Json? @map("environments_override") @db.JsonB
+  phasesOverride        Json? @map("phases_override") @db.JsonB
+  benchmarksOverride    Json? @map("benchmarks_override") @db.JsonB
+  terminologyOverride   Json? @map("terminology_override") @db.JsonB
+  navigationOverride    Json? @map("navigation_override") @db.JsonB
+
+  // Feature flags per tenant (override sport defaults)
+  usesHandicap   Boolean? @map("uses_handicap")
+  usesClubSpeed  Boolean? @map("uses_club_speed")
+  usesSG         Boolean? @map("uses_strokes_gained")
+  usesAKFormula  Boolean? @map("uses_ak_formula")
+  usesBenchmarks Boolean? @map("uses_benchmarks")
+
+  // Custom branding
+  primaryColor   String? @map("primary_color") @db.VarChar(7)
+  secondaryColor String? @map("secondary_color") @db.VarChar(7)
+  logoUrl        String? @map("logo_url") @db.VarChar(500)
+
+  createdAt DateTime @default(now()) @map("created_at") @db.Timestamptz(6)
+  updatedAt DateTime @default(now()) @updatedAt @map("updated_at") @db.Timestamptz(6)
+
+  // Relations
+  tenant Tenant @relation(fields: [tenantId], references: [id], onDelete: Cascade)
+
+  @@index([sportId])
+  @@map("sport_configs")
 }
