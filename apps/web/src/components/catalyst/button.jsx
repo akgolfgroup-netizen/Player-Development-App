@@ -165,7 +165,7 @@ const styles = {
       '[--btn-icon:var(--color-white)]/60 data-active:[--btn-icon:var(--color-white)]/80 data-hover:[--btn-icon:var(--color-white)]/80',
     ],
     gold: [
-      'text-white [--btn-hover-overlay:var(--color-white)]/10 [--btn-bg:var(--achievement)] [--btn-border:rgb(var(--tier-gold-dark))]',
+      'text-white [--btn-hover-overlay:var(--color-white)]/10 [--btn-bg:var(--tier-prestige)] [--btn-border:var(--tier-prestige-strong)]',
       '[--btn-icon:var(--color-white)]/90 data-active:[--btn-icon:var(--color-white)] data-hover:[--btn-icon:var(--color-white)]',
     ],
     success: [
