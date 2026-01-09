@@ -310,4 +310,111 @@ export function useQuickActions() {
   }, [quickActions]);
 }
 
+/**
+ * Hook to get session configuration from sport context
+ *
+ * @example
+ * const { pyramidCategories, templates, getTemplate } = useSessionConfig();
+ *
+ * // Render pyramid categories
+ * pyramidCategories.map(cat => (
+ *   <button key={cat.code} style={{ color: cat.color }}>
+ *     {cat.labelNO || cat.label}
+ *   </button>
+ * ));
+ */
+export function useSessionConfig() {
+  const sport = useSportSafe();
+
+  return useMemo(() => {
+    const sessions = sport.config.sessions;
+
+    // Default session config if not defined
+    const defaultConfig = {
+      pyramidCategories: [],
+      templates: [],
+      sessionTypes: ['training', 'test', 'tournament', 'recovery'] as const,
+      defaultDuration: 60,
+      usesAKFormula: false,
+    };
+
+    const config = sessions || defaultConfig;
+
+    return {
+      // Pyramid categories (training hierarchy)
+      pyramidCategories: config.pyramidCategories,
+
+      // Session templates
+      templates: config.templates,
+
+      // Available session types
+      sessionTypes: config.sessionTypes,
+
+      // Default duration
+      defaultDuration: config.defaultDuration,
+
+      // Whether sport uses AK-formula
+      usesAKFormula: config.usesAKFormula || false,
+
+      // Helper to get pyramid category by code
+      getCategory: (code: string) =>
+        config.pyramidCategories.find((c) => c.code === code),
+
+      // Helper to get template by id
+      getTemplate: (id: string) =>
+        config.templates.find((t) => t.id === id),
+
+      // Helper to get templates by category
+      getTemplatesByCategory: (categoryCode: string) =>
+        config.templates.filter((t) => t.categoryCode === categoryCode),
+
+      // Current sport info
+      sportId: sport.sportId,
+      sportName: sport.config.nameNO || sport.config.name,
+    };
+  }, [sport]);
+}
+
+/**
+ * Hook to get pyramid categories formatted for forms
+ * Returns categories sorted by order with Norwegian labels
+ */
+export function usePyramidCategories() {
+  const { pyramidCategories } = useSessionConfig();
+
+  return useMemo(() => {
+    return [...pyramidCategories]
+      .sort((a, b) => a.order - b.order)
+      .map((cat) => ({
+        code: cat.code,
+        label: cat.labelNO || cat.label,
+        description: cat.descriptionNO || cat.description,
+        icon: cat.icon,
+        color: cat.color,
+        usesIntensity: cat.usesIntensity,
+        usesPosition: cat.usesPosition,
+      }));
+  }, [pyramidCategories]);
+}
+
+/**
+ * Hook to get session templates formatted for selection
+ */
+export function useSessionTemplates() {
+  const { templates } = useSessionConfig();
+
+  return useMemo(() => {
+    return templates.map((t) => ({
+      id: t.id,
+      name: t.nameNO || t.name,
+      description: t.descriptionNO || t.description,
+      defaultDuration: t.defaultDuration,
+      categoryCode: t.categoryCode,
+      defaultAreas: t.defaultAreas,
+      defaultEnvironment: t.defaultEnvironment,
+      icon: t.icon,
+    }));
+  }, [templates]);
+}
+
 export default useTrainingConfig;

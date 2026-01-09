@@ -21,6 +21,9 @@ import type {
   Equipment,
   TestProtocol,
   SportNavigation,
+  SessionConfig,
+  PyramidCategory,
+  SessionTemplate,
 } from './types';
 
 // Import golf test definitions
@@ -609,6 +612,153 @@ const terminology: SportTerminology = {
 };
 
 // ============================================================================
+// SESSION CONFIGURATION - AK-formel Hierarki v2.0
+// ============================================================================
+
+const pyramidCategories: PyramidCategory[] = [
+  {
+    code: 'FYS',
+    label: 'Physical',
+    labelNO: 'Fysisk',
+    description: 'Strength, power, mobility, stability, conditioning',
+    descriptionNO: 'Styrke, power, mobilitet, stabilitet, kondisjon',
+    icon: 'Dumbbell',
+    color: 'rgb(var(--status-warning))', // Orange
+    order: 1,
+    usesIntensity: false,
+    usesPosition: false,
+  },
+  {
+    code: 'TEK',
+    label: 'Technique',
+    labelNO: 'Teknikk',
+    description: 'Movement patterns, positions, sequence',
+    descriptionNO: 'Bevegelsesmønster, posisjoner, sekvens',
+    icon: 'Target',
+    color: 'rgb(var(--category-j))', // Purple
+    order: 2,
+    usesIntensity: true,
+    usesPosition: true,
+  },
+  {
+    code: 'SLAG',
+    label: 'Shots',
+    labelNO: 'Golfslag',
+    description: 'Shot quality, distance, accuracy, consistency',
+    descriptionNO: 'Slagkvalitet, avstand, nøyaktighet, konsistens',
+    icon: 'Golf',
+    color: 'rgb(var(--status-info))', // Teal
+    order: 3,
+    usesIntensity: true,
+    usesPosition: true,
+  },
+  {
+    code: 'SPILL',
+    label: 'Play',
+    labelNO: 'Spill',
+    description: 'Strategy, course management, scoring, decisions',
+    descriptionNO: 'Strategi, banehåndtering, scoring, beslutninger',
+    icon: 'Flag',
+    color: 'rgb(var(--status-success))', // Green
+    order: 4,
+    usesIntensity: true,
+    usesPosition: false,
+  },
+  {
+    code: 'TURN',
+    label: 'Tournament',
+    labelNO: 'Turnering',
+    description: 'Mental performance, competition focus',
+    descriptionNO: 'Mental prestasjon, konkurransefokus',
+    icon: 'Trophy',
+    color: 'rgb(var(--tier-gold))', // Gold
+    order: 5,
+    usesIntensity: false,
+    usesPosition: false,
+  },
+];
+
+const sessionTemplates: SessionTemplate[] = [
+  {
+    id: 'range-practice',
+    name: 'Range Practice',
+    nameNO: 'Range-trening',
+    description: 'Standard range session with full swing focus',
+    descriptionNO: 'Standard range-økt med fokus på full sving',
+    defaultDuration: 60,
+    categoryCode: 'SLAG',
+    defaultAreas: ['TEE', 'INN150'],
+    defaultEnvironment: 'M2',
+    icon: 'Golf',
+  },
+  {
+    id: 'short-game',
+    name: 'Short Game Session',
+    nameNO: 'Kortspill-økt',
+    description: 'Chipping, pitching, and bunker work',
+    descriptionNO: 'Chip, pitch og bunkertrening',
+    defaultDuration: 45,
+    categoryCode: 'SLAG',
+    defaultAreas: ['CHIP', 'PITCH', 'BUNKER'],
+    defaultEnvironment: 'M3',
+    icon: 'Ruler',
+  },
+  {
+    id: 'putting-session',
+    name: 'Putting Session',
+    nameNO: 'Putting-økt',
+    description: 'Focused putting practice',
+    descriptionNO: 'Fokusert putting-trening',
+    defaultDuration: 30,
+    categoryCode: 'SLAG',
+    defaultAreas: ['PUTT3-5', 'PUTT5-10', 'PUTT10-15'],
+    defaultEnvironment: 'M3',
+    icon: 'Flag',
+  },
+  {
+    id: 'technique-session',
+    name: 'Technique Session',
+    nameNO: 'Teknikk-økt',
+    description: 'Motor learning focused, slow motion work',
+    descriptionNO: 'Motorisk læring, sakte-film arbeid',
+    defaultDuration: 45,
+    categoryCode: 'TEK',
+    defaultEnvironment: 'M1',
+    icon: 'Target',
+  },
+  {
+    id: 'course-practice',
+    name: 'Course Practice',
+    nameNO: 'Bane-trening',
+    description: 'Practice round on course',
+    descriptionNO: 'Treningsrunde på bane',
+    defaultDuration: 180,
+    categoryCode: 'SPILL',
+    defaultEnvironment: 'M4',
+    icon: 'Trees',
+  },
+  {
+    id: 'physical-training',
+    name: 'Physical Training',
+    nameNO: 'Fysisk trening',
+    description: 'Gym, strength, mobility work',
+    descriptionNO: 'Gym, styrke, mobilitetstrening',
+    defaultDuration: 60,
+    categoryCode: 'FYS',
+    defaultEnvironment: 'M0',
+    icon: 'Dumbbell',
+  },
+];
+
+const sessions: SessionConfig = {
+  pyramidCategories,
+  templates: sessionTemplates,
+  sessionTypes: ['training', 'test', 'tournament', 'recovery', 'physical', 'mental'],
+  defaultDuration: 60,
+  usesAKFormula: true,
+};
+
+// ============================================================================
 // NAVIGATION
 // ============================================================================
 
@@ -670,6 +820,7 @@ export const GOLF_CONFIG: SportConfig = {
   benchmarkSource: 'DataGolf',
 
   goalCategories,
+  sessions,
   terminology,
   equipment,
   navigation,

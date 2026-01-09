@@ -42,6 +42,9 @@ export interface SportConfig {
   // Goals & categories
   goalCategories: GoalCategory[];
 
+  // Session configuration
+  sessions?: SessionConfig;
+
   // Terminology
   terminology: SportTerminology;
 
@@ -99,6 +102,60 @@ export interface SportNavigation {
     label: string;
     labelNO?: string;
   };
+}
+
+// ============================================================================
+// SESSION & PYRAMID CATEGORIES
+// ============================================================================
+
+export interface PyramidCategory {
+  code: string;
+  label: string;
+  labelNO?: string;
+  description: string;
+  descriptionNO?: string;
+  icon: string;
+  color: string;
+  /** Order in pyramid (1 = base/foundation) */
+  order: number;
+  /** Whether this category uses intensity/speed tracking */
+  usesIntensity?: boolean;
+  /** Whether this category uses position tracking */
+  usesPosition?: boolean;
+}
+
+export interface SessionTemplate {
+  id: string;
+  name: string;
+  nameNO?: string;
+  description?: string;
+  descriptionNO?: string;
+  /** Default duration in minutes */
+  defaultDuration: number;
+  /** Category code (links to PyramidCategory) */
+  categoryCode: string;
+  /** Default training area codes */
+  defaultAreas?: string[];
+  /** Default environment code */
+  defaultEnvironment?: string;
+  /** Icon for this template */
+  icon: string;
+}
+
+export type SessionType = 'training' | 'test' | 'tournament' | 'recovery' | 'physical' | 'mental';
+export type SessionStatus = 'planned' | 'in_progress' | 'completed' | 'cancelled' | 'skipped';
+
+export interface SessionConfig {
+  /** Pyramid categories for this sport */
+  pyramidCategories: PyramidCategory[];
+  /** Pre-defined session templates */
+  templates: SessionTemplate[];
+  /** Available session types */
+  sessionTypes: SessionType[];
+  /** Default session duration in minutes */
+  defaultDuration: number;
+  /** Whether to track AK-formula components */
+  usesAKFormula?: boolean;
 }
 
 // ============================================================================
