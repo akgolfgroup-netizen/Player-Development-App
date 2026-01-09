@@ -768,7 +768,7 @@ function transformApiData(
       name: test.name,
       category: test.category,
       unit: test.unit || '',
-      icon: test.icon || '🎯',
+      icon: test.icon || 'target',
       lowerIsBetter: test.lowerIsBetter || false,
       description: test.description,
       currentValue,

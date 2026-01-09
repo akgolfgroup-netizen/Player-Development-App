@@ -909,15 +909,15 @@ const FollowUpCheckIn = ({ playerData, weekNumber }) => {
 
         {/* Wins and Challenges */}
         <div className="grid md:grid-cols-2 gap-4">
-          <TextArea 
-            label="🎯 Ukens seier (noe du er fornøyd med)"
+          <TextArea
+            label="Ukens seier (noe du er fornoyd med)"
             value={responses.wins}
             onChange={(v) => updateResponse('wins', v)}
             placeholder="Hva gikk bra denne uken?"
             rows={2}
           />
-          <TextArea 
-            label="zap Ukens utfordring"
+          <TextArea
+            label="Ukens utfordring"
             value={responses.challenges}
             onChange={(v) => updateResponse('challenges', v)}
             placeholder="Hva var vanskelig?"

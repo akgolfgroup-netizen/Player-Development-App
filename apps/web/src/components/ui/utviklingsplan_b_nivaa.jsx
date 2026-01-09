@@ -348,9 +348,9 @@ const UtviklingsplanApp = () => {
             }}>
               <div style={{ fontWeight: 'bold', marginBottom: '10px', textTransform: 'capitalize' }}>{period}</div>
               <div style={{ fontSize: '11px', lineHeight: '1.6' }}>
-                <div>📚 Læringsfase: <strong>{data.læringsfase}</strong></div>
-                <div>zap Clubspeed: <strong>{data.clubSpeed}</strong></div>
-                <div>🎯 Setting: <strong>{data.setting}</strong></div>
+                <div>Laeringsfase: <strong>{data.læringsfase}</strong></div>
+                <div>Clubspeed: <strong>{data.clubSpeed}</strong></div>
+                <div>Setting: <strong>{data.setting}</strong></div>
                 <div style={{ marginTop: '8px', color: colors.accent }}>Fokus: {data.focus}</div>
               </div>
             </div>
@@ -428,11 +428,11 @@ const UtviklingsplanApp = () => {
           <SubSectionTitle style={{ color: colors.primary, fontSize: '14px', marginBottom: '12px' }}>TRENINGSKATEGORIER</SubSectionTitle>
           <div style={{ display: 'grid', gridTemplateColumns: 'repeat(5, 1fr)', gap: '10px' }}>
             {[
-              { key: 'konkurranse', icon: '🏆', label: 'Konkurranse' },
-              { key: 'spill', icon: '⛳', label: 'Spill' },
-              { key: 'golfslag', icon: '🎯', label: 'Golfslag' },
-              { key: 'teknikk', icon: '🔧', label: 'Teknikk' },
-              { key: 'fysisk', icon: '💪', label: 'Fysisk' }
+              { key: 'konkurranse', icon: 'Trophy', label: 'Konkurranse' },
+              { key: 'spill', icon: 'Flag', label: 'Spill' },
+              { key: 'golfslag', icon: 'Target', label: 'Golfslag' },
+              { key: 'teknikk', icon: 'Wrench', label: 'Teknikk' },
+              { key: 'fysisk', icon: 'Strength', label: 'Fysisk' }
             ].map(cat => (
               <div key={cat.key} style={{
                 background: currentPriorities[cat.key] === 3 ? colors.success :
@@ -921,7 +921,7 @@ const UtviklingsplanApp = () => {
                 fontSize: '12px',
                 border: `1px solid ${tokenColors.gray300}`
               }}>
-                ✓ {mål}
+                {mål}
               </div>
             ))}
           </div>
@@ -1140,11 +1140,11 @@ const UtviklingsplanApp = () => {
         gap: '5px'
       }}>
         {[
-          { id: 'årsplan', label: '📅 Årsplan', desc: 'Helhetsoversikt' },
-          { id: 'periodeplan', label: '📊 Periodeplan', desc: 'Periodespesifikt' },
-          { id: 'månedskalender', label: '📆 Måned', desc: 'Kalendervisning' },
-          { id: 'ukeplan', label: '📋 Ukeplan', desc: 'Ukentlig struktur' },
-          { id: 'treningsøkt', label: '🎯 Treningsøkt', desc: 'Øktdetaljer' }
+          { id: 'årsplan', label: 'Aarsplan', desc: 'Helhetsoversikt' },
+          { id: 'periodeplan', label: 'Periodeplan', desc: 'Periodespesifikt' },
+          { id: 'månedskalender', label: 'Maaned', desc: 'Kalendervisning' },
+          { id: 'ukeplan', label: 'Ukeplan', desc: 'Ukentlig struktur' },
+          { id: 'treningsøkt', label: 'Treningsokt', desc: 'Oktdetaljer' }
         ].map(item => (
           <button
             key={item.id}

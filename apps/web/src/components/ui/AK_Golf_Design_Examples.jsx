@@ -222,7 +222,7 @@ const HomeScreenLight = () => {
               gap: '2px',
               border: `2px solid ${theme.colors.white}`,
             }}>
-              🔥 {player.streak}
+              {player.streak} streak
             </div>
           </div>
           <div style={{ flex: 1 }}>

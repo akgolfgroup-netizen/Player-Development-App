@@ -469,7 +469,7 @@ const TIERGolfAppDesignSystem = () => {
               </div>
               <div>
                 <p style={{ color: 'rgba(255,255,255,0.6)', fontSize: '12px', margin: 0 }}>Streak</p>
-                <p style={{ color: colors.accent[500], fontSize: '20px', fontWeight: 700, margin: '2px 0' }}>🔥 {weekStats.streak}</p>
+                <p style={{ color: colors.accent[500], fontSize: '20px', fontWeight: 700, margin: '2px 0' }}>{weekStats.streak} streak</p>
               </div>
             </div>
           </div>
@@ -1615,7 +1615,7 @@ const TIERGolfAppDesignSystem = () => {
                 padding: '16px',
                 border: `1px solid ${colors.primary[700]}30`,
               }}>
-                <p style={{ color: text, fontSize: '14px', margin: '0 0 8px', fontWeight: 600 }}>💡 Tips</p>
+                <p style={{ color: text, fontSize: '14px', margin: '0 0 8px', fontWeight: 600 }}>Tips</p>
                 <p style={{ color: textMuted, fontSize: '13px', margin: 0, lineHeight: 1.5 }}>
                   Bruk ditt virkelige snittscore fra de siste 10 rundene. Dette hjelper oss å plassere deg i riktig treningskategori.
                 </p>
@@ -1717,7 +1717,7 @@ const TIERGolfAppDesignSystem = () => {
                 borderRadius: '12px',
               }}>
                 <p style={{ color: text, fontSize: '14px', fontWeight: 600, margin: '0 0 8px' }}>
-                  {formData.trainingHours >= 20 ? '🏆 Elite nivå' : formData.trainingHours >= 12 ? '⭐ Seriøs satsning' : '🎯 Aktiv mosjonist'}
+                  {formData.trainingHours >= 20 ? 'Elite nivaa' : formData.trainingHours >= 12 ? 'Serios satsning' : 'Aktiv mosjonist'}
                 </p>
                 <p style={{ color: textMuted, fontSize: '13px', margin: 0, lineHeight: 1.5 }}>
                   {formData.trainingHours >= 20 
@@ -1748,7 +1748,7 @@ const TIERGolfAppDesignSystem = () => {
               boxShadow: designSystem.shadows.lg,
             }}
           >
-            {step < 4 ? 'Fortsett' : 'Generer min plan sparkles'}
+            {step < 4 ? 'Fortsett' : 'Generer min plan'}
           </button>
           {step > 1 && (
             <button
@@ -1817,10 +1817,10 @@ const TIERGolfAppDesignSystem = () => {
           flexWrap: 'wrap',
         }}>
           {[
-            { id: 'mobile-player', label: '📱 Spiller App (Mobil)' },
-            { id: 'web-player', label: '🖥️ Spiller App (Web)' },
-            { id: 'coach-dashboard', label: '👔 Coach Dashboard' },
-            { id: 'onboarding', label: 'sparkles Onboarding Flow' },
+            { id: 'mobile-player', label: 'Spiller App (Mobil)' },
+            { id: 'web-player', label: 'Spiller App (Web)' },
+            { id: 'coach-dashboard', label: 'Coach Dashboard' },
+            { id: 'onboarding', label: 'Onboarding Flow' },
           ].map(view => (
             <button
               key={view.id}
@@ -1859,7 +1859,7 @@ const TIERGolfAppDesignSystem = () => {
               gap: '8px',
             }}
           >
-            {darkMode ? 'sun Light mode' : 'moon Dark mode'}
+            {darkMode ? 'Light mode' : 'Dark mode'}
           </button>
         </div>
       </div>

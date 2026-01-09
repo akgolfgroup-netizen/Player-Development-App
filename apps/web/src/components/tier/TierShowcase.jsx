@@ -140,7 +140,7 @@ export function TierShowcase() {
                 <TierCard key={tier} variant="tier" tier={tier}>
                   <div className="text-center py-4">
                     <div className={`w-16 h-16 mx-auto mb-2 rounded-full bg-badge-tier-${tier} flex items-center justify-center`}>
-                      <span className="text-2xl">🏆</span>
+                      <span className="text-2xl">Trophy</span>
                     </div>
                     <h4 className="font-semibold capitalize">{tier}</h4>
                   </div>

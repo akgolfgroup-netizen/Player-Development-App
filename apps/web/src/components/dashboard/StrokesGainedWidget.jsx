@@ -25,9 +25,9 @@ const cardShell = {
 };
 
 const SG_CATEGORIES = [
-  { id: 'approach', label: 'Innspill', icon: '🎯' },
-  { id: 'around_green', label: 'Kortspill', icon: '⛳' },
-  { id: 'putting', label: 'Putting', icon: '🏌️' },
+  { id: 'approach', label: 'Innspill', icon: 'Target' },
+  { id: 'around_green', label: 'Kortspill', icon: 'Flag' },
+  { id: 'putting', label: 'Putting', icon: 'Golfer' },
 ];
 
 const SGCategoryBar = ({ category, value, tourAvg = 0, pgaElite = 0.8 }) => {

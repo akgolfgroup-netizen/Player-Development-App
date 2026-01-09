@@ -421,7 +421,7 @@ export function mapApiDataToUITestResult(
     name: test.name,
     category: mapTestCategoryToSkillArea(test.category),
     unit: test.unit ?? '',
-    icon: test.icon ?? '🎯',
+    icon: test.icon ?? 'target',
     lowerIsBetter,
     description: test.description,
     currentValue,
@@ -543,7 +543,7 @@ export function mapCanonicalToUITestResult(
     name: definition.name,
     category: mappedCategory ?? 'golf', // Fallback for unmapped categories
     unit: '', // Not in canonical definition
-    icon: '🎯',
+    icon: 'target',
     lowerIsBetter,
     description: definition.description,
     currentValue,

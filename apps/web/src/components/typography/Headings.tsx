@@ -36,10 +36,11 @@ interface PageTitleProps extends HeadingProps {
 
 const headingStyles = {
   pageTitle: {
-    fontSize: '28px',
+    fontSize: '30px', // 1.875rem - standard H1/page-title
     fontWeight: 700,
     color: 'rgb(var(--tier-navy))',
     margin: 0,
+    marginBottom: '16px', // mb-4 equivalent
     lineHeight: 1.2,
     letterSpacing: '-0.02em',
   },
@@ -51,18 +52,20 @@ const headingStyles = {
     lineHeight: 1.5,
   },
   sectionTitle: {
-    fontSize: '20px',
+    fontSize: '20px', // 1.25rem - standard H2/section-title
     fontWeight: 600,
     color: 'rgb(var(--tier-navy))',
     margin: 0,
+    marginBottom: '12px', // mb-3 equivalent
     lineHeight: 1.3,
     letterSpacing: '-0.01em',
   },
   subSectionTitle: {
-    fontSize: '16px',
+    fontSize: '16px', // 1rem - standard H3/card-title
     fontWeight: 600,
     color: 'rgb(var(--tier-navy))',
     margin: 0,
+    marginBottom: '8px', // mb-2 equivalent
     lineHeight: 1.4,
   },
 } as const;

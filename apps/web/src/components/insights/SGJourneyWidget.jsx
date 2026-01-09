@@ -138,7 +138,7 @@ const MountainVisualization = ({ position, levels }) => {
             boxShadow: '0 2px 8px rgba(0,0,0,0.3)',
             border: '2px solid white',
           }}>
-            <span style={{ fontSize: '16px' }}>🧗</span>
+            <span style={{ fontSize: '16px' }}>Climber</span>
           </div>
 
           {/* Current level label */}
@@ -191,7 +191,7 @@ const ProgressToNextLevel = ({ position }) => {
       }}>
         <Award size={24} style={{ color: 'var(--medal-gold)', marginBottom: '8px' }} />
         <p style={{ fontSize: '14px', fontWeight: 600, color: 'var(--text-primary)', margin: 0 }}>
-          Du har nådd toppen! 🏔️
+          Du har nadd toppen!
         </p>
         <p style={{ fontSize: '12px', color: 'var(--text-secondary)', margin: '4px 0 0 0' }}>
           PGA Elite-nivå oppnådd
@@ -348,9 +348,9 @@ const StatsSummary = ({ position }) => {
  */
 const CategoryBreakdown = ({ breakdown }) => {
   const categories = [
-    { id: 'approach', label: 'Innspill', icon: '🎯' },
-    { id: 'aroundGreen', label: 'Kortspill', icon: '⛳' },
-    { id: 'putting', label: 'Putting', icon: '🏌️' },
+    { id: 'approach', label: 'Innspill', icon: 'Target' },
+    { id: 'aroundGreen', label: 'Kortspill', icon: 'Flag' },
+    { id: 'putting', label: 'Putting', icon: 'Golfer' },
   ];
 
   return (

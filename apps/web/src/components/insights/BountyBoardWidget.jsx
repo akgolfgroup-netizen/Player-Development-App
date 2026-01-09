@@ -13,20 +13,20 @@ import { CardTitle } from '../typography';
 
 // Difficulty colors and labels
 const DIFFICULTY_CONFIG = {
-  easy: { color: 'var(--success)', label: 'Enkel', icon: '🟢' },
-  medium: { color: 'var(--warning)', label: 'Middels', icon: '🟡' },
-  hard: { color: 'var(--error)', label: 'Vanskelig', icon: '🔴' },
-  legendary: { color: 'var(--rank-legendary)', label: 'Legendarisk', icon: '💜' },
+  easy: { color: 'var(--success)', label: 'Enkel', icon: 'E' },
+  medium: { color: 'var(--warning)', label: 'Middels', icon: 'M' },
+  hard: { color: 'var(--error)', label: 'Vanskelig', icon: 'H' },
+  legendary: { color: 'var(--rank-legendary)', label: 'Legendarisk', icon: 'L' },
 };
 
 // Hunter rank configuration - using semantic medal/rank tokens
 const RANK_CONFIG = {
-  rookie: { icon: '🎯', color: 'var(--rank-rookie)' },
-  bronze: { icon: '🥉', color: 'var(--medal-bronze)' },
-  silver: { icon: '🥈', color: 'var(--medal-silver)' },
-  gold: { icon: '🥇', color: 'var(--medal-gold)' },
-  platinum: { icon: 'gem', color: 'var(--medal-platinum)' },
-  legendary: { icon: '👑', color: 'var(--rank-legendary)' },
+  rookie: { icon: 'R', color: 'var(--rank-rookie)' },
+  bronze: { icon: 'B', color: 'var(--medal-bronze)' },
+  silver: { icon: 'S', color: 'var(--medal-silver)' },
+  gold: { icon: 'G', color: 'var(--medal-gold)' },
+  platinum: { icon: 'P', color: 'var(--medal-platinum)' },
+  legendary: { icon: 'L', color: 'var(--rank-legendary)' },
 };
 
 /**
@@ -251,7 +251,7 @@ const BountyCard = ({ bounty, onActivate, onViewDetails, isActive }) => {
             color: 'var(--text-secondary)',
             marginBottom: '6px',
           }}>
-            💡 Anbefalt øvelse:
+            Anbefalt ovelse:
           </p>
           <p style={{
             fontSize: '12px',

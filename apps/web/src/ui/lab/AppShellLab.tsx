@@ -22,19 +22,19 @@ const AppShellLab: React.FC = () => {
   const bottomNavContent = (
     <div style={styles.bottomNavContent}>
       <button style={styles.navButton}>
-        <span style={styles.navIcon}>🏠</span>
+        <span style={styles.navIcon}>Home</span>
         <span style={styles.navLabel}>Hjem</span>
       </button>
       <button style={styles.navButton}>
-        <span style={styles.navIcon}>📊</span>
+        <span style={styles.navIcon}>Stats</span>
         <span style={styles.navLabel}>Statistikk</span>
       </button>
       <button style={styles.navButton}>
-        <span style={styles.navIcon}>🏆</span>
+        <span style={styles.navIcon}>Trophy</span>
         <span style={styles.navLabel}>Merker</span>
       </button>
       <button style={styles.navButton}>
-        <span style={styles.navIcon}>⚙️</span>
+        <span style={styles.navIcon}>Cog</span>
         <span style={styles.navLabel}>Innstillinger</span>
       </button>
     </div>
@@ -47,7 +47,7 @@ const AppShellLab: React.FC = () => {
         Ny økt
       </button>
       <button style={styles.iconButton}>
-        🔔
+        Bell
       </button>
     </>
   );

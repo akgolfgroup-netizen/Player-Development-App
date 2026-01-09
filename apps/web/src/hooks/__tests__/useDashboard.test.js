@@ -51,7 +51,7 @@ describe('useDashboard', () => {
           id: 'badge-1',
           name: '7-Day Streak',
           code: 'STREAK_7',
-          icon: '🔥',
+          icon: 'flame',
         },
       ],
       goals: [

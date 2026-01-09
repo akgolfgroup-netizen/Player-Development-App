@@ -200,19 +200,19 @@ const CalendarLab: React.FC = () => {
   const bottomNavContent = (
     <div style={styles.bottomNavContent}>
       <button style={styles.navButton}>
-        <span style={styles.navIcon}>🏠</span>
+        <span style={styles.navIcon}>Home</span>
         <span style={styles.navLabel}>Hjem</span>
       </button>
       <button style={{ ...styles.navButton, ...styles.navButtonActive }}>
-        <span style={styles.navIcon}>📅</span>
+        <span style={styles.navIcon}>Cal</span>
         <span style={styles.navLabel}>Kalender</span>
       </button>
       <button style={styles.navButton}>
-        <span style={styles.navIcon}>📊</span>
+        <span style={styles.navIcon}>Stats</span>
         <span style={styles.navLabel}>Statistikk</span>
       </button>
       <button style={styles.navButton}>
-        <span style={styles.navIcon}>⚙️</span>
+        <span style={styles.navIcon}>Cog</span>
         <span style={styles.navLabel}>Innstillinger</span>
       </button>
     </div>

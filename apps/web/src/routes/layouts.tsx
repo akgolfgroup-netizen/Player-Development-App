@@ -8,6 +8,7 @@
 // @ts-nocheck
 import React, { ReactNode } from 'react';
 import ApplicationLayoutTopNav from '../components/layout/ApplicationLayoutTopNav';
+import PlayerAppShell from '../components/layout/PlayerAppShell';
 import CoachAppShell from '../components/layout/CoachAppShell';
 import AdminAppShell from '../components/layout/AdminAppShell';
 
@@ -30,24 +31,23 @@ interface AuthenticatedLayoutProps extends LayoutProps {
 // =============================================================================
 
 /**
- * Layout component for authenticated pages using Top Navigation (Player)
+ * Layout component for authenticated pages using Sidebar (Player)
+ * V3: Uses PlayerAppShell with flat 5-item navigation
  */
 export const AuthenticatedLayout: React.FC<AuthenticatedLayoutProps> = ({
   children,
-  title,
-  subtitle,
-  actions
 }) => (
-  <ApplicationLayoutTopNav title={title} subtitle={subtitle} actions={actions}>
+  <PlayerAppShell>
     {children}
-  </ApplicationLayoutTopNav>
+  </PlayerAppShell>
 );
 
 /**
- * Dashboard layout - uses Top Navigation
+ * Dashboard layout - uses Sidebar navigation
+ * V3: Uses PlayerAppShell with flat 5-item navigation
  */
 export const DashboardLayout: React.FC<LayoutProps> = ({ children }) => (
-  <ApplicationLayoutTopNav>{children}</ApplicationLayoutTopNav>
+  <PlayerAppShell>{children}</PlayerAppShell>
 );
 
 /**

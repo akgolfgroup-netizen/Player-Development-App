@@ -377,20 +377,20 @@ const UiCanonPage: React.FC = () => {
         <Card padding="spacious">
           <SubSection title="Sidebar Demo">
             <div style={styles.sidebarDemo}>
-              <SidebarItem icon="📊" label="Dashboard" active />
-              <SidebarItem icon="📅" label="Kalender" />
-              <SidebarItem icon="🎯" label="Mål" badge={<Badge variant="accent" size="sm">3</Badge>} />
-              <SidebarItem icon="📈" label="Statistikk" />
-              <SidebarItem icon="⚙️" label="Innstillinger" disabled />
+              <SidebarItem icon="Chart" label="Dashboard" active />
+              <SidebarItem icon="Cal" label="Kalender" />
+              <SidebarItem icon="Goal" label="Maal" badge={<Badge variant="accent" size="sm">3</Badge>} />
+              <SidebarItem icon="Stats" label="Statistikk" />
+              <SidebarItem icon="Cog" label="Innstillinger" disabled />
             </div>
           </SubSection>
 
           <SubSection title="Icon Buttons">
             <div style={styles.row}>
               <IconButton icon="+" />
-              <IconButton icon="✏️" />
-              <IconButton icon="🗑️" variant="danger" />
-              <IconButton icon="⋮" variant="ghost" />
+              <IconButton icon="Edit" />
+              <IconButton icon="Del" variant="danger" />
+              <IconButton icon="..." variant="ghost" />
             </div>
           </SubSection>
         </Card>
@@ -518,7 +518,7 @@ const DosDonts: React.FC<{ dos: string[]; donts: string[] }> = ({ dos, donts }) 
   <div style={styles.dosDontsGrid}>
     <Card variant="flat" padding="compact">
       <div style={styles.dosHeader}>
-        <span style={styles.dosIcon}>✓</span>
+        <span style={styles.dosIcon}>Yes</span>
         <span style={styles.dosTitle}>Do</span>
       </div>
       <ul style={styles.dosList}>
@@ -527,7 +527,7 @@ const DosDonts: React.FC<{ dos: string[]; donts: string[] }> = ({ dos, donts }) 
     </Card>
     <Card variant="flat" padding="compact" style={{ backgroundColor: 'var(--bg-error-subtle)' }}>
       <div style={styles.dontsHeader}>
-        <span style={styles.dontsIcon}>✗</span>
+        <span style={styles.dontsIcon}>No</span>
         <span style={styles.dontsTitle}>Don't</span>
       </div>
       <ul style={styles.dosList}>
