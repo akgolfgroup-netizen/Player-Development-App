@@ -381,9 +381,6 @@
   --tier-forest: var(--tier-navy);
   --tier-forest-light: var(--tier-navy-light);
 
-  /* Map old gold to TIER gold */
-  --tier-gold: var(--tier-gold);
-
   /* Map old success/warning/error to new status colors */
   --tier-success: var(--status-success);
   --tier-warning: var(--status-warning);

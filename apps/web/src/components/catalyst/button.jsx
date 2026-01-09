@@ -157,8 +157,8 @@ const styles = {
     ],
     // TIER Golf Academy Custom Colors (using semantic tokens)
     primary: [
-      'text-white [--btn-hover-overlay:var(--color-white)]/10 [--btn-bg:var(--accent)] [--btn-border:var(--tier-primary-active)]/90',
-      '[--btn-icon:var(--color-white)]/60 data-active:[--btn-icon:var(--color-white)]/80 data-hover:[--btn-icon:var(--color-white)]/80',
+      'text-white [--btn-hover-overlay:var(--color-white)]/10 [--btn-bg:var(--tier-prestige)] [--btn-border:var(--tier-prestige-strong)]',
+      '[--btn-icon:var(--color-white)]/90 data-active:[--btn-icon:var(--color-white)] data-hover:[--btn-icon:var(--color-white)]',
     ],
     'primary-light': [
       'text-white [--btn-hover-overlay:var(--color-white)]/10 [--btn-bg:var(--tier-primary-hover)] [--btn-border:var(--accent)]/90',

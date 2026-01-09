@@ -13,7 +13,8 @@ import { useAuth } from '../../contexts/AuthContext';
 import { LogIn, AlertCircle, X } from 'lucide-react';
 import { TIERGolfFullLogo } from '../../components/branding/TIERGolfFullLogo';
 import { AuthPage } from '../../ui/components';
-import { Button, Text, Input } from '../../ui/primitives';
+import { Text, Input } from '../../ui/primitives';
+import { Button } from '../../components/shadcn/button';
 import { OAuthButtons } from '../../components/auth';
 
 // ============================================================================
@@ -186,12 +187,11 @@ const Login: React.FC = () => {
 
           <Button
             type="submit"
-            variant="premium"
-            leftIcon={<LogIn size={20} />}
+            variant="default"
             disabled={loading}
-            loading={loading}
-            fullWidth
+            className="w-full"
           >
+            <LogIn size={20} />
             {loading ? 'Logger inn...' : 'Logg Inn'}
           </Button>
         </form>
@@ -210,7 +210,7 @@ const Login: React.FC = () => {
               size="sm"
               onClick={() => handleDemoLogin('player')}
               disabled={loading}
-              fullWidth
+              className="w-full"
             >
               Spiller (player@demo.com)
             </Button>
@@ -219,7 +219,7 @@ const Login: React.FC = () => {
               size="sm"
               onClick={() => handleDemoLogin('coach')}
               disabled={loading}
-              fullWidth
+              className="w-full"
             >
               Trener (coach@demo.com)
             </Button>
@@ -228,7 +228,7 @@ const Login: React.FC = () => {
               size="sm"
               onClick={() => handleDemoLogin('admin')}
               disabled={loading}
-              fullWidth
+              className="w-full"
             >
               Admin (admin@demo.com)
             </Button>
@@ -278,7 +278,7 @@ const Login: React.FC = () => {
                   />
                 </div>
 
-                <Button type="submit" variant="primary" className="w-full justify-center">
+                <Button type="submit" variant="default" className="w-full justify-center">
                   Send tilbakestillingslenke
                 </Button>
               </form>
