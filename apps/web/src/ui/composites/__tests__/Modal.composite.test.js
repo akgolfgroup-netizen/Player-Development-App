@@ -53,13 +53,13 @@ describe('Modal.composite', () => {
     it('renders close button by default', () => {
       render(<Modal {...defaultProps} title="Test" />);
 
-      expect(screen.getByLabelText('Close modal')).toBeInTheDocument();
+      expect(screen.getByLabelText('Lukk modal')).toBeInTheDocument();
     });
 
     it('hides close button when showCloseButton is false', () => {
       render(<Modal {...defaultProps} title="Test" showCloseButton={false} />);
 
-      expect(screen.queryByLabelText('Close modal')).not.toBeInTheDocument();
+      expect(screen.queryByLabelText('Lukk modal')).not.toBeInTheDocument();
     });
   });
 
@@ -105,7 +105,7 @@ describe('Modal.composite', () => {
       const onClose = jest.fn();
       render(<Modal {...defaultProps} onClose={onClose} title="Test" />);
 
-      fireEvent.click(screen.getByLabelText('Close modal'));
+      fireEvent.click(screen.getByLabelText('Lukk modal'));
 
       expect(onClose).toHaveBeenCalledTimes(1);
     });
@@ -206,7 +206,7 @@ describe('Modal.composite', () => {
         </Modal>
       );
 
-      const closeButton = screen.getByLabelText('Close modal');
+      const closeButton = screen.getByLabelText('Lukk modal');
       const button1 = screen.getByText('Button 1');
       const button2 = screen.getByText('Button 2');
 
@@ -234,7 +234,7 @@ describe('Modal.composite', () => {
         </Modal>
       );
 
-      const closeButton = screen.getByLabelText('Close modal');
+      const closeButton = screen.getByLabelText('Lukk modal');
       const button2 = screen.getByText('Button 2');
 
       // Wait for initial focus
@@ -319,7 +319,7 @@ describe('Modal.composite', () => {
     it('close button has accessible label', () => {
       render(<Modal {...defaultProps} title="Test" />);
 
-      expect(screen.getByLabelText('Close modal')).toBeInTheDocument();
+      expect(screen.getByLabelText('Lukk modal')).toBeInTheDocument();
     });
   });
 
@@ -368,7 +368,7 @@ describe('Modal.composite', () => {
       );
 
       await waitFor(() => {
-        expect(screen.getByLabelText('Close modal')).toHaveFocus();
+        expect(screen.getByLabelText('Lukk modal')).toHaveFocus();
       });
     });
   });
