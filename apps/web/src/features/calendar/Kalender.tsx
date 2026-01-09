@@ -10,6 +10,7 @@
  */
 import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
+import type { CalendarSession } from '../../services/api';
 import { ChevronLeft, ChevronRight, Plus, Clock, MapPin, Play } from 'lucide-react';
 import { PageHeader } from '../../components/layout/PageHeader';
 import { SectionTitle, SubSectionTitle, CardTitle } from '../../components/typography/Headings';
@@ -89,10 +90,10 @@ const LevelBadge: React.FC<{ level: string }> = ({ level }) => {
 // Week View Component
 interface WeekViewProps {
   currentDate: Date;
-  sessions: Record<number, any[]>;
+  sessions: Record<number, CalendarSession[]>;
   selectedDate: Date | null;
   onDateSelect: (date: Date) => void;
-  onSessionClick: (session: any, date: Date) => void;
+  onSessionClick: (session: CalendarSession, date: Date) => void;
 }
 
 const WeekView: React.FC<WeekViewProps> = ({
@@ -123,7 +124,7 @@ const WeekView: React.FC<WeekViewProps> = ({
   const getDayStats = (date: Date) => {
     const day = date.getDate();
     const daySessions = sessions[day] || [];
-    const completed = daySessions.filter((s: any) => s.status === 'completed').length;
+    const completed = daySessions.filter((s: CalendarSession) => s.status === 'completed').length;
     const total = daySessions.length;
     return { completed, total };
   };
@@ -193,7 +194,7 @@ const WeekView: React.FC<WeekViewProps> = ({
                 </div>
               ) : (
                 <div className="space-y-2">
-                  {daySessions.map((session: any) => {
+                  {daySessions.map((session: CalendarSession) => {
                     const category = SESSION_TYPE_TO_CATEGORY[session.type] || 'teknikk';
                     return (
                       <Card
@@ -228,7 +229,7 @@ const WeekView: React.FC<WeekViewProps> = ({
 
 // Session Preview Dialog
 interface SessionPreviewDialogProps {
-  session: any;
+  session: CalendarSession | null;
   open: boolean;
   onOpenChange: (open: boolean) => void;
   onEdit: () => void;
@@ -321,10 +322,10 @@ const SessionPreviewDialog: React.FC<SessionPreviewDialogProps> = ({
 
 // Session Edit Dialog
 interface SessionEditDialogProps {
-  session?: any;
+  session?: CalendarSession | null;
   open: boolean;
   onOpenChange: (open: boolean) => void;
-  onSave: (data: any) => void;
+  onSave: (data: CalendarSession) => void;
   selectedDate: Date;
 }
 
@@ -478,7 +479,7 @@ const SessionEditDialog: React.FC<SessionEditDialogProps> = ({
 
 // Main Calendar Component
 interface KalenderProps {
-  events?: any[];
+  events?: CalendarSession[];
 }
 
 const TIERGolfKalender: React.FC<KalenderProps> = ({ events = [] }) => {
@@ -488,15 +489,15 @@ const TIERGolfKalender: React.FC<KalenderProps> = ({ events = [] }) => {
   const [currentDate, setCurrentDate] = useState(today);
   const [selectedDate, setSelectedDate] = useState(today);
   const [viewMode, setViewMode] = useState(VIEW_MODES.WEEK);
-  const [previewSession, setPreviewSession] = useState<any>(null);
+  const [previewSession, setPreviewSession] = useState<CalendarSession | null>(null);
   const [showEditModal, setShowEditModal] = useState(false);
-  const [editingSession, setEditingSession] = useState<any>(null);
+  const [editingSession, setEditingSession] = useState<CalendarSession | null>(null);
 
   const monthNames = ['Januar', 'Februar', 'Mars', 'April', 'Mai', 'Juni',
                       'Juli', 'August', 'September', 'Oktober', 'November', 'Desember'];
 
   // Demo sessions
-  const demoSessions: Record<number, any[]> = {
+  const demoSessions: Record<number, CalendarSession[]> = {
     [today.getDate() - 1]: [
       { id: 1, time: '08:00', name: 'WANG Trening', type: 'teknikk', duration: 120, level: 'L3', status: 'completed', location: 'Indoor Range' },
     ],
@@ -540,7 +541,7 @@ const TIERGolfKalender: React.FC<KalenderProps> = ({ events = [] }) => {
   };
 
   // Session handlers
-  const handleSessionClick = (session: any, date: Date) => {
+  const handleSessionClick = (session: CalendarSession, date: Date) => {
     setPreviewSession({ ...session, date });
   };
 
@@ -566,7 +567,7 @@ const TIERGolfKalender: React.FC<KalenderProps> = ({ events = [] }) => {
       setSessions(prev => {
         const updated = { ...prev };
         const day = previewSession.date?.getDate() || selectedDate.getDate();
-        updated[day] = (updated[day] || []).filter((s: any) => s.id !== previewSession.id);
+        updated[day] = (updated[day] || []).filter((s: CalendarSession) => s.id !== previewSession.id);
         if (updated[day].length === 0) delete updated[day];
         return updated;
       });
@@ -574,18 +575,18 @@ const TIERGolfKalender: React.FC<KalenderProps> = ({ events = [] }) => {
     }
   };
 
-  const handleSaveSession = (sessionData: any) => {
+  const handleSaveSession = (sessionData: CalendarSession) => {
     setSessions(prev => {
       const updated = { ...prev };
       const day = sessionData.date.getDate();
 
       if (editingSession) {
-        updated[day] = (updated[day] || []).map((s: any) =>
+        updated[day] = (updated[day] || []).map((s: CalendarSession) =>
           s.id === editingSession.id ? sessionData : s
         );
       } else {
         updated[day] = [...(updated[day] || []), sessionData];
-        updated[day].sort((a: any, b: any) => a.time.localeCompare(b.time));
+        updated[day].sort((a: CalendarSession, b: CalendarSession) => a.time.localeCompare(b.time));
       }
 
       return updated;
@@ -666,7 +667,7 @@ const TIERGolfKalender: React.FC<KalenderProps> = ({ events = [] }) => {
           <DayView
             date={selectedDate}
             sessions={sessions[selectedDate.getDate()] || []}
-            onSessionClick={(session: any) => handleSessionClick(session, selectedDate)}
+            onSessionClick={(session: CalendarSession) => handleSessionClick(session, selectedDate)}
             onTimeSlotClick={(hour: number) => {
               setEditingSession(null);
               setShowEditModal(true);
@@ -715,7 +716,7 @@ const TIERGolfKalender: React.FC<KalenderProps> = ({ events = [] }) => {
               {selectedDate.getDate()}. {monthNames[selectedDate.getMonth()]} - Økter
             </SubSectionTitle>
             <div className="grid gap-3 sm:grid-cols-2 lg:grid-cols-3">
-              {sessions[selectedDate.getDate()].map((session: any) => (
+              {sessions[selectedDate.getDate()].map((session: CalendarSession) => (
                 <Card
                   key={session.id}
                   className="p-4 cursor-pointer hover:border-tier-navy/30 transition-all"

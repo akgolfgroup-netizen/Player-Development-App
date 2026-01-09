@@ -21,7 +21,7 @@ import {
   ChevronRight, Search, User, RefreshCw
 } from 'lucide-react';
 import { CoachPlayerAlerts } from './widgets';
-import { coachesAPI } from '../../services/api';
+import { coachesAPI, AthleteDTO, AlertsResponseDTO, CoachAlertDTO, CoachWeeklyStatsDTO } from '../../services/api';
 import { useAuth } from '../../contexts/AuthContext';
 import { ProfileOverviewCard } from '../../components/dashboard';
 import { useToast } from '../../components/shadcn/use-toast';
@@ -214,7 +214,7 @@ export default function CoachDashboard(props: CoachDashboardProps) {
 
       // Transform athletes response (includes profile image support)
       const athleteData = athletesRes.data?.data || athletesRes.data || mockAthletes;
-      const transformedAthletes = Array.isArray(athleteData) ? athleteData.map((a: any) => ({
+      const transformedAthletes = Array.isArray(athleteData) ? athleteData.map((a: AthleteDTO) => ({
         id: a.id,
         firstName: a.firstName,
         lastName: a.lastName,
@@ -224,18 +224,18 @@ export default function CoachDashboard(props: CoachDashboardProps) {
       })) : mockAthletes;
 
       // Transform alerts to pending items format
-      const alertsResponse = alertsRes.data?.data || alertsRes.data || {};
-      const alertsData = (alertsResponse as any)?.alerts || (Array.isArray(alertsResponse) ? alertsResponse : []);
-      const transformedPendingItems = Array.isArray(alertsData) ? alertsData.slice(0, 5).map((alert: any) => ({
+      const alertsResponse = (alertsRes.data?.data || alertsRes.data || {}) as AlertsResponseDTO | CoachAlertDTO[];
+      const alertsData = (alertsResponse as AlertsResponseDTO)?.alerts || (Array.isArray(alertsResponse) ? alertsResponse : []);
+      const transformedPendingItems = Array.isArray(alertsData) ? alertsData.slice(0, 5).map((alert: CoachAlertDTO) => ({
         id: alert.id,
         type: alert.type === 'proof_uploaded' ? 'proof' : alert.type === 'plan_pending' ? 'plan' : 'note',
         athlete: alert.athleteName,
         description: alert.message,
-        time: formatTimeAgo(alert.createdAt),
+        time: formatTimeAgo(alert.createdAt || ''),
       })) : mockPendingItems;
 
       // Get stats from statistics response
-      const statsData = (statsRes.data?.data || statsRes.data) as any;
+      const statsData = (statsRes.data?.data || statsRes.data) as CoachWeeklyStatsDTO | null;
       const transformedStats = statsData?.sessions ? {
         activePlayers: statsData.players?.active || 0,
         sessionsThisWeek: statsData.sessions?.thisWeek || 0,

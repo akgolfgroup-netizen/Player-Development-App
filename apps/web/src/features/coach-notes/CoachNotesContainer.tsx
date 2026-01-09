@@ -1,9 +1,8 @@
 // @ts-nocheck
-/* eslint-disable @typescript-eslint/no-explicit-any */
 import React, { useState, useEffect, useCallback } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import { useAuth } from '../../contexts/AuthContext';
-import { notesAPI, playersAPI } from '../../services/api';
+import { notesAPI, playersAPI, NoteDTO } from '../../services/api';
 import { useToast } from '../../components/shadcn/use-toast';
 import LoadingState from '../../components/ui/LoadingState';
 import ErrorState from '../../components/ui/ErrorState';
@@ -54,7 +53,7 @@ const CoachNotesContainer: React.FC = () => {
       // Transform notes to expected format
       const notesData = notesRes.data?.data || notesRes.data || [];
       if (Array.isArray(notesData)) {
-        const transformedNotes: CoachNote[] = notesData.map((note: any) => ({
+        const transformedNotes: CoachNote[] = notesData.map((note: NoteDTO) => ({
           id: note.id,
           content: note.content || note.text || note.message || '',
           createdAt: note.createdAt || note.created_at || new Date().toISOString(),
@@ -64,9 +63,9 @@ const CoachNotesContainer: React.FC = () => {
       }
 
       setState('idle');
-    } catch (err: any) {
+    } catch (err) {
       console.error('Error fetching notes:', err);
-      setError(err);
+      setError(err instanceof Error ? err : new Error(String(err)));
       setState('error');
     }
   }, [playerId]);
@@ -92,7 +91,7 @@ const CoachNotesContainer: React.FC = () => {
 
       // Refresh notes
       await fetchData();
-    } catch (err: any) {
+    } catch (err) {
       console.error('Error adding note:', err);
 
       toast({

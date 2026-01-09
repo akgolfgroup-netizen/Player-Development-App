@@ -28,7 +28,7 @@ import {
 } from 'lucide-react';
 import PageHeader from '../../ui/raw-blocks/PageHeader.raw';
 import { useAuth } from '../../contexts/AuthContext';
-import { coachesAPI } from '../../services/api';
+import { coachesAPI, AlertsResponseDTO, CoachAlertDTO } from '../../services/api';
 import { useToast } from '../../components/shadcn/use-toast';
 
 // ============================================================================
@@ -168,30 +168,13 @@ export default function CoachAlertsPage({
     try {
       setLoading(true);
       const response = await coachesAPI.getAlerts();
-      // eslint-disable-next-line @typescript-eslint/no-explicit-any
-      const responseData = response.data?.data as any;
+      const responseData = (response.data?.data || response.data || {}) as AlertsResponseDTO | CoachAlertDTO[];
       const alertsData =
-        responseData?.alerts || responseData || response.data || [];
+        (responseData as AlertsResponseDTO)?.alerts || (Array.isArray(responseData) ? responseData : []);
 
       if (Array.isArray(alertsData) && alertsData.length > 0) {
-        // eslint-disable-next-line @typescript-eslint/no-explicit-any
         const transformedAlerts: Alert[] = alertsData.map(
-          (a: {
-            id: string;
-            athleteId?: string;
-            playerId?: string;
-            player?: { id: string; firstName?: string; lastName?: string };
-            athleteName?: string;
-            playerName?: string;
-            type?: string;
-            message?: string;
-            text?: string;
-            description?: string;
-            createdAt?: string;
-            created_at?: string;
-            read?: boolean;
-            isRead?: boolean;
-          }) => ({
+          (a: CoachAlertDTO) => ({
             id: a.id,
             athleteId: a.athleteId || a.playerId || a.player?.id || '',
             athleteName:

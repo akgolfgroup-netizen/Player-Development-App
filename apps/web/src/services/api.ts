@@ -87,6 +87,63 @@ export interface CoachAlert {
   createdAt: string;
 }
 
+// Extended alert DTO from API (includes all possible fields)
+export interface CoachAlertDTO {
+  id: string;
+  athleteId?: string;
+  playerId?: string;
+  player?: { id: string; firstName?: string; lastName?: string };
+  athleteName?: string;
+  playerName?: string;
+  type?: string;
+  message?: string;
+  text?: string;
+  description?: string;
+  createdAt?: string;
+  created_at?: string;
+  read?: boolean;
+  isRead?: boolean;
+}
+
+// Alerts response wrapper
+export interface AlertsResponseDTO {
+  alerts?: CoachAlertDTO[];
+}
+
+// Coach weekly stats from API
+export interface CoachWeeklyStatsDTO {
+  players?: {
+    active?: number;
+    total?: number;
+  };
+  sessions?: {
+    thisWeek?: number;
+    totalHours?: number;
+    completed?: number;
+  };
+}
+
+// Athlete DTO from API (raw format)
+export interface AthleteDTO {
+  id: string;
+  firstName?: string;
+  lastName?: string;
+  name?: string;
+  category?: string;
+  handicap?: number | string;
+  nextSession?: string;
+  planUpdated?: string;
+  profileImageUrl?: string;
+  avatar?: string;
+  hasActivePlan?: boolean;
+  trainingPlan?: {
+    updatedAt?: string;
+    weeks?: number;
+  };
+  weeksInPlan?: number;
+  status?: string;
+}
+
 // Test types
 export interface Test {
   id: string;
@@ -160,6 +217,20 @@ export interface SessionEvaluation {
   technicalCues?: string[];
 }
 
+// Calendar session type (used in Kalender.tsx)
+export interface CalendarSession {
+  id: string;
+  name: string;
+  type: string;
+  time: string;
+  duration: number;
+  level: string;
+  status: 'pending' | 'completed' | 'cancelled' | string;
+  location?: string;
+  notes?: string;
+  exercises?: string[];
+}
+
 // Achievement types
 export interface Achievement {
   id: string;
@@ -226,6 +297,22 @@ export interface Note {
   category?: string;
   createdAt: string;
   updatedAt: string;
+}
+
+// Note DTO from API (includes all possible fields)
+export interface NoteDTO {
+  id: string;
+  playerId?: string;
+  coachId?: string;
+  content?: string;
+  text?: string;
+  message?: string;
+  category?: string;
+  createdAt?: string;
+  created_at?: string;
+  updatedAt?: string;
+  delivered?: boolean;
+  isDelivered?: boolean;
 }
 
 // Message types
