@@ -1,4 +1,4 @@
-import React, { useEffect, useState, useCallback } from 'react';
+import React, { useEffect, useState, useCallback, useMemo } from 'react';
 import { useNavigate } from 'react-router-dom';
 import {
   Home,
@@ -28,7 +28,7 @@ import {
   CommandItem,
   CommandShortcut,
 } from '../../components/shadcn/command';
-import { testDefinitions } from '../tests/config/testDefinitions';
+import { useTestProtocols } from '../../hooks/useTrainingConfig';
 
 /**
  * CommandPalette - Global search and navigation with Cmd+K
@@ -70,8 +70,8 @@ const iconMap: Record<string, React.ElementType> = {
   Bell,
 };
 
-// Navigation items with icons and sections
-const navigationItems: NavigationItem[] = [
+// Static navigation items (without tests - those are added dynamically)
+const staticNavigationItems: NavigationItem[] = [
   // Hjem
   { id: 'home', label: 'Hjem', href: '/', icon: Home, section: 'Navigasjon', keywords: ['dashboard', 'start'] },
 
@@ -79,15 +79,6 @@ const navigationItems: NavigationItem[] = [
   { id: 'training-today', label: 'Treningsplan', href: '/trening/dagens', icon: Target, section: 'Aktivitet', keywords: ['trening', 'plan', 'dagens'] },
   { id: 'training-log', label: 'Treningslogg', href: '/trening/logg', icon: Zap, section: 'Aktivitet', keywords: ['logg', 'registrer'] },
   { id: 'testing', label: 'Testprotokoll', href: '/testprotokoll', icon: ClipboardList, section: 'Aktivitet', keywords: ['test', 'protokoll', 'alle'] },
-  // All 20 tests from testDefinitions
-  ...testDefinitions.map(test => ({
-    id: `test-${test.id}`,
-    label: test.name,
-    href: `/testing/${test.id}`,
-    icon: Target,
-    section: 'Tester',
-    keywords: [test.shortName.toLowerCase(), test.category, 'test', test.testNumber.toString()],
-  })),
 
   // Fremgang
   { id: 'stats', label: 'Statistikk', href: '/stats', icon: BarChart3, section: 'Fremgang', keywords: ['statistikk', 'data', 'analyse'] },
@@ -109,14 +100,16 @@ const navigationItems: NavigationItem[] = [
   { id: 'exercises', label: 'Ovelsesbibliotek', href: '/ovelsesbibliotek', icon: BookOpen, section: 'Ressurser', keywords: ['ovelse', 'bibliotek', 'drill'] },
 ];
 
-// Group items by section
-const groupedItems = navigationItems.reduce((acc, item) => {
-  if (!acc[item.section]) {
-    acc[item.section] = [];
-  }
-  acc[item.section].push(item);
-  return acc;
-}, {} as Record<string, NavigationItem[]>);
+// Helper to group items by section
+function groupItemsBySection(items: NavigationItem[]): Record<string, NavigationItem[]> {
+  return items.reduce((acc, item) => {
+    if (!acc[item.section]) {
+      acc[item.section] = [];
+    }
+    acc[item.section].push(item);
+    return acc;
+  }, {} as Record<string, NavigationItem[]>);
+}
 
 interface CommandPaletteProps {
   open?: boolean;
@@ -129,10 +122,28 @@ const CommandPalette: React.FC<CommandPaletteProps> = ({
 }) => {
   const [internalOpen, setInternalOpen] = useState(false);
   const navigate = useNavigate();
+  const { protocols: testDefinitions } = useTestProtocols();
 
   // Use controlled or internal state
   const open = controlledOpen !== undefined ? controlledOpen : internalOpen;
   const setOpen = onOpenChange || setInternalOpen;
+
+  // Build navigation items with dynamic test protocols from SportConfig
+  const groupedItems = useMemo(() => {
+    // Build test navigation items from sport-specific protocols
+    const testItems: NavigationItem[] = testDefinitions.map(test => ({
+      id: `test-${test.id}`,
+      label: test.name,
+      href: `/testing/${test.id}`,
+      icon: Target,
+      section: 'Tester',
+      keywords: [test.shortName?.toLowerCase() || '', test.category, 'test', test.testNumber.toString()],
+    }));
+
+    // Combine static items with dynamic test items
+    const allItems = [...staticNavigationItems, ...testItems];
+    return groupItemsBySection(allItems);
+  }, [testDefinitions]);
 
   // Listen for keyboard shortcut
   useEffect(() => {
