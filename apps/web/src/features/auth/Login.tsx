@@ -186,7 +186,7 @@ const Login: React.FC = () => {
 
           <Button
             type="submit"
-            variant="primary"
+            variant="premium"
             leftIcon={<LogIn size={20} />}
             disabled={loading}
             loading={loading}
@@ -212,7 +212,7 @@ const Login: React.FC = () => {
               disabled={loading}
               fullWidth
             >
-              DEMO Spiller (player@demo.com)
+              Spiller (player@demo.com)
             </Button>
             <Button
               variant="secondary"
