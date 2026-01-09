@@ -2209,6 +2209,91 @@ export const samlingAPI = {
 };
 
 // =============================================================================
+// Sport Config API
+// =============================================================================
+
+export type SportIdType = 'GOLF' | 'RUNNING' | 'HANDBALL' | 'FOOTBALL' | 'TENNIS' | 'SWIMMING' | 'JAVELIN';
+
+export interface SportInfo {
+  id: SportIdType;
+  name: string;
+  nameNO: string;
+}
+
+export interface SportConfigData {
+  id: string;
+  tenantId: string;
+  sportId: SportIdType;
+  trainingAreasOverride: Record<string, unknown> | null;
+  environmentsOverride: Record<string, unknown> | null;
+  phasesOverride: Record<string, unknown> | null;
+  benchmarksOverride: Record<string, unknown> | null;
+  terminologyOverride: Record<string, unknown> | null;
+  navigationOverride: Record<string, unknown> | null;
+  usesHandicap: boolean | null;
+  usesClubSpeed: boolean | null;
+  usesSG: boolean | null;
+  usesAKFormula: boolean | null;
+  usesBenchmarks: boolean | null;
+  primaryColor: string | null;
+  secondaryColor: string | null;
+  logoUrl: string | null;
+  createdAt: string;
+  updatedAt: string;
+}
+
+export interface SportConfigResponse {
+  success: boolean;
+  data: SportConfigData | null;
+  sportId: SportIdType;
+  hasCustomConfig: boolean;
+}
+
+export interface SportConfigInput {
+  sportId: SportIdType;
+  trainingAreasOverride?: Record<string, unknown>;
+  environmentsOverride?: Record<string, unknown>;
+  phasesOverride?: Record<string, unknown>;
+  benchmarksOverride?: Record<string, unknown>;
+  terminologyOverride?: Record<string, unknown>;
+  navigationOverride?: Record<string, unknown>;
+  usesHandicap?: boolean;
+  usesClubSpeed?: boolean;
+  usesSG?: boolean;
+  usesAKFormula?: boolean;
+  usesBenchmarks?: boolean;
+  primaryColor?: string;
+  secondaryColor?: string;
+  logoUrl?: string;
+}
+
+export const sportConfigAPI = {
+  /** Get list of available sports */
+  getSports: (): Promise<AxiosResponse<{ success: boolean; data: SportInfo[] }>> =>
+    api.get('/sport-config/sports'),
+
+  /** Get current tenant's sport configuration */
+  getConfig: (): Promise<AxiosResponse<SportConfigResponse>> =>
+    api.get('/sport-config'),
+
+  /** Update tenant's sport configuration (admin only) */
+  updateConfig: (data: SportConfigInput): Promise<AxiosResponse<{ success: boolean; message: string; data: SportConfigData }>> =>
+    api.put('/sport-config', data),
+
+  /** Reset tenant's sport configuration to defaults (admin only) */
+  resetConfig: (): Promise<AxiosResponse<{ success: boolean; message: string }>> =>
+    api.delete('/sport-config'),
+
+  /** Get all configurations (admin only) */
+  getAllConfigs: (): Promise<AxiosResponse<{ success: boolean; data: SportConfigData[]; total: number }>> =>
+    api.get('/sport-config/all'),
+
+  /** Get configurations by sport (admin only) */
+  getBySport: (sportId: SportIdType): Promise<AxiosResponse<{ success: boolean; data: SportConfigData[]; total: number }>> =>
+    api.get(`/sport-config/by-sport/${sportId}`),
+};
+
+// =============================================================================
 // useApi Hook
 // =============================================================================
 

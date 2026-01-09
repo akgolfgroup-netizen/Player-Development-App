@@ -36,6 +36,7 @@ import type {
   TestProtocol,
 } from '../config/sports/types';
 import { getSportConfig, DEFAULT_SPORT_CONFIG, DEFAULT_SPORT_ID } from '../config/sports';
+import { useSportConfig as useSportConfigAPI } from '../hooks/useSportConfig';
 
 // ============================================================================
 // CONTEXT TYPES
@@ -210,6 +211,111 @@ export function SportProvider({
 }
 
 // ============================================================================
+// API-ENABLED PROVIDER
+// ============================================================================
+
+interface ApiSportProviderProps {
+  children: ReactNode;
+  /** Fallback sport ID while loading */
+  fallbackSportId?: SportId;
+  /** Show loading spinner while fetching */
+  showLoading?: boolean;
+  /** Custom loading component */
+  loadingComponent?: ReactNode;
+}
+
+/**
+ * Sport Provider that fetches configuration from API
+ *
+ * This provider automatically fetches the tenant's sport configuration
+ * from the API and merges it with the static config. Falls back to
+ * defaults if API is unavailable.
+ *
+ * @example
+ * <ApiSportProvider>
+ *   <App />
+ * </ApiSportProvider>
+ */
+export function ApiSportProvider({
+  children,
+  fallbackSportId = DEFAULT_SPORT_ID,
+  showLoading = false,
+  loadingComponent = null,
+}: ApiSportProviderProps) {
+  const { sportId, config, isLoading, error } = useSportConfigAPI(true);
+
+  // Show loading state if enabled
+  if (showLoading && isLoading) {
+    return <>{loadingComponent || <div>Loading sport configuration...</div>}</>;
+  }
+
+  // Log errors but continue with fallback config
+  if (error) {
+    console.warn('Sport config API error, using defaults:', error);
+  }
+
+  const value = useMemo<SportContextValue>(() => {
+    const effectiveSportId = sportId || fallbackSportId;
+    const effectiveConfig = config || getSportConfig(effectiveSportId);
+
+    // Flatten all training areas for easy lookup
+    const allTrainingAreas = effectiveConfig.trainingAreas.flatMap((group) => group.areas);
+
+    // Create lookup maps for performance
+    const trainingAreaMap = new Map(allTrainingAreas.map((a) => [a.code, a]));
+    const environmentMap = new Map(effectiveConfig.environments.map((e) => [e.code, e]));
+    const phaseMap = new Map(effectiveConfig.phases.map((p) => [p.code, p]));
+    const intensityMap = new Map(effectiveConfig.intensityLevels.map((i) => [i.code, i]));
+    const pressureMap = new Map(effectiveConfig.pressureLevels.map((p) => [p.code, p]));
+    const goalCategoryMap = new Map(effectiveConfig.goalCategories.map((g) => [g.id, g]));
+    const metricMap = new Map(effectiveConfig.performanceMetrics.map((m) => [m.id, m]));
+
+    return {
+      sportId: effectiveSportId,
+      config: effectiveConfig,
+      terminology: effectiveConfig.terminology,
+      trainingAreas: effectiveConfig.trainingAreas,
+      allTrainingAreas,
+      environments: effectiveConfig.environments,
+      phases: effectiveConfig.phases,
+      intensityLevels: effectiveConfig.intensityLevels,
+      pressureLevels: effectiveConfig.pressureLevels,
+      goalCategories: effectiveConfig.goalCategories,
+      performanceMetrics: effectiveConfig.performanceMetrics,
+      testProtocols: effectiveConfig.testProtocols,
+      equipment: effectiveConfig.equipment || [],
+
+      // Helper functions
+      getTrainingArea: (code) => trainingAreaMap.get(code),
+      getEnvironment: (code) => environmentMap.get(code),
+      getPhase: (code) => phaseMap.get(code),
+      getIntensityLevel: (code) => intensityMap.get(code),
+      getPressureLevel: (code) => pressureMap.get(code),
+      getGoalCategory: (id) => goalCategoryMap.get(id),
+      getMetric: (id) => metricMap.get(id),
+
+      getTerm: (key, useNorwegian = true) => {
+        if (useNorwegian) {
+          const noKey = `${key}NO`;
+          if (effectiveConfig.terminology[noKey]) {
+            return effectiveConfig.terminology[noKey];
+          }
+          const labelNoKey = `${key}LabelNO`;
+          if (effectiveConfig.terminology[labelNoKey]) {
+            return effectiveConfig.terminology[labelNoKey];
+          }
+        }
+        return effectiveConfig.terminology[key] || key;
+      },
+
+      isGolf: effectiveSportId === 'golf',
+    };
+  }, [sportId, config, fallbackSportId]);
+
+  return <SportContext.Provider value={value}>{children}</SportContext.Provider>;
+}
+
+// ============================================================================
 // HOOK
 // ============================================================================
 
@@ -275,4 +381,4 @@ export function useSportSafe(): SportContextValue {
 // ============================================================================
 
 export { SportContext };
-export type { SportContextValue, SportProviderProps };
+export type { SportContextValue, SportProviderProps, ApiSportProviderProps };
