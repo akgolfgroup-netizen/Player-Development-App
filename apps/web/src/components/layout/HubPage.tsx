@@ -19,8 +19,8 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
 import * as LucideIcons from 'lucide-react';
-import type { NavArea, NavSection } from '../../config/player-navigation-v3';
-import { areaTabsConfig } from '../../config/player-navigation-v3';
+import type { NavArea, NavSection } from '../../config/player-navigation-v4';
+import { areaTabsConfig } from '../../config/player-navigation-v4';
 import { navigationColors } from '../../config/navigation-tokens';
 import PageHeader from '../../ui/raw-blocks/PageHeader.raw';
 import PageContainer from '../../ui/raw-blocks/PageContainer.raw';

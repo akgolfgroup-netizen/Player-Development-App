@@ -31,6 +31,7 @@ const DashboardHub = lazy(() => import('../features/hub-pages/DashboardHub'));
 const TreningHub = lazy(() => import('../features/hub-pages/TreningHub'));
 const PlanHub = lazy(() => import('../features/hub-pages/PlanHub'));
 const MerHub = lazy(() => import('../features/hub-pages/MerHub'));
+const VideoHub = lazy(() => import('../features/hub-pages/VideoHub'));
 
 // ===================================================================
 // NEW V4: ANALYSE HUB PAGES (replaces UtviklingHub)
@@ -149,15 +150,26 @@ export function getPlayerRoutesV4() {
       <Route path="/trening/okter" element={<SuspenseWrapper><TreningOkter /></SuspenseWrapper>} />
       <Route path="/trening/plan" element={<SuspenseWrapper><TreningPlan /></SuspenseWrapper>} />
       <Route path="/trening/ovelser" element={<SuspenseWrapper><TreningOvelser /></SuspenseWrapper>} />
-      <Route path="/trening/videoer" element={<SuspenseWrapper><TreningVideoer /></SuspenseWrapper>} />
+
+      {/* Video Hub - Consolidated video features with tabs */}
+      <Route path="/trening/video" element={<SuspenseWrapper><VideoHub /></SuspenseWrapper>} />
+      <Route path="/trening/video/bibliotek" element={<SuspenseWrapper><VideoHub /></SuspenseWrapper>} />
+      <Route path="/trening/video/sammenligning" element={<SuspenseWrapper><VideoHub /></SuspenseWrapper>} />
+      <Route path="/trening/video/annotering" element={<SuspenseWrapper><VideoHub /></SuspenseWrapper>} />
+
+      {/* Legacy video routes - redirect to new hub */}
+      <Route path="/trening/videoer" element={<Navigate to="/trening/video?tab=bibliotek" replace />} />
+      <Route path="/trening/video-sammenligning" element={<Navigate to="/trening/video?tab=sammenligning" replace />} />
+      <Route path="/trening/video-annotering" element={<Navigate to="/trening/video?tab=annotering" replace />} />
+
+      {/* Keep specific video annotation route for deep linking */}
       <Route path="/trening/videoer/:videoId/annotate" element={<SuspenseWrapper><VideoAnnotation /></SuspenseWrapper>} />
-      <Route path="/trening/video-sammenligning" element={<SuspenseWrapper><VideoComparisonPage /></SuspenseWrapper>} />
+
       <Route path="/trening/testing" element={<SuspenseWrapper><TreningTesting /></SuspenseWrapper>} />
       <Route path="/trening/testing/registrer" element={<SuspenseWrapper><TreningTestRegistrer /></SuspenseWrapper>} />
       <Route path="/trening/teknikkplan" element={<SuspenseWrapper><TreningTeknikkplan /></SuspenseWrapper>} />
       <Route path="/trening/fokus" element={<SuspenseWrapper><TreningFokus /></SuspenseWrapper>} />
       <Route path="/trening/fokus-motor" element={<SuspenseWrapper><FocusEnginePage /></SuspenseWrapper>} />
-      <Route path="/trening/video-annotering" element={<SuspenseWrapper><VideoAnnotation /></SuspenseWrapper>} />
 
       {/* ===================================================================
        * ANALYSE - NEW V4 HUB STRUCTURE (replaces /utvikling/*)

@@ -218,6 +218,9 @@ const VideoComparisonPage = lazy(() => import('./features/video-comparison/Video
 // Video progress (lazy-loaded)
 const VideoProgressView = lazy(() => import('./features/video-progress').then(m => ({ default: m.VideoProgressView })));
 
+// Video Hub - consolidated video features with tabs (lazy-loaded)
+const VideoHub = lazy(() => import('./features/hub-pages/VideoHub'));
+
 // Coach player profile (lazy-loaded)
 const CoachPlayerPage = lazy(() => import('./features/coach-player/CoachPlayerPage').then(m => ({ default: m.CoachPlayerPage })));
 
@@ -570,13 +573,30 @@ function App() {
               </PlayerLayout>
             </ProtectedRoute>
           } />
-          <Route path="/trening/videoer" element={
+          {/* Video Hub - Consolidated video features with tabs */}
+          <Route path="/trening/video" element={
             <ProtectedRoute>
-              <PlayerLayout>
-                <VideoLibraryPage />
-              </PlayerLayout>
+              <VideoHub />
             </ProtectedRoute>
           } />
+          <Route path="/trening/video/bibliotek" element={
+            <ProtectedRoute>
+              <VideoHub />
+            </ProtectedRoute>
+          } />
+          <Route path="/trening/video/sammenligning" element={
+            <ProtectedRoute>
+              <VideoHub />
+            </ProtectedRoute>
+          } />
+          <Route path="/trening/video/annotering" element={
+            <ProtectedRoute>
+              <VideoHub />
+            </ProtectedRoute>
+          } />
+
+          {/* Legacy route - redirect to new hub */}
+          <Route path="/trening/videoer" element={<Navigate to="/trening/video?tab=bibliotek" replace />} />
           <Route path="/trening/testing" element={
             <ProtectedRoute>
               <PlayerLayout>
