@@ -16,6 +16,7 @@ export interface Period {
   startDate: string;
   endDate: string;
   weeklyFrequency: number;
+  weeklyHours?: number;  // Training hours per week
   goals: string[];
   color: string;
   textColor: string;

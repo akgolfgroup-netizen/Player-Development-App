@@ -200,6 +200,26 @@ export function Step3PeriodDetails({
           />
         </div>
 
+        {/* Weekly Hours */}
+        <div className="space-y-2">
+          <Label htmlFor="weeklyHours" className="text-sm font-medium text-tier-navy">
+            Treningstimer per uke
+          </Label>
+          <Input
+            id="weeklyHours"
+            type="number"
+            min={1}
+            max={40}
+            value={currentPeriod.weeklyHours || ''}
+            onChange={(e) => updateCurrentPeriod({ weeklyHours: parseInt(e.target.value) || undefined })}
+            placeholder="f.eks. 10"
+            className="max-w-xs"
+          />
+          <p className="text-xs text-tier-text-tertiary">
+            Estimert antall timer trening per uke i denne perioden
+          </p>
+        </div>
+
         {/* Description (optional) */}
         <div className="space-y-2">
           <Label htmlFor="periodDescription" className="text-sm font-medium text-tier-navy">

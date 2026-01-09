@@ -17,8 +17,8 @@ interface WizardState {
   };
   selectedPeriodTypes: Array<'E' | 'G' | 'S' | 'T'>;
   periods: Period[];
-  goals: string[];
-  focusAreas: string[];
+  shortTermGoals: string[];   // 6-12 months
+  longTermGoals: string[];    // 1-3 years
 }
 
 const initialState: WizardState = {
@@ -32,8 +32,8 @@ const initialState: WizardState = {
   },
   selectedPeriodTypes: [],
   periods: [],
-  goals: [],
-  focusAreas: [],
+  shortTermGoals: [],
+  longTermGoals: [],
 };
 
 export function useAnnualPlanWizard() {
@@ -81,12 +81,12 @@ export function useAnnualPlanWizard() {
     setState((prev) => ({ ...prev, periods }));
   }, []);
 
-  const updateGoals = useCallback((goals: string[]) => {
-    setState((prev) => ({ ...prev, goals }));
+  const updateShortTermGoals = useCallback((goals: string[]) => {
+    setState((prev) => ({ ...prev, shortTermGoals: goals }));
   }, []);
 
-  const updateFocusAreas = useCallback((areas: string[]) => {
-    setState((prev) => ({ ...prev, focusAreas: areas }));
+  const updateLongTermGoals = useCallback((goals: string[]) => {
+    setState((prev) => ({ ...prev, longTermGoals: goals }));
   }, []);
 
   const reset = useCallback(() => {
@@ -101,8 +101,8 @@ export function useAnnualPlanWizard() {
     updateBasicInfo,
     updatePeriodTypes,
     updatePeriods,
-    updateGoals,
-    updateFocusAreas,
+    updateShortTermGoals,
+    updateLongTermGoals,
     reset,
     isFirstStep: state.currentStep === 0,
     isLastStep: state.currentStep === state.totalSteps - 1,

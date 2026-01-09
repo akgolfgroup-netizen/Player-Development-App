@@ -20,8 +20,8 @@ interface Step5ReviewProps {
     endDate: string;
   };
   periods: Period[];
-  goals: string[];
-  focusAreas: string[];
+  shortTermGoals: string[];
+  longTermGoals: string[];
   onSave: () => void;
   onPrevious: () => void;
   isLoading?: boolean;
@@ -30,8 +30,8 @@ interface Step5ReviewProps {
 export function Step5Review({
   basicInfo,
   periods,
-  goals,
-  focusAreas,
+  shortTermGoals,
+  longTermGoals,
   onSave,
   onPrevious,
   isLoading = false,
@@ -156,12 +156,12 @@ export function Step5Review({
         </div>
       </Card>
 
-      {/* Goals */}
-      {goals.length > 0 && (
+      {/* Short-term Goals */}
+      {shortTermGoals.length > 0 && (
         <Card className="p-6 space-y-3">
-          <h3 className="text-lg font-semibold text-tier-navy">Dine mål</h3>
+          <h3 className="text-lg font-semibold text-tier-navy">Kortsiktige mål (6-12 måneder)</h3>
           <ul className="space-y-2">
-            {goals.map((goal, index) => (
+            {shortTermGoals.map((goal, index) => (
               <li key={index} className="flex items-start space-x-2">
                 <span className="text-tier-gold mt-1">•</span>
                 <span className="text-tier-navy">{goal}</span>
@@ -171,21 +171,18 @@ export function Step5Review({
         </Card>
       )}
 
-      {/* Focus Areas */}
-      {focusAreas.length > 0 && (
+      {/* Long-term Goals */}
+      {longTermGoals.length > 0 && (
         <Card className="p-6 space-y-3">
-          <h3 className="text-lg font-semibold text-tier-navy">Fokusområder</h3>
-          <div className="flex flex-wrap gap-2">
-            {focusAreas.map((area) => (
-              <Badge
-                key={area}
-                variant="secondary"
-                className="bg-tier-navy/10 text-tier-navy"
-              >
-                {area}
-              </Badge>
+          <h3 className="text-lg font-semibold text-tier-navy">Langsiktige mål (1-3 år)</h3>
+          <ul className="space-y-2">
+            {longTermGoals.map((goal, index) => (
+              <li key={index} className="flex items-start space-x-2">
+                <span className="text-tier-gold mt-1">•</span>
+                <span className="text-tier-navy">{goal}</span>
+              </li>
             ))}
-          </div>
+          </ul>
         </Card>
       )}
 
@@ -221,7 +218,7 @@ export function Step5Review({
         <Button
           onClick={onSave}
           disabled={isLoading}
-          className="bg-tier-gold hover:bg-tier-gold/90 text-tier-navy font-semibold"
+          className="bg-tier-gold hover:bg-tier-gold/90 text-white font-semibold"
         >
           {isLoading ? 'Lagrer...' : 'Lagre årsplan'}
         </Button>

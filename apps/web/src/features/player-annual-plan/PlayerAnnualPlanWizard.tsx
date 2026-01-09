@@ -45,7 +45,7 @@ export function PlayerAnnualPlanWizard() {
   };
 
   const renderStep = () => {
-    const { currentStep, basicInfo, selectedPeriodTypes, periods, goals, focusAreas } =
+    const { currentStep, basicInfo, selectedPeriodTypes, periods, shortTermGoals, longTermGoals } =
       wizard.state;
 
     switch (currentStep) {
@@ -87,10 +87,10 @@ export function PlayerAnnualPlanWizard() {
       case 3:
         return (
           <Step4GoalsAndFocus
-            goals={goals}
-            focusAreas={focusAreas}
-            onUpdateGoals={wizard.updateGoals}
-            onUpdateFocusAreas={wizard.updateFocusAreas}
+            shortTermGoals={shortTermGoals}
+            longTermGoals={longTermGoals}
+            onUpdateShortTermGoals={wizard.updateShortTermGoals}
+            onUpdateLongTermGoals={wizard.updateLongTermGoals}
             onNext={wizard.goToNext}
             onPrevious={wizard.goToPrevious}
           />
@@ -101,8 +101,8 @@ export function PlayerAnnualPlanWizard() {
           <Step5Review
             basicInfo={basicInfo}
             periods={periods}
-            goals={goals}
-            focusAreas={focusAreas}
+            shortTermGoals={shortTermGoals}
+            longTermGoals={longTermGoals}
             onSave={handleSavePlan}
             onPrevious={wizard.goToPrevious}
             isLoading={isLoading}
