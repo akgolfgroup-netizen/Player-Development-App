@@ -12,13 +12,13 @@
      ═══════════════════════════════════════════════════════════ */
 
   /* Primary Brand Colors */
-  --tier-navy: 10 37 64;           /* rgb(var(--tier-navy)) - Primary brand color */
-  --tier-navy-light: 13 48 80;     /* rgb(var(--tier-navy-light)) - Hover states */
-  --tier-navy-dark: 6 24 41;       /* rgb(var(--tier-navy-dark)) - Pressed states */
+  --tier-navy: 13 59 47;           /* #0D3B2F - Primary brand color (forest green) */
+  --tier-navy-light: 22 92 74;     /* #165C4A - Hover states */
+  --tier-navy-dark: 10 47 37;      /* #0A2F25 - Pressed states */
 
-  --tier-gold: 201 162 39;         /* rgb(var(--tier-gold)) - Premium accent */
-  --tier-gold-light: 212 181 69;   /* rgb(var(--tier-gold-light)) - Hover on gold */
-  --tier-gold-dark: 168 135 31;    /* rgb(var(--tier-gold-dark)) - Pressed on gold */
+  --tier-gold: 232 165 75;         /* #E8A54B - Premium accent */
+  --tier-gold-light: 240 183 105;  /* #F0B769 - Hover on gold */
+  --tier-gold-dark: 200 142 65;    /* #C88E41 - Pressed on gold */
 
   --tier-white: 255 255 255;       /* rgb(var(--tier-white)) - White */
 
@@ -27,8 +27,8 @@
      ═══════════════════════════════════════════════════════════ */
 
   --surface-primary: 255 255 255;       /* rgb(var(--tier-white)) - Main background */
-  --surface-secondary: 248 250 252;     /* rgb(var(--surface-secondary)) - Secondary background, cards */
-  --surface-tertiary: 237 240 242;      /* #EDF0F2 - Subtle background */
+  --surface-secondary: 245 245 240;     /* #F5F5F0 - Secondary background, cards */
+  --surface-tertiary: 232 232 224;      /* #E8E8E0 - Subtle background (hover) */
   --surface-elevated: 255 255 255;      /* rgb(var(--tier-white)) - Elevated cards */
 
   /* Dark mode surfaces (optional) */
@@ -57,21 +57,21 @@
      STATUS COLORS (Success, Warning, Error, Info)
      ═══════════════════════════════════════════════════════════ */
 
-  --status-success: 22 163 74;          /* rgb(var(--status-success)) - Green */
+  --status-success: 34 197 94;          /* #22C55E - Green */
   --status-success-light: 220 252 231;  /* #DCFCE7 - Success bg */
-  --status-success-dark: 21 128 61;     /* #15803D - Success dark */
+  --status-success-dark: 22 163 74;     /* #16A34A - Success dark */
 
-  --status-warning: 217 119 6;          /* rgb(var(--status-warning)) - Orange */
+  --status-warning: 245 158 11;         /* #F59E0B - Amber */
   --status-warning-light: 254 243 199;  /* #FEF3C7 - Warning bg */
-  --status-warning-dark: 180 83 9;      /* #B45309 - Warning dark */
+  --status-warning-dark: 217 119 6;     /* #D97706 - Warning dark */
 
-  --status-error: 220 38 38;            /* rgb(var(--status-error)) - Red */
+  --status-error: 239 68 68;            /* #EF4444 - Red */
   --status-error-light: 254 226 226;    /* #FEE2E2 - Error bg */
-  --status-error-dark: 185 28 28;       /* #B91C1C - Error dark */
+  --status-error-dark: 220 38 38;       /* #DC2626 - Error dark */
 
-  --status-info: 37 99 235;             /* rgb(var(--status-info)) - Blue */
+  --status-info: 59 130 246;            /* #3B82F6 - Blue */
   --status-info-light: 219 234 254;     /* #DBEAFE - Info bg */
-  --status-info-dark: 29 78 216;        /* #1D4ED8 - Info dark */
+  --status-info-dark: 37 99 235;        /* #2563EB - Info dark */
 
   /* ═══════════════════════════════════════════════════════════
      CATEGORY COLORS (A-K System)

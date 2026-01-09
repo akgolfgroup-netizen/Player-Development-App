@@ -165,8 +165,8 @@ const styles = {
       '[--btn-icon:var(--color-white)]/60 data-active:[--btn-icon:var(--color-white)]/80 data-hover:[--btn-icon:var(--color-white)]/80',
     ],
     gold: [
-      'text-ak-text-primary [--btn-hover-overlay:var(--color-white)]/25 [--btn-bg:var(--achievement)] [--btn-border:var(--tier-achievement-gold-border)]/80',
-      '[--btn-icon:var(--text-primary)]/60 data-active:[--btn-icon:var(--text-primary)]/80 data-hover:[--btn-icon:var(--text-primary)]/80',
+      'text-white [--btn-hover-overlay:var(--color-white)]/10 [--btn-bg:var(--achievement)] [--btn-border:rgb(var(--tier-gold-dark))]',
+      '[--btn-icon:var(--color-white)]/90 data-active:[--btn-icon:var(--color-white)] data-hover:[--btn-icon:var(--color-white)]',
     ],
     success: [
       'text-white [--btn-hover-overlay:var(--color-white)]/10 [--btn-bg:var(--success)] [--btn-border:var(--success)]/90',
