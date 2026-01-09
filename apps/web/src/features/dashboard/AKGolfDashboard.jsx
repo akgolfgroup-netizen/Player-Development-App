@@ -1409,127 +1409,128 @@ const TIERGolfDashboard = () => {
         <div id="dashboard-export" className="dashboard-layout" style={styles.dashboard}>
           {/* Export Button - Full Width */}
           <div className="dashboard-full-width" style={{ display: 'flex', justifyContent: 'flex-end', marginBottom: '-8px' }}>
-        <ExportButton
-          targetId="dashboard-export"
-          filename={`oversikt-${player.name?.replace(/\s+/g, '-') || 'spiller'}-${new Date().toISOString().split('T')[0]}`}
-          title={`Oversikt - ${player.name || 'Spiller'}`}
-          variant="icon"
-          size="sm"
-        />
-      </div>
-
-      {/* Stale data banner - Full Width */}
-      {error && dashboardData && (
-        <div className="dashboard-full-width" style={styles.staleBanner}>
-          <span>Viser tidligere data. Noe kan være utdatert.</span>
-          <button style={styles.staleRetry} onClick={refetch}>
-            <RefreshCw size={14} /> Oppdater
-          </button>
-        </div>
-      )}
-
-      {/* Onboarding Checklist - Show for new users who haven't dismissed */}
-      {showOnboarding && isNewUser && (
-        <div className="dashboard-full-width">
-          <OnboardingChecklist
-            completionStatus={onboardingStatus}
-            onDismiss={handleDismissOnboarding}
-          />
-        </div>
-      )}
-
-      {/* 1. HERO SECTION: Greeting + Smart Insight - Full Width */}
-      <div className="dashboard-hero dashboard-full-width">
-        <HeroSection
-          player={player}
-          greeting={greeting}
-          stats={stats}
-          nextTest={nextTest}
-          todaySessions={todaySessions}
-        />
-      </div>
-
-      {/* 2. TODAY'S ACTION CARD (if sessions exist) - Full Width */}
-      <div className="dashboard-action-card dashboard-full-width">
-        <TodayActionCard
-          sessions={todaySessions}
-          onStartSession={(s) => navigate(`/session/${s.id}/start`)}
-          onViewCalendar={() => navigate('/kalender')}
-        />
-      </div>
-
-      {/* 3. WEEKLY PERFORMANCE SUMMARY (4 KPIs) - Full Width */}
-      <div className="dashboard-kpi-section dashboard-full-width">
-        <WeeklyPerformanceSummary stats={stats} loading={loading} />
-      </div>
-
-      {/* 4. QUICK ACTIONS (Hurtigvalg) - Full Width */}
-      <div className="dashboard-quick-actions-section dashboard-full-width">
-        <QuickActions onAction={handleQuickAction} />
-      </div>
-
-      {/* ===== MAIN CONTENT AREA ===== */}
-      <div className="dashboard-main">
-        {/* 5. WEEKLY GOALS (Ukens Mål) - EXPANDED */}
-        <div className="dashboard-main-full">
-          <WeeklyGoalsWidget
-            goals={goals}
-            onToggle={toggleGoal}
-            onAddGoal={() => navigate('/maalsetninger/new')}
-            onViewAll={() => navigate('/maalsetninger')}
-            loading={loading}
-          />
-        </div>
-
-        {/* 6. TODAY'S SESSIONS (Dagens Økter) */}
-        <div className="dashboard-main-full">
-          <SessionsWidget
-            sessions={todaySessions}
-            onViewAll={() => navigate('/kalender')}
-            onSessionClick={(s) => navigate(`/session/${s.id}`)}
-            loading={loading}
-          />
-        </div>
-
-        {/* 7. NEXT TEST (Neste Test) */}
-        {nextTest && (
-          <div className="dashboard-main-full">
-            <NextTestCard
-              title={nextTest.title}
-              date={nextTest.date || '2026-03-15'}
-              location={nextTest.location}
-              preparation={nextTest.preparation || {
-                reviewedMaterial: false,
-                practicedWeakAreas: false,
-                takenPracticeTest: false,
-              }}
-              onViewDetails={() => navigate('/tests')}
-              onPrepare={() => navigate('/tests/prepare')}
+            <ExportButton
+              targetId="dashboard-export"
+              filename={`oversikt-${player.name?.replace(/\s+/g, '-') || 'spiller'}-${new Date().toISOString().split('T')[0]}`}
+              title={`Oversikt - ${player.name || 'Spiller'}`}
+              variant="icon"
+              size="sm"
             />
           </div>
-        )}
-      </div>
 
-      {/* ===== SIDEBAR AREA ===== */}
-      <div className="dashboard-sidebar">
-        {/* 8. MESSAGES (Meldinger) - Prioritized */}
-        <MessagesWidget
-          messages={messages}
-          onViewAll={() => navigate('/meldinger')}
-          onMessageClick={(m) => navigate(`/meldinger/${m.id}`)}
-          onQuickReply={(m) => navigate(`/meldinger/${m.id}/reply`)}
-          loading={loading}
-        />
+          {/* Stale data banner - Full Width */}
+          {error && dashboardData && (
+            <div className="dashboard-full-width" style={styles.staleBanner}>
+              <span>Viser tidligere data. Noe kan være utdatert.</span>
+              <button style={styles.staleRetry} onClick={refetch}>
+                <RefreshCw size={14} /> Oppdater
+              </button>
+            </div>
+          )}
 
-        {/* 9. NEXT TOURNAMENT (Neste Turnering) - Minimized if >30 days */}
-        {nextTournament && (
-          <NextTournamentCard
-            title={nextTournament.title}
-            date={nextTournament.date || '2026-06-15'}
-            location={nextTournament.location}
-            onViewDetails={() => navigate('/tournaments')}
-          />
-        )}
+          {/* Onboarding Checklist - Show for new users who haven't dismissed */}
+          {showOnboarding && isNewUser && (
+            <div className="dashboard-full-width">
+              <OnboardingChecklist
+                completionStatus={onboardingStatus}
+                onDismiss={handleDismissOnboarding}
+              />
+            </div>
+          )}
+
+          {/* 1. HERO SECTION: Greeting + Smart Insight - Full Width */}
+          <div className="dashboard-hero dashboard-full-width">
+            <HeroSection
+              player={player}
+              greeting={greeting}
+              stats={stats}
+              nextTest={nextTest}
+              todaySessions={todaySessions}
+            />
+          </div>
+
+          {/* 2. TODAY'S ACTION CARD (if sessions exist) - Full Width */}
+          <div className="dashboard-action-card dashboard-full-width">
+            <TodayActionCard
+              sessions={todaySessions}
+              onStartSession={(s) => navigate(`/session/${s.id}/start`)}
+              onViewCalendar={() => navigate('/kalender')}
+            />
+          </div>
+
+          {/* 3. WEEKLY PERFORMANCE SUMMARY (4 KPIs) - Full Width */}
+          <div className="dashboard-kpi-section dashboard-full-width">
+            <WeeklyPerformanceSummary stats={stats} loading={loading} />
+          </div>
+
+          {/* 4. QUICK ACTIONS (Hurtigvalg) - Full Width */}
+          <div className="dashboard-quick-actions-section dashboard-full-width">
+            <QuickActions onAction={handleQuickAction} />
+          </div>
+
+          {/* ===== MAIN CONTENT AREA ===== */}
+          <div className="dashboard-main">
+            {/* 5. WEEKLY GOALS (Ukens Mål) - EXPANDED */}
+            <div className="dashboard-main-full">
+              <WeeklyGoalsWidget
+                goals={goals}
+                onToggle={toggleGoal}
+                onAddGoal={() => navigate('/maalsetninger/new')}
+                onViewAll={() => navigate('/maalsetninger')}
+                loading={loading}
+              />
+            </div>
+
+            {/* 6. TODAY'S SESSIONS (Dagens Økter) */}
+            <div className="dashboard-main-full">
+              <SessionsWidget
+                sessions={todaySessions}
+                onViewAll={() => navigate('/kalender')}
+                onSessionClick={(s) => navigate(`/session/${s.id}`)}
+                loading={loading}
+              />
+            </div>
+
+            {/* 7. NEXT TEST (Neste Test) */}
+            {nextTest && (
+              <div className="dashboard-main-full">
+                <NextTestCard
+                  title={nextTest.title}
+                  date={nextTest.date || '2026-03-15'}
+                  location={nextTest.location}
+                  preparation={nextTest.preparation || {
+                    reviewedMaterial: false,
+                    practicedWeakAreas: false,
+                    takenPracticeTest: false,
+                  }}
+                  onViewDetails={() => navigate('/tests')}
+                  onPrepare={() => navigate('/tests/prepare')}
+                />
+              </div>
+            )}
+          </div>
+
+          {/* ===== SIDEBAR AREA ===== */}
+          <div className="dashboard-sidebar">
+            {/* 8. MESSAGES (Meldinger) - Prioritized */}
+            <MessagesWidget
+              messages={messages}
+              onViewAll={() => navigate('/meldinger')}
+              onMessageClick={(m) => navigate(`/meldinger/${m.id}`)}
+              onQuickReply={(m) => navigate(`/meldinger/${m.id}/reply`)}
+              loading={loading}
+            />
+
+            {/* 9. NEXT TOURNAMENT (Neste Turnering) - Minimized if >30 days */}
+            {nextTournament && (
+              <NextTournamentCard
+                title={nextTournament.title}
+                date={nextTournament.date || '2026-06-15'}
+                location={nextTournament.location}
+                onViewDetails={() => navigate('/tournaments')}
+              />
+            )}
+          </div>
         </div>
       </PageContainer>
     </div>

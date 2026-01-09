@@ -11,7 +11,8 @@ import { ArrowLeft, AlertCircle } from 'lucide-react';
 import { SectionTitle } from '../../../components/typography';
 import { PageHeader } from '../../../components/layout/PageHeader';
 import Button from '../../../ui/primitives/Button';
-import { testDefinitions, TestDefinition } from '../config/testDefinitions';
+import { TestDefinition } from '../config/testDefinitions';
+import { useTestProtocols } from '../../../hooks/useTrainingConfig';
 import TestOverviewPage from '../templates/TestOverviewPage';
 import { testsAPI } from '../../../services/api';
 import { useAuth } from '../../../contexts/AuthContext';
@@ -34,8 +35,11 @@ const TestDetailPage: React.FC = () => {
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [submitError, setSubmitError] = useState<string | null>(null);
 
-  // Find the test definition
-  const test = testDefinitions.find(t => t.id === testId);
+  // Get test protocols from sport context
+  const { getProtocol } = useTestProtocols();
+
+  // Find the test definition from sport config
+  const test = testId ? getProtocol(testId) as TestDefinition | undefined : undefined;
 
   // Handle test not found
   if (!test) {

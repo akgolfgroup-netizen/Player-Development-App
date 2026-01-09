@@ -18,7 +18,8 @@ import {
   FlagTriangleRight, Brain, ChevronRight, CheckCircle,
   AlertCircle, Clock, TrendingUp, Calendar, Search, Plus
 } from 'lucide-react';
-import { testDefinitions, getScoreLevel } from './config/testDefinitions';
+import { getScoreLevel } from './config/testDefinitions';
+import { useTestProtocols } from '../../hooks/useTrainingConfig';
 
 // ============================================================================
 // CATEGORY CONFIGURATION
@@ -251,6 +252,9 @@ const TIERGolfTestprotokoll = ({ player: apiPlayer = null, tests: apiTests = nul
   const [testToStart, setTestToStart] = useState(null);
   const [showNewTestModal, setShowNewTestModal] = useState(false);
   const [selectedTestForRegistration, setSelectedTestForRegistration] = useState(null);
+
+  // Get test protocols from sport context
+  const { protocols: testDefinitions, getProtocol } = useTestProtocols();
 
   // Default player profile
   const player = apiPlayer ? {
