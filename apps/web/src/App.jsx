@@ -1531,14 +1531,8 @@ function App() {
             </ProtectedRoute>
           } />
 
-          {/* Kunnskap */}
-          <Route path="/bevis" element={
-            <ProtectedRoute>
-              <PlayerLayout title="Bevis" subtitle="Dokumenter fremgang">
-                <BevisContainer />
-              </PlayerLayout>
-            </ProtectedRoute>
-          } />
+          {/* Redirect: /bevis → /trening/teknikkplan (duplicate removed in v4) */}
+          <Route path="/bevis" element={<Navigate to="/trening/teknikkplan" replace />} />
 
           {/* Video Library for Players */}
           <Route path="/videos" element={

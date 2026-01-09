@@ -147,7 +147,6 @@ export const playerNavigationV3: NavArea[] = [
         id: 'ovelser',
         label: 'Teknisk plan',
         items: [
-          { href: '/bevis', label: 'Teknisk plan (Bevis)', icon: 'VideoIcon', description: 'Dokumenter fremgang' },
           { href: '/trening/teknikkplan', label: 'Teknikkplan', icon: 'TargetIcon', description: 'Teknisk utviklingsplan' },
           { href: '/trening/ovelser', label: 'Øvelser', icon: 'ClubIcon', description: 'Øvelsesbibliotek' },
           { href: '/trening/videoer', label: 'Videoer', icon: 'VideoIcon', description: 'Instruksjonsvideoer' },
