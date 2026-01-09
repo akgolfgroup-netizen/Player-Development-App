@@ -36,10 +36,10 @@ type Props = {
   athleteId: string;
   athleteName?: string;
   onBack?: () => void;
-  onViewProof: (athleteId: string) => void;
-  onViewTrajectory: (athleteId: string) => void;
-  onEditTrainingPlan: (athleteId: string) => void;
-  onViewNotes: (athleteId: string) => void;
+  onViewProof?: (athleteId: string) => void;
+  onViewTrajectory?: (athleteId: string) => void;
+  onEditTrainingPlan?: (athleteId: string) => void;
+  onViewNotes?: (athleteId: string) => void;
 };
 
 //////////////////////////////
@@ -98,16 +98,16 @@ export default function CoachAthleteDetail({
   const handleAction = (actionId: string) => {
     switch (actionId) {
       case 'proof':
-        onViewProof(athleteId);
+        onViewProof?.(athleteId);
         break;
       case 'trajectory':
-        onViewTrajectory(athleteId);
+        onViewTrajectory?.(athleteId);
         break;
       case 'plan':
-        onEditTrainingPlan(athleteId);
+        onEditTrainingPlan?.(athleteId);
         break;
       case 'notes':
-        onViewNotes(athleteId);
+        onViewNotes?.(athleteId);
         break;
     }
   };

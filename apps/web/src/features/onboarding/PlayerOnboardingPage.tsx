@@ -5,7 +5,7 @@
  * All steps collected on one page with sections
  */
 
-import React, { useState } from 'react';
+import React, { useState, useMemo } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useAuth } from '../../contexts/AuthContext';
 import apiClient from '../../services/apiClient';
@@ -35,7 +35,8 @@ interface OnboardingData {
   coachId: string;
 
   // Emergency contact
-  emergencyContactName: string;
+  emergencyContactFirstName: string;
+  emergencyContactLastName: string;
   emergencyContactPhone: string;
   emergencyContactEmail: string;
 }
@@ -59,12 +60,26 @@ export default function PlayerOnboardingPage() {
     goals: [],
     customGoal: '',
     coachId: '',
-    emergencyContactName: '',
+    emergencyContactFirstName: '',
+    emergencyContactLastName: '',
     emergencyContactPhone: '',
     emergencyContactEmail: '',
   });
 
   const [coaches, setCoaches] = useState<Array<{ id: string; firstName: string; lastName: string }>>([]);
+
+  // Calculate if player is under 18
+  const isUnder18 = useMemo(() => {
+    if (!data.dateOfBirth) return false;
+    const today = new Date();
+    const birthDate = new Date(data.dateOfBirth);
+    let age = today.getFullYear() - birthDate.getFullYear();
+    const monthDiff = today.getMonth() - birthDate.getMonth();
+    if (monthDiff < 0 || (monthDiff === 0 && today.getDate() < birthDate.getDate())) {
+      age--;
+    }
+    return age < 18;
+  }, [data.dateOfBirth]);
 
   // Fetch coaches on mount
   React.useEffect(() => {
@@ -117,7 +132,7 @@ export default function PlayerOnboardingPage() {
         goals: allGoals,
         coachId: data.coachId && data.coachId !== 'none' ? data.coachId : null,
         emergencyContact: {
-          name: data.emergencyContactName,
+          name: `${data.emergencyContactFirstName} ${data.emergencyContactLastName}`.trim(),
           phone: data.emergencyContactPhone,
           email: data.emergencyContactEmail,
         },
@@ -295,13 +310,41 @@ export default function PlayerOnboardingPage() {
 
               <div className="space-y-2">
                 <label className="text-sm font-medium text-tier-navy">
-                  Skole
+                  Idrettsskole
                 </label>
-                <Input
-                  value={data.school}
-                  onChange={(e) => handleInputChange('school', e.target.value)}
-                  placeholder="Navn på skole"
-                />
+                <Select value={data.school} onValueChange={(val) => handleInputChange('school', val)}>
+                  <SelectTrigger>
+                    <SelectValue placeholder="Velg idrettsskole (valgfritt)" />
+                  </SelectTrigger>
+                  <SelectContent>
+                    <SelectItem value="none">Ingen idrettsskole</SelectItem>
+
+                    {/* WANG Toppidrett */}
+                    <SelectItem value="WANG Toppidrett Oslo">WANG Toppidrett Oslo</SelectItem>
+                    <SelectItem value="WANG Toppidrett Romerike">WANG Toppidrett Romerike</SelectItem>
+                    <SelectItem value="WANG Toppidrett Tønsberg">WANG Toppidrett Tønsberg</SelectItem>
+                    <SelectItem value="WANG Toppidrett Fredrikstad">WANG Toppidrett Fredrikstad</SelectItem>
+                    <SelectItem value="WANG Toppidrett Stavanger">WANG Toppidrett Stavanger</SelectItem>
+
+                    {/* NTG */}
+                    <SelectItem value="NTG Bærum">NTG Bærum</SelectItem>
+                    <SelectItem value="NTG Bergen">NTG Bergen</SelectItem>
+
+                    {/* WANG UNG */}
+                    <SelectItem value="WANG UNG Oslo">WANG UNG Oslo</SelectItem>
+                    <SelectItem value="WANG UNG Romerike">WANG UNG Romerike</SelectItem>
+                    <SelectItem value="WANG UNG Sandefjord">WANG UNG Sandefjord</SelectItem>
+                    <SelectItem value="WANG UNG Fredrikstad">WANG UNG Fredrikstad</SelectItem>
+                    <SelectItem value="WANG UNG Stavanger">WANG UNG Stavanger</SelectItem>
+
+                    {/* NTG U */}
+                    <SelectItem value="NTG U Bærum">NTG U Bærum</SelectItem>
+
+                    {/* TEAM Norway */}
+                    <SelectItem value="TEAM Norway Ung">TEAM Norway Ung</SelectItem>
+                    <SelectItem value="TEAM Norway Junior">TEAM Norway Junior</SelectItem>
+                  </SelectContent>
+                </Select>
               </div>
             </CardContent>
           </Card>
@@ -392,44 +435,62 @@ export default function PlayerOnboardingPage() {
             </CardContent>
           </Card>
 
-          {/* 5. Emergency Contact */}
+          {/* 5. Emergency Contact / Fullmakt */}
           <Card>
             <CardHeader>
-              <CardTitle className="text-base">Nødkontakt</CardTitle>
+              <CardTitle className="text-base">
+                {isUnder18 ? 'Fullmakt (Foreldre/foresatt)' : 'Nødkontakt'}
+              </CardTitle>
             </CardHeader>
             <CardContent className="space-y-4">
-              <div className="space-y-2">
-                <label className="text-sm font-medium text-tier-navy">
-                  Navn
-                </label>
-                <Input
-                  value={data.emergencyContactName}
-                  onChange={(e) => handleInputChange('emergencyContactName', e.target.value)}
-                  placeholder="Forelder/foresatt"
-                />
+              <div className="grid grid-cols-2 gap-4">
+                <div className="space-y-2">
+                  <label className="text-sm font-medium text-tier-navy">
+                    Fornavn {isUnder18 && <span className="text-status-error">*</span>}
+                  </label>
+                  <Input
+                    value={data.emergencyContactFirstName}
+                    onChange={(e) => handleInputChange('emergencyContactFirstName', e.target.value)}
+                    placeholder="Ola"
+                    required={isUnder18}
+                  />
+                </div>
+                <div className="space-y-2">
+                  <label className="text-sm font-medium text-tier-navy">
+                    Etternavn {isUnder18 && <span className="text-status-error">*</span>}
+                  </label>
+                  <Input
+                    value={data.emergencyContactLastName}
+                    onChange={(e) => handleInputChange('emergencyContactLastName', e.target.value)}
+                    placeholder="Nordmann"
+                    required={isUnder18}
+                  />
+                </div>
               </div>
 
               <div className="grid grid-cols-2 gap-4">
                 <div className="space-y-2">
                   <label className="text-sm font-medium text-tier-navy">
-                    Telefon
+                    Telefon {isUnder18 && <span className="text-status-error">*</span>}
                   </label>
                   <Input
                     type="tel"
                     value={data.emergencyContactPhone}
                     onChange={(e) => handleInputChange('emergencyContactPhone', e.target.value)}
                     placeholder="+47 123 45 678"
+                    required={isUnder18}
                   />
                 </div>
                 <div className="space-y-2">
                   <label className="text-sm font-medium text-tier-navy">
-                    E-post
+                    E-post {isUnder18 && <span className="text-status-error">*</span>}
                   </label>
                   <Input
                     type="email"
                     value={data.emergencyContactEmail}
                     onChange={(e) => handleInputChange('emergencyContactEmail', e.target.value)}
                     placeholder="forelder@example.com"
+                    required={isUnder18}
                   />
                 </div>
               </div>

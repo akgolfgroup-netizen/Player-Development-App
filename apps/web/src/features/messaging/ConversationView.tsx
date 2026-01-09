@@ -171,7 +171,7 @@ export default function ConversationView() {
     if (messages.length > 0) {
       fetch(`/api/v1/messages/conversations/${conversationId}/read`, {
         method: 'PUT',
-      }).catch(() => {});
+      }).catch((err) => console.warn('Failed to mark messages as read:', err));
     }
   }, [conversationId, messages.length]);
 

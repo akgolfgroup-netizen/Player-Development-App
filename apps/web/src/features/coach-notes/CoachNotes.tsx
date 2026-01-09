@@ -42,8 +42,8 @@ type Props = {
   athleteId: string;
   athleteName?: string;
   notes?: CoachNote[];
-  onAddNote: (athleteId: string, content: string) => void;
-  onBack: () => void;
+  onAddNote?: (athleteId: string, content: string) => void;
+  onBack?: () => void;
 };
 
 //////////////////////////////
@@ -101,7 +101,7 @@ export default function CoachNotes({
 
   const handleSubmit = () => {
     if (!newNote.trim()) return;
-    onAddNote(athleteId, newNote.trim());
+    onAddNote?.(athleteId, newNote.trim());
     setNewNote("");
   };
 
@@ -113,7 +113,7 @@ export default function CoachNotes({
       {/* Header */}
       <div className="bg-tier-white border-b border-tier-border-default py-4 px-6">
         <div className="mb-4">
-          <Button variant="ghost" size="sm" onClick={onBack} leftIcon={<ArrowLeft size={18} />}>
+          <Button variant="ghost" size="sm" onClick={() => onBack?.()} leftIcon={<ArrowLeft size={18} />}>
             Tilbake
           </Button>
         </div>
