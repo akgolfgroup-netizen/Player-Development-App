@@ -515,7 +515,8 @@ describe('SubscriptionAnalytics', () => {
       renderWithRouter(<SubscriptionAnalytics />);
 
       await waitFor(() => {
-        expect(screen.getByText(/6,705\.00/i)).toBeInTheDocument();
+        // Norwegian format: space as thousands separator, comma as decimal
+        expect(screen.getByText(/6\s?705,00/i)).toBeInTheDocument();
       });
     });
   });
