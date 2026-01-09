@@ -19,7 +19,11 @@ import type {
   PerformanceMetric,
   SportTerminology,
   Equipment,
+  TestProtocol,
 } from './types';
+
+// Import golf test definitions
+import { testDefinitions as golfTestDefinitions } from '../../features/tests/config/testDefinitions';
 
 // ============================================================================
 // TRAINING AREAS - Full Swing, Short Game, Putting
@@ -620,7 +624,7 @@ export const GOLF_CONFIG: SportConfig = {
   intensityLevels,
   pressureLevels,
 
-  testProtocols: [], // Will be imported from testDefinitions.ts
+  testProtocols: golfTestDefinitions as unknown as TestProtocol[],
   performanceMetrics,
   benchmarkSource: 'DataGolf',
 
