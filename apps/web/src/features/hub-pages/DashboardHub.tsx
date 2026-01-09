@@ -28,6 +28,10 @@ import { playerQuickActions } from '../../config/quick-actions';
 import { useAuth } from '../../contexts/AuthContext';
 import PageHeader from '../../ui/raw-blocks/PageHeader.raw';
 import PageContainer from '../../ui/raw-blocks/PageContainer.raw';
+import ProfileImageUpload from '../../components/profile/ProfileImageUpload';
+import { useToast } from '../../components/shadcn/use-toast';
+import { Link } from 'react-router-dom';
+import { Target } from 'lucide-react';
 
 interface DashboardHubProps {
   playerName?: string;
@@ -49,10 +53,28 @@ export default function DashboardHub({
   },
 }: DashboardHubProps) {
   const { user } = useAuth();
+  const { toast } = useToast();
 
   // Use auth user name if available
   const displayName = playerName || user?.firstName || 'Spiller';
   const fullName = user ? `${user.firstName || ''} ${user.lastName || ''}`.trim() : displayName;
+
+  // Handle profile image upload
+  const handleImageUpload = async (file: File) => {
+    // TODO: Implement actual API call to upload image
+    toast({
+      title: 'Bilde lastet opp',
+      description: `${file.name} er lastet opp successfully`,
+    });
+  };
+
+  const handleImageRemove = async () => {
+    // TODO: Implement actual API call to remove image
+    toast({
+      title: 'Bilde fjernet',
+      description: 'Profilbildet ditt er fjernet',
+    });
+  };
 
   return (
     <div className="min-h-screen bg-tier-surface-base">
@@ -78,6 +100,19 @@ export default function DashboardHub({
             ]}
             profileHref="/mer/profil"
           />
+        </div>
+
+        {/* Profile Picture Upload */}
+        <div className="mb-6 flex flex-col items-center">
+          <ProfileImageUpload
+            currentImageUrl={user?.profileImageUrl}
+            userName={fullName}
+            onImageUpload={handleImageUpload}
+            onImageRemove={handleImageRemove}
+            size="xl"
+            className="mb-2"
+          />
+          <p className="text-sm text-tier-text-secondary">Last opp bilde</p>
         </div>
 
         {/* 2. Attention Items - Priority sorted: urgent → in progress → upcoming */}
@@ -126,6 +161,17 @@ export default function DashboardHub({
               totalExercises={5}
             />
           </FocusCardsGrid>
+
+          {/* See all goals button */}
+          <div className="mt-4 flex justify-center">
+            <Link
+              to="/plan/maal"
+              className="inline-flex items-center gap-2 px-6 py-3 bg-tier-gold hover:bg-tier-gold/90 text-white font-semibold rounded-lg transition-colors shadow-sm"
+            >
+              <Target size={20} />
+              Se alle mål
+            </Link>
+          </div>
         </section>
 
         {/* 4. Quick Actions - Streamlined */}

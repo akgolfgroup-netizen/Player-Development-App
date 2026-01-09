@@ -50,6 +50,13 @@ interface HubPageProps {
     icon?: string;
     variant?: 'primary' | 'secondary';
   };
+  /** Multiple featured actions (if provided, overrides featuredAction) */
+  featuredActions?: Array<{
+    label: string;
+    href: string;
+    icon?: string;
+    variant?: 'primary' | 'secondary' | 'success';
+  }>;
   /** Show area tabs for quick navigation to sub-pages */
   showTabs?: boolean;
   /** Custom children to render instead of default sections grid */
@@ -63,6 +70,7 @@ export default function HubPage({
   helpText,
   quickStats,
   featuredAction,
+  featuredActions,
   showTabs = true,
   children,
 }: HubPageProps) {
@@ -158,8 +166,34 @@ export default function HubPage({
             </div>
           )}
 
-          {/* Featured Action */}
-          {featuredAction && (
+          {/* Featured Actions */}
+          {featuredActions ? (
+            <div className="flex flex-wrap items-center gap-3">
+              {featuredActions.map((action, index) => (
+                <Link
+                  key={index}
+                  to={action.href}
+                  className={`
+                    inline-flex items-center gap-2.5 px-7 py-3.5 rounded-xl
+                    text-tier-body font-semibold transition-all
+                    ${action.variant === 'secondary'
+                      ? 'bg-tier-white border-2 hover:bg-tier-surface-subtle'
+                      : action.variant === 'success'
+                      ? 'bg-tier-green text-tier-white hover:bg-tier-green/90 shadow-md'
+                      : 'bg-tier-navy text-tier-white hover:bg-tier-navy-dark shadow-md'
+                    }
+                  `.trim()}
+                  style={action.variant === 'secondary' ? {
+                    borderColor: colors.primary,
+                    color: colors.primary
+                  } : undefined}
+                >
+                  {action.icon && React.createElement(getIcon(action.icon), { size: 18 })}
+                  {action.label}
+                </Link>
+              ))}
+            </div>
+          ) : featuredAction && (
             <Link
               to={featuredAction.href}
               className={`

@@ -136,7 +136,6 @@ export const playerNavigationV4: NavArea[] = [
         label: 'Kalender',
         items: [
           { href: '/plan/kalender', label: 'Kalender', icon: 'CalendarIcon', description: 'Din kalender' },
-          { href: '/plan/ukeplan', label: 'Ukeplan', icon: 'CalendarIcon', description: 'Ukentlig oversikt' },
           { href: '/plan/booking', label: 'Booking', icon: 'CalendarIcon', description: 'Book treningstid' },
           { href: '/plan/sesonger', label: 'Sesongplanlegging', icon: 'CalendarIcon', description: 'Planlegg treningssesonger' },
           { href: '/samlinger', label: 'Samlinger', icon: 'GolfFlagIcon', description: 'Treningssamlinger' },

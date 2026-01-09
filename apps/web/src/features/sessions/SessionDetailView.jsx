@@ -436,28 +436,115 @@ export default function SessionDetailView({ session, onBack, onStartSession }) {
         {/* AK Formula Card */}
         <FormulaCard session={session} />
 
-        {/* Session meta info */}
+        {/* Session meta info - Required field order */}
         <div className="bg-tier-white rounded-xl p-4 mb-4 border border-tier-border-default">
-          <div className="grid grid-cols-2 gap-4">
-            <div className="flex items-center gap-2">
-              <Calendar size={16} className="text-tier-text-tertiary" />
-              <span className="text-sm text-tier-navy">{session.date}</span>
+          <div className="space-y-3">
+            {/* 1. Beskrivelse */}
+            {session.description && (
+              <div>
+                <span className="text-xs text-tier-text-tertiary block mb-1">Beskrivelse</span>
+                <span className="text-sm text-tier-navy">{session.description}</span>
+              </div>
+            )}
+
+            {/* 2. Dato */}
+            <div>
+              <span className="text-xs text-tier-text-tertiary block mb-1">Dato</span>
+              <div className="flex items-center gap-2">
+                <Calendar size={16} className="text-tier-text-tertiary" />
+                <span className="text-sm text-tier-navy">{session.date}</span>
+              </div>
             </div>
-            <div className="flex items-center gap-2">
-              <Clock size={16} className="text-tier-text-tertiary" />
-              <span className="text-sm text-tier-navy">
-                {session.startTime} – {session.endTime}
-              </span>
+
+            {/* 3. Varighet */}
+            <div>
+              <span className="text-xs text-tier-text-tertiary block mb-1">Varighet</span>
+              <div className="flex items-center gap-2">
+                <Clock size={16} className="text-tier-text-tertiary" />
+                <span className="text-sm text-tier-navy">
+                  {session.startTime} – {session.endTime} ({session.duration || totalDuration} min)
+                </span>
+              </div>
             </div>
-            <div className="flex items-center gap-2">
-              <MapPin size={16} className="text-tier-text-tertiary" />
-              <span className="text-sm text-tier-navy">{session.location}</span>
+
+            {/* 4. Lokasjon */}
+            <div>
+              <span className="text-xs text-tier-text-tertiary block mb-1">Lokasjon</span>
+              <div className="flex items-center gap-2">
+                <MapPin size={16} className="text-tier-text-tertiary" />
+                <span className="text-sm text-tier-navy">{session.location}</span>
+              </div>
             </div>
-            <div className="flex items-center gap-2">
+
+            {/* 5. Status */}
+            <div>
+              <span className="text-xs text-tier-text-tertiary block mb-1">Status</span>
               <span className={`inline-flex items-center py-1 px-2.5 rounded-full text-xs font-semibold ${getStatusClasses(session.status)}`}>
                 {session.status}
               </span>
             </div>
+
+            {/* 6. Øvelser/drill (count from blocks) */}
+            <div>
+              <span className="text-xs text-tier-text-tertiary block mb-1">Øvelser/drill</span>
+              <span className="text-sm text-tier-navy">{blocks.length} øvelser</span>
+            </div>
+
+            {/* 7. Reps (total from blocks) */}
+            <div>
+              <span className="text-xs text-tier-text-tertiary block mb-1">Reps</span>
+              <span className="text-sm text-tier-navy">
+                {blocks.reduce((sum, b) => sum + (b.reps || 0), 0)} totalt
+              </span>
+            </div>
+
+            {/* 8. L fase */}
+            {session.lPhase && (
+              <div>
+                <span className="text-xs text-tier-text-tertiary block mb-1">L fase</span>
+                <span className={`inline-flex items-center px-2 py-1 rounded text-xs font-medium ${getLPhaseClasses(session.lPhase)}`}>
+                  {L_PHASES[session.lPhase]?.label || session.lPhase}
+                </span>
+              </div>
+            )}
+
+            {/* 9. Treningsområde (from pyramid) */}
+            {session.pyramid && (
+              <div>
+                <span className="text-xs text-tier-text-tertiary block mb-1">Treningsområde</span>
+                <span className="text-sm text-tier-navy">{PYRAMIDS[session.pyramid]?.label || session.pyramid}</span>
+              </div>
+            )}
+
+            {/* 10. Club speed */}
+            {session.csLevel !== undefined && (
+              <div>
+                <span className="text-xs text-tier-text-tertiary block mb-1">Club speed</span>
+                <span className={`inline-flex items-center px-2 py-1 rounded text-xs font-medium ${getCsLevelClasses(session.csLevel)}`}>
+                  CS{session.csLevel}%
+                </span>
+              </div>
+            )}
+
+            {/* 11. Miljø */}
+            {session.environment && (
+              <div>
+                <span className="text-xs text-tier-text-tertiary block mb-1">Miljø</span>
+                <span className={`inline-flex items-center px-2 py-1 rounded text-xs font-medium ${getEnvironmentClasses(session.environment)}`}>
+                  {session.environment} – {ENVIRONMENTS[session.environment]?.label || ''}
+                </span>
+              </div>
+            )}
+
+            {/* 12. Belastning (pressure) */}
+            {session.pressure && (
+              <div>
+                <span className="text-xs text-tier-text-tertiary block mb-1">Belastning</span>
+                <span className={`inline-flex items-center px-2 py-1 rounded text-xs font-medium ${getPressureClasses(session.pressure)}`}>
+                  {session.pressure} – {PRESSURE_LEVELS[session.pressure]?.label || ''}
+                </span>
+              </div>
+            )}
           </div>
         </div>
 

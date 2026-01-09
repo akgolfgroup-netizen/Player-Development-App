@@ -40,12 +40,20 @@ export default function PlanHub({
         { label: 'Aktive mål', value: stats.aktiveMaal, icon: 'Target' },
         { label: 'Fullførte mål', value: stats.fullforteMaal, icon: 'CheckCircle' },
       ]}
-      featuredAction={{
-        label: 'Se kalender',
-        href: '/plan/kalender',
-        icon: 'Calendar',
-        variant: 'primary',
-      }}
+      featuredActions={[
+        {
+          label: 'Se kalender',
+          href: '/plan/kalender',
+          icon: 'Calendar',
+          variant: 'primary',
+        },
+        {
+          label: 'Book trener',
+          href: '/plan/kalender?action=book',
+          icon: 'Users',
+          variant: 'success',
+        },
+      ]}
     />
   );
 }

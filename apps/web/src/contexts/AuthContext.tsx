@@ -16,6 +16,7 @@ export interface User {
   tenantId: string;
   playerId?: string;
   coachId?: string;
+  profileImageUrl?: string;
 }
 
 export interface AuthResult {
