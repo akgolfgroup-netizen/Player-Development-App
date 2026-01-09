@@ -11,6 +11,7 @@ import { AuthProvider, useAuth } from './contexts/AuthContext';
 import { NotificationProvider } from './contexts/NotificationContext';
 import { BadgeNotificationProvider } from './contexts/BadgeNotificationContext';
 import { ThemeProvider } from './contexts/ThemeContext';
+import { SportProvider } from './contexts/SportContext';
 import { initMobileApp } from './utils/mobile';
 
 // PWA & AI components
@@ -386,6 +387,7 @@ function App() {
   return (
     <Router>
       <ThemeProvider>
+        <SportProvider sportId="golf">
         <AuthProvider>
           <AICoachProvider>
           <NotificationProvider>
@@ -563,13 +565,6 @@ function App() {
             <ProtectedRoute>
               <PlayerLayout>
                 <UkensTreningsplanContainer />
-              </PlayerLayout>
-            </ProtectedRoute>
-          } />
-          <Route path="/trening/ovelser" element={
-            <ProtectedRoute>
-              <PlayerLayout>
-                <ExerciseLibraryContainer />
               </PlayerLayout>
             </ProtectedRoute>
           } />
@@ -1425,22 +1420,6 @@ function App() {
             </ProtectedRoute>
           } />
 
-          {/* Trening */}
-          <Route path="/trening/dagbok" element={
-            <ProtectedRoute>
-              <PlayerLayout title="Treningsdagbok" subtitle="Din personlige logg">
-                <TreningsdagbokContainer />
-              </PlayerLayout>
-            </ProtectedRoute>
-          } />
-          <Route path="/trening/logg" element={
-            <ProtectedRoute>
-              <PlayerLayout title="Logg trening" subtitle="Registrer ny økt">
-                <LoggTreningContainer />
-              </PlayerLayout>
-            </ProtectedRoute>
-          } />
-
           {/* Kalender */}
           <Route path="/kalender/booking" element={
             <ProtectedRoute>
@@ -2181,6 +2160,7 @@ function App() {
           </NotificationProvider>
           </AICoachProvider>
         </AuthProvider>
+        </SportProvider>
       </ThemeProvider>
     </Router>
   );
