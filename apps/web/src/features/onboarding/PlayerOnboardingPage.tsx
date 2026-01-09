@@ -25,6 +25,7 @@ interface OnboardingData {
   handicap: string;
   category: 'A' | 'B' | 'C' | 'D' | '';
   club: string;
+  school: string;
 
   // Goals
   goals: string[];
@@ -54,6 +55,7 @@ export default function PlayerOnboardingPage() {
     handicap: '',
     category: '',
     club: '',
+    school: '',
     goals: [],
     customGoal: '',
     coachId: '',
@@ -111,6 +113,7 @@ export default function PlayerOnboardingPage() {
         handicap: parseFloat(data.handicap) || null,
         category: data.category || 'D',
         club: data.club,
+        school: data.school,
         goals: allGoals,
         coachId: data.coachId && data.coachId !== 'none' ? data.coachId : null,
         emergencyContact: {
@@ -285,6 +288,17 @@ export default function PlayerOnboardingPage() {
                     placeholder="Oslo GK"
                   />
                 </div>
+              </div>
+
+              <div className="space-y-2">
+                <label className="text-sm font-medium text-tier-navy">
+                  Skole
+                </label>
+                <Input
+                  value={data.school}
+                  onChange={(e) => handleInputChange('school', e.target.value)}
+                  placeholder="Navn på skole"
+                />
               </div>
             </CardContent>
           </Card>
