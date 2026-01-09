@@ -35,6 +35,13 @@ import {
   ChevronUp,
 } from 'lucide-react';
 import Button from '../../ui/primitives/Button';
+import {
+  useLegacyTrainingAreas,
+  useLegacyPhases,
+  useLegacyIntensityLevels,
+  useLegacyEnvironments,
+  useLegacyPressureLevels,
+} from '../../hooks/useTrainingConfig';
 
 // ============================================================================
 // CONSTANTS - AK-formel Hierarki v2.0
@@ -307,6 +314,7 @@ function PyramidCategorySelector({ selected, onChange }) {
 function TrainingAreaSelector({ selected, onChange, pyramidCategory }) {
   const isPutting = selected?.some((a) => a.startsWith('PUTT'));
   const isPhysical = pyramidCategory === 'FYS';
+  const trainingAreas = useLegacyTrainingAreas();
 
   if (isPhysical) {
     return (
@@ -346,7 +354,7 @@ function TrainingAreaSelector({ selected, onChange, pyramidCategory }) {
 
   return (
     <div className="space-y-4">
-      {Object.entries(TRAINING_AREAS).map(([groupKey, group]) => (
+      {Object.entries(trainingAreas).map(([groupKey, group]) => (
         <div key={groupKey}>
           <h4 className="text-xs font-semibold text-tier-text-secondary mb-2 uppercase tracking-wide">
             {group.label}
@@ -384,12 +392,13 @@ function TrainingAreaSelector({ selected, onChange, pyramidCategory }) {
 }
 
 function LPhaseSelector({ selected, onChange }) {
+  const phases = useLegacyPhases();
   return (
     <div className="space-y-2">
       <div className="text-xs text-tier-text-secondary mb-3 p-3 bg-tier-surface-base rounded-lg">
         <strong>L-Fase progresjon:</strong> L-KROPP → L-ARM → L-KØLLE → L-BALL → L-AUTO
       </div>
-      {L_PHASES.map((phase) => {
+      {phases.map((phase) => {
         const isSelected = selected === phase.code;
         return (
           <button
@@ -422,12 +431,15 @@ function LPhaseSelector({ selected, onChange }) {
 }
 
 function CSLevelSelector({ selected, onChange, lPhase }) {
+  const phases = useLegacyPhases();
+  const intensityLevels = useLegacyIntensityLevels();
+
   // Suggest CS based on L-phase
   const suggestedCS = useMemo(() => {
     if (!lPhase) return null;
-    const phase = L_PHASES.find((p) => p.code === lPhase);
+    const phase = phases.find((p) => p.code === lPhase);
     return phase?.csRange || null;
-  }, [lPhase]);
+  }, [lPhase, phases]);
 
   return (
     <div>
@@ -437,7 +449,7 @@ function CSLevelSelector({ selected, onChange, lPhase }) {
         </div>
       )}
       <div className="grid grid-cols-5 gap-2">
-        {CS_LEVELS.map((cs) => {
+        {intensityLevels.map((cs) => {
           const isSelected = selected === cs.code;
           return (
             <button
@@ -461,9 +473,10 @@ function CSLevelSelector({ selected, onChange, lPhase }) {
 }
 
 function MEnvironmentSelector({ selected, onChange }) {
+  const environments = useLegacyEnvironments();
   return (
     <div className="space-y-2">
-      {M_ENVIRONMENTS.map((env) => {
+      {environments.map((env) => {
         const isSelected = selected === env.code;
         return (
           <button
@@ -493,9 +506,10 @@ function MEnvironmentSelector({ selected, onChange }) {
 }
 
 function PRPressSelector({ selected, onChange }) {
+  const pressureLevels = useLegacyPressureLevels();
   return (
     <div className="grid grid-cols-1 gap-2">
-      {PR_LEVELS.map((pr) => {
+      {pressureLevels.map((pr) => {
         const isSelected = selected === pr.code;
         return (
           <button
@@ -782,6 +796,12 @@ export default function SessionCreateForm({
   });
 
   const [errors, setErrors] = useState({});
+
+  // Sport-specific configuration (from SportContext)
+  const trainingAreasFromConfig = useLegacyTrainingAreas();
+  const phasesFromConfig = useLegacyPhases();
+  const intensityLevelsFromConfig = useLegacyIntensityLevels();
+  const environmentsFromConfig = useLegacyEnvironments();
 
   const toggleSection = useCallback((section) => {
     setCollapsedSections((prev) => ({ ...prev, [section]: !prev[section] }));

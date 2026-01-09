@@ -91,6 +91,21 @@ export function usePerformanceMetrics() {
 }
 
 /**
+ * Hook to get test protocols from sport context
+ */
+export function useTestProtocols() {
+  const sport = useSportSafe();
+
+  return useMemo(() => ({
+    protocols: sport.testProtocols,
+    getProtocol: (id: string) => sport.testProtocols.find((p) => p.id === id),
+    getProtocolByNumber: (num: number) => sport.testProtocols.find((p) => p.testNumber === num),
+    getProtocolsByCategory: (category: string) =>
+      sport.testProtocols.filter((p) => p.category === category),
+  }), [sport]);
+}
+
+/**
  * Hook to get sport terminology
  */
 export function useTerminology() {
@@ -191,6 +206,24 @@ export function useLegacyIntensityLevels() {
       description: level.descriptionNO || level.description,
     }));
   }, [intensityLevels]);
+}
+
+/**
+ * Legacy compatibility: Get pressure levels in the old format
+ *
+ * @deprecated Use useTrainingConfig().pressureLevels instead
+ */
+export function useLegacyPressureLevels() {
+  const { pressureLevels } = useTrainingConfig();
+
+  return useMemo(() => {
+    return pressureLevels.map((level) => ({
+      code: level.code,
+      label: level.labelNO || level.label,
+      description: level.descriptionNO || level.description,
+      icon: level.icon,
+    }));
+  }, [pressureLevels]);
 }
 
 export default useTrainingConfig;

@@ -2,13 +2,14 @@
 /**
  * Maalsetninger - Goals management with shadcn/ui components
  */
-import React, { useState } from 'react';
+import React, { useState, useMemo } from 'react';
 import { PageHeader } from '../../components/layout/PageHeader';
 import { SectionTitle, SubSectionTitle, CardTitle as TypographyCardTitle } from '../../components/typography/Headings';
 import {
-  Target, Trophy, Dumbbell, Brain, TrendingUp,
+  Target, Trophy, Dumbbell, Brain, TrendingUp, RefreshCw, Crosshair,
   Plus, Pencil, Trash2, Check, Users, X, Lightbulb, Calendar
 } from 'lucide-react';
+import { useGoalCategories } from '../../hooks/useTrainingConfig';
 import {
   Card,
   CardContent,
@@ -76,14 +77,29 @@ interface Goal {
   milestones: Milestone[];
 }
 
-// Category configuration
-const CATEGORIES = [
+// Icon mapping for dynamic icons from SportConfig
+const ICON_MAP: Record<string, React.ComponentType<{ className?: string }>> = {
+  Target,
+  Crosshair,
+  Dumbbell,
+  Brain,
+  Trophy,
+  TrendingUp,
+  RefreshCw,
+};
+
+// Helper to get icon component from string
+const getIconComponent = (iconName: string) => ICON_MAP[iconName] || Target;
+
+// Category configuration - NOW LOADED FROM SPORT CONFIG VIA useGoalCategories hook
+// This fallback is kept for backwards compatibility
+const DEFAULT_CATEGORIES = [
   { id: 'score', label: 'Score', icon: Target },
-  { id: 'teknikk', label: 'Teknikk', icon: Target },
+  { id: 'teknikk', label: 'Teknikk', icon: Crosshair },
   { id: 'fysisk', label: 'Fysisk', icon: Dumbbell },
   { id: 'mental', label: 'Mental', icon: Brain },
   { id: 'turnering', label: 'Turnering', icon: Trophy },
-  { id: 'prosess', label: 'Prosess', icon: TrendingUp },
+  { id: 'prosess', label: 'Prosess', icon: RefreshCw },
 ];
 
 const TIMEFRAMES = [
@@ -162,8 +178,12 @@ const GoalCard: React.FC<GoalCardProps> = ({
   onUpdateProgress,
   onShareWithCoach,
 }) => {
-  const category = CATEGORIES.find(c => c.id === goal.category);
-  const CategoryIcon = category?.icon || Target;
+  const { categories: sportCategories, getCategory } = useGoalCategories();
+
+  // Get category info from sport config
+  const categoryData = getCategory(goal.category);
+  const CategoryIcon = categoryData ? getIconComponent(categoryData.icon) : Target;
+  const categoryLabel = categoryData?.nameNO || categoryData?.name || goal.category;
   const progressPercentage = (goal.current / goal.target) * 100;
   const isCompleted = goal.status === 'completed';
 
@@ -337,6 +357,20 @@ const GoalModal: React.FC<GoalModalProps> = ({
   onSave,
   onDelete,
 }) => {
+  const { categories: sportCategories } = useGoalCategories();
+
+  // Transform sport config categories to component format
+  const CATEGORIES = useMemo(() => {
+    if (!sportCategories || sportCategories.length === 0) {
+      return DEFAULT_CATEGORIES;
+    }
+    return sportCategories.map(cat => ({
+      id: cat.id,
+      label: cat.nameNO || cat.name,
+      icon: getIconComponent(cat.icon),
+    }));
+  }, [sportCategories]);
+
   const [formData, setFormData] = useState<Partial<Goal>>(goal || {
     title: '',
     description: '',
@@ -616,6 +650,21 @@ const Maalsetninger: React.FC<MaalsetningerProps> = ({ goals: apiGoals }) => {
   const [showModal, setShowModal] = useState(false);
   const [editingGoal, setEditingGoal] = useState<Goal | null>(null);
   const [updatingGoal, setUpdatingGoal] = useState<Goal | null>(null);
+
+  // Get goal categories from sport context
+  const { categories: sportCategories } = useGoalCategories();
+
+  // Transform sport config categories to component format
+  const CATEGORIES = useMemo(() => {
+    if (!sportCategories || sportCategories.length === 0) {
+      return DEFAULT_CATEGORIES;
+    }
+    return sportCategories.map(cat => ({
+      id: cat.id,
+      label: cat.nameNO || cat.name,
+      icon: getIconComponent(cat.icon),
+    }));
+  }, [sportCategories]);
 
   const activeGoals = goals.filter(g => g.status === 'active');
   const completedGoals = goals.filter(g => g.status === 'completed');
