@@ -179,13 +179,15 @@ export default function HubPage({
                     ${action.variant === 'secondary'
                       ? 'bg-tier-white border-2 hover:bg-tier-surface-subtle'
                       : action.variant === 'success'
-                      ? 'bg-tier-green text-tier-white hover:bg-tier-green/90 shadow-md'
+                      ? 'text-tier-white shadow-md'
                       : 'bg-tier-navy text-tier-white hover:bg-tier-navy-dark shadow-md'
                     }
                   `.trim()}
                   style={action.variant === 'secondary' ? {
                     borderColor: colors.primary,
                     color: colors.primary
+                  } : action.variant === 'success' ? {
+                    backgroundColor: 'rgb(var(--status-success))',
                   } : undefined}
                 >
                   {action.icon && React.createElement(getIcon(action.icon), { size: 18 })}

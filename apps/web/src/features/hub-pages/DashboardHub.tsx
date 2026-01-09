@@ -86,100 +86,106 @@ export default function DashboardHub({
       />
 
       <PageContainer paddingY="md" background="base">
-        {/* 1. Profile Overview - User context */}
-        <div className="mb-6">
-          <ProfileOverviewCard
-            name={fullName}
-            role="Spiller"
-            email={user?.email}
-            stats={[
-              { label: 'treningsdager', value: stats.treningsdager },
-              { label: 'kommende tester', value: stats.kommendeTester },
-              { label: 'ukesmål', value: `${stats.ukesMal}%` },
-              { label: 'merker', value: stats.badges },
-            ]}
-            profileHref="/mer/profil"
-          />
-        </div>
+        {/* Two-column layout: main content left, attention items right */}
+        <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
+          {/* LEFT COLUMN - Main content (2/3 width on large screens) */}
+          <div className="lg:col-span-2 space-y-6">
+            {/* 1. Profile Overview - User context */}
+            <div>
+              <ProfileOverviewCard
+                name={fullName}
+                role="Spiller"
+                email={user?.email}
+                stats={[
+                  { label: 'treningsdager', value: stats.treningsdager },
+                  { label: 'kommende tester', value: stats.kommendeTester },
+                  { label: 'ukesmål', value: `${stats.ukesMal}%` },
+                  { label: 'merker', value: stats.badges },
+                ]}
+                profileHref="/mer/profil"
+              />
+            </div>
 
-        {/* Profile Picture Upload */}
-        <div className="mb-6 flex flex-col items-center">
-          <ProfileImageUpload
-            currentImageUrl={user?.profileImageUrl}
-            userName={fullName}
-            onImageUpload={handleImageUpload}
-            onImageRemove={handleImageRemove}
-            size="xl"
-            className="mb-2"
-          />
-          <p className="text-sm text-tier-text-secondary">Last opp bilde</p>
-        </div>
+            {/* Profile Picture Upload */}
+            <div className="flex flex-col items-center">
+              <ProfileImageUpload
+                currentImageUrl={user?.profileImageUrl}
+                userName={fullName}
+                onImageUpload={handleImageUpload}
+                onImageRemove={handleImageRemove}
+                size="xl"
+                className="mb-2"
+              />
+              <p className="text-sm text-tier-text-secondary">Last opp bilde</p>
+            </div>
 
-        {/* 2. Attention Items - Priority sorted: urgent → in progress → upcoming */}
-        <section className="mb-6">
-          <AttentionItems
-            items={[
-              createAttentionItem.scheduledTraining(
-                '1',
-                'Teknikk-økt med coach',
-                'I dag kl. 14:00'
-              ),
-              createAttentionItem.goalNearCompletion(
-                '2',
-                'Ukentlig treningsmål',
-                stats.ukesMal
-              ),
-              createAttentionItem.newMessage(
-                '3',
-                'Coach Hansen',
-                'Husk å ta med...',
-                new Date(Date.now() - 3600000)
-              ),
-            ]}
-            maxItems={3}
-            viewAllHref="/mer/meldinger"
-          />
-        </section>
+            {/* 3. Focus Cards - Max 4 cards */}
+            <section>
+              <h2 className="text-lg font-semibold text-tier-navy mb-4">
+                Din fokus denne uken
+              </h2>
+              <FocusCardsGrid>
+                <WeeklyGoalCard
+                  goalName="Treningsøkter"
+                  current={stats.treningsdager}
+                  target={15}
+                  unit="økter"
+                />
+                <StreakCard days={7} longestStreak={14} />
+                <FocusAreaCard
+                  area="Putting"
+                  description="Fokuser på korte putter"
+                  exercisesCompleted={3}
+                  totalExercises={5}
+                />
+              </FocusCardsGrid>
 
-        {/* 3. Focus Cards - Max 4 cards */}
-        <section className="mb-6">
-          <h2 className="text-lg font-semibold text-tier-navy mb-4">
-            Din fokus denne uken
-          </h2>
-          <FocusCardsGrid>
-            <WeeklyGoalCard
-              goalName="Treningsøkter"
-              current={stats.treningsdager}
-              target={15}
-              unit="økter"
+              {/* See all goals button */}
+              <div className="mt-4 flex justify-center">
+                <Link
+                  to="/plan/maal"
+                  className="inline-flex items-center gap-2 px-6 py-3 bg-tier-gold hover:bg-tier-gold/90 text-white font-semibold rounded-lg transition-colors shadow-sm"
+                >
+                  <Target size={20} />
+                  Se alle mål
+                </Link>
+              </div>
+            </section>
+
+            {/* 4. Quick Actions - Streamlined */}
+            <QuickActions
+              actions={playerQuickActions.slice(0, 4)}
+              title="Hurtighandlinger"
+              columns={4}
             />
-            <StreakCard days={7} longestStreak={14} />
-            <FocusAreaCard
-              area="Putting"
-              description="Fokuser på korte putter"
-              exercisesCompleted={3}
-              totalExercises={5}
-            />
-          </FocusCardsGrid>
-
-          {/* See all goals button */}
-          <div className="mt-4 flex justify-center">
-            <Link
-              to="/plan/maal"
-              className="inline-flex items-center gap-2 px-6 py-3 bg-tier-gold hover:bg-tier-gold/90 text-white font-semibold rounded-lg transition-colors shadow-sm"
-            >
-              <Target size={20} />
-              Se alle mål
-            </Link>
           </div>
-        </section>
 
-        {/* 4. Quick Actions - Streamlined */}
-        <QuickActions
-          actions={playerQuickActions.slice(0, 4)}
-          title="Hurtighandlinger"
-          columns={4}
-        />
+          {/* RIGHT COLUMN - Attention Items (1/3 width on large screens) */}
+          <div className="lg:col-span-1">
+            <AttentionItems
+              items={[
+                createAttentionItem.scheduledTraining(
+                  '1',
+                  'Teknikk-økt med coach',
+                  'I dag kl. 14:00'
+                ),
+                createAttentionItem.goalNearCompletion(
+                  '2',
+                  'Ukentlig treningsmål',
+                  stats.ukesMal
+                ),
+                createAttentionItem.newMessage(
+                  '3',
+                  'Coach Hansen',
+                  'Husk å ta med...',
+                  new Date(Date.now() - 3600000)
+                ),
+              ]}
+              maxItems={3}
+              viewAllHref="/mer/meldinger"
+            />
+          </div>
+        </div>
       </PageContainer>
     </div>
   );
