@@ -1,4 +1,3 @@
-// @ts-nocheck
 import React, { useState, useEffect, useCallback } from 'react';
 import { useNavigate } from 'react-router-dom';
 import {
@@ -7,6 +6,7 @@ import {
   MessageSquare, Clock, Tag
 } from 'lucide-react';
 import { listVideos } from '../../services/videoApi';
+import { VideoDTO } from '../../services/api';
 import { CardTitle } from '../../components/typography/Headings';
 import {
   Card,
@@ -489,9 +489,9 @@ const BevisContainer: React.FC = () => {
       const result = await listVideos({ status: 'ready', sortBy: 'createdAt', sortOrder: 'desc' });
       const apiVideos = result.videos || [];
 
-      const transformedVideos: VideoProof[] = apiVideos.map((v: any) => ({
+      const transformedVideos: VideoProof[] = apiVideos.map((v: VideoDTO) => ({
         id: v.id,
-        title: v.title || v.fileName,
+        title: v.title || v.fileName || 'Untitled',
         type: v.category || 'swing',
         category: mapCategoryToDisplay(v.category),
         date: v.createdAt?.split('T')[0] || new Date().toISOString().split('T')[0],
@@ -503,9 +503,10 @@ const BevisContainer: React.FC = () => {
       }));
 
       setVideos(transformedVideos.length > 0 ? transformedVideos : VIDEO_PROOFS);
-    } catch (err: any) {
+    } catch (err) {
       console.error('Error fetching videos:', err);
-      setError(err.message || 'Kunne ikke laste videoer');
+      const errorMessage = err instanceof Error ? err.message : 'Kunne ikke laste videoer';
+      setError(errorMessage);
       setVideos(VIDEO_PROOFS);
     } finally {
       setLoading(false);

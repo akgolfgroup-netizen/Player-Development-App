@@ -4,8 +4,6 @@
  *
  * MIGRATED TO PAGE ARCHITECTURE - Zero inline styles
  */
-// @ts-nocheck
-/* eslint-disable @typescript-eslint/no-explicit-any */
 import React, { useState, useEffect, useCallback, useRef } from 'react';
 import {
   User,
@@ -25,7 +23,7 @@ import {
   X
 } from 'lucide-react';
 import { useAuth } from '../../contexts/AuthContext';
-import { coachesAPI, settingsAPI } from '../../services/api';
+import { coachesAPI, settingsAPI, CoachNotificationSettings } from '../../services/api';
 import Button from '../../ui/primitives/Button';
 import PageHeader from '../../ui/raw-blocks/PageHeader.raw';
 import PageContainer from '../../ui/raw-blocks/PageContainer.raw';
@@ -288,15 +286,8 @@ interface CoachProfile {
   avatar?: string;
 }
 
-interface NotificationSettings {
-  newBooking: boolean;
-  bookingReminder: boolean;
-  playerUpdate: boolean;
-  tournamentResults: boolean;
-  systemUpdates: boolean;
-  emailNotifications: boolean;
-  pushNotifications: boolean;
-}
+// Use imported CoachNotificationSettings from api.ts
+type NotificationSettings = CoachNotificationSettings;
 
 interface DisplaySettings {
   theme: 'light' | 'dark' | 'system';

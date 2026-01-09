@@ -1,4 +1,3 @@
-// @ts-nocheck
 /**
  * SessionsListView - Training sessions overview with filtering
  *
@@ -6,11 +5,42 @@
  */
 import React, { useState, useCallback } from 'react';
 import { useNavigate } from 'react-router-dom';
+import { LucideIcon } from 'lucide-react';
 import {
   Calendar, Clock, Target, Filter, ChevronRight,
   CheckCircle, AlertCircle, XCircle, Play, Search, X
 } from 'lucide-react';
 import { AICoachGuide, GUIDE_PRESETS } from '../ai-coach';
+
+// ============================================================================
+// TYPES
+// ============================================================================
+
+interface Session {
+  id: string;
+  sessionType: string;
+  sessionDate: string;
+  duration: number;
+  completionStatus: string;
+  focusArea?: string;
+  evaluationFocus?: number;
+  evaluationTechnical?: number;
+}
+
+interface SessionFilters {
+  search?: string;
+  completionStatus?: string | null;
+  sessionType?: string | null;
+  period?: string | null;
+  fromDate?: string | null;
+  toDate?: string | null;
+}
+
+interface StatusConfig {
+  label: string;
+  variant: 'default' | 'secondary' | 'destructive' | 'outline';
+  icon: LucideIcon;
+}
 import {
   Card,
   CardContent,
@@ -49,7 +79,7 @@ const SESSION_TYPE_LABELS: Record<string, string> = {
 };
 
 // Status config
-const STATUS_CONFIG: Record<string, { label: string; variant: 'default' | 'secondary' | 'destructive' | 'outline'; icon: React.ComponentType<any> }> = {
+const STATUS_CONFIG: Record<string, StatusConfig> = {
   in_progress: {
     label: 'Pågår',
     variant: 'secondary',
@@ -98,8 +128,8 @@ const SESSION_TYPE_TO_CATEGORY: Record<string, string> = {
 // ============================================================================
 
 interface FilterBarProps {
-  filters: any;
-  onFilterChange: (key: string, value: any) => void;
+  filters: SessionFilters;
+  onFilterChange: (key: keyof SessionFilters, value: string | null) => void;
   onSearch: (value: string) => void;
 }
 
@@ -257,7 +287,7 @@ function FilterBar({ filters, onFilterChange, onSearch }: FilterBarProps) {
 // ============================================================================
 
 interface SessionCardProps {
-  session: any;
+  session: Session;
   onClick: () => void;
 }
 
@@ -278,7 +308,7 @@ function SessionCard({ session, onClick }: SessionCardProps) {
             {/* Session type and status */}
             <div className="flex items-center gap-2 flex-wrap">
               <TrainingCategoryBadge
-                category={(['teknikk', 'slag', 'spill', 'fysisk', 'mental', 'turnering'].includes(category) ? category : 'teknikk') as 'teknikk' | 'slag' | 'spill' | 'fysisk' | 'mental' | 'turnering'}
+                category={(['teknikk', 'slag', 'spill', 'fysisk', 'turnering'].includes(category) ? category : 'teknikk') as 'teknikk' | 'slag' | 'spill' | 'fysisk' | 'turnering'}
                 size="sm"
               />
               <span className="text-lg font-semibold text-text-primary capitalize">
@@ -378,7 +408,7 @@ function EmptyState({ onCreateNew }: EmptyStateProps) {
       <p style={{ fontSize: 'var(--font-size-footnote)', color: 'var(--text-tertiary)', marginBottom: 'var(--spacing-4)', maxWidth: '320px' }}>
         Du har ingen treningsøkter som matcher filtrene dine. Opprett en ny økt for å komme i gang.
       </p>
-      <Button variant="primary" onClick={onCreateNew}>
+      <Button variant="default" onClick={onCreateNew}>
         Opprett ny økt
       </Button>
     </div>
@@ -402,10 +432,14 @@ function SessionPagination({ page, totalPages, onPageChange }: SessionPagination
     <Pagination className="mt-6">
       <PaginationContent>
         <PaginationItem>
-          <PaginationPrevious
+          <button
             onClick={() => page > 1 && onPageChange(page - 1)}
-            className={cn(page <= 1 && 'pointer-events-none opacity-50')}
-          />
+            disabled={page <= 1}
+            className={cn("cursor-pointer", page <= 1 && 'pointer-events-none opacity-50')}
+            aria-label="Previous page"
+          >
+            <PaginationPrevious />
+          </button>
         </PaginationItem>
 
         {/* Page numbers */}
@@ -423,21 +457,28 @@ function SessionPagination({ page, totalPages, onPageChange }: SessionPagination
 
           return (
             <PaginationItem key={pageNum}>
-              <PaginationLink
+              <button
                 onClick={() => onPageChange(pageNum)}
-                isActive={page === pageNum}
+                className="cursor-pointer"
+                aria-label={`Page ${pageNum}`}
               >
-                {pageNum}
-              </PaginationLink>
+                <PaginationLink isActive={page === pageNum}>
+                  {pageNum}
+                </PaginationLink>
+              </button>
             </PaginationItem>
           );
         })}
 
         <PaginationItem>
-          <PaginationNext
+          <button
             onClick={() => page < totalPages && onPageChange(page + 1)}
-            className={cn(page >= totalPages && 'pointer-events-none opacity-50')}
-          />
+            disabled={page >= totalPages}
+            className={cn("cursor-pointer", page >= totalPages && 'pointer-events-none opacity-50')}
+            aria-label="Next page"
+          >
+            <PaginationNext />
+          </button>
         </PaginationItem>
       </PaginationContent>
     </Pagination>
@@ -449,11 +490,11 @@ function SessionPagination({ page, totalPages, onPageChange }: SessionPagination
 // ============================================================================
 
 interface SessionsListViewProps {
-  sessions?: any[];
+  sessions?: Session[];
   pagination?: { page: number; totalPages: number; total: number };
-  filters?: any;
+  filters?: SessionFilters;
   isLoading?: boolean;
-  onFilterChange: (key: string, value: any) => void;
+  onFilterChange: (key: keyof SessionFilters, value: string | null) => void;
   onSearch: (value: string) => void;
   onPageChange: (page: number) => void;
 }
@@ -469,7 +510,7 @@ export default function SessionsListView({
 }: SessionsListViewProps) {
   const navigate = useNavigate();
 
-  const handleSessionClick = useCallback((session: any) => {
+  const handleSessionClick = useCallback((session: Session) => {
     if (session.completionStatus === 'in_progress') {
       navigate(`/session/${session.id}/evaluate`);
     } else {

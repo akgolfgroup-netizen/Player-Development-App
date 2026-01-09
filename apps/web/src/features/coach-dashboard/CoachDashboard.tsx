@@ -1,5 +1,3 @@
-/* eslint-disable @typescript-eslint/no-explicit-any */
-// @ts-nocheck
 /**
  * CoachDashboard.tsx
  * Design System v3.0 - Premium Light
@@ -15,6 +13,7 @@
  */
 
 import React, { useState, useEffect, useCallback, useRef } from 'react';
+import type { LucideIcon } from 'lucide-react';
 import { useNavigate } from 'react-router-dom';
 import {
   Users, Calendar, ClipboardList, MessageSquare, Bell,
@@ -35,8 +34,18 @@ import Avatar from '../../ui/primitives/Avatar';
 import PageHeader from '../../ui/raw-blocks/PageHeader.raw';
 import PageContainer from '../../ui/raw-blocks/PageContainer.raw';
 
+// Athlete type for dashboard display
+interface DashboardAthlete {
+  id: string;
+  firstName: string;
+  lastName: string;
+  category: string;
+  lastSession: string;
+  profileImageUrl: string | null;
+}
+
 // Mock data for athletes (includes profileImageUrl for avatar support)
-const mockAthletes = [
+const mockAthletes: DashboardAthlete[] = [
   { id: '1', firstName: 'Anders', lastName: 'Hansen', category: 'A', lastSession: '2025-12-18', profileImageUrl: null },
   { id: '2', firstName: 'Erik', lastName: 'Johansen', category: 'B', lastSession: '2025-12-17', profileImageUrl: null },
   { id: '3', firstName: 'Lars', lastName: 'Olsen', category: 'A', lastSession: '2025-12-19', profileImageUrl: null },
@@ -102,7 +111,7 @@ const CategoryBadge: React.FC<{ category: string }> = ({ category }) => {
 
 // Props interface
 interface CoachDashboardProps {
-  athletes?: typeof mockAthletes;
+  athletes?: DashboardAthlete[];
   pendingItems?: typeof mockPendingItems;
 }
 
@@ -125,12 +134,28 @@ const ErrorState: React.FC<{ error: string; onRetry: () => void }> = ({ error, o
   </div>
 );
 
+// Weekly stats interface
+interface WeeklyStats {
+  activePlayers: number;
+  sessionsThisWeek: number;
+  hoursTrained: number;
+  pendingCount: number;
+}
+
+// Schedule item interface
+interface ScheduleItem {
+  id: string;
+  time: string;
+  title: string;
+  type: string;
+}
+
 // Dashboard data interface
 interface DashboardData {
-  athletes: typeof mockAthletes;
+  athletes: DashboardAthlete[];
   pendingItems: typeof mockPendingItems;
-  weeklyStats: any;
-  todaySchedule: any[];
+  weeklyStats: WeeklyStats | null;
+  todaySchedule: ScheduleItem[];
   defaultTeamId: string | null;
 }
 
@@ -213,25 +238,33 @@ export default function CoachDashboard(props: CoachDashboardProps) {
       }
 
       // Transform athletes response (includes profile image support)
-      const athleteData = athletesRes.data?.data || athletesRes.data || mockAthletes;
-      const transformedAthletes = Array.isArray(athleteData) ? athleteData.map((a: AthleteDTO) => ({
-        id: a.id,
-        firstName: a.firstName,
-        lastName: a.lastName,
-        category: a.category || 'B',
-        lastSession: a.nextSession || a.planUpdated || new Date().toISOString().split('T')[0],
-        profileImageUrl: a.profileImageUrl || a.avatar || null,
-      })) : mockAthletes;
+      const rawAthleteData = athletesRes.data?.data || athletesRes.data;
+      let transformedAthletes: DashboardAthlete[];
+
+      if (Array.isArray(rawAthleteData) && rawAthleteData.length > 0) {
+        // API returned data - transform from AthleteDTO to DashboardAthlete
+        transformedAthletes = (rawAthleteData as AthleteDTO[]).map((a): DashboardAthlete => ({
+          id: a.id,
+          firstName: a.firstName || '',
+          lastName: a.lastName || '',
+          category: a.category || 'B',
+          lastSession: a.nextSession || a.planUpdated || new Date().toISOString().split('T')[0],
+          profileImageUrl: a.profileImageUrl || a.avatar || null,
+        }));
+      } else {
+        // No API data - use mock data
+        transformedAthletes = mockAthletes;
+      }
 
       // Transform alerts to pending items format
       const alertsResponse = (alertsRes.data?.data || alertsRes.data || {}) as AlertsResponseDTO | CoachAlertDTO[];
       const alertsData = (alertsResponse as AlertsResponseDTO)?.alerts || (Array.isArray(alertsResponse) ? alertsResponse : []);
-      const transformedPendingItems = Array.isArray(alertsData) ? alertsData.slice(0, 5).map((alert: CoachAlertDTO) => ({
+      const transformedPendingItems = Array.isArray(alertsData) && alertsData.length > 0 ? alertsData.slice(0, 5).map((alert: CoachAlertDTO) => ({
         id: alert.id,
-        type: alert.type === 'proof_uploaded' ? 'proof' : alert.type === 'plan_pending' ? 'plan' : 'note',
-        athlete: alert.athleteName,
-        description: alert.message,
-        time: formatTimeAgo(alert.createdAt || ''),
+        type: alert.type === 'proof_uploaded' ? 'proof' : alert.type === 'plan_pending' ? 'plan' : 'note' as const,
+        athlete: String(alert.athleteName || alert.playerName || 'Ukjent spiller'),
+        description: String(alert.message || alert.text || alert.description || ''),
+        time: formatTimeAgo(alert.createdAt || alert.created_at || ''),
       })) : mockPendingItems;
 
       // Get stats from statistics response

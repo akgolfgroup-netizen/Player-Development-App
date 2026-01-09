@@ -1,4 +1,3 @@
-// @ts-nocheck - API type mismatch needs to be resolved
 import React, { useState } from 'react';
 import {
   Bell, Mail, Smartphone, MessageSquare, Calendar,

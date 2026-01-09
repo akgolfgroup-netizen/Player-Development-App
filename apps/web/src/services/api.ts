@@ -76,6 +76,17 @@ export interface Coach {
   tenantId: string;
   maxPlayersPerSession?: number;
   active?: boolean;
+  // Extended fields (may be returned by API)
+  name?: string;
+  phone?: string;
+  title?: string;
+  specialization?: string;
+  bio?: string;
+  description?: string;
+  avatar?: string;
+  profileImage?: string;
+  user?: { email?: string; phone?: string };
+  notificationSettings?: Record<string, boolean>;
 }
 
 export interface CoachAlert {
@@ -229,6 +240,20 @@ export interface CalendarSession {
   location?: string;
   notes?: string;
   exercises?: string[];
+}
+
+// Video DTO from videoApi (used in BevisContainer.tsx)
+export interface VideoDTO {
+  id: string;
+  title?: string;
+  fileName?: string;
+  category?: string;
+  status?: string;
+  createdAt?: string;
+  duration?: number;
+  thumbnailUrl?: string | null;
+  coachNotes?: string | null;
+  tags?: string[];
 }
 
 // Achievement types
@@ -980,8 +1005,42 @@ export const weatherAPI = {
 // Settings API
 // =============================================================================
 
+// Complex notification settings structure (player settings page)
+export interface NotificationSettingsPayload {
+  channels: {
+    push: boolean;
+    email: boolean;
+    sms: boolean;
+  };
+  categories: {
+    training: { enabled: boolean; reminders: boolean; coachFeedback: boolean; planUpdates: boolean };
+    tournaments: { enabled: boolean; registrationDeadlines: boolean; results: boolean; rankings: boolean };
+    goals: { enabled: boolean; achievements: boolean; milestones: boolean; weeklyProgress: boolean };
+    messages: { enabled: boolean; fromCoach: boolean; fromAdmin: boolean };
+    system: { enabled: boolean; maintenance: boolean; newFeatures: boolean };
+  };
+  timing: {
+    quietHoursEnabled: boolean;
+    quietStart: string;
+    quietEnd: string;
+    dailySummary: boolean;
+    dailySummaryTime: string;
+  };
+}
+
+// Simple notification settings (coach settings page)
+export interface CoachNotificationSettings {
+  newBooking: boolean;
+  bookingReminder: boolean;
+  playerUpdate: boolean;
+  tournamentResults: boolean;
+  systemUpdates: boolean;
+  emailNotifications: boolean;
+  pushNotifications: boolean;
+}
+
 export const settingsAPI = {
-  saveNotifications: (data: Record<string, boolean>): Promise<AxiosResponse<ApiResponse<void>>> =>
+  saveNotifications: (data: NotificationSettingsPayload | CoachNotificationSettings): Promise<AxiosResponse<ApiResponse<void>>> =>
     api.post('/settings/notifications', data),
 };
 
