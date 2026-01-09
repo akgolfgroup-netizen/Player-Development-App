@@ -152,13 +152,10 @@ export const playerNavigationV4: NavArea[] = [
         id: 'ovelser',
         label: 'Teknisk plan',
         items: [
-          { href: '/bevis', label: 'Mine teknisk plan (Bevis)', icon: 'VideoIcon', description: 'Dokumenter fremgang' },
           { href: '/trening/teknikkplan', label: 'Teknikkplan', icon: 'TargetIcon', description: 'Teknisk utviklingsplan' },
           { href: '/trening/ovelser', label: 'Mine øvelser', icon: 'ClubIcon', description: 'Mine øvelser' },
           { href: '/trening/ovelser', label: 'Øvelsesbank', icon: 'ClubIcon', description: 'Alle øvelser' },
-          { href: '/trening/videoer', label: 'Video', icon: 'VideoIcon', description: 'Instruksjonsvideoer' },
-          { href: '/trening/video-sammenligning', label: 'Video sammenligning', icon: 'CompareIcon', description: 'Sammenlign videoer side-ved-side' },
-          { href: '/trening/video-annotering', label: 'Video annotasjon', icon: 'VideoIcon', description: 'Annot video med tegning og notater' },
+          { href: '/trening/video', label: 'Video', icon: 'VideoIcon', description: 'Videoer, sammenligning og annotering' },
           { href: '/trening/trackman-sync', label: 'TrackMan Sync', icon: 'RefreshIcon', description: 'Synkroniser TrackMan data' },
         ],
       },
@@ -518,5 +515,47 @@ export const routeRedirectsV4: Record<string, string> = {
   '/trenerteam': '/mer/trenerteam',
   '/kalibrering': '/mer/kalibrering',
 };
+
+/**
+ * ============================================================
+ * AREA TABS CONFIGURATION
+ * ============================================================
+ * Tabs shown at the top of hub pages for quick navigation
+ */
+export const areaTabsConfig = {
+  trening: [
+    { href: '/trening', label: 'Oversikt', icon: 'LayoutDashboard' },
+    { href: '/trening/logg', label: 'Logg økt', icon: 'Plus' },
+    { href: '/trening/dagbok', label: 'Historikk', icon: 'History' },
+    { href: '/trening/ovelser', label: 'Øvelser', icon: 'Dumbbell' },
+    { href: '/trening/testing', label: 'Testing', icon: 'Target' },
+  ],
+  analyse: [
+    { href: '/analyse', label: 'Oversikt', icon: 'LayoutDashboard' },
+    { href: '/analyse/statistikk', label: 'Statistikk', icon: 'BarChart3' },
+    { href: '/analyse/tester', label: 'Tester', icon: 'ClipboardList' },
+    { href: '/analyse/prestasjoner', label: 'Prestasjoner', icon: 'Award' },
+  ],
+  plan: [
+    { href: '/plan', label: 'Oversikt', icon: 'LayoutDashboard' },
+    { href: '/plan/kalender', label: 'Kalender', icon: 'Calendar' },
+    { href: '/plan/maal', label: 'Mål', icon: 'Target' },
+    { href: '/plan/turneringer', label: 'Turneringer', icon: 'Trophy' },
+  ],
+  // Video tabs - consolidated from separate pages
+  video: [
+    { href: '/trening/video', label: 'Oversikt', icon: 'LayoutDashboard' },
+    { href: '/trening/video/bibliotek', label: 'Videoer', icon: 'Video' },
+    { href: '/trening/video/sammenligning', label: 'Sammenlign', icon: 'GitCompare' },
+    { href: '/trening/video/annotering', label: 'Annot', icon: 'PenTool' },
+  ],
+};
+
+/**
+ * Get tabs for a specific area
+ */
+export function getAreaTabs(areaId: string) {
+  return areaTabsConfig[areaId as keyof typeof areaTabsConfig] || [];
+}
 
 export default playerNavigationV4;

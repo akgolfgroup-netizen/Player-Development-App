@@ -4,7 +4,7 @@
  */
 
 import React from 'react';
-import { getAreaById } from '../../config/player-navigation-v3';
+import { getAreaById } from '../../config/player-navigation-v4';
 import HubPage from '../../components/layout/HubPage';
 
 interface PlanHubProps {
