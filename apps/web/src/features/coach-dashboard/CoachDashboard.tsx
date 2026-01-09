@@ -18,21 +18,19 @@ import React, { useState, useEffect, useCallback, useRef } from 'react';
 import { useNavigate } from 'react-router-dom';
 import {
   Users, Calendar, ClipboardList, MessageSquare, Bell,
-  ChevronRight, Search, User, BarChart3, Trophy, RefreshCw
+  ChevronRight, Search, User, RefreshCw
 } from 'lucide-react';
-import { CoachPlayerAlerts, CoachWeeklyTournaments, CoachInjuryTracker } from './widgets';
+import { CoachPlayerAlerts } from './widgets';
 import { coachesAPI } from '../../services/api';
 import { useAuth } from '../../contexts/AuthContext';
 import { ProfileOverviewCard } from '../../components/dashboard';
 import { useToast } from '../../components/shadcn/use-toast';
-import { TeamFocusHeatmap } from '../focus-engine';
 import { getNotifications } from '../../services/notificationsApi';
-import StatsGridTemplate from '../../ui/templates/StatsGridTemplate';
 import Button from '../../ui/primitives/Button';
 import Badge from '../../ui/primitives/Badge.primitive';
 import StateCard from '../../ui/composites/StateCard';
 import Card from '../../ui/primitives/Card';
-import { PageTitle, SectionTitle, SubSectionTitle } from '../../components/typography/Headings';
+import { SubSectionTitle } from '../../components/typography/Headings';
 import Avatar from '../../ui/primitives/Avatar';
 import PageHeader from '../../ui/raw-blocks/PageHeader.raw';
 import PageContainer from '../../ui/raw-blocks/PageContainer.raw';
@@ -54,15 +52,12 @@ const mockPendingItems = [
   { id: '3', type: 'plan', athlete: 'Sofie Andersen', description: 'Treningsplan venter godkjenning', time: '1 dag siden' },
 ];
 
-// Quick action items
+// Quick action items - Simplified to max 4
 const quickActions = [
   { id: 'athletes', label: 'Spillere', icon: Users, href: '/coach/athletes' },
-  { id: 'alerts', label: 'Varsler', icon: Bell, href: '/coach/alerts' },
-  { id: 'messages', label: 'Meldinger', icon: MessageSquare, href: '/coach/messages' },
   { id: 'calendar', label: 'Kalender', icon: Calendar, href: '/coach/calendar' },
   { id: 'plans', label: 'Treningsplaner', icon: ClipboardList, href: '/coach/training-plans/create' },
-  { id: 'stats', label: 'Statistikk', icon: BarChart3, href: '/coach/stats' },
-  { id: 'tournaments', label: 'Turneringer', icon: Trophy, href: '/coach/tournaments' },
+  { id: 'messages', label: 'Meldinger', icon: MessageSquare, href: '/coach/messages' },
 ];
 
 // Widget header
@@ -387,9 +382,9 @@ export default function CoachDashboard(props: CoachDashboardProps) {
         />
       </div>
 
-        {/* Quick Actions */}
+        {/* Quick Actions - Simplified to 4 items */}
         <div className="mb-6">
-        <div className="grid grid-cols-3 md:grid-cols-4 lg:grid-cols-7 gap-3">
+        <div className="grid grid-cols-2 md:grid-cols-4 gap-3">
           {quickActions.map(action => (
             <button
               key={action.id}
@@ -419,8 +414,8 @@ export default function CoachDashboard(props: CoachDashboardProps) {
         </Card>
       </div>
 
-        {/* Main content grid */}
-        <div className="pb-6 grid grid-cols-2 gap-5">
+        {/* Main content grid - Simplified to 2 core widgets */}
+        <div className="pb-6 grid grid-cols-1 md:grid-cols-2 gap-5">
         {/* Athletes List */}
         <Card variant="default" padding="none">
           <div className="p-5">
@@ -430,41 +425,41 @@ export default function CoachDashboard(props: CoachDashboardProps) {
               action={{ label: 'Se alle', onClick: () => navigate('/coach/athletes') }}
             />
 
-            {/* Search - Enhanced visibility */}
-            <div className="flex items-center gap-2 py-3 px-4 bg-white border-2 border-tier-navy/20 rounded-lg mb-4 transition-all hover:border-tier-navy/40 focus-within:border-tier-navy focus-within:shadow-sm">
-              <Search size={20} className="text-tier-navy" />
+            {/* Search */}
+            <div className="flex items-center gap-2 py-3 px-4 bg-white border border-tier-border-default rounded-lg mb-4 transition-all focus-within:border-tier-navy">
+              <Search size={18} className="text-tier-text-secondary" />
               <input
                 type="text"
                 placeholder="Søk etter spiller..."
                 value={searchTerm}
                 onChange={(e) => setSearchTerm(e.target.value)}
-                className="flex-1 border-none bg-transparent outline-none text-[15px] text-tier-navy placeholder:text-tier-text-secondary"
+                className="flex-1 border-none bg-transparent outline-none text-sm text-tier-navy placeholder:text-tier-text-tertiary"
               />
             </div>
 
-            {/* Athletes list */}
+            {/* Athletes list - Max 5 items */}
             <div className="flex flex-col gap-2">
               {sortedAthletes.slice(0, 5).map(athlete => (
                 <div
                   key={athlete.id}
                   onClick={() => navigate(`/coach/athlete/${athlete.id}`)}
-                  className="flex items-center gap-3 p-3 bg-tier-surface-base rounded-lg cursor-pointer transition-all hover:bg-tier-border-default"
+                  className="flex items-center gap-3 p-3 bg-tier-surface-base rounded-lg cursor-pointer transition-all hover:bg-tier-border-subtle"
                 >
                   <Avatar
                     name={`${athlete.firstName} ${athlete.lastName}`}
                     imageUrl={athlete.profileImageUrl || undefined}
                     size="md"
                   />
-                  <div className="flex-1">
-                    <p className="text-[15px] font-medium text-tier-navy m-0">
+                  <div className="flex-1 min-w-0">
+                    <p className="text-sm font-medium text-tier-navy truncate">
                       {athlete.lastName}, {athlete.firstName}
                     </p>
-                    <p className="text-[13px] text-tier-text-secondary m-0 mt-0.5">
+                    <p className="text-xs text-tier-text-secondary">
                       Sist aktiv: {new Date(athlete.lastSession).toLocaleDateString('nb-NO')}
                     </p>
                   </div>
                   <CategoryBadge category={athlete.category} />
-                  <ChevronRight size={18} className="text-tier-text-secondary" />
+                  <ChevronRight size={16} className="text-tier-text-tertiary" />
                 </div>
               ))}
             </div>
@@ -483,40 +478,39 @@ export default function CoachDashboard(props: CoachDashboardProps) {
             {pendingItems.length === 0 ? (
               <div className="text-center py-8 px-4">
                 <Bell size={32} className="text-tier-border-default mb-2 mx-auto" />
-                <p className="text-[15px] text-tier-text-secondary">
+                <p className="text-sm text-tier-text-secondary">
                   Ingen ventende oppgaver
                 </p>
               </div>
             ) : (
-              <div className="flex flex-col gap-3">
-                {pendingItems.map(item => {
-                  // Different colors for different types
-                  const colorClass = item.type === 'proof' ? 'bg-blue-50 border-blue-500' :
-                                    item.type === 'note' ? 'bg-amber-50 border-amber-500' :
-                                    'bg-emerald-50 border-emerald-500';
-                  const iconColor = item.type === 'proof' ? 'text-blue-600' :
-                                   item.type === 'note' ? 'text-amber-600' :
-                                   'text-emerald-600';
+              <div className="flex flex-col gap-2">
+                {pendingItems.slice(0, 5).map(item => {
+                  const colorClass = item.type === 'proof' ? 'bg-status-info/5 border-status-info' :
+                                    item.type === 'note' ? 'bg-status-warning/5 border-status-warning' :
+                                    'bg-status-success/5 border-status-success';
+                  const iconColor = item.type === 'proof' ? 'text-status-info' :
+                                   item.type === 'note' ? 'text-status-warning' :
+                                   'text-status-success';
 
                   return (
                     <div
                       key={item.id}
-                      className={`flex items-start gap-3 p-3.5 ${colorClass} rounded-lg border-l-[3px] cursor-pointer transition-all hover:shadow-sm`}
+                      className={`flex items-start gap-3 p-3 ${colorClass} rounded-lg border-l-3 cursor-pointer transition-all hover:shadow-sm`}
                     >
-                      <div className="w-9 h-9 rounded-md bg-white flex items-center justify-center shrink-0">
-                        {item.type === 'proof' && <User size={18} className={iconColor} />}
-                        {item.type === 'note' && <MessageSquare size={18} className={iconColor} />}
-                        {item.type === 'plan' && <ClipboardList size={18} className={iconColor} />}
+                      <div className="w-8 h-8 rounded-md bg-tier-white flex items-center justify-center shrink-0">
+                        {item.type === 'proof' && <User size={16} className={iconColor} />}
+                        {item.type === 'note' && <MessageSquare size={16} className={iconColor} />}
+                        {item.type === 'plan' && <ClipboardList size={16} className={iconColor} />}
                       </div>
-                      <div className="flex-1">
-                        <p className="text-[15px] font-medium text-tier-navy m-0">
+                      <div className="flex-1 min-w-0">
+                        <p className="text-sm font-medium text-tier-navy truncate">
                           {item.athlete}
                         </p>
-                        <p className="text-[13px] text-tier-text-secondary m-0 mt-0.5">
+                        <p className="text-xs text-tier-text-secondary truncate">
                           {item.description}
                         </p>
                       </div>
-                      <span className="text-xs text-tier-text-secondary shrink-0">
+                      <span className="text-xs text-tier-text-tertiary shrink-0">
                         {item.time}
                       </span>
                     </div>
@@ -526,85 +520,6 @@ export default function CoachDashboard(props: CoachDashboardProps) {
             )}
           </div>
         </Card>
-
-        {/* Weekly Tournaments */}
-        <Card variant="default" padding="none">
-          <div className="p-5">
-            <CoachWeeklyTournaments
-              onViewAll={() => navigate('/coach/tournaments')}
-            />
-          </div>
-        </Card>
-
-        {/* Injury Tracker */}
-        <Card variant="default" padding="none">
-          <div className="p-5">
-            <CoachInjuryTracker
-              onViewAll={() => navigate('/coach/athletes/status')}
-            />
-          </div>
-        </Card>
-
-        {/* Team Focus Heatmap */}
-        <Card variant="default" padding="none">
-          <div className="p-5">
-            {user?.id && defaultTeamId ? (
-              <TeamFocusHeatmap
-                coachId={user.id}
-                teamId={defaultTeamId}
-              />
-            ) : (
-              <div>
-                <WidgetHeader title="Team Focus" />
-                <div className="text-center py-8 px-4">
-                  <Users size={32} className="text-tier-border-default mb-2 mx-auto" />
-                  <p className="text-[15px] text-tier-text-secondary">
-                    Legg til spillere for å se team focus
-                  </p>
-                </div>
-              </div>
-            )}
-          </div>
-        </Card>
-
-        {/* Today's Schedule */}
-        <Card variant="default" padding="none">
-          <div className="p-5">
-            <WidgetHeader
-              title="Dagens program"
-              icon={Calendar}
-              action={{ label: 'Kalender', onClick: () => navigate('/coach/calendar') }}
-            />
-
-            <div className="flex flex-col gap-3">
-              {(todaySchedule.length > 0 ? todaySchedule : [
-                { time: '09:00', title: 'Teknikktrening - Gruppe A', athletes: 3 },
-                { time: '11:00', title: 'Individuell time - Anders H.', athletes: 1 },
-                { time: '14:00', title: 'Putting workshop', athletes: 6 },
-                { time: '16:00', title: 'Videoanalyse - Erik J.', athletes: 1 },
-              ]).map((event, index) => (
-                <div
-                  key={index}
-                  className="flex items-center gap-3 p-3 bg-tier-surface-base rounded-lg"
-                >
-                  <div className="w-12 h-12 rounded-lg bg-tier-navy text-white flex items-center justify-center text-[13px] font-semibold">
-                    {event.time}
-                  </div>
-                  <div className="flex-1">
-                    <p className="text-[15px] font-medium text-tier-navy m-0">
-                      {event.title}
-                    </p>
-                    <p className="text-xs text-tier-text-secondary m-0 mt-0.5">
-                      {event.athletes} {event.athletes === 1 ? 'spiller' : 'spillere'}
-                    </p>
-                  </div>
-                </div>
-              ))}
-            </div>
-          </div>
-        </Card>
-
-{/* Removed "Ukens oversikt" section as per requirements */}
         </div>
       </PageContainer>
     </div>

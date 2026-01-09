@@ -5,28 +5,29 @@
  *
  * Landing page for the Dashboard area.
  *
- * MIGRATED TO TIER DESIGN SYSTEM:
- * - Uses PageHeader + PageContainer
- * - Zero inline styles - all Tailwind + TIER tokens
- * - No hardcoded colors
- * - Responsive design
+ * SIMPLIFIED LAYOUT (FASE 5):
+ * - Max 4-5 cards per dashboard
+ * - Priority sorting: urgent → in progress → upcoming
+ * - Standardized dashboard layout
  *
  * ============================================================
  */
 
 import React from 'react';
-import { Link } from 'react-router-dom';
-import * as LucideIcons from 'lucide-react';
-import { navigationColors } from '../../config/navigation-tokens';
-import { ProfileOverviewCard, WeatherWidgetCompact } from '../../components/dashboard';
+import {
+  ProfileOverviewCard,
+  QuickActions,
+  FocusCardsGrid,
+  WeeklyGoalCard,
+  StreakCard,
+  FocusAreaCard,
+  AttentionItems,
+  createAttentionItem,
+} from '../../components/dashboard';
+import { playerQuickActions } from '../../config/quick-actions';
 import { useAuth } from '../../contexts/AuthContext';
 import PageHeader from '../../ui/raw-blocks/PageHeader.raw';
 import PageContainer from '../../ui/raw-blocks/PageContainer.raw';
-
-const {
-  Plus, Target, Calendar, TrendingUp,
-  Dumbbell, Award, Clock, ChevronRight, BookOpen,
-} = LucideIcons;
 
 interface DashboardHubProps {
   playerName?: string;
@@ -36,12 +37,6 @@ interface DashboardHubProps {
     ukesMal: number;
     badges: number;
   };
-  recentActivities?: Array<{
-    id: string;
-    title: string;
-    type: string;
-    date: string;
-  }>;
 }
 
 export default function DashboardHub({
@@ -52,7 +47,6 @@ export default function DashboardHub({
     ukesMal: 75,
     badges: 8,
   },
-  recentActivities = [],
 }: DashboardHubProps) {
   const { user } = useAuth();
 
@@ -70,7 +64,7 @@ export default function DashboardHub({
       />
 
       <PageContainer paddingY="md" background="base">
-        {/* Profile Overview Card */}
+        {/* 1. Profile Overview - User context */}
         <div className="mb-6">
           <ProfileOverviewCard
             name={fullName}
@@ -86,193 +80,61 @@ export default function DashboardHub({
           />
         </div>
 
-        {/* Weather Widget */}
-        <div className="mb-6">
-          <WeatherWidgetCompact
-            lat={59.91}
-            lng={10.75}
-            courseName="Oslo Golf Club"
+        {/* 2. Attention Items - Priority sorted: urgent → in progress → upcoming */}
+        <section className="mb-6">
+          <AttentionItems
+            items={[
+              createAttentionItem.scheduledTraining(
+                '1',
+                'Teknikk-økt med coach',
+                'I dag kl. 14:00'
+              ),
+              createAttentionItem.goalNearCompletion(
+                '2',
+                'Ukentlig treningsmål',
+                stats.ukesMal
+              ),
+              createAttentionItem.newMessage(
+                '3',
+                'Coach Hansen',
+                'Husk å ta med...',
+                new Date(Date.now() - 3600000)
+              ),
+            ]}
+            maxItems={3}
+            viewAllHref="/mer/meldinger"
           />
-        </div>
+        </section>
 
-        {/* Quick Actions - 4 buttons */}
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3 mb-8">
-          <Link
-            to="/trening/logg"
-            className="flex items-center justify-center gap-2 px-4 py-3.5 rounded-xl bg-tier-gold text-tier-white text-sm font-semibold hover:bg-tier-gold-dark transition-colors"
-          >
-            <Plus size={18} />
-            Logg trening
-          </Link>
-          <Link
-            to="/trening/testing/registrer"
-            className="flex items-center justify-center gap-2 px-4 py-3.5 rounded-xl bg-tier-gold text-tier-white text-sm font-semibold hover:bg-tier-gold-dark transition-colors"
-          >
-            <Target size={18} />
-            Registrer test
-          </Link>
-          <Link
-            to="/plan/kalender"
-            className="flex items-center justify-center gap-2 px-4 py-3.5 rounded-xl bg-tier-gold text-tier-white text-sm font-semibold hover:bg-tier-gold-dark transition-colors"
-          >
-            <Calendar size={18} />
-            Kalender
-          </Link>
-          <Link
-            to="/utvikling/statistikk"
-            className="flex items-center justify-center gap-2 px-4 py-3.5 rounded-xl bg-tier-gold text-tier-white text-sm font-semibold hover:bg-tier-gold-dark transition-colors"
-          >
-            <TrendingUp size={18} />
-            Statistikk
-          </Link>
-        </div>
+        {/* 3. Focus Cards - Max 4 cards */}
+        <section className="mb-6">
+          <h2 className="text-lg font-semibold text-tier-navy mb-4">
+            Din fokus denne uken
+          </h2>
+          <FocusCardsGrid>
+            <WeeklyGoalCard
+              goalName="Treningsøkter"
+              current={stats.treningsdager}
+              target={15}
+              unit="økter"
+            />
+            <StreakCard days={7} longestStreak={14} />
+            <FocusAreaCard
+              area="Putting"
+              description="Fokuser på korte putter"
+              exercisesCompleted={3}
+              totalExercises={5}
+            />
+          </FocusCardsGrid>
+        </section>
 
-        {/* Stats Grid */}
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 mb-8">
-          <StatCard
-            icon={<Dumbbell size={20} />}
-            label="Treningsdager denne mnd"
-            value={stats.treningsdager}
-            color={navigationColors.trening.primary}
-          />
-          <StatCard
-            icon={<Target size={20} />}
-            label="Kommende tester"
-            value={stats.kommendeTester}
-            color={navigationColors.utvikling.primary}
-          />
-          <StatCard
-            icon={<TrendingUp size={20} />}
-            label="Ukesmål fullført"
-            value={`${stats.ukesMal}%`}
-            color={navigationColors.plan.primary}
-          />
-          <StatCard
-            icon={<Award size={20} />}
-            label="Merker opptjent"
-            value={stats.badges}
-            color={navigationColors.mer.primary}
-          />
-        </div>
-
-        {/* Navigation Cards */}
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-5">
-          <NavigationCard
-            title="Trening"
-            description="Logg treningsøkter, se øvelser og registrer tester"
-            href="/trening"
-            icon={<Dumbbell size={24} />}
-            color={navigationColors.trening}
-          />
-          <NavigationCard
-            title="Min utvikling"
-            description="Se din fremgang, statistikk og oppnådde merker"
-            href="/utvikling"
-            icon={<TrendingUp size={24} />}
-            color={navigationColors.utvikling}
-          />
-          <NavigationCard
-            title="Plan"
-            description="Kalender, målsetninger og turneringsoversikt"
-            href="/plan"
-            icon={<Calendar size={24} />}
-            color={navigationColors.plan}
-          />
-          <NavigationCard
-            title="Kunnskap"
-            description="Artikler, guider og tips for å forbedre spillet ditt"
-            href="/kunnskap"
-            icon={<BookOpen size={24} />}
-            color={navigationColors.mer}
-          />
-        </div>
-
-        {/* Recent Activity */}
-        {recentActivities.length > 0 && (
-          <section className="mt-10">
-            <h2 className="text-lg font-semibold text-tier-navy mb-4">
-              Siste aktivitet
-            </h2>
-            <div className="bg-tier-white rounded-xl border border-tier-border-default overflow-hidden">
-              {recentActivities.map((activity, index) => (
-                <div
-                  key={activity.id}
-                  className={`flex items-center gap-3 px-5 py-4 ${
-                    index < recentActivities.length - 1 ? 'border-b border-tier-border-subtle' : ''
-                  }`}
-                >
-                  <Clock size={16} className="text-tier-text-tertiary" />
-                  <div className="flex-1">
-                    <div className="text-tier-body font-medium text-tier-navy">
-                      {activity.title}
-                    </div>
-                    <div className="text-tier-footnote text-tier-text-secondary">
-                      {activity.type} - {activity.date}
-                    </div>
-                  </div>
-                  <ChevronRight size={16} className="text-tier-text-tertiary" />
-                </div>
-              ))}
-            </div>
-          </section>
-        )}
+        {/* 4. Quick Actions - Streamlined */}
+        <QuickActions
+          actions={playerQuickActions.slice(0, 4)}
+          title="Hurtighandlinger"
+          columns={4}
+        />
       </PageContainer>
     </div>
-  );
-}
-
-interface StatCardProps {
-  icon: React.ReactNode;
-  label: string;
-  value: string | number;
-  color: string;
-}
-
-function StatCard({ icon, label, value, color }: StatCardProps) {
-  return (
-    <div className="bg-tier-white rounded-xl p-5 border border-tier-border-subtle shadow-sm hover:shadow-md transition-shadow">
-      <div className="flex items-center gap-2 mb-3">
-        <span style={{ color }}>{icon}</span>
-        <span className="text-tier-footnote text-tier-text-secondary">{label}</span>
-      </div>
-      <div className="text-3xl font-bold leading-tight" style={{ color }}>
-        {value}
-      </div>
-    </div>
-  );
-}
-
-type ColorScheme = (typeof navigationColors)[keyof typeof navigationColors];
-
-interface NavigationCardProps {
-  title: string;
-  description: string;
-  href: string;
-  icon: React.ReactNode;
-  color: ColorScheme;
-}
-
-function NavigationCard({ title, description, href, icon, color }: NavigationCardProps) {
-  return (
-    <Link
-      to={href}
-      className="block bg-tier-white rounded-2xl p-6 border border-tier-border-default hover:shadow-md transition-shadow group"
-    >
-      <div
-        className="w-12 h-12 rounded-xl flex items-center justify-center mb-4"
-        style={{
-          backgroundColor: color.surface,
-          color: color.primary,
-        }}
-      >
-        {icon}
-      </div>
-      <h3 className="text-lg font-semibold text-tier-navy mb-2 group-hover:text-tier-navy-dark transition-colors">
-        {title}
-      </h3>
-      <p className="text-tier-body text-tier-text-secondary">
-        {description}
-      </p>
-    </Link>
   );
 }
