@@ -70,7 +70,8 @@ const PlanUkeplan = lazy(() => Promise.resolve({ default: () => <PlaceholderPage
 const PlanBooking = lazy(() => import('../features/bookings/PlayerBookingPage'));
 const PlanSkole = lazy(() => import('../features/school/SkoleplanContainer'));
 const PlanMaal = lazy(() => import('../features/goals/GoalsPage'));
-const PlanAarsplan = lazy(() => Promise.resolve({ default: () => <PlaceholderPage title="Årsplan" /> }));
+const PlanAarsplan = lazy(() => import('../features/player-annual-plan').then(m => ({ default: m.PlayerAnnualPlanOverview })));
+const PlanAarsplanWizard = lazy(() => import('../features/player-annual-plan').then(m => ({ default: m.PlayerAnnualPlanWizard })));
 const PlanTurneringer = lazy(() => Promise.resolve({ default: () => <PlaceholderPage title="Turneringskalender" /> }));
 const PlanMineTurneringer = lazy(() => Promise.resolve({ default: () => <PlaceholderPage title="Mine turneringer" /> }));
 const TournamentPrepPage = lazy(() => import('../features/tournament-prep/TournamentPrepPage'));
@@ -262,6 +263,7 @@ export function getPlayerRoutesV3() {
       <Route path="/plan/intake" element={<SuspenseWrapper><IntakeFormPage /></SuspenseWrapper>} />
       <Route path="/plan/maal" element={<SuspenseWrapper><PlanMaal /></SuspenseWrapper>} />
       <Route path="/plan/aarsplan" element={<SuspenseWrapper><PlanAarsplan /></SuspenseWrapper>} />
+      <Route path="/plan/aarsplan/ny" element={<SuspenseWrapper><PlanAarsplanWizard /></SuspenseWrapper>} />
       <Route path="/plan/sesonger" element={<SuspenseWrapper><SeasonManagementPage /></SuspenseWrapper>} />
       <Route path="/plan/turneringer" element={<SuspenseWrapper><PlanTurneringer /></SuspenseWrapper>} />
       <Route path="/plan/turneringer/mine" element={<SuspenseWrapper><PlanMineTurneringer /></SuspenseWrapper>} />
