@@ -417,4 +417,114 @@ export function useSessionTemplates() {
   }, [templates]);
 }
 
+/**
+ * Hook to get skill levels and benchmarks from sport context
+ *
+ * @example
+ * const { skillLevels, getBenchmarksForLevel, getSkillLevel } = useBenchmarks();
+ *
+ * // Get benchmarks for a specific level
+ * const eliteBenchmarks = getBenchmarksForLevel('A');
+ */
+export function useBenchmarks() {
+  const sport = useSportSafe();
+
+  return useMemo(() => {
+    const benchmarkConfig = sport.config.benchmarks;
+
+    // Default empty config if not defined
+    const defaultConfig = {
+      skillLevels: [],
+      levelBenchmarks: [],
+      source: undefined,
+    };
+
+    const config = benchmarkConfig || defaultConfig;
+
+    return {
+      // All skill levels
+      skillLevels: config.skillLevels,
+
+      // All level benchmarks
+      levelBenchmarks: config.levelBenchmarks,
+
+      // Data source
+      source: config.source,
+
+      // Helper to get skill level by code
+      getSkillLevel: (code: string) =>
+        config.skillLevels.find((l) => l.code === code),
+
+      // Helper to get benchmarks for a specific level
+      getBenchmarksForLevel: (levelCode: string) =>
+        config.levelBenchmarks.find((b) => b.levelCode === levelCode),
+
+      // Helper to get benchmark value for a metric at a level
+      getBenchmarkValue: (levelCode: string, metricId: string) => {
+        const levelBenchmarks = config.levelBenchmarks.find((b) => b.levelCode === levelCode);
+        if (!levelBenchmarks) return undefined;
+        const benchmark = levelBenchmarks.benchmarks.find((b) => b.metricId === metricId);
+        return benchmark?.value;
+      },
+
+      // Current sport info
+      sportId: sport.sportId,
+      sportName: sport.config.nameNO || sport.config.name,
+    };
+  }, [sport]);
+}
+
+/**
+ * Hook to get skill levels formatted for UI display
+ * Returns levels sorted by order with Norwegian labels
+ */
+export function useSkillLevels() {
+  const { skillLevels } = useBenchmarks();
+
+  return useMemo(() => {
+    return [...skillLevels]
+      .sort((a, b) => a.order - b.order)
+      .map((level) => ({
+        code: level.code,
+        label: level.labelNO || level.label,
+        description: level.descriptionNO || level.description,
+        color: level.color,
+        icon: level.icon,
+        order: level.order,
+      }));
+  }, [skillLevels]);
+}
+
+/**
+ * Hook to get combined metrics with benchmark context
+ * Combines performance metrics with benchmark targets
+ */
+export function useMetricsWithBenchmarks() {
+  const { metrics, getMetric } = usePerformanceMetrics();
+  const { getBenchmarkValue, skillLevels } = useBenchmarks();
+
+  return useMemo(() => {
+    return {
+      metrics,
+      getMetric,
+
+      // Get metric with benchmark values for all levels
+      getMetricWithBenchmarks: (metricId: string) => {
+        const metric = getMetric(metricId);
+        if (!metric) return undefined;
+
+        const benchmarksByLevel: Record<string, number | undefined> = {};
+        skillLevels.forEach((level) => {
+          benchmarksByLevel[level.code] = getBenchmarkValue(level.code, metricId);
+        });
+
+        return {
+          ...metric,
+          benchmarksByLevel,
+        };
+      },
+    };
+  }, [metrics, getMetric, getBenchmarkValue, skillLevels]);
+}
+
 export default useTrainingConfig;

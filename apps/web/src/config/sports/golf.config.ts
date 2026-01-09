@@ -24,6 +24,8 @@ import type {
   SessionConfig,
   PyramidCategory,
   SessionTemplate,
+  BenchmarkConfig,
+  SkillLevel,
 } from './types';
 
 // Import golf test definitions
@@ -759,6 +761,75 @@ const sessions: SessionConfig = {
 };
 
 // ============================================================================
+// SKILL LEVELS & BENCHMARKS
+// ============================================================================
+
+const skillLevels: SkillLevel[] = [
+  { code: 'K', label: 'Beginner', labelNO: 'Nybegynner', order: 1, color: '#9CA3AF', description: 'HCP 45-54' },
+  { code: 'J', label: 'Basic', labelNO: 'Grunnleggende', order: 2, color: '#6B7280', description: 'HCP 37-44' },
+  { code: 'I', label: 'Developing', labelNO: 'Utviklende', order: 3, color: '#8B5CF6', description: 'HCP 30-36' },
+  { code: 'H', label: 'Progressing', labelNO: 'Fremskritt', order: 4, color: '#A78BFA', description: 'HCP 25-29' },
+  { code: 'G', label: 'Intermediate', labelNO: 'Mellomnivå', order: 5, color: '#3B82F6', description: 'HCP 20-24' },
+  { code: 'F', label: 'Competent', labelNO: 'Kompetent', order: 6, color: '#60A5FA', description: 'HCP 15-19' },
+  { code: 'E', label: 'Advanced', labelNO: 'Avansert', order: 7, color: '#10B981', description: 'HCP 12-14' },
+  { code: 'D', label: 'Skilled', labelNO: 'Dyktig', order: 8, color: '#34D399', description: 'HCP 9-11' },
+  { code: 'C', label: 'Very Skilled', labelNO: 'Meget dyktig', order: 9, color: '#F59E0B', description: 'HCP 6-8' },
+  { code: 'B', label: 'Expert', labelNO: 'Expert', order: 10, color: '#FBBF24', description: 'HCP 3-5' },
+  { code: 'A', label: 'Elite', labelNO: 'Elite', order: 11, color: '#EF4444', description: 'HCP 0-2' },
+];
+
+const benchmarks: BenchmarkConfig = {
+  skillLevels,
+  levelBenchmarks: [
+    // Key benchmarks for level A (Elite)
+    {
+      levelCode: 'A',
+      benchmarks: [
+        { metricId: 'handicap', value: 2, required: true },
+        { metricId: 'sg_total', value: -0.3 },
+        { metricId: 'sg_tee', value: -0.1 },
+        { metricId: 'sg_approach', value: -0.1 },
+        { metricId: 'sg_putting', value: -0.1 },
+      ],
+    },
+    // Key benchmarks for level B (Expert)
+    {
+      levelCode: 'B',
+      benchmarks: [
+        { metricId: 'handicap', value: 5, required: true },
+        { metricId: 'sg_total', value: -0.8 },
+        { metricId: 'sg_tee', value: -0.3 },
+        { metricId: 'sg_approach', value: -0.3 },
+        { metricId: 'sg_putting', value: -0.1 },
+      ],
+    },
+    // Key benchmarks for level E (Advanced)
+    {
+      levelCode: 'E',
+      benchmarks: [
+        { metricId: 'handicap', value: 14, required: true },
+        { metricId: 'sg_total', value: -2.0 },
+        { metricId: 'sg_tee', value: -0.6 },
+        { metricId: 'sg_approach', value: -0.9 },
+        { metricId: 'sg_putting', value: -0.1 },
+      ],
+    },
+    // Key benchmarks for level G (Intermediate)
+    {
+      levelCode: 'G',
+      benchmarks: [
+        { metricId: 'handicap', value: 24, required: true },
+        { metricId: 'sg_total', value: -3.0 },
+        { metricId: 'sg_tee', value: -0.8 },
+        { metricId: 'sg_approach', value: -1.3 },
+        { metricId: 'sg_putting', value: -0.3 },
+      ],
+    },
+  ],
+  source: 'DataGolf',
+};
+
+// ============================================================================
 // NAVIGATION
 // ============================================================================
 
@@ -821,6 +892,7 @@ export const GOLF_CONFIG: SportConfig = {
 
   goalCategories,
   sessions,
+  benchmarks,
   terminology,
   equipment,
   navigation,

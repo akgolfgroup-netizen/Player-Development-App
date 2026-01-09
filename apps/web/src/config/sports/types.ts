@@ -45,6 +45,9 @@ export interface SportConfig {
   // Session configuration
   sessions?: SessionConfig;
 
+  // Skill levels & benchmarks
+  benchmarks?: BenchmarkConfig;
+
   // Terminology
   terminology: SportTerminology;
 
@@ -403,6 +406,56 @@ export interface SportTerminology {
 
   // Sport-specific terms (extensible)
   [key: string]: string;
+}
+
+// ============================================================================
+// SKILL LEVELS & BENCHMARKS
+// ============================================================================
+
+export interface SkillLevel {
+  code: string;
+  label: string;
+  labelNO?: string;
+  description?: string;
+  descriptionNO?: string;
+  /** Order from beginner (1) to elite (highest) */
+  order: number;
+  /** Color for UI */
+  color: string;
+  /** Icon name */
+  icon?: string;
+}
+
+export interface MetricBenchmark {
+  /** Metric ID this benchmark applies to */
+  metricId: string;
+  /** Target value for this skill level */
+  value: number;
+  /** Whether meeting this is required for the level */
+  required?: boolean;
+}
+
+export interface SkillLevelBenchmarks {
+  /** Skill level code */
+  levelCode: string;
+  /** Benchmarks for this level */
+  benchmarks: MetricBenchmark[];
+  /** Test requirements for this level */
+  testRequirements?: {
+    testId: string;
+    targetValue: number;
+    /** 'min' = must be >= value, 'max' = must be <= value */
+    comparison: 'min' | 'max';
+  }[];
+}
+
+export interface BenchmarkConfig {
+  /** Available skill levels for this sport */
+  skillLevels: SkillLevel[];
+  /** Benchmarks per skill level */
+  levelBenchmarks: SkillLevelBenchmarks[];
+  /** Data source for benchmarks (e.g., 'DataGolf', 'WorldAthletics') */
+  source?: string;
 }
 
 // ============================================================================
