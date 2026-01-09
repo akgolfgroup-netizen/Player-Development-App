@@ -73,7 +73,7 @@ const AnalyticsDebug: React.FC = () => {
         style={styles.toggle}
         aria-label="Toggle analytics debug"
       >
-        {isOpen ? '📊 ▼' : '📊 ▲'}
+        {isOpen ? 'Analytics (hide)' : 'Analytics (show)'}
       </button>
 
       {isOpen && (

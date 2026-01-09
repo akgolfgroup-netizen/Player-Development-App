@@ -3,30 +3,34 @@ import { render, screen, waitFor } from '@testing-library/react';
 import { MemoryRouter, Routes, Route } from 'react-router-dom';
 import App from '../../App';
 
-// Mock components to simplify testing
-jest.mock('../../features/billing/BillingPortal', () => {
-  return function BillingPortal() {
+// Mock components to simplify testing (must support lazy loading with default export)
+jest.mock('../../features/billing/BillingPortal', () => ({
+  __esModule: true,
+  default: function BillingPortal() {
     return <div>Billing Portal Component</div>;
-  };
-});
+  },
+}));
 
-jest.mock('../../features/subscription/SubscriptionManagement', () => {
-  return function SubscriptionManagement() {
+jest.mock('../../features/subscription/SubscriptionManagement', () => ({
+  __esModule: true,
+  default: function SubscriptionManagement() {
     return <div>Subscription Management Component</div>;
-  };
-});
+  },
+}));
 
-jest.mock('../../features/admin/PaymentDashboard', () => {
-  return function PaymentDashboard() {
+jest.mock('../../features/admin/PaymentDashboard', () => ({
+  __esModule: true,
+  default: function PaymentDashboard() {
     return <div>Payment Dashboard Component</div>;
-  };
-});
+  },
+}));
 
-jest.mock('../../features/analytics/SubscriptionAnalytics', () => {
-  return function SubscriptionAnalytics() {
+jest.mock('../../features/analytics/SubscriptionAnalytics', () => ({
+  __esModule: true,
+  default: function SubscriptionAnalytics() {
     return <div>Subscription Analytics Component</div>;
-  };
-});
+  },
+}));
 
 // Mock auth context
 const mockAuthContext = {
@@ -45,8 +49,13 @@ jest.mock('../../contexts/AuthContext', () => ({
 jest.mock('../../contexts/NotificationContext', () => ({
   NotificationProvider: ({ children }: { children: React.ReactNode }) => <div>{children}</div>,
   useNotification: () => ({
+    notifications: [],
     showSuccess: jest.fn(),
     showError: jest.fn(),
+    removeNotification: jest.fn(),
+    connectRealtime: jest.fn(),
+    disconnectRealtime: jest.fn(),
+    isOnline: false,
   }),
 }));
 
@@ -64,13 +73,84 @@ jest.mock('../../features/ai-coach', () => ({
   AICoachPanel: () => <div>AI Coach Panel</div>,
 }));
 
+// Mock ProtectedRoute
+jest.mock('../../components/guards/ProtectedRoute', () => {
+  return function ProtectedRoute({ children, requiredRole }: { children: React.ReactNode, requiredRole?: string }) {
+    const { useAuth } = require('../../contexts/AuthContext');
+    const { isAuthenticated, user } = useAuth();
+
+    if (!isAuthenticated) {
+      return <div>Redirecting to login...</div>;
+    }
+
+    if (requiredRole && user?.role?.name !== requiredRole) {
+      return <div>Unauthorized access</div>;
+    }
+
+    return <>{children}</>;
+  };
+});
+
+// Mock PlayerAppShellV3 and AdminAppShell
+jest.mock('../../components/layout/PlayerAppShellV3', () => {
+  return function PlayerAppShellV3({ children }: { children: React.ReactNode }) {
+    return <div data-testid="player-layout">{children}</div>;
+  };
+});
+
+jest.mock('../../components/layout/AdminAppShell', () => {
+  return function AdminAppShell({ children }: { children: React.ReactNode }) {
+    return <div data-testid="admin-layout">{children}</div>;
+  };
+});
+
+// Mock ErrorBoundary to render children without catching errors (for debugging)
+jest.mock('../../components/ErrorBoundary', () => {
+  return function ErrorBoundary({ children }: { children: React.ReactNode }) {
+    return <>{children}</>;
+  };
+});
+
+// Mock useRealtimeUpdates hook to prevent WebSocket connections
+jest.mock('../../hooks/useRealtimeUpdates', () => ({
+  __esModule: true,
+  default: () => ({
+    isConnected: false,
+    error: null,
+    retryCount: 0,
+  }),
+}));
+
 // Mock fetch for API calls
 global.fetch = jest.fn();
+
+// Mock localStorage
+const localStorageMock = (() => {
+  let store: Record<string, string> = {};
+  return {
+    getItem: (key: string) => store[key] || null,
+    setItem: (key: string, value: string) => {
+      store[key] = value.toString();
+    },
+    clear: () => {
+      store = {};
+    },
+    removeItem: (key: string) => {
+      delete store[key];
+    },
+  };
+})();
+
+Object.defineProperty(window, 'localStorage', {
+  value: localStorageMock,
+});
 
 describe('Billing Routes Integration', () => {
   beforeEach(() => {
     jest.clearAllMocks();
     (global.fetch as jest.Mock).mockClear();
+    localStorageMock.clear();
+    localStorageMock.setItem('accessToken', 'test-token-123');
 
     // Reset auth context before each test
     mockAuthContext.user = null;
