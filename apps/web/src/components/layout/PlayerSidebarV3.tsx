@@ -195,7 +195,7 @@ export default function PlayerSidebarV3({
         className="flex items-center gap-2 p-2 rounded-lg hover:bg-tier-surface-secondary transition-colors"
       >
         <div className="w-8 h-8 rounded-full bg-tier-gold flex items-center justify-center text-tier-white font-bold text-sm">
-          {(user?.firstName?.[0] || 'S').toUpperCase()}
+          {`${user?.firstName?.[0] || ''}${user?.lastName?.[0] || ''}`.toUpperCase() || 'U'}
         </div>
         <ChevronDown size={16} className={cn(
           'text-tier-text-secondary transition-transform',

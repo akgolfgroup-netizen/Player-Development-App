@@ -31,46 +31,46 @@ export const PERIOD_COLORS = {
 };
 
 export const PERIOD_LABELS = {
-  E: 'Etablering',
-  G: 'Grunntrening',
-  S: 'Spesialisering',
-  T: 'Turnering',
+  E: 'Evaluering og testperiode',
+  G: 'Grunnperiode',
+  S: 'Spesialiseringsperiode',
+  T: 'Turneringsperiode',
 };
 
 export const PERIOD_DESCRIPTIONS = {
-  E: 'Bygge teknisk grunnlag og grunnkondisjon',
-  G: 'Øke treningsvolum og bygge fysisk kapasitet',
-  S: 'Golf-spesifikk trening og pre-sesong forberedelse',
-  T: 'Konkurransesesong med vedlikeholdstrening',
+  E: 'Evaluering av nåværende nivå og testing av fysisk og teknisk grunnlag',
+  G: 'Bygge grunnleggende treningsfundament og øke treningsvolum',
+  S: 'Golf-spesifikk trening og fokusert forberedelse til konkurransesesong',
+  T: 'Konkurransesesong med vedlikeholdstrening og toppprestasjoner',
 };
 
 export const PERIOD_DEFAULTS = {
   E: {
-    name: 'Etablering',
-    description: 'Bygge teknisk grunnlag',
+    name: 'Evaluering og testperiode',
+    description: 'Evaluering av nåværende nivå',
     weeklyFrequency: 3,
     defaultWeeks: 6,
-    goals: ['Bygge treningsvaner', 'Grunnleggende teknikk', 'Baseline'],
+    goals: ['Baseline testing', 'Nivåevaluering', 'Identifisere styrker og svakheter'],
   },
   G: {
-    name: 'Grunntrening',
-    description: 'Øke volum og styrke',
+    name: 'Grunnperiode',
+    description: 'Bygge treningsfundament',
     weeklyFrequency: 5,
     defaultWeeks: 16,
-    goals: ['Øke styrke', 'Teknisk utvikling', 'Bygge volum'],
+    goals: ['Øke treningsvolum', 'Teknisk utvikling', 'Bygge fysisk kapasitet'],
   },
   S: {
-    name: 'Spesialisering',
+    name: 'Spesialiseringsperiode',
     description: 'Golf-spesifikk forberedelse',
     weeklyFrequency: 4,
     defaultWeeks: 10,
-    goals: ['Pre-sesong', 'Short game', 'Mental trening'],
+    goals: ['Pre-sesong forberedelse', 'Short game fokus', 'Mental trening'],
   },
   T: {
-    name: 'Turnering',
+    name: 'Turneringsperiode',
     description: 'Konkurransesesong',
     weeklyFrequency: 4,
     defaultWeeks: 16,
-    goals: ['Prestere', 'Vedlikeholde', 'Analysere'],
+    goals: ['Toppprestasjoner', 'Vedlikeholde form', 'Turnering analyse'],
   },
 };

@@ -180,7 +180,7 @@ export default function CoachSidebarV3({
       <div className="bg-tier-surface-secondary rounded-xl p-4 border border-tier-border-subtle">
         <div className="flex items-center gap-3 mb-3">
           <div className="w-10 h-10 rounded-xl bg-tier-navy flex items-center justify-center text-tier-white font-bold">
-            {(user?.firstName?.[0] || 'T').toUpperCase()}
+            {`${user?.firstName?.[0] || ''}${user?.lastName?.[0] || ''}`.toUpperCase() || 'U'}
           </div>
           <div className="flex-1 min-w-0">
             <div className="text-sm font-semibold text-tier-navy truncate">

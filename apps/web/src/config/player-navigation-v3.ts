@@ -435,8 +435,8 @@ export interface FlatNavItem {
 }
 
 /**
- * Forenklet navigasjon med kun 4 hovedelementer (ingen nesting)
- * Bruker-relaterte funksjoner er flyttet til en dropdown i header
+ * Forenklet navigasjon med 5 hovedelementer (ingen nesting)
+ * Matcher V4 navigasjonsstruktur: Hjem, Trening, Analyse, Plan, Mer
  */
 export const playerNavigationFlat: FlatNavItem[] = [
   {
@@ -455,7 +455,7 @@ export const playerNavigationFlat: FlatNavItem[] = [
   },
   {
     id: 'fremgang',
-    label: 'Fremgang',
+    label: 'Analyse',
     icon: 'TrendingUp',
     href: '/analyse',
     color: 'blue',
@@ -466,6 +466,14 @@ export const playerNavigationFlat: FlatNavItem[] = [
     icon: 'Calendar',
     href: '/plan',
     color: 'amber',
+  },
+  {
+    id: 'mer',
+    label: 'Mer',
+    icon: 'MoreHorizontal',
+    href: '/mer',
+    color: 'purple',
+    badge: 'unreadMessages',
   },
 ];
 

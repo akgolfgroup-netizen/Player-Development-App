@@ -326,7 +326,7 @@ export default function PlayerSidebarV2({
               fontSize: '16px',
             }}
           >
-            {(user?.firstName?.[0] || 'S').toUpperCase()}
+            {`${user?.firstName?.[0] || ''}${user?.lastName?.[0] || ''}`.toUpperCase() || 'U'}
           </div>
           <div>
             <div style={{ fontSize: '14px', fontWeight: 600, color: tokenColors.white }}>

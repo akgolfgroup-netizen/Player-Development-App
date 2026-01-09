@@ -360,7 +360,7 @@ export default function PlayerAppShellV3({ children }: PlayerAppShellV3Props) {
               fontSize: '16px',
             }}
           >
-            {(user?.firstName?.[0] || 'S').toUpperCase()}
+            {`${user?.firstName?.[0] || ''}${user?.lastName?.[0] || ''}`.toUpperCase() || 'U'}
           </div>
           <div>
             <div style={{ fontSize: '14px', fontWeight: 600, color: 'rgb(var(--tier-white))' }}>

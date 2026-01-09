@@ -264,17 +264,20 @@ export default function PlayerOnboardingPage() {
                 </div>
                 <div className="space-y-2">
                   <label className="text-sm font-medium text-tier-navy">
-                    Kategori
+                    Spiller Kategori
                   </label>
+                  <p className="text-xs text-tier-text-secondary mb-2">
+                    Basert på snittscore fra forrige fullverdige golf sesong
+                  </p>
                   <Select value={data.category} onValueChange={(val) => handleInputChange('category', val)}>
                     <SelectTrigger>
-                      <SelectValue placeholder="Velg" />
+                      <SelectValue placeholder="Velg kategori" />
                     </SelectTrigger>
                     <SelectContent>
-                      <SelectItem value="A">A (Handicap 0-4.4)</SelectItem>
-                      <SelectItem value="B">B (Handicap 4.5-11.4)</SelectItem>
-                      <SelectItem value="C">C (Handicap 11.5-18.4)</SelectItem>
-                      <SelectItem value="D">D (Handicap 18.5+)</SelectItem>
+                      <SelectItem value="A">Kategori A (Handicap 0-4.4)</SelectItem>
+                      <SelectItem value="B">Kategori B (Handicap 4.5-11.4)</SelectItem>
+                      <SelectItem value="C">Kategori C (Handicap 11.5-18.4)</SelectItem>
+                      <SelectItem value="D">Kategori D (Handicap 18.5+)</SelectItem>
                     </SelectContent>
                   </Select>
                 </div>

@@ -121,7 +121,57 @@ export const playerNavigationV4: NavArea[] = [
   },
 
   // ────────────────────────────────────────────────────────────
-  // 2. TRENING - Logging, økter, øvelser, testing (GRØNN)
+  // 2. PLAN - Kalender, mål, turneringer (AMBER)
+  // ────────────────────────────────────────────────────────────
+  {
+    id: 'plan',
+    label: 'Plan',
+    icon: 'CalendarIcon',
+    color: 'amber',
+    href: '/plan',
+    hubPath: '/plan',
+    sections: [
+      {
+        id: 'kalender',
+        label: 'Kalender',
+        items: [
+          { href: '/plan/kalender', label: 'Kalender', icon: 'CalendarIcon', description: 'Din kalender' },
+          { href: '/plan/ukeplan', label: 'Ukeplan', icon: 'CalendarIcon', description: 'Ukentlig oversikt' },
+          { href: '/plan/booking', label: 'Booking', icon: 'CalendarIcon', description: 'Book treningstid' },
+          { href: '/plan/sesonger', label: 'Sesongplanlegging', icon: 'CalendarIcon', description: 'Planlegg treningssesonger' },
+          { href: '/samlinger', label: 'Samlinger', icon: 'GolfFlagIcon', description: 'Treningssamlinger' },
+        ],
+      },
+      {
+        id: 'skole',
+        label: 'Skole',
+        items: [
+          { href: '/plan/skole', label: 'Skoleplan', icon: 'CalendarIcon', description: 'Skoletimer, fag og oppgaver' },
+          { href: '/plan/intake', label: 'Inntak/Onboarding', icon: 'ClipboardIcon', description: 'Fyll ut spillerprofil og vurdering' },
+        ],
+      },
+      {
+        id: 'mal',
+        label: 'Mål',
+        items: [
+          { href: '/plan/maal', label: 'Målsetninger', icon: 'TargetIcon', description: 'Dine mål' },
+          { href: '/plan/aarsplan', label: 'Årsplan', icon: 'ScorecardIcon', description: 'Langsiktig plan' },
+        ],
+      },
+      {
+        id: 'turneringer',
+        label: 'Turneringer',
+        items: [
+          { href: '/plan/turneringer', label: 'Turneringskalender', icon: 'GolfFlagIcon', description: 'Alle turneringer' },
+          { href: '/plan/turneringer/mine', label: 'Mine turneringer', icon: 'GolfFlagIcon', description: 'Påmeldte turneringer' },
+          { href: '/plan/turneringsforberedelse', label: 'Turneringsforberedelse', icon: 'TargetIcon', description: 'Banestrategi og sjekkliste' },
+        ],
+      },
+    ],
+  },
+
+  // ────────────────────────────────────────────────────────────
+  // 3. TRENING - Logging, økter, øvelser, testing (GRØNN)
   // ────────────────────────────────────────────────────────────
   {
     id: 'trening',
@@ -180,7 +230,7 @@ export const playerNavigationV4: NavArea[] = [
   },
 
   // ────────────────────────────────────────────────────────────
-  // 3. ANALYSE - Fremgang, statistikk, sammenligninger (BLÅ)
+  // 4. ANALYSE - Fremgang, statistikk, sammenligninger (BLÅ)
   // ────────────────────────────────────────────────────────────
   // VIKTIG: Dette erstatter "Min utvikling" og reduserer 17 items til 6 hubs
   // ────────────────────────────────────────────────────────────
@@ -226,56 +276,6 @@ export const playerNavigationV4: NavArea[] = [
             icon: 'TrophyIcon',
             description: 'Merker og achievements'
           },
-        ],
-      },
-    ],
-  },
-
-  // ────────────────────────────────────────────────────────────
-  // 4. PLAN - Kalender, mål, turneringer (AMBER)
-  // ────────────────────────────────────────────────────────────
-  {
-    id: 'plan',
-    label: 'Plan',
-    icon: 'CalendarIcon',
-    color: 'amber',
-    href: '/plan',
-    hubPath: '/plan',
-    sections: [
-      {
-        id: 'kalender',
-        label: 'Kalender',
-        items: [
-          { href: '/plan/kalender', label: 'Kalender', icon: 'CalendarIcon', description: 'Din kalender' },
-          { href: '/plan/ukeplan', label: 'Ukeplan', icon: 'CalendarIcon', description: 'Ukentlig oversikt' },
-          { href: '/plan/booking', label: 'Booking', icon: 'CalendarIcon', description: 'Book treningstid' },
-          { href: '/plan/sesonger', label: 'Sesongplanlegging', icon: 'CalendarIcon', description: 'Planlegg treningssesonger' },
-          { href: '/samlinger', label: 'Samlinger', icon: 'GolfFlagIcon', description: 'Treningssamlinger' },
-        ],
-      },
-      {
-        id: 'skole',
-        label: 'Skole',
-        items: [
-          { href: '/plan/skole', label: 'Skoleplan', icon: 'CalendarIcon', description: 'Skoletimer, fag og oppgaver' },
-          { href: '/plan/intake', label: 'Inntak/Onboarding', icon: 'ClipboardIcon', description: 'Fyll ut spillerprofil og vurdering' },
-        ],
-      },
-      {
-        id: 'mal',
-        label: 'Mål',
-        items: [
-          { href: '/plan/maal', label: 'Målsetninger', icon: 'TargetIcon', description: 'Dine mål' },
-          { href: '/plan/aarsplan', label: 'Årsplan', icon: 'ScorecardIcon', description: 'Langsiktig plan' },
-        ],
-      },
-      {
-        id: 'turneringer',
-        label: 'Turneringer',
-        items: [
-          { href: '/plan/turneringer', label: 'Turneringskalender', icon: 'GolfFlagIcon', description: 'Alle turneringer' },
-          { href: '/plan/turneringer/mine', label: 'Mine turneringer', icon: 'GolfFlagIcon', description: 'Påmeldte turneringer' },
-          { href: '/plan/turneringsforberedelse', label: 'Turneringsforberedelse', icon: 'TargetIcon', description: 'Banestrategi og sjekkliste' },
         ],
       },
     ],
