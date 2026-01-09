@@ -141,6 +141,7 @@ export default function AdminFeatureFlagsEditor() {
         <Page.Header
           title="Funksjonsflagg"
           subtitle="Administrer systemfunksjoner og aktiver/deaktiver features"
+          helpText="Administrator-side for styring av funksjonsflagg (feature flags) som kontrollerer systemfunksjoner. Se alle flagg, filtrer etter status (aktiv/deaktivert), søk etter nøkkel eller navn. Opprett nye flagg, rediger beskrivelser, aktiver/deaktiver features og slett flagg. Bruk for å gradvis lansere funksjoner eller deaktivere features ved behov."
           actions={
             <Button
               variant="primary"

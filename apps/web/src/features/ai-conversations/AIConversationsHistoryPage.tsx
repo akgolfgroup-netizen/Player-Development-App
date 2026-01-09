@@ -325,7 +325,7 @@ const AIConversationsHistoryPage: React.FC = () => {
                                       ? 'bg-tier-navy text-white'
                                       : message.role === 'assistant'
                                       ? 'bg-tier-info text-white'
-                                      : 'bg-tier-warning text-white'
+                                      : 'bg-tier-warning text-tier-navy'
                                   }`}
                                 >
                                   {message.role === 'user'

@@ -323,7 +323,7 @@ export default function TrainingStatsDashboard() {
                 {sgData.isDemo && (
                   <div className="mt-4 p-3 bg-tier-gold/20 rounded-lg border border-tier-gold/30">
                     <Text variant="caption1" className="text-tier-gold">
-                      💡 Dette er demodata. Fullfør tester for å se dine egne Strokes Gained resultater.
+                      Merk: Dette er demodata. Fullfør tester for å se dine egne Strokes Gained resultater.
                     </Text>
                   </div>
                 )}

@@ -324,7 +324,7 @@ export default function EvaluationStatsDashboard({ stats, isLoading }) {
               key={index}
               className="flex items-start gap-2 p-2 bg-tier-surface-base rounded-lg mb-2"
             >
-              <span className="text-base">{insight.icon || '💡'}</span>
+              <span className="text-base">{insight.icon || 'TIP'}</span>
               <span className="text-[15px] text-tier-navy">
                 {insight.text}
               </span>

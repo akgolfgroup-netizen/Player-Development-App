@@ -24,6 +24,7 @@ import {
   DollarSign,
 } from 'lucide-react';
 import { Button, Text } from '../../ui/primitives';
+import { PageHeader } from '../../ui/raw-blocks';
 
 const API_URL = process.env.REACT_APP_API_URL || 'http://localhost:3000/api/v1';
 
@@ -148,15 +149,11 @@ const BillingPortal: React.FC = () => {
 
   return (
     <div className="max-w-6xl mx-auto p-6">
-      {/* Header */}
-      <div className="mb-8">
-        <Text variant="title1" color="primary" className="mb-2">
-          Billing & Payments
-        </Text>
-        <Text variant="body" color="secondary">
-          Manage your subscription, payment methods, and billing history
-        </Text>
-      </div>
+      <PageHeader
+        title="Fakturering og betaling"
+        subtitle="Administrer abonnement, betalingsmetoder og fakturahistorikk"
+        helpText="Komplett fakturaadministrasjon. Faner for Overview (nåværende abonnement, neste faktura, totalt brukt), Payment Methods (kort, legge til/slette, sett som standard), Invoices (historikk med status paid/pending/failed, last ned PDF). Raskt oppsummering av abonnementsdetaljer, betalingsstatistikk. Bruk for full kontroll over fakturering og betalingsinformasjon."
+      />
 
       {/* Tabs */}
       <div className="flex gap-2 mb-8 border-b border-tier-border-default">

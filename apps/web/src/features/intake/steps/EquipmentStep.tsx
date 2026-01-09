@@ -142,7 +142,7 @@ const EquipmentStep: React.FC<Props> = ({ data, onComplete }) => {
 
       {/* Info Box */}
       <div className="bg-tier-info-light border border-tier-info rounded-lg p-4">
-        <h4 className="text-sm font-semibold text-tier-navy mb-2">💡 Hvorfor spør vi om dette?</h4>
+        <h4 className="text-sm font-semibold text-tier-navy mb-2">Hvorfor spor vi om dette?</h4>
         <p className="text-xs text-tier-text-secondary">
           Tilgang til utstyr som TrackMan, treningsstudio og godt tilpassede klubber påvirker hvilke treningsmetoder
           som er tilgjengelige for deg. Dette hjelper oss å lage en plan som passer din situasjon og ressurser.

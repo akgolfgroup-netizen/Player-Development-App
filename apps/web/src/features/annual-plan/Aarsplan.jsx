@@ -540,7 +540,7 @@ const ImprovedMonthCard = ({ month, periodConfig, priorityLabels, focusAreas, is
             backgroundColor: 'var(--achievement)15',
             borderRadius: '6px',
           }}>
-            <span style={{ fontSize: '12px' }}>📊</span>
+            <span style={{ fontSize: '12px' }}>B</span>
             <span style={{ fontSize: '11px', color: 'var(--achievement)', fontWeight: 500 }}>
               Benchmark: Uke {month.benchmark.join(', ')}
             </span>
@@ -558,7 +558,7 @@ const ImprovedMonthCard = ({ month, periodConfig, priorityLabels, focusAreas, is
             backgroundColor: 'var(--accent)10',
             borderRadius: '6px',
           }}>
-            <span style={{ fontSize: '12px' }}>🏆</span>
+            <span style={{ fontSize: '12px' }}>T</span>
             <span style={{ fontSize: '11px', color: 'var(--accent)', fontWeight: 500 }}>
               {month.tournaments.join(' · ')}
             </span>
@@ -686,10 +686,10 @@ const TIERGolfAarsplan = ({ player: apiPlayer = null, annualPlan: apiAnnualPlan 
 
   // Period definitions (Blue Palette 01)
   const periodConfig = {
-    E: { name: 'Evaluering', color: 'var(--text-secondary)', bg: 'var(--bg-tertiary)', icon: '📋' },
-    G: { name: 'Grunnperiode', color: 'rgba(var(--accent-rgb), 0.8)', bg: `${'var(--status-success)'}20`, icon: '🏗️' },
-    S: { name: 'Spesialperiode', color: 'var(--status-success)', bg: `${'var(--status-success)'}15`, icon: '🎯' },
-    T: { name: 'Turnering', color: 'var(--achievement)', bg: `${'var(--achievement)'}15`, icon: '🏆' },
+    E: { name: 'Evaluering', color: 'var(--text-secondary)', bg: 'var(--bg-tertiary)', icon: 'E' },
+    G: { name: 'Grunnperiode', color: 'rgba(var(--accent-rgb), 0.8)', bg: `${'var(--status-success)'}20`, icon: 'G' },
+    S: { name: 'Spesialperiode', color: 'var(--status-success)', bg: `${'var(--status-success)'}15`, icon: 'S' },
+    T: { name: 'Turnering', color: 'var(--achievement)', bg: `${'var(--achievement)'}15`, icon: 'T' },
   };
 
   // Priority labels (Blue Palette 01)
@@ -1025,7 +1025,7 @@ const TIERGolfAarsplan = ({ player: apiPlayer = null, annualPlan: apiAnnualPlan 
                             </Badge>
                             {month.benchmark.length > 0 && (
                               <Badge color={'var(--achievement)'} bg={`${'var(--achievement)'}15`}>
-                                📊 Benchmark: Uke {month.benchmark.join(', ')}
+                                Benchmark: Uke {month.benchmark.join(', ')}
                               </Badge>
                             )}
                           </div>
@@ -1120,11 +1120,11 @@ const TIERGolfAarsplan = ({ player: apiPlayer = null, annualPlan: apiAnnualPlan 
 
           <div className="grid grid-cols-1 md:grid-cols-5 gap-4">
             {[
-              { name: 'Teknisk', icon: '⚙️', color: 'var(--accent)', desc: 'Sving, slag, teknikk' },
-              { name: 'Fysisk', icon: '💪', color: 'var(--status-success)', desc: 'Styrke, utholdenhet, mobilitet' },
-              { name: 'Mental', icon: '🧠', color: 'rgba(var(--accent-rgb), 0.8)', desc: 'Fokus, visualisering, rutiner' },
-              { name: 'Strategisk', icon: '🎯', color: 'var(--achievement)', desc: 'Banestrategi, beslutninger' },
-              { name: 'Sosial', icon: '👥', color: 'var(--status-warning)', desc: 'Team, kommunikasjon, nettverk' },
+              { name: 'Teknisk', icon: 'TEK', color: 'var(--accent)', desc: 'Sving, slag, teknikk' },
+              { name: 'Fysisk', icon: 'FYS', color: 'var(--status-success)', desc: 'Styrke, utholdenhet, mobilitet' },
+              { name: 'Mental', icon: 'MEN', color: 'rgba(var(--accent-rgb), 0.8)', desc: 'Fokus, visualisering, rutiner' },
+              { name: 'Strategisk', icon: 'STR', color: 'var(--achievement)', desc: 'Banestrategi, beslutninger' },
+              { name: 'Sosial', icon: 'SOS', color: 'var(--status-warning)', desc: 'Team, kommunikasjon, nettverk' },
             ].map(process => (
               <div
                 key={process.name}

@@ -18,15 +18,15 @@ import { getAthleteById } from '../../../lib/coachMockData';
 
 // Test categories
 const TEST_CATEGORIES = [
-  { id: 'all', label: 'Alle tester', icon: '🎯' },
+  { id: 'all', label: 'Alle tester', icon: 'target' },
   { id: 'speed', label: 'Fart', icon: 'zap' },
   { id: 'distance', label: 'Distanse', icon: 'ruler' },
-  { id: 'accuracy', label: 'Presisjon', icon: '🎯' },
-  { id: 'short_game', label: 'Kort spill', icon: '⛳' },
-  { id: 'putting', label: 'Putting', icon: '⚪' },
-  { id: 'physical', label: 'Fysisk', icon: '💪' },
-  { id: 'scoring', label: 'Scoring', icon: '📊' },
-  { id: 'mental', label: 'Mental', icon: '🧠' },
+  { id: 'accuracy', label: 'Presisjon', icon: 'target' },
+  { id: 'short_game', label: 'Kort spill', icon: 'flag' },
+  { id: 'putting', label: 'Putting', icon: 'circle' },
+  { id: 'physical', label: 'Fysisk', icon: 'dumbbell' },
+  { id: 'scoring', label: 'Scoring', icon: 'bar-chart' },
+  { id: 'mental', label: 'Mental', icon: 'brain' },
 ];
 
 // Mock test results data (will be replaced with API call)
@@ -86,7 +86,7 @@ const MOCK_TEST_RESULTS = [
 
 // Test result card component
 function TestResultCard({ test }: { test: typeof MOCK_TEST_RESULTS[0] }) {
-  const trendIcon = test.trend === 'up' ? '📈' : test.trend === 'down' ? '📉' : '➡️';
+  const trendIcon = test.trend === 'up' ? 'up' : test.trend === 'down' ? 'down' : 'stable';
   const trendColor = test.trend === 'up' ? 'text-green-600' : test.trend === 'down' ? 'text-red-600' : 'text-gray-600';
 
   return (

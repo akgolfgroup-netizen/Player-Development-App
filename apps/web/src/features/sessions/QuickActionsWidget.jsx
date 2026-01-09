@@ -166,7 +166,7 @@ export default function QuickActionsWidget({ planId }) {
                 disabled={loading}
                 className="flex-1"
               >
-                ▶️ Start
+                Start
               </Button>
               <Button
                 variant="primary"
@@ -174,7 +174,7 @@ export default function QuickActionsWidget({ planId }) {
                 disabled={loading}
                 className="flex-1 bg-tier-success hover:bg-tier-success/90"
               >
-                ✅ Fullfør
+                Fullfor
               </Button>
             </>
           )}
@@ -186,7 +186,7 @@ export default function QuickActionsWidget({ planId }) {
                 disabled={loading}
                 className="flex-1 bg-tier-success hover:bg-tier-success/90"
               >
-                📝 Evaluer
+                Evaluer
               </Button>
               <Button
                 variant="primary"
@@ -194,7 +194,7 @@ export default function QuickActionsWidget({ planId }) {
                 disabled={loading}
                 className="flex-1"
               >
-                ✅ Fullfør
+                Fullfor
               </Button>
             </>
           )}
@@ -214,7 +214,7 @@ export default function QuickActionsWidget({ planId }) {
               disabled={loading}
               className="bg-orange-400/20 text-orange-700 hover:bg-orange-400/30"
             >
-              🔄 Bytt økt
+              Bytt okt
             </Button>
           )}
         </div>

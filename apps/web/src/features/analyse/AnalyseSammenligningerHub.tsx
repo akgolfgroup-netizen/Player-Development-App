@@ -231,7 +231,7 @@ function MultiPlayerComparisonTab() {
           <tbody>
             <tr className="border-b border-tier-border-default">
               <td className="py-3 px-4 text-sm text-tier-navy">Handicap</td>
-              <td className="py-3 px-4 text-center text-sm font-medium text-tier-success">12.4 ⭐</td>
+              <td className="py-3 px-4 text-center text-sm font-medium text-tier-success">12.4 [Best]</td>
               <td className="py-3 px-4 text-center text-sm text-tier-text-secondary">13.8</td>
               <td className="py-3 px-4 text-center text-sm text-tier-text-secondary">11.2</td>
             </tr>
@@ -239,11 +239,11 @@ function MultiPlayerComparisonTab() {
               <td className="py-3 px-4 text-sm text-tier-navy">Strokes Gained</td>
               <td className="py-3 px-4 text-center text-sm font-medium text-tier-navy">+2.4</td>
               <td className="py-3 px-4 text-center text-sm text-tier-text-secondary">+1.8</td>
-              <td className="py-3 px-4 text-center text-sm font-medium text-tier-success">+3.1 ⭐</td>
+              <td className="py-3 px-4 text-center text-sm font-medium text-tier-success">+3.1 [Best]</td>
             </tr>
             <tr className="border-b border-tier-border-default">
               <td className="py-3 px-4 text-sm text-tier-navy">GIR %</td>
-              <td className="py-3 px-4 text-center text-sm font-medium text-tier-success">62% ⭐</td>
+              <td className="py-3 px-4 text-center text-sm font-medium text-tier-success">62% [Best]</td>
               <td className="py-3 px-4 text-center text-sm text-tier-text-secondary">58%</td>
               <td className="py-3 px-4 text-center text-sm text-tier-text-secondary">60%</td>
             </tr>
@@ -251,7 +251,7 @@ function MultiPlayerComparisonTab() {
               <td className="py-3 px-4 text-sm text-tier-navy">Putts per runde</td>
               <td className="py-3 px-4 text-center text-sm font-medium text-tier-navy">32.4</td>
               <td className="py-3 px-4 text-center text-sm text-tier-text-secondary">34.1</td>
-              <td className="py-3 px-4 text-center text-sm font-medium text-tier-success">31.8 ⭐</td>
+              <td className="py-3 px-4 text-center text-sm font-medium text-tier-success">31.8 [Best]</td>
             </tr>
           </tbody>
         </table>
@@ -286,9 +286,9 @@ export default function AnalyseSammenligningerHub() {
   };
 
   const tabs: { id: SammenligningTab; label: string; icon: string }[] = [
-    { id: 'peer', label: 'Peer', icon: '🎯' },
-    { id: 'proff', label: 'Proff', icon: '⭐' },
-    { id: 'multi', label: 'Multi-spiller', icon: '👥' },
+    { id: 'peer', label: 'Peer', icon: '' },
+    { id: 'proff', label: 'Proff', icon: '' },
+    { id: 'multi', label: 'Multi-spiller', icon: '' },
   ];
 
   return (

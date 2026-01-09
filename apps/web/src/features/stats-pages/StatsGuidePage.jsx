@@ -109,17 +109,17 @@ const TEST_CATEGORIES = [
 // ============================================================================
 
 const PLAYER_CATEGORIES = [
-  { category: 'A', scoreRange: '< 70', level: 'Elite / Tour', emoji: '🏆', colorKey: 'success' },
-  { category: 'B', scoreRange: '70-72', level: 'Scratch', emoji: '⭐', colorKey: 'success' },
-  { category: 'C', scoreRange: '73-75', level: 'Lavt handicap', emoji: '🎯', colorKey: 'success' },
-  { category: 'D', scoreRange: '76-78', level: 'Singel handicap', emoji: '📊', colorKey: 'warning' },
-  { category: 'E', scoreRange: '79-81', level: 'Middels', emoji: '📈', colorKey: 'warning' },
-  { category: 'F', scoreRange: '82-84', level: 'Hobby+', emoji: '🏌️', colorKey: 'secondary' },
-  { category: 'G', scoreRange: '85-87', level: 'Hobby', emoji: '🏌️', colorKey: 'secondary' },
-  { category: 'H', scoreRange: '88-90', level: 'Nybegynner+', emoji: '🌱', colorKey: 'secondary' },
-  { category: 'I', scoreRange: '91-93', level: 'Nybegynner', emoji: '🌱', colorKey: 'secondary' },
-  { category: 'J', scoreRange: '94-96', level: 'Starter+', emoji: '🆕', colorKey: 'secondary' },
-  { category: 'K', scoreRange: '97+', level: 'Starter', emoji: '🆕', colorKey: 'secondary' },
+  { category: 'A', scoreRange: '< 70', level: 'Elite / Tour', emoji: '', colorKey: 'success' },
+  { category: 'B', scoreRange: '70-72', level: 'Scratch', emoji: '', colorKey: 'success' },
+  { category: 'C', scoreRange: '73-75', level: 'Lavt handicap', emoji: '', colorKey: 'success' },
+  { category: 'D', scoreRange: '76-78', level: 'Singel handicap', emoji: '', colorKey: 'warning' },
+  { category: 'E', scoreRange: '79-81', level: 'Middels', emoji: '', colorKey: 'warning' },
+  { category: 'F', scoreRange: '82-84', level: 'Hobby+', emoji: '', colorKey: 'secondary' },
+  { category: 'G', scoreRange: '85-87', level: 'Hobby', emoji: '', colorKey: 'secondary' },
+  { category: 'H', scoreRange: '88-90', level: 'Nybegynner+', emoji: '', colorKey: 'secondary' },
+  { category: 'I', scoreRange: '91-93', level: 'Nybegynner', emoji: '', colorKey: 'secondary' },
+  { category: 'J', scoreRange: '94-96', level: 'Starter+', emoji: '', colorKey: 'secondary' },
+  { category: 'K', scoreRange: '97+', level: 'Starter', emoji: '', colorKey: 'secondary' },
 ];
 
 // ============================================================================

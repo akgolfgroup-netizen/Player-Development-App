@@ -296,7 +296,7 @@ export const FocusStep: React.FC<FocusStepProps> = ({ planner }) => {
       {showPositionSelector && !showPuttingFocus && (
         <div className="p-3 rounded-lg bg-tier-info/10">
           <span className="text-xs text-tier-info">
-            💡 Posisjonsvalg er valgfritt. Du kan gå videre uten å velge.
+            Merk: Posisjonsvalg er valgfritt. Du kan gå videre uten å velge.
           </span>
         </div>
       )}

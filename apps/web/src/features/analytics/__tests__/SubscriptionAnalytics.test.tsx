@@ -7,6 +7,24 @@ import SubscriptionAnalytics from '../SubscriptionAnalytics';
 // Mock fetch
 global.fetch = jest.fn();
 
+// Mock localStorage
+const localStorageMock = (() => {
+  let store: Record<string, string> = {};
+  return {
+    getItem: (key: string) => store[key] || null,
+    setItem: (key: string, value: string) => {
+      store[key] = value.toString();
+    },
+    clear: () => {
+      store = {};
+    },
+  };
+})();
+
+Object.defineProperty(window, 'localStorage', {
+  value: localStorageMock,
+});
+
 // Mock auth context
 jest.mock('../../../contexts/AuthContext', () => ({
   useAuth: () => ({
@@ -26,6 +44,8 @@ describe('SubscriptionAnalytics', () => {
   beforeEach(() => {
     jest.clearAllMocks();
     (global.fetch as jest.Mock).mockClear();
+    localStorageMock.clear();
+    localStorageMock.setItem('accessToken', 'test-token-123');
   });
 
   describe('Analytics Overview', () => {

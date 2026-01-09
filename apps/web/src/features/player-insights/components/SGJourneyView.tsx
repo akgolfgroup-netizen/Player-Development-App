@@ -14,7 +14,7 @@ const SGJourneyView: React.FC<SGJourneyViewProps> = ({ data }) => {
   if (!data) {
     return (
       <div className="bg-white rounded-xl border border-tier-border-default p-12 text-center">
-        <div className="text-6xl mb-4">📊</div>
+        <TrendingUp size={64} className="mb-4 mx-auto text-tier-text-secondary" />
         <h3 className="text-lg font-semibold text-tier-navy mb-2">Ingen SG Journey data</h3>
         <p className="text-tier-text-secondary">
           Trenger flere testresultater for å beregne din SG Journey.
@@ -232,7 +232,7 @@ const SGJourneyView: React.FC<SGJourneyViewProps> = ({ data }) => {
         <div className="bg-white rounded-xl border border-tier-border-default p-6">
           <h3 className="text-lg font-semibold text-tier-navy mb-4">Historikk</h3>
           <div className="text-sm text-tier-text-secondary text-center py-8">
-            📈 SG historikk graf kommer her (krever chart library)
+            SG historikk graf kommer her (krever chart library)
             <div className="mt-2 text-xs">
               {history.length} datapunkter tilgjengelig
             </div>

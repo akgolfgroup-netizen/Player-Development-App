@@ -117,7 +117,7 @@ const WelcomeSection: React.FC<WelcomeSectionProps> = ({ playerName, avatarUrl, 
           </div>
           {streak > 0 && (
             <div className="absolute -bottom-1 -right-1 w-6 h-6 bg-orange-500 rounded-full flex items-center justify-center text-xs shadow-sm">
-              🔥
+              STREAK
             </div>
           )}
         </div>
@@ -188,7 +188,7 @@ const WeekAtGlanceCard: React.FC<WeekAtGlanceCardProps> = ({ stats, loading }) =
           </CardTitle>
           {stats.streak > 0 && (
             <div className="flex items-center gap-1.5 px-3 py-1.5 bg-orange-50 rounded-full">
-              <span className="text-sm">🔥</span>
+              <span className="text-sm">STREAK</span>
               <span className="text-subhead font-semibold text-orange-600">{stats.streak} dager</span>
             </div>
           )}
@@ -340,7 +340,7 @@ const BadgesScoreCard: React.FC<BadgesScoreCardProps> = ({
           </div>
           {badgeCount > 0 && achievements?.slice(0, 3).map((badge, idx) => (
             <span key={badge.id || idx} className="text-xl">
-              {badge.iconEmoji || '🏅'}
+              {badge.iconEmoji || 'BADGE'}
             </span>
           ))}
         </div>

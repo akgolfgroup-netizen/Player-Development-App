@@ -52,7 +52,7 @@ const tw = {
 const CHECKLIST_ITEMS = [
   {
     key: 'equipmentChecked',
-    title: '⛳ Utstyrskontroll',
+    title: 'Utstyrskontroll',
     description: 'Sjekk at alt utstyr er komplett og i orden (køller, baller, hansker, tees)',
   },
   {
@@ -62,17 +62,17 @@ const CHECKLIST_ITEMS = [
   },
   {
     key: 'practiceRoundCompleted',
-    title: '🏌️ Treningsrunde',
+    title: 'Treningsrunde',
     description: 'Spill minst én treningsrunde på banen for å teste strategi',
   },
   {
     key: 'mentalRoutineSet',
-    title: '🧠 Mental rutine',
+    title: 'Mental rutine',
     description: 'Definer og øv på pre-shot rutine og mentale fokuspunkter',
   },
   {
     key: 'nutritionPlanned',
-    title: '🍎 Ernæringsplan',
+    title: 'Ernaeringsplan',
     description: 'Planlegg mat og væske for turneringsdagen',
   },
 ];

@@ -48,7 +48,7 @@ const ApproachSkillBreakdown: React.FC<Props> = ({ playerId, className = '' }) =
   if (error) {
     return (
       <div className="bg-white rounded-xl border border-tier-border-default p-8 text-center">
-        <div className="text-tier-error text-4xl mb-4">⚠️</div>
+        <div className="text-tier-error text-4xl mb-4">[Warning]</div>
         <h3 className="text-lg font-semibold text-tier-navy mb-2">Kunne ikke laste approach skill</h3>
         <p className="text-tier-text-secondary">{error}</p>
       </div>
@@ -160,7 +160,7 @@ const ApproachSkillBreakdown: React.FC<Props> = ({ playerId, className = '' }) =
       {/* Insights */}
       {approachSkill?.insights && (
         <div className="p-6 border-t border-tier-border-default">
-          <h4 className="text-md font-semibold text-tier-navy mb-3">💡 Innsikt</h4>
+          <h4 className="text-md font-semibold text-tier-navy mb-3">Innsikt</h4>
           <div className="space-y-2">
             {approachSkill.insights.map((insight: string, index: number) => (
               <div key={index} className="p-3 bg-tier-info-light rounded-lg text-sm text-tier-navy">

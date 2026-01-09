@@ -65,7 +65,7 @@ const FocusEnginePage: React.FC = () => {
       <div className="min-h-screen bg-tier-surface-base p-6">
         <div className="max-w-2xl mx-auto">
           <div className="bg-white rounded-xl border border-tier-border-default p-8 text-center">
-            <div className="text-tier-error text-4xl mb-4">⚠️</div>
+            <div className="text-tier-error text-4xl mb-4">[Warning]</div>
             <h3 className="text-lg font-semibold text-tier-navy mb-2">
               Kunne ikke laste anbefalinger
             </h3>
@@ -175,7 +175,7 @@ const FocusEnginePage: React.FC = () => {
           </div>
         ) : (
           <div className="bg-white rounded-xl border border-tier-border-default p-12 text-center">
-            <div className="text-tier-text-secondary text-4xl mb-4">🎯</div>
+            <div className="text-tier-text-secondary text-4xl mb-4">[Target]</div>
             <h3 className="text-lg font-semibold text-tier-navy mb-2">
               Ingen anbefalinger tilgjengelig
             </h3>
@@ -190,7 +190,7 @@ const FocusEnginePage: React.FC = () => {
 
         {/* Info section */}
         <div className="mt-8 bg-white rounded-xl border border-tier-border-default p-6">
-          <h3 className="text-lg font-semibold text-tier-navy mb-3">💡 Om treningsfokus</h3>
+          <h3 className="text-lg font-semibold text-tier-navy mb-3">Om treningsfokus</h3>
           <div className="grid md:grid-cols-2 gap-6 text-sm text-tier-text-secondary">
             <div>
               <h4 className="font-semibold text-tier-navy mb-2">Hvordan fungerer det?</h4>

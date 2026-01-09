@@ -29,9 +29,9 @@ interface TourAveragesData {
 }
 
 const TOUR_OPTIONS = [
-  { value: 'pga' as Tour, label: 'PGA Tour', icon: '🇺🇸' },
-  { value: 'european' as Tour, label: 'DP World Tour', icon: '🇪🇺' },
-  { value: 'lpga' as Tour, label: 'LPGA Tour', icon: '⛳' },
+  { value: 'pga' as Tour, label: 'PGA Tour', icon: '[US]' },
+  { value: 'european' as Tour, label: 'DP World Tour', icon: '[EU]' },
+  { value: 'lpga' as Tour, label: 'LPGA Tour', icon: '[Golf]' },
 ];
 
 const CURRENT_SEASON = '2024';
@@ -151,7 +151,7 @@ const PlayerDataGolfPage: React.FC = () => {
         {/* Error state */}
         {comparisonError && !loading && (
           <div className="bg-white rounded-xl border border-tier-border-default p-8 text-center">
-            <div className="text-tier-error text-4xl mb-4">⚠️</div>
+            <div className="text-tier-error text-4xl mb-4">[Warning]</div>
             <h3 className="text-lg font-semibold text-tier-navy mb-2">Kunne ikke laste data</h3>
             <p className="text-tier-text-secondary">{comparisonError}</p>
           </div>
@@ -234,17 +234,17 @@ const PlayerDataGolfPage: React.FC = () => {
 
             {/* Insights */}
             <div className="bg-white rounded-xl border border-tier-border-default p-6">
-              <h3 className="text-lg font-semibold text-tier-navy mb-4">💡 Styrker og svakheter</h3>
+              <h3 className="text-lg font-semibold text-tier-navy mb-4">Styrker og svakheter</h3>
               <div className="grid md:grid-cols-2 gap-4">
                 <div className="p-4 bg-tier-success-light rounded-lg">
-                  <h4 className="font-semibold text-tier-success mb-2">✓ Dine styrker</h4>
+                  <h4 className="font-semibold text-tier-success mb-2">Dine styrker</h4>
                   <ul className="text-sm text-tier-navy space-y-1">
                     <li>• Short game (over tour-snitt)</li>
                     <li>• Putting fra kort distanse</li>
                   </ul>
                 </div>
                 <div className="p-4 bg-tier-warning-light rounded-lg">
-                  <h4 className="font-semibold text-tier-warning mb-2">⚠ Forbedringsområder</h4>
+                  <h4 className="font-semibold text-tier-warning mb-2">Forbedringsområder</h4>
                   <ul className="text-sm text-tier-navy space-y-1">
                     <li>• Driving distanse (under tour-snitt)</li>
                     <li>• Greens i regulering</li>

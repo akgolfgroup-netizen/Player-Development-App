@@ -98,10 +98,10 @@ export function ProgressReportViewer({ className = '', report, onBack }) {
             </Button>
           )}
           <Button variant="secondary" onClick={handlePrint}>
-            🖨️ Skriv ut
+            Skriv ut
             </Button>
           <Button variant="secondary" onClick={handleDownload}>
-            📥 Last ned PDF
+            Last ned PDF
           </Button>
         </div>
       </div>
@@ -136,7 +136,7 @@ export function ProgressReportViewer({ className = '', report, onBack }) {
         {/* Highlights Section */}
         <div className={tw.section}>
           <h2 className={tw.sectionTitle}>
-            <span className={tw.sectionIcon}>🌟</span>
+            <span className={tw.sectionIcon}>[Star]</span>
             Høydepunkter
           </h2>
           {report.highlights ? (
@@ -149,7 +149,7 @@ export function ProgressReportViewer({ className = '', report, onBack }) {
         {/* Areas for Improvement Section */}
         <div className={tw.section}>
           <h2 className={tw.sectionTitle}>
-            <span className={tw.sectionIcon}>📈</span>
+            <span className={tw.sectionIcon}>[TrendUp]</span>
             Forbedringsområder
           </h2>
           {report.areasForImprovement ? (
@@ -162,7 +162,7 @@ export function ProgressReportViewer({ className = '', report, onBack }) {
         {/* Goals for Next Period Section */}
         <div className={tw.section}>
           <h2 className={tw.sectionTitle}>
-            <span className={tw.sectionIcon}>🎯</span>
+            <span className={tw.sectionIcon}>[Target]</span>
             Mål for neste periode
           </h2>
           {report.goalsForNextPeriod ? (
@@ -176,7 +176,7 @@ export function ProgressReportViewer({ className = '', report, onBack }) {
         {report.coachComments && (
           <div className={tw.section}>
             <h2 className={tw.sectionTitle}>
-              <span className={tw.sectionIcon}>💬</span>
+              <span className={tw.sectionIcon}>[Chat]</span>
               Trenerkommentarer
             </h2>
             <p className={tw.sectionContent}>{report.coachComments}</p>

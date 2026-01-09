@@ -344,7 +344,7 @@ export default function CoachBookingCalendar() {
             >
               Forespørsler
               {stats.pending > 0 && (
-                <span className="ml-2 py-0.5 px-2 bg-tier-warning text-white rounded-full text-xs font-semibold">
+                <span className="ml-2 py-0.5 px-2 bg-tier-warning text-tier-navy rounded-full text-xs font-semibold">
                   {stats.pending}
                 </span>
               )}
@@ -489,7 +489,7 @@ export default function CoachBookingCalendar() {
                             {slot.booking.sessionType}
                           </p>
                           {slot.status === 'pending' && (
-                            <span className="inline-block mt-1 py-0.5 px-1.5 bg-tier-warning text-white rounded text-[9px] font-semibold">
+                            <span className="inline-block mt-1 py-0.5 px-1.5 bg-tier-warning text-tier-navy rounded text-[9px] font-semibold">
                               VENTER
                             </span>
                           )}

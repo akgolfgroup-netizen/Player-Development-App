@@ -159,7 +159,7 @@ const BountyBoardView: React.FC<BountyBoardViewProps> = ({ data: initialData }) 
         </div>
         <div className="bg-white rounded-xl border border-tier-border-default p-4">
           <div className="text-xs text-tier-text-secondary mb-1">Streak</div>
-          <div className="text-2xl font-bold text-tier-error">🔥 {data.currentStreak}</div>
+          <div className="text-2xl font-bold text-tier-error">{data.currentStreak}</div>
         </div>
       </div>
 
@@ -194,7 +194,7 @@ const BountyBoardView: React.FC<BountyBoardViewProps> = ({ data: initialData }) 
           </div>
         ) : (
           <div className="bg-white rounded-xl border border-tier-border-default p-8 text-center">
-            <div className="text-4xl mb-2">🎯</div>
+            <Target size={48} className="mb-2 text-tier-text-secondary" />
             <p className="text-tier-text-secondary">Ingen aktive bounties</p>
           </div>
         )}
@@ -214,7 +214,7 @@ const BountyBoardView: React.FC<BountyBoardViewProps> = ({ data: initialData }) 
           </div>
         ) : (
           <div className="bg-white rounded-xl border border-tier-border-default p-8 text-center">
-            <div className="text-4xl mb-2">✅</div>
+            <TrendingUp size={48} className="mb-2 text-tier-success" />
             <p className="text-tier-text-secondary">Alle tilgjengelige bounties er aktivert!</p>
           </div>
         )}

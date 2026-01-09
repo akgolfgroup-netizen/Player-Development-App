@@ -10,17 +10,17 @@ interface Props {
 }
 
 const LEARNING_STYLES = [
-  { value: 'visual', label: 'Visuell', description: 'Lærer best ved å se demonstrasjoner og videoer', icon: '👁️' },
-  { value: 'verbal', label: 'Verbal', description: 'Lærer best gjennom detaljerte forklaringer', icon: '💬' },
-  { value: 'kinesthetic', label: 'Kinestetisk', description: 'Lærer best ved å gjøre og føle bevegelsen', icon: '🤸' },
-  { value: 'mixed', label: 'Blandet', description: 'Kombinasjon av flere læringstiler', icon: '🔄' },
+  { value: 'visual', label: 'Visuell', description: 'Laerer best ved a se demonstrasjoner og videoer', icon: 'V' },
+  { value: 'verbal', label: 'Verbal', description: 'Laerer best gjennom detaljerte forklaringer', icon: 'T' },
+  { value: 'kinesthetic', label: 'Kinestetisk', description: 'Laerer best ved a gjore og fole bevegelsen', icon: 'K' },
+  { value: 'mixed', label: 'Blandet', description: 'Kombinasjon av flere laeringsstiler', icon: 'M' },
 ];
 
 const MOTIVATION_TYPES = [
-  { value: 'competition', label: 'Konkuranse', description: 'Motivert av å konkurrere og vinne', icon: '🏆' },
-  { value: 'personal_growth', label: 'Personlig utvikling', description: 'Motivert av egen fremgang', icon: '📈' },
-  { value: 'social', label: 'Sosial', description: 'Motivert av fellesskap og sosiale aspekter', icon: '👥' },
-  { value: 'achievement', label: 'Prestasjon', description: 'Motivert av å nå konkrete mål', icon: '🎯' },
+  { value: 'competition', label: 'Konkuranse', description: 'Motivert av a konkurrere og vinne', icon: 'C' },
+  { value: 'personal_growth', label: 'Personlig utvikling', description: 'Motivert av egen fremgang', icon: 'P' },
+  { value: 'social', label: 'Sosial', description: 'Motivert av fellesskap og sosiale aspekter', icon: 'S' },
+  { value: 'achievement', label: 'Prestasjon', description: 'Motivert av a na konkrete mal', icon: 'A' },
 ];
 
 const LearningStep: React.FC<Props> = ({ data, onComplete }) => {
@@ -132,7 +132,7 @@ const LearningStep: React.FC<Props> = ({ data, onComplete }) => {
 
       {/* Info Box */}
       <div className="bg-tier-success-light border border-tier-success rounded-lg p-4">
-        <h4 className="text-sm font-semibold text-tier-navy mb-2">✨ Nesten ferdig!</h4>
+        <h4 className="text-sm font-semibold text-tier-navy mb-2">Nesten ferdig!</h4>
         <p className="text-xs text-tier-text-secondary mb-2">
           Ved å forstå hvordan du lærer best og hva som motiverer deg, kan vi lage en treningsplan
           som passer din personlighet og læringsstil. Dette øker sjansen for langsiktig suksess.

@@ -264,7 +264,7 @@ export const CalendarDayView: React.FC<CalendarDayViewProps> = ({
           primaryCta = (
             <button
               onClick={() => onPostponeSession(recommendedEvent, 30)}
-              className="flex items-center gap-1.5 px-4 py-2 rounded-lg font-medium text-sm transition-colors bg-tier-warning text-white"
+              className="flex items-center gap-1.5 px-4 py-2 rounded-lg font-medium text-sm transition-colors bg-tier-warning text-tier-navy"
             >
               <ArrowRight size={16} />
               Flytt 30 min

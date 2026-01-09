@@ -104,16 +104,16 @@ const TestresultaterContainer = () => {
 // Helper functions
 function getCategoryIcon(category) {
   const icons = {
-    speed: '⚡',
-    distance: '🏌️',
-    accuracy: '🎯',
-    short_game: '⛳',
-    putting: '🕳️',
-    physical: '💪',
-    mental: '🧠',
-    scoring: '📊',
+    speed: 'zap',
+    distance: 'ruler',
+    accuracy: 'target',
+    short_game: 'flag',
+    putting: 'circle',
+    physical: 'dumbbell',
+    mental: 'brain',
+    scoring: 'bar-chart',
   };
-  return icons[category] || '📋';
+  return icons[category] || 'file-text';
 }
 
 function getTestUnit(testType) {

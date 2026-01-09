@@ -57,7 +57,7 @@ const BreakingPointTimeline: React.FC<Props> = ({
   if (sortedPoints.length === 0) {
     return (
       <div className={`bg-white rounded-xl border border-tier-border-default p-12 text-center ${className}`}>
-        <div className="text-tier-text-secondary text-4xl mb-4">📊</div>
+        <div className="text-tier-text-secondary text-4xl mb-4">[Chart]</div>
         <h3 className="text-lg font-semibold text-tier-navy mb-2">Ingen vendepunkter ennå</h3>
         <p className="text-tier-text-secondary">
           Når systemet identifiserer betydelige endringer i prestasjonen din, vil de vises her.

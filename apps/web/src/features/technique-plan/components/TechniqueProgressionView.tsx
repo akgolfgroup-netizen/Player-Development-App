@@ -266,7 +266,7 @@ const TechniqueProgressionView: React.FC<TechniqueProgressionViewProps> = ({ pla
                   <p className="text-xs text-tier-text-secondary">{club.shots} slag</p>
                   {club.avgClubSpeed && (
                     <p className="text-xs text-tier-navy mt-1">
-                      ⚡ {club.avgClubSpeed.toFixed(1)} mph
+                      Speed: {club.avgClubSpeed.toFixed(1)} mph
                     </p>
                   )}
                 </div>

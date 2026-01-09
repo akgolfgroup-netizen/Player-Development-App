@@ -41,9 +41,9 @@ export default function CoachSpillereHub({
         { label: 'Evalueringer', value: stats.evalueringer, icon: 'CheckCircle' },
       ]}
       featuredAction={{
-        label: 'Legg til spiller',
-        href: '/coach/athletes/new',
-        icon: 'UserPlus',
+        label: 'Se alle spillere',
+        href: '/coach/athletes',
+        icon: 'Users',
         variant: 'primary',
       }}
     />

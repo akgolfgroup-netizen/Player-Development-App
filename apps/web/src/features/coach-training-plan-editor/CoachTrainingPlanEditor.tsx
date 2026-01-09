@@ -97,43 +97,43 @@ const TRAINING_CATEGORIES = {
   fullSwing: {
     label: 'Full Swing',
     categories: [
-      { code: 'TEE', label: 'Tee Total', icon: '🏌️', description: 'Driver, 3-wood' },
-      { code: 'INN200', label: 'Innspill 200+ m', icon: '🎯', description: '3-wood, hybrid, long iron' },
-      { code: 'INN150', label: 'Innspill 150-200 m', icon: '🎯', description: '5-7 iron' },
-      { code: 'INN100', label: 'Innspill 100-150 m', icon: '🎯', description: '8-PW' },
-      { code: 'INN50', label: 'Innspill 50-100 m', icon: '🎯', description: 'Wedges (full swing)' },
+      { code: 'TEE', label: 'Tee Total', icon: '[Golfer]', description: 'Driver, 3-wood' },
+      { code: 'INN200', label: 'Innspill 200+ m', icon: '[Target]', description: '3-wood, hybrid, long iron' },
+      { code: 'INN150', label: 'Innspill 150-200 m', icon: '[Target]', description: '5-7 iron' },
+      { code: 'INN100', label: 'Innspill 100-150 m', icon: '[Target]', description: '8-PW' },
+      { code: 'INN50', label: 'Innspill 50-100 m', icon: '[Target]', description: 'Wedges (full swing)' },
     ],
   },
   shortGame: {
     label: 'Naerspill',
     categories: [
-      { code: 'CHIP', label: 'Chip', icon: '📐', description: 'Lav bue, mye rulle' },
-      { code: 'PITCH', label: 'Pitch', icon: '📐', description: 'Middels bue, middels rulle' },
-      { code: 'LOB', label: 'Lob', icon: '📐', description: 'Høy bue, lite rulle' },
+      { code: 'CHIP', label: 'Chip', icon: '[Angle]', description: 'Lav bue, mye rulle' },
+      { code: 'PITCH', label: 'Pitch', icon: '[Angle]', description: 'Middels bue, middels rulle' },
+      { code: 'LOB', label: 'Lob', icon: '[Angle]', description: 'Høy bue, lite rulle' },
       { code: 'BUNKER', label: 'Bunker', icon: 'umbrella', description: 'Sand, greenside' },
     ],
   },
   putting: {
     label: 'Putting',
     categories: [
-      { code: 'PUTT0-3', label: '0-3 ft', icon: '⛳', description: 'Makk-putts' },
-      { code: 'PUTT3-5', label: '3-5 ft', icon: '⛳', description: 'Korte' },
-      { code: 'PUTT5-10', label: '5-10 ft', icon: '⛳', description: 'Mellom' },
-      { code: 'PUTT10-15', label: '10-15 ft', icon: '⛳', description: 'Mellom-lange' },
-      { code: 'PUTT15-25', label: '15-25 ft', icon: '⛳', description: 'Lange' },
-      { code: 'PUTT25-40', label: '25-40 ft', icon: '⛳', description: 'Lag putts' },
-      { code: 'PUTT40+', label: '40+ ft', icon: '⛳', description: 'Ekstra lange' },
+      { code: 'PUTT0-3', label: '0-3 ft', icon: '[Flag]', description: 'Makk-putts' },
+      { code: 'PUTT3-5', label: '3-5 ft', icon: '[Flag]', description: 'Korte' },
+      { code: 'PUTT5-10', label: '5-10 ft', icon: '[Flag]', description: 'Mellom' },
+      { code: 'PUTT10-15', label: '10-15 ft', icon: '[Flag]', description: 'Mellom-lange' },
+      { code: 'PUTT15-25', label: '15-25 ft', icon: '[Flag]', description: 'Lange' },
+      { code: 'PUTT25-40', label: '25-40 ft', icon: '[Flag]', description: 'Lag putts' },
+      { code: 'PUTT40+', label: '40+ ft', icon: '[Flag]', description: 'Ekstra lange' },
     ],
   },
 };
 
 // L-Faser (Motorisk læring)
 const L_PHASES = [
-  { code: 'L-KROPP', label: 'Kropp', description: 'Kun kroppsbevegelse, ingen utstyr', icon: '🧍', csRange: 'CS0' },
-  { code: 'L-ARM', label: 'Arm', description: 'Kropp + armer, ingen kølle/ball', icon: '💪', csRange: 'CS0' },
-  { code: 'L-KØLLE', label: 'Kølle', description: 'Kropp + armer + kølle, ingen ball', icon: '🏌️', csRange: 'CS20-40' },
-  { code: 'L-BALL', label: 'Ball', description: 'Alt inkludert, lav hastighet', icon: '⚪', csRange: 'CS40-60' },
-  { code: 'L-AUTO', label: 'Auto', description: 'Full hastighet, automatisert', icon: '🚀', csRange: 'CS70-100' },
+  { code: 'L-KROPP', label: 'Kropp', description: 'Kun kroppsbevegelse, ingen utstyr', icon: '[Body]', csRange: 'CS0' },
+  { code: 'L-ARM', label: 'Arm', description: 'Kropp + armer, ingen kølle/ball', icon: '[Arm]', csRange: 'CS0' },
+  { code: 'L-KØLLE', label: 'Kølle', description: 'Kropp + armer + kølle, ingen ball', icon: '[Golfer]', csRange: 'CS20-40' },
+  { code: 'L-BALL', label: 'Ball', description: 'Alt inkludert, lav hastighet', icon: '[Ball]', csRange: 'CS40-60' },
+  { code: 'L-AUTO', label: 'Auto', description: 'Full hastighet, automatisert', icon: '[Rocket]', csRange: 'CS70-100' },
 ];
 
 // CS-Nivåer (Clubspeed)
@@ -152,21 +152,21 @@ const CS_LEVELS = [
 
 // M-Miljø (Fysisk kontekst)
 const M_ENVIRONMENTS = [
-  { code: 'M0', label: 'Off-course', description: 'Gym, hjemme, ikke golf-spesifikt', icon: '🏋️' },
-  { code: 'M1', label: 'Innendørs', description: 'Nett, simulator, Trackman', icon: '🏠' },
-  { code: 'M2', label: 'Range', description: 'Utendørs, matte eller gress', icon: '🏟️' },
-  { code: 'M3', label: 'Øvingsfelt', description: 'Kortbane, chipping green, putting green', icon: '⛳' },
-  { code: 'M4', label: 'Bane trening', description: 'Treningsrunde på bane', icon: '🌿' },
-  { code: 'M5', label: 'Bane turnering', description: 'Turneringsrunde', icon: '🏆' },
+  { code: 'M0', label: 'Off-course', description: 'Gym, hjemme, ikke golf-spesifikt', icon: '[Gym]' },
+  { code: 'M1', label: 'Innendørs', description: 'Nett, simulator, Trackman', icon: '[Home]' },
+  { code: 'M2', label: 'Range', description: 'Utendørs, matte eller gress', icon: '[Stadium]' },
+  { code: 'M3', label: 'Øvingsfelt', description: 'Kortbane, chipping green, putting green', icon: '[Flag]' },
+  { code: 'M4', label: 'Bane trening', description: 'Treningsrunde på bane', icon: '[Grass]' },
+  { code: 'M5', label: 'Bane turnering', description: 'Turneringsrunde', icon: '[Trophy]' },
 ];
 
 // PR-Press (Fysisk & Mental belastning)
 const PR_LEVELS = [
-  { code: 'PR1', label: 'Ingen', description: 'Utforskende, ingen konsekvens', icon: '😌' },
-  { code: 'PR2', label: 'Selvmonitorering', description: 'Måltall, tracking, men ingen sosial', icon: '📊' },
-  { code: 'PR3', label: 'Sosial', description: 'Med andre, observert', icon: '👥' },
-  { code: 'PR4', label: 'Konkurranse', description: 'Innsats, spill mot andre', icon: '🔥' },
-  { code: 'PR5', label: 'Turnering', description: 'Resultat teller, ranking', icon: '🏆' },
+  { code: 'PR1', label: 'Ingen', description: 'Utforskende, ingen konsekvens', icon: '[Relax]' },
+  { code: 'PR2', label: 'Selvmonitorering', description: 'Måltall, tracking, men ingen sosial', icon: '[Chart]' },
+  { code: 'PR3', label: 'Sosial', description: 'Med andre, observert', icon: '[Group]' },
+  { code: 'PR4', label: 'Konkurranse', description: 'Innsats, spill mot andre', icon: '[Fire]' },
+  { code: 'PR5', label: 'Turnering', description: 'Resultat teller, ranking', icon: '[Trophy]' },
 ];
 
 //////////////////////////////

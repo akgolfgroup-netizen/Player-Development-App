@@ -29,7 +29,7 @@ export default function AnalyseRapporterHub() {
           <div className="bg-white rounded-xl border border-tier-border-default p-6 hover:shadow-lg transition-shadow cursor-pointer">
             <div className="flex items-center justify-between mb-4">
               <div className="w-12 h-12 bg-tier-info-light rounded-full flex items-center justify-center">
-                <span className="text-2xl">📄</span>
+                <span className="text-2xl">[Doc]</span>
               </div>
               <span className="text-xs text-tier-text-secondary">3 dager siden</span>
             </div>
@@ -38,16 +38,16 @@ export default function AnalyseRapporterHub() {
               Vurdering av din utvikling i desember med fokus på putting og short game forbedringer.
             </p>
             <div className="flex items-center gap-4 text-xs text-tier-text-secondary">
-              <span>📊 8 tester</span>
-              <span>🎯 6 mål evaluert</span>
-              <span>✍️ Trener: Anders</span>
+              <span>8 tester</span>
+              <span>6 maal evaluert</span>
+              <span>Trener: Anders</span>
             </div>
           </div>
 
           <div className="bg-white rounded-xl border border-tier-border-default p-6 hover:shadow-lg transition-shadow cursor-pointer">
             <div className="flex items-center justify-between mb-4">
               <div className="w-12 h-12 bg-tier-success-light rounded-full flex items-center justify-center">
-                <span className="text-2xl">📄</span>
+                <span className="text-2xl">[Doc]</span>
               </div>
               <span className="text-xs text-tier-text-secondary">5 uker siden</span>
             </div>
@@ -56,9 +56,9 @@ export default function AnalyseRapporterHub() {
               Oppsummering av fjerde kvartal med betydelig fremgang i handicap og teknisk utvikling.
             </p>
             <div className="flex items-center gap-4 text-xs text-tier-text-secondary">
-              <span>📊 24 tester</span>
-              <span>🎯 12 mål evaluert</span>
-              <span>✍️ Trener: Anders</span>
+              <span>24 tester</span>
+              <span>12 maal evaluert</span>
+              <span>Trener: Anders</span>
             </div>
           </div>
         </div>
@@ -119,7 +119,7 @@ export default function AnalyseRapporterHub() {
         {/* Info box */}
         <div className="mt-6 bg-tier-info-light border border-tier-info rounded-xl p-6">
           <div className="flex items-start gap-3">
-            <span className="text-2xl">💡</span>
+            <span className="text-2xl">[Info]</span>
             <div>
               <h4 className="text-sm font-semibold text-tier-navy mb-1">Rapporteringsplan</h4>
               <p className="text-sm text-tier-text-secondary">

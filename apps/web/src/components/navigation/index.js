@@ -22,3 +22,6 @@ export { default as SideNavigationMobile } from './SideNavigationMobile';
 export { default as NavRail } from './NavRail';
 export { default as NavFlyout } from './NavFlyout';
 export { navigationSections, getSectionById, getSectionByPath } from './navigationData';
+
+// Area Tabs for hub pages
+export { AreaTabs, areaTabs } from './AreaTabs';

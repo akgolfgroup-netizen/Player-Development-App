@@ -7,7 +7,7 @@
 import React, { useState, useEffect } from 'react';
 import {
   BookOpen, ChevronRight, Plus, Star, Clock,
-  Target, Dumbbell, Brain, Search, AlertCircle
+  Target, Dumbbell, Brain, Search, AlertCircle, Flame
 } from 'lucide-react';
 import Card from '../../ui/primitives/Card';
 import Button from '../../ui/primitives/Button';
@@ -293,7 +293,7 @@ const StatsOverview = ({ stats }) => (
     </Card>
     <Card variant="default" padding="sm" className="text-center">
       <div className="text-[22px] font-bold text-tier-error flex items-center justify-center gap-1">
-        🔥 {stats.streak}
+        <Flame size={18} /> {stats.streak}
       </div>
       <div className="text-[11px] text-tier-text-secondary">Streak</div>
     </Card>

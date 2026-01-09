@@ -69,7 +69,7 @@ const SupportPage: React.FC = () => {
         {/* FAQ/Help section */}
         <div className="bg-white rounded-xl border border-tier-border-default p-6">
           <h3 className="text-lg font-semibold text-tier-navy mb-4">
-            💡 Ofte stilte spørsmål
+            Ofte stilte sporsmal
           </h3>
 
           <div className="space-y-4">

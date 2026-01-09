@@ -49,10 +49,10 @@ function BadgesTab() {
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
           {/* Putting Badges */}
           <div className="p-4 border border-tier-border-default rounded-lg">
-            <h4 className="text-sm font-semibold text-tier-navy mb-3">🎯 Putting</h4>
+            <h4 className="text-sm font-semibold text-tier-navy mb-3">Putting</h4>
             <div className="space-y-2">
               <div className="flex items-center gap-3 p-2 bg-tier-success-light rounded-lg">
-                <span className="text-2xl">🥇</span>
+                <span className="text-2xl">[Gold]</span>
                 <div>
                   <div className="text-xs font-medium text-tier-navy">Putting Master</div>
                   <div className="text-xs text-tier-text-secondary">Alle P1-P5 tests</div>
@@ -60,7 +60,7 @@ function BadgesTab() {
               </div>
 
               <div className="flex items-center gap-3 p-2 bg-tier-success-light rounded-lg">
-                <span className="text-2xl">🥈</span>
+                <span className="text-2xl">[Silver]</span>
                 <div>
                   <div className="text-xs font-medium text-tier-navy">Putting Expert</div>
                   <div className="text-xs text-tier-text-secondary">P1-P3 tests</div>
@@ -68,7 +68,7 @@ function BadgesTab() {
               </div>
 
               <div className="flex items-center gap-3 p-2 bg-tier-surface-base rounded-lg opacity-50">
-                <span className="text-2xl grayscale">🥉</span>
+                <span className="text-2xl grayscale">[Bronze]</span>
                 <div>
                   <div className="text-xs font-medium text-tier-text-secondary">Putting Pro</div>
                   <div className="text-xs text-tier-text-secondary">P1-P2 tests</div>
@@ -79,10 +79,10 @@ function BadgesTab() {
 
           {/* Chipping Badges */}
           <div className="p-4 border border-tier-border-default rounded-lg">
-            <h4 className="text-sm font-semibold text-tier-navy mb-3">⛳ Chipping</h4>
+            <h4 className="text-sm font-semibold text-tier-navy mb-3">Chipping</h4>
             <div className="space-y-2">
               <div className="flex items-center gap-3 p-2 bg-tier-surface-base rounded-lg opacity-50">
-                <span className="text-2xl grayscale">🥇</span>
+                <span className="text-2xl grayscale">[Gold]</span>
                 <div>
                   <div className="text-xs font-medium text-tier-text-secondary">Chipping Master</div>
                   <div className="text-xs text-tier-text-secondary">Alle CH1-CH5 tests</div>
@@ -90,7 +90,7 @@ function BadgesTab() {
               </div>
 
               <div className="flex items-center gap-3 p-2 bg-tier-warning-light rounded-lg border border-tier-warning">
-                <span className="text-2xl">🥈</span>
+                <span className="text-2xl">[Silver]</span>
                 <div>
                   <div className="text-xs font-medium text-tier-navy">Chipping Expert</div>
                   <div className="text-xs text-tier-warning font-medium">1 test mangler!</div>
@@ -98,7 +98,7 @@ function BadgesTab() {
               </div>
 
               <div className="flex items-center gap-3 p-2 bg-tier-success-light rounded-lg">
-                <span className="text-2xl">🥉</span>
+                <span className="text-2xl">[Bronze]</span>
                 <div>
                   <div className="text-xs font-medium text-tier-navy">Chipping Pro</div>
                   <div className="text-xs text-tier-text-secondary">CH1-CH2 tests</div>
@@ -109,10 +109,10 @@ function BadgesTab() {
 
           {/* Pitching Badges */}
           <div className="p-4 border border-tier-border-default rounded-lg">
-            <h4 className="text-sm font-semibold text-tier-navy mb-3">🏌️ Pitching</h4>
+            <h4 className="text-sm font-semibold text-tier-navy mb-3">Pitching</h4>
             <div className="space-y-2">
               <div className="flex items-center gap-3 p-2 bg-tier-surface-base rounded-lg opacity-50">
-                <span className="text-2xl grayscale">🥇</span>
+                <span className="text-2xl grayscale">[Gold]</span>
                 <div>
                   <div className="text-xs font-medium text-tier-text-secondary">Pitching Master</div>
                   <div className="text-xs text-tier-text-secondary">Alle PI1-PI5 tests</div>
@@ -120,7 +120,7 @@ function BadgesTab() {
               </div>
 
               <div className="flex items-center gap-3 p-2 bg-tier-surface-base rounded-lg opacity-50">
-                <span className="text-2xl grayscale">🥈</span>
+                <span className="text-2xl grayscale">[Silver]</span>
                 <div>
                   <div className="text-xs font-medium text-tier-text-secondary">Pitching Expert</div>
                   <div className="text-xs text-tier-text-secondary">PI1-PI3 tests</div>
@@ -128,7 +128,7 @@ function BadgesTab() {
               </div>
 
               <div className="flex items-center gap-3 p-2 bg-tier-surface-base rounded-lg opacity-50">
-                <span className="text-2xl grayscale">🥉</span>
+                <span className="text-2xl grayscale">[Bronze]</span>
                 <div>
                   <div className="text-xs font-medium text-tier-text-secondary">Pitching Pro</div>
                   <div className="text-xs text-tier-text-secondary">PI1-PI2 tests</div>
@@ -144,7 +144,7 @@ function BadgesTab() {
         <h3 className="text-lg font-semibold text-tier-navy mb-4">Nylig opptjent</h3>
         <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
           <div className="flex items-center gap-4 p-4 bg-tier-success-light border border-tier-success rounded-lg">
-            <span className="text-4xl">🥇</span>
+            <span className="text-4xl">[Gold]</span>
             <div className="flex-1">
               <div className="text-sm font-semibold text-tier-navy">Putting Master</div>
               <div className="text-xs text-tier-text-secondary mb-2">Bestått alle P1-P5 tester</div>
@@ -153,7 +153,7 @@ function BadgesTab() {
           </div>
 
           <div className="flex items-center gap-4 p-4 bg-tier-success-light border border-tier-success rounded-lg">
-            <span className="text-4xl">🥈</span>
+            <span className="text-4xl">[Silver]</span>
             <div className="flex-1">
               <div className="text-sm font-semibold text-tier-navy">Chipping Pro</div>
               <div className="text-xs text-tier-text-secondary mb-2">Bestått CH1-CH2 tester</div>
@@ -170,7 +170,7 @@ function BadgesTab() {
           <div>
             <div className="flex items-center justify-between mb-2">
               <div className="flex items-center gap-3">
-                <span className="text-2xl">🥈</span>
+                <span className="text-2xl">[Silver]</span>
                 <div>
                   <div className="text-sm font-medium text-tier-navy">Chipping Expert</div>
                   <div className="text-xs text-tier-text-secondary">CH1-CH3 tests</div>
@@ -186,7 +186,7 @@ function BadgesTab() {
           <div>
             <div className="flex items-center justify-between mb-2">
               <div className="flex items-center gap-3">
-                <span className="text-2xl">🥉</span>
+                <span className="text-2xl">[Bronze]</span>
                 <div>
                   <div className="text-sm font-medium text-tier-navy">Full Swing Pro</div>
                   <div className="text-xs text-tier-text-secondary">F1-F2 tests</div>
@@ -231,10 +231,10 @@ function AchievementsTab() {
         <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
           {/* Skill Achievements */}
           <div>
-            <h4 className="text-md font-semibold text-tier-navy mb-3">🎯 Ferdigheter</h4>
+            <h4 className="text-md font-semibold text-tier-navy mb-3">Ferdigheter</h4>
             <div className="space-y-3">
               <div className="flex items-center gap-4 p-3 bg-tier-success-light border border-tier-success rounded-lg">
-                <span className="text-3xl">🎯</span>
+                <span className="text-3xl">[Target]</span>
                 <div className="flex-1">
                   <div className="text-sm font-medium text-tier-navy">Perfect Putter</div>
                   <div className="text-xs text-tier-text-secondary">100% accuracy på P1 test</div>
@@ -243,7 +243,7 @@ function AchievementsTab() {
               </div>
 
               <div className="flex items-center gap-4 p-3 bg-tier-success-light border border-tier-success rounded-lg">
-                <span className="text-3xl">⛳</span>
+                <span className="text-3xl">[Golf]</span>
                 <div className="flex-1">
                   <div className="text-sm font-medium text-tier-navy">Chip Champion</div>
                   <div className="text-xs text-tier-text-secondary">Bestå 5 chipping tester på rad</div>
@@ -252,7 +252,7 @@ function AchievementsTab() {
               </div>
 
               <div className="flex items-center gap-4 p-3 bg-tier-surface-base border border-tier-border-default rounded-lg opacity-50">
-                <span className="text-3xl grayscale">🏌️</span>
+                <span className="text-3xl grayscale">[Golfer]</span>
                 <div className="flex-1">
                   <div className="text-sm font-medium text-tier-text-secondary">Swing Master</div>
                   <div className="text-xs text-tier-text-secondary">Bestå alle full swing tester</div>
@@ -264,10 +264,10 @@ function AchievementsTab() {
 
           {/* Progress Achievements */}
           <div>
-            <h4 className="text-md font-semibold text-tier-navy mb-3">📈 Fremgang</h4>
+            <h4 className="text-md font-semibold text-tier-navy mb-3">Fremgang</h4>
             <div className="space-y-3">
               <div className="flex items-center gap-4 p-3 bg-tier-success-light border border-tier-success rounded-lg">
-                <span className="text-3xl">🚀</span>
+                <span className="text-3xl">[Rocket]</span>
                 <div className="flex-1">
                   <div className="text-sm font-medium text-tier-navy">Fast Learner</div>
                   <div className="text-xs text-tier-text-secondary">Forbedre handicap med 2.0 på 1 måned</div>
@@ -276,7 +276,7 @@ function AchievementsTab() {
               </div>
 
               <div className="flex items-center gap-4 p-3 bg-tier-warning-light border border-tier-warning rounded-lg">
-                <span className="text-3xl">⏱️</span>
+                <span className="text-3xl">[Timer]</span>
                 <div className="flex-1">
                   <div className="text-sm font-medium text-tier-navy">Dedicated</div>
                   <div className="text-xs text-tier-text-secondary">Tren 20 økter på 1 måned</div>
@@ -285,7 +285,7 @@ function AchievementsTab() {
               </div>
 
               <div className="flex items-center gap-4 p-3 bg-tier-surface-base border border-tier-border-default rounded-lg opacity-50">
-                <span className="text-3xl grayscale">🔥</span>
+                <span className="text-3xl grayscale">[Fire]</span>
                 <div className="flex-1">
                   <div className="text-sm font-medium text-tier-text-secondary">On Fire</div>
                   <div className="text-xs text-tier-text-secondary">10 dager treningsstreak</div>
@@ -297,10 +297,10 @@ function AchievementsTab() {
 
           {/* Competition Achievements */}
           <div>
-            <h4 className="text-md font-semibold text-tier-navy mb-3">🏆 Konkurranser</h4>
+            <h4 className="text-md font-semibold text-tier-navy mb-3">Konkurranser</h4>
             <div className="space-y-3">
               <div className="flex items-center gap-4 p-3 bg-tier-success-light border border-tier-success rounded-lg">
-                <span className="text-3xl">🏆</span>
+                <span className="text-3xl">[Trophy]</span>
                 <div className="flex-1">
                   <div className="text-sm font-medium text-tier-navy">Tournament Rookie</div>
                   <div className="text-xs text-tier-text-secondary">Spill din første turnering</div>
@@ -309,7 +309,7 @@ function AchievementsTab() {
               </div>
 
               <div className="flex items-center gap-4 p-3 bg-tier-surface-base border border-tier-border-default rounded-lg opacity-50">
-                <span className="text-3xl grayscale">🥇</span>
+                <span className="text-3xl grayscale">[Gold]</span>
                 <div className="flex-1">
                   <div className="text-sm font-medium text-tier-text-secondary">Podium Finish</div>
                   <div className="text-xs text-tier-text-secondary">Topp 3 finish i turnering</div>
@@ -318,7 +318,7 @@ function AchievementsTab() {
               </div>
 
               <div className="flex items-center gap-4 p-3 bg-tier-surface-base border border-tier-border-default rounded-lg opacity-50">
-                <span className="text-3xl grayscale">👑</span>
+                <span className="text-3xl grayscale">[Crown]</span>
                 <div className="flex-1">
                   <div className="text-sm font-medium text-tier-text-secondary">Champion</div>
                   <div className="text-xs text-tier-text-secondary">Vinn en turnering</div>
@@ -330,10 +330,10 @@ function AchievementsTab() {
 
           {/* Social Achievements */}
           <div>
-            <h4 className="text-md font-semibold text-tier-navy mb-3">👥 Sosialt</h4>
+            <h4 className="text-md font-semibold text-tier-navy mb-3">Sosialt</h4>
             <div className="space-y-3">
               <div className="flex items-center gap-4 p-3 bg-tier-success-light border border-tier-success rounded-lg">
-                <span className="text-3xl">🤝</span>
+                <span className="text-3xl">[Handshake]</span>
                 <div className="flex-1">
                   <div className="text-sm font-medium text-tier-navy">Team Player</div>
                   <div className="text-xs text-tier-text-secondary">Delta på en treningssamling</div>
@@ -342,7 +342,7 @@ function AchievementsTab() {
               </div>
 
               <div className="flex items-center gap-4 p-3 bg-tier-surface-base border border-tier-border-default rounded-lg opacity-50">
-                <span className="text-3xl grayscale">💬</span>
+                <span className="text-3xl grayscale">[Chat]</span>
                 <div className="flex-1">
                   <div className="text-sm font-medium text-tier-text-secondary">Helpful</div>
                   <div className="text-xs text-tier-text-secondary">Gi tips til 5 andre spillere</div>
@@ -359,7 +359,7 @@ function AchievementsTab() {
         <h3 className="text-lg font-semibold text-tier-navy mb-4">Nylig låst opp</h3>
         <div className="space-y-3">
           <div className="flex items-center gap-4 p-4 bg-tier-success-light border border-tier-success rounded-lg">
-            <span className="text-4xl">🎯</span>
+            <span className="text-4xl">[Target]</span>
             <div className="flex-1">
               <div className="text-sm font-semibold text-tier-navy">Perfect Putter</div>
               <div className="text-xs text-tier-text-secondary">100% accuracy på P1 test</div>
@@ -371,7 +371,7 @@ function AchievementsTab() {
           </div>
 
           <div className="flex items-center gap-4 p-4 bg-tier-success-light border border-tier-success rounded-lg">
-            <span className="text-4xl">🚀</span>
+            <span className="text-4xl">[Rocket]</span>
             <div className="flex-1">
               <div className="text-sm font-semibold text-tier-navy">Fast Learner</div>
               <div className="text-xs text-tier-text-secondary">Forbedre handicap med 2.0 på 1 måned</div>
@@ -405,8 +405,8 @@ export default function AnalysePrestasjoner() {
   };
 
   const tabs: { id: PrestasjonsTab; label: string; icon: string }[] = [
-    { id: 'badges', label: 'Merker', icon: '🏅' },
-    { id: 'achievements', label: 'Achievements', icon: '🏆' },
+    { id: 'badges', label: 'Merker', icon: '' },
+    { id: 'achievements', label: 'Achievements', icon: '' },
   ];
 
   return (

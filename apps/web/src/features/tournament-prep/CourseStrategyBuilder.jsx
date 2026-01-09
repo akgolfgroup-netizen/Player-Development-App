@@ -150,7 +150,7 @@ export function CourseStrategyBuilder({
 
       {/* Info Card */}
       <div className={tw.infoCard}>
-        <h3 className={tw.infoTitle}>💡 Tips for banestrategi</h3>
+        <h3 className={tw.infoTitle}>Tips for banestrategi</h3>
         <p className={tw.infoText}>
           Definer en overordnet strategi for banen basert på spillerens styrker,
           værets påvirkning, og banens utfordringer. Dette vil hjelpe deg å planlegge
@@ -222,12 +222,12 @@ export function CourseStrategyBuilder({
             className={tw.select}
           >
             <option value="">Velg værforhold...</option>
-            <option value="sunny">sun Solskinn</option>
-            <option value="cloudy">☁️ Overskyet</option>
-            <option value="windy">💨 Blåsende</option>
-            <option value="rainy">🌧️ Regnvær</option>
-            <option value="cold">❄️ Kaldt</option>
-            <option value="hot"> Varmt</option>
+            <option value="sunny">Solskinn</option>
+            <option value="cloudy">Overskyet</option>
+            <option value="windy">Blasende</option>
+            <option value="rainy">Regnvaer</option>
+            <option value="cold">Kaldt</option>
+            <option value="hot">Varmt</option>
           </select>
           <p className={tw.helperText}>
             Velg forventet vær for turneringen (påvirker klubbvalg og strategi)
@@ -270,7 +270,7 @@ export function CourseStrategyBuilder({
             </Button>
           )}
           <Button variant="primary" type="submit" disabled={saving}>
-            {saving ? 'Lagrer...' : '💾 Lagre banestrategi'}
+            {saving ? 'Lagrer...' : 'Lagre banestrategi'}
           </Button>
         </div>
       </form>

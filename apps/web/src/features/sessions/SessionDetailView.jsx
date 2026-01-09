@@ -115,7 +115,7 @@ const getPressureClasses = (pressure) => {
     PR2: 'bg-amber-500/15 text-amber-600',
     PR3: 'bg-amber-500/25 text-amber-600',
     PR4: 'bg-amber-500/40 text-amber-700',
-    PR5: 'bg-amber-500 text-white',
+    PR5: 'bg-amber-500 text-tier-navy',
   };
   return classes[pressure] || classes.PR2;
 };
@@ -123,7 +123,7 @@ const getPressureClasses = (pressure) => {
 const getStatusClasses = (status) => {
   const classes = {
     Planlagt: 'bg-tier-surface-base text-tier-text-secondary',
-    Pågår: 'bg-tier-warning text-white',
+    Pågår: 'bg-tier-warning text-tier-navy',
     Fullført: 'bg-tier-success text-white',
   };
   return classes[status] || classes.Planlagt;

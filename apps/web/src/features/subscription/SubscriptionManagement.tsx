@@ -13,6 +13,7 @@ import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { CreditCard, Calendar, TrendingUp, AlertCircle, Check, X } from 'lucide-react';
 import { Button, Text } from '../../ui/primitives';
+import { PageHeader } from '../../ui/raw-blocks';
 
 const API_URL = process.env.REACT_APP_API_URL || 'http://localhost:3000/api/v1';
 
@@ -202,15 +203,11 @@ const SubscriptionManagement: React.FC = () => {
 
   return (
     <div className="max-w-4xl mx-auto p-6">
-      {/* Header */}
-      <div className="mb-8">
-        <Text variant="title1" color="primary" className="mb-2">
-          Subscription Management
-        </Text>
-        <Text variant="body" color="secondary">
-          Manage your subscription and billing information
-        </Text>
-      </div>
+      <PageHeader
+        title="Abonnementshåndtering"
+        subtitle="Administrer ditt abonnement og betalingsinformasjon"
+        helpText="Administrer ditt TIER Golf abonnement. Se nåværende plan (Basic, Premium, Elite, Coach Base/Pro/Team) med pris (månedlig/årlig), status og neste fornyelsesdato. Oppgrader eller nedgrader abonnement, kanseller (avsluttes ved periodeslutt), bytt til månedlig/årlig fakturering, oppdater betalingsmetode (kort), se betalingshistorikk. Bruk for full kontroll over abonnement og faktureringsinformasjon."
+      />
 
       {/* Error Message */}
       {error && (

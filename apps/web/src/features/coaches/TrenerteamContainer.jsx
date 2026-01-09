@@ -5,6 +5,7 @@ import LoadingState from '../../components/ui/LoadingState';
 import ErrorState from '../../components/ui/ErrorState';
 import EmptyState from '../../components/ui/EmptyState';
 import Trenerteam from './Trenerteam';
+import { PageHeader } from '../../ui/raw-blocks';
 
 /**
  * TrenerteamContainer
@@ -86,7 +87,16 @@ const TrenerteamContainer = () => {
   }
 
   // Pass coaches data or let component use defaults
-  return <Trenerteam trainers={coaches.length > 0 ? coaches : null} />;
+  return (
+    <>
+      <PageHeader
+        title="Trenerteam"
+        subtitle="Møt dine dedikerte trenere"
+        helpText="Oversikt over trenerteamet med hovedtrener og spesialiserte trenere (teknisk, fysisk, mental, strategi). Se hver treners profil med spesialiseringer, sertifiseringer, startår, totalt antall økter og månedlige økter. Kontaktinformasjon (e-post, telefon) og biografi tilgjengelig. Bruk for å bli kjent med teamet og vite hvem som hjelper deg med hva."
+      />
+      <Trenerteam trainers={coaches.length > 0 ? coaches : null} />
+    </>
+  );
 };
 
 /**

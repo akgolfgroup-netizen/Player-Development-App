@@ -183,7 +183,7 @@ const PlayerBookingPage: React.FC = () => {
             <CheckCircle2 size={18} className="inline mr-2" />
             Mine bestillinger
             {bookings.length > 0 && (
-              <span className="ml-2 px-2 py-0.5 bg-tier-warning text-white text-xs rounded-full">
+              <span className="ml-2 px-2 py-0.5 bg-tier-warning text-tier-navy text-xs rounded-full">
                 {bookings.filter((b: any) => b.status === 'pending').length}
               </span>
             )}

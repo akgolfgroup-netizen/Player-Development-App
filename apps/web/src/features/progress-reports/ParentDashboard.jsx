@@ -161,7 +161,7 @@ export function ParentDashboard({ className = '', playerId, playerName }) {
         helpText="Foresattes portal for å følge spillerens fremgang. Les publiserte fremdriftsrapporter fra trener, se statistikk over økter, mål og prestasjoner. Vis oppsummering av siste rapport, kommende mål og kontakt trener. Kun lesevisning (ingen redigeringsmulighet)."
         actions={
           <Button variant="secondary" onClick={refresh}>
-            🔄 Oppdater
+            Oppdater
           </Button>
         }
       />
@@ -170,7 +170,7 @@ export function ParentDashboard({ className = '', playerId, playerName }) {
       {reports.length > 0 && (
         <div className={tw.welcomeCard}>
           <h2 className={tw.welcomeTitle}>
-            Velkommen til forelderportalen! 👋
+            Velkommen til forelderportalen!
           </h2>
           <p className={tw.welcomeText}>
             Her kan du følge {playerName || 'spillerens'} fremgang, se detaljerte rapporter fra treneren,
@@ -183,22 +183,22 @@ export function ParentDashboard({ className = '', playerId, playerName }) {
       {reports.length > 0 && (
         <div className={tw.statsGrid}>
           <div className={tw.statCard}>
-            <div className={tw.statIcon}>📊</div>
+            <div className={tw.statIcon}>[Chart]</div>
             <div className={tw.statLabel}>Rapporter</div>
             <div className={tw.statValue}>{stats.totalReports}</div>
           </div>
           <div className={tw.statCard}>
-            <div className={tw.statIcon}>🏋️</div>
+            <div className={tw.statIcon}>[Gym]</div>
             <div className={tw.statLabel}>Økter totalt</div>
             <div className={tw.statValue}>{stats.totalSessions}</div>
           </div>
           <div className={tw.statCard}>
-            <div className={tw.statIcon}>🎯</div>
+            <div className={tw.statIcon}>[Target]</div>
             <div className={tw.statLabel}>Mål oppnådd</div>
             <div className={tw.statValue}>{stats.goalsAchieved}</div>
           </div>
           <div className={tw.statCard}>
-            <div className={tw.statIcon}>⭐</div>
+            <div className={tw.statIcon}>[Star]</div>
             <div className={tw.statLabel}>Siste oppdatering</div>
             <div className={tw.statValue}>
               {stats.latestReport
@@ -218,7 +218,7 @@ export function ParentDashboard({ className = '', playerId, playerName }) {
 
         {reports.length === 0 ? (
           <div className={tw.emptyState}>
-            <div className={tw.emptyIcon}>📋</div>
+            <div className={tw.emptyIcon}>[List]</div>
             <h3 className={tw.emptyTitle}>Ingen rapporter ennå</h3>
             <p className={tw.emptyDescription}>
               Treneren har ikke publisert noen fremdriftsrapporter ennå.
@@ -265,7 +265,7 @@ export function ParentDashboard({ className = '', playerId, playerName }) {
           Kontakt treneren direkte for å diskutere {playerName || 'spillerens'} fremgang eller stille spørsmål.
         </p>
         <button onClick={handleContactCoach} className={tw.contactButton}>
-          📧 Kontakt trener
+          Kontakt trener
         </button>
       </div>
     </div>

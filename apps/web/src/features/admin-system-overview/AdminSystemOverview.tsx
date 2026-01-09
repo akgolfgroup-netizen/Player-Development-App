@@ -131,6 +131,7 @@ export default function AdminSystemOverview({
       <Page.Header
         title="Systemoversikt"
         subtitle="Systemhelse og konfigurasjon"
+        helpText="Administrator-side for systemoversikt og konfigurasjon. Se systemstatus med miljø (development/production/test), Node/API versjon, database-status, oppetid. Inspiser konfigurasjon (API URL, Stripe keys, S3/Redis status). Overvåk databasetilstand (tilkoblinger, aktive/idle, total størrelse, sist opprettet tabeller). Bruk for systemhelse, debugging og konfigurasjonskontroll."
       />
 
       <Page.Content>

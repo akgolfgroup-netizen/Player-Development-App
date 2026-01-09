@@ -106,9 +106,9 @@ export default function HubPage({
               <AreaIcon size={28} />
             </span>
             <div className="flex-1">
-              <h2 className="text-2xl md:text-3xl font-bold text-tier-navy leading-tight">
+              <div className="text-2xl md:text-3xl font-bold text-tier-navy leading-tight" aria-hidden="true">
                 {title || area.label}
-              </h2>
+              </div>
               {subtitle && (
                 <p className="text-tier-body text-tier-text-secondary mt-1">
                   {subtitle}

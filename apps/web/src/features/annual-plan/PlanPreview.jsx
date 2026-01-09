@@ -175,7 +175,7 @@ export default function PlanPreview() {
     return (
       <div className="min-h-screen bg-gray-50 flex items-center justify-center p-4">
         <div className="bg-white rounded-lg shadow-lg p-8 max-w-md w-full text-center">
-          <div className="text-red-500 text-5xl mb-4">alert-triangle️</div>
+          <div className="text-red-500 text-5xl mb-4">!</div>
           <PageTitle className="text-2xl font-bold text-gray-900 mb-2">Plan ikke funnet</PageTitle>
           <p className="text-gray-600 mb-6">{error?.message}</p>
           <Button
@@ -193,7 +193,7 @@ export default function PlanPreview() {
     return (
       <div className="min-h-screen bg-gray-50 flex items-center justify-center p-4">
         <div className="bg-white rounded-lg shadow-lg p-8 max-w-md w-full text-center">
-          <div className="text-orange-500 text-5xl mb-4">🔧</div>
+          <div className="text-orange-500 text-5xl mb-4">!</div>
           <PageTitle className="text-2xl font-bold text-gray-900 mb-2">Systemfeil</PageTitle>
           <p className="text-gray-600 mb-6">{error?.message}</p>
           <div className="flex gap-3 justify-center">
@@ -232,7 +232,7 @@ export default function PlanPreview() {
     return (
       <div className="min-h-screen bg-gray-50 flex items-center justify-center p-4">
         <div className="bg-white rounded-lg shadow-lg p-8 max-w-md w-full text-center">
-          <div className="text-green-500 text-5xl mb-4">✅</div>
+          <div className="text-green-500 text-5xl mb-4">OK</div>
           <PageTitle className="text-2xl font-bold text-gray-900 mb-2">Plan aktivert!</PageTitle>
           <p className="text-gray-600 mb-6">
             Treningsplanen din er nå aktiv. Omdirigerer til dashboard...
@@ -253,7 +253,7 @@ export default function PlanPreview() {
     return (
       <div className="min-h-screen bg-gray-50 flex items-center justify-center p-4">
         <div className="bg-white rounded-lg shadow-lg p-8 max-w-md w-full text-center">
-          <div className="text-blue-500 text-5xl mb-4">📝</div>
+          <div className="text-blue-500 text-5xl mb-4">NOTE</div>
           <PageTitle className="text-2xl font-bold text-gray-900 mb-2">Forespørsel sendt</PageTitle>
           <p className="text-gray-600 mb-6">
             Treneren din vil gjennomgå forespørselen innen 24-48 timer.
@@ -783,10 +783,10 @@ function TournamentsView({ data }) {
               </span>
             </div>
             <div className="grid grid-cols-2 gap-2 text-sm text-gray-600">
-              <div>📅 Date: {new Date(t.startDate).toLocaleDateString()}</div>
-              <div>📍 Week: {t.weekNumber}</div>
-              <div>🎯 Topping: Week {t.toppingStartWeek} ({t.toppingDurationWeeks} weeks)</div>
-              <div>📉 Tapering: {t.taperingDurationDays} days</div>
+              <div>Date: {new Date(t.startDate).toLocaleDateString()}</div>
+              <div>Week: {t.weekNumber}</div>
+              <div>Topping: Week {t.toppingStartWeek} ({t.toppingDurationWeeks} weeks)</div>
+              <div>Tapering: {t.taperingDurationDays} days</div>
             </div>
           </div>
         ))}

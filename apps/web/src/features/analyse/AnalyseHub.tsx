@@ -37,7 +37,7 @@ const ANALYSE_CARDS: AnalyseCard[] = [
     title: 'Statistikk',
     description: 'Se din utvikling, strokes gained, trender og status mot mål',
     href: '/analyse/statistikk',
-    icon: '📊',
+    icon: '',
     color: 'blue',
     stats: [
       { label: 'Strokes Gained', value: '+2.4' },
@@ -48,7 +48,7 @@ const ANALYSE_CARDS: AnalyseCard[] = [
     title: 'Sammenligninger',
     description: 'Sammenlign med peer group, proff-spillere og andre i systemet',
     href: '/analyse/sammenligninger',
-    icon: '👥',
+    icon: '',
     color: 'purple',
     stats: [
       { label: 'Peer Rank', value: '#12 of 45' },
@@ -59,7 +59,7 @@ const ANALYSE_CARDS: AnalyseCard[] = [
     title: 'Rapporter',
     description: 'Fremdriftsrapporter og tilbakemeldinger fra dine trenere',
     href: '/analyse/rapporter',
-    icon: '📄',
+    icon: '',
     color: 'green',
     stats: [
       { label: 'Nye rapporter', value: '2' },
@@ -70,7 +70,7 @@ const ANALYSE_CARDS: AnalyseCard[] = [
     title: 'Tester',
     description: 'Testresultater, historikk og kategori-krav',
     href: '/analyse/tester',
-    icon: '🎯',
+    icon: '',
     color: 'amber',
     stats: [
       { label: 'Siste test', value: '85.5%' },
@@ -81,7 +81,7 @@ const ANALYSE_CARDS: AnalyseCard[] = [
     title: 'Prestasjoner',
     description: 'Dine merker, achievements og milepæler',
     href: '/analyse/prestasjoner',
-    icon: '🏆',
+    icon: '',
     color: 'yellow',
     stats: [
       { label: 'Merker', value: '24/50' },
@@ -167,7 +167,7 @@ export default function AnalyseHub() {
               {/* Activity items - placeholder for now */}
               <div className="flex items-center gap-4 pb-4 border-b border-tier-border-default">
                 <div className="w-10 h-10 bg-tier-info-light rounded-full flex items-center justify-center">
-                  <span className="text-lg">📊</span>
+                  <span className="text-lg">[Chart]</span>
                 </div>
                 <div className="flex-1">
                   <div className="text-sm font-medium text-tier-navy">Ny testresultat registrert</div>
@@ -177,7 +177,7 @@ export default function AnalyseHub() {
 
               <div className="flex items-center gap-4 pb-4 border-b border-tier-border-default">
                 <div className="w-10 h-10 bg-tier-success-light rounded-full flex items-center justify-center">
-                  <span className="text-lg">🏆</span>
+                  <span className="text-lg">[Trophy]</span>
                 </div>
                 <div className="flex-1">
                   <div className="text-sm font-medium text-tier-navy">Nytt merke opptjent</div>
@@ -187,7 +187,7 @@ export default function AnalyseHub() {
 
               <div className="flex items-center gap-4">
                 <div className="w-10 h-10 bg-tier-warning-light rounded-full flex items-center justify-center">
-                  <span className="text-lg">📄</span>
+                  <span className="text-lg">[Doc]</span>
                 </div>
                 <div className="flex-1">
                   <div className="text-sm font-medium text-tier-navy">Ny fremdriftsrapport fra trener</div>
@@ -201,7 +201,7 @@ export default function AnalyseHub() {
         {/* Info Box */}
         <div className="mt-8 bg-tier-info-light border border-tier-info rounded-xl p-6">
           <h3 className="text-lg font-semibold text-tier-info mb-2">
-            💡 Ny navigasjonsstruktur
+            Ny navigasjonsstruktur
           </h3>
           <p className="text-sm text-tier-navy">
             Vi har redesignet "Min utvikling" til "Analyse" med en mer intuitiv struktur.

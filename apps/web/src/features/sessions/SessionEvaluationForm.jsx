@@ -73,7 +73,7 @@ function PreShotRoutineSelector({ value, onChange, shotCount, totalShots, onShot
 
     switch (optionValue) {
       case 'yes': return `${baseClasses} bg-tier-success text-white font-semibold`;
-      case 'partial': return `${baseClasses} bg-tier-warning text-white font-semibold`;
+      case 'partial': return `${baseClasses} bg-tier-warning text-tier-navy font-semibold`;
       case 'no': return `${baseClasses} bg-tier-error text-white font-semibold`;
       default: return `${baseClasses} bg-tier-surface-base text-tier-navy font-medium`;
     }

@@ -4,6 +4,7 @@ import apiClient from '../../services/apiClient';
 import LoadingState from '../../components/ui/LoadingState';
 import ErrorState from '../../components/ui/ErrorState';
 import Treningsstatistikk from './Treningsstatistikk.tsx';
+import { PageHeader } from '../../ui/raw-blocks';
 
 // Demo stats for when API is not available
 const demoStats = {
@@ -80,7 +81,16 @@ const TreningsstatistikkContainer = () => {
     );
   }
 
-  return <Treningsstatistikk stats={stats} onRefresh={fetchStats} />;
+  return (
+    <>
+      <PageHeader
+        title="Treningsstatistikk"
+        subtitle="Dine treningsdata og fremgang"
+        helpText="Statistikk over treningsaktivitet med totalt antall økter, timer, nåværende streak, fullføringsrate og ukentlig mål. Se fordeling per kategori (teknikk, golfslag, spill, fysisk, mental) med økter og timer. Oversikt over siste økter med dato, varighet og type. Bruk for å følge progresjon og motivasjon."
+      />
+      <Treningsstatistikk stats={stats} onRefresh={fetchStats} />
+    </>
+  );
 };
 
 export default TreningsstatistikkContainer;

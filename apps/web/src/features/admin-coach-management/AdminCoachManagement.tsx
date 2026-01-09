@@ -140,6 +140,7 @@ export default function AdminCoachManagement() {
       <Page.Header
         title="Trenerkontoer"
         subtitle={coaches.length > 0 ? `${activeCount} aktive av ${coaches.length} kontoer` : undefined}
+        helpText="Administrator-side for styring av trenerkontoer. Opprett nye trenere med fornavn, etternavn, e-post, telefon, spesialiseringer og sertifiseringer. Se liste over alle trenere med status (aktiv/inaktiv), antall spillere, økter denne måneden. Rediger trenerprofiler, endre status, vis detaljer, slett kontoer. Bruk for komplett administrasjon av trenerteamet."
         actions={
           <Button
             variant="primary"

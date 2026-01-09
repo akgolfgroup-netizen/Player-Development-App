@@ -116,7 +116,7 @@ export const ContextStep: React.FC<ContextStepProps> = ({ planner }) => {
           {recommendedCS && (
             <div className="flex items-center gap-2 mt-3 p-2 rounded-lg bg-tier-info/10">
               <span className="text-xs text-tier-info">
-                💡 Anbefalt for {formState.lPhase}: CS{recommendedCS.min}-{recommendedCS.max}
+                Anbefalt for {formState.lPhase}: CS{recommendedCS.min}-{recommendedCS.max}
               </span>
             </div>
           )}

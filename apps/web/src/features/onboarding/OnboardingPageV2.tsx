@@ -223,7 +223,7 @@ export default function OnboardingPageV2() {
                     : 'border-tier-border-default hover:border-tier-navy/50'
                 }`}
               >
-                <div className="text-3xl mb-3">👤</div>
+                <div className="text-3xl mb-3">[User]</div>
                 <h3 className="font-semibold text-tier-navy mb-1">Spiller</h3>
                 <p className="text-sm text-tier-text-secondary">
                   Få personlig treningsplan og track fremgang
@@ -450,7 +450,7 @@ export default function OnboardingPageV2() {
       {showConfetti && (
         <div className="fixed inset-0 bg-black/80 flex items-center justify-center z-50">
           <div className="text-center">
-            <div className="text-6xl mb-4">🎉</div>
+            <div className="text-6xl mb-4">[Celebration]</div>
             <h1 className="text-3xl font-bold text-white mb-2">Gratulerer!</h1>
             <p className="text-white/80 mb-4">
               Din personlige treningsplan er klar!

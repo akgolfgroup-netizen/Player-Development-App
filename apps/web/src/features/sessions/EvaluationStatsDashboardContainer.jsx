@@ -88,7 +88,7 @@ export default function EvaluationStatsDashboardContainer() {
     // Focus trend insight
     if (data.trends?.focusTrend > 0.5) {
       insights.push({
-        icon: '🎯',
+        icon: 'TARGET',
         text: `Fokuset ditt har okt med ${data.trends.focusTrend.toFixed(1)} poeng siste periode. Fortsett slik!`,
       });
     } else if (data.trends?.focusTrend < -0.5) {
@@ -120,12 +120,12 @@ export default function EvaluationStatsDashboardContainer() {
     // Session volume insight
     if (data.totalSessions >= 10) {
       insights.push({
-        icon: '💪',
+        icon: 'STRONG',
         text: `Du har logget ${data.totalSessions} okter! God dedikasjon til trening.`,
       });
     } else if (data.totalSessions < 3) {
       insights.push({
-        icon: '📝',
+        icon: 'NOTE',
         text: 'Logg flere okter for a fa mer detaljert statistikk og trender.',
       });
     }

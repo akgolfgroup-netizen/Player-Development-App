@@ -167,11 +167,11 @@ export function ProgressReportList({ className = '', onCreateReport, onEditRepor
         <h2 className={tw.title}>Fremdriftsrapporter</h2>
         <div className={tw.headerActions}>
           <Button variant="secondary" onClick={refresh}>
-            🔄 Oppdater
+            Oppdater
           </Button>
           {onCreateReport && (
             <Button variant="primary" onClick={onCreateReport}>
-              ➕ Ny Rapport
+              + Ny Rapport
             </Button>
           )}
         </div>
@@ -214,7 +214,7 @@ export function ProgressReportList({ className = '', onCreateReport, onEditRepor
       {/* Reports Grid */}
       {filteredReports.length === 0 ? (
         <div className={tw.emptyState}>
-          <div className={tw.emptyIcon}>📊</div>
+          <div className={tw.emptyIcon}>[Chart]</div>
           <h3 className={tw.emptyTitle}>Ingen rapporter funnet</h3>
           <p className={tw.emptyDescription}>
             {searchQuery || statusFilter !== 'all'
@@ -223,7 +223,7 @@ export function ProgressReportList({ className = '', onCreateReport, onEditRepor
           </p>
           {onCreateReport && !searchQuery && statusFilter === 'all' && (
             <Button variant="primary" onClick={onCreateReport}>
-              ➕ Opprett Rapport
+              + Opprett Rapport
             </Button>
           )}
         </div>
@@ -246,11 +246,11 @@ export function ProgressReportList({ className = '', onCreateReport, onEditRepor
 
               <div className={tw.cardInfo}>
                 <div className={tw.infoRow}>
-                  <span className={tw.infoIcon}>👤</span>
+                  <span className={tw.infoIcon}>[User]</span>
                   <span>{report.player?.name || 'Ukjent spiller'}</span>
                 </div>
                 <div className={tw.infoRow}>
-                  <span className={tw.infoIcon}>📅</span>
+                  <span className={tw.infoIcon}>[Cal]</span>
                   <span>
                     {new Date(report.periodStart).toLocaleDateString('nb-NO')} -{' '}
                     {new Date(report.periodEnd).toLocaleDateString('nb-NO')}
@@ -258,7 +258,7 @@ export function ProgressReportList({ className = '', onCreateReport, onEditRepor
                 </div>
                 {report.publishedAt && (
                   <div className={tw.infoRow}>
-                    <span className={tw.infoIcon}>✉️</span>
+                    <span className={tw.infoIcon}>[Mail]</span>
                     <span>
                       Publisert {new Date(report.publishedAt).toLocaleDateString('nb-NO')}
                     </span>
@@ -277,13 +277,13 @@ export function ProgressReportList({ className = '', onCreateReport, onEditRepor
                       onClick={(e) => handleEdit(report, e)}
                       className={tw.actionButton}
                     >
-                      ✏️ Rediger
+                      Rediger
                     </button>
                     <button
                       onClick={(e) => handlePublish(report.id, e)}
                       className={tw.primaryActionButton}
                     >
-                      ✉️ Publiser
+                      Publiser
                     </button>
                   </>
                 ) : (
@@ -294,7 +294,7 @@ export function ProgressReportList({ className = '', onCreateReport, onEditRepor
                     }}
                     className={tw.actionButton}
                   >
-                    👁️ Vis Rapport
+                    Vis Rapport
                   </button>
                 )}
               </div>

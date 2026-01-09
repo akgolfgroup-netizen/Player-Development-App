@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import api from '../../services/api';
 import { LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip, Legend, ResponsiveContainer, BarChart, Bar } from 'recharts';
+import { PageHeader } from '../../ui/raw-blocks';
 
 const TRAINING_AREAS = [
   { value: 'TEE', label: 'Tee' },
@@ -115,11 +116,11 @@ export const ProgressTrackingView: React.FC = () => {
 
   return (
     <div className="max-w-7xl mx-auto p-6 space-y-6">
-      {/* Header */}
-      <div className="bg-white rounded-lg shadow p-6">
-        <h1 className="text-3xl font-bold text-gray-900 mb-2">Treningsområde Statistikk</h1>
-        <p className="text-gray-600">Følg din progresjon og utvikling over tid</p>
-      </div>
+      <PageHeader
+        title="Treningsområde Statistikk"
+        subtitle="Følg din progresjon og utvikling over tid"
+        helpText="Detaljert statistikk for treningsområder (TEE, INN200-50, CHIP/PITCH/LOB/BUNKER, PUTT 0-3m til 40m+, SPILL). Velg område og tidsperiode (fra-til dato). Se totalt økter, gjennomsnittlig suksessrate, forbedring over tid, graf med progresjon, neste nivåkrav. Bruk for å spore fremgang i spesifikke områder og planlegge forbedring."
+      />
 
       {/* Filters */}
       <div className="bg-white rounded-lg shadow p-6">

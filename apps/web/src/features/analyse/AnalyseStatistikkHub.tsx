@@ -109,7 +109,7 @@ function StatistikkOversiktTab() {
       {/* ✅ PHASE 2 INTEGRATION: Vendepunkter section */}
       <div id="vendepunkter" className="bg-white rounded-xl border border-tier-border-default p-6">
         <div className="flex items-center justify-between mb-4">
-          <h3 className="text-lg font-semibold text-tier-navy">🔄 Vendepunkter i prestasjonen</h3>
+          <h3 className="text-lg font-semibold text-tier-navy">Vendepunkter i prestasjonen</h3>
           {breakingPoints.length > 5 && (
             <Link
               to="/utvikling/vendepunkter"
@@ -301,7 +301,7 @@ function TrenderTab() {
       {/* ✅ PHASE 2 INTEGRATION: Treningsområder section */}
       <div id="treningsomrader" className="bg-white rounded-xl border border-tier-border-default p-6">
         <div className="flex items-center justify-between mb-4">
-          <h3 className="text-lg font-semibold text-tier-navy">🎯 Ytelse per treningsområde</h3>
+          <h3 className="text-lg font-semibold text-tier-navy">Ytelse per treningsområde</h3>
           <Link
             to="/training-area-performance"
             className="text-sm text-tier-info hover:text-tier-info-dark transition-colors"
@@ -401,7 +401,7 @@ function StatusMaalTab() {
       {/* ✅ PHASE 2 INTEGRATION: Player Insights (innsikter) */}
       <div className="bg-white rounded-xl border border-tier-border-default p-6">
         <div className="flex items-center justify-between mb-4">
-          <h3 className="text-lg font-semibold text-tier-navy">💡 Spillerinnsikter</h3>
+          <h3 className="text-lg font-semibold text-tier-navy">Spillerinnsikter</h3>
           <div className="flex gap-2">
             <button
               onClick={() => setShowFullInsights(!showFullInsights)}
@@ -430,7 +430,7 @@ function StatusMaalTab() {
             {/* SG Journey - Compact View */}
             <div className="border border-tier-border-default rounded-lg overflow-hidden">
               <div className="bg-tier-info-light p-3 border-b border-tier-info">
-                <div className="text-sm font-medium text-tier-navy">🎯 SG Journey</div>
+                <div className="text-sm font-medium text-tier-navy">SG Journey</div>
               </div>
               <div className="p-4">
                 {showFullInsights ? (
@@ -450,7 +450,7 @@ function StatusMaalTab() {
             {/* Skill DNA - Compact View */}
             <div className="border border-tier-border-default rounded-lg overflow-hidden">
               <div className="bg-tier-success-light p-3 border-b border-tier-success">
-                <div className="text-sm font-medium text-tier-navy">🧬 Skill DNA</div>
+                <div className="text-sm font-medium text-tier-navy">Skill DNA</div>
               </div>
               <div className="p-4">
                 {showFullInsights ? (
@@ -481,7 +481,7 @@ function StatusMaalTab() {
             {/* Bounty Board - Compact View */}
             <div className="border border-tier-border-default rounded-lg overflow-hidden">
               <div className="bg-tier-warning-light p-3 border-b border-tier-warning">
-                <div className="text-sm font-medium text-tier-navy">🎁 Bounty Board</div>
+                <div className="text-sm font-medium text-tier-navy">Bounty Board</div>
               </div>
               <div className="p-4">
                 {showFullInsights ? (
@@ -517,7 +517,7 @@ function StatusMaalTab() {
         <h3 className="text-lg font-semibold text-tier-navy mb-4">Neste milepæler</h3>
         <div className="space-y-3">
           <div className="flex items-center gap-3 p-3 bg-tier-surface-base rounded-lg">
-            <div className="text-xl">🎯</div>
+            <div className="text-xl">[Target]</div>
             <div className="flex-1">
               <div className="text-sm font-medium text-tier-navy">Reach handicap 11.0</div>
               <div className="text-xs text-tier-text-secondary">Estimert: 6 uker</div>
@@ -525,7 +525,7 @@ function StatusMaalTab() {
           </div>
 
           <div className="flex items-center gap-3 p-3 bg-tier-surface-base rounded-lg">
-            <div className="text-xl">🏆</div>
+            <div className="text-xl">[Trophy]</div>
             <div className="flex-1">
               <div className="text-sm font-medium text-tier-navy">Earn 'Putting Master' badge</div>
               <div className="text-xs text-tier-text-secondary">2 tests remaining</div>
@@ -555,10 +555,10 @@ export default function AnalyseStatistikkHub() {
   };
 
   const tabs: { id: StatistikkTab; label: string; icon: string }[] = [
-    { id: 'oversikt', label: 'Oversikt', icon: '📊' },
-    { id: 'strokes-gained', label: 'Strokes Gained', icon: '⛳' },
-    { id: 'trender', label: 'Trender', icon: '📈' },
-    { id: 'status-maal', label: 'Status & Mål', icon: '🎯' },
+    { id: 'oversikt', label: 'Oversikt', icon: '' },
+    { id: 'strokes-gained', label: 'Strokes Gained', icon: '' },
+    { id: 'trender', label: 'Trender', icon: '' },
+    { id: 'status-maal', label: 'Status & Mål', icon: '' },
   ];
 
   return (

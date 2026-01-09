@@ -5,6 +5,7 @@ import LoadingState from '../../components/ui/LoadingState';
 import ErrorState from '../../components/ui/ErrorState';
 import EmptyState from '../../components/ui/EmptyState';
 import Treningsprotokoll from './Treningsprotokoll';
+import { PageHeader } from '../../ui/raw-blocks';
 
 // Demo data for when API is not available
 const demoSessions = [
@@ -96,7 +97,16 @@ const TreningsprotokollContainer = () => {
     );
   }
 
-  return <Treningsprotokoll sessions={sessions} onRefresh={fetchSessions} />;
+  return (
+    <>
+      <PageHeader
+        title="Treningsprotokoll"
+        subtitle="Oversikt over dine treningsøkter"
+        helpText="Logg over alle treningsøkter med dato, type (teknikk, golfslag, spill, fysisk, mental), varighet, status (fullført/kommende) og nivå. Se notater for hver økt, filtrer etter kategori og type. Bruk for å spore treningshistorikk og planlegge fremtidige økter."
+      />
+      <Treningsprotokoll sessions={sessions} onRefresh={fetchSessions} />
+    </>
+  );
 };
 
 export default TreningsprotokollContainer;

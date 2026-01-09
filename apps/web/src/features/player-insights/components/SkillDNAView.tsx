@@ -14,7 +14,7 @@ const SkillDNAView: React.FC<SkillDNAViewProps> = ({ data }) => {
   if (!data) {
     return (
       <div className="bg-white rounded-xl border border-tier-border-default p-12 text-center">
-        <div className="text-6xl mb-4">🧬</div>
+        <Dna size={64} className="mb-4 mx-auto text-tier-text-secondary" />
         <h3 className="text-lg font-semibold text-tier-navy mb-2">Ingen Skill DNA data</h3>
         <p className="text-tier-text-secondary">
           Trenger flere testresultater for å generere ditt ferdighetsprofil.
@@ -32,12 +32,12 @@ const SkillDNAView: React.FC<SkillDNAViewProps> = ({ data }) => {
   };
 
   const dimensionsList = [
-    { key: 'distance', label: 'Distanse', icon: '🚀' },
-    { key: 'speed', label: 'Hastighet', icon: '⚡' },
-    { key: 'accuracy', label: 'Presisjon', icon: '🎯' },
-    { key: 'shortGame', label: 'Kort spill', icon: '⛳' },
-    { key: 'putting', label: 'Putting', icon: '🏌️' },
-    { key: 'physical', label: 'Fysikk', icon: '💪' },
+    { key: 'distance', label: 'Distanse', icon: 'D' },
+    { key: 'speed', label: 'Hastighet', icon: 'S' },
+    { key: 'accuracy', label: 'Presisjon', icon: 'P' },
+    { key: 'shortGame', label: 'Kort spill', icon: 'K' },
+    { key: 'putting', label: 'Putting', icon: 'Pu' },
+    { key: 'physical', label: 'Fysikk', icon: 'F' },
   ];
 
   return (
@@ -140,7 +140,7 @@ const SkillDNAView: React.FC<SkillDNAViewProps> = ({ data }) => {
       {/* Strengths and Weaknesses */}
       <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
         <div className="bg-tier-success-light rounded-xl border border-tier-success p-6">
-          <h3 className="text-lg font-semibold text-tier-navy mb-4">💪 Styrker</h3>
+          <h3 className="text-lg font-semibold text-tier-navy mb-4">Styrker</h3>
           {strengths && strengths.length > 0 ? (
             <ul className="space-y-2">
               {strengths.map((strength: string, idx: number) => (
@@ -156,7 +156,7 @@ const SkillDNAView: React.FC<SkillDNAViewProps> = ({ data }) => {
         </div>
 
         <div className="bg-tier-warning-light rounded-xl border border-tier-warning p-6">
-          <h3 className="text-lg font-semibold text-tier-navy mb-4">⚠️ Svakheter</h3>
+          <h3 className="text-lg font-semibold text-tier-navy mb-4">Svakheter</h3>
           {weaknesses && weaknesses.length > 0 ? (
             <ul className="space-y-2">
               {weaknesses.map((weakness: string, idx: number) => (
@@ -227,7 +227,7 @@ const SkillDNAView: React.FC<SkillDNAViewProps> = ({ data }) => {
       <div className="bg-white rounded-xl border border-tier-border-default p-6">
         <h3 className="text-lg font-semibold text-tier-navy mb-4">DNA Visualisering</h3>
         <div className="text-sm text-tier-text-secondary text-center py-12">
-          🕷️ Radar chart / spider diagram kommer her (krever chart library)
+          Radar chart / spider diagram kommer her (krever chart library)
           <div className="mt-2 text-xs">6-dimensjonal visualisering av ditt ferdighetsprofil</div>
         </div>
       </div>

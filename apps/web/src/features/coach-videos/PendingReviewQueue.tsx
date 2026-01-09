@@ -161,7 +161,7 @@ export function PendingReviewQueue({
         <SubSectionTitle className="m-0 text-base font-semibold text-tier-navy flex items-center gap-2">
           <Clock size={16} />
           Venter på gjennomgang
-          <span className="px-2 py-0.5 bg-tier-warning rounded-full text-xs font-bold text-white">
+          <span className="px-2 py-0.5 bg-tier-warning rounded-full text-xs font-bold text-tier-navy">
             {pendingVideos.length}
           </span>
         </SubSectionTitle>

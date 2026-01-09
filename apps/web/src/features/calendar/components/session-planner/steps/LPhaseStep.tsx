@@ -92,7 +92,7 @@ export const LPhaseStep: React.FC<LPhaseStepProps> = ({ planner }) => {
 
       {/* Progression hint */}
       <div className="flex items-center gap-2 p-3 rounded-lg bg-tier-info/10">
-        <span className="text-sm text-tier-info">💡</span>
+        <span className="text-sm text-tier-info">Tips:</span>
         <span className="text-xs text-tier-info">
           Start med L-KROPP for nye bevegelser, og jobb deg oppover til L-AUTO
         </span>

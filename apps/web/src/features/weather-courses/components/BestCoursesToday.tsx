@@ -22,7 +22,7 @@ const BestCoursesToday: React.FC = () => {
   if (error) {
     return (
       <div className="bg-white rounded-xl border border-tier-border-default p-8 text-center">
-        <div className="text-tier-error text-4xl mb-2">⚠️</div>
+        <div className="text-tier-error text-4xl mb-2">[Warning]</div>
         <p className="text-tier-error">{error}</p>
       </div>
     );
@@ -32,7 +32,7 @@ const BestCoursesToday: React.FC = () => {
     <div className="space-y-4">
       <div className="bg-tier-success-light border border-tier-success rounded-xl p-4">
         <p className="text-sm text-tier-navy">
-          <strong className="font-semibold">🏆 {courses.length} baner</strong> med best værforhold i dag - sortert etter temperatur, vind og nedbør.
+          <strong className="font-semibold">{courses.length} baner</strong> med best værforhold i dag - sortert etter temperatur, vind og nedbør.
         </p>
       </div>
 
@@ -121,7 +121,7 @@ const BestCoursesToday: React.FC = () => {
 
       {courses.length === 0 && (
         <div className="bg-white rounded-xl border border-tier-border-default p-12 text-center">
-          <div className="text-6xl mb-4">🌦️</div>
+          <div className="text-6xl mb-4">[Weather]</div>
           <h3 className="text-lg font-semibold text-tier-navy mb-2">Ingen data tilgjengelig</h3>
           <p className="text-tier-text-secondary">Kunne ikke hente værdata for baner akkurat nå.</p>
         </div>

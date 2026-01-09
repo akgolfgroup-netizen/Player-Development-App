@@ -135,25 +135,37 @@ export function AICoachPanel() {
           {/* Messages */}
           <div className="flex-1 overflow-y-auto p-4 flex flex-col gap-3">
             {messages.length === 0 ? (
-              <div className="flex flex-col items-center justify-center text-center p-6 gap-3">
-                <Bot size={48} className="text-tier-navy opacity-50" />
-                <h3 className="text-base font-semibold text-tier-navy m-0">
-                  Hei! Jeg er din AI Golf Coach
-                </h3>
-                <p className="text-sm text-tier-text-secondary m-0">
-                  Spør meg om trening, teknikk, mentale strategier eller målsetting.
-                </p>
-                <div className="flex flex-wrap gap-2 justify-center mt-2">
-                  {DEFAULT_QUICK_ACTIONS.map((action) => (
-                    <button
-                      key={action.label}
-                      onClick={() => handleQuickAction(action.message)}
-                      className="px-3 py-2 bg-tier-white border border-tier-border-default rounded-full text-xs text-tier-text-secondary cursor-pointer transition-all hover:bg-tier-surface-base hover:border-tier-navy disabled:opacity-50"
-                      disabled={isBusy}
-                    >
-                      {action.label}
-                    </button>
-                  ))}
+              <div className="flex flex-col items-center justify-center text-center h-full gap-4">
+                {/* Hero section */}
+                <div className="w-16 h-16 rounded-2xl bg-tier-navy/10 flex items-center justify-center">
+                  <Bot size={32} className="text-tier-navy" />
+                </div>
+                <div className="space-y-2">
+                  <h3 className="text-lg font-bold text-tier-navy m-0">
+                    AI Golf Coach
+                  </h3>
+                  <p className="text-sm text-tier-text-secondary m-0 max-w-[260px]">
+                    Din personlige treningsassistent for golf
+                  </p>
+                </div>
+
+                {/* Quick actions with better visual hierarchy */}
+                <div className="w-full pt-4">
+                  <p className="text-xs text-tier-text-tertiary uppercase tracking-wide mb-3">
+                    Hurtigvalg
+                  </p>
+                  <div className="flex flex-col gap-2">
+                    {DEFAULT_QUICK_ACTIONS.slice(0, 4).map((action) => (
+                      <button
+                        key={action.label}
+                        onClick={() => handleQuickAction(action.message)}
+                        className="w-full px-4 py-3 bg-tier-surface-base border border-tier-border-subtle rounded-xl text-sm text-tier-navy text-left cursor-pointer transition-all hover:bg-tier-white hover:border-tier-navy hover:shadow-sm disabled:opacity-50"
+                        disabled={isBusy}
+                      >
+                        {action.label}
+                      </button>
+                    ))}
+                  </div>
                 </div>
               </div>
             ) : (

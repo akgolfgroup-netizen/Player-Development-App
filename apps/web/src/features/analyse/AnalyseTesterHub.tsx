@@ -98,7 +98,7 @@ function OversiktTab() {
         <div className="space-y-3">
           <div className="flex items-center gap-4 p-4 border border-tier-border-default rounded-lg hover:bg-tier-surface-base transition-colors cursor-pointer">
             <div className="w-12 h-12 bg-tier-success-light rounded-full flex items-center justify-center">
-              <span className="text-xl">🎯</span>
+              <span className="text-xl">[Target]</span>
             </div>
             <div className="flex-1">
               <div className="text-sm font-medium text-tier-navy">CH3 - Chipping 20-30 meter</div>
@@ -112,7 +112,7 @@ function OversiktTab() {
 
           <div className="flex items-center gap-4 p-4 border border-tier-border-default rounded-lg hover:bg-tier-surface-base transition-colors cursor-pointer">
             <div className="w-12 h-12 bg-tier-info-light rounded-full flex items-center justify-center">
-              <span className="text-xl">🎯</span>
+              <span className="text-xl">[Target]</span>
             </div>
             <div className="flex-1">
               <div className="text-sm font-medium text-tier-navy">P2 - Putting 3 meter</div>
@@ -339,7 +339,7 @@ function KravTab() {
       {/* Action Box */}
       <div className="bg-tier-warning-light border border-tier-warning rounded-xl p-6">
         <div className="flex items-start gap-3">
-          <span className="text-2xl">🎯</span>
+          <span className="text-2xl">[Target]</span>
           <div>
             <h4 className="text-sm font-semibold text-tier-navy mb-1">Fokusområder for kategori B</h4>
             <p className="text-sm text-tier-text-secondary mb-3">
@@ -375,9 +375,9 @@ export default function AnalyseTesterHub() {
   };
 
   const tabs: { id: TesterTab; label: string; icon: string }[] = [
-    { id: 'oversikt', label: 'Oversikt', icon: '📊' },
-    { id: 'resultater', label: 'Resultater', icon: '📋' },
-    { id: 'krav', label: 'Krav', icon: '🎯' },
+    { id: 'oversikt', label: 'Oversikt', icon: '' },
+    { id: 'resultater', label: 'Resultater', icon: '' },
+    { id: 'krav', label: 'Krav', icon: '' },
   ];
 
   return (

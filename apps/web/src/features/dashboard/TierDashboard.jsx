@@ -94,7 +94,7 @@ export function TierDashboard({ dashboardData }) {
         {/* Smart Insight Banner */}
         <TierCard className="mb-8 p-5 bg-tier-gold/5 border-l-4 border-tier-gold">
           <div className="flex items-center gap-3">
-            <div className="text-3xl">🎯</div>
+            <div className="text-3xl font-bold text-tier-gold">*</div>
             <div>
               <h3 className="font-semibold text-tier-navy mb-1">
                 Du er på god vei!

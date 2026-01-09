@@ -126,7 +126,7 @@ const UILabContainer = () => {
             <CardSimple
               title="Enkel Card"
               subtitle="Med ikon og subtitle"
-              icon={<span style={{ fontSize: '24px' }}>📊</span>}
+              icon={<span style={{ fontSize: '24px' }}>[chart]</span>}
             />
             <CardSimple
               title="Uten Ikon"
@@ -145,7 +145,7 @@ const UILabContainer = () => {
           <div style={styles.card}>
             <CardHeader
               title="Card med Header"
-              icon={<span style={{ fontSize: '20px' }}>🎯</span>}
+              icon={<span style={{ fontSize: '20px' }}>[target]</span>}
               action={{
                 label: 'Se alle',
                 onClick: () => console.log('Action clicked'),

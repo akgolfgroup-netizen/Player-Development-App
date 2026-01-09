@@ -142,7 +142,7 @@ function BlockNavigationChips({ blocks, currentIndex, completedIndices, onSelect
 function PauseOverlay({ totalTime, pauseTime, onResume, onEnd }) {
   return (
     <div className="fixed inset-0 bg-black/90 flex flex-col items-center justify-center z-[1000]">
-      <span className="text-5xl mb-6">⏸️</span>
+      <span className="text-5xl mb-6">PAUSE</span>
       <span className="text-[28px] font-bold text-white mb-2">
         PAUSE
       </span>
@@ -164,7 +164,7 @@ function PauseOverlay({ totalTime, pauseTime, onResume, onEnd }) {
         onClick={onResume}
         className="w-[200px] py-4 mb-4 text-xl font-semibold"
       >
-        ▶️ Fortsett økt
+        Fortsett okt
       </Button>
 
       <Button
@@ -370,7 +370,7 @@ export default function ActiveSessionView({ session, onEndSession, onPause: _onP
 
           <div className="bg-tier-surface-base rounded-lg p-4 mt-4">
             <div className="flex items-center gap-2">
-              <span>🎯</span>
+              <span>Focus:</span>
               <span className="text-xs font-medium text-tier-navy">
                 {currentBlock.focus}
               </span>
@@ -421,7 +421,7 @@ export default function ActiveSessionView({ session, onEndSession, onPause: _onP
 
         <div className="bg-tier-white rounded-xl p-4">
           <div className="flex items-center gap-2 mb-2">
-            <span>📝</span>
+            <span>Notat:</span>
             <span className="text-xs font-medium text-tier-navy">
               Legg til notat...
             </span>

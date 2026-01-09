@@ -16,10 +16,10 @@ import Button from '../../ui/primitives/Button';
 type FilterType = 'all' | 'plateau' | 'regression' | 'breakthrough';
 
 const FILTERS = [
-  { value: 'all' as FilterType, label: 'Alle', icon: '📊' },
-  { value: 'breakthrough' as FilterType, label: 'Gjennombrudd', icon: '🎯' },
-  { value: 'plateau' as FilterType, label: 'Platåer', icon: '⚠️' },
-  { value: 'regression' as FilterType, label: 'Tilbakeganger', icon: '📉' },
+  { value: 'all' as FilterType, label: 'Alle', icon: '[All]' },
+  { value: 'breakthrough' as FilterType, label: 'Gjennombrudd', icon: '[Target]' },
+  { value: 'plateau' as FilterType, label: 'Platåer', icon: '[Warn]' },
+  { value: 'regression' as FilterType, label: 'Tilbakeganger', icon: '[Down]' },
 ];
 
 const BreakingPointsPage: React.FC = () => {
@@ -88,7 +88,7 @@ const BreakingPointsPage: React.FC = () => {
       <div className="min-h-screen bg-tier-surface-base p-6">
         <div className="max-w-2xl mx-auto">
           <div className="bg-white rounded-xl border border-tier-border-default p-8 text-center">
-            <div className="text-tier-error text-4xl mb-4">⚠️</div>
+            <div className="text-tier-error text-4xl mb-4">[Warning]</div>
             <h3 className="text-lg font-semibold text-tier-navy mb-2">Kunne ikke laste vendepunkter</h3>
             <p className="text-tier-text-secondary mb-4">{error}</p>
             <Button variant="primary" onClick={refetch}>
@@ -191,7 +191,7 @@ const BreakingPointsPage: React.FC = () => {
         {/* No breaking points */}
         {cardPoints.length === 0 && (
           <div className="bg-white rounded-xl border border-tier-border-default p-12 text-center">
-            <div className="text-tier-text-secondary text-4xl mb-4">📊</div>
+            <div className="text-tier-text-secondary text-4xl mb-4">[Chart]</div>
             <h3 className="text-lg font-semibold text-tier-navy mb-2">
               Ingen vendepunkter funnet
             </h3>

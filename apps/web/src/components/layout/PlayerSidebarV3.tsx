@@ -1,23 +1,20 @@
 /**
  * ============================================================
- * PlayerSidebarV3 - Forenklet flat sidebar (Fase 1 UX)
+ * PlayerSidebarV3 - Forenklet flat sidebar (Fase 2 UX)
  * TIER Golf Academy Design System v3.1
  * ============================================================
  *
- * Ny sidebar med kun 5 toppnivåvalg uten nesting:
+ * Ny sidebar med kun 4 toppnivåvalg uten nesting:
  * 1. Hjem
  * 2. Trening (grønn)
- * 3. Utvikling (blå)
+ * 3. Fremgang (blå) - erstatter "Analyse"
  * 4. Plan (amber)
- * 5. Mer (lilla)
+ *
+ * Bruker-funksjoner er flyttet til:
+ * - Notifikasjonsikon i header (meldinger)
+ * - Bruker-dropdown i header (profil, innstillinger, hjelp, logg ut)
  *
  * Undersider vises som horisontale tabs på hver hub-side.
- *
- * Fordeler over V2:
- * - Ingen nested menyer = færre klikk
- * - Tydelig visuell hierarki
- * - Raskere navigering
- * - Bedre mobil-opplevelse
  *
  * ============================================================
  */
@@ -30,13 +27,14 @@ import {
   playerNavigationFlat,
   getFlatAreaByPath,
   areaColors,
+  userMenuItems,
   type FlatNavItem,
   type AreaColor,
 } from '../../config/player-navigation-v3';
 import { QuickActionsCompact } from '../dashboard/QuickActions';
 import { playerQuickActions } from '../../config/quick-actions';
 
-const { LogOut, Menu, X, Circle } = LucideIcons;
+const { LogOut, Menu, X, Circle, Bell, User, Settings, HelpCircle, CreditCard, ChevronDown } = LucideIcons;
 
 // Helper to get icon from string name
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
@@ -84,6 +82,7 @@ export default function PlayerSidebarV3({
 
   const [isMobile, setIsMobile] = useState(false);
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
+  const [isUserMenuOpen, setIsUserMenuOpen] = useState(false);
 
   // Map navigation items with icons and badges
   const items = useMemo(() => {
@@ -172,37 +171,98 @@ export default function PlayerSidebarV3({
     </div>
   );
 
-  // Render user section
-  const renderUserSection = () => (
-    <div className="p-4 mt-auto">
-      <div className="bg-tier-surface-secondary rounded-xl p-4 border border-tier-border-subtle">
-        <div className="flex items-center gap-3 mb-3">
-          <div className="w-10 h-10 rounded-xl bg-tier-gold flex items-center justify-center text-tier-white font-bold">
-            {(user?.firstName?.[0] || 'S').toUpperCase()}
-          </div>
-          <div className="flex-1 min-w-0">
-            <div className="text-sm font-semibold text-tier-navy truncate">
-              {user?.firstName || 'Spiller'} {user?.lastName || ''}
-            </div>
-            <div className="text-xs text-tier-text-tertiary truncate">
-              {user?.email || 'spiller@tiergolf.no'}
-            </div>
-          </div>
-        </div>
+  // Render notification button
+  const renderNotificationButton = () => (
+    <Link
+      to="/mer/meldinger"
+      className="relative p-2 rounded-lg hover:bg-tier-surface-secondary transition-colors"
+      aria-label="Meldinger"
+    >
+      <Bell size={20} className="text-tier-text-secondary" />
+      {unreadMessages > 0 && (
+        <span className="absolute -top-1 -right-1 min-w-[18px] h-[18px] px-1 rounded-full bg-status-error text-tier-white text-[10px] font-bold flex items-center justify-center">
+          {unreadMessages > 99 ? '99+' : unreadMessages}
+        </span>
+      )}
+    </Link>
+  );
 
-        <button
-          onClick={handleLogout}
-          className={cn(
-            'w-full flex items-center justify-center gap-2 px-4 py-2.5 rounded-lg',
-            'text-sm font-medium text-tier-text-secondary',
-            'border border-tier-border-subtle',
-            'hover:bg-tier-surface-tertiary hover:text-tier-text-primary',
-            'transition-colors duration-200'
-          )}
-        >
-          <LogOut size={16} />
-          Logg ut
-        </button>
+  // Render user dropdown
+  const renderUserDropdown = () => (
+    <div className="relative">
+      <button
+        onClick={() => setIsUserMenuOpen(!isUserMenuOpen)}
+        className="flex items-center gap-2 p-2 rounded-lg hover:bg-tier-surface-secondary transition-colors"
+      >
+        <div className="w-8 h-8 rounded-full bg-tier-gold flex items-center justify-center text-tier-white font-bold text-sm">
+          {(user?.firstName?.[0] || 'S').toUpperCase()}
+        </div>
+        <ChevronDown size={16} className={cn(
+          'text-tier-text-secondary transition-transform',
+          isUserMenuOpen && 'rotate-180'
+        )} />
+      </button>
+
+      {isUserMenuOpen && (
+        <>
+          <div
+            className="fixed inset-0 z-40"
+            onClick={() => setIsUserMenuOpen(false)}
+          />
+          <div className="absolute right-0 top-full mt-2 w-56 bg-tier-white rounded-xl border border-tier-border-subtle shadow-lg z-50 py-2">
+            {/* User info */}
+            <div className="px-4 py-3 border-b border-tier-border-subtle">
+              <div className="text-sm font-semibold text-tier-navy">
+                {user?.firstName || 'Spiller'} {user?.lastName || ''}
+              </div>
+              <div className="text-xs text-tier-text-tertiary truncate">
+                {user?.email || 'spiller@tiergolf.no'}
+              </div>
+            </div>
+
+            {/* Menu items */}
+            <div className="py-1">
+              {userMenuItems.map((item) => {
+                const MenuIcon = getIcon(item.icon);
+                return (
+                  <Link
+                    key={item.href}
+                    to={item.href}
+                    onClick={() => setIsUserMenuOpen(false)}
+                    className="flex items-center gap-3 px-4 py-2.5 text-sm text-tier-text-secondary hover:bg-tier-surface-secondary hover:text-tier-text-primary transition-colors"
+                  >
+                    <MenuIcon size={16} />
+                    {item.label}
+                  </Link>
+                );
+              })}
+            </div>
+
+            {/* Logout */}
+            <div className="border-t border-tier-border-subtle pt-1">
+              <button
+                onClick={() => {
+                  setIsUserMenuOpen(false);
+                  handleLogout();
+                }}
+                className="w-full flex items-center gap-3 px-4 py-2.5 text-sm text-status-error hover:bg-status-error/5 transition-colors"
+              >
+                <LogOut size={16} />
+                Logg ut
+              </button>
+            </div>
+          </div>
+        </>
+      )}
+    </div>
+  );
+
+  // Render user section (for sidebar)
+  const renderUserSection = () => (
+    <div className="p-4 mt-auto border-t border-tier-border-subtle">
+      <div className="flex items-center gap-3">
+        {renderNotificationButton()}
+        {renderUserDropdown()}
       </div>
     </div>
   );
@@ -245,13 +305,17 @@ export default function PlayerSidebarV3({
             <span className="font-bold text-tier-navy">TIER Golf</span>
           </Link>
 
-          <button
-            onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
-            className="p-2 rounded-lg hover:bg-tier-surface-secondary transition-colors"
-            aria-label={isMobileMenuOpen ? 'Lukk meny' : 'Åpne meny'}
-          >
-            {isMobileMenuOpen ? <X size={24} /> : <Menu size={24} />}
-          </button>
+          <div className="flex items-center gap-1">
+            {renderNotificationButton()}
+            {renderUserDropdown()}
+            <button
+              onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
+              className="p-2 rounded-lg hover:bg-tier-surface-secondary transition-colors"
+              aria-label={isMobileMenuOpen ? 'Lukk meny' : 'Åpne meny'}
+            >
+              {isMobileMenuOpen ? <X size={24} /> : <Menu size={24} />}
+            </button>
+          </div>
         </header>
 
         {/* Mobile Menu Overlay */}
@@ -275,12 +339,11 @@ export default function PlayerSidebarV3({
           <div className="flex-1 overflow-y-auto p-3">
             {renderNavItems()}
           </div>
-          {renderUserSection()}
         </aside>
 
         {/* Mobile Bottom Navigation */}
         <nav className="fixed bottom-0 left-0 right-0 h-16 bg-tier-white border-t border-tier-border-subtle flex items-center justify-around z-50 safe-area-inset-bottom">
-          {items.slice(0, 5).map((item) => {
+          {items.slice(0, 4).map((item) => {
             const active = isActive(item);
             return (
               <Link

@@ -242,7 +242,7 @@ const ProgressReportsPage: React.FC = () => {
       <div className="min-h-screen bg-tier-surface-base p-6">
         <div className="max-w-7xl mx-auto">
           <div className="bg-white rounded-xl border border-tier-border-default p-8 text-center">
-            <div className="text-tier-error text-4xl mb-2">⚠️</div>
+            <div className="text-tier-error text-4xl mb-2">[Warning]</div>
             <p className="text-tier-error">{error}</p>
           </div>
         </div>
@@ -270,7 +270,7 @@ const ProgressReportsPage: React.FC = () => {
           </div>
         ) : (
           <div className="bg-white rounded-xl border border-tier-border-default p-12 text-center">
-            <div className="text-6xl mb-4">📊</div>
+            <div className="text-6xl mb-4">[Chart]</div>
             <h3 className="text-lg font-semibold text-tier-navy mb-2">Ingen rapporter ennå</h3>
             <p className="text-tier-text-secondary">
               Din trener vil dele fremdriftsrapporter med deg her

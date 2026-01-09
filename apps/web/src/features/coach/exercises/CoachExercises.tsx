@@ -56,7 +56,7 @@ function ExerciseCard({
       <div className="flex items-start gap-4">
         {/* Category icon */}
         <div className="w-12 h-12 rounded-xl bg-tier-navy/10 flex items-center justify-center text-2xl shrink-0">
-          {categoryConfig?.icon || '📝'}
+          {categoryConfig?.icon || ''}
         </div>
 
         <div className="flex-1 min-w-0">

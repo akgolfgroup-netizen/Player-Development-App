@@ -193,14 +193,14 @@ export function ClubGappingChart({
             onClick={handleCalculate}
             disabled={calculating || saving}
           >
-            {calculating ? ' Beregner...' : '🔄 Oppdater Gapping'}
+            {calculating ? ' Beregner...' : 'Oppdater Gapping'}
           </Button>
         </div>
       </div>
 
       {/* Info Card */}
       <div className={tw.infoCard}>
-        <h3 className={tw.infoTitle}>💡 Om Club Gapping</h3>
+        <h3 className={tw.infoTitle}>Om Club Gapping</h3>
         <p className={tw.infoText}>
           Club gapping viser gjennomsnittlig distanse for hver kølle og avstanden mellom dem.
           Ideelt gap er 8-15 meter mellom køller. For små gap (<8m) betyr overlap, og for store gap (>20m) betyr hull i settet.

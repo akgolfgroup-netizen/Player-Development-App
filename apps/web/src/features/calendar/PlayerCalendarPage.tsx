@@ -25,7 +25,7 @@ import {
   type CalendarView,
   type CalendarEvent,
 } from './components/enhanced';
-import { EventDetailsPanel, CreateSessionModal, NewSession } from './components';
+import { EventDetailsPanel, CreateSessionModal, NewSession, CalendarColorLegend } from './components';
 import { SessionPlannerModal, type NewPlannedSession } from './components/session-planner';
 import { sessionsAPI } from '../../services/api';
 import StateCard from '../../ui/composites/StateCard';
@@ -341,6 +341,14 @@ const PlayerCalendarPage: React.FC = () => {
                 <li className="text-tier-text-tertiary py-2">Ingen kommende økter</li>
               )}
             </ol>
+          </section>
+
+          {/* Color legend */}
+          <section className="mt-8 pt-6 border-t border-tier-border-default">
+            <h2 className="text-sm font-medium text-tier-navy mb-3">
+              Fargekoder
+            </h2>
+            <CalendarColorLegend orientation="vertical" />
           </section>
         </div>
 

@@ -109,7 +109,7 @@ export const playerNavigationV3: NavArea[] = [
         items: [
           { href: '/dashboard', label: 'Hjem', icon: 'HomeIcon', description: 'Din personlige oversikt' },
           { href: '/dashboard/aktivitet', label: 'Status', icon: 'StatsIcon', description: 'Siste aktiviteter' },
-          { href: '/dashboard/deling', label: 'Deling', icon: 'ShareIcon', description: 'Delingsinnstillinger' },
+          { href: '/mer/varsler', label: 'Deling', icon: 'ShareIcon', description: 'Delingsinnstillinger' },
         ],
       },
     ],
@@ -147,14 +147,12 @@ export const playerNavigationV3: NavArea[] = [
         id: 'ovelser',
         label: 'Teknisk plan',
         items: [
-          { href: '/bevis', label: 'Mine teknisk plan (Bevis)', icon: 'VideoIcon', description: 'Dokumenter fremgang' },
+          { href: '/bevis', label: 'Teknisk plan (Bevis)', icon: 'VideoIcon', description: 'Dokumenter fremgang' },
           { href: '/trening/teknikkplan', label: 'Teknikkplan', icon: 'TargetIcon', description: 'Teknisk utviklingsplan' },
-          { href: '/trening/ovelser', label: 'Mine øvelser', icon: 'ClubIcon', description: 'Mine øvelser' },
-          { href: '/trening/ovelser', label: 'Øvelsesbank', icon: 'ClubIcon', description: 'Alle øvelser' },
-          { href: '/trening/videoer', label: 'Video', icon: 'VideoIcon', description: 'Instruksjonsvideoer' },
-          { href: '/trening/video-sammenligning', label: 'Video sammenligning', icon: 'CompareIcon', description: 'Sammenlign videoer side-ved-side' },
-          { href: '/trening/video-annotering', label: 'Video annotasjon', icon: 'VideoIcon', description: 'Annot video med tegning og notater' },
-          { href: '/trening/trackman-sync', label: 'TrackMan Sync', icon: 'RefreshIcon', description: 'Synkroniser TrackMan data' },
+          { href: '/trening/ovelser', label: 'Øvelser', icon: 'ClubIcon', description: 'Øvelsesbibliotek' },
+          { href: '/trening/videoer', label: 'Videoer', icon: 'VideoIcon', description: 'Instruksjonsvideoer' },
+          { href: '/videos/compare', label: 'Sammenlign videoer', icon: 'CompareIcon', description: 'Sammenlign videoer side-ved-side' },
+          { href: '/trening/trackman-upload', label: 'TrackMan', icon: 'RefreshIcon', description: 'Last opp TrackMan data' },
         ],
       },
       {
@@ -170,8 +168,6 @@ export const playerNavigationV3: NavArea[] = [
         label: 'Kunnskap',
         items: [
           { href: '/trening/kategorisystem', label: 'Kategorisystem', icon: 'LessonsIcon', description: 'Forstå treningssystemet' },
-          { href: '/trening/fokus', label: 'Treningsfokus', icon: 'TargetIcon', description: 'AI-baserte anbefalinger for hva du bør fokusere på' },
-          { href: '/trening/fokus-motor', label: 'Fokusmotor', icon: 'TargetIcon', description: 'AI-drevet treningsprioritering' },
         ],
       },
     ],
@@ -192,18 +188,10 @@ export const playerNavigationV3: NavArea[] = [
         id: 'fremgang',
         label: 'Fremgang & Statistikk',
         items: [
-          { href: '/utvikling/oversikt', label: 'Min utvikling', icon: 'StatsIcon', description: 'Din progresjon' },
-          { href: '/utvikling/statistikk', label: 'Statistikk', icon: 'ScorecardIcon', description: 'Detaljert statistikk' },
-          { href: '/utvikling/strokes-gained', label: 'Strokes Gained', icon: 'StatsIcon', description: 'Avansert SG-analyse' },
-          { href: '/utvikling/sammenlign-proff', label: 'Sammenlign med proff', icon: 'StatsIcon', description: 'Sammenlign med tour-spillere' },
-          { href: '/utvikling/vendepunkter', label: 'Vendepunkter', icon: 'StatsIcon', description: 'Vendepunkter i prestasjonen' },
-          { href: '/utvikling/innsikter', label: 'Spillerinnsikter', icon: 'StatsIcon', description: 'SG Journey, Skill DNA og Bounty Board' },
-          { href: '/utvikling/treningsomrader', label: 'Treningsområder', icon: 'TargetIcon', description: 'Statistikk per treningsområde' },
-          { href: '/utvikling/peer-sammenligning', label: 'Peer sammenligning', icon: 'StatsIcon', description: 'Sammenlign med lignende spillere' },
-          { href: '/utvikling/sammenligninger', label: 'Prestasjonssammenligninger', icon: 'CompareIcon', description: 'Multi-spiller sammenligninger' },
-          { href: '/utvikling/rapporter', label: 'Fremdriftsrapporter', icon: 'StatsIcon', description: 'Rapporter fra trener' },
-          { href: '/utvikling/datagolf', label: 'Verktøy', icon: 'TargetIcon', description: 'Avanserte analyseverktøy' },
-          { href: '/utvikling/fremgang', label: 'Fremgangsanalyse', icon: 'StatsIcon', description: 'Analyser din fremgang' },
+          { href: '/analyse', label: 'Oversikt', icon: 'StatsIcon', description: 'Din progresjon' },
+          { href: '/analyse/statistikk', label: 'Statistikk', icon: 'ScorecardIcon', description: 'Detaljert statistikk' },
+          { href: '/analyse/sammenligninger', label: 'Sammenligninger', icon: 'CompareIcon', description: 'Sammenlign prestasjoner' },
+          { href: '/analyse/rapporter', label: 'Rapporter', icon: 'StatsIcon', description: 'Fremdriftsrapporter' },
           { href: '/utvikling/historikk', label: 'Historikk', icon: 'RefreshIcon', description: 'Tidligere resultater' },
         ],
       },
@@ -211,16 +199,14 @@ export const playerNavigationV3: NavArea[] = [
         id: 'tester',
         label: 'Tester',
         items: [
-          { href: '/utvikling/testresultater', label: 'Testresultater', icon: 'TargetIcon', description: 'Alle testresultater' },
-          { href: '/utvikling/krav', label: 'Kategori-krav', icon: 'HandicapIcon', description: 'Krav per kategori' },
+          { href: '/analyse/tester', label: 'Testresultater', icon: 'TargetIcon', description: 'Alle testresultater' },
         ],
       },
       {
         id: 'achievements',
         label: 'Prestasjoner',
         items: [
-          { href: '/utvikling/badges', label: 'Merker', icon: 'HandicapIcon', description: 'Dine merker' },
-          { href: '/utvikling/achievements', label: 'Prestasjoner', icon: 'CheckIcon', description: 'Alle prestasjoner' },
+          { href: '/analyse/prestasjoner', label: 'Prestasjoner', icon: 'CheckIcon', description: 'Merker og prestasjoner' },
         ],
       },
     ],
@@ -244,7 +230,6 @@ export const playerNavigationV3: NavArea[] = [
           { href: '/plan/kalender', label: 'Kalender', icon: 'CalendarIcon', description: 'Din kalender' },
           { href: '/plan/ukeplan', label: 'Ukeplan', icon: 'CalendarIcon', description: 'Ukentlig oversikt' },
           { href: '/plan/booking', label: 'Booking', icon: 'CalendarIcon', description: 'Book treningstid' },
-          { href: '/plan/sesonger', label: 'Sesongplanlegging', icon: 'CalendarIcon', description: 'Planlegg treningssesonger' },
           { href: '/samlinger', label: 'Samlinger', icon: 'GolfFlagIcon', description: 'Treningssamlinger' },
         ],
       },
@@ -253,7 +238,6 @@ export const playerNavigationV3: NavArea[] = [
         label: 'Skole',
         items: [
           { href: '/plan/skole', label: 'Skoleplan', icon: 'CalendarIcon', description: 'Skoletimer, fag og oppgaver' },
-          { href: '/plan/intake', label: 'Inntak/Onboarding', icon: 'ClipboardIcon', description: 'Fyll ut spillerprofil og vurdering' },
         ],
       },
       {
@@ -270,7 +254,6 @@ export const playerNavigationV3: NavArea[] = [
         items: [
           { href: '/plan/turneringer', label: 'Turneringskalender', icon: 'GolfFlagIcon', description: 'Alle turneringer' },
           { href: '/plan/turneringer/mine', label: 'Mine turneringer', icon: 'GolfFlagIcon', description: 'Påmeldte turneringer' },
-          { href: '/plan/turneringsforberedelse', label: 'Turneringsforberedelse', icon: 'TargetIcon', description: 'Banestrategi og sjekkliste' },
         ],
       },
     ],
@@ -312,12 +295,8 @@ export const playerNavigationV3: NavArea[] = [
         items: [
           { href: '/mer/kunnskap', label: 'Kunnskapsbase', icon: 'LessonsIcon', description: 'Artikler og guider' },
           { href: '/mer/notater', label: 'Notater', icon: 'ScorecardIcon', description: 'Dine notater' },
-          { href: '/mer/baner-vaer', label: 'Baner & Vær', icon: 'CloudIcon', description: 'Finn beste baner basert på værforhold' },
-          { href: '/mer/ai-historikk', label: 'AI Treningshistorikk', icon: 'ChatIcon', description: 'Se tidligere AI-samtaler' },
-          { href: '/mer/samlinger', label: 'Samlinger', icon: 'FolderIcon', description: 'Organiser videoer, øvelser og planer' },
-          { href: '/mer/eksporter', label: 'Eksporter data', icon: 'DownloadIcon', description: 'Last ned dine data som PDF eller Excel' },
-          { href: '/mer/arkiv', label: 'Arkiv', icon: 'ArchiveIcon', description: 'Administrer arkiverte elementer' },
-          { href: '/mer/betaling', label: 'Betaling & Fakturering', icon: 'CreditCardIcon', description: 'Administrer betalingsmåter og abonnementer' },
+          { href: '/samlinger', label: 'Samlinger', icon: 'FolderIcon', description: 'Treningssamlinger' },
+          { href: '/arkiv', label: 'Arkiv', icon: 'ArchiveIcon', description: 'Arkiverte elementer' },
         ],
       },
       {
@@ -325,18 +304,9 @@ export const playerNavigationV3: NavArea[] = [
         label: 'Innstillinger',
         items: [
           { href: '/mer/innstillinger', label: 'Innstillinger', icon: 'SettingsIcon', description: 'App-innstillinger' },
-          { href: '/mer/deling', label: 'Deling', icon: 'ShareIcon', description: 'Delingsinnstillinger' },
+          { href: '/mer/varsler', label: 'Varsler og deling', icon: 'ShareIcon', description: 'Delingsinnstillinger' },
           { href: '/mer/kalibrering', label: 'Kalibrering', icon: 'SettingsIcon', description: 'Testkalibrering' },
-          { href: '/mer/support', label: 'Support', icon: 'ChatIcon', description: 'Få hjelp og support' },
-        ],
-      },
-      {
-        id: 'admin',
-        label: 'Administrasjon',
-        items: [
-          { href: '/mer/admin', label: 'Admin Panel', icon: 'SettingsIcon', description: 'Systemadministrasjon' },
-          { href: '/mer/admin/feature-flags', label: 'Feature Flags', icon: 'SettingsIcon', description: 'Funksjonsflags administrasjon' },
-          { href: '/mer/admin/audit', label: 'Revisjonslogg', icon: 'ClipboardIcon', description: 'Systemrevisjonslogg' },
+          { href: '/billing', label: 'Abonnement', icon: 'CreditCardIcon', description: 'Administrer abonnement' },
         ],
       },
     ],
@@ -465,7 +435,8 @@ export interface FlatNavItem {
 }
 
 /**
- * Forenklet navigasjon med kun 5 hovedelementer (ingen nesting)
+ * Forenklet navigasjon med kun 4 hovedelementer (ingen nesting)
+ * Bruker-relaterte funksjoner er flyttet til en dropdown i header
  */
 export const playerNavigationFlat: FlatNavItem[] = [
   {
@@ -483,8 +454,8 @@ export const playerNavigationFlat: FlatNavItem[] = [
     color: 'green',
   },
   {
-    id: 'utvikling',
-    label: 'Analyse',
+    id: 'fremgang',
+    label: 'Fremgang',
     icon: 'TrendingUp',
     href: '/analyse',
     color: 'blue',
@@ -496,14 +467,16 @@ export const playerNavigationFlat: FlatNavItem[] = [
     href: '/plan',
     color: 'amber',
   },
-  {
-    id: 'mer',
-    label: 'Mer',
-    icon: 'MoreHorizontal',
-    href: '/mer',
-    color: 'purple',
-    badge: 'unreadMessages',
-  },
+];
+
+/**
+ * Brukermeny dropdown-items (vises i header)
+ */
+export const userMenuItems = [
+  { href: '/mer/profil', label: 'Min profil', icon: 'User' },
+  { href: '/mer/innstillinger', label: 'Innstillinger', icon: 'Settings' },
+  { href: '/billing', label: 'Abonnement', icon: 'CreditCard' },
+  { href: '/mer/kunnskap', label: 'Hjelp & Support', icon: 'HelpCircle' },
 ];
 
 /**
@@ -517,6 +490,13 @@ export const areaTabsConfig = {
     { href: '/trening/ovelser', label: 'Øvelser', icon: 'Dumbbell' },
     { href: '/trening/testing', label: 'Testing', icon: 'Target' },
   ],
+  fremgang: [
+    { href: '/analyse', label: 'Oversikt', icon: 'LayoutDashboard' },
+    { href: '/analyse/statistikk', label: 'Statistikk', icon: 'BarChart3' },
+    { href: '/analyse/tester', label: 'Tester', icon: 'ClipboardList' },
+    { href: '/analyse/prestasjoner', label: 'Prestasjoner', icon: 'Award' },
+  ],
+  // Keep utvikling as alias for fremgang for backwards compatibility
   utvikling: [
     { href: '/analyse', label: 'Oversikt', icon: 'LayoutDashboard' },
     { href: '/analyse/statistikk', label: 'Statistikk', icon: 'BarChart3' },
@@ -526,15 +506,8 @@ export const areaTabsConfig = {
   plan: [
     { href: '/plan', label: 'Oversikt', icon: 'LayoutDashboard' },
     { href: '/plan/kalender', label: 'Kalender', icon: 'Calendar' },
-    { href: '/plan/skole', label: 'Skole', icon: 'GraduationCap' },
     { href: '/plan/maal', label: 'Mål', icon: 'Target' },
     { href: '/plan/turneringer', label: 'Turneringer', icon: 'Trophy' },
-  ],
-  mer: [
-    { href: '/mer', label: 'Oversikt', icon: 'LayoutDashboard' },
-    { href: '/mer/profil', label: 'Profil', icon: 'User' },
-    { href: '/mer/meldinger', label: 'Meldinger', icon: 'MessageSquare' },
-    { href: '/mer/innstillinger', label: 'Innstillinger', icon: 'Settings' },
   ],
 };
 

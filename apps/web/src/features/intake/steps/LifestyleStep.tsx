@@ -158,7 +158,7 @@ const LifestyleStep: React.FC<Props> = ({ data, onComplete }) => {
 
       {/* Info Box */}
       <div className="bg-tier-info-light border border-tier-info rounded-lg p-4">
-        <h4 className="text-sm font-semibold text-tier-navy mb-2">💡 Hvorfor spør vi om dette?</h4>
+        <h4 className="text-sm font-semibold text-tier-navy mb-2">Hvorfor spor vi om dette?</h4>
         <p className="text-xs text-tier-text-secondary">
           Livsstilsfaktorer som søvn, stress og aktivitetsnivå påvirker både prestasjon og restitusjon.
           Dette hjelper oss å tilpasse treningsplanen til din totale livssituasjon, slik at den blir realistisk og bærekraftig.

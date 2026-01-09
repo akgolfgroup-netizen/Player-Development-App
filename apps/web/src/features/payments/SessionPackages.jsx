@@ -224,7 +224,7 @@ export function SessionPackages({ className = '' }) {
 
                 return (
                   <div key={pkg.id} className={tw.ownedPackageCard}>
-                    <div className={tw.packageIcon}>🎟️</div>
+                    <div className={tw.packageIcon}>[ticket]</div>
                     <div className={tw.packageInfo}>
                       <div className={tw.packageTitle}>{pkg.packageType}</div>
                       <div className={tw.packageDetails}>
@@ -240,7 +240,7 @@ export function SessionPackages({ className = '' }) {
                       )}
                       {expired && (
                         <div className={tw.expiryWarning}>
-                          ❌ Expired
+                          Expired
                         </div>
                       )}
                     </div>

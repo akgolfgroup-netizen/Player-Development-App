@@ -35,6 +35,7 @@ import {
   type CalendarView,
   type CalendarEvent,
 } from './components/enhanced';
+import { CalendarColorLegend } from './components/CalendarColorLegend';
 
 // ============================================================================
 // TYPES
@@ -464,7 +465,7 @@ export default function CoachCalendarPage() {
                   <Bell className="h-4 w-4" />
                   Booking-forespørsler
                   {bookingRequests.length > 0 && (
-                    <span className="px-1.5 py-0.5 bg-tier-warning text-white text-xs font-semibold rounded-full">
+                    <span className="px-1.5 py-0.5 bg-tier-warning text-tier-navy text-xs font-semibold rounded-full">
                       {bookingRequests.length}
                     </span>
                   )}
@@ -593,6 +594,14 @@ export default function CoachCalendarPage() {
                   <ChevronRight className="h-4 w-4 ml-auto" />
                 </button>
               </div>
+            </div>
+
+            {/* Color Legend */}
+            <div className="p-4 border-t border-tier-border-default">
+              <h3 className="text-sm font-semibold text-tier-navy mb-3">
+                Fargekoder
+              </h3>
+              <CalendarColorLegend orientation="vertical" variant="status" />
             </div>
           </div>
         </aside>

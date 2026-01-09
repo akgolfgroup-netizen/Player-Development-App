@@ -106,7 +106,7 @@ export default function BlockRatingModal({ block, duration, reps, onComplete, on
           label="Kvalitet"
           value={quality}
           onChange={setQuality}
-          icons={['😟', 'meh', '🙂', 'smile', '🤩']}
+          icons={['1', '2', '3', '4', '5']}
           labels={['Dårlig', 'Utmerket']}
         />
 
@@ -114,7 +114,7 @@ export default function BlockRatingModal({ block, duration, reps, onComplete, on
           label="Fokus"
           value={focus}
           onChange={setFocus}
-          icons={['😟', 'meh', '🙂', 'smile', '🤩']}
+          icons={['1', '2', '3', '4', '5']}
           labels={['Distrahert', 'Laserfokusert']}
         />
 
@@ -122,7 +122,7 @@ export default function BlockRatingModal({ block, duration, reps, onComplete, on
           label="Intensitet"
           value={intensity}
           onChange={setIntensity}
-          icons={['💤', '😴', '💪', '🔥', 'zap']}
+          icons={['1', '2', '3', '4', '5']}
           labels={['Lav', 'Høy']}
         />
 
