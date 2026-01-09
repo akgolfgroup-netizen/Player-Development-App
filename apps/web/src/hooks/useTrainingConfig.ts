@@ -226,4 +226,88 @@ export function useLegacyPressureLevels() {
   }, [pressureLevels]);
 }
 
+/**
+ * Hook to get sport-specific navigation configuration
+ *
+ * @example
+ * const { quickActions, testing } = useNavigation();
+ *
+ * // Render quick actions
+ * quickActions.map(action => (
+ *   <Link to={action.href}>
+ *     {action.labelNO || action.label}
+ *   </Link>
+ * ));
+ */
+export function useNavigation() {
+  const sport = useSportSafe();
+
+  return useMemo(() => {
+    const navigation = sport.config.navigation;
+
+    // Default navigation if not defined in sport config
+    const defaultNavigation = {
+      quickActions: [
+        {
+          label: 'Log Training',
+          labelNO: 'Logg trening',
+          icon: 'Plus',
+          href: '/trening/logg',
+          variant: 'primary' as const,
+        },
+      ],
+      testing: {
+        hubPath: '/trening/testing',
+        registerPath: '/trening/testing/registrer',
+        resultsPath: '/analyse/tester',
+        label: 'Testing',
+        labelNO: 'Testing',
+      },
+      itemOverrides: [],
+    };
+
+    const nav = navigation || defaultNavigation;
+
+    return {
+      // Quick actions for dashboard
+      quickActions: nav.quickActions,
+
+      // Testing navigation paths
+      testing: nav.testing,
+
+      // Item overrides for customizing nav labels
+      itemOverrides: nav.itemOverrides || [],
+
+      // Helper to get override for a specific path
+      getOverride: (href: string) =>
+        nav.itemOverrides?.find((o) => o.targetHref === href),
+
+      // Helper to check if an item should be hidden
+      isHidden: (href: string) =>
+        nav.itemOverrides?.some((o) => o.targetHref === href && o.hidden),
+
+      // Current sport info
+      sportId: sport.sportId,
+      sportName: sport.config.nameNO || sport.config.name,
+    };
+  }, [sport]);
+}
+
+/**
+ * Hook to get quick actions for dashboard
+ * Returns actions formatted for Norwegian display
+ */
+export function useQuickActions() {
+  const { quickActions } = useNavigation();
+
+  return useMemo(() => {
+    return quickActions.map((action) => ({
+      label: action.labelNO || action.label,
+      icon: action.icon,
+      href: action.href,
+      variant: action.variant,
+    }));
+  }, [quickActions]);
+}
+
 export default useTrainingConfig;

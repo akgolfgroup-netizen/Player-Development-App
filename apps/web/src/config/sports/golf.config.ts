@@ -20,6 +20,7 @@ import type {
   SportTerminology,
   Equipment,
   TestProtocol,
+  SportNavigation,
 } from './types';
 
 // Import golf test definitions
@@ -608,6 +609,46 @@ const terminology: SportTerminology = {
 };
 
 // ============================================================================
+// NAVIGATION
+// ============================================================================
+
+const navigation: SportNavigation = {
+  quickActions: [
+    {
+      label: 'Log Training',
+      labelNO: 'Logg trening',
+      icon: 'Plus',
+      href: '/trening/logg',
+      variant: 'primary',
+    },
+    {
+      label: 'Register Test',
+      labelNO: 'Registrer test',
+      icon: 'Target',
+      href: '/trening/testing/registrer',
+      variant: 'secondary',
+    },
+    {
+      label: 'View Calendar',
+      labelNO: 'Se kalender',
+      icon: 'Calendar',
+      href: '/plan/kalender',
+      variant: 'secondary',
+    },
+  ],
+  testing: {
+    hubPath: '/trening/testing',
+    registerPath: '/trening/testing/registrer',
+    resultsPath: '/analyse/tester',
+    label: 'Test Protocol',
+    labelNO: 'Testprotokoll',
+  },
+  itemOverrides: [
+    // Golf-specific terminology overrides (if needed)
+  ],
+};
+
+// ============================================================================
 // COMPLETE GOLF CONFIG
 // ============================================================================
 
@@ -631,6 +672,7 @@ export const GOLF_CONFIG: SportConfig = {
   goalCategories,
   terminology,
   equipment,
+  navigation,
 
   metadata: {
     maxHolesPerRound: 18,

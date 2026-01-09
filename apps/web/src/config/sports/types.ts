@@ -48,8 +48,57 @@ export interface SportConfig {
   // Equipment (optional)
   equipment?: Equipment[];
 
+  // Navigation customization
+  navigation?: SportNavigation;
+
   // Sport-specific metadata
   metadata?: Record<string, unknown>;
+}
+
+// ============================================================================
+// NAVIGATION
+// ============================================================================
+
+export interface QuickAction {
+  label: string;
+  labelNO?: string;
+  icon: string;
+  href: string;
+  variant: 'primary' | 'secondary' | 'success';
+}
+
+export interface NavItemOverride {
+  /** Target path to override */
+  targetHref: string;
+  /** New label (optional) */
+  label?: string;
+  labelNO?: string;
+  /** New description (optional) */
+  description?: string;
+  descriptionNO?: string;
+  /** New icon (optional) */
+  icon?: string;
+  /** Hide this item entirely */
+  hidden?: boolean;
+}
+
+export interface SportNavigation {
+  /** Quick actions shown on dashboard */
+  quickActions: QuickAction[];
+  /** Override specific navigation items */
+  itemOverrides?: NavItemOverride[];
+  /** Testing section configuration */
+  testing: {
+    /** Hub page path */
+    hubPath: string;
+    /** Register test path */
+    registerPath: string;
+    /** Results path */
+    resultsPath: string;
+    /** Label for testing section */
+    label: string;
+    labelNO?: string;
+  };
 }
 
 // ============================================================================
