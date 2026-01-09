@@ -18,7 +18,7 @@
 
 import React from 'react';
 import { Link } from 'react-router-dom';
-import { PageHeader } from '../../components/layout/PageHeader';
+import PageHeader from '../../ui/raw-blocks/PageHeader.raw';
 
 interface AnalyseCard {
   title: string;
@@ -99,7 +99,6 @@ export default function AnalyseHub() {
           title="Analyse"
           subtitle="Følg din utvikling og få innsikt i din prestasjon"
           helpText="Dette området erstatter 'Min utvikling' med en mer strukturert tilnærming. Klikk på kort nedenfor for å utforske statistikk, sammenligninger, rapporter, tester og prestasjoner."
-          actions={null}
         />
 
         {/* Navigation Cards Grid */}
