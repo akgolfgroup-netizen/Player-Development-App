@@ -19,6 +19,7 @@ import { TIERGolfFullLogo } from '../../components/branding/TIERGolfFullLogo';
 
 interface OnboardingData {
   userType?: 'player' | 'coach';
+  school?: string;
   goals: string[];
   currentLevel: {
     handicap: number;
@@ -32,6 +33,7 @@ interface OnboardingData {
 }
 
 const defaultData: OnboardingData = {
+  school: '',
   goals: [],
   currentLevel: {
     handicap: 15,
@@ -81,6 +83,7 @@ export default function OnboardingPageV2() {
             userType: data.userType,
           },
           background: {
+            school: data.school,
             currentLevel: data.currentLevel,
             focusAreas: data.focusAreas,
           },
@@ -127,6 +130,8 @@ export default function OnboardingPageV2() {
   const canSubmit = () => {
     return (
       data.userType &&
+      data.school &&
+      data.school.trim().length > 0 &&
       data.goals.length > 0 &&
       data.currentLevel.handicap >= 0 &&
       data.focusAreas.length > 0
@@ -247,10 +252,28 @@ export default function OnboardingPageV2() {
             </div>
           </section>
 
-          {/* Section 2: Goals */}
+          {/* Section 2: School */}
           <section className="mb-12">
             <h2 className="text-2xl font-bold text-tier-navy mb-2">
-              2. Hva er dine mål?
+              2. Hvilken skole går du på?
+            </h2>
+            <p className="text-tier-text-secondary mb-6">Skriv inn skolens navn</p>
+
+            <div>
+              <input
+                type="text"
+                value={data.school || ''}
+                onChange={(e) => updateData({ school: e.target.value })}
+                placeholder="F.eks. Oslo Golfklubb Akademi"
+                className="w-full px-4 py-3 border border-tier-border-default rounded-xl text-tier-navy focus:outline-none focus:ring-2 focus:ring-tier-navy/20 focus:border-tier-navy"
+              />
+            </div>
+          </section>
+
+          {/* Section 3: Goals */}
+          <section className="mb-12">
+            <h2 className="text-2xl font-bold text-tier-navy mb-2">
+              3. Hva er dine mål?
             </h2>
             <p className="text-tier-text-secondary mb-6">Velg ett eller flere</p>
 
@@ -271,10 +294,10 @@ export default function OnboardingPageV2() {
             </div>
           </section>
 
-          {/* Section 3: Current Level */}
+          {/* Section 4: Current Level */}
           <section className="mb-12">
             <h2 className="text-2xl font-bold text-tier-navy mb-2">
-              3. Ditt nåværende nivå
+              4. Ditt nåværende nivå
             </h2>
             <p className="text-tier-text-secondary mb-6">Fortell oss om din erfaring</p>
 
@@ -340,10 +363,10 @@ export default function OnboardingPageV2() {
             </div>
           </section>
 
-          {/* Section 4: Focus Areas */}
+          {/* Section 5: Focus Areas */}
           <section className="mb-12">
             <h2 className="text-2xl font-bold text-tier-navy mb-2">
-              4. Fokusområder
+              5. Fokusområder
             </h2>
             <p className="text-tier-text-secondary mb-6">Hva vil du jobbe mest med?</p>
 
@@ -365,10 +388,10 @@ export default function OnboardingPageV2() {
             </div>
           </section>
 
-          {/* Section 5: Training Frequency */}
+          {/* Section 6: Training Frequency */}
           <section className="mb-12">
             <h2 className="text-2xl font-bold text-tier-navy mb-2">
-              5. Treningsfrekvens
+              6. Treningsfrekvens
             </h2>
             <p className="text-tier-text-secondary mb-6">Hvor mange økter per uke?</p>
 
