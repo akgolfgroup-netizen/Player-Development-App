@@ -334,6 +334,7 @@ const AnnualPlanGenerator: React.FC = () => {
 
   const [mode, setMode] = useState<CreationMode>(null);
   const [currentView, setCurrentView] = useState<'month' | 'week'>('month');
+  const [selectedPeriod, setSelectedPeriod] = useState<Period | null>(null);
   const [plan, setPlan] = useState<AnnualPlan>({
     playerId: playerId || '',
     playerName: 'Emma Hansen', // Mock - should come from API
