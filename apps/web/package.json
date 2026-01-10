@@ -127,5 +127,10 @@
   },
   "overrides": {
     "fs-extra": "^11.2.0"
+  },
+  "jest": {
+    "transformIgnorePatterns": [
+      "node_modules/(?!(axios)/)"
+    ]
   }
 }
