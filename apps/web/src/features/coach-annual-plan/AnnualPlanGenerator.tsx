@@ -348,7 +348,6 @@ const AnnualPlanGenerator: React.FC = () => {
   };
 
   const handleSave = () => {
-    console.log('Saving annual plan:', plan);
     // TODO: API call to save
   };
 
@@ -361,7 +360,6 @@ const AnnualPlanGenerator: React.FC = () => {
         endDate: plan.endDate,
         periods: plan.periods,
       });
-      console.log('Annual plan exported successfully');
     } catch (error) {
       console.error('Failed to export annual plan:', error);
     }
@@ -451,7 +449,7 @@ const AnnualPlanGenerator: React.FC = () => {
                   <PeriodBlock
                     key={period.id}
                     period={period}
-                    onClick={() => console.log('Period clicked:', period)}
+                    onClick={() => setSelectedPeriod(period)}
                     totalDays={365}
                   />
                 ))}

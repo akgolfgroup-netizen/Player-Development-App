@@ -54,12 +54,8 @@ type InstrumentationEvent =
   | WorkoutCompleteEvent;
 
 // Instrumentation helper (non-blocking)
-const logEvent = (eventName: string, data: InstrumentationEvent) => {
-  // Non-blocking console log for MVP
-  // In production, this would send to analytics service
-  console.log(`[DayView Analytics] ${eventName}:`, data);
-
-  // Future: Send to analytics service
+const logEvent = (_eventName: string, _data: InstrumentationEvent) => {
+  // TODO: Send to analytics service in production
   // analyticsService.track(eventName, data);
 };
 

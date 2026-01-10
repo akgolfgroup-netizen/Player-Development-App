@@ -196,8 +196,8 @@ export function AICoachProvider({ children }: AICoachProviderProps) {
           fullContent += text;
           setStreamingContent(fullContent);
         },
-        onToolUse: (toolName: string) => {
-          console.log('[AICoach] Tool used:', toolName);
+        onToolUse: (_toolName: string) => {
+          // Tool use callback - could be used for UI feedback
         },
         onDone: () => {
           // Create final assistant message

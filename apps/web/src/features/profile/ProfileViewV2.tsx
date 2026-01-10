@@ -223,7 +223,6 @@ const ProfileViewV2: React.FC<ProfileViewV2Props> = ({ profile, onUpdate }) => {
       const response = await playersAPI.uploadProfileImage(file);
       const { imageUrl } = response.data.data;
       await onUpdate({ profileImageUrl: imageUrl });
-      console.log('Profile image uploaded successfully');
     } catch (error) {
       console.error('Image upload failed:', error);
       throw error;
@@ -238,7 +237,6 @@ const ProfileViewV2: React.FC<ProfileViewV2Props> = ({ profile, onUpdate }) => {
     try {
       await playersAPI.removeProfileImage();
       await onUpdate({ profileImageUrl: undefined });
-      console.log('Profile image removed successfully');
     } catch (error) {
       console.error('Image removal failed:', error);
       throw error;

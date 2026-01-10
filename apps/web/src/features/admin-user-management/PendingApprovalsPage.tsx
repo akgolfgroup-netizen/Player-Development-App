@@ -50,13 +50,11 @@ export const PendingApprovalsPage: React.FC = () => {
 
   const handleApprove = async (userId: string) => {
     // TODO: Implement API call
-    console.log('Approving user:', userId);
     setUsers(users.map(u => u.id === userId ? { ...u, status: 'approved' as const } : u));
   };
 
   const handleReject = async (userId: string) => {
     // TODO: Implement API call
-    console.log('Rejecting user:', userId);
     setUsers(users.map(u => u.id === userId ? { ...u, status: 'rejected' as const } : u));
   };
 

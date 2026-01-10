@@ -435,7 +435,6 @@ const AnnualPlanGenerator: React.FC = () => {
     try {
       // TODO: API call
       await new Promise(resolve => setTimeout(resolve, 1000));
-      console.log('Saving plan:', plan);
       setSaveStatus('success');
       setTimeout(() => setSaveStatus('idle'), 2000);
     } catch (error) {
@@ -448,7 +447,6 @@ const AnnualPlanGenerator: React.FC = () => {
   // Export to PDF
   const handleExport = () => {
     // TODO: Implement PDF export
-    console.log('Exporting plan to PDF');
     alert('PDF eksport kommer snart!');
   };
 

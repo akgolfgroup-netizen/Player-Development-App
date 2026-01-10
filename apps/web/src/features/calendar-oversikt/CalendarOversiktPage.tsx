@@ -66,9 +66,8 @@ export const CalendarOversiktPage: React.FC = () => {
     [setDate, setView]
   );
 
-  const handleEventClick = useCallback((event: UnifiedCalendarEvent) => {
-    // Read-only: just show details (could show tooltip or modal)
-    console.log('Event clicked:', event);
+  const handleEventClick = useCallback((_event: UnifiedCalendarEvent) => {
+    // TODO: Read-only: show details (tooltip or modal)
   }, []);
 
   const renderView = () => {

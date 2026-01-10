@@ -181,8 +181,7 @@ export const DayViewExecution: React.FC<DayViewProps> = ({ date: initialDate, on
 
   // Handle workout selection from modal
   const handleWorkoutSelect = useCallback((workout: Workout) => {
-    // Add the selected workout to the day
-    console.log('Workout selected:', workout);
+    // TODO: Add the selected workout to the day
     setShowWorkoutSelector(false);
   }, []);
 
@@ -192,8 +191,7 @@ export const DayViewExecution: React.FC<DayViewProps> = ({ date: initialDate, on
       // Reschedule to specific time
       rescheduleWorkout({ type: 'specific_time', time });
     } else {
-      // Could be used for quick-add at specific time
-      console.log('Time selected for new workout:', time);
+      // TODO: Could be used for quick-add at specific time
     }
     setShowTimePicker(false);
   }, [timePickerContext, rescheduleWorkout]);

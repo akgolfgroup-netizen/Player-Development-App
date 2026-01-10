@@ -181,9 +181,8 @@ export default function CoachBooking() {
     setCurrentDate(new Date());
   };
 
-  const handleSlotClick = (date: Date, time: string, slot?: BookingSlot) => {
-    // In a real app, this would open a modal or navigate to a detail page
-    console.log('Slot clicked:', date, time, slot);
+  const handleSlotClick = (_date: Date, _time: string, _slot?: BookingSlot) => {
+    // TODO: In a real app, this would open a modal or navigate to a detail page
   };
 
   return (

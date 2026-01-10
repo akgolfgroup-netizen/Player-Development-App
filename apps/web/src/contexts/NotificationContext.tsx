@@ -243,7 +243,6 @@ export const NotificationProvider: React.FC<NotificationProviderProps> = ({ chil
         return false;
       }
 
-      console.log('Push subscription registered with backend');
       return true;
     } catch (error) {
       console.error('Failed to subscribe to push notifications:', error);
@@ -372,7 +371,7 @@ export const NotificationProvider: React.FC<NotificationProviderProps> = ({ chil
         break;
 
       default:
-        console.log('Unknown realtime message type:', data.type);
+        console.warn('Unknown realtime message type:', data.type);
     }
   }, [showNotification]);
 
@@ -412,7 +411,6 @@ export const NotificationProvider: React.FC<NotificationProviderProps> = ({ chil
       );
 
       eventSource.onopen = (): void => {
-        console.log('Realtime connection established');
         setRealtimeConnected(true);
         // Reset reconnect attempts on successful connection
         reconnectAttemptsRef.current = 0;
@@ -443,7 +441,6 @@ export const NotificationProvider: React.FC<NotificationProviderProps> = ({ chil
         if (reconnectAttemptsRef.current < MAX_RECONNECT_ATTEMPTS && isOnline) {
           const delay = getReconnectDelay(reconnectAttemptsRef.current);
           reconnectAttemptsRef.current++;
-          console.log(`Realtime reconnecting in ${delay}ms... Attempt ${reconnectAttemptsRef.current}/${MAX_RECONNECT_ATTEMPTS}`);
 
           // Clear any existing timeout
           if (reconnectTimeoutRef.current) {

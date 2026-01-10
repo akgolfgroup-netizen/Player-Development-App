@@ -61,7 +61,6 @@ export default function SharingPermissions() {
 
   const handleSave = () => {
     // TODO: Save to API
-    console.log('Saving sharing permissions:', { permissions, shareTarget });
     alert('Delingsinnstillinger lagret!');
   };
 

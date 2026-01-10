@@ -23,7 +23,6 @@ export function NotificationManager() {
   useEffect(() => {
     // Connect to real-time notifications when user is authenticated
     if (user?.id && token && isOnline) {
-      console.log('[NotificationManager] Connecting to real-time notifications');
       connectRealtime(user.id, token);
     }
 

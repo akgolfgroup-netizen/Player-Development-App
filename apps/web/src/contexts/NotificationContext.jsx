@@ -157,7 +157,6 @@ export const NotificationProvider = ({ children }) => {
       );
 
       eventSource.onopen = () => {
-        console.log('Realtime connection established');
         setRealtimeConnected(true);
         if (reconnectTimeoutRef.current) {
           clearTimeout(reconnectTimeoutRef.current);
@@ -280,7 +279,7 @@ export const NotificationProvider = ({ children }) => {
         break;
 
       default:
-        console.log('Unknown realtime message type:', data.type);
+        console.warn('Unknown realtime message type:', data.type);
     }
   }, [showNotification]);
 

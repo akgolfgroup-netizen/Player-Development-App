@@ -12,7 +12,6 @@ export const InvitationsPage: React.FC = () => {
   const [role, setRole] = useState('player');
 
   const handleSendInvitation = () => {
-    console.log('Sending invitation to:', email, 'as', role);
     // TODO: Implement API call
     setEmail('');
   };

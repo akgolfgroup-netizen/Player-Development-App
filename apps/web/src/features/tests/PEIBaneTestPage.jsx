@@ -110,8 +110,8 @@ const PEIBaneTestPage = () => {
       <div style={{ maxWidth: '900px', margin: '0 auto' }}>
         <PEIBaneTestForm
           onClose={() => setShowTestForm(false)}
-          onSubmit={async (data) => {
-            console.log('Test submitted:', data);
+          onSubmit={async () => {
+            // TODO: Handle test submission
             setShowTestForm(false);
           }}
         />

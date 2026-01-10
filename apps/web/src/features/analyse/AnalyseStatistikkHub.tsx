@@ -188,7 +188,7 @@ function StatistikkOversiktTab() {
               <div className="mb-6">
                 <BreakingPointTimeline
                   breakingPoints={timelinePoints}
-                  onPointClick={(id) => console.log('Selected:', id)}
+                  onPointClick={() => { /* TODO: Handle point selection */ }}
                 />
               </div>
             )}
@@ -200,7 +200,7 @@ function StatistikkOversiktTab() {
                   <BreakingPointCard
                     key={point.id}
                     breakingPoint={point}
-                    onClick={() => console.log('Clicked:', point.id)}
+                    onClick={() => { /* TODO: Handle card click */ }}
                   />
                 ))}
               </div>

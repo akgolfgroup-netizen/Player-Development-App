@@ -336,8 +336,7 @@ export const DailyTrainingCalendar: React.FC<DailyTrainingCalendarProps> = ({ pl
     return { hasSession: sessionDates };
   }, [sessionsByDate]);
 
-  const handleAction = (action: string) => {
-    console.log('Action:', action);
+  const handleAction = (_action: string) => {
     // TODO: Implement actual action handling
   };
 

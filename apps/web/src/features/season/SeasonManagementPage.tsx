@@ -119,8 +119,8 @@ interface CreateSeasonModalProps {
 
 const CreateSeasonModal: React.FC<CreateSeasonModalProps> = ({ playerId, onClose, onSuccess }) => {
   // TODO: Implement useCreateSeason hook
-  const createSeason = async (data: any) => {
-    console.log('Create season:', data);
+  const createSeason = async (_data: any) => {
+    // TODO: Implement API call
   };
   const loading = false;
 

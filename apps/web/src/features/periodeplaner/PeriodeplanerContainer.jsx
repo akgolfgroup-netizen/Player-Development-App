@@ -653,8 +653,8 @@ const PeriodeplanerContainer = () => {
 
   // Session sync hook
   const { syncPeriodSessions, isSyncing } = useSessionSync({
-    onSyncComplete: (count) => {
-      console.log(`Synkroniserte ${count} økter fra periodeplan`);
+    onSyncComplete: () => {
+      // Sync completed successfully
     },
   });
 

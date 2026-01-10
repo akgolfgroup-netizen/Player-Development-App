@@ -282,9 +282,8 @@ export default function CoachGroupPlan() {
   };
 
   const handleSave = async () => {
-    // In production, save to API
+    // TODO: In production, save to API
     // await fetch(`/api/v1/coach/groups/${groupId}/plan`, { method: 'PUT', body: JSON.stringify(weeklyPlan) });
-    console.log('Saving plan:', weeklyPlan);
     setHasUnsavedChanges(false);
     // Show success notification
   };

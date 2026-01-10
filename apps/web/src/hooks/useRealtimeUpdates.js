@@ -118,7 +118,6 @@ export function useRealtimeUpdates(options = {}) {
     }
 
     if (wsRef.current?.readyState === WS_STATE.OPEN) {
-      console.log('[WS] Already connected');
       return;
     }
 
@@ -127,7 +126,6 @@ export function useRealtimeUpdates(options = {}) {
       wsRef.current = new WebSocket(url);
 
       wsRef.current.onopen = () => {
-        console.log('[WS] Connected');
         setIsConnected(true);
         setConnectionState(WS_STATE.OPEN);
         setError(null);
@@ -161,7 +159,6 @@ export function useRealtimeUpdates(options = {}) {
       };
 
       wsRef.current.onclose = (event) => {
-        console.log('[WS] Disconnected', event.code, event.reason);
         setIsConnected(false);
         setConnectionState(WS_STATE.CLOSED);
 
@@ -179,9 +176,6 @@ export function useRealtimeUpdates(options = {}) {
         ) {
           const delay = getReconnectDelay(reconnectAttemptsRef.current);
           reconnectAttemptsRef.current++;
-          console.log(
-            `[WS] Reconnecting in ${delay}ms... Attempt ${reconnectAttemptsRef.current}/${reconnectAttempts}`
-          );
           // Clear any existing timeout
           if (reconnectTimeoutRef.current) {
             clearTimeout(reconnectTimeoutRef.current);

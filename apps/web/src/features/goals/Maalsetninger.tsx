@@ -843,9 +843,8 @@ const Maalsetninger: React.FC<MaalsetningerProps> = ({ goals: apiGoals }) => {
               })) || []
             }
             maxDisplay={3}
-            onBadgeClick={(badge) => {
+            onBadgeClick={() => {
               // TODO: Show badge details modal
-              console.log('Badge clicked:', badge);
             }}
           />
         </div>

@@ -187,7 +187,6 @@ export default function CoachBookingRequests() {
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ filter, sortBy }),
       });
-      console.log('Preferences saved');
     } catch (error) {
       console.error('Failed to save preferences:', error);
     }

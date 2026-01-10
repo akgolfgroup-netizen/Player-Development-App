@@ -388,8 +388,7 @@ export const DrillManagementPage: React.FC = () => {
     });
   }, [drills, filterPyramide, filterArea]);
 
-  const handleEdit = (drill: Drill) => {
-    console.log('Edit drill:', drill);
+  const handleEdit = (_drill: Drill) => {
     // TODO: Open edit dialog
   };
 
@@ -408,8 +407,7 @@ export const DrillManagementPage: React.FC = () => {
     setDrills([...drills, newDrill]);
   };
 
-  const handleAddToSession = (drill: Drill) => {
-    console.log('Add to session:', drill);
+  const handleAddToSession = (_drill: Drill) => {
     // TODO: Implement add to session functionality
   };
 

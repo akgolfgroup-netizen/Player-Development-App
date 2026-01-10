@@ -33,10 +33,9 @@ const FocusEnginePage: React.FC = () => {
     );
   }
 
-  const handleStartTraining = (recommendation: any) => {
-    // Navigate to training for this focus area
-    console.log('Start training for:', recommendation);
-    // TODO: Implement navigation to training page/exercises
+  const handleStartTraining = (_recommendation: any) => {
+    // TODO: Navigate to training for this focus area
+    // Implement navigation to training page/exercises
   };
 
   const handlePrioritiesChange = async (areas: any[]) => {
