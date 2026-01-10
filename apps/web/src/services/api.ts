@@ -1045,6 +1045,83 @@ export const settingsAPI = {
 };
 
 // =============================================================================
+// Goals API
+// =============================================================================
+
+export interface GoalStreak {
+  currentStreak: number;
+  longestStreak: number;
+  lastActivityDate: string;
+  streakStatus: 'active' | 'at_risk' | 'frozen' | 'inactive';
+  daysUntilExpiry: number;
+}
+
+export interface GoalStats {
+  totalActive: number;
+  totalCompleted: number;
+  averageProgress: number;
+  completedThisMonth: number;
+  upcomingDeadlines: Array<{
+    id: string;
+    title: string;
+    deadline: string;
+    progress: number;
+    category: string;
+  }>;
+  recentActivity: Array<{
+    date: string;
+    updates: number;
+  }>;
+}
+
+export interface GoalBadge {
+  id: string;
+  badgeId: string;
+  name: string;
+  description?: string;
+  icon: string;
+  rarity: 'common' | 'rare' | 'epic' | 'legendary';
+  unlockedAt: string;
+  viewed: boolean;
+}
+
+export interface GoalBadgesResponse {
+  badges: GoalBadge[];
+  unlockedCount: number;
+  totalBadges: number;
+  recentUnlocks: Array<{
+    id: string;
+    badgeId: string;
+    name: string;
+    icon: string;
+    unlockedAt: string;
+  }>;
+}
+
+export const goalsAPI = {
+  // Streak endpoints
+  getStreak: (): Promise<AxiosResponse<ApiResponse<GoalStreak>>> =>
+    api.get('/goals/streak'),
+
+  updateStreak: (goalId: string, progressValue: number): Promise<AxiosResponse<ApiResponse<{ success: boolean; currentStreak: number; streakUpdated: boolean; message: string }>>> =>
+    api.post('/goals/streak/update', { goalId, progressValue }),
+
+  // Stats endpoints
+  getStats: (): Promise<AxiosResponse<ApiResponse<GoalStats>>> =>
+    api.get('/goals/stats'),
+
+  // Badges endpoints
+  getBadges: (): Promise<AxiosResponse<ApiResponse<GoalBadgesResponse>>> =>
+    api.get('/goals/badges'),
+
+  unlockBadge: (badgeId: string): Promise<AxiosResponse<ApiResponse<{ success: boolean; badge: GoalBadge }>>> =>
+    api.post(`/goals/badges/${badgeId}/unlock`),
+
+  markBadgeViewed: (badgeId: string): Promise<AxiosResponse<ApiResponse<{ success: boolean }>>> =>
+    api.patch(`/goals/badges/${badgeId}/viewed`),
+};
+
+// =============================================================================
 // Achievements API
 // =============================================================================
 

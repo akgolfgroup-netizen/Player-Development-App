@@ -96,6 +96,8 @@ export default function DashboardHub({
                 name={fullName}
                 role="Spiller"
                 email={user?.email}
+                avatarUrl={user?.profileImageUrl}
+                onImageUpload={handleImageUpload}
                 stats={[
                   { label: 'treningsdager', value: stats.treningsdager },
                   { label: 'kommende tester', value: stats.kommendeTester },
@@ -106,24 +108,11 @@ export default function DashboardHub({
               />
             </div>
 
-            {/* Profile Picture Upload */}
-            <div className="flex flex-col items-center">
-              <ProfileImageUpload
-                currentImageUrl={user?.profileImageUrl}
-                userName={fullName}
-                onImageUpload={handleImageUpload}
-                onImageRemove={handleImageRemove}
-                size="xl"
-                className="mb-2"
-              />
-              <p className="text-sm text-tier-text-secondary">Last opp bilde</p>
-            </div>
-
             {/* 3. Focus Cards - Max 4 cards */}
             <section>
-              <h2 className="text-lg font-semibold text-tier-navy mb-4">
+              <h3 className="text-lg font-semibold text-tier-navy mb-4">
                 Din fokus denne uken
-              </h2>
+              </h3>
               <FocusCardsGrid>
                 <WeeklyGoalCard
                   goalName="Treningsøkter"

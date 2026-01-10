@@ -74,21 +74,8 @@ export default function VideoHub({}: VideoHubProps) {
 function VideoOverviewTab() {
   return (
     <div>
-      {/* Hero Section */}
+      {/* Quick Stats Section */}
       <div className="bg-gradient-to-br from-tier-white to-tier-surface-subtle rounded-2xl p-6 md:p-8 mb-8 border border-tier-border-default shadow-sm">
-        <div className="flex items-center gap-4 mb-6">
-          <span className="flex items-center justify-center w-12 h-12 rounded-xl bg-tier-status-success text-white">
-            <Video size={24} />
-          </span>
-          <div>
-            <div className="text-2xl md:text-3xl font-bold text-tier-navy leading-tight" aria-hidden="true">
-              Video
-            </div>
-            <p className="text-tier-text-secondary mt-1">
-              Videoer, sammenligning og annotering
-            </p>
-          </div>
-        </div>
 
         {/* Quick Stats */}
         <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 mb-6">
@@ -157,7 +144,7 @@ function VideoLibraryTab() {
   return (
     <div>
       <div className="bg-tier-white rounded-xl p-6 border border-tier-border-default mb-6">
-        <h2 className="text-xl font-bold text-tier-navy mb-2">Instruksjonsvideoer</h2>
+        <h3 className="text-xl font-bold text-tier-navy mb-2">Instruksjonsvideoer</h3>
         <p className="text-tier-text-secondary mb-4">
           Utforsk biblioteket med instruksjonsvideoer og læringsressurser
         </p>
@@ -198,7 +185,7 @@ function VideoComparisonTab() {
   return (
     <div>
       <div className="bg-tier-white rounded-xl p-6 border border-tier-border-default">
-        <h2 className="text-xl font-bold text-tier-navy mb-2">Video sammenligning</h2>
+        <h3 className="text-xl font-bold text-tier-navy mb-2">Video sammenligning</h3>
         <p className="text-tier-text-secondary mb-6">
           Sammenlign videoer side-ved-side for å analysere teknikk og fremgang
         </p>
@@ -240,7 +227,7 @@ function VideoAnnotationTab() {
   return (
     <div>
       <div className="bg-tier-white rounded-xl p-6 border border-tier-border-default">
-        <h2 className="text-xl font-bold text-tier-navy mb-2">Video annotasjon</h2>
+        <h3 className="text-xl font-bold text-tier-navy mb-2">Video annotasjon</h3>
         <p className="text-tier-text-secondary mb-6">
           Annot videoer med tegning, linjer og notater for detaljert analyse
         </p>

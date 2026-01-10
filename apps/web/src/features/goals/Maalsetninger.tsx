@@ -13,6 +13,7 @@ import { useGoalCategories } from '../../hooks/useTrainingConfig';
 import { useAuth } from '../../contexts/AuthContext';
 import { getCategoryColors } from './constants/categoryConfig';
 import { GoalsWelcomeHeader } from './components/GoalsWelcomeHeader';
+import { useGoalsData } from './hooks/useGoalsData';
 import {
   Card,
   CardContent,
@@ -675,6 +676,9 @@ const Maalsetninger: React.FC<MaalsetningerProps> = ({ goals: apiGoals }) => {
   const { categories: sportCategories } = useGoalCategories();
   const { celebrateGoalReached } = useConfetti();
 
+  // Fetch goals data from API (streak, stats, badges)
+  const { streak, stats, badges, isLoading: isLoadingGoalsData } = useGoalsData();
+
   // Transform sport config categories to component format
   const CATEGORIES = useMemo(() => {
     if (!sportCategories || sportCategories.length === 0) {
@@ -777,7 +781,7 @@ const Maalsetninger: React.FC<MaalsetningerProps> = ({ goals: apiGoals }) => {
           userName={user?.name || user?.email?.split('@')[0] || 'Spiller'}
           activeGoals={activeGoals.length}
           totalProgress={totalProgress}
-          completedThisMonth={0} // TODO: Calculate from API data
+          completedThisMonth={stats?.completedThisMonth || 0}
         />
       </div>
 
@@ -818,10 +822,10 @@ const Maalsetninger: React.FC<MaalsetningerProps> = ({ goals: apiGoals }) => {
         {/* Streak Counter */}
         <div className="mb-6">
           <StreakCounter
-            currentStreak={7} // TODO: Get from API
-            longestStreak={14} // TODO: Get from API
-            streakStatus="active"
-            nextMilestone={14}
+            currentStreak={streak?.currentStreak || 0}
+            longestStreak={streak?.longestStreak || 0}
+            streakStatus={streak?.streakStatus || 'inactive'}
+            nextMilestone={streak?.longestStreak ? streak.longestStreak + 7 : 7}
           />
         </div>
 
@@ -829,30 +833,15 @@ const Maalsetninger: React.FC<MaalsetningerProps> = ({ goals: apiGoals }) => {
         <div className="mb-8">
           <BadgeShowcase
             title="Siste merker"
-            badges={[
-              // TODO: Get from API - these are sample badges
-              {
-                id: 'first_goal',
-                name: BADGE_DEFINITIONS.find(b => b.id === 'first_goal')?.name || '',
-                description: BADGE_DEFINITIONS.find(b => b.id === 'first_goal')?.description,
-                icon: BADGE_DEFINITIONS.find(b => b.id === 'first_goal')?.icon || '🎯',
-                earnedAt: new Date(Date.now() - 7 * 24 * 60 * 60 * 1000),
-              },
-              {
-                id: 'three_day_streak',
-                name: BADGE_DEFINITIONS.find(b => b.id === 'three_day_streak')?.name || '',
-                description: BADGE_DEFINITIONS.find(b => b.id === 'three_day_streak')?.description,
-                icon: BADGE_DEFINITIONS.find(b => b.id === 'three_day_streak')?.icon || '🔥',
-                earnedAt: new Date(Date.now() - 3 * 24 * 60 * 60 * 1000),
-              },
-              {
-                id: 'early_bird',
-                name: BADGE_DEFINITIONS.find(b => b.id === 'early_bird')?.name || '',
-                description: BADGE_DEFINITIONS.find(b => b.id === 'early_bird')?.description,
-                icon: BADGE_DEFINITIONS.find(b => b.id === 'early_bird')?.icon || '🌅',
-                earnedAt: new Date(Date.now() - 1 * 24 * 60 * 60 * 1000),
-              },
-            ]}
+            badges={
+              badges?.recentUnlocks?.map(badge => ({
+                id: badge.badgeId,
+                name: badge.name,
+                description: BADGE_DEFINITIONS.find(b => b.id === badge.badgeId)?.description,
+                icon: badge.icon,
+                earnedAt: new Date(badge.unlockedAt),
+              })) || []
+            }
             maxDisplay={3}
             onBadgeClick={(badge) => {
               // TODO: Show badge details modal

@@ -227,7 +227,7 @@ export default function AnalyseHub() {
 
         {/* Recent Activity Section */}
         <div className="mt-12">
-          <h2 className="text-2xl font-bold text-tier-navy mb-6">Siste aktivitet</h2>
+          <h3 className="text-xl font-semibold text-tier-navy mb-6">Siste aktivitet</h3>
           <div className="bg-white rounded-xl border border-tier-border-default p-6">
             <div className="space-y-4">
               {/* Activity items - placeholder for now */}
