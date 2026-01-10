@@ -363,13 +363,17 @@ export class GoalsService {
       where: { userId }
     });
 
+    // Use UTC to avoid timezone issues with PostgreSQL DATE type
+    const now = new Date();
+    const today = new Date(Date.UTC(now.getUTCFullYear(), now.getUTCMonth(), now.getUTCDate()));
+
     if (!streak) {
       streak = await prisma.goalStreak.create({
         data: {
           userId,
           currentStreak: 1,
           longestStreak: 1,
-          lastActivityDate: new Date(),
+          lastActivityDate: today,
           streakStatus: 'active',
           freezeUsed: false
         }
@@ -383,13 +387,13 @@ export class GoalsService {
       };
     }
 
-    const today = new Date();
-    today.setHours(0, 0, 0, 0);
-
-    const lastActivity = streak.lastActivityDate ? new Date(streak.lastActivityDate) : null;
-    if (lastActivity) {
-      lastActivity.setHours(0, 0, 0, 0);
-    }
+    const lastActivity = streak.lastActivityDate
+      ? new Date(Date.UTC(
+          new Date(streak.lastActivityDate).getUTCFullYear(),
+          new Date(streak.lastActivityDate).getUTCMonth(),
+          new Date(streak.lastActivityDate).getUTCDate()
+        ))
+      : null;
 
     // Calculate day difference
     const daysDiff = lastActivity
@@ -457,11 +461,14 @@ export class GoalsService {
   private calculateDaysUntilExpiry(lastActivityDate: Date | null): number {
     if (!lastActivityDate) return 0;
 
-    const today = new Date();
-    today.setHours(0, 0, 0, 0);
+    const now = new Date();
+    const today = new Date(Date.UTC(now.getUTCFullYear(), now.getUTCMonth(), now.getUTCDate()));
 
-    const lastActivity = new Date(lastActivityDate);
-    lastActivity.setHours(0, 0, 0, 0);
+    const lastActivity = new Date(Date.UTC(
+      new Date(lastActivityDate).getUTCFullYear(),
+      new Date(lastActivityDate).getUTCMonth(),
+      new Date(lastActivityDate).getUTCDate()
+    ));
 
     const daysSinceActivity = Math.floor((today.getTime() - lastActivity.getTime()) / (1000 * 60 * 60 * 24));
 
