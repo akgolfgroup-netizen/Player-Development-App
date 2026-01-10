@@ -315,6 +315,7 @@ export const playerNavigationV4: NavArea[] = [
         label: 'Ressurser',
         items: [
           { href: '/mer/kunnskap', label: 'Kunnskapsbase', icon: 'LessonsIcon', description: 'Artikler og guider' },
+          { href: '/plan/kalender?action=book', label: 'Book trener', icon: 'UsersIcon', description: 'Bestill time med trener' },
           { href: '/mer/notater', label: 'Notater', icon: 'ScorecardIcon', description: 'Dine notater' },
           { href: '/mer/baner-vaer', label: 'Baner & Vær', icon: 'CloudIcon', description: 'Finn beste baner basert på værforhold' },
           { href: '/mer/ai-historikk', label: 'AI Treningshistorikk', icon: 'ChatIcon', description: 'Se tidligere AI-samtaler' },
@@ -537,8 +538,8 @@ export const areaTabsConfig = {
   ],
   plan: [
     { href: '/plan', label: 'Oversikt', icon: 'LayoutDashboard' },
-    { href: '/plan/kalender', label: 'Kalender', icon: 'Calendar' },
     { href: '/plan/maal', label: 'Mål', icon: 'Target' },
+    { href: '/plan/kalender', label: 'Planlegger', icon: 'Calendar' },
     { href: '/plan/turneringer', label: 'Turneringer', icon: 'Trophy' },
   ],
   // Video tabs - consolidated from separate pages

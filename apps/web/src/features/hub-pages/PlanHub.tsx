@@ -47,12 +47,6 @@ export default function PlanHub({
           icon: 'Calendar',
           variant: 'primary',
         },
-        {
-          label: 'Book trener',
-          href: '/plan/kalender?action=book',
-          icon: 'Users',
-          variant: 'success',
-        },
       ]}
     />
   );

@@ -292,6 +292,7 @@ export const playerNavigationV3: NavArea[] = [
         label: 'Ressurser',
         items: [
           { href: '/mer/kunnskap', label: 'Kunnskapsbase', icon: 'LessonsIcon', description: 'Artikler og guider' },
+          { href: '/plan/kalender?action=book', label: 'Book trener', icon: 'UsersIcon', description: 'Bestill time med trener' },
           { href: '/mer/notater', label: 'Notater', icon: 'ScorecardIcon', description: 'Dine notater' },
           { href: '/samlinger', label: 'Samlinger', icon: 'FolderIcon', description: 'Treningssamlinger' },
           { href: '/arkiv', label: 'Arkiv', icon: 'ArchiveIcon', description: 'Arkiverte elementer' },
@@ -511,8 +512,8 @@ export const areaTabsConfig = {
   ],
   plan: [
     { href: '/plan', label: 'Oversikt', icon: 'LayoutDashboard' },
-    { href: '/plan/kalender', label: 'Kalender', icon: 'Calendar' },
     { href: '/plan/maal', label: 'Mål', icon: 'Target' },
+    { href: '/plan/kalender', label: 'Planlegger', icon: 'Calendar' },
     { href: '/plan/turneringer', label: 'Turneringer', icon: 'Trophy' },
   ],
 };

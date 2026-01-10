@@ -17,6 +17,8 @@ export interface User {
   playerId?: string;
   coachId?: string;
   profileImageUrl?: string;
+  onboardingComplete?: boolean;
+  sportId?: string;
 }
 
 export interface AuthResult {

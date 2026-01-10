@@ -23,7 +23,7 @@ interface OnboardingData {
 
   // Golf profile
   handicap: string;
-  category: 'A' | 'B' | 'C' | 'D' | '';
+  category: 'F' | 'G' | 'H' | 'I' | 'J' | 'K' | '';
   club: string;
   school: string;
 
@@ -126,7 +126,7 @@ export default function PlayerOnboardingPage() {
         gender: data.gender,
         phone: data.phone,
         handicap: parseFloat(data.handicap) || null,
-        category: data.category || 'D',
+        category: data.category || 'K',
         club: data.club,
         school: data.school,
         goals: allGoals,

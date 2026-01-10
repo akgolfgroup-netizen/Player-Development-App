@@ -89,14 +89,14 @@ function StatistikkOversiktTab() {
     priority: bp.priority,
   }));
 
-  // Mock data for Handicap chart
-  const mockHandicapData = [
-    { date: 'Aug', handicap: 14.2 },
-    { date: 'Sep', handicap: 13.8 },
-    { date: 'Okt', handicap: 13.5 },
-    { date: 'Nov', handicap: 13.1 },
-    { date: 'Des', handicap: 12.8 },
-    { date: 'Jan', handicap: 12.4 },
+  // Mock data for Snitt score chart
+  const mockSnittScoreData = [
+    { date: 'Aug', score: 14.2 },
+    { date: 'Sep', score: 13.8 },
+    { date: 'Okt', score: 13.5 },
+    { date: 'Nov', score: 13.1 },
+    { date: 'Des', score: 12.8 },
+    { date: 'Jan', score: 12.4 },
   ];
 
   return (
@@ -104,7 +104,7 @@ function StatistikkOversiktTab() {
       {/* Key Metrics Cards */}
       <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
         <div className="bg-white rounded-xl border border-tier-border-default p-6">
-          <div className="text-sm text-tier-text-secondary mb-1">Handicap</div>
+          <div className="text-sm text-tier-text-secondary mb-1">SNITT SCORE</div>
           <div className="text-3xl font-bold text-tier-navy mb-2">12.4</div>
           <div className="text-xs text-tier-success flex items-center gap-1">
             <span>↓ 0.8</span>
@@ -130,9 +130,9 @@ function StatistikkOversiktTab() {
 
       {/* Handicap Chart */}
       <div className="bg-white rounded-xl border border-tier-border-default p-6">
-        <h3 className="text-lg font-semibold text-tier-navy mb-4">Handicap utvikling</h3>
+        <h3 className="text-lg font-semibold text-tier-navy mb-4">SNITT SCORE UTVIKLING</h3>
         <ResponsiveContainer width="100%" height={300}>
-          <LineChart data={mockHandicapData}>
+          <LineChart data={mockSnittScoreData}>
             <CartesianGrid strokeDasharray="3 3" stroke="var(--tier-border-default)" />
             <XAxis
               dataKey="date"
@@ -154,7 +154,7 @@ function StatistikkOversiktTab() {
             />
             <Line
               type="monotone"
-              dataKey="handicap"
+              dataKey="score"
               stroke="var(--tier-navy)"
               strokeWidth={3}
               dot={{ fill: 'var(--tier-navy)', r: 5 }}
@@ -250,7 +250,7 @@ function StrokesGainedTab() {
         <div className="bg-white rounded-xl border border-tier-border-default p-6">
           <div className="text-sm text-tier-text-secondary mb-1">Total SG</div>
           <div className="text-3xl font-bold text-tier-navy mb-2">+2.4</div>
-          <div className="text-xs text-tier-success">vs Handicap</div>
+          <div className="text-xs text-tier-success">vs Par</div>
         </div>
 
         <div className="bg-white rounded-xl border border-tier-border-default p-6">
@@ -475,7 +475,7 @@ function StatusMaalTab() {
         <div className="space-y-4">
           <div>
             <div className="flex items-center justify-between mb-2">
-              <span className="text-sm font-medium text-tier-navy">Handicap mål: 10.0</span>
+              <span className="text-sm font-medium text-tier-navy">Snitt score mål: 10.0</span>
               <span className="text-sm text-tier-text-secondary">Nåværende: 12.4</span>
             </div>
             <div className="w-full bg-tier-surface-base rounded-full h-2">

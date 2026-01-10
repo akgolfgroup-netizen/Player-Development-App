@@ -131,14 +131,14 @@ export default function DashboardHub({
                 />
               </FocusCardsGrid>
 
-              {/* See all goals button */}
+              {/* See training plan button */}
               <div className="mt-4 flex justify-center">
                 <Link
-                  to="/plan/maal"
+                  to="/trening/plan?view=dag"
                   className="inline-flex items-center gap-2 px-6 py-3 bg-tier-gold hover:bg-tier-gold/90 text-white font-semibold rounded-lg transition-colors shadow-sm"
                 >
                   <Target size={20} />
-                  Se alle mål
+                  Se treningsplan
                 </Link>
               </div>
             </section>

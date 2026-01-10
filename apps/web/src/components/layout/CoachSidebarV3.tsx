@@ -313,7 +313,7 @@ export default function CoachSidebarV3({
 
   // Desktop view
   return (
-    <aside className="w-64 h-screen bg-tier-white border-r border-tier-border-subtle flex flex-col flex-shrink-0 sticky top-0">
+    <aside className="w-64 h-screen bg-tier-white border-r border-tier-border-subtle flex flex-col flex-shrink-0 ">
       {renderLogo()}
       {renderQuickActions()}
       <div className="flex-1 overflow-y-auto p-3">

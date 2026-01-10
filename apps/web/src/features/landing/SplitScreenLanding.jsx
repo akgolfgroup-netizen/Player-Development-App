@@ -1,11 +1,12 @@
 /**
  * TIER Golf Academy Landing Page
- * Premium hero section with app preview
+ * Premium hero section with multi-device app preview
+ * MacBook Pro + iPhone + Apple Watch mockups
  */
 
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { Menu, X, ChevronRight, Calendar, TrendingUp, Trophy } from 'lucide-react';
+import { Menu, X, ChevronRight, Calendar, TrendingUp, Trophy, Target, Zap } from 'lucide-react';
 import { TIERGolfFullLogo } from '../../components/branding/TIERGolfFullLogo';
 
 const navigation = [
@@ -14,6 +15,372 @@ const navigation = [
   { name: 'For trenere', href: '#coaches' },
   { name: 'Kontakt', href: '#contact' },
 ];
+
+// MacBook Pro Mockup Component
+function MacBookMockup() {
+  return (
+    <div className="relative">
+      {/* MacBook Screen */}
+      <div className="relative mx-auto" style={{ width: '680px', maxWidth: '100%' }}>
+        {/* Screen bezel */}
+        <div className="bg-[#1a1a1a] rounded-t-xl pt-3 px-3 pb-0">
+          {/* Camera notch */}
+          <div className="absolute top-1.5 left-1/2 -translate-x-1/2 w-3 h-3 rounded-full bg-[#0a0a0a] border border-[#2a2a2a]">
+            <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-1.5 h-1.5 rounded-full bg-[#1a3a5a]"></div>
+          </div>
+
+          {/* Screen content */}
+          <div className="bg-gradient-to-br from-[#f8f9fa] to-[#e9ecef] rounded-t-lg overflow-hidden" style={{ aspectRatio: '16/10' }}>
+            {/* App Header */}
+            <div className="bg-white border-b border-gray-200 px-4 py-2 flex items-center justify-between">
+              <div className="flex items-center gap-3">
+                <img src="/tier-golf-icon.svg" alt="TIER" className="w-6 h-6" />
+                <span className="text-sm font-semibold text-tier-navy">TIER Golf Analytics</span>
+              </div>
+              <div className="flex items-center gap-2">
+                <div className="w-7 h-7 rounded-full bg-tier-navy/10 flex items-center justify-center">
+                  <span className="text-[10px] font-bold text-tier-navy">NL</span>
+                </div>
+              </div>
+            </div>
+
+            {/* Dashboard Content */}
+            <div className="p-4 grid grid-cols-3 gap-3" style={{ height: 'calc(100% - 44px)' }}>
+              {/* Left Column - Strokes Gained */}
+              <div className="col-span-2 space-y-3">
+                {/* SG Overview Card */}
+                <div className="bg-white rounded-xl p-4 shadow-sm h-[45%]">
+                  <div className="flex items-center justify-between mb-2">
+                    <h3 className="text-sm font-semibold text-gray-900">Strokes Gained Analyse</h3>
+                    <span className="text-[10px] px-2 py-0.5 bg-status-success/10 text-status-success rounded-full font-medium">+2.3 denne mnd</span>
+                  </div>
+                  <div className="flex items-end gap-4 h-[calc(100%-32px)]">
+                    {/* Bar Chart */}
+                    <div className="flex-1 flex items-end justify-around gap-2 h-full pb-4">
+                      {[
+                        { label: 'Tee', value: 65, color: '#1B4D3E' },
+                        { label: 'Approach', value: 80, color: '#C9A227' },
+                        { label: 'Short', value: 45, color: '#0a2540' },
+                        { label: 'Putting', value: 70, color: '#4ECDC4' },
+                      ].map((item) => (
+                        <div key={item.label} className="flex flex-col items-center gap-1 flex-1">
+                          <div
+                            className="w-full rounded-t-md transition-all duration-500"
+                            style={{ height: `${item.value}%`, backgroundColor: item.color, minHeight: '20px' }}
+                          />
+                          <span className="text-[8px] text-gray-500 font-medium">{item.label}</span>
+                        </div>
+                      ))}
+                    </div>
+                    {/* Stats */}
+                    <div className="w-24 space-y-2">
+                      <div className="text-center p-2 bg-gray-50 rounded-lg">
+                        <div className="text-lg font-bold text-tier-navy">+1.8</div>
+                        <div className="text-[8px] text-gray-500">Total SG</div>
+                      </div>
+                      <div className="text-center p-2 bg-tier-gold/10 rounded-lg">
+                        <div className="text-sm font-bold text-tier-gold">Top 15%</div>
+                        <div className="text-[8px] text-gray-500">Kategori B</div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+
+                {/* Trend Chart */}
+                <div className="bg-white rounded-xl p-4 shadow-sm h-[45%]">
+                  <div className="flex items-center justify-between mb-2">
+                    <h3 className="text-sm font-semibold text-gray-900">Handicap Utvikling</h3>
+                    <div className="flex gap-2">
+                      <span className="text-[9px] px-2 py-0.5 bg-tier-navy text-white rounded font-medium">6 mnd</span>
+                      <span className="text-[9px] px-2 py-0.5 bg-gray-100 text-gray-600 rounded font-medium">1 år</span>
+                    </div>
+                  </div>
+                  <svg viewBox="0 0 400 100" className="w-full h-[calc(100%-40px)]">
+                    <defs>
+                      <linearGradient id="areaGradient" x1="0%" y1="0%" x2="0%" y2="100%">
+                        <stop offset="0%" style={{ stopColor: '#1B4D3E', stopOpacity: 0.3 }} />
+                        <stop offset="100%" style={{ stopColor: '#1B4D3E', stopOpacity: 0 }} />
+                      </linearGradient>
+                    </defs>
+                    {/* Area fill */}
+                    <path
+                      d="M 20 80 L 80 75 L 140 70 L 200 60 L 260 55 L 320 45 L 380 35 L 380 95 L 20 95 Z"
+                      fill="url(#areaGradient)"
+                    />
+                    {/* Line */}
+                    <path
+                      d="M 20 80 L 80 75 L 140 70 L 200 60 L 260 55 L 320 45 L 380 35"
+                      fill="none"
+                      stroke="#1B4D3E"
+                      strokeWidth="2.5"
+                      strokeLinecap="round"
+                    />
+                    {/* Data points */}
+                    <circle cx="380" cy="35" r="4" fill="#1B4D3E" />
+                    <circle cx="380" cy="35" r="7" fill="#1B4D3E" fillOpacity="0.2" />
+                    {/* Labels */}
+                    <text x="20" y="95" fontSize="8" fill="#9ca3af">Aug</text>
+                    <text x="120" y="95" fontSize="8" fill="#9ca3af">Okt</text>
+                    <text x="220" y="95" fontSize="8" fill="#9ca3af">Des</text>
+                    <text x="340" y="95" fontSize="8" fill="#9ca3af">Jan</text>
+                    {/* HCP values */}
+                    <text x="385" y="38" fontSize="9" fill="#1B4D3E" fontWeight="600">8.2</text>
+                    <text x="5" y="83" fontSize="9" fill="#9ca3af">12.4</text>
+                  </svg>
+                </div>
+              </div>
+
+              {/* Right Column - Quick Stats */}
+              <div className="space-y-3">
+                {/* Player Card */}
+                <div className="bg-gradient-to-br from-tier-navy to-tier-navy/90 rounded-xl p-3 text-white">
+                  <div className="flex items-center gap-2 mb-2">
+                    <div className="w-8 h-8 rounded-full bg-white/20 flex items-center justify-center">
+                      <span className="text-xs font-bold">NL</span>
+                    </div>
+                    <div>
+                      <div className="text-[10px] text-white/60">Spiller</div>
+                      <div className="text-xs font-semibold">Nils Jonas</div>
+                    </div>
+                  </div>
+                  <div className="grid grid-cols-2 gap-2 mt-3">
+                    <div className="bg-white/10 rounded-lg p-2 text-center">
+                      <div className="text-sm font-bold">8.2</div>
+                      <div className="text-[8px] text-white/60">HCP</div>
+                    </div>
+                    <div className="bg-white/10 rounded-lg p-2 text-center">
+                      <div className="text-sm font-bold">B</div>
+                      <div className="text-[8px] text-white/60">Kategori</div>
+                    </div>
+                  </div>
+                </div>
+
+                {/* Goals */}
+                <div className="bg-white rounded-xl p-3 shadow-sm">
+                  <h4 className="text-[10px] font-semibold text-gray-900 mb-2 flex items-center gap-1">
+                    <Target size={10} className="text-tier-gold" />
+                    Aktive mål
+                  </h4>
+                  <div className="space-y-2">
+                    <div className="flex items-center gap-2">
+                      <div className="flex-1 h-1.5 bg-gray-100 rounded-full overflow-hidden">
+                        <div className="h-full bg-tier-gold rounded-full" style={{ width: '75%' }} />
+                      </div>
+                      <span className="text-[8px] text-gray-500">75%</span>
+                    </div>
+                    <p className="text-[9px] text-gray-600">HCP under 8.0</p>
+                  </div>
+                </div>
+
+                {/* Upcoming */}
+                <div className="bg-white rounded-xl p-3 shadow-sm">
+                  <h4 className="text-[10px] font-semibold text-gray-900 mb-2 flex items-center gap-1">
+                    <Calendar size={10} className="text-tier-navy" />
+                    Neste økt
+                  </h4>
+                  <div className="bg-tier-navy/5 rounded-lg p-2">
+                    <div className="text-[9px] font-medium text-tier-navy">I dag 14:00</div>
+                    <div className="text-[8px] text-gray-500">Putting trening</div>
+                  </div>
+                </div>
+
+                {/* Streak */}
+                <div className="bg-gradient-to-br from-tier-gold/20 to-tier-gold/5 rounded-xl p-3">
+                  <div className="flex items-center gap-2">
+                    <Zap size={14} className="text-tier-gold" />
+                    <div>
+                      <div className="text-sm font-bold text-tier-navy">12 dager</div>
+                      <div className="text-[8px] text-gray-500">Treningsstreak</div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        {/* MacBook Bottom (keyboard area hint) */}
+        <div className="bg-gradient-to-b from-[#c4c4c4] to-[#a8a8a8] h-3 rounded-b-xl mx-1">
+          <div className="h-0.5 bg-[#8a8a8a] mx-auto w-20 rounded-full mt-1"></div>
+        </div>
+        {/* Base */}
+        <div className="bg-gradient-to-b from-[#e0e0e0] to-[#d0d0d0] h-2 rounded-b-lg mx-12 shadow-md"></div>
+      </div>
+    </div>
+  );
+}
+
+// iPhone Mockup Component (refined)
+function IPhoneMockup() {
+  return (
+    <svg role="img" viewBox="0 0 280 560" className="w-full max-w-[180px] drop-shadow-2xl">
+      <title>iPhone App</title>
+      <defs>
+        <clipPath id="iphone-clip">
+          <rect rx={28} width={244} height={524} />
+        </clipPath>
+      </defs>
+      {/* Phone frame */}
+      <path
+        d="M279 50C279 22 259 2 231 2H49C21 2 1 22 1 50v460c0 28 20 48 48 48h182c28 0 48-20 48-48V50Z"
+        fill="#1a1a1a"
+      />
+      <path
+        d="M12 46c0-18 14-32 32-32h192c18 0 32 14 32 32v468c0 18-14 32-32 32H44c-18 0-32-14-32-32V46Z"
+        fill="#0a0a0a"
+      />
+      {/* Dynamic Island */}
+      <ellipse cx="140" cy="36" rx="42" ry="14" fill="#000" />
+
+      <foreignObject
+        width={244}
+        height={524}
+        clipPath="url(#iphone-clip)"
+        transform="translate(18 18)"
+      >
+        <div className="h-full w-full" style={{ background: 'linear-gradient(180deg, #f8f9fa 0%, #e9ecef 100%)' }}>
+          {/* Status bar area */}
+          <div className="h-12" />
+
+          {/* Header */}
+          <div className="flex items-center justify-between px-4 py-2 bg-white/80 backdrop-blur-sm">
+            <img src="/tier-golf-icon.svg" alt="TIER" className="w-6 h-6" />
+            <div className="w-7 h-7 rounded-full bg-tier-navy/10 flex items-center justify-center">
+              <span className="text-[9px] font-bold text-tier-navy">NL</span>
+            </div>
+          </div>
+
+          <div className="px-3 py-2 space-y-2">
+            {/* Welcome Card */}
+            <div className="bg-white rounded-xl p-3 shadow-sm">
+              <div className="flex items-center gap-2">
+                <div className="w-10 h-10 rounded-full bg-gradient-to-br from-tier-navy to-tier-navy/80 flex items-center justify-center">
+                  <span className="text-sm font-bold text-white">NL</span>
+                </div>
+                <div>
+                  <div className="text-[8px] text-gray-500">Velkommen tilbake</div>
+                  <div className="text-sm font-bold text-tier-navy">Nils Jonas</div>
+                  <div className="text-[8px] text-gray-500">HCP 8.2 • Kategori B</div>
+                </div>
+              </div>
+            </div>
+
+            {/* Quick Stats */}
+            <div className="grid grid-cols-2 gap-2">
+              <div className="bg-white rounded-xl p-3 shadow-sm text-center">
+                <div className="text-lg font-bold text-tier-navy">+1.8</div>
+                <div className="text-[8px] text-gray-500">Strokes Gained</div>
+              </div>
+              <div className="bg-gradient-to-br from-tier-gold/20 to-tier-gold/10 rounded-xl p-3 text-center">
+                <div className="text-lg font-bold text-tier-navy">12</div>
+                <div className="text-[8px] text-gray-500">Dager streak</div>
+              </div>
+            </div>
+
+            {/* Today's Training */}
+            <div className="bg-white rounded-xl p-3 shadow-sm">
+              <div className="text-[10px] font-semibold text-gray-900 mb-2">Dagens trening</div>
+              <div className="space-y-1.5">
+                <div className="flex items-center gap-2 p-2 bg-tier-navy/5 rounded-lg">
+                  <div className="w-0.5 h-6 bg-tier-gold rounded-full"></div>
+                  <div>
+                    <div className="text-[9px] font-medium text-tier-navy">14:00 - Putting</div>
+                    <div className="text-[8px] text-gray-500">45 min • 3 øvelser</div>
+                  </div>
+                </div>
+                <div className="flex items-center gap-2 p-2 bg-gray-50 rounded-lg">
+                  <div className="w-0.5 h-6 bg-gray-300 rounded-full"></div>
+                  <div>
+                    <div className="text-[9px] font-medium text-gray-700">16:30 - Driving</div>
+                    <div className="text-[8px] text-gray-500">60 min • Range</div>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            {/* Progress Ring */}
+            <div className="bg-white rounded-xl p-3 shadow-sm">
+              <div className="flex items-center gap-3">
+                <div className="relative w-14 h-14">
+                  <svg className="w-14 h-14 -rotate-90" viewBox="0 0 56 56">
+                    <circle cx="28" cy="28" r="24" stroke="#e5e7eb" strokeWidth="4" fill="none" />
+                    <circle
+                      cx="28" cy="28" r="24"
+                      stroke="#1B4D3E" strokeWidth="4" fill="none"
+                      strokeLinecap="round"
+                      strokeDasharray={`${0.75 * 151} 151`}
+                    />
+                  </svg>
+                  <div className="absolute inset-0 flex items-center justify-center">
+                    <span className="text-sm font-bold text-tier-navy">75%</span>
+                  </div>
+                </div>
+                <div>
+                  <div className="text-[10px] font-semibold text-gray-900">Ukesmål</div>
+                  <div className="text-[8px] text-gray-500">3 av 4 økter fullført</div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </foreignObject>
+    </svg>
+  );
+}
+
+// Apple Watch Mockup Component
+function AppleWatchMockup() {
+  return (
+    <div className="relative">
+      <svg viewBox="0 0 160 200" className="w-full max-w-[100px] drop-shadow-xl">
+        {/* Watch case */}
+        <rect x="20" y="30" width="120" height="140" rx="28" fill="#1a1a1a" />
+        <rect x="26" y="36" width="108" height="128" rx="22" fill="#0a0a0a" />
+
+        {/* Crown */}
+        <rect x="140" y="70" width="8" height="24" rx="4" fill="#2a2a2a" />
+        <rect x="140" y="105" width="8" height="12" rx="4" fill="#2a2a2a" />
+
+        {/* Band hints */}
+        <rect x="45" y="5" width="70" height="28" rx="8" fill="#2a2a2a" />
+        <rect x="45" y="167" width="70" height="28" rx="8" fill="#2a2a2a" />
+
+        {/* Screen */}
+        <foreignObject x="32" y="42" width="96" height="116" style={{ borderRadius: '18px', overflow: 'hidden' }}>
+          <div className="h-full w-full bg-black rounded-[18px] overflow-hidden p-2">
+            {/* Watch face content - Training reminder */}
+            <div className="h-full flex flex-col justify-between">
+              {/* Time */}
+              <div className="text-center">
+                <div className="text-[10px] text-white/60">TIER Golf</div>
+                <div className="text-2xl font-light text-white tracking-tight">13:45</div>
+              </div>
+
+              {/* Training reminder */}
+              <div className="bg-tier-gold/20 rounded-xl p-2 text-center">
+                <div className="text-[8px] text-tier-gold font-medium">NESTE ØKT</div>
+                <div className="text-xs text-white font-semibold mt-0.5">Putting</div>
+                <div className="text-[10px] text-white/80">om 15 min</div>
+              </div>
+
+              {/* Quick stats */}
+              <div className="flex justify-around">
+                <div className="text-center">
+                  <div className="text-sm font-bold text-tier-green">12</div>
+                  <div className="text-[7px] text-white/50">STREAK</div>
+                </div>
+                <div className="text-center">
+                  <div className="text-sm font-bold text-tier-gold">3/4</div>
+                  <div className="text-[7px] text-white/50">ØKTER</div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </foreignObject>
+      </svg>
+    </div>
+  );
+}
 
 export function SplitScreenLanding() {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
@@ -119,7 +486,7 @@ export function SplitScreenLanding() {
       </header>
 
       {/* Hero section */}
-      <div className="relative isolate pt-14">
+      <div className="relative isolate pt-14 overflow-hidden">
         {/* Background pattern */}
         <svg
           aria-hidden="true"
@@ -146,169 +513,97 @@ export function SplitScreenLanding() {
           <rect fill="url(#hero-pattern)" width="100%" height="100%" strokeWidth={0} />
         </svg>
 
-        <div className="mx-auto max-w-7xl px-6 py-24 sm:py-32 lg:flex lg:items-center lg:gap-x-10 lg:px-8 lg:py-40">
-          {/* Left content */}
-          <div className="mx-auto max-w-2xl lg:mx-0 lg:flex-auto">
+        {/* Gradient overlay */}
+        <div className="absolute inset-x-0 bottom-0 h-96 bg-gradient-to-t from-white to-transparent -z-10" />
+
+        <div className="mx-auto max-w-7xl px-6 py-16 sm:py-24 lg:px-8">
+          {/* Top section - Text content */}
+          <div className="text-center max-w-3xl mx-auto mb-16">
             {/* Badge */}
-            <div className="flex">
-              <div className="relative flex items-center gap-x-4 rounded-full bg-white px-4 py-1 text-sm leading-6 text-gray-600 ring-1 ring-gray-900/10 hover:ring-gray-900/20">
+            <div className="flex justify-center mb-8">
+              <div className="relative flex items-center gap-x-4 rounded-full bg-white px-4 py-1.5 text-sm leading-6 text-gray-600 ring-1 ring-gray-900/10 hover:ring-gray-900/20 shadow-sm">
                 <span className="font-semibold text-tier-navy">Nyhet</span>
                 <span aria-hidden="true" className="h-4 w-px bg-gray-900/10" />
                 <a href="#features" className="flex items-center gap-x-1">
                   <span className="absolute inset-0" />
-                  AI-drevet treningsanalyse
+                  Tilgjengelig på alle enheter
                   <ChevronRight size={16} className="-mr-2 text-gray-400" aria-hidden="true" />
                 </a>
               </div>
             </div>
 
             {/* Headline */}
-            <h1 className="mt-10 text-5xl font-semibold tracking-tight text-gray-900 sm:text-7xl" style={{ textWrap: 'balance' }}>
+            <h1 className="text-5xl font-semibold tracking-tight text-gray-900 sm:text-7xl" style={{ textWrap: 'balance' }}>
               Utvikle ditt{' '}
               <span className="text-tier-navy">golfspill</span>{' '}
               systematisk
             </h1>
 
             {/* Description */}
-            <p className="mt-8 text-lg font-medium text-gray-500 sm:text-xl leading-8" style={{ textWrap: 'pretty' }}>
+            <p className="mt-8 text-lg font-medium text-gray-500 sm:text-xl leading-8 max-w-2xl mx-auto" style={{ textWrap: 'pretty' }}>
               TIER Golf IUP gir deg verktøyene for å spore fremgang, følge treningsplaner og nå dine golfmål.
-              Fra kategori D til A – vi er med deg hele veien.
+              Fra kategori D til A – på Mac, iPhone og Apple Watch.
             </p>
 
             {/* CTAs */}
-            <div className="mt-10 flex items-center gap-x-6">
+            <div className="mt-10 flex items-center justify-center gap-x-6">
               <button
                 onClick={handleGetStarted}
-                className="rounded-md bg-tier-navy px-4 py-3 text-sm font-semibold text-white shadow-sm hover:bg-tier-navy-dark focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-tier-navy transition-colors"
+                className="rounded-xl bg-tier-navy px-6 py-3.5 text-sm font-semibold text-white shadow-lg hover:bg-tier-navy-dark focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-tier-navy transition-all hover:shadow-xl hover:-translate-y-0.5"
               >
-                Kom i gang
+                Kom i gang gratis
               </button>
               <a
                 href="#features"
                 className="text-sm font-semibold leading-6 text-gray-900 hover:text-tier-navy transition-colors"
               >
-                Les mer <span aria-hidden="true">→</span>
+                Se funksjoner <span aria-hidden="true">→</span>
               </a>
             </div>
           </div>
 
-          {/* Right content - App mockup */}
-          <div className="mt-16 sm:mt-24 lg:mt-0 lg:shrink-0 lg:grow">
-            <svg role="img" viewBox="0 0 366 729" className="mx-auto w-[22.875rem] max-w-full drop-shadow-2xl">
-              <title>App skjermbilde</title>
-              <defs>
-                <clipPath id="app-clip">
-                  <rect rx={36} width={316} height={684} />
-                </clipPath>
-              </defs>
-              {/* Phone frame - Black */}
-              <path
-                d="M363.315 64.213C363.315 22.99 341.312 1 300.092 1H66.751C25.53 1 3.528 22.99 3.528 64.213v44.68l-.857.143A2 2 0 0 0 1 111.009v24.611a2 2 0 0 0 1.671 1.973l.95.158a2.26 2.26 0 0 1-.093.236v26.173c.212.1.398.296.541.643l-1.398.233A2 2 0 0 0 1 167.009v47.611a2 2 0 0 0 1.671 1.973l1.368.228c-.139.319-.314.533-.511.653v16.637c.221.104.414.313.56.689l-1.417.236A2 2 0 0 0 1 237.009v47.611a2 2 0 0 0 1.671 1.973l1.347.225c-.135.294-.302.493-.49.607v377.681c0 41.213 22 63.208 63.223 63.208h95.074c.947-.504 2.717-.843 4.745-.843l.141.001h.194l.086-.001 33.704.005c1.849.043 3.442.37 4.323.838h95.074c41.222 0 63.223-21.999 63.223-63.212v-394.63c-.259-.275-.48-.796-.63-1.47l-.011-.133 1.655-.276A2 2 0 0 0 366 266.62v-77.611a2 2 0 0 0-1.671-1.973l-1.712-.285c.148-.839.396-1.491.698-1.811V64.213Z"
-                fill="#1a1a1a"
-              />
-              <path
-                d="M16 59c0-23.748 19.252-43 43-43h246c23.748 0 43 19.252 43 43v615c0 23.196-18.804 42-42 42H58c-23.196 0-42-18.804-42-42V59Z"
-                fill="#0a0a0a"
-              />
-              {/* Dynamic Island */}
-              <ellipse
-                cx="183"
-                cy="48"
-                rx="54"
-                ry="18"
-                fill="#000000"
-              />
-              <foreignObject
-                width={316}
-                height={684}
-                clipPath="url(#app-clip)"
-                transform="translate(24 24)"
-              >
-                <div className="h-full w-full" style={{ background: 'linear-gradient(135deg, #f5f7f9 0%, #e8ecf0 100%)' }}>
-                  {/* Header with TIER logo icon */}
-                  <div className="flex items-center justify-between p-4 bg-white/60 backdrop-blur-sm border-b border-gray-200/50">
-                    <img
-                      src="/tier-golf-icon.svg"
-                      alt="TIER Golf"
-                      style={{ width: '28px', height: '28px' }}
-                    />
-                    <div className="w-8 h-8 rounded-full bg-tier-navy/10 flex items-center justify-center">
-                      <span className="text-xs font-bold text-tier-navy">NL</span>
-                    </div>
-                  </div>
+          {/* Device Showcase */}
+          <div className="relative max-w-6xl mx-auto">
+            {/* MacBook - Center */}
+            <div className="relative z-10">
+              <MacBookMockup />
+            </div>
 
-                  <div className="p-4 space-y-3">
-                    {/* Player greeting */}
-                    <div className="bg-white rounded-2xl p-4 shadow-sm">
-                      <div className="flex items-center gap-3">
-                        <div className="w-12 h-12 rounded-full bg-gradient-to-br from-tier-navy to-tier-navy/80 flex items-center justify-center flex-shrink-0">
-                          <span className="text-lg font-bold text-white">NL</span>
-                        </div>
-                        <div className="flex-1">
-                          <div className="text-[10px] text-gray-500 mb-0.5">Velkommen tilbake</div>
-                          <div className="text-base font-bold text-tier-navy">Nils Jonas Lilja</div>
-                          <div className="text-[10px] text-gray-500 mt-0.5">HCP 8.2 • Kategori B</div>
-                        </div>
-                      </div>
-                    </div>
+            {/* iPhone - Left side, overlapping MacBook */}
+            <div className="absolute -left-4 lg:left-8 bottom-0 z-20 transform translate-y-8">
+              <IPhoneMockup />
+            </div>
 
-                    {/* SG Progression Card */}
-                    <div className="bg-white rounded-2xl p-4 shadow-sm">
-                      <div className="flex items-center justify-between mb-3">
-                        <div className="text-sm font-semibold text-gray-900">SG Progresjon</div>
-                        <div className="text-xs text-status-success font-medium">↗ +0.8</div>
-                      </div>
-                      <div className="relative h-24 mb-2">
-                        <svg viewBox="0 0 280 90" className="w-full h-full">
-                          <defs>
-                            <linearGradient id="lineGradient" x1="0%" y1="0%" x2="100%" y2="0%">
-                              <stop offset="0%" style={{ stopColor: '#C9A227', stopOpacity: 0.2 }} />
-                              <stop offset="100%" style={{ stopColor: '#C9A227', stopOpacity: 0.8 }} />
-                            </linearGradient>
-                          </defs>
-                          <path
-                            d="M 10 70 L 50 65 L 90 58 L 130 55 L 170 48 L 210 42 L 250 35 L 270 30"
-                            fill="none"
-                            stroke="url(#lineGradient)"
-                            strokeWidth="3"
-                            strokeLinecap="round"
-                          />
-                          <circle cx="270" cy="30" r="4" fill="#C9A227" />
-                        </svg>
-                      </div>
-                      <div className="flex justify-between text-[10px] text-gray-400">
-                        <span>Jan</span>
-                        <span>Feb</span>
-                        <span>Mar</span>
-                        <span>Apr</span>
-                        <span>Mai</span>
-                      </div>
-                    </div>
+            {/* Apple Watch - Right side */}
+            <div className="absolute -right-2 lg:right-16 bottom-16 z-20">
+              <AppleWatchMockup />
+            </div>
 
-                    {/* Training Calendar */}
-                    <div className="bg-white rounded-2xl p-4 shadow-sm">
-                      <div className="text-sm font-semibold text-gray-900 mb-3">Treningsplan</div>
-                      <div className="space-y-2">
-                        <div className="flex items-center gap-2 p-2 bg-tier-navy/5 rounded-lg">
-                          <div className="w-1 h-8 bg-tier-gold rounded-full"></div>
-                          <div className="flex-1">
-                            <div className="text-xs font-medium text-tier-navy">I dag 14:00</div>
-                            <div className="text-[11px] text-gray-600">Putting sesjon</div>
-                          </div>
-                        </div>
-                        <div className="flex items-center gap-2 p-2 bg-gray-50 rounded-lg">
-                          <div className="w-1 h-8 bg-gray-300 rounded-full"></div>
-                          <div className="flex-1">
-                            <div className="text-xs font-medium text-gray-700">I morgen 10:00</div>
-                            <div className="text-[11px] text-gray-500">Driving range</div>
-                          </div>
-                        </div>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-              </foreignObject>
-            </svg>
+            {/* Decorative elements */}
+            <div className="absolute -top-10 -left-10 w-40 h-40 bg-tier-gold/10 rounded-full blur-3xl -z-10" />
+            <div className="absolute -bottom-10 -right-10 w-60 h-60 bg-tier-navy/10 rounded-full blur-3xl -z-10" />
+          </div>
+
+          {/* Platform badges */}
+          <div className="flex items-center justify-center gap-8 mt-16">
+            <div className="flex items-center gap-2 text-gray-500">
+              <svg className="w-5 h-5" viewBox="0 0 24 24" fill="currentColor">
+                <path d="M18.71 19.5c-.83 1.24-1.71 2.45-3.05 2.47-1.34.03-1.77-.79-3.29-.79-1.53 0-2 .77-3.27.82-1.31.05-2.3-1.32-3.14-2.53C4.25 17 2.94 12.45 4.7 9.39c.87-1.52 2.43-2.48 4.12-2.51 1.28-.02 2.5.87 3.29.87.78 0 2.26-1.07 3.81-.91.65.03 2.47.26 3.64 1.98-.09.06-2.17 1.28-2.15 3.81.03 3.02 2.65 4.03 2.68 4.04-.03.07-.42 1.44-1.38 2.83M13 3.5c.73-.83 1.94-1.46 2.94-1.5.13 1.17-.34 2.35-1.04 3.19-.69.85-1.83 1.51-2.95 1.42-.15-1.15.41-2.35 1.05-3.11z"/>
+              </svg>
+              <span className="text-sm font-medium">macOS</span>
+            </div>
+            <div className="flex items-center gap-2 text-gray-500">
+              <svg className="w-5 h-5" viewBox="0 0 24 24" fill="currentColor">
+                <path d="M18.71 19.5c-.83 1.24-1.71 2.45-3.05 2.47-1.34.03-1.77-.79-3.29-.79-1.53 0-2 .77-3.27.82-1.31.05-2.3-1.32-3.14-2.53C4.25 17 2.94 12.45 4.7 9.39c.87-1.52 2.43-2.48 4.12-2.51 1.28-.02 2.5.87 3.29.87.78 0 2.26-1.07 3.81-.91.65.03 2.47.26 3.64 1.98-.09.06-2.17 1.28-2.15 3.81.03 3.02 2.65 4.03 2.68 4.04-.03.07-.42 1.44-1.38 2.83M13 3.5c.73-.83 1.94-1.46 2.94-1.5.13 1.17-.34 2.35-1.04 3.19-.69.85-1.83 1.51-2.95 1.42-.15-1.15.41-2.35 1.05-3.11z"/>
+              </svg>
+              <span className="text-sm font-medium">iOS</span>
+            </div>
+            <div className="flex items-center gap-2 text-gray-500">
+              <svg className="w-5 h-5" viewBox="0 0 24 24" fill="currentColor">
+                <path d="M18.71 19.5c-.83 1.24-1.71 2.45-3.05 2.47-1.34.03-1.77-.79-3.29-.79-1.53 0-2 .77-3.27.82-1.31.05-2.3-1.32-3.14-2.53C4.25 17 2.94 12.45 4.7 9.39c.87-1.52 2.43-2.48 4.12-2.51 1.28-.02 2.5.87 3.29.87.78 0 2.26-1.07 3.81-.91.65.03 2.47.26 3.64 1.98-.09.06-2.17 1.28-2.15 3.81.03 3.02 2.65 4.03 2.68 4.04-.03.07-.42 1.44-1.38 2.83M13 3.5c.73-.83 1.94-1.46 2.94-1.5.13 1.17-.34 2.35-1.04 3.19-.69.85-1.83 1.51-2.95 1.42-.15-1.15.41-2.35 1.05-3.11z"/>
+              </svg>
+              <span className="text-sm font-medium">watchOS</span>
+            </div>
           </div>
         </div>
       </div>
@@ -372,7 +667,7 @@ export function SplitScreenLanding() {
             <div className="mt-10 flex items-center justify-center gap-x-6">
               <button
                 onClick={handleGetStarted}
-                className="rounded-md bg-white px-4 py-3 text-sm font-semibold text-tier-navy shadow-sm hover:bg-tier-cream focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-white transition-colors"
+                className="rounded-xl bg-white px-6 py-3.5 text-sm font-semibold text-tier-navy shadow-lg hover:bg-tier-cream focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-white transition-all hover:shadow-xl"
               >
                 Kom i gang gratis
               </button>
