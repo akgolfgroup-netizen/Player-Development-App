@@ -6,7 +6,7 @@
 import React, { useState } from 'react';
 import { TrendingUp, History, BarChart3 } from 'lucide-react';
 import { useAuth } from '../../contexts/AuthContext';
-import StrokesGainedDashboard from './StrokesGainedDashboard';
+import StrokesGainedDashboardPro from './StrokesGainedDashboardPro';
 import StrokesGainedHistory from './StrokesGainedHistory';
 import StrokesGainedComparison from './StrokesGainedComparison';
 
@@ -71,7 +71,7 @@ const StrokesGainedPage: React.FC = () => {
         {/* Tab Content */}
         <div>
           {activeTab === 'overview' && (
-            <StrokesGainedDashboard playerId={playerId} onBack={() => {}} />
+            <StrokesGainedDashboardPro playerId={playerId} />
           )}
           {activeTab === 'history' && (
             <StrokesGainedHistory playerId={playerId} />

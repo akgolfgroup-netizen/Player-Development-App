@@ -110,6 +110,7 @@ const CalendarOversiktPage = lazy(() => import('./features/calendar-oversikt').t
 // Player Stats (DataGolf & Test Results)
 const PlayerStatsPage = lazy(() => import('./features/player-stats').then(m => ({ default: m.PlayerStatsPage })));
 const StrokesGainedPage = lazy(() => import('./features/player-stats').then(m => ({ default: m.StrokesGainedPage })));
+const StrokesGainedDemo = lazy(() => import('./features/strokes-gained/StrokesGainedDemo'));
 const PlayerTestResultsPage = lazy(() => import('./features/player-stats').then(m => ({ default: m.TestResultsPage })));
 const StatusProgressPage = lazy(() => import('./features/player-stats').then(m => ({ default: m.StatusProgressPage })));
 const BenchmarkPage = lazy(() => import('./features/player-stats').then(m => ({ default: m.BenchmarkPage })));
@@ -320,6 +321,7 @@ const SplitScreenLanding = lazy(() => import('./features/landing/SplitScreenLand
 // Onboarding (lazy-loaded)
 const OnboardingPage = lazy(() => import('./features/onboarding/OnboardingPage'));
 const PlayerOnboardingPage = lazy(() => import('./features/onboarding/PlayerOnboardingPage'));
+const CoachOnboardingPage = lazy(() => import('./features/onboarding/CoachOnboardingPage'));
 
 // V3 Hub Pages (lazy-loaded)
 const DashboardHub = lazy(() => import('./features/hub-pages/DashboardHub'));
@@ -388,8 +390,8 @@ function App() {
   return (
     <Router>
       <ThemeProvider>
-        <SportProvider sportId="golf">
         <AuthProvider>
+        <SportProvider sportId="golf">
           <AICoachProvider>
           <NotificationProvider>
             <BadgeNotificationProvider>
@@ -408,6 +410,7 @@ function App() {
           {/* Public routes */}
           <Route path="/login" element={<Login />} />
           <Route path="/welcome" element={<SplitScreenLanding />} />
+          <Route path="/demo/strokes-gained" element={<StrokesGainedDemo />} />
 
           {/* Pricing & Checkout */}
           <Route path="/pricing" element={<PricingPage />} />
@@ -444,6 +447,13 @@ function App() {
           <Route path="/onboarding" element={
             <ProtectedRoute>
               <PlayerOnboardingPage />
+            </ProtectedRoute>
+          } />
+
+          {/* Coach Onboarding - Single-page form for new coach registration */}
+          <Route path="/coach/onboarding" element={
+            <ProtectedRoute requiredRole="coach">
+              <CoachOnboardingPage />
             </ProtectedRoute>
           } />
 
@@ -2160,8 +2170,8 @@ function App() {
             </BadgeNotificationProvider>
           </NotificationProvider>
           </AICoachProvider>
-        </AuthProvider>
         </SportProvider>
+        </AuthProvider>
       </ThemeProvider>
     </Router>
   );

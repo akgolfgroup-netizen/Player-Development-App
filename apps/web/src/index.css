@@ -11,6 +11,7 @@
 @import "./styles/tier-tokens.css";
 @import "./styles/tier-animations.css";
 @import "./styles/tier-components.css";
+@import "./styles/dashboard-pro.css";
 
 @tailwind base;
 @tailwind components;
