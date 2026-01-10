@@ -297,6 +297,7 @@
     "apps/web/src/features/stats/StatsPageV2.tsx": 1,
     "apps/web/src/features/strokes-gained/StrokesGainedComparison.tsx": 2,
     "apps/web/src/features/strokes-gained/StrokesGainedDashboardPro.tsx": 1,
+    "apps/web/src/features/strokes-gained/StrokesGainedDemo.tsx": 1,
     "apps/web/src/features/strokes-gained/StrokesGainedHistory.tsx": 2,
     "apps/web/src/features/technique-plan/TechniquePlanPage.jsx": 53,
     "apps/web/src/features/technique-plan/TechniquePlanPage.tsx": 1,
@@ -444,5 +445,5 @@
     "apps/web/src/ui/widgets/SkeletonLoader.tsx": 17,
     "apps/web/src/ui/widgets/WidgetHeader.tsx": 4
   },
-  "generatedAt": "2026-01-10T17:03:45.999Z"
+  "generatedAt": "2026-01-10T21:18:18.511Z"
 }
