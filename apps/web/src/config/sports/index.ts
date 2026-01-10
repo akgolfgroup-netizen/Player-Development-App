@@ -14,12 +14,18 @@ export { GOLF_CONFIG, default as GolfConfig } from './golf.config';
 export { RUNNING_CONFIG } from './running.config';
 export { HANDBALL_CONFIG } from './handball.config';
 export { FOOTBALL_CONFIG } from './football.config';
+export { TENNIS_CONFIG } from './tennis.config';
+export { SWIMMING_CONFIG } from './swimming.config';
+export { JAVELIN_CONFIG } from './javelin.config';
 
 import type { SportConfig, SportId } from './types';
 import { GOLF_CONFIG } from './golf.config';
 import { RUNNING_CONFIG } from './running.config';
 import { HANDBALL_CONFIG } from './handball.config';
 import { FOOTBALL_CONFIG } from './football.config';
+import { TENNIS_CONFIG } from './tennis.config';
+import { SWIMMING_CONFIG } from './swimming.config';
+import { JAVELIN_CONFIG } from './javelin.config';
 
 // ============================================================================
 // SPORT REGISTRY
@@ -34,10 +40,9 @@ export const SPORTS_REGISTRY: Record<SportId, SportConfig> = {
   running: RUNNING_CONFIG,
   handball: HANDBALL_CONFIG,
   football: FOOTBALL_CONFIG,
-  // Future sports (placeholder configs will be added):
-  javelin: GOLF_CONFIG, // Placeholder - will be replaced
-  tennis: GOLF_CONFIG, // Placeholder - will be replaced
-  swimming: GOLF_CONFIG, // Placeholder - will be replaced
+  tennis: TENNIS_CONFIG,
+  swimming: SWIMMING_CONFIG,
+  javelin: JAVELIN_CONFIG,
 };
 
 /**
@@ -60,8 +65,8 @@ export function getSportConfig(sportId: SportId): SportConfig {
  * @returns true if sport has a real config (not placeholder)
  */
 export function isSportAvailable(sportId: SportId): boolean {
-  // Golf, running, handball, and football are fully implemented
-  return sportId === 'golf' || sportId === 'running' || sportId === 'handball' || sportId === 'football';
+  // All sports are now fully implemented
+  return sportId in SPORTS_REGISTRY;
 }
 
 /**
