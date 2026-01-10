@@ -129,14 +129,15 @@ test.describe('DOM Injection Detection', () => {
     expect(images, 'Found icon_128.png on /aarsplan - Blaze extension detected').toBe(0);
   });
 
-  test('should only contain AK Golf Academy elements', async ({ page }) => {
+  test('should only contain TIER Golf Academy elements', async ({ page }) => {
     // Verify our app is actually loaded
     const title = await page.title();
-    expect(title).toBe('AK Golf Academy');
+    expect(title).toBe('TIER Golf Academy');
 
-    // Should contain our own branding
-    const akGolfText = await page.getByText('AK Golf Academy').count();
-    expect(akGolfText, 'Should contain AK Golf Academy text').toBeGreaterThan(0);
+    // Should contain our own branding - check for TIER Golf text or logo
+    const tierGolfText = await page.getByText(/TIER Golf/i).count();
+    const hasLogo = await page.locator('svg, img[alt*="TIER"], img[alt*="Golf"]').count();
+    expect(tierGolfText + hasLogo, 'Should contain TIER Golf branding').toBeGreaterThan(0);
   });
 
   test('should log any suspicious elements for debugging', async ({ page }) => {

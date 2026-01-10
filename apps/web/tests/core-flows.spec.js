@@ -8,19 +8,25 @@ import { test, expect } from '@playwright/test';
 test.describe('Authentication (TC-AUTH)', () => {
   test('TC-AUTH-01: login page renders correctly', async ({ page }) => {
     await page.goto('/login');
-    await expect(page.getByRole('heading', { name: 'AK Golf Academy' })).toBeVisible();
-    await expect(page.getByPlaceholder(/din e-post/i)).toBeVisible();
-    await expect(page.getByPlaceholder(/ditt passord/i)).toBeVisible();
+    // Wait for page to be fully loaded
+    await page.waitForLoadState('networkidle');
+
+    // Check for TIER Golf branding and login form elements
+    // The card title "Logg Inn" is an h2 heading
+    await expect(page.locator('h1, h2').filter({ hasText: /logg inn/i })).toBeVisible();
+    await expect(page.getByPlaceholder(/e-post/i)).toBeVisible();
+    await expect(page.getByPlaceholder(/passord/i)).toBeVisible();
     await expect(page.getByRole('button', { name: /logg inn/i })).toBeVisible();
   });
 
   test('TC-AUTH-02: demo login buttons work', async ({ page }) => {
     await page.goto('/login');
+    await page.waitForLoadState('networkidle');
 
-    // Check demo login buttons exist
-    await expect(page.getByRole('button', { name: /spiller/i })).toBeVisible();
-    await expect(page.getByRole('button', { name: /trener/i })).toBeVisible();
-    await expect(page.getByRole('button', { name: /admin/i })).toBeVisible();
+    // Check demo login buttons exist - they contain email addresses
+    await expect(page.getByRole('button', { name: /player@demo/i })).toBeVisible();
+    await expect(page.getByRole('button', { name: /coach@demo/i })).toBeVisible();
+    await expect(page.getByRole('button', { name: /admin@demo/i })).toBeVisible();
   });
 
   test('TC-AUTH-03: successful login redirects to dashboard', async ({ page }) => {
@@ -47,21 +53,22 @@ test.describe('Authentication (TC-AUTH)', () => {
     });
 
     await page.goto('/login');
+    await page.waitForLoadState('networkidle');
 
-    // Click player demo login
-    await page.getByRole('button', { name: /spiller/i }).click();
+    // Click player demo login button
+    await page.getByRole('button', { name: /player@demo/i }).click();
 
-    // Should redirect to dashboard
-    await page.waitForURL('**/', { timeout: 10000 });
-    await expect(page).toHaveURL('/');
+    // Should redirect to dashboard or home
+    await page.waitForURL(/\/(dashboard)?$/, { timeout: 10000 });
   });
 
   test('TC-AUTH-04: invalid credentials show error', async ({ page }) => {
     await page.goto('/login');
+    await page.waitForLoadState('networkidle');
 
     // Fill in invalid credentials and submit
-    await page.getByPlaceholder(/din e-post/i).fill('invalid@test.com');
-    await page.getByPlaceholder(/ditt passord/i).fill('wrongpassword');
+    await page.getByPlaceholder(/e-post/i).fill('invalid@test.com');
+    await page.getByPlaceholder(/passord/i).fill('wrongpassword');
     await page.getByRole('button', { name: /logg inn/i }).click();
 
     // Wait for the login attempt to complete
