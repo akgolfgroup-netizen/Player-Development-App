@@ -474,7 +474,7 @@ export default function OnboardingPageV2() {
         <div className="fixed inset-0 bg-black/80 flex items-center justify-center z-50">
           <div className="text-center">
             <div className="text-6xl mb-4">[Celebration]</div>
-            <h1 className="text-3xl font-bold text-white mb-2">Gratulerer!</h1>
+            <h2 className="text-3xl font-bold text-white mb-2">Gratulerer!</h2>
             <p className="text-white/80 mb-4">
               Din personlige treningsplan er klar!
             </p>

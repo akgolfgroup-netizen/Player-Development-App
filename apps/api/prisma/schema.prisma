@@ -125,6 +125,8 @@ model User {
   refreshTokens          RefreshToken[]
   notes                  Note[]
   goals                  Goal[]
+  goalStreak             GoalStreak?
+  goalBadges             GoalBadge[]
   archivedItems          ArchivedItem[]
   achievements           UserAchievement[]
   seasonBaselines        SeasonBaseline[]
@@ -2612,6 +2614,63 @@ model Goal {
   @@index([targetDate])
   @@index([goalType])
   @@map("goals")
+}
+
+// ============================================================================
+// GOAL STREAKS - Track consecutive days with goal progress
+// ============================================================================
+
+model GoalStreak {
+  id     String @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  userId String @unique @map("user_id") @db.Uuid
+
+  // Streak tracking
+  currentStreak  Int      @default(0) @map("current_streak") // Consecutive days with activity
+  longestStreak  Int      @default(0) @map("longest_streak") // Personal best
+  lastActivityDate DateTime? @map("last_activity_date") @db.Date // Last day with goal progress
+
+  // Streak status: active (updated today/yesterday), at_risk (about to expire), frozen (1-day grace period used), inactive
+  streakStatus   String   @default("inactive") @map("streak_status") @db.VarChar(20)
+  freezeUsed     Boolean  @default(false) @map("freeze_used") // Whether user has used their 1-day grace period
+
+  createdAt DateTime @default(now()) @map("created_at") @db.Timestamptz(6)
+  updatedAt DateTime @default(now()) @updatedAt @map("updated_at") @db.Timestamptz(6)
+
+  // Relations
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@index([userId])
+  @@index([streakStatus])
+  @@map("goal_streaks")
+}
+
+// ============================================================================
+// GOAL BADGES - Achievement system for goal completion
+// ============================================================================
+
+model GoalBadge {
+  id      String @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  userId  String @map("user_id") @db.Uuid
+  badgeId String @map("badge_id") @db.VarChar(50) // References badge definition ID (e.g., 'first_goal', 'five_goals')
+
+  // Badge info (denormalized for quick access)
+  name        String  @db.VarChar(100)
+  description String? @db.Text
+  icon        String  @db.VarChar(10) // Emoji icon
+  rarity      String  @db.VarChar(20) // common, rare, epic, legendary
+
+  // Tracking
+  unlockedAt DateTime @default(now()) @map("unlocked_at") @db.Timestamptz(6)
+  viewed     Boolean  @default(false) // Whether user has seen the unlock notification
+
+  // Relations
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@unique([userId, badgeId]) // User can only unlock each badge once
+  @@index([userId])
+  @@index([badgeId])
+  @@index([unlockedAt])
+  @@map("goal_badges")
 }
 
 // ============================================================================

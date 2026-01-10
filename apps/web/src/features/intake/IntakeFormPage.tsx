@@ -151,7 +151,7 @@ const IntakeFormPage: React.FC = () => {
       <div className="min-h-screen bg-tier-surface-base flex items-center justify-center p-6">
         <div className="max-w-md w-full bg-white rounded-xl border border-tier-border-default p-8 text-center">
           <CheckCircle size={64} className="text-tier-success mx-auto mb-4" />
-          <h1 className="text-2xl font-bold text-tier-navy mb-2">Takk for din innsending!</h1>
+          <h2 className="text-2xl font-bold text-tier-navy mb-2">Takk for din innsending!</h2>
           <p className="text-tier-text-secondary mb-6">
             Vi har mottatt din inntak-vurdering. Din treningsplan vil snart bli generert basert på informasjonen du har gitt.
           </p>

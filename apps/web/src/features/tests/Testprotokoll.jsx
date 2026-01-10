@@ -361,7 +361,7 @@ const TIERGolfTestprotokoll = ({ player: apiPlayer = null, tests: apiTests = nul
                 {initials}
               </div>
               <div>
-                <h1 className="font-semibold text-tier-navy text-lg">{player.name}</h1>
+                <div className="font-semibold text-tier-navy text-lg">{player.name}</div>
                 <p className="text-sm text-tier-text-secondary">
                   Kategori {player.category} · {player.age} år
                 </p>

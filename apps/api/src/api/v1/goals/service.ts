@@ -220,10 +220,83 @@ export class GoalsService {
       updateData.completedDate = new Date();
     }
 
-    return prisma.goal.update({
+    // Update the goal
+    const updatedGoal = await prisma.goal.update({
       where: { id: goalId },
       data: updateData
     });
+
+    // Track streak for this progress update
+    await this.updateStreak(userId, goalId, currentValue);
+
+    // Check and unlock badges based on progress
+    await this.checkAndUnlockBadges(userId);
+
+    return updatedGoal;
+  }
+
+  /**
+   * Check and unlock badges based on user's goals and progress
+   */
+  private async checkAndUnlockBadges(userId: string) {
+    const goals = await this.listGoals(userId);
+    const completedGoals = goals.filter(g => g.status === 'completed');
+    const streak = await this.getStreak(userId);
+
+    // First goal completed
+    if (completedGoals.length === 1) {
+      await this.tryUnlockBadge(userId, 'first_goal');
+    }
+
+    // Five goals completed
+    if (completedGoals.length === 5) {
+      await this.tryUnlockBadge(userId, 'five_goals');
+    }
+
+    // Ten goals completed
+    if (completedGoals.length === 10) {
+      await this.tryUnlockBadge(userId, 'goal_getter');
+    }
+
+    // Streak badges
+    if (streak.currentStreak === 3) {
+      await this.tryUnlockBadge(userId, 'three_day_streak');
+    }
+
+    if (streak.currentStreak === 7) {
+      await this.tryUnlockBadge(userId, 'week_warrior');
+    }
+
+    if (streak.currentStreak === 30) {
+      await this.tryUnlockBadge(userId, 'month_master');
+    }
+
+    if (streak.currentStreak === 30 && streak.longestStreak === 30) {
+      await this.tryUnlockBadge(userId, 'consistency_king');
+    }
+
+    // Time-based badges
+    const hour = new Date().getHours();
+    if (hour < 9) {
+      await this.tryUnlockBadge(userId, 'early_bird');
+    } else if (hour >= 22) {
+      await this.tryUnlockBadge(userId, 'night_owl');
+    }
+  }
+
+  /**
+   * Try to unlock a badge (silently fails if already unlocked)
+   */
+  private async tryUnlockBadge(userId: string, badgeId: string) {
+    try {
+      await this.unlockBadge(userId, badgeId);
+    } catch (error) {
+      // Ignore if already unlocked
+      if (error instanceof AppError && error.statusCode === 409) {
+        return;
+      }
+      throw error;
+    }
   }
 
   async getGoalsByType(userId: string, goalType: string) {
@@ -252,25 +325,148 @@ export class GoalsService {
   // =============================================================================
 
   async getStreak(userId: string) {
-    // TODO: Replace in-memory storage with database table
-    // For now, return demo data
+    // Get or create streak record
+    let streak = await prisma.goalStreak.findUnique({
+      where: { userId }
+    });
+
+    if (!streak) {
+      // Create initial streak record
+      streak = await prisma.goalStreak.create({
+        data: {
+          userId,
+          currentStreak: 0,
+          longestStreak: 0,
+          streakStatus: 'inactive'
+        }
+      });
+    }
+
+    // Calculate days until expiry (streak expires if no activity for 2 days)
+    const daysUntilExpiry = this.calculateDaysUntilExpiry(streak.lastActivityDate);
+
     return {
-      currentStreak: 7,
-      longestStreak: 14,
-      lastActivityDate: new Date().toISOString(),
-      streakStatus: 'active' as const,
-      daysUntilExpiry: 0
+      currentStreak: streak.currentStreak,
+      longestStreak: streak.longestStreak,
+      lastActivityDate: streak.lastActivityDate?.toISOString() || new Date().toISOString(),
+      streakStatus: streak.streakStatus as 'active' | 'at_risk' | 'frozen' | 'inactive',
+      daysUntilExpiry
     };
   }
 
-  async updateStreak(userId: string, goalId: string, progressValue: number) {
-    // TODO: Implement streak tracking with database
+  async updateStreak(userId: string, goalId: string, _progressValue: number) {
+    // Verify goal exists and belongs to user
+    await this.getGoalById(goalId, userId);
+
+    // Get or create streak
+    let streak = await prisma.goalStreak.findUnique({
+      where: { userId }
+    });
+
+    if (!streak) {
+      streak = await prisma.goalStreak.create({
+        data: {
+          userId,
+          currentStreak: 1,
+          longestStreak: 1,
+          lastActivityDate: new Date(),
+          streakStatus: 'active',
+          freezeUsed: false
+        }
+      });
+
+      return {
+        success: true,
+        currentStreak: 1,
+        streakUpdated: true,
+        message: 'Streak started! Keep it going!'
+      };
+    }
+
+    const today = new Date();
+    today.setHours(0, 0, 0, 0);
+
+    const lastActivity = streak.lastActivityDate ? new Date(streak.lastActivityDate) : null;
+    if (lastActivity) {
+      lastActivity.setHours(0, 0, 0, 0);
+    }
+
+    // Calculate day difference
+    const daysDiff = lastActivity
+      ? Math.floor((today.getTime() - lastActivity.getTime()) / (1000 * 60 * 60 * 24))
+      : 999;
+
+    let newStreak = streak.currentStreak;
+    let streakUpdated = false;
+    let message = 'Progress recorded';
+
+    if (daysDiff === 0) {
+      // Same day, no streak change
+      message = 'Progress recorded for today';
+    } else if (daysDiff === 1) {
+      // Consecutive day - increase streak
+      newStreak = streak.currentStreak + 1;
+      streakUpdated = true;
+      message = `Streak extended to ${newStreak} days! 🔥`;
+    } else if (daysDiff === 2 && !streak.freezeUsed) {
+      // 2 days gap, but can use freeze
+      newStreak = streak.currentStreak;
+      streakUpdated = true;
+      message = 'Streak frozen! You get one grace day 🧊';
+      await prisma.goalStreak.update({
+        where: { userId },
+        data: { freezeUsed: true }
+      });
+    } else {
+      // Streak broken - reset
+      newStreak = 1;
+      streakUpdated = true;
+      message = 'Streak reset. Starting fresh! 💪';
+    }
+
+    // Update longest streak if needed
+    const newLongest = Math.max(streak.longestStreak, newStreak);
+
+    // Determine streak status
+    let streakStatus: 'active' | 'at_risk' | 'frozen' | 'inactive' = 'active';
+    if (newStreak === 0) {
+      streakStatus = 'inactive';
+    } else if (daysDiff === 0) {
+      streakStatus = 'active';
+    }
+
+    await prisma.goalStreak.update({
+      where: { userId },
+      data: {
+        currentStreak: newStreak,
+        longestStreak: newLongest,
+        lastActivityDate: today,
+        streakStatus,
+        freezeUsed: daysDiff === 2 ? true : (newStreak === 1 ? false : streak.freezeUsed)
+      }
+    });
+
     return {
       success: true,
-      currentStreak: 7,
-      streakUpdated: true,
-      message: 'Streak updated successfully'
+      currentStreak: newStreak,
+      streakUpdated,
+      message
     };
+  }
+
+  private calculateDaysUntilExpiry(lastActivityDate: Date | null): number {
+    if (!lastActivityDate) return 0;
+
+    const today = new Date();
+    today.setHours(0, 0, 0, 0);
+
+    const lastActivity = new Date(lastActivityDate);
+    lastActivity.setHours(0, 0, 0, 0);
+
+    const daysSinceActivity = Math.floor((today.getTime() - lastActivity.getTime()) / (1000 * 60 * 60 * 24));
+
+    // Streak expires after 2 days of inactivity
+    return Math.max(0, 2 - daysSinceActivity);
   }
 
   // =============================================================================
@@ -318,53 +514,127 @@ export class GoalsService {
   // =============================================================================
 
   async getBadges(userId: string) {
-    // TODO: Replace with database table
-    // For now, return demo badges
+    // Get all user badges
+    const badges = await prisma.goalBadge.findMany({
+      where: { userId },
+      orderBy: { unlockedAt: 'desc' }
+    });
+
+    // Total available badges (from badge definitions)
+    const totalBadges = 16; // This matches BADGE_DEFINITIONS count
+
+    // Recent unlocks (last 3)
+    const recentUnlocks = badges.slice(0, 3).map(badge => ({
+      id: badge.id,
+      badgeId: badge.badgeId,
+      name: badge.name,
+      icon: badge.icon,
+      unlockedAt: badge.unlockedAt.toISOString()
+    }));
+
     return {
-      badges: [
-        {
-          id: '1',
-          badgeId: 'first_goal',
-          name: 'Første Mål',
-          description: 'Fullført ditt første mål',
-          icon: '🎯',
-          rarity: 'common' as const,
-          unlockedAt: new Date(Date.now() - 7 * 24 * 60 * 60 * 1000).toISOString(),
-          viewed: true
-        }
-      ],
-      unlockedCount: 1,
-      totalBadges: 16,
-      recentUnlocks: [
-        {
-          id: '1',
-          badgeId: 'first_goal',
-          name: 'Første Mål',
-          icon: '🎯',
-          unlockedAt: new Date(Date.now() - 7 * 24 * 60 * 60 * 1000).toISOString()
-        }
-      ]
+      badges: badges.map(badge => ({
+        id: badge.id,
+        badgeId: badge.badgeId,
+        name: badge.name,
+        description: badge.description || '',
+        icon: badge.icon,
+        rarity: badge.rarity as 'common' | 'rare' | 'epic' | 'legendary',
+        unlockedAt: badge.unlockedAt.toISOString(),
+        viewed: badge.viewed
+      })),
+      unlockedCount: badges.length,
+      totalBadges,
+      recentUnlocks
     };
   }
 
   async unlockBadge(userId: string, badgeId: string) {
-    // TODO: Implement badge unlocking with database
+    // Check if badge is already unlocked
+    const existing = await prisma.goalBadge.findUnique({
+      where: {
+        userId_badgeId: {
+          userId,
+          badgeId
+        }
+      }
+    });
+
+    if (existing) {
+      throw new AppError('validation_error', 'Badge already unlocked', 409);
+    }
+
+    // Badge definitions map (should match frontend BADGE_DEFINITIONS)
+    const BADGE_DEFINITIONS: Record<string, { name: string; description: string; icon: string; rarity: string }> = {
+      first_goal: { name: 'Første Mål', description: 'Fullført ditt første mål', icon: '🎯', rarity: 'common' },
+      five_goals: { name: 'Målbevisst', description: 'Fullført 5 mål', icon: '🏆', rarity: 'rare' },
+      perfect_week: { name: 'Perfekt Uke', description: 'Alle ukentlige mål oppnådd', icon: '⭐', rarity: 'epic' },
+      category_master: { name: 'Kategori Mester', description: 'Alle mål i én kategori fullført', icon: '👑', rarity: 'epic' },
+      speed_demon: { name: 'Lynrask', description: 'Mål fullført før deadline', icon: '⚡', rarity: 'rare' },
+      comeback_kid: { name: 'Comeback', description: 'Fullført mål etter å ha ligget bak', icon: '💪', rarity: 'rare' },
+      three_day_streak: { name: 'Tre Dagers Streak', description: 'Oppdatert mål 3 dager på rad', icon: '🔥', rarity: 'common' },
+      week_warrior: { name: 'Uke Kriger', description: '7 dagers streak', icon: '⚔️', rarity: 'rare' },
+      month_master: { name: 'Måneds Mester', description: '30 dagers streak', icon: '🌟', rarity: 'epic' },
+      early_bird: { name: 'Tidlig Fugl', description: 'Oppdatert mål før kl 9', icon: '🌅', rarity: 'common' },
+      night_owl: { name: 'Nattergal', description: 'Oppdatert mål etter kl 22', icon: '🦉', rarity: 'common' },
+      overachiever: { name: 'Overpresterer', description: 'Overgått målverdi med 20%', icon: '🚀', rarity: 'rare' },
+      consistency_king: { name: 'Konsistent Konge', description: 'Oppdatert mål hver dag i en måned', icon: '👑', rarity: 'legendary' },
+      goal_getter: { name: 'Mål Gjenget', description: '10 mål fullført totalt', icon: '🎖️', rarity: 'epic' },
+      quick_starter: { name: 'Rask Start', description: 'Opprettet første mål innen 24 timer', icon: '⚡', rarity: 'common' },
+      milestone_maker: { name: 'Milepæl Mester', description: 'Fullført alle milepæler i et mål', icon: '🗿', rarity: 'rare' }
+    };
+
+    const badgeDef = BADGE_DEFINITIONS[badgeId];
+    if (!badgeDef) {
+      throw new AppError('validation_error', 'Invalid badge ID', 400);
+    }
+
+    // Create badge
+    const badge = await prisma.goalBadge.create({
+      data: {
+        userId,
+        badgeId,
+        name: badgeDef.name,
+        description: badgeDef.description,
+        icon: badgeDef.icon,
+        rarity: badgeDef.rarity,
+        viewed: false
+      }
+    });
+
     return {
       success: true,
       badge: {
-        id: 'new-badge-id',
-        badgeId,
-        name: 'New Badge',
-        description: 'Badge description',
-        icon: '🏆',
-        rarity: 'rare' as const,
-        unlockedAt: new Date().toISOString()
+        id: badge.id,
+        badgeId: badge.badgeId,
+        name: badge.name,
+        description: badge.description || '',
+        icon: badge.icon,
+        rarity: badge.rarity as 'common' | 'rare' | 'epic' | 'legendary',
+        unlockedAt: badge.unlockedAt.toISOString()
       }
     };
   }
 
   async markBadgeViewed(userId: string, badgeId: string) {
-    // TODO: Implement with database
+    // Find the badge
+    const badge = await prisma.goalBadge.findFirst({
+      where: {
+        userId,
+        id: badgeId // badgeId here is actually the badge record ID
+      }
+    });
+
+    if (!badge) {
+      throw new AppError('validation_error', 'Badge not found', 404);
+    }
+
+    // Mark as viewed
+    await prisma.goalBadge.update({
+      where: { id: badgeId },
+      data: { viewed: true }
+    });
+
     return { success: true };
   }
 }

@@ -209,7 +209,7 @@ export default function PlayerSidebarV3({
             className="fixed inset-0 z-40"
             onClick={() => setIsUserMenuOpen(false)}
           />
-          <div className="absolute right-0 top-full mt-2 w-56 bg-tier-white rounded-xl border border-tier-border-subtle shadow-lg z-50 py-2">
+          <div className="absolute left-0 bottom-full mb-2 w-56 bg-tier-white rounded-xl border border-tier-border-subtle shadow-lg z-50 py-2">
             {/* User info */}
             <div className="px-4 py-3 border-b border-tier-border-subtle">
               <div className="text-sm font-semibold text-tier-navy">

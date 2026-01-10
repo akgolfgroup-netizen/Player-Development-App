@@ -7,9 +7,9 @@
  *
  * HOVEDOMRÅDER:
  * 1. Dashboard (Hjem) - Oversikt og sammendrag
- * 2. Trening (Grønn)  - Logging, økter, øvelser, testing
- * 3. Analyse (Blå) - Fremgang, statistikk, sammenligninger (erstatter "Min utvikling")
- * 4. Plan (Gul/Amber) - Kalender, mål, turneringer
+ * 2. Plan (Gul/Amber) - Kalender, mål, turneringer
+ * 3. Trening (Grønn)  - Logging, økter, øvelser, testing
+ * 4. Analyse (Blå) - Fremgang, statistikk, sammenligninger (erstatter "Min utvikling")
  * 5. Mer (Lilla) - Profil, innstillinger, ressurser
  *
  * ============================================================
@@ -116,7 +116,53 @@ export const playerNavigationV3: NavArea[] = [
   },
 
   // ────────────────────────────────────────────────────────────
-  // 2. TRENING - Logging, økter, øvelser, testing (GRØNN)
+  // 2. PLAN - Kalender, mål, turneringer (AMBER)
+  // ────────────────────────────────────────────────────────────
+  {
+    id: 'plan',
+    label: 'Plan',
+    icon: 'CalendarIcon',
+    color: 'amber',
+    href: '/plan',
+    hubPath: '/plan',
+    sections: [
+      {
+        id: 'kalender',
+        label: 'Kalender',
+        items: [
+          { href: '/plan/kalender', label: 'Kalender', icon: 'CalendarIcon', description: 'Din kalender' },
+          { href: '/plan/booking', label: 'Booking', icon: 'CalendarIcon', description: 'Book treningstid' },
+          { href: '/samlinger', label: 'Samlinger', icon: 'GolfFlagIcon', description: 'Treningssamlinger' },
+        ],
+      },
+      {
+        id: 'skole',
+        label: 'Skole',
+        items: [
+          { href: '/plan/skole', label: 'Skoleplan', icon: 'CalendarIcon', description: 'Skoletimer, fag og oppgaver' },
+        ],
+      },
+      {
+        id: 'mal',
+        label: 'Mål',
+        items: [
+          { href: '/plan/maal', label: 'Målsetninger', icon: 'TargetIcon', description: 'Dine mål' },
+          { href: '/plan/aarsplan', label: 'Årsplan', icon: 'ScorecardIcon', description: 'Langsiktig plan' },
+        ],
+      },
+      {
+        id: 'turneringer',
+        label: 'Turneringer',
+        items: [
+          { href: '/plan/turneringer', label: 'Turneringskalender', icon: 'GolfFlagIcon', description: 'Alle turneringer' },
+          { href: '/plan/turneringer/mine', label: 'Mine turneringer', icon: 'GolfFlagIcon', description: 'Påmeldte turneringer' },
+        ],
+      },
+    ],
+  },
+
+  // ────────────────────────────────────────────────────────────
+  // 3. TRENING - Logging, økter, øvelser, testing (GRØNN)
   // ────────────────────────────────────────────────────────────
   {
     id: 'trening',
@@ -173,7 +219,7 @@ export const playerNavigationV3: NavArea[] = [
   },
 
   // ────────────────────────────────────────────────────────────
-  // 3. ANALYSE - Fremgang, statistikk, sammenligninger (BLÅ)
+  // 4. ANALYSE - Fremgang, statistikk, sammenligninger (BLÅ)
   // ────────────────────────────────────────────────────────────
   {
     id: 'utvikling',
@@ -206,52 +252,6 @@ export const playerNavigationV3: NavArea[] = [
         label: 'Prestasjoner',
         items: [
           { href: '/analyse/prestasjoner', label: 'Prestasjoner', icon: 'CheckIcon', description: 'Merker og prestasjoner' },
-        ],
-      },
-    ],
-  },
-
-  // ────────────────────────────────────────────────────────────
-  // 4. PLAN - Kalender, mål, turneringer (AMBER)
-  // ────────────────────────────────────────────────────────────
-  {
-    id: 'plan',
-    label: 'Plan',
-    icon: 'CalendarIcon',
-    color: 'amber',
-    href: '/plan',
-    hubPath: '/plan',
-    sections: [
-      {
-        id: 'kalender',
-        label: 'Kalender',
-        items: [
-          { href: '/plan/kalender', label: 'Kalender', icon: 'CalendarIcon', description: 'Din kalender' },
-          { href: '/plan/booking', label: 'Booking', icon: 'CalendarIcon', description: 'Book treningstid' },
-          { href: '/samlinger', label: 'Samlinger', icon: 'GolfFlagIcon', description: 'Treningssamlinger' },
-        ],
-      },
-      {
-        id: 'skole',
-        label: 'Skole',
-        items: [
-          { href: '/plan/skole', label: 'Skoleplan', icon: 'CalendarIcon', description: 'Skoletimer, fag og oppgaver' },
-        ],
-      },
-      {
-        id: 'mal',
-        label: 'Mål',
-        items: [
-          { href: '/plan/maal', label: 'Målsetninger', icon: 'TargetIcon', description: 'Dine mål' },
-          { href: '/plan/aarsplan', label: 'Årsplan', icon: 'ScorecardIcon', description: 'Langsiktig plan' },
-        ],
-      },
-      {
-        id: 'turneringer',
-        label: 'Turneringer',
-        items: [
-          { href: '/plan/turneringer', label: 'Turneringskalender', icon: 'GolfFlagIcon', description: 'Alle turneringer' },
-          { href: '/plan/turneringer/mine', label: 'Mine turneringer', icon: 'GolfFlagIcon', description: 'Påmeldte turneringer' },
         ],
       },
     ],
@@ -434,7 +434,7 @@ export interface FlatNavItem {
 
 /**
  * Forenklet navigasjon med 5 hovedelementer (ingen nesting)
- * Matcher V4 navigasjonsstruktur: Hjem, Trening, Analyse, Plan, Mer
+ * Matcher V4 navigasjonsstruktur: Hjem, Plan, Trening, Analyse, Mer
  */
 export const playerNavigationFlat: FlatNavItem[] = [
   {
@@ -443,6 +443,13 @@ export const playerNavigationFlat: FlatNavItem[] = [
     icon: 'Home',
     href: '/dashboard',
     color: 'default',
+  },
+  {
+    id: 'plan',
+    label: 'Plan',
+    icon: 'Calendar',
+    href: '/plan',
+    color: 'amber',
   },
   {
     id: 'trening',
@@ -457,13 +464,6 @@ export const playerNavigationFlat: FlatNavItem[] = [
     icon: 'TrendingUp',
     href: '/analyse',
     color: 'blue',
-  },
-  {
-    id: 'plan',
-    label: 'Plan',
-    icon: 'Calendar',
-    href: '/plan',
-    color: 'amber',
   },
   {
     id: 'mer',
