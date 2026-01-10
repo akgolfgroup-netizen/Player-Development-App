@@ -123,7 +123,7 @@ pnpm test -- --testNamePattern="login"
 |-----------|-------|
 | **Tier** | Pro ($20/måned) |
 | **Status** | ✅ Produksjonsklar |
-| **API Key** | `73c5ee864270d96fb23f0eac2265` |
+| **API Key** | `[REDACTED - Se .env]` |
 | **Base URL** | `https://feeds.datagolf.com` |
 | **Rate Limit** | 100 requests/time |
 | **Daglig Sync** | 03:00 UTC |

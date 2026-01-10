@@ -57,6 +57,7 @@ Thumbs.db
 # Backups
 *_BACKUP_*
 *.bak
+backup_*/
 
 # Archives
 *.zip

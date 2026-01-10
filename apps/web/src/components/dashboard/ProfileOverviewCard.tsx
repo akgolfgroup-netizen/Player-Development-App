@@ -5,9 +5,9 @@
  * Based on Tailwind UI with TIER Golf design system.
  */
 
-import React from 'react';
+import React, { useState, useRef } from 'react';
 import { Link } from 'react-router-dom';
-import { Bell } from 'lucide-react';
+import { Bell, Camera } from 'lucide-react';
 import clsx from 'clsx';
 
 interface ProfileStat {
@@ -34,6 +34,14 @@ interface ProfileOverviewCardProps {
   unreadCount?: number;
   /** Callback when notifications button is clicked */
   onNotificationsClick?: () => void;
+  /** Callback for profile image upload */
+  onImageUpload?: (file: File) => Promise<void>;
+  /** Weekly progress percentage for progress ring (0-100) */
+  weeklyProgress?: number;
+  /** Current number of completed sessions this week */
+  sessionsCompleted?: number;
+  /** Weekly goal for number of sessions */
+  weeklyGoal?: number;
 }
 
 function getInitials(name: string): string {
@@ -52,6 +60,50 @@ function getGreeting(): string {
   return 'God kveld';
 }
 
+function getTimeOfDayClass(): string {
+  const hour = new Date().getHours();
+  if (hour >= 6 && hour < 12) return 'morning';
+  if (hour >= 12 && hour < 18) return 'afternoon';
+  return 'evening';
+}
+
+function getMotivationalMessage(
+  weeklyProgress: number,
+  weeklyGoal: number
+): string | null {
+  if (weeklyGoal === 0) return null;
+
+  const remaining = weeklyGoal - weeklyProgress;
+
+  if (remaining <= 0) {
+    return '🎉 Du har nådd ukesmålet!';
+  }
+
+  if (remaining === 1) {
+    return '🔥 Bare 1 økt igjen til ukesmålet!';
+  }
+
+  if (remaining <= 3) {
+    return `🔥 Bare ${remaining} økter igjen til ukesmålet!`;
+  }
+
+  const percentage = Math.round((weeklyProgress / weeklyGoal) * 100);
+
+  if (percentage >= 75) {
+    return `Du er på god vei – ${weeklyProgress} av ${weeklyGoal} økter fullført`;
+  }
+
+  if (percentage >= 50) {
+    return `Godt jobbet! ${weeklyProgress} av ${weeklyGoal} økter gjennomført`;
+  }
+
+  if (percentage >= 25) {
+    return `Du er i gang – ${weeklyProgress} av ${weeklyGoal} økter fullført`;
+  }
+
+  return `Ukesmål: ${weeklyProgress} av ${weeklyGoal} økter`;
+}
+
 export function ProfileOverviewCard({
   name,
   role,
@@ -62,28 +114,140 @@ export function ProfileOverviewCard({
   welcomeMessage,
   unreadCount = 0,
   onNotificationsClick,
+  onImageUpload,
+  weeklyProgress,
+  sessionsCompleted = 0,
+  weeklyGoal = 0,
 }: ProfileOverviewCardProps) {
   const initials = getInitials(name);
   const greeting = welcomeMessage ?? getGreeting();
+  const motivationalMessage = getMotivationalMessage(sessionsCompleted, weeklyGoal);
+  const timeOfDay = getTimeOfDayClass();
+  const [isUploading, setIsUploading] = useState(false);
+  const fileInputRef = useRef<HTMLInputElement>(null);
+
+  const handleFileSelect = async (event: React.ChangeEvent<HTMLInputElement>) => {
+    const file = event.target.files?.[0];
+    if (!file || !onImageUpload) return;
+
+    if (!file.type.startsWith('image/')) return;
+    if (file.size > 5 * 1024 * 1024) return;
+
+    try {
+      setIsUploading(true);
+      await onImageUpload(file);
+    } catch (error) {
+      console.error('Image upload failed:', error);
+    } finally {
+      setIsUploading(false);
+      if (fileInputRef.current) {
+        fileInputRef.current.value = '';
+      }
+    }
+  };
+
+  const progressPercentage = weeklyProgress ?? 0;
+  const circumference = 2 * Math.PI * 36; // radius = 36
+  const strokeDashoffset = circumference - (progressPercentage / 100) * circumference;
+
+  // Define gradient based on time of day
+  const gradientClass = {
+    morning: 'bg-gradient-to-br from-amber-50 to-yellow-50',
+    afternoon: 'bg-gradient-to-br from-blue-50 to-sky-50',
+    evening: 'bg-gradient-to-br from-indigo-50 to-purple-50',
+  }[timeOfDay];
 
   return (
     <div className="overflow-hidden rounded-xl bg-white shadow-sm dark:bg-gray-900 dark:shadow-none dark:ring-1 dark:ring-white/10">
-      <div className="bg-white p-6 dark:bg-gray-800/75">
+      <div className={clsx('p-6 transition-colors duration-500', gradientClass, 'dark:bg-gray-800/75')}>
         <div className="sm:flex sm:items-center sm:justify-between">
           <div className="sm:flex sm:space-x-5">
-            {/* Avatar */}
-            <div className="shrink-0">
-              {avatarUrl ? (
-                <img
-                  alt={name}
-                  src={avatarUrl}
-                  className="mx-auto size-20 rounded-full object-cover dark:ring-1 dark:ring-white/10"
+            {/* Avatar with Progress Ring and Upload */}
+            <div className="shrink-0 relative group">
+              {/* Hidden file input */}
+              {onImageUpload && (
+                <input
+                  ref={fileInputRef}
+                  type="file"
+                  accept="image/*"
+                  onChange={handleFileSelect}
+                  className="hidden"
+                  aria-label="Last opp profilbilde"
                 />
-              ) : (
-                <div className="mx-auto size-20 rounded-full bg-ak-primary flex items-center justify-center dark:ring-1 dark:ring-white/10">
-                  <span className="text-2xl font-bold text-white">{initials}</span>
-                </div>
               )}
+
+              {/* Progress Ring SVG */}
+              {weeklyProgress !== undefined && (
+                <svg className="absolute inset-0 size-20 -rotate-90" viewBox="0 0 80 80">
+                  <circle
+                    cx="40"
+                    cy="40"
+                    r="36"
+                    fill="none"
+                    stroke="currentColor"
+                    strokeWidth="3"
+                    className="text-gray-200 dark:text-gray-700"
+                  />
+                  <circle
+                    cx="40"
+                    cy="40"
+                    r="36"
+                    fill="none"
+                    stroke="currentColor"
+                    strokeWidth="3"
+                    strokeDasharray={circumference}
+                    strokeDashoffset={strokeDashoffset}
+                    strokeLinecap="round"
+                    className="text-green-500 transition-all duration-500"
+                  />
+                </svg>
+              )}
+
+              {/* Avatar Image */}
+              <div className="relative mx-auto size-16 mt-0.5 ml-0.5">
+                {avatarUrl ? (
+                  <img
+                    alt={name}
+                    src={avatarUrl}
+                    className="size-16 rounded-full object-cover dark:ring-1 dark:ring-white/10"
+                  />
+                ) : (
+                  <div className="size-16 rounded-full bg-ak-primary flex items-center justify-center dark:ring-1 dark:ring-white/10">
+                    <span className="text-xl font-bold text-white">{initials}</span>
+                  </div>
+                )}
+
+                {/* Upload Button - shows on hover */}
+                {onImageUpload && (
+                  <button
+                    onClick={() => fileInputRef.current?.click()}
+                    disabled={isUploading}
+                    className={clsx(
+                      'absolute bottom-0 right-0',
+                      'size-6 rounded-full',
+                      'bg-ak-primary hover:bg-ak-primary/90',
+                      'text-white',
+                      'flex items-center justify-center',
+                      'border-2 border-white dark:border-gray-800',
+                      'shadow-sm',
+                      'transition-all duration-200',
+                      'opacity-0 group-hover:opacity-100',
+                      'disabled:opacity-50 disabled:cursor-not-allowed'
+                    )}
+                    aria-label="Last opp profilbilde"
+                    title="Last opp profilbilde"
+                  >
+                    <Camera size={12} />
+                  </button>
+                )}
+
+                {/* Loading Spinner */}
+                {isUploading && (
+                  <div className="absolute inset-0 flex items-center justify-center bg-black/50 rounded-full">
+                    <div className="size-5 border-2 border-white border-t-transparent rounded-full animate-spin" />
+                  </div>
+                )}
+              </div>
             </div>
 
             {/* Info */}
@@ -97,6 +261,11 @@ export function ProfileOverviewCard({
               <p className="text-sm font-medium text-gray-600 dark:text-gray-400">
                 {role}
               </p>
+              {motivationalMessage && (
+                <p className="mt-2 text-sm font-semibold text-green-600 dark:text-green-400">
+                  {motivationalMessage}
+                </p>
+              )}
             </div>
           </div>
 

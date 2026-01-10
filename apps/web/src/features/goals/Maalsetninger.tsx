@@ -10,6 +10,9 @@ import {
   Plus, Pencil, Trash2, Check, Users, X, Lightbulb, Calendar
 } from 'lucide-react';
 import { useGoalCategories } from '../../hooks/useTrainingConfig';
+import { useAuth } from '../../contexts/AuthContext';
+import { getCategoryColors } from './constants/categoryConfig';
+import { GoalsWelcomeHeader } from './components/GoalsWelcomeHeader';
 import {
   Card,
   CardContent,
@@ -44,6 +47,11 @@ import {
   AlertDialogTrigger,
 } from '../../components/shadcn';
 import { GoalProgress, PlayerStatCard } from '../../components/shadcn/golf';
+import { AnimatedStatsCard } from '../../components/dashboard/AnimatedStatsCard';
+import { StreakCounter } from './components/StreakCounter';
+import { BadgeShowcase } from '../../components/gamification/BadgeShowcase';
+import { BADGE_DEFINITIONS } from './constants/badgeDefinitions';
+import { useConfetti } from '../../hooks/useConfetti';
 import { cn } from 'lib/utils';
 
 // Types
@@ -184,6 +192,7 @@ const GoalCard: React.FC<GoalCardProps> = ({
   const categoryData = getCategory(goal.category);
   const CategoryIcon = categoryData ? getIconComponent(categoryData.icon) : Target;
   const categoryLabel = categoryData?.nameNO || categoryData?.name || goal.category;
+  const categoryColors = getCategoryColors(goal.category);
   const progressPercentage = (goal.current / goal.target) * 100;
   const isCompleted = goal.status === 'completed';
 
@@ -199,8 +208,14 @@ const GoalCard: React.FC<GoalCardProps> = ({
         {/* Header */}
         <div className="flex items-start justify-between mb-3">
           <div className="flex items-center gap-3">
-            <div className="w-10 h-10 rounded-lg bg-tier-navy/10 flex items-center justify-center">
-              <CategoryIcon className="w-5 h-5 text-tier-navy" />
+            <div className={cn(
+              "w-10 h-10 rounded-lg flex items-center justify-center transition-colors",
+              categoryColors ? categoryColors.bgColor : "bg-tier-navy/10"
+            )}>
+              <CategoryIcon className={cn(
+                "w-5 h-5",
+                categoryColors ? categoryColors.textColor : "text-tier-navy"
+              )} />
             </div>
             <div>
               <SubSectionTitle className={cn(
@@ -237,19 +252,23 @@ const GoalCard: React.FC<GoalCardProps> = ({
               variant="ghost"
               size="icon"
               onClick={() => onShareWithCoach(goal.id)}
-              className={cn(goal.sharedWithCoach && "text-tier-navy")}
+              className={cn(
+                "transition-transform duration-200 hover:scale-110 active:scale-95",
+                goal.sharedWithCoach && "text-tier-navy"
+              )}
             >
               <Users className="h-4 w-4" />
             </Button>
             <Checkbox
               checked={isCompleted}
               onCheckedChange={() => onToggleComplete(goal.id)}
-              className="h-5 w-5"
+              className="h-5 w-5 transition-transform duration-200 hover:scale-110"
             />
             <Button
               variant="ghost"
               size="icon"
               onClick={() => onEdit(goal)}
+              className="transition-transform duration-200 hover:scale-110 active:scale-95"
             >
               <Pencil className="h-4 w-4" />
             </Button>
@@ -281,7 +300,7 @@ const GoalCard: React.FC<GoalCardProps> = ({
                 variant="outline"
                 size="sm"
                 onClick={() => onUpdateProgress(goal)}
-                className="mt-2"
+                className="mt-2 transition-transform duration-200 hover:scale-105 active:scale-95"
               >
                 Oppdater progresjon
               </Button>
@@ -651,8 +670,10 @@ const Maalsetninger: React.FC<MaalsetningerProps> = ({ goals: apiGoals }) => {
   const [editingGoal, setEditingGoal] = useState<Goal | null>(null);
   const [updatingGoal, setUpdatingGoal] = useState<Goal | null>(null);
 
-  // Get goal categories from sport context
+  // Get user and goal categories
+  const { user } = useAuth();
   const { categories: sportCategories } = useGoalCategories();
+  const { celebrateGoalReached } = useConfetti();
 
   // Transform sport config categories to component format
   const CATEGORIES = useMemo(() => {
@@ -701,13 +722,30 @@ const Maalsetninger: React.FC<MaalsetningerProps> = ({ goals: apiGoals }) => {
   };
 
   const handleToggleComplete = (id: number) => {
+    const goal = goals.find(g => g.id === id);
+    const newStatus = goal?.status === 'completed' ? 'active' : 'completed';
+
     setGoals(goals.map(g =>
-      g.id === id ? { ...g, status: g.status === 'completed' ? 'active' : 'completed' } : g
+      g.id === id ? { ...g, status: newStatus } : g
     ));
+
+    // Celebrate when goal is completed
+    if (newStatus === 'completed') {
+      celebrateGoalReached();
+    }
   };
 
   const handleUpdateProgress = (id: number, value: number) => {
+    const goal = goals.find(g => g.id === id);
+    const previousValue = goal?.current || 0;
+    const target = goal?.target || 100;
+
     setGoals(goals.map(g => g.id === id ? { ...g, current: value } : g));
+
+    // Celebrate when progress reaches 100% for the first time
+    if (goal && previousValue < target && value >= target) {
+      celebrateGoalReached();
+    }
   };
 
   const toggleShareWithCoach = (id: number) => {
@@ -723,30 +761,103 @@ const Maalsetninger: React.FC<MaalsetningerProps> = ({ goals: apiGoals }) => {
         subtitle={`${activeGoals.length} aktive mål`}
         helpText="Sett og følg opp dine golfmål. Del mål med trener og spor fremgang over tid med milepæler og deadlines."
         action={
-          <Button onClick={() => { setEditingGoal(null); setShowModal(true); }} className="gap-2">
+          <Button
+            onClick={() => { setEditingGoal(null); setShowModal(true); }}
+            className="gap-2 transition-transform duration-200 hover:scale-105 active:scale-95"
+          >
             <Plus className="h-4 w-4" />
             Nytt mål
           </Button>
         }
       />
 
+      {/* Welcome Header */}
+      <div className="px-6 pt-6 max-w-4xl mx-auto">
+        <GoalsWelcomeHeader
+          userName={user?.name || user?.email?.split('@')[0] || 'Spiller'}
+          activeGoals={activeGoals.length}
+          totalProgress={totalProgress}
+          completedThisMonth={0} // TODO: Calculate from API data
+        />
+      </div>
+
       {/* Stats */}
       <div className="px-6 pb-6 max-w-4xl mx-auto">
-        <div className="grid grid-cols-3 gap-3 mb-6">
-          <PlayerStatCard
-            label="Aktive"
-            value={activeGoals.length.toString()}
-            accentColor="primary"
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 mb-6">
+          <AnimatedStatsCard
+            icon={Target}
+            label="Aktive mål"
+            value={activeGoals.length}
+            iconColor="rgb(59 130 246)" // blue-500
+            iconBgColor="rgb(239 246 255)" // blue-50
+            iconAnimation="pulse"
+            animationDelay={0}
           />
-          <PlayerStatCard
+          <AnimatedStatsCard
+            icon={Trophy}
             label="Fullført"
-            value={completedGoals.length.toString()}
-            accentColor="success"
+            value={completedGoals.length}
+            iconColor="rgb(34 197 94)" // green-500
+            iconBgColor="rgb(240 253 244)" // green-50
+            iconAnimation="shine"
+            animationDelay={200}
           />
-          <PlayerStatCard
-            label="Snitt progr."
-            value={`${Math.round(totalProgress)}%`}
-            accentColor="primary"
+          <AnimatedStatsCard
+            icon={TrendingUp}
+            label="Snitt fremgang"
+            value={totalProgress}
+            suffix="%"
+            decimals={0}
+            iconColor="rgb(249 115 22)" // orange-500
+            iconBgColor="rgb(255 247 237)" // orange-50
+            iconAnimation="pulse"
+            animationDelay={400}
+          />
+        </div>
+
+        {/* Streak Counter */}
+        <div className="mb-6">
+          <StreakCounter
+            currentStreak={7} // TODO: Get from API
+            longestStreak={14} // TODO: Get from API
+            streakStatus="active"
+            nextMilestone={14}
+          />
+        </div>
+
+        {/* Badge Showcase */}
+        <div className="mb-8">
+          <BadgeShowcase
+            title="Siste merker"
+            badges={[
+              // TODO: Get from API - these are sample badges
+              {
+                id: 'first_goal',
+                name: BADGE_DEFINITIONS.find(b => b.id === 'first_goal')?.name || '',
+                description: BADGE_DEFINITIONS.find(b => b.id === 'first_goal')?.description,
+                icon: BADGE_DEFINITIONS.find(b => b.id === 'first_goal')?.icon || '🎯',
+                earnedAt: new Date(Date.now() - 7 * 24 * 60 * 60 * 1000),
+              },
+              {
+                id: 'three_day_streak',
+                name: BADGE_DEFINITIONS.find(b => b.id === 'three_day_streak')?.name || '',
+                description: BADGE_DEFINITIONS.find(b => b.id === 'three_day_streak')?.description,
+                icon: BADGE_DEFINITIONS.find(b => b.id === 'three_day_streak')?.icon || '🔥',
+                earnedAt: new Date(Date.now() - 3 * 24 * 60 * 60 * 1000),
+              },
+              {
+                id: 'early_bird',
+                name: BADGE_DEFINITIONS.find(b => b.id === 'early_bird')?.name || '',
+                description: BADGE_DEFINITIONS.find(b => b.id === 'early_bird')?.description,
+                icon: BADGE_DEFINITIONS.find(b => b.id === 'early_bird')?.icon || '🌅',
+                earnedAt: new Date(Date.now() - 1 * 24 * 60 * 60 * 1000),
+              },
+            ]}
+            maxDisplay={3}
+            onBadgeClick={(badge) => {
+              // TODO: Show badge details modal
+              console.log('Badge clicked:', badge);
+            }}
           />
         </div>
 
@@ -766,20 +877,35 @@ const Maalsetninger: React.FC<MaalsetningerProps> = ({ goals: apiGoals }) => {
               variant={selectedCategory === null ? 'default' : 'outline'}
               size="sm"
               onClick={() => setSelectedCategory(null)}
+              className="transition-all"
             >
               Alle
             </Button>
             {CATEGORIES.map(cat => {
               const Icon = cat.icon;
+              const colors = getCategoryColors(cat.id);
+              const isSelected = selectedCategory === cat.id;
+
               return (
                 <Button
                   key={cat.id}
-                  variant={selectedCategory === cat.id ? 'default' : 'outline'}
+                  variant={isSelected ? 'default' : 'outline'}
                   size="sm"
                   onClick={() => setSelectedCategory(cat.id)}
-                  className="gap-1"
+                  className={cn(
+                    "gap-1 transition-all duration-200",
+                    isSelected && "shadow-md",
+                    !isSelected && colors && [
+                      colors.borderColor,
+                      colors.hoverBorderColor,
+                      "hover:shadow-sm"
+                    ]
+                  )}
                 >
-                  <Icon className="h-4 w-4" />
+                  <Icon className={cn(
+                    "h-4 w-4",
+                    !isSelected && colors && colors.textColor
+                  )} />
                   {cat.label}
                 </Button>
               );

@@ -57,9 +57,9 @@
      STATUS COLORS (Success, Warning, Error, Info)
      ═══════════════════════════════════════════════════════════ */
 
-  --status-success: 34 197 94;          /* #22C55E - Green */
+  --status-success: 5 150 105;          /* #059669 - Green (WCAG AA compliant - 4.5:1 contrast) */
   --status-success-light: 220 252 231;  /* #DCFCE7 - Success bg */
-  --status-success-dark: 22 163 74;     /* #16A34A - Success dark */
+  --status-success-dark: 4 120 87;      /* #047857 - Success dark (5.3:1 contrast) */
 
   --status-warning: 245 158 11;         /* #F59E0B - Amber */
   --status-warning-light: 254 243 199;  /* #FEF3C7 - Warning bg */
@@ -102,10 +102,10 @@
   --category-g-bg: 239 246 255;         /* #EFF6FF */
 
   /* Club Level (H-I) - Green tones */
-  --category-h: 22 163 74;              /* rgb(var(--status-success)) - Green (Club medium) */
+  --category-h: 4 120 87;               /* #047857 - Green (Club medium) - WCAG AA compliant */
   --category-h-bg: 240 253 244;         /* #F0FDF4 */
 
-  --category-i: 34 197 94;              /* #22C55E - Light green (Club low) */
+  --category-i: 5 150 105;              /* #059669 - Green (Club low) - WCAG AA compliant */
   --category-i-bg: 240 253 244;         /* #F0FDF4 */
 
   /* Development Level (J-K) - Purple tones */

@@ -5,6 +5,12 @@ import { Card, CardContent } from "../card"
 import { Progress } from "../progress"
 import { CardTitle } from "../../typography"
 
+export interface Milestone {
+  label: string
+  value: number
+  reached: boolean
+}
+
 interface GoalProgressProps {
   title: string
   description?: string
@@ -16,31 +22,39 @@ interface GoalProgressProps {
   showCard?: boolean
   size?: "sm" | "md" | "lg"
   className?: string
+  /** Optional milestones to display on progress bar */
+  milestones?: Milestone[]
+  /** Whether to animate progress on mount */
+  animated?: boolean
 }
 
 const statusConfig = {
   on_track: {
     label: "På sporet",
     color: "text-ak-success",
-    bgColor: "bg-ak-success",
+    bgColor: "bg-gradient-to-r from-green-500 to-green-600",
+    solidBg: "bg-ak-success",
     icon: Target,
   },
   behind: {
     label: "Bak skjema",
     color: "text-ak-warning",
-    bgColor: "bg-ak-warning",
+    bgColor: "bg-gradient-to-r from-orange-400 to-orange-500",
+    solidBg: "bg-ak-warning",
     icon: Clock,
   },
   completed: {
     label: "Fullført",
     color: "text-ak-success",
-    bgColor: "bg-ak-success",
+    bgColor: "bg-gradient-to-r from-green-500 to-emerald-600",
+    solidBg: "bg-ak-success",
     icon: CheckCircle2,
   },
   at_risk: {
     label: "Risiko",
     color: "text-ak-error",
-    bgColor: "bg-ak-error",
+    bgColor: "bg-gradient-to-r from-red-500 to-red-600",
+    solidBg: "bg-ak-error",
     icon: Target,
   },
 }
@@ -74,11 +88,25 @@ export const GoalProgress: React.FC<GoalProgressProps> = ({
   showCard = true,
   size = "md",
   className,
+  milestones,
+  animated = true,
 }) => {
+  const [displayPercentage, setDisplayPercentage] = React.useState(animated ? 0 : Math.min(Math.round((current / target) * 100), 100))
   const percentage = Math.min(Math.round((current / target) * 100), 100)
   const statusInfo = statusConfig[status]
   const sizes = sizeConfig[size]
   const StatusIcon = statusInfo.icon
+  const isNearCompletion = percentage >= 90 && percentage < 100
+
+  // Animate progress on mount
+  React.useEffect(() => {
+    if (animated) {
+      const timer = setTimeout(() => {
+        setDisplayPercentage(percentage)
+      }, 100)
+      return () => clearTimeout(timer)
+    }
+  }, [percentage, animated])
 
   const content = (
     <div className="space-y-3">
@@ -103,15 +131,49 @@ export const GoalProgress: React.FC<GoalProgressProps> = ({
               / {target} {unit}
             </span>
           </span>
-          <span className="text-sm font-medium text-text-secondary">
+          <span className={cn(
+            "text-sm font-medium text-text-secondary",
+            isNearCompletion && "animate-pulse text-green-600 dark:text-green-400 font-bold"
+          )}>
             {percentage}%
           </span>
         </div>
-        <Progress
-          value={percentage}
-          className={sizes.progress}
-          indicatorClassName={statusInfo.bgColor}
-        />
+
+        {/* Progress Bar with Milestones */}
+        <div className="relative">
+          <Progress
+            value={displayPercentage}
+            className={cn(
+              sizes.progress,
+              "transition-all duration-1000 ease-out"
+            )}
+            indicatorClassName={cn(
+              statusInfo.bgColor,
+              isNearCompletion && "animate-pulse"
+            )}
+          />
+
+          {/* Milestone Markers */}
+          {milestones && milestones.length > 0 && (
+            <div className="absolute inset-0 pointer-events-none">
+              {milestones.map((milestone, index) => {
+                const position = (milestone.value / target) * 100
+                return (
+                  <div
+                    key={index}
+                    className="absolute top-0 bottom-0 w-0.5 bg-white dark:bg-gray-900"
+                    style={{ left: `${position}%` }}
+                    title={`${milestone.label}: ${milestone.value} ${unit}`}
+                  >
+                    {milestone.reached && (
+                      <div className="absolute -top-1 -left-1 w-2.5 h-2.5 rounded-full bg-green-500 border-2 border-white dark:border-gray-900" />
+                    )}
+                  </div>
+                )
+              })}
+            </div>
+          )}
+        </div>
       </div>
 
       {deadline && (

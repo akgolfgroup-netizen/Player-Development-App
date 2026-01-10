@@ -105,11 +105,11 @@ function QuickActionButton({ action }: QuickActionButtonProps) {
         />
       </div>
       <div className="flex-1 min-w-0">
-        <div className="truncate">{action.label}</div>
+        <div className="break-words leading-tight">{action.label}</div>
         {action.description && (
           <div
             className={cn(
-              'text-xs font-normal truncate mt-0.5',
+              'text-xs font-normal break-words leading-tight mt-0.5',
               isPrimary ? 'text-tier-white/70' : 'text-tier-text-tertiary'
             )}
           >

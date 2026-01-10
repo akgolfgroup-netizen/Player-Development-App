@@ -657,6 +657,88 @@ module.exports = {
           from: { transform: "translateY(100%)" },
           to: { transform: "translateY(0)" },
         },
+        "stat-pulse": {
+          "0%, 100%": { transform: "scale(1)" },
+          "50%": { transform: "scale(1.05)" },
+        },
+        "stat-shine": {
+          "0%": {
+            backgroundPosition: "-100px",
+          },
+          "100%": {
+            backgroundPosition: "200px",
+          },
+        },
+        "flicker": {
+          "0%, 100%": {
+            transform: "scale(1) rotate(-2deg)",
+            opacity: "0.9",
+          },
+          "50%": {
+            transform: "scale(1.1) rotate(2deg)",
+            opacity: "1",
+          },
+        },
+        "flame-flicker": {
+          "0%, 100%": {
+            transform: "scale(1) rotate(-1deg)",
+            opacity: "0.95",
+          },
+          "25%": {
+            transform: "scale(1.05) rotate(1deg)",
+            opacity: "1",
+          },
+          "50%": {
+            transform: "scale(1.08) rotate(-0.5deg)",
+            opacity: "0.97",
+          },
+          "75%": {
+            transform: "scale(1.03) rotate(0.5deg)",
+            opacity: "1",
+          },
+        },
+        "flame-flicker-slow": {
+          "0%, 100%": {
+            transform: "scale(1)",
+            opacity: "0.95",
+          },
+          "50%": {
+            transform: "scale(1.05) rotate(1deg)",
+            opacity: "1",
+          },
+        },
+        "flame-flicker-fast": {
+          "0%, 100%": {
+            transform: "scale(1) rotate(-2deg)",
+            opacity: "0.9",
+          },
+          "33%": {
+            transform: "scale(1.1) rotate(2deg)",
+            opacity: "1",
+          },
+          "66%": {
+            transform: "scale(1.05) rotate(-1deg)",
+            opacity: "0.95",
+          },
+        },
+        "badge-entry": {
+          "0%": {
+            opacity: "0",
+            transform: "scale(0.5) rotate(-10deg)",
+          },
+          "100%": {
+            opacity: "1",
+            transform: "scale(1) rotate(0)",
+          },
+        },
+        "badge-shine": {
+          "0%": {
+            left: "-100%",
+          },
+          "50%, 100%": {
+            left: "100%",
+          },
+        },
       },
       animation: {
         "accordion-down": "accordion-down 0.2s ease-out",
@@ -665,6 +747,14 @@ module.exports = {
         "fade-out": "fade-out 0.2s ease-out",
         "slide-in-from-top": "slide-in-from-top 0.3s ease-out",
         "slide-in-from-bottom": "slide-in-from-bottom 0.3s ease-out",
+        "stat-pulse": "stat-pulse 3s ease-in-out infinite",
+        "stat-shine": "stat-shine 3s infinite",
+        "flicker": "flicker 0.5s ease-in-out infinite alternate",
+        "flame-flicker": "flame-flicker 1.5s ease-in-out infinite",
+        "flame-flicker-slow": "flame-flicker-slow 2.5s ease-in-out infinite",
+        "flame-flicker-fast": "flame-flicker-fast 0.8s ease-in-out infinite",
+        "badge-entry": "badge-entry 0.5s ease-out forwards",
+        "badge-shine": "badge-shine 2s infinite",
       },
     },
   },

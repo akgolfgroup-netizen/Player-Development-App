@@ -13,6 +13,22 @@
 
 import React, { useState, useEffect } from 'react';
 import { useSearchParams, Link } from 'react-router-dom';
+import {
+  BarChart3,
+  FileText,
+  Target
+} from 'lucide-react';
+import {
+  LineChart,
+  Line,
+  XAxis,
+  YAxis,
+  CartesianGrid,
+  Tooltip,
+  ResponsiveContainer,
+  Legend,
+  ReferenceLine
+} from 'recharts';
 import { PageHeader } from '../../components/layout/PageHeader';
 
 // Tab type
@@ -98,7 +114,7 @@ function OversiktTab() {
         <div className="space-y-3">
           <div className="flex items-center gap-4 p-4 border border-tier-border-default rounded-lg hover:bg-tier-surface-base transition-colors cursor-pointer">
             <div className="w-12 h-12 bg-tier-success-light rounded-full flex items-center justify-center">
-              <span className="text-xl">[Target]</span>
+              <Target size={20} className="text-tier-success" />
             </div>
             <div className="flex-1">
               <div className="text-sm font-medium text-tier-navy">CH3 - Chipping 20-30 meter</div>
@@ -112,7 +128,7 @@ function OversiktTab() {
 
           <div className="flex items-center gap-4 p-4 border border-tier-border-default rounded-lg hover:bg-tier-surface-base transition-colors cursor-pointer">
             <div className="w-12 h-12 bg-tier-info-light rounded-full flex items-center justify-center">
-              <span className="text-xl">[Target]</span>
+              <Target size={20} className="text-tier-info" />
             </div>
             <div className="flex-1">
               <div className="text-sm font-medium text-tier-navy">P2 - Putting 3 meter</div>
@@ -146,6 +162,16 @@ function OversiktTab() {
 }
 
 function ResultaterTab() {
+  // Mock data for Test Performance chart
+  const mockTestPerformance = [
+    { date: 'Aug', score: 72.5 },
+    { date: 'Sep', score: 76.8 },
+    { date: 'Okt', score: 78.3 },
+    { date: 'Nov', score: 81.2 },
+    { date: 'Des', score: 83.5 },
+    { date: 'Jan', score: 85.5 },
+  ];
+
   return (
     <div className="space-y-6">
       {/* Filter and Sort */}
@@ -229,9 +255,30 @@ function ResultaterTab() {
       {/* Performance Chart */}
       <div className="bg-white rounded-xl border border-tier-border-default p-6">
         <h3 className="text-lg font-semibold text-tier-navy mb-4">Testprestasjoner over tid</h3>
-        <div className="h-80 bg-tier-surface-base rounded-lg flex items-center justify-center text-tier-text-secondary">
-          [Test performance chart over time]
-        </div>
+        <ResponsiveContainer width="100%" height={320}>
+          <LineChart data={mockTestPerformance}>
+            <CartesianGrid strokeDasharray="3 3" stroke="var(--tier-border-default)" />
+            <XAxis dataKey="date" stroke="var(--tier-text-secondary)" style={{ fontSize: 12 }} />
+            <YAxis domain={[0, 100]} stroke="var(--tier-text-secondary)" style={{ fontSize: 12 }} />
+            <Tooltip />
+            <Legend />
+            <ReferenceLine
+              y={75}
+              stroke="var(--tier-warning)"
+              strokeWidth={2}
+              strokeDasharray="5 5"
+              label={{ value: 'Passing Grade (75%)', position: 'insideTopRight' }}
+            />
+            <Line
+              type="monotone"
+              dataKey="score"
+              name="Test Score"
+              stroke="var(--tier-info)"
+              strokeWidth={3}
+              dot={{ fill: 'var(--tier-info)', r: 5 }}
+            />
+          </LineChart>
+        </ResponsiveContainer>
       </div>
     </div>
   );
@@ -339,7 +386,9 @@ function KravTab() {
       {/* Action Box */}
       <div className="bg-tier-warning-light border border-tier-warning rounded-xl p-6">
         <div className="flex items-start gap-3">
-          <span className="text-2xl">[Target]</span>
+          <div className="w-12 h-12 bg-tier-warning rounded-full flex items-center justify-center flex-shrink-0">
+            <Target size={24} className="text-white" />
+          </div>
           <div>
             <h4 className="text-sm font-semibold text-tier-navy mb-1">Fokusområder for kategori B</h4>
             <p className="text-sm text-tier-text-secondary mb-3">
@@ -374,10 +423,10 @@ export default function AnalyseTesterHub() {
     setSearchParams({ tab });
   };
 
-  const tabs: { id: TesterTab; label: string; icon: string }[] = [
-    { id: 'oversikt', label: 'Oversikt', icon: '' },
-    { id: 'resultater', label: 'Resultater', icon: '' },
-    { id: 'krav', label: 'Krav', icon: '' },
+  const tabs: { id: TesterTab; label: string; icon: React.ReactNode }[] = [
+    { id: 'oversikt', label: 'Oversikt', icon: <BarChart3 size={16} /> },
+    { id: 'resultater', label: 'Resultater', icon: <FileText size={16} /> },
+    { id: 'krav', label: 'Krav', icon: <Target size={16} /> },
   ];
 
   return (

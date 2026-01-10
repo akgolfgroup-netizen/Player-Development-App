@@ -95,7 +95,7 @@ export async function playerAnnualPlanRoutes(
     async (request, reply) => {
       try {
         const { playerId } = request.params;
-        const tenantId = (request as any).tenantId;
+        const tenantId = (request as any).tenant?.id;
 
         // Verify user can access this player's data
         const requestPlayerId = getPlayerId(request);
@@ -186,7 +186,7 @@ export async function playerAnnualPlanRoutes(
     async (request, reply) => {
       try {
         const { playerId } = request.params;
-        const tenantId = (request as any).tenantId;
+        const tenantId = (request as any).tenant?.id;
 
         // Verify user can create plan for this player
         const requestPlayerId = getPlayerId(request);
@@ -253,7 +253,7 @@ export async function playerAnnualPlanRoutes(
     async (request, reply) => {
       try {
         const { playerId } = request.params;
-        const tenantId = (request as any).tenantId;
+        const tenantId = (request as any).tenant?.id;
 
         // Verify user can update this player's plan
         const requestPlayerId = getPlayerId(request);
@@ -320,7 +320,7 @@ export async function playerAnnualPlanRoutes(
     async (request, reply) => {
       try {
         const { playerId } = request.params;
-        const tenantId = (request as any).tenantId;
+        const tenantId = (request as any).tenant?.id;
 
         // Verify user can cancel this player's plan
         const requestPlayerId = getPlayerId(request);

@@ -570,12 +570,66 @@ const LogForm = ({ sessionType, selectedCategories, onSubmit, saving = false }) 
         </div>
       </div>
 
-      {/* Focus Rating (1-10) */}
+      {/* Energy Level with Emoji Feedback */}
       <div className="mb-4">
-        <label className="block text-[13px] font-medium text-tier-navy mb-1">
-          <Target size={14} className="inline mr-1" />
-          Fokus
-        </label>
+        <div className="flex justify-between items-center mb-2">
+          <label className="text-[13px] font-medium text-tier-navy">
+            Energiniva
+          </label>
+          <span className="text-2xl">
+            {['😴', '😐', '🙂', '😊', '🔥'][formData.energyLevel - 1]}
+          </span>
+        </div>
+        <div className="flex gap-2">
+          {[1, 2, 3, 4, 5].map((level) => {
+            const energyEmojis = ['😴', '😐', '🙂', '😊', '🔥'];
+            const energyColors = [
+              'border-gray-400 bg-gray-100',
+              'border-amber-500 bg-amber-100',
+              'border-emerald-500 bg-emerald-100',
+              'border-blue-500 bg-blue-100',
+              'border-red-500 bg-red-100',
+            ];
+            const isSelected = formData.energyLevel === level;
+
+            return (
+              <button
+                key={level}
+                type="button"
+                onClick={() => setFormData({ ...formData, energyLevel: level })}
+                className={`flex-1 py-3 px-2 rounded-xl cursor-pointer transition-all duration-200 flex flex-col items-center gap-1 ${
+                  isSelected
+                    ? `border-2 ${energyColors[level - 1]}`
+                    : 'border border-tier-border-default bg-tier-white'
+                }`}
+              >
+                <span className="text-lg">{energyEmojis[level - 1]}</span>
+                <span className={`text-xs font-medium ${
+                  isSelected ? 'text-tier-navy' : 'text-tier-text-secondary'
+                }`}>
+                  {level}
+                </span>
+              </button>
+            );
+          })}
+        </div>
+        <div className="flex justify-between text-[11px] text-tier-text-secondary mt-1">
+          <span>Lav energi</span>
+          <span>Hoy energi</span>
+        </div>
+      </div>
+
+      {/* Focus Level with Emoji Feedback */}
+      <div className="mb-4">
+        <div className="flex justify-between items-center mb-2">
+          <label className="text-[13px] font-medium text-tier-navy">
+            <Target size={14} className="inline mr-1" />
+            Fokus
+          </label>
+          <span className="text-2xl">
+            {['🎯', '💭', '🙂', '😤', '🧠'][Math.min(Math.floor((formData.focusRating - 1) / 2), 4)]}
+          </span>
+        </div>
         <p className="text-[11px] text-tier-text-secondary mb-2">
           Hvor godt klarte du å holde fokus gjennom økten?
         </p>
@@ -598,33 +652,6 @@ const LogForm = ({ sessionType, selectedCategories, onSubmit, saving = false }) 
         <div className="flex justify-between mt-1">
           <span className="text-xs text-tier-text-secondary">Distrahert</span>
           <span className="text-xs text-tier-text-secondary">Laserfokus</span>
-        </div>
-      </div>
-
-      {/* Energy Level */}
-      <div className="mb-4">
-        <label className="block text-[13px] font-medium text-tier-navy mb-1">
-          Energiniva
-        </label>
-        <div className="flex gap-2">
-          {[1, 2, 3, 4, 5].map((level) => (
-            <button
-              key={level}
-              type="button"
-              onClick={() => setFormData({ ...formData, energyLevel: level })}
-              className={`flex-1 py-2 rounded-lg text-sm font-medium cursor-pointer transition-all ${
-                formData.energyLevel === level
-                  ? 'border-2 border-tier-navy bg-tier-navy/15 text-tier-navy'
-                  : 'border border-tier-border-default bg-tier-white text-tier-navy'
-              }`}
-            >
-              {level}
-            </button>
-          ))}
-        </div>
-        <div className="flex justify-between text-[11px] text-tier-text-secondary mt-1">
-          <span>Lav</span>
-          <span>Hoy</span>
         </div>
       </div>
 

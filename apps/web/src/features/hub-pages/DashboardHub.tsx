@@ -130,6 +130,8 @@ export default function DashboardHub({
                   current={stats.treningsdager}
                   target={15}
                   unit="økter"
+                  showAction={true}
+                  href="/trening/logg"
                 />
                 <StreakCard days={7} longestStreak={14} />
                 <FocusAreaCard

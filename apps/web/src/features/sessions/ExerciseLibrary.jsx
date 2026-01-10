@@ -305,15 +305,25 @@ function ExerciseCard({ exercise, onSelect, onToggleFavorite, onAddToPlan, isFav
   return (
     <div
       onClick={() => onSelect(exercise)}
-      className="bg-tier-white rounded-xl overflow-hidden shadow-sm cursor-pointer transition-all hover:-translate-y-0.5 hover:shadow-md"
+      className={`bg-tier-white rounded-xl overflow-hidden shadow-sm cursor-pointer transition-all hover:-translate-y-0.5 hover:shadow-md relative ${
+        isFavorite ? 'ring-2 ring-amber-300' : ''
+      }`}
     >
+      {/* "Min øvelse" badge for favorites */}
+      {isFavorite && (
+        <div className="absolute top-2 left-2 z-10 inline-flex items-center gap-1 py-1 px-2 bg-amber-100 text-amber-700 text-[11px] font-semibold rounded">
+          <Heart size={12} fill="currentColor" />
+          Min øvelse
+        </div>
+      )}
+
       {/* Top color bar based on pyramide level */}
       <div className={`h-1 ${pyramideClasses.bar}`} />
 
       <div className="p-4">
         {/* Header row */}
         <div className="flex justify-between items-start mb-2">
-          <SubSectionTitle className="text-[15px] leading-tight">
+          <SubSectionTitle className={`text-[15px] leading-tight ${isFavorite ? 'mt-6' : ''}`}>
             {exercise.name}
           </SubSectionTitle>
           <Button
@@ -542,6 +552,9 @@ export default function ExerciseLibrary({ onSelectExercise, onClose }) {
   });
   const [showOnlyFavorites, setShowOnlyFavorites] = useState(false);
   const [showAdvancedFilters, setShowAdvancedFilters] = useState(false);
+  // NEW: Library filter tabs (Alle, Mine øvelser, Bibliotek)
+  const [libraryFilter, setLibraryFilter] = useState('all'); // 'all' | 'mine' | 'library'
+  const [showAddExerciseModal, setShowAddExerciseModal] = useState(false);
 
   const handleToggleFavorite = (exerciseId) => {
     setFavorites(prev => {
@@ -594,6 +607,58 @@ export default function ExerciseLibrary({ onSelectExercise, onClose }) {
 
   return (
     <div className="bg-tier-surface-base min-h-screen">
+      {/* Library Filter Tabs + Add Button */}
+      <div className="bg-tier-white py-4 px-6 border-b border-tier-border-default flex justify-between items-center">
+        <div className="inline-flex gap-1 p-1 bg-tier-surface-base rounded-xl">
+          <button
+            onClick={() => { setLibraryFilter('all'); setShowOnlyFavorites(false); }}
+            className={`flex items-center gap-1.5 py-2 px-4 rounded-lg text-sm font-medium transition-all ${
+              libraryFilter === 'all'
+                ? 'bg-white text-tier-success shadow-sm'
+                : 'bg-transparent text-tier-text-secondary hover:text-tier-navy'
+            }`}
+          >
+            Alle øvelser
+          </button>
+          <button
+            onClick={() => { setLibraryFilter('mine'); setShowOnlyFavorites(true); }}
+            className={`flex items-center gap-1.5 py-2 px-4 rounded-lg text-sm font-medium transition-all ${
+              libraryFilter === 'mine'
+                ? 'bg-white text-amber-600 shadow-sm'
+                : 'bg-transparent text-tier-text-secondary hover:text-tier-navy'
+            }`}
+          >
+            <Heart size={16} fill={libraryFilter === 'mine' ? 'currentColor' : 'none'} />
+            Mine øvelser
+            {favorites.length > 0 && (
+              <span className={`rounded-full py-0.5 px-1.5 text-[11px] font-semibold ${
+                libraryFilter === 'mine' ? 'bg-amber-500 text-white' : 'bg-tier-text-tertiary text-white'
+              }`}>
+                {favorites.length}
+              </span>
+            )}
+          </button>
+          <button
+            onClick={() => { setLibraryFilter('library'); setShowOnlyFavorites(false); }}
+            className={`flex items-center gap-1.5 py-2 px-4 rounded-lg text-sm font-medium transition-all ${
+              libraryFilter === 'library'
+                ? 'bg-white text-tier-navy shadow-sm'
+                : 'bg-transparent text-tier-text-secondary hover:text-tier-navy'
+            }`}
+          >
+            Bibliotek
+          </button>
+        </div>
+
+        <Button
+          variant="primary"
+          leftIcon={<Plus size={18} />}
+          onClick={() => setShowAddExerciseModal(true)}
+        >
+          Legg til øvelse
+        </Button>
+      </div>
+
       {/* Compact filters */}
       <div className="bg-tier-white py-3 px-6 border-b border-tier-border-default">
         {/* Search and filters in one row */}
@@ -783,6 +848,95 @@ export default function ExerciseLibrary({ onSelectExercise, onClose }) {
           onClose={() => setSelectedExercise(null)}
           onAddToSession={handleAddToSession}
         />
+      )}
+
+      {/* Add Exercise Modal */}
+      {showAddExerciseModal && (
+        <div
+          className="fixed inset-0 bg-black/50 flex items-center justify-center z-[1000]"
+          onClick={() => setShowAddExerciseModal(false)}
+        >
+          <div
+            className="bg-tier-white rounded-2xl p-6 w-[90%] max-w-[500px] max-h-[80vh] overflow-y-auto"
+            onClick={(e) => e.stopPropagation()}
+          >
+            <div className="flex justify-between items-center mb-5">
+              <h2 className="m-0 text-xl font-bold text-tier-navy">
+                Legg til ny øvelse
+              </h2>
+              <button
+                onClick={() => setShowAddExerciseModal(false)}
+                className="bg-transparent border-none text-2xl text-tier-text-secondary cursor-pointer hover:text-tier-navy"
+              >
+                &times;
+              </button>
+            </div>
+
+            <p className="text-sm text-tier-text-secondary mb-5">
+              Opprett en tilpasset øvelse som blir lagt til i &quot;Mine øvelser&quot;.
+            </p>
+
+            <div className="flex flex-col gap-4">
+              <div>
+                <label className="block text-[13px] font-medium mb-1.5 text-tier-navy">
+                  Øvelsesnavn *
+                </label>
+                <input
+                  type="text"
+                  placeholder="F.eks. Min putting-drill"
+                  className="w-full p-3 rounded-lg border border-tier-border-default text-sm focus:border-tier-navy outline-none"
+                />
+              </div>
+
+              <div>
+                <label className="block text-[13px] font-medium mb-1.5 text-tier-navy">
+                  Beskrivelse
+                </label>
+                <textarea
+                  placeholder="Beskriv øvelsen..."
+                  rows={3}
+                  className="w-full p-3 rounded-lg border border-tier-border-default text-sm resize-y focus:border-tier-navy outline-none"
+                />
+              </div>
+
+              <div className="grid grid-cols-2 gap-3">
+                <div>
+                  <label className="block text-[13px] font-medium mb-1.5 text-tier-navy">
+                    Kategori
+                  </label>
+                  <select className="w-full p-3 rounded-lg border border-tier-border-default text-sm">
+                    <option value="TEK">Teknikk</option>
+                    <option value="FYS">Fysisk</option>
+                    <option value="SLAG">Golfslag</option>
+                    <option value="SPILL">Spill</option>
+                    <option value="TURN">Turnering</option>
+                  </select>
+                </div>
+                <div>
+                  <label className="block text-[13px] font-medium mb-1.5 text-tier-navy">
+                    Varighet (min)
+                  </label>
+                  <input
+                    type="number"
+                    placeholder="20"
+                    className="w-full p-3 rounded-lg border border-tier-border-default text-sm focus:border-tier-navy outline-none"
+                  />
+                </div>
+              </div>
+
+              <Button
+                variant="primary"
+                onClick={() => {
+                  alert('Øvelse opprettet! (Demo)');
+                  setShowAddExerciseModal(false);
+                }}
+                className="w-full py-3.5 mt-2 text-[15px] font-semibold"
+              >
+                Opprett øvelse
+              </Button>
+            </div>
+          </div>
+        </div>
       )}
     </div>
   );

@@ -9,7 +9,7 @@
 ## ✅ Completed Implementation
 
 ### 1. API Connection Setup
-- ✅ DataGolf API key configured (`73c5ee864270d96fb23f0eac2265`)
+- ✅ DataGolf API key configured (`[REDACTED - Se .env]`)
 - ✅ Authentication method identified (query parameter `?key=`)
 - ✅ axios dependency installed
 - ✅ DataGolf client updated with working endpoints

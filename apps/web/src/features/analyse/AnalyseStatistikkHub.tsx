@@ -22,6 +22,26 @@
 
 import React, { useState, useEffect } from 'react';
 import { useSearchParams, Link } from 'react-router-dom';
+import {
+  BarChart3,
+  TrendingUp,
+  Target,
+  Trophy
+} from 'lucide-react';
+import {
+  LineChart,
+  Line,
+  BarChart,
+  Bar,
+  XAxis,
+  YAxis,
+  CartesianGrid,
+  Tooltip,
+  ResponsiveContainer,
+  Legend,
+  ReferenceLine,
+  Cell
+} from 'recharts';
 import { PageHeader } from '../../components/layout/PageHeader';
 import api from '../../services/api';
 import { useBreakingPoints } from '../../hooks/useBreakingPoints';
@@ -69,6 +89,16 @@ function StatistikkOversiktTab() {
     priority: bp.priority,
   }));
 
+  // Mock data for Handicap chart
+  const mockHandicapData = [
+    { date: 'Aug', handicap: 14.2 },
+    { date: 'Sep', handicap: 13.8 },
+    { date: 'Okt', handicap: 13.5 },
+    { date: 'Nov', handicap: 13.1 },
+    { date: 'Des', handicap: 12.8 },
+    { date: 'Jan', handicap: 12.4 },
+  ];
+
   return (
     <div className="space-y-6">
       {/* Key Metrics Cards */}
@@ -98,12 +128,39 @@ function StatistikkOversiktTab() {
         </div>
       </div>
 
-      {/* Fremgangsgraf placeholder */}
+      {/* Handicap Chart */}
       <div className="bg-white rounded-xl border border-tier-border-default p-6">
         <h3 className="text-lg font-semibold text-tier-navy mb-4">Handicap utvikling</h3>
-        <div className="h-64 bg-tier-surface-base rounded-lg flex items-center justify-center text-tier-text-secondary">
-          [Graf kommer her - handicap over tid]
-        </div>
+        <ResponsiveContainer width="100%" height={300}>
+          <LineChart data={mockHandicapData}>
+            <CartesianGrid strokeDasharray="3 3" stroke="var(--tier-border-default)" />
+            <XAxis
+              dataKey="date"
+              stroke="var(--tier-text-secondary)"
+              style={{ fontSize: 12 }}
+            />
+            <YAxis
+              reversed
+              domain={[10, 15]}
+              stroke="var(--tier-text-secondary)"
+              style={{ fontSize: 12 }}
+            />
+            <Tooltip
+              contentStyle={{
+                backgroundColor: 'var(--tier-surface-card)',
+                border: '1px solid var(--tier-border-default)',
+                borderRadius: '8px',
+              }}
+            />
+            <Line
+              type="monotone"
+              dataKey="handicap"
+              stroke="var(--tier-navy)"
+              strokeWidth={3}
+              dot={{ fill: 'var(--tier-navy)', r: 5 }}
+            />
+          </LineChart>
+        </ResponsiveContainer>
       </div>
 
       {/* ✅ PHASE 2 INTEGRATION: Vendepunkter section */}
@@ -168,6 +225,24 @@ function StatistikkOversiktTab() {
 }
 
 function StrokesGainedTab() {
+  // Mock data for SG Breakdown
+  const mockSGBreakdown = [
+    { category: 'Putting', value: 0.8 },
+    { category: 'Approach', value: 1.2 },
+    { category: 'Tee-to-Green', value: -0.3 },
+    { category: 'Short Game', value: 0.7 },
+  ];
+
+  // Mock data for SG Trends
+  const mockSGTrends = [
+    { date: 'Aug', total: 1.8, putting: 0.5, approach: 0.9, aroundGreen: 0.4 },
+    { date: 'Sep', total: 2.0, putting: 0.6, approach: 1.0, aroundGreen: 0.4 },
+    { date: 'Okt', total: 2.1, putting: 0.7, approach: 1.0, aroundGreen: 0.4 },
+    { date: 'Nov', total: 2.3, putting: 0.7, approach: 1.2, aroundGreen: 0.4 },
+    { date: 'Des', total: 2.4, putting: 0.8, approach: 1.2, aroundGreen: 0.4 },
+    { date: 'Jan', total: 2.4, putting: 0.8, approach: 1.2, aroundGreen: 0.4 },
+  ];
+
   return (
     <div className="space-y-6">
       {/* SG Summary Cards */}
@@ -200,17 +275,41 @@ function StrokesGainedTab() {
       {/* SG Breakdown Chart */}
       <div className="bg-white rounded-xl border border-tier-border-default p-6">
         <h3 className="text-lg font-semibold text-tier-navy mb-4">Strokes Gained fordeling</h3>
-        <div className="h-80 bg-tier-surface-base rounded-lg flex items-center justify-center text-tier-text-secondary">
-          [SG breakdown chart kommer her]
-        </div>
+        <ResponsiveContainer width="100%" height={320}>
+          <BarChart data={mockSGBreakdown} layout="vertical">
+            <CartesianGrid strokeDasharray="3 3" stroke="var(--tier-border-default)" />
+            <XAxis type="number" stroke="var(--tier-text-secondary)" style={{ fontSize: 12 }} />
+            <YAxis dataKey="category" type="category" stroke="var(--tier-text-secondary)" style={{ fontSize: 12 }} width={120} />
+            <Tooltip />
+            <ReferenceLine x={0} stroke="var(--tier-text-secondary)" strokeWidth={2} />
+            <Bar dataKey="value" radius={[0, 8, 8, 0]}>
+              {mockSGBreakdown.map((entry, index) => (
+                <Cell
+                  key={`cell-${index}`}
+                  fill={entry.value >= 0 ? 'var(--tier-success)' : 'var(--tier-error)'}
+                />
+              ))}
+            </Bar>
+          </BarChart>
+        </ResponsiveContainer>
       </div>
 
       {/* Historical SG Trends */}
       <div className="bg-white rounded-xl border border-tier-border-default p-6">
         <h3 className="text-lg font-semibold text-tier-navy mb-4">Historiske SG trender</h3>
-        <div className="h-64 bg-tier-surface-base rounded-lg flex items-center justify-center text-tier-text-secondary">
-          [SG trends over time kommer her]
-        </div>
+        <ResponsiveContainer width="100%" height={320}>
+          <LineChart data={mockSGTrends}>
+            <CartesianGrid strokeDasharray="3 3" stroke="var(--tier-border-default)" />
+            <XAxis dataKey="date" stroke="var(--tier-text-secondary)" style={{ fontSize: 12 }} />
+            <YAxis stroke="var(--tier-text-secondary)" style={{ fontSize: 12 }} />
+            <Tooltip />
+            <Legend />
+            <Line type="monotone" dataKey="total" name="Total SG" stroke="var(--tier-navy)" strokeWidth={3} />
+            <Line type="monotone" dataKey="putting" name="Putting" stroke="var(--tier-success)" strokeWidth={2} />
+            <Line type="monotone" dataKey="approach" name="Approach" stroke="var(--tier-info)" strokeWidth={2} />
+            <Line type="monotone" dataKey="aroundGreen" name="Around Green" stroke="var(--tier-warning)" strokeWidth={2} />
+          </LineChart>
+        </ResponsiveContainer>
       </div>
     </div>
   );
@@ -517,7 +616,9 @@ function StatusMaalTab() {
         <h3 className="text-lg font-semibold text-tier-navy mb-4">Neste milepæler</h3>
         <div className="space-y-3">
           <div className="flex items-center gap-3 p-3 bg-tier-surface-base rounded-lg">
-            <div className="text-xl">[Target]</div>
+            <div className="w-10 h-10 bg-tier-info-light rounded-full flex items-center justify-center">
+              <Target size={20} className="text-tier-info" />
+            </div>
             <div className="flex-1">
               <div className="text-sm font-medium text-tier-navy">Reach handicap 11.0</div>
               <div className="text-xs text-tier-text-secondary">Estimert: 6 uker</div>
@@ -525,7 +626,9 @@ function StatusMaalTab() {
           </div>
 
           <div className="flex items-center gap-3 p-3 bg-tier-surface-base rounded-lg">
-            <div className="text-xl">[Trophy]</div>
+            <div className="w-10 h-10 bg-tier-gold-light rounded-full flex items-center justify-center">
+              <Trophy size={20} className="text-tier-gold" />
+            </div>
             <div className="flex-1">
               <div className="text-sm font-medium text-tier-navy">Earn 'Putting Master' badge</div>
               <div className="text-xs text-tier-text-secondary">2 tests remaining</div>
@@ -554,11 +657,11 @@ export default function AnalyseStatistikkHub() {
     setSearchParams({ tab });
   };
 
-  const tabs: { id: StatistikkTab; label: string; icon: string }[] = [
-    { id: 'oversikt', label: 'Oversikt', icon: '' },
-    { id: 'strokes-gained', label: 'Strokes Gained', icon: '' },
-    { id: 'trender', label: 'Trender', icon: '' },
-    { id: 'status-maal', label: 'Status & Mål', icon: '' },
+  const tabs: { id: StatistikkTab; label: string; icon: React.ReactNode }[] = [
+    { id: 'oversikt', label: 'Oversikt', icon: <BarChart3 size={16} /> },
+    { id: 'strokes-gained', label: 'Strokes Gained', icon: <TrendingUp size={16} /> },
+    { id: 'trender', label: 'Trender', icon: <TrendingUp size={16} /> },
+    { id: 'status-maal', label: 'Status & Mål', icon: <Target size={16} /> },
   ];
 
   return (

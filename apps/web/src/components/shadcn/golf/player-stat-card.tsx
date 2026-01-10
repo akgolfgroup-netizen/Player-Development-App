@@ -14,6 +14,10 @@ interface PlayerStatCardProps {
   accentColor?: "primary" | "success" | "warning" | "error"
   size?: "sm" | "md" | "lg"
   className?: string
+  /** Optional abbreviated label for mobile screens */
+  mobileLabel?: string
+  /** Optional tooltip text for full label description */
+  tooltip?: string
 }
 
 const accentColors = {
@@ -66,17 +70,28 @@ export const PlayerStatCard: React.FC<PlayerStatCardProps> = ({
   accentColor = "primary",
   size = "md",
   className,
+  mobileLabel,
+  tooltip,
 }) => {
   const TrendIcon = trend ? trendIcons[trend] : null
   const sizeConfig = sizes[size]
+  const displayLabel = mobileLabel ? (
+    <>
+      <span className="hidden sm:inline">{label}</span>
+      <span className="sm:hidden">{mobileLabel}</span>
+    </>
+  ) : label;
 
   return (
     <Card className={cn("overflow-hidden", className)}>
       <CardContent className="p-4">
         <div className="flex items-start justify-between">
           <div className="space-y-1">
-            <p className={cn("font-medium text-text-secondary", sizeConfig.label)}>
-              {label}
+            <p
+              className={cn("font-medium text-text-secondary text-xs sm:text-sm", sizeConfig.label)}
+              title={tooltip || label}
+            >
+              {displayLabel}
             </p>
             <div className="flex items-baseline gap-1">
               <span className={cn("font-bold text-text-primary tabular-nums", sizeConfig.value)}>

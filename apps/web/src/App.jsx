@@ -85,6 +85,7 @@ const PeriodeplanerContainer = lazy(() => import('./features/periodeplaner/Perio
 const DagensTreningsplanContainer = lazy(() => import('./features/trening-plan/DagensTreningsplanContainer'));
 const UkensTreningsplanContainer = lazy(() => import('./features/trening-plan/UkensTreningsplanContainer'));
 const TekniskPlanContainer = lazy(() => import('./features/trening-plan/TekniskPlanContainer'));
+const TreningOversiktContainer = lazy(() => import('./features/trening-plan/TreningOversiktContainer'));
 const StatsOppdateringContainer = lazy(() => import('./features/stats-pages/StatsOppdateringContainer'));
 const TurneringsstatistikkContainer = lazy(() => import('./features/stats-pages/TurneringsstatistikkContainer'));
 const StatsVerktoyContainer = lazy(() => import('./features/stats-pages/StatsVerktoyContainer'));
@@ -497,11 +498,11 @@ function App() {
             </ProtectedRoute>
           } />
 
-          {/* Trening Hub (Green) */}
+          {/* Trening Hub (Green) - WOW Edition with animated stats, streak, heatmap */}
           <Route path="/trening" element={
             <ProtectedRoute>
               <PlayerLayout>
-                <TreningHub />
+                <TreningOversiktContainer />
               </PlayerLayout>
             </ProtectedRoute>
           } />

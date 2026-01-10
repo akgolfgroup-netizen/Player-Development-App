@@ -97,18 +97,39 @@ export class PlayerAnnualPlanService {
       throw new Error('End date must be after start date');
     }
 
+    // Calculate period totals
+    const periodTypeCounts = data.periods.reduce((acc, period) => {
+      const type = period.type;
+      if (!acc[type]) acc[type] = 0;
+      const weeks = Math.ceil((new Date(period.endDate).getTime() - new Date(period.startDate).getTime()) / (7 * 24 * 60 * 60 * 1000));
+      acc[type] += weeks;
+      return acc;
+    }, {} as Record<string, number>);
+
     // Create plan
     const plan = await this.prisma.annualTrainingPlan.create({
       data: {
         tenantId,
         playerId,
-        coachId: null, // Player-generated
-        name: data.name,
+        planName: data.name,
         startDate: start,
         endDate: end,
         periods: data.periods as any,
         status: 'active',
-        createdBy: 'player',
+        // Required baseline fields - use defaults for player-created plans
+        baselineAverageScore: 0,
+        playerCategory: 'B', // Default category
+        basePeriodWeeks: periodTypeCounts['G'] || 0,
+        specializationWeeks: periodTypeCounts['S'] || 0,
+        tournamentWeeks: periodTypeCounts['T'] || 0,
+        weeklyHoursTarget: 10, // Default 10 hours per week
+        intensityProfile: {
+          base: { volume: 'medium', intensity: 'medium' },
+          recovery: { volume: 'low', intensity: 'low' },
+          specialization: { volume: 'medium', intensity: 'high' },
+          tournament: { volume: 'medium', intensity: 'peak' },
+        },
+        generatedAt: new Date(),
       },
     });
 

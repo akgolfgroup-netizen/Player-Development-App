@@ -29,6 +29,7 @@ import {
   Zap,
 } from 'lucide-react';
 import { Button } from '../shadcn/button';
+import { StreakFlame } from '../gamification/StreakFlame';
 
 type FocusVariant = 'goal' | 'focus' | 'streak' | 'achievement';
 
@@ -230,6 +231,7 @@ interface WeeklyGoalCardProps {
   target: number;
   unit: string;
   href?: string;
+  showAction?: boolean;
 }
 
 export function WeeklyGoalCard({
@@ -238,6 +240,7 @@ export function WeeklyGoalCard({
   target,
   unit,
   href = '/plan/maal',
+  showAction = false,
 }: WeeklyGoalCardProps) {
   const progress = Math.round((current / target) * 100);
 
@@ -248,8 +251,8 @@ export function WeeklyGoalCard({
       subtitle="Ukentlig mål"
       progress={progress}
       progressLabel={`${current} / ${target} ${unit}`}
-      actionLabel="Se alle mål"
-      actionHref={href}
+      actionLabel={showAction ? 'Se alle mål' : undefined}
+      actionHref={showAction ? href : undefined}
     />
   );
 }
@@ -265,16 +268,27 @@ export function StreakCard({
   longestStreak,
   href = '/trening/dagbok',
 }: StreakCardProps) {
+  const target = longestStreak || days;
+  const progress = target > 0 ? Math.round((days / target) * 100) : 0;
+  const isActive = days > 0;
+
   return (
-    <FocusCard
-      variant="streak"
-      title="Treningsstreak"
-      subtitle={longestStreak ? `Rekord: ${longestStreak} dager` : undefined}
-      metric={days}
-      metricLabel="dager på rad"
-      actionLabel="Se treningshistorikk"
-      actionHref={href}
-    />
+    <div className="relative">
+      {/* Animated Flame */}
+      <div className="absolute -top-2 -right-2 z-10">
+        <StreakFlame isActive={isActive} size={32} />
+      </div>
+
+      <FocusCard
+        variant="streak"
+        title="Treningsstreak"
+        subtitle={longestStreak ? `Rekord: ${longestStreak} dager` : 'Dager på rad'}
+        progress={progress}
+        progressLabel={`${days} / ${target} dager`}
+        actionLabel="Se treningshistorikk"
+        actionHref={href}
+      />
+    </div>
   );
 }
 
@@ -355,7 +369,7 @@ export function FocusCardsGrid({ children, className }: FocusCardsGridProps) {
     <div
       className={cn(
         'grid gap-4',
-        'grid-cols-1 sm:grid-cols-2 lg:grid-cols-4',
+        'grid-cols-1 sm:grid-cols-2 lg:grid-cols-3',
         className
       )}
     >
