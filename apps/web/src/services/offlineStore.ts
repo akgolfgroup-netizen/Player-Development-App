@@ -1,5 +1,5 @@
 /**
- * TIER Golf Academy - Offline Store
+ * TIER Golf - Offline Store
  *
  * IndexedDB-basert lagring for offline-funksjonalitet.
  * Cacher API-data lokalt for offline tilgang.

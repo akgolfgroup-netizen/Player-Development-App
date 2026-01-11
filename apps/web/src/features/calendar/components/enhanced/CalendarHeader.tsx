@@ -18,6 +18,7 @@ import { Menu, MenuButton, MenuItem, MenuItems, Transition } from '@headlessui/r
 import { ChevronLeft, ChevronRight, ChevronDown, MoreHorizontal, Plus, HelpCircle } from 'lucide-react';
 import * as Tooltip from '@radix-ui/react-tooltip';
 import clsx from 'clsx';
+import { PageTitle } from '../../../../components/typography/Headings';
 
 export type CalendarView = 'day' | 'week' | 'month' | 'year';
 
@@ -75,9 +76,9 @@ export const CalendarHeader: React.FC<CalendarHeaderProps> = ({
       {/* Left: Title */}
       <div>
         <div className="flex items-center gap-2">
-          <h1 className="text-base font-semibold text-tier-navy">
+          <PageTitle style={{ marginBottom: 0 }}>
             <time>{title}</time>
-          </h1>
+          </PageTitle>
           {helpText && (
             <Tooltip.Provider delayDuration={200}>
               <Tooltip.Root>

@@ -10,6 +10,7 @@ import { useNavigate } from 'react-router-dom';
 import { useAuth } from '../../contexts/AuthContext';
 import apiClient from '../../services/apiClient';
 import { Card, CardContent, CardHeader, CardTitle, Button, Input, Select, SelectTrigger, SelectValue, SelectContent, SelectItem, Textarea, Badge } from '../../components/shadcn';
+import { PageTitle } from '../../ui/components/typography';
 import { User, Award, Building, Users, CheckCircle, X, Plus, Mail } from 'lucide-react';
 import { TIERGolfFullLogo } from '../../components/branding/TIERGolfFullLogo';
 
@@ -163,9 +164,9 @@ export default function CoachOnboardingPage() {
           <div className="flex justify-center mb-6">
             <TIERGolfFullLogo height={48} variant="dark" />
           </div>
-          <h1 className="text-2xl font-semibold text-tier-navy mb-2">
+          <PageTitle style={{ marginBottom: 0 }} className="text-2xl font-semibold text-tier-navy mb-2">
             Velkommen, Coach!
-          </h1>
+          </PageTitle>
           <p className="text-[16px] text-tier-text-secondary">
             Sett opp din trenerprofil for å komme i gang
           </p>

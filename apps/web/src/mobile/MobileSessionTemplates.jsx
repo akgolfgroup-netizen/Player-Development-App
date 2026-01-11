@@ -8,7 +8,7 @@
 
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { PageTitle } from '../components/typography';
+import { PageTitle, SubSectionTitle } from '../components/typography';
 import { Dumbbell, Target, Flag, Gamepad2, Trophy } from 'lucide-react';
 
 const PYRAMID_CONFIGS = {
@@ -150,9 +150,9 @@ export default function MobileSessionTemplates() {
 
                 {/* Content */}
                 <div className="flex-1 min-w-0">
-                  <h3 className="text-base font-semibold text-ak-text-primary mb-1">
+                  <SubSectionTitle className="text-base font-semibold text-ak-text-primary mb-1" style={{ marginBottom: 0 }}>
                     {template.title}
-                  </h3>
+                  </SubSectionTitle>
                   <p className="text-xs text-ak-text-secondary mb-2">
                     {template.description}
                   </p>

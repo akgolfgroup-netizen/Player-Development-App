@@ -1,5 +1,5 @@
 /**
- * TIER Golf Academy - Coach Notes
+ * TIER Golf - Coach Notes
  * Design System v3.0 - Premium Light
  *
  * Purpose:

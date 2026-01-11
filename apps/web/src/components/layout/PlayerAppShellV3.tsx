@@ -1,7 +1,7 @@
 /**
  * ============================================================
  * PlayerAppShellV3 - Fargekodet 5-område layout
- * TIER Golf Academy Design System v3.0
+ * TIER Golf Design System v3.0
  * ============================================================
  *
  * Responsiv layout med:

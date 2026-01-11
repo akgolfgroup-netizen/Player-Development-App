@@ -18,6 +18,7 @@ import Button from '../../ui/primitives/Button';
 import StateCard from '../../ui/composites/StateCard';
 import { track } from '../../analytics/track';
 import { PageHeader } from '../../ui/raw-blocks';
+import { SectionTitle, SubSectionTitle } from '../../components/typography/Headings';
 
 // ═══════════════════════════════════════════
 // TAILWIND CLASSES
@@ -169,9 +170,9 @@ export function ParentDashboard({ className = '', playerId, playerName }) {
       {/* Welcome Card */}
       {reports.length > 0 && (
         <div className={tw.welcomeCard}>
-          <h2 className={tw.welcomeTitle}>
+          <SectionTitle style={{ marginBottom: 0 }}>
             Velkommen til forelderportalen!
-          </h2>
+          </SectionTitle>
           <p className={tw.welcomeText}>
             Her kan du følge {playerName || 'spillerens'} fremgang, se detaljerte rapporter fra treneren,
             og holde deg oppdatert på mål og prestasjoner.
@@ -213,13 +214,13 @@ export function ParentDashboard({ className = '', playerId, playerName }) {
       {/* Reports Section */}
       <div className={tw.section}>
         <div className={tw.sectionHeader}>
-          <h2 className={tw.sectionTitle}>Alle rapporter</h2>
+          <SectionTitle style={{ marginBottom: 0 }}>Alle rapporter</SectionTitle>
         </div>
 
         {reports.length === 0 ? (
           <div className={tw.emptyState}>
             <div className={tw.emptyIcon}>[List]</div>
-            <h3 className={tw.emptyTitle}>Ingen rapporter ennå</h3>
+            <SubSectionTitle style={{ marginBottom: 0 }}>Ingen rapporter ennå</SubSectionTitle>
             <p className={tw.emptyDescription}>
               Treneren har ikke publisert noen fremdriftsrapporter ennå.
               Du vil motta e-post når en ny rapport er klar.
@@ -234,9 +235,9 @@ export function ParentDashboard({ className = '', playerId, playerName }) {
                 onClick={() => handleViewReport(report)}
               >
                 <div className={tw.reportHeader}>
-                  <h3 className={tw.reportTitle}>
+                  <SubSectionTitle style={{ marginBottom: 0 }}>
                     {report.title || `Rapport ${new Date(report.periodStart).toLocaleDateString('nb-NO')}`}
-                  </h3>
+                  </SubSectionTitle>
                   <span className={tw.reportDate}>
                     {new Date(report.publishedAt || report.createdAt).toLocaleDateString('nb-NO')}
                   </span>
@@ -260,7 +261,7 @@ export function ParentDashboard({ className = '', playerId, playerName }) {
 
       {/* Contact Coach Card */}
       <div className={tw.contactCoachCard}>
-        <h3 className={tw.contactTitle}>Har du spørsmål?</h3>
+        <SubSectionTitle style={{ marginBottom: 0 }}>Har du spørsmål?</SubSectionTitle>
         <p className={tw.contactText}>
           Kontakt treneren direkte for å diskutere {playerName || 'spillerens'} fremgang eller stille spørsmål.
         </p>

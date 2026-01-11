@@ -224,7 +224,7 @@ const IntroSection = () => {
 
       <Card className="mb-6 bg-tier-navy/10 border border-tier-navy/20">
         <p className="text-[15px] text-tier-navy m-0 leading-relaxed">
-          TIER Golf Academy bruker <strong>Team Norway Golf Testing Protocol</strong> for å måle alle aspekter
+          TIER Golf bruker <strong>Team Norway Golf Testing Protocol</strong> for å måle alle aspekter
           av golfspillet ditt. Basert på dine testresultater tilpasser vi treningsplanen automatisk til
           dine styrker og forbedringsområder.
         </p>

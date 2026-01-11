@@ -1,5 +1,5 @@
 /**
- * Accessibility utilities for TIER Golf Academy
+ * Accessibility utilities for TIER Golf
  * Provides helpers for keyboard navigation, ARIA labels, focus management, and screen reader support
  */
 

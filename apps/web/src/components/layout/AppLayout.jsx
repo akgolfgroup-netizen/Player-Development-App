@@ -1,5 +1,5 @@
 /**
- * TIER Golf Academy - Main Application Layout
+ * TIER Golf - Main Application Layout
  *
  * Uses Catalyst SidebarLayout with TIER Golf styling.
  * Provides consistent navigation and structure across the app.
@@ -119,7 +119,7 @@ export default function AppLayout({ children, userRole = 'player', user }) {
               />
               <div>
                 <p className="text-sm font-semibold text-ak-text-primary dark:text-ak-text-inverse">
-                  TIER Golf Academy
+                  TIER Golf
                 </p>
                 <p className="text-xs text-ak-text-muted">
                   {userRole === 'coach' ? 'Trener' : 'Spiller'}

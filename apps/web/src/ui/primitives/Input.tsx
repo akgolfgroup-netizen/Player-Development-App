@@ -1,5 +1,5 @@
 /**
- * TIER Golf Academy - Input Components
+ * TIER Golf - Input Components
  * Premium Light System: Stone × Midnight Blue × Emerald × Soft Gold
  *
  * NOW POWERED BY CATALYST UI

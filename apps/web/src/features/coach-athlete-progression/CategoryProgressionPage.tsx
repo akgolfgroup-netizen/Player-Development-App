@@ -1,5 +1,5 @@
 /**
- * TIER Golf Academy - Category Progression Page
+ * TIER Golf - Category Progression Page
  * Design System v3.0 - Premium Light
  *
  * Shows player's progression toward next category with detailed test requirements.

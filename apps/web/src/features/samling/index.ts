@@ -1,5 +1,5 @@
 /**
- * TIER Golf Academy - Samling (Training Camp) Feature
+ * TIER Golf - Samling (Training Camp) Feature
  * Export all samling components
  */
 

@@ -18,6 +18,7 @@ import { useAuth } from '../../contexts/AuthContext';
 import Card from '../../ui/primitives/Card';
 import Button from '../../ui/primitives/Button';
 import PageHeader from '../../components/layout/PageHeader';
+import { SubSectionTitle, SectionTitle } from '../../ui/components/typography';
 
 type TabId = 'methods' | 'invoices' | 'subscriptions' | 'packages';
 
@@ -130,7 +131,7 @@ const PaymentMethodsTab: React.FC<PaymentMethodsTabProps> = ({ playerId }) => {
         <Card>
           <div className="p-12 text-center">
             <CreditCard size={64} className="mx-auto text-tier-text-tertiary mb-4" />
-            <h3 className="text-xl font-bold text-tier-navy mb-2">Ingen betalingsmåter</h3>
+            <SubSectionTitle style={{ marginBottom: 0 }} className="text-xl font-bold text-tier-navy mb-2">Ingen betalingsmåter</SubSectionTitle>
             <p className="text-tier-text-secondary mb-6">Legg til en betalingsmåte for å komme i gang</p>
             <Button variant="primary" onClick={() => setShowAddModal(true)}>
               Legg til første betalingsmåte
@@ -147,11 +148,11 @@ const PaymentMethodsTab: React.FC<PaymentMethodsTabProps> = ({ playerId }) => {
                     <CreditCard size={24} className="text-tier-navy" />
                   </div>
                   <div>
-                    <h3 className="font-semibold text-tier-navy">
+                    <SubSectionTitle style={{ marginBottom: 0 }} className="font-semibold text-tier-navy">
                       {method.type === 'card' && `**** **** **** ${method.last4}`}
                       {method.type === 'vipps' && 'Vipps'}
                       {method.type === 'invoice' && 'Faktura'}
-                    </h3>
+                    </SubSectionTitle>
                     <p className="text-sm text-tier-text-secondary">
                       {method.brand && `${method.brand} • `}
                       Utløper {method.expiryMonth}/{method.expiryYear}
@@ -234,7 +235,7 @@ const InvoicesTab: React.FC = () => {
         <Card>
           <div className="p-12 text-center">
             <FileText size={64} className="mx-auto text-tier-text-tertiary mb-4" />
-            <h3 className="text-xl font-bold text-tier-navy mb-2">Ingen fakturaer</h3>
+            <SubSectionTitle style={{ marginBottom: 0 }} className="text-xl font-bold text-tier-navy mb-2">Ingen fakturaer</SubSectionTitle>
             <p className="text-tier-text-secondary">Du har ingen {status ? status.toLowerCase() : ''} fakturaer</p>
           </div>
         </Card>
@@ -245,9 +246,9 @@ const InvoicesTab: React.FC = () => {
               <div className="p-6">
                 <div className="flex items-start justify-between mb-4">
                   <div>
-                    <h3 className="text-lg font-semibold text-tier-navy mb-1">
+                    <SubSectionTitle style={{ marginBottom: 0 }} className="text-lg font-semibold text-tier-navy mb-1">
                       Faktura #{invoice.invoiceNumber}
-                    </h3>
+                    </SubSectionTitle>
                     <p className="text-sm text-tier-text-secondary">
                       {new Date(invoice.issueDate).toLocaleDateString('no-NO')}
                       {invoice.dueDate && ` • Forfaller ${new Date(invoice.dueDate).toLocaleDateString('no-NO')}`}
@@ -349,7 +350,7 @@ const SubscriptionsTab: React.FC = () => {
         <Card>
           <div className="p-12 text-center">
             <RefreshCcw size={64} className="mx-auto text-tier-text-tertiary mb-4" />
-            <h3 className="text-xl font-bold text-tier-navy mb-2">Ingen abonnementer</h3>
+            <SubSectionTitle style={{ marginBottom: 0 }} className="text-xl font-bold text-tier-navy mb-2">Ingen abonnementer</SubSectionTitle>
             <p className="text-tier-text-secondary">Du har ingen {status ? status.toLowerCase() : ''} abonnementer</p>
           </div>
         </Card>
@@ -360,7 +361,7 @@ const SubscriptionsTab: React.FC = () => {
               <div className="p-6">
                 <div className="flex items-start justify-between mb-4">
                   <div>
-                    <h3 className="text-lg font-semibold text-tier-navy mb-1">{sub.planName}</h3>
+                    <SubSectionTitle style={{ marginBottom: 0 }} className="text-lg font-semibold text-tier-navy mb-1">{sub.planName}</SubSectionTitle>
                     <p className="text-sm text-tier-text-secondary">
                       Startet {new Date(sub.startDate).toLocaleDateString('no-NO')}
                     </p>
@@ -415,7 +416,7 @@ const SessionPackagesTab: React.FC = () => {
     <Card>
       <div className="p-12 text-center">
         <Package size={64} className="mx-auto text-tier-text-tertiary mb-4" />
-        <h3 className="text-xl font-bold text-tier-navy mb-2">Time-pakker</h3>
+        <SubSectionTitle style={{ marginBottom: 0 }} className="text-xl font-bold text-tier-navy mb-2">Time-pakker</SubSectionTitle>
         <p className="text-tier-text-secondary mb-6">
           Kjøp pakker med treningstimer til redusert pris
         </p>
@@ -458,7 +459,7 @@ const AddPaymentMethodModal: React.FC<AddPaymentMethodModalProps> = ({ onClose, 
   return (
     <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center p-4 z-50">
       <div className="bg-white rounded-xl max-w-md w-full p-6">
-        <h2 className="text-xl font-bold text-tier-navy mb-4">Legg til betalingsmåte</h2>
+        <SectionTitle style={{ marginBottom: 0 }} className="text-xl font-bold text-tier-navy mb-4">Legg til betalingsmåte</SectionTitle>
         <form onSubmit={handleSubmit} className="space-y-4">
           <div>
             <label className="block text-sm font-medium text-tier-navy mb-2">Type</label>

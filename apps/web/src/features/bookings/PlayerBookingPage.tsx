@@ -1,5 +1,5 @@
 /**
- * Player Booking Page - TIER Golf Academy
+ * Player Booking Page - TIER Golf
  * Design System v3.0 - Premium Light
  *
  * Allows players to:
@@ -13,7 +13,7 @@ import { PageHeader } from '../../components/layout/PageHeader';
 import LoadingSpinner from '../../components/LoadingSpinner';
 import ErrorState from '../../components/ui/ErrorState';
 import Button from '../../ui/primitives/Button';
-import { SectionTitle } from '../../components/typography/Headings';
+import { SubSectionTitle } from '../../components/typography/Headings';
 import {
   Calendar,
   Clock,
@@ -132,9 +132,9 @@ const PlayerBookingPage: React.FC = () => {
         <div className="p-6">
           <div className="bg-white rounded-xl border border-tier-border-default p-8 text-center">
             <User size={48} className="text-tier-text-secondary mx-auto mb-4" />
-            <h3 className="text-lg font-semibold text-tier-navy mb-2">
+            <SubSectionTitle style={{ marginBottom: '0.5rem' }}>
               Ingen trenere funnet
-            </h3>
+            </SubSectionTitle>
             <p className="text-tier-text-secondary mb-4">
               Du må være tilknyttet en trener for å kunne bestille timer.
             </p>

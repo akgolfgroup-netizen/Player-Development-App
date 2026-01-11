@@ -57,7 +57,7 @@ function transformApiResponse(apiData) {
     startTime: session.time,
     endTime: calculateEndTime(session.time, session.duration),
     type: session.sessionType === 'training' ? 'training' : 'meeting',
-    location: session.meta?.split(' - ')[1] || 'TIER Golf Academy',
+    location: session.meta?.split(' - ')[1] || 'TIER Golf',
     sessionId: session.id,
   }));
 
@@ -66,7 +66,7 @@ function transformApiResponse(apiData) {
     id: session.id,
     title: session.title,
     time: session.time,
-    location: session.meta?.split(' - ')[1] || 'TIER Golf Academy',
+    location: session.meta?.split(' - ')[1] || 'TIER Golf',
     duration: session.duration,
     status: session.status,
   }));
@@ -137,7 +137,7 @@ function transformApiResponse(apiData) {
     player: {
       name: `${player.firstName} ${player.lastName}`,
       category: player.category,
-      profileImageUrl: player.profileImageUrl,
+      avatarUrl: player.profileImageUrl,
     },
     period,
     stats: trainingStats,
@@ -201,7 +201,7 @@ function getFallbackData() {
     nextTest: {
       title: 'Kategoritest Q1',
       date: '2026-01-20',
-      location: 'TIER Golf Academy',
+      location: 'TIER Golf',
     },
     tasks: [
       { id: 1, title: 'Gjennomgå video av swing', area: 'Teknikk', completed: true, priority: 'normal' },

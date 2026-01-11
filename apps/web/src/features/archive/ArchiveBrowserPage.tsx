@@ -15,6 +15,7 @@ import {
 import Card from '../../ui/primitives/Card';
 import Button from '../../ui/primitives/Button';
 import PageHeader from '../../components/layout/PageHeader';
+import { SectionTitle, SubSectionTitle } from '../../components/typography/Headings';
 
 const ENTITY_TYPES = [
   { value: '', label: 'Alle typer' },
@@ -182,7 +183,7 @@ const ArchiveBrowserPage: React.FC = () => {
           <Card>
             <div className="p-12 text-center">
               <Archive size={64} className="mx-auto text-tier-text-tertiary mb-4" />
-              <h3 className="text-xl font-bold text-tier-navy mb-2">Tomt arkiv</h3>
+              <SubSectionTitle style={{ marginBottom: '0.5rem' }}>Tomt arkiv</SubSectionTitle>
               <p className="text-tier-text-secondary">
                 {selectedType
                   ? `Ingen arkiverte ${ENTITY_TYPES.find((t) => t.value === selectedType)?.label.toLowerCase()}`
@@ -206,9 +207,9 @@ const ArchiveBrowserPage: React.FC = () => {
                     <div className="flex-1">
                       <div className="flex items-start justify-between mb-2">
                         <div>
-                          <h3 className="text-lg font-semibold text-tier-navy mb-1">
+                          <SubSectionTitle style={{ marginBottom: '0.25rem' }}>
                             {item.entityName || item.entityId}
-                          </h3>
+                          </SubSectionTitle>
                           <div className="flex items-center gap-3 text-sm text-tier-text-secondary">
                             <span className="px-2 py-1 bg-tier-surface-base rounded text-tier-navy font-medium">
                               {ENTITY_TYPES.find((t) => t.value === item.entityType)?.label || item.entityType}
@@ -268,7 +269,7 @@ const ArchiveBrowserPage: React.FC = () => {
         {showDeleteModal && (
           <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center p-4 z-50">
             <div className="bg-white rounded-xl max-w-md w-full p-6">
-              <h2 className="text-xl font-bold text-tier-navy mb-4">Bekreft sletting</h2>
+              <SectionTitle style={{ marginBottom: '1rem' }}>Bekreft sletting</SectionTitle>
               <p className="text-tier-text-secondary mb-6">
                 Er du sikker på at du vil slette dette elementet permanent? Dette kan ikke angres.
               </p>

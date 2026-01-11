@@ -14,6 +14,7 @@ import React, { useState, useEffect, useCallback } from 'react';
 import { useTournamentPrep } from '../../hooks/useTournamentPrep';
 import Button from '../../ui/primitives/Button';
 import { track } from '../../analytics/track';
+import { SectionTitle } from '../../components/typography';
 
 // ═══════════════════════════════════════════
 // TAILWIND CLASSES
@@ -162,9 +163,9 @@ export function TournamentPrepForm({
     <div className={`${tw.container} ${className}`}>
       {/* Header */}
       <div className={tw.header}>
-        <h2 className={tw.title}>
+        <SectionTitle style={{ marginBottom: 0 }}>
           {preparation?.id ? 'Rediger Forberedelse' : 'Ny Turneringsforberedelse'}
-        </h2>
+        </SectionTitle>
       </div>
 
       {/* Error Message */}

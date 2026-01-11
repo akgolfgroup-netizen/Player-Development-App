@@ -21,6 +21,7 @@ import {
   getSGSemantic,
 } from '../../utils/sgFormatting';
 import { TrendingUp, Percent, Users, Target, Flag, Circle, Crosshair } from 'lucide-react';
+import { PageTitle, SubSectionTitle, CardTitle } from '../../components/typography';
 
 // Mock data for demonstration
 const mockData = {
@@ -63,9 +64,9 @@ export default function StrokesGainedDemo() {
       <div className="max-w-6xl mx-auto space-y-8">
         {/* Page Header */}
         <div className="space-y-2">
-          <h1 className="text-3xl font-bold text-[rgb(var(--text-primary))]">
+          <PageTitle style={{ marginBottom: 0 }}>
             Strokes Gained Analytics
-          </h1>
+          </PageTitle>
           <p className="text-[rgb(var(--text-secondary))]">
             Pro Dashboard Demo - Enterprise-grade analytics UI
           </p>
@@ -135,9 +136,9 @@ export default function StrokesGainedDemo() {
 
         {/* Recent Tests */}
         <section className="space-y-3">
-          <h3 className="text-sm font-semibold text-[rgb(var(--text-secondary))] uppercase tracking-wide">
+          <SubSectionTitle style={{ marginBottom: 0 }}>
             Nylige Tester
-          </h3>
+          </SubSectionTitle>
           <div className="space-y-2">
             {mockData.recentTests.map((test, index) => (
               <div
@@ -169,12 +170,12 @@ export default function StrokesGainedDemo() {
 
         {/* Design Notes */}
         <section className="mt-12 p-6 bg-[rgb(var(--surface-secondary))] rounded-lg border border-[rgb(var(--gray-200))]">
-          <h3 className="text-lg font-semibold text-[rgb(var(--text-primary))] mb-4">
+          <SubSectionTitle style={{ marginBottom: '1rem' }}>
             Design System Notes
-          </h3>
+          </SubSectionTitle>
           <div className="grid md:grid-cols-3 gap-6 text-sm text-[rgb(var(--text-secondary))]">
             <div>
-              <h4 className="font-medium text-[rgb(var(--text-primary))] mb-2">Hierarchy</h4>
+              <CardTitle style={{ marginBottom: '0.5rem' }}>Hierarchy</CardTitle>
               <ul className="space-y-1">
                 <li>• Primary KPI: 56px value</li>
                 <li>• Secondary: 28px value</li>
@@ -182,7 +183,7 @@ export default function StrokesGainedDemo() {
               </ul>
             </div>
             <div>
-              <h4 className="font-medium text-[rgb(var(--text-primary))] mb-2">Semantic Colors</h4>
+              <CardTitle style={{ marginBottom: '0.5rem' }}>Semantic Colors</CardTitle>
               <ul className="space-y-1">
                 <li className="text-[var(--semantic-positive-text,#047857)]">• Positive: Green</li>
                 <li className="text-[var(--semantic-negative-text,#b91c1c)]">• Negative: Red</li>
@@ -190,7 +191,7 @@ export default function StrokesGainedDemo() {
               </ul>
             </div>
             <div>
-              <h4 className="font-medium text-[rgb(var(--text-primary))] mb-2">Pro Tokens</h4>
+              <CardTitle style={{ marginBottom: '0.5rem' }}>Pro Tokens</CardTitle>
               <ul className="space-y-1">
                 <li>• Reduced radius (4-8px)</li>
                 <li>• Border emphasis</li>

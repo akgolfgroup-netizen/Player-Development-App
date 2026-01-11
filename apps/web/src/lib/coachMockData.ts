@@ -165,7 +165,7 @@ export function getCoachGreeting(): string {
 // ============================================================
 
 const rawAthletes: Omit<Athlete, 'displayName'>[] = [
-  // Real players from TIER Golf Academy - All Oslo GK, WANG Toppidrett Oslo, Team Norway Junior
+  // Real players from TIER Golf - All Oslo GK, WANG Toppidrett Oslo, Team Norway Junior
   { id: '1', firstName: 'Anders', lastName: 'Kristiansen', email: 'anders.kristiansen@demo.com', hcp: 2.1, category: 'A', lastActivityAt: '2026-01-03T10:30:00Z', injuryStatus: 'ready', hasPlan: true },
   { id: '2', firstName: 'Caroline', lastName: 'Diethelm', email: 'caroline.diethelm@demo.com', hcp: 3.2, category: 'A', lastActivityAt: '2026-01-03T09:00:00Z', injuryStatus: 'ready', hasPlan: true },
   { id: '3', firstName: 'Carl Johan', lastName: 'Gustavsson', email: 'carl.gustavsson@demo.com', hcp: 8.5, category: 'C', lastActivityAt: '2026-01-02T14:00:00Z', injuryStatus: 'ready', hasPlan: true },

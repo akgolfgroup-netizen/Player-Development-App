@@ -12,6 +12,7 @@ import { cn } from 'lib/utils';
 import { Card, CardContent } from '../../../components/shadcn/card';
 import { Progress } from '../../../components/shadcn/progress';
 import { StreakFlame } from '../../../components/shared/StreakFlame';
+import { SubSectionTitle } from '../../../components/typography';
 
 export interface StreakCounterProps {
   /** Current active streak count (consecutive days) */
@@ -74,9 +75,9 @@ export function StreakCounter({
           <div className="flex items-start justify-between">
             <div className="flex-1">
               <div className="flex items-center gap-2 mb-1">
-                <h3 className="text-sm font-medium text-text-secondary">
+                <SubSectionTitle style={{ marginBottom: 0 }} className="text-sm font-medium text-text-secondary">
                   Målstreek
-                </h3>
+                </SubSectionTitle>
                 {isFrozen && (
                   <Snowflake className="h-3.5 w-3.5 text-blue-400 animate-pulse" />
                 )}

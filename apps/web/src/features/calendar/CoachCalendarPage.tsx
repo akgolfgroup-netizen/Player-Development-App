@@ -36,6 +36,7 @@ import {
   type CalendarEvent,
 } from './components/enhanced';
 import { CalendarColorLegend } from './components/CalendarColorLegend';
+import { SubSectionTitle, SectionTitle } from '../../components/typography/Headings';
 
 // ============================================================================
 // TYPES
@@ -168,7 +169,7 @@ function generateMockSessions(rangeStart: Date, rangeEnd: Date): CoachSession[] 
           status: status as 'planned' | 'completed',
           category: 'coach',
           color: color as 'blue' | 'green',
-          location: 'TIER Golf Academy',
+          location: 'TIER Golf',
           playerId: player.id,
           playerName: player.name,
           playerInitials: player.initials,
@@ -344,7 +345,7 @@ export default function CoachCalendarPage() {
           status: 'planned',
           category: 'coach',
           color: 'blue',
-          location: 'TIER Golf Academy',
+          location: 'TIER Golf',
           playerId: request.playerId,
           playerName: request.playerName,
           playerInitials: request.playerInitials,
@@ -461,7 +462,7 @@ export default function CoachCalendarPage() {
           <div className="flex-1 overflow-y-auto">
             <div className="p-4">
               <div className="flex items-center justify-between mb-3">
-                <h3 className="text-sm font-semibold text-tier-navy flex items-center gap-2">
+                <SubSectionTitle style={{ marginBottom: 0 }} className="flex items-center gap-2">
                   <Bell className="h-4 w-4" />
                   Booking-forespørsler
                   {bookingRequests.length > 0 && (
@@ -469,7 +470,7 @@ export default function CoachCalendarPage() {
                       {bookingRequests.length}
                     </span>
                   )}
-                </h3>
+                </SubSectionTitle>
                 <button
                   onClick={() => navigate('/coach/booking/requests')}
                   className="text-xs text-tier-navy hover:text-tier-navy/80"
@@ -541,9 +542,9 @@ export default function CoachCalendarPage() {
 
             {/* Today's Sessions */}
             <div className="p-4 border-t border-tier-border-default">
-              <h3 className="text-sm font-semibold text-tier-navy mb-3">
+              <SubSectionTitle style={{ marginBottom: '0.75rem' }}>
                 I dag ({todaysSessions.length} økter)
-              </h3>
+              </SubSectionTitle>
               {todaysSessions.length === 0 ? (
                 <p className="text-sm text-tier-text-tertiary text-center py-2">
                   Ingen økter i dag
@@ -573,9 +574,9 @@ export default function CoachCalendarPage() {
 
             {/* Quick Actions */}
             <div className="p-4 border-t border-tier-border-default">
-              <h3 className="text-sm font-semibold text-tier-navy mb-3">
+              <SubSectionTitle style={{ marginBottom: '0.75rem' }}>
                 Hurtigvalg
-              </h3>
+              </SubSectionTitle>
               <div className="space-y-2">
                 <button
                   onClick={() => navigate('/coach/booking/settings')}
@@ -598,9 +599,9 @@ export default function CoachCalendarPage() {
 
             {/* Color Legend */}
             <div className="p-4 border-t border-tier-border-default">
-              <h3 className="text-sm font-semibold text-tier-navy mb-3">
+              <SubSectionTitle style={{ marginBottom: '0.75rem' }}>
                 Fargekoder
-              </h3>
+              </SubSectionTitle>
               <CalendarColorLegend orientation="vertical" variant="status" />
             </div>
           </div>
@@ -647,9 +648,9 @@ export default function CoachCalendarPage() {
             {view === 'day' && (
               <div className="h-full p-6 overflow-y-auto">
                 <div className="max-w-3xl mx-auto">
-                  <h2 className="text-lg font-semibold text-tier-navy mb-4">
+                  <SectionTitle style={{ marginBottom: '1rem' }}>
                     Økter for {currentDate.toLocaleDateString('nb-NO', { weekday: 'long', day: 'numeric', month: 'long' })}
-                  </h2>
+                  </SectionTitle>
                   {sessions.filter((s) => s.date === formatDateKey(currentDate)).length === 0 ? (
                     <div className="text-center py-12 text-tier-text-tertiary">
                       <CalendarIcon className="h-12 w-12 mx-auto mb-3 opacity-50" />
@@ -721,9 +722,9 @@ export default function CoachCalendarPage() {
                         }}
                         className="p-4 rounded-xl bg-tier-white border border-tier-border-default hover:border-tier-navy/50 text-left transition-colors"
                       >
-                        <h3 className="text-sm font-semibold text-tier-navy capitalize">
+                        <SubSectionTitle style={{ marginBottom: 0, textTransform: 'capitalize' }}>
                           {monthName}
-                        </h3>
+                        </SubSectionTitle>
                         <p className="text-2xl font-bold text-tier-navy mt-1">
                           {monthSessions.length}
                         </p>
@@ -756,9 +757,9 @@ export default function CoachCalendarPage() {
                     {selectedSession.playerInitials}
                   </div>
                   <div>
-                    <h2 className="text-lg font-semibold text-tier-navy">
+                    <SectionTitle style={{ marginBottom: 0 }}>
                       {selectedSession.playerName}
-                    </h2>
+                    </SectionTitle>
                     <p className="text-sm text-tier-text-secondary">
                       {selectedSession.sessionType}
                     </p>

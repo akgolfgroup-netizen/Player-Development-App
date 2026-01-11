@@ -11,6 +11,7 @@
  */
 
 import React from 'react';
+import { SectionTitle, SubSectionTitle } from '../../components/typography';
 
 // ═══════════════════════════════════════════
 // TAILWIND CLASSES
@@ -70,7 +71,7 @@ export function ShotAnalysisView({ className = '', shot, playerAverages = null, 
       {/* Header */}
       <div className={tw.header}>
         <div>
-          <h2 className={tw.title}>Slag Analyse</h2>
+          <SectionTitle style={{ marginBottom: 0 }}>Slag Analyse</SectionTitle>
           <p className={tw.shotNumber}>
             Slag #{shot.shotNumber || 'N/A'}
           </p>
@@ -89,7 +90,7 @@ export function ShotAnalysisView({ className = '', shot, playerAverages = null, 
       <div className={tw.mainCard}>
         {/* Club Info */}
         <div className={tw.clubInfo}>
-          <h3 className={tw.clubName}>{shot.club || 'Ukjent kølle'}</h3>
+          <SubSectionTitle style={{ marginBottom: 0, fontSize: '1.5rem', fontWeight: 700 }}>{shot.club || 'Ukjent kølle'}</SubSectionTitle>
           <span className={tw.shotType}>{shot.shotType || 'Standard'}</span>
         </div>
 
@@ -194,7 +195,7 @@ export function ShotAnalysisView({ className = '', shot, playerAverages = null, 
 
         {/* Trajectory Visualization (Placeholder) */}
         <div className={tw.trajectorySection}>
-          <h3 className={tw.sectionTitle}>Bane Visualisering</h3>
+          <SubSectionTitle style={{ marginBottom: '12px' }}>Bane Visualisering</SubSectionTitle>
           <div className={tw.trajectoryPlaceholder}>
             Stats Bane-diagram kommer snart
           </div>
@@ -203,7 +204,7 @@ export function ShotAnalysisView({ className = '', shot, playerAverages = null, 
         {/* Notes */}
         {shot.notes && (
           <div className={tw.notesSection}>
-            <h3 className={tw.sectionTitle}>Notater</h3>
+            <SubSectionTitle style={{ marginBottom: '12px' }}>Notater</SubSectionTitle>
             <p className={tw.notesText}>{shot.notes}</p>
           </div>
         )}

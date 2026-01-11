@@ -1,5 +1,5 @@
 /**
- * TIER Golf Academy - Periodeplaner Container
+ * TIER Golf - Periodeplaner Container
  * Design System v3.0 - Premium Light
  *
  * Season planning with period cards and week overview.

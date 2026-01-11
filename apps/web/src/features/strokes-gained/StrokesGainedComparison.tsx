@@ -9,6 +9,7 @@ import { BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContaine
 import { useStrokesGainedBreakdown, useStrokesGainedPeerComparison } from '../../hooks/useStrokesGained';
 import { PageHeader } from '../../components/layout/PageHeader';
 import LoadingSpinner from '../../components/LoadingSpinner';
+import { SubSectionTitle } from '../../components/typography';
 
 interface Props {
   playerId: string;
@@ -41,7 +42,7 @@ const StrokesGainedComparison: React.FC<Props> = ({ playerId, className = '' }) 
     return (
       <div className="bg-white rounded-xl border border-tier-border-default p-8 text-center">
         <div className="text-tier-error text-4xl mb-4">⚠️</div>
-        <h3 className="text-lg font-semibold text-tier-navy mb-2">Kunne ikke laste sammenligning</h3>
+        <SubSectionTitle style={{ marginBottom: 0 }}>Kunne ikke laste sammenligning</SubSectionTitle>
         <p className="text-tier-text-secondary">{error}</p>
       </div>
     );
@@ -97,7 +98,7 @@ const StrokesGainedComparison: React.FC<Props> = ({ playerId, className = '' }) 
               <SelectedIcon size={24} />
             </div>
             <div className="flex-1">
-              <h3 className="text-lg font-semibold text-tier-navy mb-2">Din posisjon</h3>
+              <SubSectionTitle style={{ marginBottom: 0 }}>Din posisjon</SubSectionTitle>
               <p className="text-tier-text-secondary mb-4">
                 Du er i <span className="font-bold text-tier-navy">{percentile}. persentil</span> blant spillere på ditt nivå
               </p>
@@ -198,7 +199,7 @@ const StrokesGainedComparison: React.FC<Props> = ({ playerId, className = '' }) 
 
       {/* Insights */}
       <div className="p-6 border-t border-tier-border-default">
-        <h3 className="text-lg font-semibold text-tier-navy mb-4">💡 Innsikt</h3>
+        <SubSectionTitle style={{ marginBottom: '1rem' }}>💡 Innsikt</SubSectionTitle>
         <div className="space-y-3">
           {categories
             .sort((a, b) => (a.player - a.benchmark) - (b.player - b.benchmark))

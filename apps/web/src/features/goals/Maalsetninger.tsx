@@ -434,12 +434,12 @@ const GoalModal: React.FC<GoalModalProps> = ({
 
   return (
     <Dialog open={open} onOpenChange={onOpenChange}>
-      <DialogContent className="max-w-2xl max-h-[90vh] overflow-y-auto">
+      <DialogContent size="2xl">
         <DialogHeader>
           <DialogTitle>{goal ? 'Rediger mål' : 'Nytt mål'}</DialogTitle>
         </DialogHeader>
 
-        <div className="space-y-4 py-4">
+        <div className="space-y-4 py-4 max-h-[60vh] overflow-y-auto">
           {/* Title */}
           <div className="space-y-2">
             <Label htmlFor="title">Måltittel *</Label>

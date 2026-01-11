@@ -1,5 +1,5 @@
 /**
- * TIER Golf Academy - Kalibrerings Container
+ * TIER Golf - Kalibrerings Container
  * Design System v3.0 - Premium Light
  *
  * Calibration settings for player metrics and club distances.

@@ -14,6 +14,7 @@ import React, { useState, useCallback } from 'react';
 import { useSessionPackages } from '../../hooks/useSessionPackages';
 import Button from '../../ui/primitives/Button';
 import StateCard from '../../ui/composites/StateCard';
+import { SectionTitle, SubSectionTitle } from '../../ui/components/typography';
 import { track } from '../../analytics/track';
 
 // ═══════════════════════════════════════════
@@ -215,7 +216,7 @@ export function SessionPackages({ className = '' }) {
         {/* Owned Packages */}
         {ownedPackages.length > 0 && (
           <div className={tw.section}>
-            <h2 className={tw.sectionTitle}>My Session Packages</h2>
+            <SectionTitle style={{ marginBottom: 0 }} className={tw.sectionTitle}>My Session Packages</SectionTitle>
 
             <div className={tw.ownedPackagesList}>
               {ownedPackages.map((pkg) => {
@@ -259,7 +260,7 @@ export function SessionPackages({ className = '' }) {
 
         {/* Available Packages */}
         <div className={tw.section}>
-          <h2 className={tw.sectionTitle}>Purchase Session Package</h2>
+          <SectionTitle style={{ marginBottom: 0 }} className={tw.sectionTitle}>Purchase Session Package</SectionTitle>
 
           <div className={tw.packagesGrid}>
             {AVAILABLE_PACKAGES.map((pkg) => (
@@ -301,7 +302,7 @@ export function SessionPackages({ className = '' }) {
       {showConfirmModal && selectedPackage && (
         <div className={tw.modal} onClick={() => setShowConfirmModal(false)}>
           <div className={tw.modalCard} onClick={(e) => e.stopPropagation()}>
-            <h3 className={tw.modalTitle}>Confirm Purchase</h3>
+            <SubSectionTitle style={{ marginBottom: 0 }} className={tw.modalTitle}>Confirm Purchase</SubSectionTitle>
 
             <div>
               <p className="text-sm text-[var(--text-inverse)] mb-2">

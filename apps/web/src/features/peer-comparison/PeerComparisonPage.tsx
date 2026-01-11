@@ -6,6 +6,7 @@
 import React, { useState, useEffect } from 'react';
 import { Users, Filter, TrendingUp, TrendingDown } from 'lucide-react';
 import { PageHeader } from '../../components/layout/PageHeader';
+import { SubSectionTitle } from '../../components/typography';
 import usePeerComparison from '../../hooks/usePeerComparison';
 import { useAuth } from '../../contexts/AuthContext';
 import Button from '../../ui/primitives/Button';
@@ -148,10 +149,10 @@ const PeerComparisonPage: React.FC = () => {
         {/* Filters Panel */}
         <div className="bg-white rounded-xl border border-tier-border-default p-6 mb-6">
           <div className="flex items-center justify-between mb-4">
-            <h3 className="text-lg font-semibold text-tier-navy flex items-center gap-2">
+            <SubSectionTitle style={{ marginBottom: 0 }} className="flex items-center gap-2">
               <Filter size={20} />
               Filtrer peer gruppe
-            </h3>
+            </SubSectionTitle>
             <Button variant="secondary" onClick={() => setShowFilters(!showFilters)}>
               {showFilters ? 'Skjul' : 'Vis'} filtre
             </Button>
@@ -244,7 +245,7 @@ const PeerComparisonPage: React.FC = () => {
           <div className="space-y-6">
             {/* Stats Comparison Grid */}
             <div>
-              <h3 className="text-lg font-semibold text-tier-navy mb-4">Test {testNumber} - Sammenligning</h3>
+              <SubSectionTitle>Test {testNumber} - Sammenligning</SubSectionTitle>
               <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
                 {comparison.playerStats && comparison.peerStats && (
                   <>
@@ -279,7 +280,7 @@ const PeerComparisonPage: React.FC = () => {
 
             {/* Peer Group List */}
             <div>
-              <h3 className="text-lg font-semibold text-tier-navy mb-4">Peer gruppe ({peers.length})</h3>
+              <SubSectionTitle>Peer gruppe ({peers.length})</SubSectionTitle>
               <div className="bg-white rounded-xl border border-tier-border-default overflow-hidden">
                 <table className="min-w-full divide-y divide-tier-border-default">
                   <thead className="bg-tier-surface-base">
@@ -331,7 +332,7 @@ const PeerComparisonPage: React.FC = () => {
         {!loading && !error && !comparison && (
           <div className="bg-white rounded-xl border border-tier-border-default p-12 text-center">
             <div className="text-6xl mb-4">👥</div>
-            <h3 className="text-lg font-semibold text-tier-navy mb-2">Ingen sammenligningsdata</h3>
+            <SubSectionTitle style={{ marginBottom: '0.5rem' }}>Ingen sammenligningsdata</SubSectionTitle>
             <p className="text-tier-text-secondary">
               Juster filtrene eller vent på flere testresultater
             </p>

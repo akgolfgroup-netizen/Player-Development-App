@@ -1,5 +1,5 @@
 /**
- * TIER Golf Academy - Coach Availability Widget
+ * TIER Golf - Coach Availability Widget
  * Design System v3.0 - Premium Light
  *
  * Compact widget showing coach's current week availability.
@@ -19,6 +19,7 @@ import {
 import { coachesAPI } from '../../services/api';
 import { useAuth } from '../../contexts/AuthContext';
 import Button from '../../ui/primitives/Button';
+import { SubSectionTitle } from '../../ui/primitives/typography';
 
 // Types for availability
 interface AvailabilitySlot {
@@ -239,9 +240,9 @@ export const CoachAvailabilityWidget: React.FC<CoachAvailabilityWidgetProps> = (
       <div className="flex items-center justify-between mb-4">
         <div className="flex items-center gap-2">
           <Calendar size={20} className="text-tier-navy" />
-          <h3 className="text-base font-semibold text-tier-navy">
+          <SubSectionTitle className="text-base font-semibold text-tier-navy" style={{ marginBottom: 0 }}>
             Ukens tilgjengelighet
-          </h3>
+          </SubSectionTitle>
         </div>
         <Button variant="ghost" size="sm" onClick={handleSettingsClick}>
           <Settings size={16} />

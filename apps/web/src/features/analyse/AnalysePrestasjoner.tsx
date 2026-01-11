@@ -13,6 +13,7 @@
 import React, { useState, useEffect } from 'react';
 import { useSearchParams } from 'react-router-dom';
 import { PageHeader } from '../../components/layout/PageHeader';
+import { SubSectionTitle, CardTitle } from '../../components/typography/Headings';
 
 // Tab type
 type PrestasjonsTab = 'badges' | 'achievements';
@@ -45,11 +46,11 @@ function BadgesTab() {
 
       {/* Badge Categories */}
       <div className="bg-white rounded-xl border border-tier-border-default p-6">
-        <h3 className="text-lg font-semibold text-tier-navy mb-4">Kategori-merker</h3>
+        <SubSectionTitle style={{ marginBottom: 0 }} className="text-lg font-semibold text-tier-navy mb-4">Kategori-merker</SubSectionTitle>
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
           {/* Putting Badges */}
           <div className="p-4 border border-tier-border-default rounded-lg">
-            <h4 className="text-sm font-semibold text-tier-navy mb-3">Putting</h4>
+            <CardTitle style={{ marginBottom: 0 }} className="text-sm font-semibold text-tier-navy mb-3">Putting</CardTitle>
             <div className="space-y-2">
               <div className="flex items-center gap-3 p-2 bg-tier-success-light rounded-lg">
                 <span className="text-2xl">[Gold]</span>
@@ -79,7 +80,7 @@ function BadgesTab() {
 
           {/* Chipping Badges */}
           <div className="p-4 border border-tier-border-default rounded-lg">
-            <h4 className="text-sm font-semibold text-tier-navy mb-3">Chipping</h4>
+            <CardTitle style={{ marginBottom: 0 }} className="text-sm font-semibold text-tier-navy mb-3">Chipping</CardTitle>
             <div className="space-y-2">
               <div className="flex items-center gap-3 p-2 bg-tier-surface-base rounded-lg opacity-50">
                 <span className="text-2xl grayscale">[Gold]</span>
@@ -109,7 +110,7 @@ function BadgesTab() {
 
           {/* Pitching Badges */}
           <div className="p-4 border border-tier-border-default rounded-lg">
-            <h4 className="text-sm font-semibold text-tier-navy mb-3">Pitching</h4>
+            <CardTitle style={{ marginBottom: 0 }} className="text-sm font-semibold text-tier-navy mb-3">Pitching</CardTitle>
             <div className="space-y-2">
               <div className="flex items-center gap-3 p-2 bg-tier-surface-base rounded-lg opacity-50">
                 <span className="text-2xl grayscale">[Gold]</span>
@@ -141,7 +142,7 @@ function BadgesTab() {
 
       {/* Recently Earned */}
       <div className="bg-white rounded-xl border border-tier-border-default p-6">
-        <h3 className="text-lg font-semibold text-tier-navy mb-4">Nylig opptjent</h3>
+        <SubSectionTitle style={{ marginBottom: 0 }} className="text-lg font-semibold text-tier-navy mb-4">Nylig opptjent</SubSectionTitle>
         <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
           <div className="flex items-center gap-4 p-4 bg-tier-success-light border border-tier-success rounded-lg">
             <span className="text-4xl">[Gold]</span>
@@ -165,7 +166,7 @@ function BadgesTab() {
 
       {/* Progress Towards Next Badges */}
       <div className="bg-white rounded-xl border border-tier-border-default p-6">
-        <h3 className="text-lg font-semibold text-tier-navy mb-4">Fremgang mot neste merker</h3>
+        <SubSectionTitle style={{ marginBottom: 0 }} className="text-lg font-semibold text-tier-navy mb-4">Fremgang mot neste merker</SubSectionTitle>
         <div className="space-y-4">
           <div>
             <div className="flex items-center justify-between mb-2">
@@ -227,11 +228,11 @@ function AchievementsTab() {
 
       {/* Achievement Categories */}
       <div className="bg-white rounded-xl border border-tier-border-default p-6">
-        <h3 className="text-lg font-semibold text-tier-navy mb-4">Achievement kategorier</h3>
+        <SubSectionTitle style={{ marginBottom: 0 }} className="text-lg font-semibold text-tier-navy mb-4">Achievement kategorier</SubSectionTitle>
         <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
           {/* Skill Achievements */}
           <div>
-            <h4 className="text-md font-semibold text-tier-navy mb-3">Ferdigheter</h4>
+            <CardTitle style={{ marginBottom: 0 }} className="text-md font-semibold text-tier-navy mb-3">Ferdigheter</CardTitle>
             <div className="space-y-3">
               <div className="flex items-center gap-4 p-3 bg-tier-success-light border border-tier-success rounded-lg">
                 <span className="text-3xl">[Target]</span>
@@ -264,7 +265,7 @@ function AchievementsTab() {
 
           {/* Progress Achievements */}
           <div>
-            <h4 className="text-md font-semibold text-tier-navy mb-3">Fremgang</h4>
+            <CardTitle style={{ marginBottom: 0 }} className="text-md font-semibold text-tier-navy mb-3">Fremgang</CardTitle>
             <div className="space-y-3">
               <div className="flex items-center gap-4 p-3 bg-tier-success-light border border-tier-success rounded-lg">
                 <span className="text-3xl">[Rocket]</span>
@@ -297,7 +298,7 @@ function AchievementsTab() {
 
           {/* Competition Achievements */}
           <div>
-            <h4 className="text-md font-semibold text-tier-navy mb-3">Konkurranser</h4>
+            <CardTitle style={{ marginBottom: 0 }} className="text-md font-semibold text-tier-navy mb-3">Konkurranser</CardTitle>
             <div className="space-y-3">
               <div className="flex items-center gap-4 p-3 bg-tier-success-light border border-tier-success rounded-lg">
                 <span className="text-3xl">[Trophy]</span>
@@ -330,7 +331,7 @@ function AchievementsTab() {
 
           {/* Social Achievements */}
           <div>
-            <h4 className="text-md font-semibold text-tier-navy mb-3">Sosialt</h4>
+            <CardTitle style={{ marginBottom: 0 }} className="text-md font-semibold text-tier-navy mb-3">Sosialt</CardTitle>
             <div className="space-y-3">
               <div className="flex items-center gap-4 p-3 bg-tier-success-light border border-tier-success rounded-lg">
                 <span className="text-3xl">[Handshake]</span>
@@ -356,7 +357,7 @@ function AchievementsTab() {
 
       {/* Recent Achievements */}
       <div className="bg-white rounded-xl border border-tier-border-default p-6">
-        <h3 className="text-lg font-semibold text-tier-navy mb-4">Nylig låst opp</h3>
+        <SubSectionTitle style={{ marginBottom: 0 }} className="text-lg font-semibold text-tier-navy mb-4">Nylig låst opp</SubSectionTitle>
         <div className="space-y-3">
           <div className="flex items-center gap-4 p-4 bg-tier-success-light border border-tier-success rounded-lg">
             <span className="text-4xl">[Target]</span>

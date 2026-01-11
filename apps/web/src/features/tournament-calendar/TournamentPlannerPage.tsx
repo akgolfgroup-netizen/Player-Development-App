@@ -1,5 +1,5 @@
 /**
- * TIER Golf Academy - Tournament Planner Page (PLANLEGGER)
+ * TIER Golf - Tournament Planner Page (PLANLEGGER)
  *
  * Subsection "MIN TURNERINGSPLAN" for planning tournament participation.
  * Allows players to plan their tournament season with coach guidance.

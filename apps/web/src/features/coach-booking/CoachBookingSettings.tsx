@@ -1,5 +1,5 @@
 /**
- * TIER Golf Academy - Coach Booking Settings
+ * TIER Golf - Coach Booking Settings
  * Design System v3.0 - Premium Light
  *
  * MIGRATED TO PAGE ARCHITECTURE - Zero inline styles

@@ -1,5 +1,5 @@
 /**
- * TIER Golf Academy - Samling Create
+ * TIER Golf - Samling Create
  * Form for creating a new samling
  */
 
@@ -16,6 +16,7 @@ import {
   Flag,
 } from 'lucide-react';
 import api from '../../services/api';
+import { PageTitle, SectionTitle } from '../../components/typography';
 
 interface GolfCourse {
   id: string;
@@ -173,14 +174,9 @@ const SamlingCreate: React.FC = () => {
           Tilbake til samlinger
         </button>
 
-        <h1 style={{
-          fontSize: '24px',
-          fontWeight: 600,
-          color: 'var(--text-primary)',
-          margin: 0
-        }}>
+        <PageTitle style={{ marginBottom: 0 }}>
           Opprett ny samling
-        </h1>
+        </PageTitle>
         <p style={{
           fontSize: '14px',
           color: 'var(--text-secondary)',
@@ -214,10 +210,7 @@ const SamlingCreate: React.FC = () => {
           padding: '24px',
           marginBottom: '24px',
         }}>
-          <h2 style={{
-            fontSize: '16px',
-            fontWeight: 600,
-            color: 'var(--text-primary)',
+          <SectionTitle style={{
             margin: '0 0 20px',
             display: 'flex',
             alignItems: 'center',
@@ -225,7 +218,7 @@ const SamlingCreate: React.FC = () => {
           }}>
             <Calendar size={18} />
             Grunnleggende informasjon
-          </h2>
+          </SectionTitle>
 
           <div style={{ display: 'grid', gap: '16px' }}>
             <div>
@@ -305,10 +298,7 @@ const SamlingCreate: React.FC = () => {
           padding: '24px',
           marginBottom: '24px',
         }}>
-          <h2 style={{
-            fontSize: '16px',
-            fontWeight: 600,
-            color: 'var(--text-primary)',
+          <SectionTitle style={{
             margin: '0 0 20px',
             display: 'flex',
             alignItems: 'center',
@@ -316,7 +306,7 @@ const SamlingCreate: React.FC = () => {
           }}>
             <MapPin size={18} />
             Lokasjon
-          </h2>
+          </SectionTitle>
 
           <div style={{ display: 'grid', gap: '16px' }}>
             <div>
@@ -390,10 +380,7 @@ const SamlingCreate: React.FC = () => {
           padding: '24px',
           marginBottom: '24px',
         }}>
-          <h2 style={{
-            fontSize: '16px',
-            fontWeight: 600,
-            color: 'var(--text-primary)',
+          <SectionTitle style={{
             margin: '0 0 20px',
             display: 'flex',
             alignItems: 'center',
@@ -401,7 +388,7 @@ const SamlingCreate: React.FC = () => {
           }}>
             <Hotel size={18} />
             Praktisk informasjon
-          </h2>
+          </SectionTitle>
 
           <div style={{ display: 'grid', gap: '16px' }}>
             <div>

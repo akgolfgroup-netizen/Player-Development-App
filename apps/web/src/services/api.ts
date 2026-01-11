@@ -228,6 +228,122 @@ export interface SessionEvaluation {
   technicalCues?: string[];
 }
 
+// Technique Plan / P-System types
+export interface TechniqueTask {
+  id: string;
+  playerId: string;
+  createdById: string;
+  creatorType: 'coach' | 'player';
+  title: string;
+  description: string;
+  instructions?: string;
+  videoUrl?: string;
+  technicalArea: string;
+  targetMetrics?: Record<string, number>;
+  status: 'pending' | 'in_progress' | 'completed';
+  priority: 'low' | 'medium' | 'high';
+  dueDate?: string;
+  completedAt?: string;
+  // P-System specific fields
+  pLevel?: string;
+  repetitions?: number;
+  priorityOrder?: number;
+  imageUrls?: string[];
+  // Relations
+  player?: {
+    firstName: string;
+    lastName: string;
+  };
+  drills?: TechniqueTaskDrill[];
+  responsible?: TechniqueTaskResponsible[];
+  createdAt: string;
+  updatedAt: string;
+  tenantId: string;
+}
+
+export interface TechniqueTaskDrill {
+  id: string;
+  taskId: string;
+  exerciseId: string;
+  orderIndex: number;
+  notes?: string;
+  exercise?: {
+    id: string;
+    name: string;
+    exerciseType: string;
+  };
+  createdAt: string;
+}
+
+export interface TechniqueTaskResponsible {
+  id: string;
+  taskId: string;
+  userId: string;
+  role?: string;
+  user?: {
+    id: string;
+    firstName: string;
+    lastName: string;
+    role: string;
+  };
+  assignedAt: string;
+}
+
+export interface CreateTechniqueTaskInput {
+  playerId: string;
+  title: string;
+  description: string;
+  instructions?: string;
+  videoUrl?: string;
+  technicalArea: string;
+  targetMetrics?: Record<string, number>;
+  priority?: 'low' | 'medium' | 'high';
+  dueDate?: string;
+  // P-System fields
+  pLevel?: string;
+  repetitions?: number;
+  priorityOrder?: number;
+  imageUrls?: string[];
+}
+
+export interface UpdateTechniqueTaskInput {
+  title?: string;
+  description?: string;
+  instructions?: string;
+  videoUrl?: string;
+  technicalArea?: string;
+  targetMetrics?: Record<string, number>;
+  status?: 'pending' | 'in_progress' | 'completed';
+  priority?: 'low' | 'medium' | 'high';
+  dueDate?: string;
+  // P-System fields
+  pLevel?: string;
+  repetitions?: number;
+  priorityOrder?: number;
+  imageUrls?: string[];
+}
+
+export interface TechniqueTaskFilters {
+  playerId?: string;
+  status?: 'pending' | 'in_progress' | 'completed';
+  technicalArea?: string;
+  creatorType?: 'coach' | 'player';
+  pLevel?: string;
+  limit?: number;
+  offset?: number;
+}
+
+export interface AddDrillInput {
+  exerciseId: string;
+  orderIndex?: number;
+  notes?: string;
+}
+
+export interface AssignResponsibleInput {
+  userId: string;
+  role?: string;
+}
+
 // Calendar session type (used in Kalender.tsx)
 export interface CalendarSession {
   id: string;
@@ -786,6 +902,58 @@ export const trainingPlanAPI = {
 
   respondToModification: (requestId: string, data: { approved: boolean; response?: string }): Promise<AxiosResponse<ApiResponse<unknown>>> =>
     api.put(`/training-plan/modification-requests/${requestId}/respond`, data),
+};
+
+// =============================================================================
+// Technique Plan / P-System API
+// =============================================================================
+
+export const techniquePlanAPI = {
+  // List tasks with optional filtering
+  getTasks: (filters?: TechniqueTaskFilters): Promise<AxiosResponse<{ success: boolean; data: TechniqueTask[]; pagination: { total: number; limit: number; offset: number } }>> =>
+    api.get('/technique-plan/tasks', { params: filters }),
+
+  // Get single task
+  getTask: (taskId: string): Promise<AxiosResponse<{ success: boolean; data: TechniqueTask }>> =>
+    api.get(`/technique-plan/tasks/${taskId}`),
+
+  // Get task with full details (player, drills, responsible persons)
+  getTaskFull: (taskId: string): Promise<AxiosResponse<{ success: boolean; data: TechniqueTask }>> =>
+    api.get(`/technique-plan/tasks/${taskId}/full`),
+
+  // Get tasks filtered by P-level
+  getTasksByPLevel: (playerId: string, pLevel: string): Promise<AxiosResponse<{ success: boolean; data: TechniqueTask[] }>> =>
+    api.get('/technique-plan/tasks/by-p-level', { params: { playerId, pLevel } }),
+
+  // Create task (with P-System fields)
+  createTask: (data: CreateTechniqueTaskInput): Promise<AxiosResponse<{ success: boolean; data: TechniqueTask }>> =>
+    api.post('/technique-plan/tasks', data),
+
+  // Update task
+  updateTask: (taskId: string, data: UpdateTechniqueTaskInput): Promise<AxiosResponse<{ success: boolean; data: TechniqueTask }>> =>
+    api.patch(`/technique-plan/tasks/${taskId}`, data),
+
+  // Delete task
+  deleteTask: (taskId: string): Promise<AxiosResponse<{ success: boolean }>> =>
+    api.delete(`/technique-plan/tasks/${taskId}`),
+
+  // Update task priority order (drag-and-drop)
+  updateTaskPriority: (taskId: string, priorityOrder: number): Promise<AxiosResponse<{ success: boolean; data: TechniqueTask }>> =>
+    api.patch(`/technique-plan/tasks/${taskId}/priority`, { priorityOrder }),
+
+  // Drill management
+  addDrill: (taskId: string, data: AddDrillInput): Promise<AxiosResponse<{ success: boolean; data: TechniqueTaskDrill }>> =>
+    api.post(`/technique-plan/tasks/${taskId}/drills`, data),
+
+  removeDrill: (taskId: string, drillId: string): Promise<AxiosResponse<{ success: boolean }>> =>
+    api.delete(`/technique-plan/tasks/${taskId}/drills/${drillId}`),
+
+  // Responsible person management
+  assignResponsible: (taskId: string, data: AssignResponsibleInput): Promise<AxiosResponse<{ success: boolean; data: TechniqueTaskResponsible }>> =>
+    api.post(`/technique-plan/tasks/${taskId}/responsible`, data),
+
+  removeResponsible: (taskId: string, responsibleId: string): Promise<AxiosResponse<{ success: boolean }>> =>
+    api.delete(`/technique-plan/tasks/${taskId}/responsible/${responsibleId}`),
 };
 
 // =============================================================================
@@ -2401,6 +2569,37 @@ export function useApi() {
 
   return { get, post, put, delete: del };
 }
+
+// =============================================================================
+// TrackMan / Launch Monitor API
+// =============================================================================
+
+export const trackmanAPI = {
+  createSession: (data: { playerId: string; deviceType: string; location?: string; notes?: string }): Promise<AxiosResponse<{ success: boolean; data: any }>> =>
+    api.post('/trackman/sessions', data),
+
+  addShot: (data: {
+    sessionId: string;
+    club: string;
+    ballSpeed?: number;
+    clubSpeed?: number;
+    launchAngle?: number;
+    spinRate?: number;
+    carryDistance?: number;
+    totalDistance?: number;
+    smashFactor?: number;
+    attackAngle?: number;
+    clubPath?: number;
+    faceAngle?: number;
+  }): Promise<AxiosResponse<{ success: boolean; data: any }>> =>
+    api.post('/trackman/shots', data),
+
+  getSession: (sessionId: string): Promise<AxiosResponse<{ success: boolean; data: any }>> =>
+    api.get(`/trackman/sessions/${sessionId}`),
+
+  getClubGapping: (playerId: string): Promise<AxiosResponse<{ success: boolean; data: any[] }>> =>
+    api.get(`/trackman/club-gapping/${playerId}`),
+};
 
 // =============================================================================
 // Export

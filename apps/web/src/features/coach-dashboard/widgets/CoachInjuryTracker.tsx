@@ -1,5 +1,5 @@
 /**
- * TIER Golf Academy - Coach Injury/Illness Tracker Widget
+ * TIER Golf - Coach Injury/Illness Tracker Widget
  * Design System v3.0 - Semantic CSS Variables
  *
  * Viser oversikt over spillere med skader eller sykdom.
@@ -17,6 +17,7 @@ import {
   CheckCircle,
 } from 'lucide-react';
 import Button from '../../../ui/primitives/Button';
+import { SubSectionTitle } from '../../../ui/primitives/typography';
 
 interface InjuryRecord {
   id: string;
@@ -207,16 +208,16 @@ export default function CoachInjuryTracker({ onViewAll }: CoachInjuryTrackerProp
             <Heart size={20} style={{ color: 'var(--status-error)' }} />
           </div>
           <div>
-            <h3
+            <SubSectionTitle
               style={{
                 fontSize: '17px',
                 fontWeight: 600,
                 color: 'var(--text-primary)',
-                margin: 0,
+                marginBottom: 0,
               }}
             >
               Skade/Sykdom
-            </h3>
+            </SubSectionTitle>
             <span
               style={{
                 fontSize: '13px',

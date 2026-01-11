@@ -1,6 +1,6 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 /**
- * TIER Golf Academy - Coach Training Plan Editor
+ * TIER Golf - Coach Training Plan Editor
  * Design System v3.0 - Premium Light
  *
  * Purpose:

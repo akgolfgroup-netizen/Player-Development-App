@@ -9,6 +9,7 @@ import React from 'react';
 import { X, User, Database, Calendar, Globe } from 'lucide-react';
 import Button from '../../ui/primitives/Button';
 import { Text } from '../../ui/primitives';
+import { SectionTitle } from '../../components/typography/Headings';
 
 interface AuditEvent {
   id: string;
@@ -80,9 +81,9 @@ export const AuditLogDetailModal: React.FC<AuditLogDetailModalProps> = ({
             <div className="w-10 h-10 rounded-xl bg-tier-navy/10 flex items-center justify-center">
               <Database size={20} className="text-tier-navy" />
             </div>
-            <h2 className="text-lg font-semibold text-tier-navy">
+            <SectionTitle style={{ marginBottom: 0 }}>
               Audit Log Detaljer
-            </h2>
+            </SectionTitle>
           </div>
           <button
             onClick={onClose}

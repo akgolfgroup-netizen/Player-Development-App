@@ -28,6 +28,7 @@ import {
   Target,
   Trophy
 } from 'lucide-react';
+import { SubSectionTitle } from '../../components/typography/Headings';
 import {
   LineChart,
   Line,
@@ -130,7 +131,7 @@ function StatistikkOversiktTab() {
 
       {/* Handicap Chart */}
       <div className="bg-white rounded-xl border border-tier-border-default p-6">
-        <h3 className="text-lg font-semibold text-tier-navy mb-4">SNITT SCORE UTVIKLING</h3>
+        <SubSectionTitle style={{ marginBottom: 0 }} className="text-lg font-semibold text-tier-navy mb-4">SNITT SCORE UTVIKLING</SubSectionTitle>
         <ResponsiveContainer width="100%" height={300}>
           <LineChart data={mockSnittScoreData}>
             <CartesianGrid strokeDasharray="3 3" stroke="var(--tier-border-default)" />
@@ -166,7 +167,7 @@ function StatistikkOversiktTab() {
       {/* ✅ PHASE 2 INTEGRATION: Vendepunkter section */}
       <div id="vendepunkter" className="bg-white rounded-xl border border-tier-border-default p-6">
         <div className="flex items-center justify-between mb-4">
-          <h3 className="text-lg font-semibold text-tier-navy">Vendepunkter i prestasjonen</h3>
+          <SubSectionTitle style={{ marginBottom: 0 }} className="text-lg font-semibold text-tier-navy">Vendepunkter i prestasjonen</SubSectionTitle>
           {breakingPoints.length > 5 && (
             <Link
               to="/utvikling/vendepunkter"
@@ -274,7 +275,7 @@ function StrokesGainedTab() {
 
       {/* SG Breakdown Chart */}
       <div className="bg-white rounded-xl border border-tier-border-default p-6">
-        <h3 className="text-lg font-semibold text-tier-navy mb-4">Strokes Gained fordeling</h3>
+        <SubSectionTitle style={{ marginBottom: 0 }} className="text-lg font-semibold text-tier-navy mb-4">Strokes Gained fordeling</SubSectionTitle>
         <ResponsiveContainer width="100%" height={320}>
           <BarChart data={mockSGBreakdown} layout="vertical">
             <CartesianGrid strokeDasharray="3 3" stroke="var(--tier-border-default)" />
@@ -296,7 +297,7 @@ function StrokesGainedTab() {
 
       {/* Historical SG Trends */}
       <div className="bg-white rounded-xl border border-tier-border-default p-6">
-        <h3 className="text-lg font-semibold text-tier-navy mb-4">Historiske SG trender</h3>
+        <SubSectionTitle style={{ marginBottom: 0 }} className="text-lg font-semibold text-tier-navy mb-4">Historiske SG trender</SubSectionTitle>
         <ResponsiveContainer width="100%" height={320}>
           <LineChart data={mockSGTrends}>
             <CartesianGrid strokeDasharray="3 3" stroke="var(--tier-border-default)" />
@@ -369,7 +370,7 @@ function TrenderTab() {
     <div className="space-y-6">
       {/* Trend Overview */}
       <div className="bg-white rounded-xl border border-tier-border-default p-6">
-        <h3 className="text-lg font-semibold text-tier-navy mb-4">Trendindikatorer</h3>
+        <SubSectionTitle style={{ marginBottom: 0 }} className="text-lg font-semibold text-tier-navy mb-4">Trendindikatorer</SubSectionTitle>
         <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
           <div className="flex items-center gap-3 p-4 bg-tier-success-light rounded-lg">
             <div className="text-2xl">↗</div>
@@ -400,7 +401,7 @@ function TrenderTab() {
       {/* ✅ PHASE 2 INTEGRATION: Treningsområder section */}
       <div id="treningsomrader" className="bg-white rounded-xl border border-tier-border-default p-6">
         <div className="flex items-center justify-between mb-4">
-          <h3 className="text-lg font-semibold text-tier-navy">Ytelse per treningsområde</h3>
+          <SubSectionTitle style={{ marginBottom: 0 }} className="text-lg font-semibold text-tier-navy">Ytelse per treningsområde</SubSectionTitle>
           <Link
             to="/training-area-performance"
             className="text-sm text-tier-info hover:text-tier-info-dark transition-colors"
@@ -454,7 +455,7 @@ function TrenderTab() {
 
       {/* Long-term trends */}
       <div className="bg-white rounded-xl border border-tier-border-default p-6">
-        <h3 className="text-lg font-semibold text-tier-navy mb-4">Langsiktige trender (12 måneder)</h3>
+        <SubSectionTitle style={{ marginBottom: 0 }} className="text-lg font-semibold text-tier-navy mb-4">Langsiktige trender (12 måneder)</SubSectionTitle>
         <div className="h-64 bg-tier-surface-base rounded-lg flex items-center justify-center text-tier-text-secondary">
           [12-måneders trend chart]
         </div>
@@ -471,7 +472,7 @@ function StatusMaalTab() {
     <div className="space-y-6">
       {/* Status mot mål */}
       <div className="bg-white rounded-xl border border-tier-border-default p-6">
-        <h3 className="text-lg font-semibold text-tier-navy mb-4">Status mot mål</h3>
+        <SubSectionTitle style={{ marginBottom: 0 }} className="text-lg font-semibold text-tier-navy mb-4">Status mot mål</SubSectionTitle>
         <div className="space-y-4">
           <div>
             <div className="flex items-center justify-between mb-2">
@@ -500,7 +501,7 @@ function StatusMaalTab() {
       {/* ✅ PHASE 2 INTEGRATION: Player Insights (innsikter) */}
       <div className="bg-white rounded-xl border border-tier-border-default p-6">
         <div className="flex items-center justify-between mb-4">
-          <h3 className="text-lg font-semibold text-tier-navy">Spillerinnsikter</h3>
+          <SubSectionTitle style={{ marginBottom: 0 }} className="text-lg font-semibold text-tier-navy">Spillerinnsikter</SubSectionTitle>
           <div className="flex gap-2">
             <button
               onClick={() => setShowFullInsights(!showFullInsights)}
@@ -613,7 +614,7 @@ function StatusMaalTab() {
 
       {/* Next milestones */}
       <div className="bg-white rounded-xl border border-tier-border-default p-6">
-        <h3 className="text-lg font-semibold text-tier-navy mb-4">Neste milepæler</h3>
+        <SubSectionTitle style={{ marginBottom: 0 }} className="text-lg font-semibold text-tier-navy mb-4">Neste milepæler</SubSectionTitle>
         <div className="space-y-3">
           <div className="flex items-center gap-3 p-3 bg-tier-surface-base rounded-lg">
             <div className="w-10 h-10 bg-tier-info-light rounded-full flex items-center justify-center">

@@ -1,5 +1,5 @@
 /**
- * TIER Golf Academy - Progress Components
+ * TIER Golf - Progress Components
  * Premium Light System: Stone × Midnight Blue × Emerald × Soft Gold
  *
  * Rules:

@@ -18,6 +18,7 @@ import Card from '../../ui/primitives/Card';
 import apiClient from '../../services/apiClient';
 import TrackManImportModal from './components/TrackManImportModal';
 import TechniqueProgressionView from './components/TechniqueProgressionView';
+import { SectionTitle, SubSectionTitle, CardTitle } from '../../components/typography';
 
 // ============================================================================
 // TYPES
@@ -221,7 +222,7 @@ const TaskCard: React.FC<TaskCardProps> = ({ task, onUpdate }) => {
           <div className="flex-1 min-w-0">
             <div className="flex items-center gap-2 mb-1">
               <StatusIcon size={16} className={statusConfig.color} />
-              <h3 className="text-base font-semibold text-tier-navy m-0">{task.title}</h3>
+              <SubSectionTitle style={{ marginBottom: 0 }}>{task.title}</SubSectionTitle>
             </div>
             <div className="flex items-center gap-2 flex-wrap">
               <span className={`px-2 py-0.5 rounded text-xs font-medium ${statusConfig.bgColor} ${statusConfig.color}`}>
@@ -330,7 +331,7 @@ const GoalCard: React.FC<GoalCardProps> = ({ goal, onUpdate }) => {
           <div className="flex-1 min-w-0">
             <div className="flex items-center gap-2 mb-1">
               <StatusIcon size={16} className={statusConfig.color} />
-              <h3 className="text-base font-semibold text-tier-navy m-0">{goal.title}</h3>
+              <SubSectionTitle style={{ marginBottom: 0 }}>{goal.title}</SubSectionTitle>
             </div>
             <span className={`px-2 py-0.5 rounded text-xs font-medium ${statusConfig.bgColor} ${statusConfig.color}`}>
               {statusConfig.label}
@@ -507,7 +508,7 @@ export const TechniquePlanPage: React.FC = () => {
               {/* Active Tasks */}
               {activeTasks.length > 0 && (
                 <div>
-                  <h2 className="text-lg font-semibold text-tier-navy mb-4">Aktive oppgaver</h2>
+                  <SectionTitle style={{ marginBottom: '1rem' }}>Aktive oppgaver</SectionTitle>
                   <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                     {activeTasks.map(task => (
                       <TaskCard key={task.id} task={task} onUpdate={loadData} />
@@ -519,7 +520,7 @@ export const TechniquePlanPage: React.FC = () => {
               {/* Completed Tasks */}
               {completedTasks.length > 0 && (
                 <div>
-                  <h2 className="text-lg font-semibold text-tier-navy mb-4">Fullførte oppgaver</h2>
+                  <SectionTitle style={{ marginBottom: '1rem' }}>Fullførte oppgaver</SectionTitle>
                   <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                     {completedTasks.map(task => (
                       <TaskCard key={task.id} task={task} onUpdate={loadData} />
@@ -533,7 +534,7 @@ export const TechniquePlanPage: React.FC = () => {
                 <Card>
                   <div className="p-12 text-center">
                     <AlertCircle size={48} className="mx-auto text-tier-text-tertiary mb-4" />
-                    <h3 className="text-lg font-semibold text-tier-navy mb-2">Ingen oppgaver ennå</h3>
+                    <SubSectionTitle style={{ marginBottom: '0.5rem' }}>Ingen oppgaver ennå</SubSectionTitle>
                     <p className="text-sm text-tier-text-secondary mb-4">
                       Din trener vil opprette tekniske oppgaver for deg basert på dine treninger og Trackman-data.
                     </p>
@@ -549,7 +550,7 @@ export const TechniquePlanPage: React.FC = () => {
               {/* Active Goals */}
               {activeGoals.length > 0 && (
                 <div>
-                  <h2 className="text-lg font-semibold text-tier-navy mb-4">Aktive mål</h2>
+                  <SectionTitle style={{ marginBottom: '1rem' }}>Aktive mål</SectionTitle>
                   <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
                     {activeGoals.map(goal => (
                       <GoalCard key={goal.id} goal={goal} onUpdate={loadData} />
@@ -561,7 +562,7 @@ export const TechniquePlanPage: React.FC = () => {
               {/* Achieved Goals */}
               {achievedGoals.length > 0 && (
                 <div>
-                  <h2 className="text-lg font-semibold text-tier-navy mb-4">Oppnådde mål</h2>
+                  <SectionTitle style={{ marginBottom: '1rem' }}>Oppnådde mål</SectionTitle>
                   <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
                     {achievedGoals.map(goal => (
                       <GoalCard key={goal.id} goal={goal} onUpdate={loadData} />
@@ -575,7 +576,7 @@ export const TechniquePlanPage: React.FC = () => {
                 <Card>
                   <div className="p-12 text-center">
                     <Target size={48} className="mx-auto text-tier-text-tertiary mb-4" />
-                    <h3 className="text-lg font-semibold text-tier-navy mb-2">Ingen mål ennå</h3>
+                    <SubSectionTitle style={{ marginBottom: '0.5rem' }}>Ingen mål ennå</SubSectionTitle>
                     <p className="text-sm text-tier-text-secondary mb-4">
                       Din trener vil sette tekniske mål basert på Trackman-målinger og dine utviklingsområder.
                     </p>
@@ -592,7 +593,7 @@ export const TechniquePlanPage: React.FC = () => {
                 <div className="flex items-center gap-3 mb-2">
                   <Trophy size={32} />
                   <div>
-                    <h2 className="text-2xl font-bold">Teknikk-merker</h2>
+                    <SectionTitle style={{ marginBottom: 0 }}>Teknikk-merker</SectionTitle>
                     <p className="text-tier-navy-light mt-1">
                       Lås opp merker ved å nå tekniske milepæler
                     </p>
@@ -603,10 +604,10 @@ export const TechniquePlanPage: React.FC = () => {
               {/* Unlocked Badges */}
               {TECHNIQUE_BADGES.filter(b => b.unlocked).length > 0 && (
                 <div>
-                  <h3 className="text-lg font-semibold text-tier-navy mb-4 flex items-center gap-2">
+                  <SubSectionTitle style={{ marginBottom: '1rem' }} className="flex items-center gap-2">
                     <CheckCircle className="text-tier-success" size={20} />
                     Opplåste merker
-                  </h3>
+                  </SubSectionTitle>
                   <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
                     {TECHNIQUE_BADGES.filter(b => b.unlocked).map(badge => (
                       <Card key={badge.id}>
@@ -617,7 +618,7 @@ export const TechniquePlanPage: React.FC = () => {
                             {badge.icon === 'award' && <Award size={32} />}
                             <CheckCircle size={24} className="text-white" />
                           </div>
-                          <h4 className="text-lg font-bold">{badge.name}</h4>
+                          <CardTitle style={{ marginBottom: 0 }}>{badge.name}</CardTitle>
                         </div>
                         <div className="p-4">
                           <p className="text-sm text-tier-text-secondary">{badge.description}</p>
@@ -633,10 +634,10 @@ export const TechniquePlanPage: React.FC = () => {
 
               {/* Locked Badges */}
               <div>
-                <h3 className="text-lg font-semibold text-tier-navy mb-4 flex items-center gap-2">
+                <SubSectionTitle style={{ marginBottom: '1rem' }} className="flex items-center gap-2">
                   <Lock className="text-gray-400" size={20} />
                   Låste merker
-                </h3>
+                </SubSectionTitle>
                 <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
                   {TECHNIQUE_BADGES.filter(b => !b.unlocked).map(badge => (
                     <Card key={badge.id} className="opacity-75">
@@ -649,7 +650,7 @@ export const TechniquePlanPage: React.FC = () => {
                           {badge.icon === 'target' && <Target size={32} className="text-gray-400" />}
                           {badge.icon === 'award' && <Award size={32} className="text-gray-400" />}
                         </div>
-                        <h4 className="text-lg font-bold text-gray-700">{badge.name}</h4>
+                        <CardTitle style={{ marginBottom: 0 }}>{badge.name}</CardTitle>
                       </div>
                       <div className="p-4">
                         <p className="text-sm text-tier-text-secondary">{badge.description}</p>
@@ -671,9 +672,9 @@ export const TechniquePlanPage: React.FC = () => {
               <Card className="bg-gradient-to-r from-blue-50 to-indigo-50 border-blue-200">
                 <div className="p-6 text-center">
                   <Award size={48} className="mx-auto text-tier-navy mb-3" />
-                  <h3 className="text-lg font-semibold text-tier-navy mb-2">
+                  <SubSectionTitle style={{ marginBottom: '0.5rem' }}>
                     Fortsett å trene for å låse opp flere merker!
-                  </h3>
+                  </SubSectionTitle>
                   <p className="text-sm text-tier-text-secondary mb-4">
                     Jobb med dine tekniske mål og importer Trackman-data for å spore fremgangen din.
                   </p>

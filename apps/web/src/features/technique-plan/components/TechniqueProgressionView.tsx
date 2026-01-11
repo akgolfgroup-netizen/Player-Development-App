@@ -9,6 +9,7 @@ import { useAuth } from '../../../contexts/AuthContext';
 import { useTechniqueStats } from '../../../hooks/useTechniquePlan';
 import Card from '../../../ui/primitives/Card';
 import Button from '../../../ui/primitives/Button';
+import { SubSectionTitle } from '../../../components/typography';
 
 const METRIC_LABELS: Record<string, string> = {
   clubPath: 'Klubbane',
@@ -76,7 +77,7 @@ const TechniqueProgressionView: React.FC<TechniqueProgressionViewProps> = ({ pla
       <Card>
         <div className="p-12 text-center">
           <Calendar size={48} className="mx-auto text-tier-text-tertiary mb-4" />
-          <h3 className="text-lg font-semibold text-tier-navy mb-2">Ingen data tilgjengelig</h3>
+          <SubSectionTitle style={{ marginBottom: '0.5rem' }}>Ingen data tilgjengelig</SubSectionTitle>
           <p className="text-sm text-tier-text-secondary">
             Importer TrackMan-data for å se din tekniske fremgang
           </p>
@@ -183,7 +184,7 @@ const TechniqueProgressionView: React.FC<TechniqueProgressionViewProps> = ({ pla
       {metricProgression && metricProgression.length > 0 && (
         <Card>
           <div className="p-4">
-            <h3 className="text-lg font-semibold text-tier-navy mb-4">Metrikk fremgang</h3>
+            <SubSectionTitle style={{ marginBottom: '1rem' }}>Metrikk fremgang</SubSectionTitle>
             <div className="space-y-4">
               {metricProgression.map((metric: any) => (
                 <div key={metric.metricType} className="border-b border-tier-border-default pb-4 last:border-b-0">
@@ -254,7 +255,7 @@ const TechniqueProgressionView: React.FC<TechniqueProgressionViewProps> = ({ pla
       {clubStats && clubStats.length > 0 && !selectedClub && (
         <Card>
           <div className="p-4">
-            <h3 className="text-lg font-semibold text-tier-navy mb-4">Klubbestatistikk</h3>
+            <SubSectionTitle style={{ marginBottom: '1rem' }}>Klubbestatistikk</SubSectionTitle>
             <div className="grid grid-cols-2 md:grid-cols-4 gap-3">
               {clubStats.slice(0, 8).map((club: any) => (
                 <div
@@ -280,7 +281,7 @@ const TechniqueProgressionView: React.FC<TechniqueProgressionViewProps> = ({ pla
       {recentImports && recentImports.length > 0 && (
         <Card>
           <div className="p-4">
-            <h3 className="text-lg font-semibold text-tier-navy mb-4">Siste importer</h3>
+            <SubSectionTitle style={{ marginBottom: '1rem' }}>Siste importer</SubSectionTitle>
             <div className="space-y-2">
               {recentImports.slice(0, 5).map((importItem: any) => (
                 <div
@@ -314,7 +315,7 @@ const TechniqueProgressionView: React.FC<TechniqueProgressionViewProps> = ({ pla
       <Card className="bg-tier-surface-base">
         <div className="p-12 text-center">
           <TrendingUp size={48} className="mx-auto text-tier-text-tertiary mb-4" />
-          <h3 className="text-lg font-semibold text-tier-navy mb-2">Tidslinje-graf kommer snart</h3>
+          <SubSectionTitle style={{ marginBottom: '0.5rem' }}>Tidslinje-graf kommer snart</SubSectionTitle>
           <p className="text-sm text-tier-text-secondary">
             Visualisering av metrikk over tid med chart library
           </p>

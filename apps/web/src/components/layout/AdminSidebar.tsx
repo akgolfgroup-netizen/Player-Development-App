@@ -1,5 +1,5 @@
 /**
- * TIER Golf Academy - Admin Sidebar
+ * TIER Golf - Admin Sidebar
  * Design System v3.0 - Blue Palette 01
  *
  * Sidebar navigation for administrators.

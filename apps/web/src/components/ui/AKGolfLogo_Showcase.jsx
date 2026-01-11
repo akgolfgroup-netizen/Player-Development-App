@@ -269,7 +269,7 @@ export default function App() {
                 <div style={{ display: 'flex', alignItems: 'center', gap: 12, marginBottom: 12 }}>
                   <TIERGolfLogoBadge size={40} borderRadius={10} />
                   <div>
-                    <div style={{ fontSize: 14, fontWeight: 600, color: colors.textPrimary }}>TIER Golf Academy</div>
+                    <div style={{ fontSize: 14, fontWeight: 600, color: colors.textPrimary }}>TIER Golf</div>
                     <div style={{ fontSize: 12, color: colors.textSecondary }}>Treningsprogram</div>
                   </div>
                 </div>

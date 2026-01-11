@@ -1,5 +1,5 @@
 /**
- * TIER Golf Academy - Coach Tournaments Module
+ * TIER Golf - Coach Tournaments Module
  * Design System v3.0 - Blue Palette 01
  *
  * Eksporterer alle turneringskomponenter for trener.

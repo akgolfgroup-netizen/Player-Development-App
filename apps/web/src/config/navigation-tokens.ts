@@ -1,6 +1,6 @@
 /**
  * ============================================================
- * NAVIGATION DESIGN TOKENS - TIER Golf Academy
+ * NAVIGATION DESIGN TOKENS - TIER Golf
  * ============================================================
  *
  * Fargepalett og design tokens for fargekodet navigasjon.

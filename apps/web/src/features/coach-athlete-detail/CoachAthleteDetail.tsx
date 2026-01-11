@@ -1,5 +1,5 @@
 /**
- * TIER Golf Academy - Coach Athlete Detail
+ * TIER Golf - Coach Athlete Detail
  * Design System v3.0 - Semantic CSS Variables
  *
  * Purpose:
@@ -27,6 +27,7 @@ import Card from '../../ui/primitives/Card';
 import PageHeader from '../../ui/raw-blocks/PageHeader.raw';
 import PageContainer from '../../ui/raw-blocks/PageContainer.raw';
 import { CoachExportButton } from '../../components/export';
+import { SectionTitle } from '../../ui/primitives/typography';
 
 //////////////////////////////
 // 2. TYPES
@@ -128,7 +129,7 @@ export default function CoachAthleteDetail({
         <div className="flex items-center gap-4 mb-6">
           <Avatar name={athleteName} size={64} />
           <div className="flex-1">
-            <h2 className="text-2xl font-bold text-tier-navy">{athleteName}</h2>
+            <SectionTitle className="text-2xl font-bold text-tier-navy" style={{ marginBottom: 0 }}>{athleteName}</SectionTitle>
             <p className="text-tier-body text-tier-text-secondary mt-1">Velg handling nedenfor</p>
           </div>
         </div>

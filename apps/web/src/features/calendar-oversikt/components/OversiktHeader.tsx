@@ -10,6 +10,7 @@
 import React from 'react';
 import { ChevronLeft, ChevronRight } from 'lucide-react';
 import type { OversiktView, OversiktHeaderProps } from '../types';
+import { SectionTitle } from '../../../components/typography/Headings';
 
 const VIEW_OPTIONS: { value: OversiktView; label: string }[] = [
   { value: 'day', label: 'DAG' },
@@ -93,12 +94,11 @@ export const OversiktHeader: React.FC<OversiktHeaderProps> = ({
         </div>
 
         {/* Title */}
-        <h2
-          className="text-lg font-semibold capitalize"
-          style={{ color: 'var(--calendar-text-primary)' }}
+        <SectionTitle
+          style={{ color: 'var(--calendar-text-primary)', marginBottom: 0, textTransform: 'capitalize' }}
         >
           {getViewLabel()}
-        </h2>
+        </SectionTitle>
 
         {/* Week number badge (only for week view) */}
         {view === 'week' && weekNumber && (

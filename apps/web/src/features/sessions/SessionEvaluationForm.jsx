@@ -1,5 +1,5 @@
 /**
- * TIER Golf Academy - Session Evaluation Form
+ * TIER Golf - Session Evaluation Form
  * Design System v3.0 - Premium Light
  *
  * Samler evalueringsdata etter fullført økt.

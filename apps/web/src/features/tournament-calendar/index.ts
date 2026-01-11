@@ -1,5 +1,5 @@
 /**
- * TIER Golf Academy - Tournament Calendar Feature
+ * TIER Golf - Tournament Calendar Feature
  *
  * Tournament discovery and planning surface with:
  * - Automatic tournament ingestion

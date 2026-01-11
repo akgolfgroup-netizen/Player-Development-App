@@ -17,7 +17,7 @@ import { Clock, Save, AlertCircle, CheckCircle, Target, X } from 'lucide-react';
 import { TrainingPyramidSelector } from './components/TrainingPyramidSelector';
 import { DurationSlider } from './components/DurationSlider';
 import Button from '../../ui/primitives/Button';
-import { SubSectionTitle } from '../../components/typography';
+import { PageTitle, SubSectionTitle } from '../../components/typography';
 
 // ============================================================================
 // MOCK DATA - Will be replaced with API data
@@ -188,7 +188,7 @@ export const QuickSessionRegistration = ({ onClose, onSave }) => {
       <div className="bg-tier-white border-b border-tier-border-default sticky top-0 z-10">
         <div className="px-6 py-4 flex items-center justify-between">
           <div>
-            <h1 className="text-xl font-bold text-tier-navy">Hurtigregistrering av økt</h1>
+            <PageTitle style={{ marginBottom: 0 }}>Hurtigregistrering av økt</PageTitle>
             <p className="text-sm text-tier-text-secondary">
               Rask registrering av uplanlagt treningsøkt
             </p>

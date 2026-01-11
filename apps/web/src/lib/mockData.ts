@@ -1,6 +1,6 @@
 /**
  * ============================================================
- * MOCK DATA - TIER Golf Academy
+ * MOCK DATA - TIER Golf
  * ============================================================
  *
  * Mock data for development and testing.
@@ -414,7 +414,7 @@ export const mockMessages = [
   },
   {
     id: 'msg-003',
-    from: 'TIER Golf Academy',
+    from: 'TIER Golf',
     subject: 'Ny badge opptjent!',
     preview: 'Gratulerer! Du har oppnådd "Konsistent trening"...',
     date: '2025-01-01',

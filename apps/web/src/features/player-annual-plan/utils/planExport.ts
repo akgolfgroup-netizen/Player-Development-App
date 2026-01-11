@@ -18,7 +18,7 @@ export function exportToICal(
   const lines: string[] = [
     'BEGIN:VCALENDAR',
     'VERSION:2.0',
-    'PRODID:-//TIER Golf Academy//Annual Plan//EN',
+    'PRODID:-//TIER Golf//Annual Plan//EN',
     'CALSCALE:GREGORIAN',
     'METHOD:PUBLISH',
     `X-WR-CALNAME:${planName}`,
@@ -213,7 +213,7 @@ function generatePrintHTML(
     .join('')}
 
   <div style="margin-top: 48px; padding-top: 16px; border-top: 1px solid #e2e8f0; text-align: center; color: #94a3b8; font-size: 12px;">
-    <p>Generert av TIER Golf Academy</p>
+    <p>Generert av TIER Golf</p>
     <p>${new Date().toLocaleDateString('nb-NO')}</p>
   </div>
 </body>

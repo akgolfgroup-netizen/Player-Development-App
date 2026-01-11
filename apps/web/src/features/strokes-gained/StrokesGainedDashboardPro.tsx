@@ -32,6 +32,7 @@ import {
   getSGSemantic,
 } from '../../utils/sgFormatting';
 import { TrendingUp, Percent, Users, Target, Flag, Circle, Crosshair } from 'lucide-react';
+import { PageTitle, SubSectionTitle } from '../../components/typography';
 
 // ═══════════════════════════════════════════
 // TYPES
@@ -246,9 +247,9 @@ function Header({
   return (
     <div className="space-y-3">
       <div className="flex items-center justify-between">
-        <h1 className="text-2xl font-bold text-[rgb(var(--text-primary))]">
+        <PageTitle style={{ marginBottom: 0 }}>
           Strokes Gained Analytics
-        </h1>
+        </PageTitle>
         <div className="flex gap-2">
           {onBack && (
             <Button variant="secondary" size="sm" onClick={onBack}>
@@ -287,9 +288,9 @@ function RecentTestsList({
 }) {
   return (
     <div className="space-y-3">
-      <h3 className="text-sm font-semibold text-[rgb(var(--text-secondary))] uppercase tracking-wide">
+      <SubSectionTitle style={{ marginBottom: 0 }}>
         Nylige Tester
-      </h3>
+      </SubSectionTitle>
       <div className="space-y-2">
         {tests.slice(0, 5).map((test, index) => (
           <div

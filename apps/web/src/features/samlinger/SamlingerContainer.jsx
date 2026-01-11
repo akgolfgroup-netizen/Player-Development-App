@@ -1,5 +1,5 @@
 /**
- * TIER Golf Academy - Samlinger Container
+ * TIER Golf - Samlinger Container
  * Design System v3.0 - Premium Light
  *
  * Training camps and gatherings overview with registration.
@@ -575,7 +575,7 @@ const SamlingerContainer = () => {
           program: [],
           includes: [],
           price: 0,
-          coach: 'TIER Golf Academy',
+          coach: 'TIER Golf',
         }));
         setCamps(transformedCamps);
       } else {

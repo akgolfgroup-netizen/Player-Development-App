@@ -15,6 +15,7 @@
 import React, { useState, useCallback } from 'react';
 import { useTournamentPrep } from '../../hooks/useTournamentPrep';
 import { track } from '../../analytics/track';
+import { SectionTitle, SubSectionTitle } from '../../components/typography';
 
 // ═══════════════════════════════════════════
 // TAILWIND CLASSES
@@ -139,7 +140,7 @@ export function PreTournamentChecklist({
       <div className={`${tw.container} ${className}`}>
         <div className={tw.emptyState}>
           <div className={tw.emptyIcon}>✅</div>
-          <h3 className={tw.emptyTitle}>Ingen forberedelse valgt</h3>
+          <SubSectionTitle style={{ marginBottom: 0 }}>Ingen forberedelse valgt</SubSectionTitle>
           <p className={tw.emptyDescription}>
             Velg eller opprett en turneringsforberedelse for å bruke sjekklisten
           </p>
@@ -155,7 +156,7 @@ export function PreTournamentChecklist({
       {/* Header */}
       <div className={tw.header}>
         <div>
-          <h2 className={tw.title}>Pre-Turnering Sjekkliste</h2>
+          <SectionTitle style={{ marginBottom: 0 }}>Pre-Turnering Sjekkliste</SectionTitle>
           <p className={tw.subtitle}>
             Sørg for at alt er klart før turneringen
           </p>
@@ -208,7 +209,7 @@ export function PreTournamentChecklist({
                   disabled={saving}
                 />
                 <div className={tw.checklistContent}>
-                  <h3 className={tw.checklistTitle}>{item.title}</h3>
+                  <SubSectionTitle style={{ marginBottom: '4px' }}>{item.title}</SubSectionTitle>
                   <p className={tw.checklistDescription}>
                     {item.description}
                   </p>

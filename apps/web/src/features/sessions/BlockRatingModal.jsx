@@ -1,5 +1,5 @@
 /**
- * TIER Golf Academy - Block Rating Modal
+ * TIER Golf - Block Rating Modal
  * Design System v3.0 - Premium Light
  *
  * Quality rating after completing a training block.

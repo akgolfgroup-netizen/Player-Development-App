@@ -1,5 +1,5 @@
 /**
- * TIER Golf Academy - Members List
+ * TIER Golf - Members List
  * Design System v3.0
  *
  * A reusable component for displaying lists of members/people

@@ -1,6 +1,6 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 /**
- * TIER Golf Academy - Coach Booking Requests
+ * TIER Golf - Coach Booking Requests
  * Design System v3.0 - Blue Palette 01
  *
  * Liste over alle bookingforespørsler for trener.

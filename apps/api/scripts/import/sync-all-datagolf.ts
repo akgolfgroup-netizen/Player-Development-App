@@ -13,8 +13,8 @@
  * - /historical-raw-data/rounds (historical round data)
  */
 
-import prisma from '../prisma/client';
-import { DataGolfClient } from '../src/integrations/datagolf/client';
+import prisma from '../../prisma/client';
+import { DataGolfClient } from '../../src/integrations/datagolf/client';
 
 const client = new DataGolfClient();
 

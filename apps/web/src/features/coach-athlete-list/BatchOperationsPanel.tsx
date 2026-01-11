@@ -1,5 +1,5 @@
 /**
- * TIER Golf Academy - Batch Operations Panel
+ * TIER Golf - Batch Operations Panel
  *
  * Provides batch actions for selected players:
  * - Assign training sessions
@@ -11,6 +11,7 @@
 import React, { useState } from 'react';
 import { X, Calendar, MessageSquare, UserCheck, ClipboardList, Loader2, CheckCircle, AlertCircle } from 'lucide-react';
 import { coachesAPI } from '../../services/api';
+import { SubSectionTitle } from '../../ui/primitives/typography';
 
 interface Props {
   selectedPlayerIds: string[];
@@ -154,9 +155,9 @@ export default function BatchOperationsPanel({
         }}
       >
         <div>
-          <h3 style={{ margin: 0, fontSize: '17px', fontWeight: 600, color: 'var(--text-primary)' }}>
+          <SubSectionTitle style={{ marginBottom: 0, fontSize: '17px', fontWeight: 600, color: 'var(--text-primary)' }}>
             Batch-operasjoner
-          </h3>
+          </SubSectionTitle>
           <p style={{ margin: 0, marginTop: '4px', fontSize: '13px', color: 'var(--text-secondary)' }}>
             {selectedPlayerIds.length} spillere valgt
           </p>

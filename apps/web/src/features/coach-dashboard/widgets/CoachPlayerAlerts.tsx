@@ -1,5 +1,5 @@
 /**
- * TIER Golf Academy - Coach Player Alerts Widget
+ * TIER Golf - Coach Player Alerts Widget
  * Design System v3.0 - Semantic CSS Variables
  *
  * Viser rode flagg fra spillere som krever oppmerksomhet:
@@ -23,6 +23,7 @@ import {
   X,
 } from 'lucide-react';
 import Button from '../../../ui/primitives/Button';
+import { SubSectionTitle } from '../../../ui/primitives/typography';
 
 interface PlayerAlert {
   id: string;
@@ -229,16 +230,16 @@ export default function CoachPlayerAlerts({ maxItems = 5, onViewAll }: CoachPlay
             <AlertTriangle size={20} style={{ color: 'var(--status-error)' }} />
           </div>
           <div>
-            <h3
+            <SubSectionTitle
               style={{
                 fontSize: '17px',
                 fontWeight: 600,
                 color: 'var(--text-primary)',
-                margin: 0,
+                marginBottom: 0,
               }}
             >
               Spillervarsler
-            </h3>
+            </SubSectionTitle>
             {criticalCount > 0 && (
               <span
                 style={{

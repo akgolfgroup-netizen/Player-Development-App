@@ -18,6 +18,7 @@ import {
   Gem,
 } from 'lucide-react';
 import { cn } from '../../lib/utils';
+import { SubSectionTitle } from '../typography/Headings';
 import { TierBadge } from './TierBadge';
 
 /**
@@ -249,15 +250,16 @@ export function AchievementBadge({
 
       {/* Badge Name */}
       <div className="text-center">
-        <h3
+        <SubSectionTitle
           className={cn(
             'font-display font-bold mb-1',
             sizing.title,
             unlocked ? 'text-tier-navy' : 'text-gray-500'
           )}
+          style={{ marginBottom: '0.25rem' }}
         >
           {name}
-        </h3>
+        </SubSectionTitle>
         <p
           className={cn(
             'leading-tight',

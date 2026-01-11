@@ -7,6 +7,7 @@ import React, { useState } from 'react';
 import { Send } from 'lucide-react';
 import Button from '../../../ui/primitives/Button';
 import Input from '../../../ui/primitives/Input';
+import { SectionTitle } from '../../../components/typography';
 
 type Priority = 'low' | 'normal' | 'high' | 'urgent';
 
@@ -70,7 +71,7 @@ const SupportTicketForm: React.FC<Props> = ({ onSubmit, isSubmitting = false, cl
 
   return (
     <form onSubmit={handleSubmit} className={`bg-white rounded-xl border border-tier-border-default p-6 ${className}`}>
-      <h2 className="text-xl font-semibold text-tier-navy mb-4">Ny supporthenvendelse</h2>
+      <SectionTitle style={{ marginBottom: '1rem' }}>Ny supporthenvendelse</SectionTitle>
 
       {/* Title */}
       <div className="mb-4">

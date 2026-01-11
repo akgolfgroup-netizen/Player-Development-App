@@ -14,6 +14,7 @@ import React, { useState, useEffect, useCallback } from 'react';
 import { usePaymentMethods } from '../../hooks/usePaymentMethods';
 import Button from '../../ui/primitives/Button';
 import StateCard from '../../ui/composites/StateCard';
+import { SectionTitle, SubSectionTitle } from '../../ui/components/typography';
 import { track } from '../../analytics/track';
 
 // ═══════════════════════════════════════════
@@ -204,7 +205,7 @@ export function PaymentMethodsManager({ className = '' }) {
       <div className={`${tw.container} ${className}`}>
         {/* Header */}
         <div className={tw.header}>
-          <h2 className={tw.title}>Payment Methods</h2>
+          <SectionTitle style={{ marginBottom: 0 }} className={tw.title}>Payment Methods</SectionTitle>
           <button onClick={() => setShowAddModal(true)} className={tw.addButton}>
             + Add Payment Method
           </button>
@@ -214,7 +215,7 @@ export function PaymentMethodsManager({ className = '' }) {
         {paymentMethods.length === 0 ? (
           <div className={tw.emptyState}>
             <div className={tw.emptyIcon}>💳</div>
-            <h3 className={tw.emptyTitle}>No Payment Methods</h3>
+            <SubSectionTitle style={{ marginBottom: 0 }} className={tw.emptyTitle}>No Payment Methods</SubSectionTitle>
             <p className={tw.emptyDescription}>
               Add a payment method to enable automatic payments and subscriptions
             </p>
@@ -262,7 +263,7 @@ export function PaymentMethodsManager({ className = '' }) {
       {showAddModal && (
         <div className={tw.modal} onClick={() => setShowAddModal(false)}>
           <div className={tw.modalCard} onClick={(e) => e.stopPropagation()}>
-            <h3 className={tw.modalTitle}>Add Payment Method</h3>
+            <SubSectionTitle style={{ marginBottom: 0 }} className={tw.modalTitle}>Add Payment Method</SubSectionTitle>
 
             <div className={tw.form}>
               <div>

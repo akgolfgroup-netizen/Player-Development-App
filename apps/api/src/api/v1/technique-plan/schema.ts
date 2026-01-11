@@ -26,6 +26,11 @@ export const createTaskSchema = z.object({
   targetMetrics: z.record(z.number()).optional(),
   priority: z.enum(['low', 'medium', 'high']).default('medium'),
   dueDate: z.string().datetime().optional(),
+  // P-System fields
+  pLevel: z.string().regex(/^P([1-9]|10)\.0$/).optional(),
+  repetitions: z.number().int().min(0).optional(),
+  priorityOrder: z.number().int().min(0).optional(),
+  imageUrls: z.array(z.string().url()).optional(),
 });
 
 export const updateTaskSchema = z.object({
@@ -49,6 +54,11 @@ export const updateTaskSchema = z.object({
   status: z.enum(['pending', 'in_progress', 'completed']).optional(),
   priority: z.enum(['low', 'medium', 'high']).optional(),
   dueDate: z.string().datetime().optional().nullable(),
+  // P-System fields
+  pLevel: z.string().regex(/^P([1-9]|10)\.0$/).optional().nullable(),
+  repetitions: z.number().int().min(0).optional(),
+  priorityOrder: z.number().int().min(0).optional(),
+  imageUrls: z.array(z.string().url()).optional(),
 });
 
 export const listTasksQuerySchema = z.object({
@@ -56,6 +66,7 @@ export const listTasksQuerySchema = z.object({
   status: z.enum(['pending', 'in_progress', 'completed']).optional(),
   technicalArea: z.string().optional(),
   creatorType: z.enum(['coach', 'player']).optional(),
+  pLevel: z.string().regex(/^P([1-9]|10)\.0$/).optional(),
   limit: z.coerce.number().int().min(1).max(100).default(50),
   offset: z.coerce.number().int().min(0).default(0),
 });

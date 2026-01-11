@@ -8,6 +8,7 @@
 import React, { useState, useEffect, useMemo, useCallback } from 'react';
 import { Users, TrendingUp, Award, ChevronDown, ChevronUp, RefreshCw } from 'lucide-react';
 import { useApi } from '../../services/api';
+import { SubSectionTitle } from '../typography/Headings';
 
 // =============================================================================
 // Types
@@ -481,14 +482,14 @@ export default function PeerComparisonWidget({
             <Users size={18} style={{ color: 'var(--accent)' }} />
           </div>
           <div>
-            <h3 style={{
+            <SubSectionTitle style={{
               fontSize: 16,
               fontWeight: 600,
               color: 'var(--text-primary)',
               margin: 0,
             }}>
               Peer Sammenligning
-            </h3>
+            </SubSectionTitle>
             <p style={{
               fontSize: 12,
               color: 'var(--text-secondary)',

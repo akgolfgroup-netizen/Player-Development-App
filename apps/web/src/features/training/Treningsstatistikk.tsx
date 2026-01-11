@@ -22,6 +22,7 @@ import {
 } from '../../components/shadcn';
 import { StreakBadge } from '../../components/shadcn/golf';
 import { cn } from 'lib/utils';
+import { SectionTitle, SubSectionTitle, CardTitle as TypographyCardTitle } from '../../ui/primitives/typography';
 
 // ============================================================================
 // TYPES
@@ -989,7 +990,7 @@ const RecentSessionsList: React.FC<RecentSessionsListProps> = ({ sessions, pyram
             style={{ backgroundColor: pyramid?.color || 'var(--text-secondary)' }}
           />
           <div className="flex-1 min-w-0">
-            <h4 className="text-sm font-medium text-text-primary truncate">{session.title}</h4>
+            <TypographyCardTitle style={{ marginBottom: 0 }} className="text-sm font-medium text-text-primary truncate">{session.title}</TypographyCardTitle>
             <p className="text-[11px] text-text-secondary">{session.date}</p>
           </div>
           <div className="text-right">
@@ -1171,7 +1172,7 @@ const AreaCard: React.FC<AreaCardProps> = ({
       <CardContent className="p-4">
         <div className="flex items-start justify-between mb-2">
           <div>
-            <h4 className="font-semibold text-text-primary text-sm">{area.label}</h4>
+            <TypographyCardTitle style={{ marginBottom: 0 }} className="font-semibold text-text-primary text-sm">{area.label}</TypographyCardTitle>
             <p className="text-[10px] text-text-secondary uppercase">{
               AREA_CATEGORIES.find(c => c.id === area.category)?.label
             }</p>
@@ -1783,7 +1784,7 @@ const Treningsstatistikk: React.FC<TreningsstatistikkProps> = ({
 
         <div className="flex items-center gap-2 mb-4">
           <Award size={20} className="text-achievement" />
-          <h2 className="text-lg font-bold text-text-primary">Elite Trener Innsikt</h2>
+          <SectionTitle style={{ marginBottom: 0 }}>Elite Trener Innsikt</SectionTitle>
           <Badge variant="outline" className="text-[10px] bg-achievement/10 text-achievement border-achievement/30">
             PRO
           </Badge>
@@ -1853,7 +1854,7 @@ const Treningsstatistikk: React.FC<TreningsstatistikkProps> = ({
         {/* Pyramid Level Tabs */}
         <Card>
           <CardContent className="p-4">
-            <h3 className="text-sm font-semibold text-text-primary mb-3">Treningskategorier</h3>
+            <SubSectionTitle style={{ marginBottom: '0.75rem' }} className="text-sm font-semibold text-text-primary">Treningskategorier</SubSectionTitle>
             <PyramidTabs
               selected={selectedPyramid}
               onSelect={setSelectedPyramid}
@@ -1906,9 +1907,9 @@ const Treningsstatistikk: React.FC<TreningsstatistikkProps> = ({
 
           return (
             <div key={category.id}>
-              <h3 className="text-sm font-semibold text-text-secondary uppercase tracking-wider mb-3">
+              <SubSectionTitle style={{ marginBottom: '0.75rem' }} className="text-sm font-semibold text-text-secondary uppercase tracking-wider">
                 {category.label}
-              </h3>
+              </SubSectionTitle>
               <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
                 {visibleAreas.map(area => {
                   const stats = filteredAreaStats[area.id];
@@ -1936,7 +1937,7 @@ const Treningsstatistikk: React.FC<TreningsstatistikkProps> = ({
           <Card>
             <CardContent className="p-8 text-center">
               <BarChart3 size={48} className="mx-auto mb-4 text-text-secondary opacity-30" />
-              <h3 className="text-lg font-semibold text-text-primary mb-2">Ingen data</h3>
+              <SubSectionTitle style={{ marginBottom: '0.5rem' }} className="text-lg font-semibold text-text-primary">Ingen data</SubSectionTitle>
               <p className="text-sm text-text-secondary">
                 Ingen treningsdata for valgt pyramidenivå. Prøv å velge "Alle" eller en annen kategori.
               </p>

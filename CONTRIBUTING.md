@@ -1,4 +1,4 @@
-# Contributing to TIER Golf Academy IUP Platform
+# Contributing to TIER Golf IUP Platform
 
 ## Development Setup
 

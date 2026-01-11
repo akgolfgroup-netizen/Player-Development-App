@@ -1,5 +1,5 @@
 /**
- * TIER Golf Academy - Ressurser Container
+ * TIER Golf - Ressurser Container
  * Design System v3.0 - Premium Light
  *
  * Knowledge resources with videos, articles, documents and links.

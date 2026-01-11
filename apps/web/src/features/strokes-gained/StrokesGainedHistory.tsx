@@ -10,6 +10,7 @@ import { useStrokesGainedTrends } from '../../hooks/useStrokesGained';
 import Button from '../../ui/primitives/Button';
 import { PageHeader } from '../../components/layout/PageHeader';
 import LoadingSpinner from '../../components/LoadingSpinner';
+import { SubSectionTitle } from '../../components/typography';
 
 interface Props {
   playerId: string;
@@ -67,7 +68,7 @@ const StrokesGainedHistory: React.FC<Props> = ({ playerId, className = '' }) => 
     return (
       <div className="bg-white rounded-xl border border-tier-border-default p-8 text-center">
         <div className="text-tier-error text-4xl mb-4">⚠️</div>
-        <h3 className="text-lg font-semibold text-tier-navy mb-2">Kunne ikke laste historikk</h3>
+        <SubSectionTitle style={{ marginBottom: 0 }}>Kunne ikke laste historikk</SubSectionTitle>
         <p className="text-tier-text-secondary mb-4">{error}</p>
         <Button variant="primary" onClick={refetch}>
           Prøv igjen
@@ -80,7 +81,7 @@ const StrokesGainedHistory: React.FC<Props> = ({ playerId, className = '' }) => 
     return (
       <div className="bg-white rounded-xl border border-tier-border-default p-8 text-center">
         <Calendar size={48} className="text-tier-text-secondary mx-auto mb-4" />
-        <h3 className="text-lg font-semibold text-tier-navy mb-2">Ingen historikk ennå</h3>
+        <SubSectionTitle style={{ marginBottom: 0 }}>Ingen historikk ennå</SubSectionTitle>
         <p className="text-tier-text-secondary">
           Når du har gjennomført flere tester over tid, vil trenden vises her.
         </p>

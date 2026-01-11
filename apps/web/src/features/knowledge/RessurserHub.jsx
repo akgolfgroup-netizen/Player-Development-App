@@ -1,5 +1,5 @@
 /**
- * TIER Golf Academy - Ressurser Hub
+ * TIER Golf - Ressurser Hub
  * Navigation hub for resources
  */
 
@@ -9,6 +9,7 @@ import { BookmarkCheck, BookOpen } from 'lucide-react';
 import PageHeader from '../../ui/raw-blocks/PageHeader.raw';
 import PageContainer from '../../ui/raw-blocks/PageContainer.raw';
 import { Card } from '../../components/shadcn/card';
+import { SubSectionTitle } from '../../components/typography';
 
 const RessurserHub = () => {
   const navigate = useNavigate();
@@ -31,9 +32,9 @@ const RessurserHub = () => {
                 <BookmarkCheck size={32} className="text-tier-navy" />
               </div>
               <div>
-                <h3 className="text-xl font-semibold text-tier-navy mb-2">
+                <SubSectionTitle className="text-xl font-semibold text-tier-navy mb-2">
                   Mine ressurser
-                </h3>
+                </SubSectionTitle>
                 <p className="text-sm text-tier-text-secondary">
                   Lagret av deg eller tilsendt fra trenerteam
                 </p>
@@ -51,9 +52,9 @@ const RessurserHub = () => {
                 <BookOpen size={32} className="text-tier-success" />
               </div>
               <div>
-                <h3 className="text-xl font-semibold text-tier-navy mb-2">
+                <SubSectionTitle className="text-xl font-semibold text-tier-navy mb-2">
                   Alle ressurser
-                </h3>
+                </SubSectionTitle>
                 <p className="text-sm text-tier-text-secondary">
                   Kunnskapsbibliotek og ressurser
                 </p>

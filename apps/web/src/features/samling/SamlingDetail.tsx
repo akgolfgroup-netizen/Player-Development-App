@@ -1,5 +1,5 @@
 /**
- * TIER Golf Academy - Samling Detail
+ * TIER Golf - Samling Detail
  * Detail view with tabs for info, participants, sessions, and calendar
  */
 
@@ -22,6 +22,7 @@ import {
   X,
 } from 'lucide-react';
 import api from '../../services/api';
+import { PageTitle, SectionTitle, SubSectionTitle } from '../../components/typography';
 
 interface Player {
   id: string;
@@ -300,14 +301,9 @@ const SamlingDetail: React.FC = () => {
         }}>
           <div>
             <div style={{ display: 'flex', alignItems: 'center', gap: '12px', marginBottom: '8px' }}>
-              <h1 style={{
-                fontSize: '24px',
-                fontWeight: 600,
-                color: 'var(--text-primary)',
-                margin: 0
-              }}>
+              <PageTitle style={{ marginBottom: 0 }}>
                 {samling.name}
-              </h1>
+              </PageTitle>
               <span
                 style={{
                   padding: '4px 10px',
@@ -417,9 +413,9 @@ const SamlingDetail: React.FC = () => {
               borderRadius: '12px',
               padding: '20px',
             }}>
-              <h3 style={{ fontSize: '14px', fontWeight: 600, color: 'var(--text-primary)', margin: '0 0 12px' }}>
+              <SubSectionTitle style={{ margin: '0 0 12px' }}>
                 Beskrivelse
-              </h3>
+              </SubSectionTitle>
               <p style={{ fontSize: '14px', color: 'var(--text-secondary)', margin: 0, whiteSpace: 'pre-wrap' }}>
                 {samling.description}
               </p>
@@ -437,10 +433,10 @@ const SamlingDetail: React.FC = () => {
               borderRadius: '12px',
               padding: '20px',
             }}>
-              <h3 style={{ fontSize: '14px', fontWeight: 600, color: 'var(--text-primary)', margin: '0 0 12px', display: 'flex', alignItems: 'center', gap: '8px' }}>
+              <SubSectionTitle style={{ margin: '0 0 12px', display: 'flex', alignItems: 'center', gap: '8px' }}>
                 <Calendar size={16} />
                 Datoer
-              </h3>
+              </SubSectionTitle>
               <p style={{ fontSize: '14px', color: 'var(--text-secondary)', margin: '0 0 4px' }}>
                 <strong>Start:</strong> {formatDate(samling.startDate)}
               </p>
@@ -455,10 +451,10 @@ const SamlingDetail: React.FC = () => {
                 borderRadius: '12px',
                 padding: '20px',
               }}>
-                <h3 style={{ fontSize: '14px', fontWeight: 600, color: 'var(--text-primary)', margin: '0 0 12px', display: 'flex', alignItems: 'center', gap: '8px' }}>
+                <SubSectionTitle style={{ margin: '0 0 12px', display: 'flex', alignItems: 'center', gap: '8px' }}>
                   <MapPin size={16} />
                   Lokasjon
-                </h3>
+                </SubSectionTitle>
                 {samling.venue && (
                   <p style={{ fontSize: '14px', color: 'var(--text-secondary)', margin: '0 0 4px' }}>
                     <strong>Sted:</strong> {samling.venue}
@@ -491,9 +487,9 @@ const SamlingDetail: React.FC = () => {
                   borderRadius: '12px',
                   padding: '20px',
                 }}>
-                  <h3 style={{ fontSize: '14px', fontWeight: 600, color: 'var(--text-primary)', margin: '0 0 12px' }}>
+                  <SubSectionTitle style={{ margin: '0 0 12px' }}>
                     Overnatting
-                  </h3>
+                  </SubSectionTitle>
                   <p style={{ fontSize: '14px', color: 'var(--text-secondary)', margin: 0, whiteSpace: 'pre-wrap' }}>
                     {samling.accommodation}
                   </p>
@@ -505,9 +501,9 @@ const SamlingDetail: React.FC = () => {
                   borderRadius: '12px',
                   padding: '20px',
                 }}>
-                  <h3 style={{ fontSize: '14px', fontWeight: 600, color: 'var(--text-primary)', margin: '0 0 12px' }}>
+                  <SubSectionTitle style={{ margin: '0 0 12px' }}>
                     Transport
-                  </h3>
+                  </SubSectionTitle>
                   <p style={{ fontSize: '14px', color: 'var(--text-secondary)', margin: 0, whiteSpace: 'pre-wrap' }}>
                     {samling.transportInfo}
                   </p>
@@ -523,9 +519,9 @@ const SamlingDetail: React.FC = () => {
               borderRadius: '12px',
               padding: '20px',
             }}>
-              <h3 style={{ fontSize: '14px', fontWeight: 600, color: 'var(--text-primary)', margin: '0 0 12px' }}>
+              <SubSectionTitle style={{ margin: '0 0 12px' }}>
                 Notater
-              </h3>
+              </SubSectionTitle>
               <p style={{ fontSize: '14px', color: 'var(--text-secondary)', margin: 0, whiteSpace: 'pre-wrap' }}>
                 {samling.notes}
               </p>
@@ -573,9 +569,9 @@ const SamlingDetail: React.FC = () => {
               borderRadius: '12px',
             }}>
               <Users size={48} style={{ color: 'var(--text-tertiary)', marginBottom: '16px' }} />
-              <h3 style={{ color: 'var(--text-primary)', margin: '0 0 8px' }}>
+              <SubSectionTitle style={{ marginBottom: '8px' }}>
                 Ingen deltakere enna
-              </h3>
+              </SubSectionTitle>
               <p style={{ color: 'var(--text-secondary)', margin: 0 }}>
                 Legg til spillere for a invitere dem til samlingen
               </p>
@@ -707,9 +703,9 @@ const SamlingDetail: React.FC = () => {
                   alignItems: 'center',
                   marginBottom: '20px',
                 }}>
-                  <h2 style={{ margin: 0, fontSize: '18px', fontWeight: 600, color: 'var(--text-primary)' }}>
+                  <SectionTitle style={{ marginBottom: 0 }}>
                     Legg til deltakere
-                  </h2>
+                  </SectionTitle>
                   <button
                     onClick={() => {
                       setShowAddParticipants(false);
@@ -865,9 +861,9 @@ const SamlingDetail: React.FC = () => {
               borderRadius: '12px',
             }}>
               <Clock size={48} style={{ color: 'var(--text-tertiary)', marginBottom: '16px' }} />
-              <h3 style={{ color: 'var(--text-primary)', margin: '0 0 8px' }}>
+              <SubSectionTitle style={{ marginBottom: '8px' }}>
                 Ingen okter enna
-              </h3>
+              </SubSectionTitle>
               <p style={{ color: 'var(--text-secondary)', margin: 0 }}>
                 Legg til treningsokter for samlingen
               </p>
@@ -967,9 +963,9 @@ const SamlingDetail: React.FC = () => {
                   alignItems: 'center',
                   marginBottom: '20px',
                 }}>
-                  <h2 style={{ margin: 0, fontSize: '18px', fontWeight: 600, color: 'var(--text-primary)' }}>
+                  <SectionTitle style={{ marginBottom: 0 }}>
                     Legg til treningsokt
-                  </h2>
+                  </SectionTitle>
                   <button
                     onClick={() => {
                       setShowAddSession(false);
@@ -1223,9 +1219,9 @@ const SamlingDetail: React.FC = () => {
           borderRadius: '12px',
         }}>
           <Calendar size={48} style={{ color: 'var(--text-tertiary)', marginBottom: '16px' }} />
-          <h3 style={{ color: 'var(--text-primary)', margin: '0 0 8px' }}>
+          <SubSectionTitle style={{ marginBottom: '8px' }}>
             Kalendervisning
-          </h3>
+          </SubSectionTitle>
           <p style={{ color: 'var(--text-secondary)', margin: 0 }}>
             Kalendervisning kommer snart
           </p>

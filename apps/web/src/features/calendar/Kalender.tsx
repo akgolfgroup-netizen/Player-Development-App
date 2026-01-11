@@ -1,6 +1,6 @@
 // @ts-nocheck
 /**
- * TIER Golf Academy - Kalender
+ * TIER Golf - Kalender
  *
  * Archetype: C - Dashboard/Calendar Page
  * Purpose: Calendar with shadcn/ui components

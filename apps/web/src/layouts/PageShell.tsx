@@ -1,7 +1,7 @@
 /**
  * ============================================================
  * PageShell - Standardisert sidelayout
- * TIER Golf Academy Design System v3.0 - Premium Light
+ * TIER Golf Design System v3.0 - Premium Light
  * ============================================================
  *
  * Felles layout-komponent som alle sider i spillerportalen bruker.
@@ -27,6 +27,7 @@
 import React from 'react';
 import ProfileDropdown from '../components/layout/ProfileDropdown';
 import { useAuth } from '../contexts/AuthContext';
+import { PageTitle, SubSectionTitle } from '../components/typography';
 
 // ────────────────────────────────────────────────────────────
 // Spacing constants (CSS custom properties referanse)
@@ -134,9 +135,9 @@ const EmptyState = ({ title, description, cta }: EmptyStateProps) => (
         <path d="M12 8v4m0 4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
       </svg>
     </div>
-    <h3 className="text-lg font-semibold text-ak-text-primary m-0">
+    <SubSectionTitle style={{ marginBottom: 0 }}>
       {title}
-    </h3>
+    </SubSectionTitle>
     {description && (
       <p className="text-sm text-ak-text-secondary mt-2 max-w-[400px]">
         {description}
@@ -168,9 +169,9 @@ const ErrorState = ({ message = 'Noe gikk galt', onRetry }: ErrorStateProps) => 
         <path d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z" />
       </svg>
     </div>
-    <h3 className="text-lg font-semibold text-ak-text-primary m-0">
+    <SubSectionTitle style={{ marginBottom: 0 }}>
       Feil oppstod
-    </h3>
+    </SubSectionTitle>
     <p className="text-sm text-ak-text-secondary mt-2 max-w-[400px]">
       {message}
     </p>
@@ -269,9 +270,9 @@ export default function PageShell({
         {/* Header */}
         <header className="flex items-start justify-between mb-6 flex-wrap gap-4">
           <div>
-            <h1 className={`font-bold text-ak-text-primary m-0 leading-tight ${isMobile ? 'text-2xl' : 'text-[28px]'}`}>
+            <PageTitle className={`font-bold text-ak-text-primary leading-tight ${isMobile ? 'text-2xl' : 'text-[28px]'}`} style={{ marginBottom: 0 }}>
               {title}
-            </h1>
+            </PageTitle>
             {subtitle && (
               <p className="text-sm text-ak-text-secondary mt-1 mb-0">
                 {subtitle}

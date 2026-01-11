@@ -1,5 +1,5 @@
 /**
- * TIER Golf Academy - Coach Dashboard Widgets
+ * TIER Golf - Coach Dashboard Widgets
  * Export all dashboard widget components
  */
 

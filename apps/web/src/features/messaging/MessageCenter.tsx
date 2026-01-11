@@ -1,6 +1,6 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 /**
- * TIER Golf Academy - Message Center
+ * TIER Golf - Message Center
  * Design System v3.0 - Premium Light
  *
  * Hovedkomponent for meldingssystemet.
@@ -345,9 +345,9 @@ export default function MessageCenter({ userId, filterType: initialFilterType }:
         {filteredConversations.length === 0 ? (
           <div className="flex flex-col items-center justify-center py-12 px-4 text-center">
             <MessageSquare className="w-12 h-12 text-tier-text-tertiary mb-4" />
-            <h3 className="text-lg font-semibold text-tier-navy mb-2">
+            <SubSectionTitle style={{ marginBottom: 0 }} className="text-lg font-semibold text-tier-navy mb-2">
               Ingen meldinger
-            </h3>
+            </SubSectionTitle>
             <p className="text-sm text-tier-text-tertiary mb-4 max-w-[320px]">
               {searchQuery
                 ? 'Ingen samtaler matcher søket ditt'

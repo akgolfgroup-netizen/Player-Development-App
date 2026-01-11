@@ -18,6 +18,7 @@ import {
   FileText,
   Target
 } from 'lucide-react';
+import { SubSectionTitle, CardTitle } from '../../components/typography/Headings';
 import {
   LineChart,
   Line,
@@ -64,7 +65,7 @@ function OversiktTab() {
 
       {/* Category Progress */}
       <div className="bg-white rounded-xl border border-tier-border-default p-6">
-        <h3 className="text-lg font-semibold text-tier-navy mb-4">Fremgang mot kategori B</h3>
+        <SubSectionTitle style={{ marginBottom: 0 }} className="text-lg font-semibold text-tier-navy mb-4">Fremgang mot kategori B</SubSectionTitle>
         <div className="space-y-4">
           <div>
             <div className="flex items-center justify-between mb-2">
@@ -110,7 +111,7 @@ function OversiktTab() {
 
       {/* Recent Tests */}
       <div className="bg-white rounded-xl border border-tier-border-default p-6">
-        <h3 className="text-lg font-semibold text-tier-navy mb-4">Siste tester</h3>
+        <SubSectionTitle style={{ marginBottom: 0 }} className="text-lg font-semibold text-tier-navy mb-4">Siste tester</SubSectionTitle>
         <div className="space-y-3">
           <div className="flex items-center gap-4 p-4 border border-tier-border-default rounded-lg hover:bg-tier-surface-base transition-colors cursor-pointer">
             <div className="w-12 h-12 bg-tier-success-light rounded-full flex items-center justify-center">
@@ -203,7 +204,7 @@ function ResultaterTab() {
 
       {/* Test Results Table */}
       <div className="bg-white rounded-xl border border-tier-border-default p-6 overflow-x-auto">
-        <h3 className="text-lg font-semibold text-tier-navy mb-4">Testresultater</h3>
+        <SubSectionTitle style={{ marginBottom: 0 }} className="text-lg font-semibold text-tier-navy mb-4">Testresultater</SubSectionTitle>
         <table className="w-full">
           <thead>
             <tr className="border-b border-tier-border-default">
@@ -254,7 +255,7 @@ function ResultaterTab() {
 
       {/* Performance Chart */}
       <div className="bg-white rounded-xl border border-tier-border-default p-6">
-        <h3 className="text-lg font-semibold text-tier-navy mb-4">Testprestasjoner over tid</h3>
+        <SubSectionTitle style={{ marginBottom: 0 }} className="text-lg font-semibold text-tier-navy mb-4">Testprestasjoner over tid</SubSectionTitle>
         <ResponsiveContainer width="100%" height={320}>
           <LineChart data={mockTestPerformance}>
             <CartesianGrid strokeDasharray="3 3" stroke="var(--tier-border-default)" />
@@ -289,7 +290,7 @@ function KravTab() {
     <div className="space-y-6">
       {/* Category Selector */}
       <div className="bg-white rounded-xl border border-tier-border-default p-6">
-        <h3 className="text-lg font-semibold text-tier-navy mb-4">Velg kategori</h3>
+        <SubSectionTitle style={{ marginBottom: 0 }} className="text-lg font-semibold text-tier-navy mb-4">Velg kategori</SubSectionTitle>
         <div className="flex gap-2">
           <button className="px-4 py-2 bg-tier-surface-base text-tier-text-secondary rounded-lg text-sm font-medium hover:bg-tier-info-light">
             D
@@ -312,13 +313,13 @@ function KravTab() {
       {/* Requirements for Category B */}
       <div className="bg-white rounded-xl border border-tier-border-default p-6">
         <div className="flex items-center justify-between mb-6">
-          <h3 className="text-lg font-semibold text-tier-navy">Krav for kategori B</h3>
+          <SubSectionTitle style={{ marginBottom: 0 }} className="text-lg font-semibold text-tier-navy">Krav for kategori B</SubSectionTitle>
           <span className="text-sm text-tier-text-secondary">18/25 krav oppfylt (72%)</span>
         </div>
 
         {/* Putting Requirements */}
         <div className="mb-6">
-          <h4 className="text-md font-semibold text-tier-navy mb-3">Putting (P1-P5)</h4>
+          <CardTitle style={{ marginBottom: 0 }} className="text-md font-semibold text-tier-navy mb-3">Putting (P1-P5)</CardTitle>
           <div className="space-y-2">
             <div className="flex items-center gap-3 p-3 bg-tier-success-light border border-tier-success rounded-lg">
               <span className="text-tier-success">✓</span>
@@ -348,7 +349,7 @@ function KravTab() {
 
         {/* Chipping Requirements */}
         <div className="mb-6">
-          <h4 className="text-md font-semibold text-tier-navy mb-3">Chipping (CH1-CH5)</h4>
+          <CardTitle style={{ marginBottom: 0 }} className="text-md font-semibold text-tier-navy mb-3">Chipping (CH1-CH5)</CardTitle>
           <div className="space-y-2">
             <div className="flex items-center gap-3 p-3 bg-tier-success-light border border-tier-success rounded-lg">
               <span className="text-tier-success">✓</span>
@@ -370,7 +371,7 @@ function KravTab() {
 
         {/* Full Swing Requirements */}
         <div>
-          <h4 className="text-md font-semibold text-tier-navy mb-3">Full Swing (F1-F5)</h4>
+          <CardTitle style={{ marginBottom: 0 }} className="text-md font-semibold text-tier-navy mb-3">Full Swing (F1-F5)</CardTitle>
           <div className="space-y-2">
             <div className="flex items-center gap-3 p-3 bg-tier-surface-base border border-tier-border-default rounded-lg">
               <span className="text-tier-text-secondary">○</span>
@@ -390,7 +391,7 @@ function KravTab() {
             <Target size={24} className="text-white" />
           </div>
           <div>
-            <h4 className="text-sm font-semibold text-tier-navy mb-1">Fokusområder for kategori B</h4>
+            <CardTitle style={{ marginBottom: 0 }} className="text-sm font-semibold text-tier-navy mb-1">Fokusområder for kategori B</CardTitle>
             <p className="text-sm text-tier-text-secondary mb-3">
               Du mangler 7 krav for å kvalifisere til kategori B. Prioriter testing på:
             </p>

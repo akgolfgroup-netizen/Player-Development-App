@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { PageTitle, SectionTitle, SubSectionTitle, CardTitle } from '../typography';
 
 // ============================================================================
-// TIER Golf Academy - LEGACY DESIGN SYSTEM ARCHIVE
+// TIER Golf - LEGACY DESIGN SYSTEM ARCHIVE
 // Version: 1.0 | December 2025
 // NOTE: This file showcases the OLD AK Golf design system (Navy/Gold theme)
 // For current TIER Golf Design System v3.0, see tier-tokens.css

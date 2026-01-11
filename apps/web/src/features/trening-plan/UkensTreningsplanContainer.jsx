@@ -18,6 +18,7 @@ import { PageHeader } from '../../components/layout/PageHeader';
 import { AICoachGuide } from '../ai-coach';
 import { GUIDE_PRESETS } from '../ai-coach/types';
 import { CalendarWeekGrid } from '../calendar/components/enhanced/CalendarWeekGrid';
+import { SectionTitle } from '../../ui/primitives/typography';
 
 // =============================================================================
 // AK HIERARCHY CONFIGURATION (from AK_GOLF_KATEGORI_HIERARKI_v2.0)
@@ -608,9 +609,9 @@ const SessionSidebarDrawer = ({ isOpen, session, onClose, allSessions, onSession
       >
         {/* Header */}
         <div className="flex items-center justify-between py-4 px-5 border-b border-tier-border-default">
-          <h2 className="text-sm font-semibold text-tier-navy m-0">
+          <SectionTitle style={{ marginBottom: 0 }}>
             {session ? 'Øktdetaljer' : 'Oversikt'}
-          </h2>
+          </SectionTitle>
           <button
             onClick={onClose}
             aria-label="Lukk sidebar"

@@ -10,6 +10,7 @@ import { useAuth } from '../../contexts/AuthContext';
 import Card from '../../ui/primitives/Card';
 import Button from '../../ui/primitives/Button';
 import PageHeader from '../../components/layout/PageHeader';
+import { SectionTitle, SubSectionTitle } from '../../components/typography';
 
 const SeasonManagementPage: React.FC = () => {
   const { user } = useAuth();
@@ -57,7 +58,7 @@ const SeasonManagementPage: React.FC = () => {
           <Card>
             <div className="p-12 text-center">
               <Calendar size={64} className="mx-auto text-tier-text-tertiary mb-4" />
-              <h3 className="text-xl font-bold text-tier-navy mb-2">Ingen sesonger planlagt</h3>
+              <SubSectionTitle className="mb-2">Ingen sesonger planlagt</SubSectionTitle>
               <p className="text-tier-text-secondary mb-6">Start med å lage din første treningssesong</p>
               <Button variant="primary" leftIcon={<Plus size={16} />} onClick={() => setShowCreateModal(true)}>
                 Opprett første sesong
@@ -71,7 +72,7 @@ const SeasonManagementPage: React.FC = () => {
                 <div className="p-6">
                   <div className="flex items-start justify-between mb-4">
                     <div>
-                      <h3 className="text-xl font-bold text-tier-navy mb-1">{season.name}</h3>
+                      <SubSectionTitle className="mb-1">{season.name}</SubSectionTitle>
                       <p className="text-sm text-tier-text-secondary">
                         {new Date(season.startDate).toLocaleDateString('no-NO')} - {new Date(season.endDate).toLocaleDateString('no-NO')}
                       </p>
@@ -144,7 +145,7 @@ const CreateSeasonModal: React.FC<CreateSeasonModalProps> = ({ playerId, onClose
   return (
     <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center p-4 z-50">
       <div className="bg-white rounded-xl max-w-md w-full p-6">
-        <h2 className="text-xl font-bold text-tier-navy mb-4">Ny sesong</h2>
+        <SectionTitle className="mb-4">Ny sesong</SectionTitle>
         <form onSubmit={handleSubmit} className="space-y-4">
           <div>
             <label className="block text-sm font-medium text-tier-navy mb-1">Navn</label>

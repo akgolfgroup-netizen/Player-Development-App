@@ -1,5 +1,5 @@
 /**
- * TIER Golf Academy Landing Page
+ * TIER Golf Landing Page
  * Premium hero section with multi-device app preview
  * MacBook Pro + iPhone + Apple Watch mockups
  */
@@ -8,6 +8,7 @@ import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { Menu, X, ChevronRight, Calendar, TrendingUp, Trophy, Target, Zap } from 'lucide-react';
 import { TIERGolfFullLogo } from '../../components/branding/TIERGolfFullLogo';
+import { PageTitle, SectionTitle, SubSectionTitle, CardTitle } from '../../components/typography';
 
 const navigation = [
   { name: 'Om oss', href: '#features' },
@@ -51,17 +52,17 @@ function MacBookMockup() {
                 {/* SG Overview Card */}
                 <div className="bg-white rounded-xl p-4 shadow-sm h-[45%]">
                   <div className="flex items-center justify-between mb-2">
-                    <h3 className="text-sm font-semibold text-gray-900">Strokes Gained Analyse</h3>
+                    <SubSectionTitle style={{ marginBottom: 0 }} className="text-sm font-semibold text-gray-900">Strokes Gained Analyse</SubSectionTitle>
                     <span className="text-[10px] px-2 py-0.5 bg-status-success/10 text-status-success rounded-full font-medium">+2.3 denne mnd</span>
                   </div>
                   <div className="flex items-end gap-4 h-[calc(100%-32px)]">
                     {/* Bar Chart */}
                     <div className="flex-1 flex items-end justify-around gap-2 h-full pb-4">
                       {[
-                        { label: 'Tee', value: 65, color: '#1B4D3E' },
+                        { label: 'Tee', value: 65, color: '#0A2540' },
                         { label: 'Approach', value: 80, color: '#C9A227' },
-                        { label: 'Short', value: 45, color: '#0a2540' },
-                        { label: 'Putting', value: 70, color: '#4ECDC4' },
+                        { label: 'Short', value: 45, color: '#16A34A' },
+                        { label: 'Putting', value: 70, color: '#2563EB' },
                       ].map((item) => (
                         <div key={item.label} className="flex flex-col items-center gap-1 flex-1">
                           <div
@@ -89,7 +90,7 @@ function MacBookMockup() {
                 {/* Trend Chart */}
                 <div className="bg-white rounded-xl p-4 shadow-sm h-[45%]">
                   <div className="flex items-center justify-between mb-2">
-                    <h3 className="text-sm font-semibold text-gray-900">Handicap Utvikling</h3>
+                    <SubSectionTitle style={{ marginBottom: 0 }} className="text-sm font-semibold text-gray-900">Handicap Utvikling</SubSectionTitle>
                     <div className="flex gap-2">
                       <span className="text-[9px] px-2 py-0.5 bg-tier-navy text-white rounded font-medium">6 mnd</span>
                       <span className="text-[9px] px-2 py-0.5 bg-gray-100 text-gray-600 rounded font-medium">1 år</span>
@@ -98,8 +99,8 @@ function MacBookMockup() {
                   <svg viewBox="0 0 400 100" className="w-full h-[calc(100%-40px)]">
                     <defs>
                       <linearGradient id="areaGradient" x1="0%" y1="0%" x2="0%" y2="100%">
-                        <stop offset="0%" style={{ stopColor: '#1B4D3E', stopOpacity: 0.3 }} />
-                        <stop offset="100%" style={{ stopColor: '#1B4D3E', stopOpacity: 0 }} />
+                        <stop offset="0%" style={{ stopColor: '#0A2540', stopOpacity: 0.3 }} />
+                        <stop offset="100%" style={{ stopColor: '#0A2540', stopOpacity: 0 }} />
                       </linearGradient>
                     </defs>
                     {/* Area fill */}
@@ -111,20 +112,20 @@ function MacBookMockup() {
                     <path
                       d="M 20 80 L 80 75 L 140 70 L 200 60 L 260 55 L 320 45 L 380 35"
                       fill="none"
-                      stroke="#1B4D3E"
+                      stroke="#0A2540"
                       strokeWidth="2.5"
                       strokeLinecap="round"
                     />
                     {/* Data points */}
-                    <circle cx="380" cy="35" r="4" fill="#1B4D3E" />
-                    <circle cx="380" cy="35" r="7" fill="#1B4D3E" fillOpacity="0.2" />
+                    <circle cx="380" cy="35" r="4" fill="#0A2540" />
+                    <circle cx="380" cy="35" r="7" fill="#0A2540" fillOpacity="0.2" />
                     {/* Labels */}
                     <text x="20" y="95" fontSize="8" fill="#9ca3af">Aug</text>
                     <text x="120" y="95" fontSize="8" fill="#9ca3af">Okt</text>
                     <text x="220" y="95" fontSize="8" fill="#9ca3af">Des</text>
                     <text x="340" y="95" fontSize="8" fill="#9ca3af">Jan</text>
                     {/* HCP values */}
-                    <text x="385" y="38" fontSize="9" fill="#1B4D3E" fontWeight="600">8.2</text>
+                    <text x="385" y="38" fontSize="9" fill="#0A2540" fontWeight="600">8.2</text>
                     <text x="5" y="83" fontSize="9" fill="#9ca3af">12.4</text>
                   </svg>
                 </div>
@@ -157,10 +158,10 @@ function MacBookMockup() {
 
                 {/* Goals */}
                 <div className="bg-white rounded-xl p-3 shadow-sm">
-                  <h4 className="text-[10px] font-semibold text-gray-900 mb-2 flex items-center gap-1">
+                  <CardTitle className="text-[10px] font-semibold text-gray-900 mb-2 flex items-center gap-1">
                     <Target size={10} className="text-tier-gold" />
                     Aktive mål
-                  </h4>
+                  </CardTitle>
                   <div className="space-y-2">
                     <div className="flex items-center gap-2">
                       <div className="flex-1 h-1.5 bg-gray-100 rounded-full overflow-hidden">
@@ -174,10 +175,10 @@ function MacBookMockup() {
 
                 {/* Upcoming */}
                 <div className="bg-white rounded-xl p-3 shadow-sm">
-                  <h4 className="text-[10px] font-semibold text-gray-900 mb-2 flex items-center gap-1">
+                  <CardTitle className="text-[10px] font-semibold text-gray-900 mb-2 flex items-center gap-1">
                     <Calendar size={10} className="text-tier-navy" />
                     Neste økt
-                  </h4>
+                  </CardTitle>
                   <div className="bg-tier-navy/5 rounded-lg p-2">
                     <div className="text-[9px] font-medium text-tier-navy">I dag 14:00</div>
                     <div className="text-[8px] text-gray-500">Putting trening</div>
@@ -306,7 +307,7 @@ function IPhoneMockup() {
                     <circle cx="28" cy="28" r="24" stroke="#e5e7eb" strokeWidth="4" fill="none" />
                     <circle
                       cx="28" cy="28" r="24"
-                      stroke="#1B4D3E" strokeWidth="4" fill="none"
+                      stroke="#0A2540" strokeWidth="4" fill="none"
                       strokeLinecap="round"
                       strokeDasharray={`${0.75 * 151} 151`}
                     />
@@ -533,11 +534,11 @@ export function SplitScreenLanding() {
             </div>
 
             {/* Headline */}
-            <h1 className="text-5xl font-semibold tracking-tight text-gray-900 sm:text-7xl" style={{ textWrap: 'balance' }}>
+            <PageTitle style={{ marginBottom: 0, textWrap: 'balance' }} className="text-5xl font-semibold tracking-tight text-gray-900 sm:text-7xl">
               Utvikle ditt{' '}
               <span className="text-tier-navy">golfspill</span>{' '}
               systematisk
-            </h1>
+            </PageTitle>
 
             {/* Description */}
             <p className="mt-8 text-lg font-medium text-gray-500 sm:text-xl leading-8 max-w-2xl mx-auto" style={{ textWrap: 'pretty' }}>
@@ -612,7 +613,7 @@ export function SplitScreenLanding() {
       <div id="features" className="bg-gray-50 py-24 sm:py-32">
         <div className="mx-auto max-w-7xl px-6 lg:px-8">
           <div className="mx-auto max-w-2xl lg:text-center">
-            <h2 className="text-base font-semibold leading-7 text-tier-navy">Alt du trenger</h2>
+            <SectionTitle style={{ marginBottom: 0 }} className="text-base font-semibold leading-7 text-tier-navy">Alt du trenger</SectionTitle>
             <p className="mt-2 text-4xl font-semibold tracking-tight text-gray-900 sm:text-5xl" style={{ textWrap: 'balance' }}>
               Verktøy for systematisk golfutvikling
             </p>
@@ -658,9 +659,9 @@ export function SplitScreenLanding() {
       <div className="bg-tier-navy">
         <div className="px-6 py-24 sm:px-6 sm:py-32 lg:px-8">
           <div className="mx-auto max-w-2xl text-center">
-            <h2 className="text-4xl font-semibold tracking-tight text-white sm:text-5xl" style={{ textWrap: 'balance' }}>
+            <SectionTitle style={{ marginBottom: 0, textWrap: 'balance' }} className="text-4xl font-semibold tracking-tight text-white sm:text-5xl">
               Klar for å ta golfspillet ditt til neste nivå?
-            </h2>
+            </SectionTitle>
             <p className="mx-auto mt-6 max-w-xl text-lg leading-8 text-tier-navy-light/60">
               Bli med i TIER Golf og start din reise mot bedre golf i dag.
             </p>

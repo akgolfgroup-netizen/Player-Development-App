@@ -9,6 +9,7 @@ import { useCreateSupportTicket } from '../../hooks/useSupport';
 import SupportTicketForm from './components/SupportTicketForm';
 import { PageHeader } from '../../components/layout/PageHeader';
 import Button from '../../ui/primitives/Button';
+import { SubSectionTitle, CardTitle } from '../../components/typography';
 
 const SupportPage: React.FC = () => {
   const { createTicket, loading } = useCreateSupportTicket();
@@ -49,9 +50,9 @@ const SupportPage: React.FC = () => {
             <div className="flex items-start gap-4">
               <CheckCircle size={24} className="text-tier-success flex-shrink-0 mt-1" />
               <div>
-                <h3 className="text-lg font-semibold text-tier-navy mb-2">
+                <SubSectionTitle style={{ marginBottom: 0 }}>
                   Henvendelse sendt!
-                </h3>
+                </SubSectionTitle>
                 <p className="text-sm text-tier-text-secondary mb-2">
                   Vi har mottatt din henvendelse og vil svare deg så snart som mulig.
                 </p>
@@ -68,33 +69,33 @@ const SupportPage: React.FC = () => {
 
         {/* FAQ/Help section */}
         <div className="bg-white rounded-xl border border-tier-border-default p-6">
-          <h3 className="text-lg font-semibold text-tier-navy mb-4">
+          <SubSectionTitle style={{ marginBottom: '1rem' }}>
             Ofte stilte sporsmal
-          </h3>
+          </SubSectionTitle>
 
           <div className="space-y-4">
             <div className="p-4 bg-tier-surface-base rounded-lg">
-              <h4 className="font-semibold text-tier-navy mb-2">
+              <CardTitle style={{ marginBottom: '0.5rem' }}>
                 Hvor raskt får jeg svar?
-              </h4>
+              </CardTitle>
               <p className="text-sm text-tier-text-secondary">
                 Vi svarer normalt innen 24 timer på hverdager. Kritiske henvendelser prioriteres og behandles raskere.
               </p>
             </div>
 
             <div className="p-4 bg-tier-surface-base rounded-lg">
-              <h4 className="font-semibold text-tier-navy mb-2">
+              <CardTitle style={{ marginBottom: '0.5rem' }}>
                 Hva skjer etter at jeg sender henvendelsen?
-              </h4>
+              </CardTitle>
               <p className="text-sm text-tier-text-secondary">
                 Du får en e-post med saksnummeret ditt. Vi undersøker saken og kommer tilbake med en løsning eller spørsmål for å hjelpe deg videre.
               </p>
             </div>
 
             <div className="p-4 bg-tier-surface-base rounded-lg">
-              <h4 className="font-semibold text-tier-navy mb-2">
+              <CardTitle style={{ marginBottom: '0.5rem' }}>
                 Kan jeg følge statusen på saken min?
-              </h4>
+              </CardTitle>
               <p className="text-sm text-tier-text-secondary">
                 Ja, du vil motta e-postvarsler når statusen på saken din oppdateres. Du kan også bruke saksnummeret til å spørre om status.
               </p>
@@ -107,9 +108,9 @@ const SupportPage: React.FC = () => {
           <div className="flex items-start gap-4">
             <AlertCircle size={24} className="text-tier-info flex-shrink-0 mt-1" />
             <div>
-              <h3 className="font-semibold text-tier-navy mb-2">
+              <SubSectionTitle style={{ marginBottom: '0.5rem' }}>
                 Trenger du umiddelbar hjelp?
-              </h3>
+              </SubSectionTitle>
               <p className="text-sm text-tier-text-secondary mb-3">
                 For kritiske problemer kan du også kontakte oss direkte:
               </p>

@@ -1,5 +1,5 @@
 /**
- * TIER Golf Academy - Turneringsevaluering Container
+ * TIER Golf - Turneringsevaluering Container
  * Design System v3.0 - Premium Light
  *
  * Tournament evaluations with stats and performance tracking.

@@ -16,6 +16,7 @@ import React, { useState, useCallback, useEffect } from 'react';
 import { useTournamentPrep } from '../../hooks/useTournamentPrep';
 import Button from '../../ui/primitives/Button';
 import { track } from '../../analytics/track';
+import { SectionTitle, SubSectionTitle } from '../../components/typography';
 
 // ═══════════════════════════════════════════
 // TAILWIND CLASSES
@@ -181,7 +182,7 @@ export function HoleStrategyPlanner({
       <div className={`${tw.container} ${className}`}>
         <div className={tw.emptyState}>
           <div className={tw.emptyIcon}>🏌️</div>
-          <h3 className={tw.emptyTitle}>Ingen banestrategi</h3>
+          <SubSectionTitle style={{ marginBottom: 0 }}>Ingen banestrategi</SubSectionTitle>
           <p className={tw.emptyDescription}>
             Du må opprette en banestrategi før du kan planlegge hull-for-hull
           </p>
@@ -194,7 +195,7 @@ export function HoleStrategyPlanner({
     <div className={`${tw.container} ${className}`}>
       {/* Header */}
       <div className={tw.header}>
-        <h2 className={tw.title}>Hull-for-hull Planlegging</h2>
+        <SectionTitle style={{ marginBottom: 0 }}>Hull-for-hull Planlegging</SectionTitle>
       </div>
 
       {/* Hole Selector */}

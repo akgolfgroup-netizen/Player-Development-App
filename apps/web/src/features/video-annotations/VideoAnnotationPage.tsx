@@ -12,6 +12,7 @@ import AnnotationTimeline from './components/AnnotationTimeline';
 import { PageHeader } from '../../components/layout/PageHeader';
 import LoadingSpinner from '../../components/LoadingSpinner';
 import Button from '../../ui/primitives/Button';
+import { SubSectionTitle } from '../../ui/primitives/typography';
 
 const VideoAnnotationPage: React.FC = () => {
   const { videoId } = useParams<{ videoId: string }>();
@@ -298,7 +299,7 @@ const VideoAnnotationPage: React.FC = () => {
         <div className="max-w-2xl mx-auto">
           <div className="bg-white rounded-xl border border-tier-border-default p-8 text-center">
             <div className="text-tier-error text-4xl mb-4">⚠️</div>
-            <h3 className="text-lg font-semibold text-tier-navy mb-2">Kunne ikke laste video</h3>
+            <SubSectionTitle style={{ marginBottom: 0 }}>Kunne ikke laste video</SubSectionTitle>
             <p className="text-tier-text-secondary mb-4">{error}</p>
             <Button variant="primary" onClick={() => navigate(-1)}>
               Gå tilbake

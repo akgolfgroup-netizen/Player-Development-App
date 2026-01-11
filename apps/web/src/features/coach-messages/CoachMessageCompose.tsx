@@ -1,7 +1,7 @@
 /* eslint-disable @typescript-eslint/no-explicit-any, @typescript-eslint/no-unused-vars */
 // @ts-nocheck
 /**
- * TIER Golf Academy - Coach Message Compose
+ * TIER Golf - Coach Message Compose
  * Design System v3.0 - Premium Light
  *
  * Message composition form for coaches.

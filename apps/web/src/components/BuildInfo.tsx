@@ -61,7 +61,7 @@ export function BuildInfo({ showBadge = false }: BuildInfoProps) {
 
     // Additional styled logging for better visibility
     console.log(
-      '%c🏌️ TIER Golf Academy',
+      '%c🏌️ TIER Golf',
       'color: #10456A; font-weight: bold; font-size: 12px;'
     );
     console.log(

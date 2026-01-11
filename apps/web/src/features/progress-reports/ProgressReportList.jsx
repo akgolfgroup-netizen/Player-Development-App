@@ -17,6 +17,7 @@ import { useProgressReports } from '../../hooks/useProgressReports';
 import Button from '../../ui/primitives/Button';
 import StateCard from '../../ui/composites/StateCard';
 import { track } from '../../analytics/track';
+import { SectionTitle, SubSectionTitle } from '../../components/typography/Headings';
 
 // ═══════════════════════════════════════════
 // TAILWIND CLASSES
@@ -164,7 +165,7 @@ export function ProgressReportList({ className = '', onCreateReport, onEditRepor
     <div className={`${tw.container} ${className}`}>
       {/* Header */}
       <div className={tw.header}>
-        <h2 className={tw.title}>Fremdriftsrapporter</h2>
+        <SectionTitle style={{ marginBottom: 0 }}>Fremdriftsrapporter</SectionTitle>
         <div className={tw.headerActions}>
           <Button variant="secondary" onClick={refresh}>
             Oppdater
@@ -215,7 +216,7 @@ export function ProgressReportList({ className = '', onCreateReport, onEditRepor
       {filteredReports.length === 0 ? (
         <div className={tw.emptyState}>
           <div className={tw.emptyIcon}>[Chart]</div>
-          <h3 className={tw.emptyTitle}>Ingen rapporter funnet</h3>
+          <SubSectionTitle style={{ marginBottom: 0 }}>Ingen rapporter funnet</SubSectionTitle>
           <p className={tw.emptyDescription}>
             {searchQuery || statusFilter !== 'all'
               ? 'Ingen rapporter matcher filteret ditt'
@@ -236,9 +237,9 @@ export function ProgressReportList({ className = '', onCreateReport, onEditRepor
               onClick={() => handleView(report)}
             >
               <div className={tw.cardHeader}>
-                <h3 className={tw.cardTitle}>
+                <SubSectionTitle style={{ marginBottom: 0 }}>
                   {report.title || `Rapport for ${report.player?.name || 'Spiller'}`}
-                </h3>
+                </SubSectionTitle>
                 <span className={tw.statusBadge[report.status]}>
                   {report.status === 'draft' ? 'Utkast' : 'Publisert'}
                 </span>

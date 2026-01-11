@@ -5,6 +5,7 @@
 
 import React, { useEffect, useRef } from 'react';
 import { MoreVertical, Edit2, Trash2 } from 'lucide-react';
+import { SubSectionTitle } from '../../../ui/primitives/typography';
 
 interface Message {
   id: string;
@@ -79,7 +80,7 @@ const MessageList: React.FC<Props> = ({
     return (
       <div className={`flex flex-col items-center justify-center h-full p-8 ${className}`}>
         <div className="text-6xl mb-4">💬</div>
-        <h3 className="text-lg font-semibold text-tier-navy mb-2">Ingen meldinger ennå</h3>
+        <SubSectionTitle className="text-lg font-semibold text-tier-navy mb-2">Ingen meldinger ennå</SubSectionTitle>
         <p className="text-sm text-tier-text-secondary text-center">
           Send den første meldingen for å starte samtalen
         </p>

@@ -20,6 +20,7 @@ import {
   PlayerHeader,
   QuickActionCard,
 } from '../../components/tier';
+import { SectionTitle, SubSectionTitle, CardTitle } from '../../components/typography';
 
 /**
  * TIER Golf Dashboard
@@ -96,9 +97,9 @@ export function TierDashboard({ dashboardData }) {
           <div className="flex items-center gap-3">
             <div className="text-3xl font-bold text-tier-gold">*</div>
             <div>
-              <h3 className="font-semibold text-tier-navy mb-1">
+              <SubSectionTitle style={{ marginBottom: 4 }}>
                 Du er på god vei!
-              </h3>
+              </SubSectionTitle>
               <p className="text-sm text-text-secondary">
                 Kun 3 økter unna ukens mål. Fortsett det gode arbeidet!
               </p>
@@ -108,9 +109,9 @@ export function TierDashboard({ dashboardData }) {
 
         {/* Weekly Performance - 4 KPI Cards */}
         <div className="mb-8">
-          <h2 className="font-display text-2xl font-bold text-tier-navy mb-4">
+          <SectionTitle style={{ marginBottom: 16 }}>
             Ukens Prestasjon
-          </h2>
+          </SectionTitle>
 
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
             <StatCard
@@ -168,9 +169,9 @@ export function TierDashboard({ dashboardData }) {
 
         {/* Category Progress */}
         <div className="mb-8">
-          <h2 className="font-display text-2xl font-bold text-tier-navy mb-4">
+          <SectionTitle style={{ marginBottom: 16 }}>
             Din Kategoriutvikling
-          </h2>
+          </SectionTitle>
 
           <CategoryProgressCard
             category={playerData.categoryProgress.category}
@@ -182,9 +183,9 @@ export function TierDashboard({ dashboardData }) {
 
         {/* Quick Actions Grid */}
         <div className="mb-8">
-          <h2 className="font-display text-2xl font-bold text-tier-navy mb-4">
+          <SectionTitle style={{ marginBottom: 16 }}>
             Hurtigvalg
-          </h2>
+          </SectionTitle>
 
           <div className="grid grid-cols-2 md:grid-cols-4 gap-3">
             <QuickActionCard
@@ -216,9 +217,9 @@ export function TierDashboard({ dashboardData }) {
           {/* Upcoming Test */}
           <TierCard className="p-6">
             <div className="flex items-center justify-between mb-4">
-              <h3 className="font-display text-lg font-bold text-tier-navy">
+              <SubSectionTitle style={{ marginBottom: 0 }}>
                 Neste Test
-              </h3>
+              </SubSectionTitle>
               <TierBadge variant="gold" size="sm">
                 Om 9 dager
               </TierBadge>
@@ -249,9 +250,9 @@ export function TierDashboard({ dashboardData }) {
           {/* Next Tournament */}
           <TierCard className="p-6">
             <div className="flex items-center justify-between mb-4">
-              <h3 className="font-display text-lg font-bold text-tier-navy">
+              <SubSectionTitle style={{ marginBottom: 0 }}>
                 Neste Turnering
-              </h3>
+              </SubSectionTitle>
               <TierBadge variant="info" size="sm">
                 Om 35 dager
               </TierBadge>

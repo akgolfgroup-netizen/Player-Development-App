@@ -1,5 +1,5 @@
 /**
- * TIER Golf Academy - Coach App Shell
+ * TIER Golf - Coach App Shell
  * Design System v3.1 - Navy × Gold (Premium Light)
  *
  * Layout wrapper for coach portal routes.

@@ -7,6 +7,7 @@ import React, { useState } from 'react';
 import { MapPin, Phone, Globe } from 'lucide-react';
 import { useNorwegianCourses } from '../../../hooks/useGolfCourses';
 import Input from '../../../ui/primitives/Input';
+import { SubSectionTitle } from '../../../ui/primitives/typography';
 
 const NorwegianCourses: React.FC = () => {
   const { clubs, loading, error } = useNorwegianCourses();
@@ -62,7 +63,7 @@ const NorwegianCourses: React.FC = () => {
             key={club.id}
             className="bg-white rounded-xl border border-tier-border-default p-6 hover:border-tier-info hover:shadow-md transition-all"
           >
-            <h3 className="text-lg font-semibold text-tier-navy mb-2">{club.name}</h3>
+            <SubSectionTitle style={{ marginBottom: 0 }}>{club.name}</SubSectionTitle>
 
             <div className="space-y-2 text-sm">
               {club.city && (
@@ -108,7 +109,7 @@ const NorwegianCourses: React.FC = () => {
       {filteredClubs.length === 0 && (
         <div className="bg-white rounded-xl border border-tier-border-default p-12 text-center">
           <div className="text-6xl mb-4">🔍</div>
-          <h3 className="text-lg font-semibold text-tier-navy mb-2">Ingen resultater</h3>
+          <SubSectionTitle style={{ marginBottom: 0 }}>Ingen resultater</SubSectionTitle>
           <p className="text-tier-text-secondary">Prøv et annet søkeord</p>
         </div>
       )}

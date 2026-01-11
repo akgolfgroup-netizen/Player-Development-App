@@ -13,6 +13,7 @@ import PageHeader from '../../ui/raw-blocks/PageHeader.raw';
 import PageContainer from '../../ui/raw-blocks/PageContainer.raw';
 import { AreaTabs } from '../../components/navigation/AreaTabs';
 import * as LucideIcons from 'lucide-react';
+import { SubSectionTitle } from '../../components/typography';
 
 const { Video, GitCompare, PenTool, Play, Upload, BookOpen } = LucideIcons;
 
@@ -144,7 +145,7 @@ function VideoLibraryTab() {
   return (
     <div>
       <div className="bg-tier-white rounded-xl p-6 border border-tier-border-default mb-6">
-        <h3 className="text-xl font-bold text-tier-navy mb-2">Instruksjonsvideoer</h3>
+        <SubSectionTitle className="text-xl font-bold text-tier-navy mb-2">Instruksjonsvideoer</SubSectionTitle>
         <p className="text-tier-text-secondary mb-4">
           Utforsk biblioteket med instruksjonsvideoer og læringsressurser
         </p>
@@ -156,7 +157,7 @@ function VideoLibraryTab() {
               <div className="aspect-video bg-tier-surface-base rounded mb-3 flex items-center justify-center">
                 <Video className="text-tier-text-tertiary" size={32} />
               </div>
-              <h3 className="font-semibold text-tier-navy mb-1">Video tittel {i}</h3>
+              <SubSectionTitle style={{ marginBottom: 0 }} className="font-semibold text-tier-navy mb-1">Video tittel {i}</SubSectionTitle>
               <p className="text-sm text-tier-text-secondary">Beskrivelse av video innhold</p>
             </div>
           ))}
@@ -167,7 +168,7 @@ function VideoLibraryTab() {
         <div className="flex items-start gap-3">
           <BookOpen className="text-tier-status-info-dark flex-shrink-0 mt-0.5" size={20} />
           <div>
-            <h3 className="font-semibold text-tier-status-info-dark mb-1">Tips</h3>
+            <SubSectionTitle style={{ marginBottom: 0 }} className="font-semibold text-tier-status-info-dark mb-1">Tips</SubSectionTitle>
             <p className="text-sm text-tier-status-info-dark">
               Klikk på en video for å se den i fullskjerm. Du kan også laste opp dine egne videoer for analyse.
             </p>
@@ -185,7 +186,7 @@ function VideoComparisonTab() {
   return (
     <div>
       <div className="bg-tier-white rounded-xl p-6 border border-tier-border-default">
-        <h3 className="text-xl font-bold text-tier-navy mb-2">Video sammenligning</h3>
+        <SubSectionTitle className="text-xl font-bold text-tier-navy mb-2">Video sammenligning</SubSectionTitle>
         <p className="text-tier-text-secondary mb-6">
           Sammenlign videoer side-ved-side for å analysere teknikk og fremgang
         </p>
@@ -227,7 +228,7 @@ function VideoAnnotationTab() {
   return (
     <div>
       <div className="bg-tier-white rounded-xl p-6 border border-tier-border-default">
-        <h3 className="text-xl font-bold text-tier-navy mb-2">Video annotasjon</h3>
+        <SubSectionTitle className="text-xl font-bold text-tier-navy mb-2">Video annotasjon</SubSectionTitle>
         <p className="text-tier-text-secondary mb-6">
           Annot videoer med tegning, linjer og notater for detaljert analyse
         </p>
@@ -287,7 +288,7 @@ function FeatureCard({ icon: Icon, title, description, href }: FeatureCardProps)
       <div className="flex items-center justify-center w-12 h-12 rounded-lg bg-tier-status-success-light text-tier-status-success mb-4 group-hover:bg-tier-status-success group-hover:text-white transition-colors">
         <Icon size={24} />
       </div>
-      <h3 className="text-lg font-semibold text-tier-navy mb-2">{title}</h3>
+      <SubSectionTitle className="text-lg font-semibold text-tier-navy mb-2">{title}</SubSectionTitle>
       <p className="text-tier-text-secondary text-sm">{description}</p>
     </Link>
   );

@@ -1,5 +1,5 @@
 /**
- * TIER Golf Academy - Technical Plan (P-System)
+ * TIER Golf - Technical Plan (P-System)
  * Design System v3.0 - Premium Light
  *
  * P1.0 - P10.0 technical development areas with:
@@ -11,7 +11,7 @@
  * - TrackMan integration
  */
 
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useCallback } from 'react';
 import { useNavigate } from 'react-router-dom';
 import {
   GripVertical,
@@ -28,6 +28,25 @@ import {
   Activity,
   TrendingUp,
 } from 'lucide-react';
+import DrillSelector from './DrillSelector';
+import ResponsiblePersonSelector from './ResponsiblePersonSelector';
+import {
+  DndContext,
+  closestCenter,
+  KeyboardSensor,
+  PointerSensor,
+  useSensor,
+  useSensors,
+  DragEndEvent,
+} from '@dnd-kit/core';
+import {
+  arrayMove,
+  SortableContext,
+  sortableKeyboardCoordinates,
+  verticalListSortingStrategy,
+  useSortable,
+} from '@dnd-kit/sortable';
+import { CSS } from '@dnd-kit/utilities';
 import {
   Card,
   CardContent,
@@ -39,6 +58,9 @@ import {
 } from '../../components/shadcn';
 import PageHeader from '../../ui/raw-blocks/PageHeader.raw';
 import PageContainer from '../../ui/raw-blocks/PageContainer.raw';
+import { SectionTitle, SubSectionTitle } from '../../components/typography/Headings';
+import { useAuth } from '../../contexts/AuthContext';
+import { techniquePlanAPI, TechniqueTask as ApiTechniqueTask } from '../../services/api';
 
 // ============================================================================
 // TYPES
@@ -55,8 +77,13 @@ interface TechnicalTask {
   status: 'active' | 'completed' | 'paused';
   drills: Array<{
     id: string;
-    name: string;
-    category: string;
+    exerciseId: string;
+    exercise?: {
+      id: string;
+      name: string;
+      description?: string;
+      exerciseType?: string;
+    };
   }>;
   responsible: Array<{
     id: string;
@@ -127,15 +154,42 @@ interface TechnicalTaskCardProps {
   onUpdate: (taskId: string, updates: Partial<TechnicalTask>) => void;
   onDelete: (taskId: string) => void;
   onToggleExpand: (taskId: string) => void;
+  onRefresh: () => void;
   isExpanded: boolean;
 }
 
-const TechnicalTaskCard: React.FC<TechnicalTaskCardProps> = ({
+// Sortable wrapper for drag-and-drop
+const SortableTaskCard: React.FC<TechnicalTaskCardProps> = (props) => {
+  const {
+    attributes,
+    listeners,
+    setNodeRef,
+    transform,
+    transition,
+    isDragging,
+  } = useSortable({ id: props.task.id });
+
+  const style = {
+    transform: CSS.Transform.toString(transform),
+    transition,
+    opacity: isDragging ? 0.5 : 1,
+  };
+
+  return (
+    <div ref={setNodeRef} style={style}>
+      <TechnicalTaskCard {...props} dragHandleProps={{ ...attributes, ...listeners }} />
+    </div>
+  );
+};
+
+const TechnicalTaskCard: React.FC<TechnicalTaskCardProps & { dragHandleProps?: any }> = ({
   task,
   onUpdate,
   onDelete,
   onToggleExpand,
+  onRefresh,
   isExpanded,
+  dragHandleProps,
 }) => {
   const pLevelInfo = P_LEVELS.find(p => p.id === task.pLevel);
 
@@ -144,7 +198,10 @@ const TechnicalTaskCard: React.FC<TechnicalTaskCardProps> = ({
       {/* Header - Always visible */}
       <div className="flex items-start gap-3 p-4">
         {/* Drag handle */}
-        <div className="cursor-move text-tier-text-secondary hover:text-tier-navy mt-1">
+        <div
+          className="cursor-move text-tier-text-secondary hover:text-tier-navy mt-1"
+          {...dragHandleProps}
+        >
           <GripVertical size={20} />
         </div>
 
@@ -269,63 +326,22 @@ const TechnicalTaskCard: React.FC<TechnicalTaskCardProps> = ({
 
           {/* Drills */}
           <div>
-            <div className="flex items-center justify-between mb-2">
-              <label className="text-xs font-medium text-tier-text-secondary">
-                Drills / Øvelser
-              </label>
-              <Button variant="ghost" size="sm" className="h-auto p-1">
-                <Plus size={16} />
-              </Button>
-            </div>
-            {task.drills.length > 0 ? (
-              <div className="space-y-2">
-                {task.drills.map(drill => (
-                  <div key={drill.id} className="flex items-center justify-between p-2 bg-tier-surface-base rounded">
-                    <div>
-                      <p className="text-sm font-medium text-tier-navy">{drill.name}</p>
-                      <p className="text-xs text-tier-text-secondary">{drill.category}</p>
-                    </div>
-                    <Button variant="ghost" size="sm" className="h-auto p-1 text-tier-error">
-                      <Trash2 size={14} />
-                    </Button>
-                  </div>
-                ))}
-              </div>
-            ) : (
-              <p className="text-xs text-tier-text-secondary italic">Ingen drills lagt til</p>
-            )}
+            <DrillSelector
+              taskId={task.id}
+              existingDrills={task.drills}
+              onDrillAdded={onRefresh}
+              onDrillRemoved={onRefresh}
+            />
           </div>
 
           {/* Responsible persons */}
           <div>
-            <div className="flex items-center justify-between mb-2">
-              <label className="text-xs font-medium text-tier-text-secondary">
-                Ansvarlig person
-              </label>
-              <Button variant="ghost" size="sm" className="h-auto p-1">
-                <Plus size={16} />
-              </Button>
-            </div>
-            {task.responsible.length > 0 ? (
-              <div className="space-y-2">
-                {task.responsible.map(person => (
-                  <div key={person.id} className="flex items-center justify-between p-2 bg-tier-surface-base rounded">
-                    <div className="flex items-center gap-2">
-                      <User size={14} className="text-tier-text-secondary" />
-                      <div>
-                        <p className="text-sm font-medium text-tier-navy">{person.name}</p>
-                        <p className="text-xs text-tier-text-secondary">{person.role}</p>
-                      </div>
-                    </div>
-                    <Button variant="ghost" size="sm" className="h-auto p-1 text-tier-error">
-                      <Trash2 size={14} />
-                    </Button>
-                  </div>
-                ))}
-              </div>
-            ) : (
-              <p className="text-xs text-tier-text-secondary italic">Ingen ansvarlig tildelt</p>
-            )}
+            <ResponsiblePersonSelector
+              taskId={task.id}
+              existingResponsible={task.responsible}
+              onPersonAdded={onRefresh}
+              onPersonRemoved={onRefresh}
+            />
           </div>
 
           {/* Delete button */}
@@ -352,89 +368,197 @@ const TechnicalTaskCard: React.FC<TechnicalTaskCardProps> = ({
 
 export default function TechnicalPlanView() {
   const navigate = useNavigate();
+  const { user } = useAuth();
   const [tasks, setTasks] = useState<TechnicalTask[]>([]);
   const [expandedTaskId, setExpandedTaskId] = useState<string | null>(null);
   const [loading, setLoading] = useState(true);
+  const [error, setError] = useState<string | null>(null);
   const [activeTab, setActiveTab] = useState<'tasks' | 'status' | 'trackman'>('tasks');
 
-  // Fetch technical tasks
+  // Drag and drop sensors
+  const sensors = useSensors(
+    useSensor(PointerSensor),
+    useSensor(KeyboardSensor, {
+      coordinateGetter: sortableKeyboardCoordinates,
+    })
+  );
+
+  // Fetch technical tasks from backend - reusable callback
+  const fetchTasks = useCallback(async () => {
+    if (!user?.id) {
+      setLoading(false);
+      return;
+    }
+
+    try {
+      setLoading(true);
+      setError(null);
+
+      // Use the player's ID (for players) or user's ID (for coaches viewing their own tasks)
+      const playerId = user.playerId || user.id;
+
+      const response = await techniquePlanAPI.getTasks({
+        playerId,
+        limit: 100
+      });
+
+      // Transform API response to component format
+      const apiTasks = response.data.data || [];
+      const transformedTasks: TechnicalTask[] = apiTasks.map((apiTask: ApiTechniqueTask) => ({
+        id: apiTask.id,
+        pLevel: apiTask.pLevel || 'P1.0',
+        description: apiTask.description,
+        imageUrl: apiTask.imageUrls && apiTask.imageUrls.length > 0 ? apiTask.imageUrls[0] : undefined,
+        videoUrl: apiTask.videoUrl,
+        repetitions: apiTask.repetitions || 0,
+        priorityOrder: apiTask.priorityOrder || 0,
+        status: apiTask.status as 'active' | 'completed' | 'paused' || 'active',
+        drills: (apiTask.drills || []).map(drill => ({
+          id: drill.id,
+          exerciseId: drill.exerciseId,
+          exercise: drill.exercise ? {
+            id: drill.exercise.id,
+            name: drill.exercise.name,
+            exerciseType: drill.exercise.exerciseType,
+          } : undefined,
+        })),
+        responsible: (apiTask.responsible || []).map(resp => ({
+          id: resp.id,
+          name: `${resp.user?.firstName || ''} ${resp.user?.lastName || ''}`.trim() || 'Unknown',
+          role: resp.role || resp.user?.role || 'Coach',
+        })),
+        progressImages: (apiTask.imageUrls || []).map((url, index) => ({
+          id: `img-${index}`,
+          url,
+          uploadedAt: apiTask.updatedAt,
+        })),
+        progressVideos: [],
+      }));
+
+      setTasks(transformedTasks);
+    } catch (error) {
+      console.error('Failed to fetch technical tasks:', error);
+      setError('Failed to load tasks. Please try again.');
+    } finally {
+      setLoading(false);
+    }
+  }, [user]);
+
+  // Initial fetch on mount
   useEffect(() => {
-    const fetchTasks = async () => {
-      try {
-        const response = await fetch('/api/v1/technique-plan');
-        if (response.ok) {
-          const data = await response.json();
-          setTasks(data.tasks || []);
-        }
-      } catch (error) {
-        console.error('Failed to fetch technical tasks:', error);
-        // Mock data for development
-        setTasks([
-          {
-            id: '1',
-            pLevel: 'P4.0',
-            description: 'Topp av backswing - optimal posisjon med flatere venstre håndledd',
-            imageUrl: undefined,
-            videoUrl: undefined,
-            repetitions: 150,
-            priorityOrder: 1,
-            status: 'active',
-            drills: [
-              { id: 'd1', name: 'Mirror drill - topp posisjon', category: 'Teknikk' },
-              { id: 'd2', name: 'Slow motion swings', category: 'Teknikk' },
-            ],
-            responsible: [
-              { id: 'r1', name: 'Anders Kristiansen', role: 'Hovedtrener' },
-            ],
-            progressImages: [],
-            progressVideos: [],
-          },
-          {
-            id: '2',
-            pLevel: 'P7.0',
-            description: 'Impact - bedre rotasjon og forward shaft lean',
-            repetitions: 200,
-            priorityOrder: 2,
-            status: 'active',
-            drills: [
-              { id: 'd3', name: 'Impact bag drills', category: 'Impact' },
-            ],
-            responsible: [
-              { id: 'r1', name: 'Anders Kristiansen', role: 'Hovedtrener' },
-            ],
-            progressImages: [],
-            progressVideos: [],
-          },
-          {
-            id: '3',
-            pLevel: 'P1.0',
-            description: 'Address - konsistent ball posisjon og setup',
-            repetitions: 100,
-            priorityOrder: 3,
-            status: 'active',
-            drills: [],
-            responsible: [],
-            progressImages: [],
-            progressVideos: [],
-          },
-        ]);
-      } finally {
-        setLoading(false);
-      }
-    };
-
     fetchTasks();
-  }, []);
+  }, [fetchTasks]);
 
-  const handleUpdateTask = (taskId: string, updates: Partial<TechnicalTask>) => {
-    setTasks(tasks.map(task =>
-      task.id === taskId ? { ...task, ...updates } : task
-    ));
+  const handleUpdateTask = async (taskId: string, updates: Partial<TechnicalTask>) => {
+    try {
+      // Optimistic update
+      setTasks(tasks.map(task =>
+        task.id === taskId ? { ...task, ...updates } : task
+      ));
+
+      // Update in backend
+      await techniquePlanAPI.updateTask(taskId, {
+        description: updates.description,
+        pLevel: updates.pLevel,
+        repetitions: updates.repetitions,
+        priorityOrder: updates.priorityOrder,
+        status: updates.status as any,
+        videoUrl: updates.videoUrl,
+      });
+    } catch (error) {
+      console.error('Failed to update task:', error);
+      setError('Failed to update task');
+      // Revert optimistic update on error - refetch tasks
+      if (user?.id) {
+        const playerId = user.playerId || user.id;
+        const response = await techniquePlanAPI.getTasks({ playerId });
+        const apiTasks = response.data.data || [];
+        const transformedTasks: TechnicalTask[] = apiTasks.map((apiTask: ApiTechniqueTask) => ({
+          id: apiTask.id,
+          pLevel: apiTask.pLevel || 'P1.0',
+          description: apiTask.description,
+          imageUrl: apiTask.imageUrls && apiTask.imageUrls.length > 0 ? apiTask.imageUrls[0] : undefined,
+          videoUrl: apiTask.videoUrl,
+          repetitions: apiTask.repetitions || 0,
+          priorityOrder: apiTask.priorityOrder || 0,
+          status: apiTask.status as any || 'active',
+          drills: (apiTask.drills || []).map(drill => ({
+            id: drill.id,
+            exerciseId: drill.exerciseId,
+            exercise: drill.exercise ? {
+              id: drill.exercise.id,
+              name: drill.exercise.name,
+                            exerciseType: drill.exercise.exerciseType,
+            } : undefined,
+          })),
+          responsible: (apiTask.responsible || []).map(resp => ({
+            id: resp.id,
+            name: `${resp.user?.firstName || ''} ${resp.user?.lastName || ''}`.trim() || 'Unknown',
+            role: resp.role || resp.user?.role || 'Coach',
+          })),
+          progressImages: (apiTask.imageUrls || []).map((url, index) => ({
+            id: `img-${index}`,
+            url,
+            uploadedAt: apiTask.updatedAt,
+          })),
+          progressVideos: [],
+        }));
+        setTasks(transformedTasks);
+      }
+    }
   };
 
-  const handleDeleteTask = (taskId: string) => {
-    if (confirm('Er du sikker på at du vil slette denne oppgaven?')) {
+  const handleDeleteTask = async (taskId: string) => {
+    if (!confirm('Er du sikker på at du vil slette denne oppgaven?')) {
+      return;
+    }
+
+    try {
+      // Optimistic update
       setTasks(tasks.filter(task => task.id !== taskId));
+
+      // Delete from backend
+      await techniquePlanAPI.deleteTask(taskId);
+    } catch (error) {
+      console.error('Failed to delete task:', error);
+      setError('Failed to delete task');
+      // Revert on error - refetch tasks
+      if (user?.id) {
+        const playerId = user.playerId || user.id;
+        const response = await techniquePlanAPI.getTasks({ playerId });
+        const apiTasks = response.data.data || [];
+        const transformedTasks: TechnicalTask[] = apiTasks.map((apiTask: ApiTechniqueTask) => ({
+          id: apiTask.id,
+          pLevel: apiTask.pLevel || 'P1.0',
+          description: apiTask.description,
+          imageUrl: apiTask.imageUrls && apiTask.imageUrls.length > 0 ? apiTask.imageUrls[0] : undefined,
+          videoUrl: apiTask.videoUrl,
+          repetitions: apiTask.repetitions || 0,
+          priorityOrder: apiTask.priorityOrder || 0,
+          status: apiTask.status as any || 'active',
+          drills: (apiTask.drills || []).map(drill => ({
+            id: drill.id,
+            exerciseId: drill.exerciseId,
+            exercise: drill.exercise ? {
+              id: drill.exercise.id,
+              name: drill.exercise.name,
+                            exerciseType: drill.exercise.exerciseType,
+            } : undefined,
+          })),
+          responsible: (apiTask.responsible || []).map(resp => ({
+            id: resp.id,
+            name: `${resp.user?.firstName || ''} ${resp.user?.lastName || ''}`.trim() || 'Unknown',
+            role: resp.role || resp.user?.role || 'Coach',
+          })),
+          progressImages: (apiTask.imageUrls || []).map((url, index) => ({
+            id: `img-${index}`,
+            url,
+            uploadedAt: apiTask.updatedAt,
+          })),
+          progressVideos: [],
+        }));
+        setTasks(transformedTasks);
+      }
     }
   };
 
@@ -442,21 +566,81 @@ export default function TechnicalPlanView() {
     setExpandedTaskId(expandedTaskId === taskId ? null : taskId);
   };
 
-  const handleAddTask = () => {
-    const newTask: TechnicalTask = {
-      id: Date.now().toString(),
-      pLevel: 'P1.0',
-      description: 'Ny teknisk oppgave',
-      repetitions: 0,
-      priorityOrder: tasks.length + 1,
-      status: 'active',
-      drills: [],
-      responsible: [],
-      progressImages: [],
-      progressVideos: [],
-    };
-    setTasks([...tasks, newTask]);
-    setExpandedTaskId(newTask.id);
+  const handleDragEnd = async (event: DragEndEvent) => {
+    const { active, over } = event;
+
+    if (!over || active.id === over.id) return;
+
+    const oldIndex = tasks.findIndex(task => task.id === active.id);
+    const newIndex = tasks.findIndex(task => task.id === over.id);
+
+    if (oldIndex === -1 || newIndex === -1) return;
+
+    // Optimistically update UI
+    const reorderedTasks = arrayMove(tasks, oldIndex, newIndex);
+
+    // Update priority orders based on new positions
+    const updatedTasks = reorderedTasks.map((task, index) => ({
+      ...task,
+      priorityOrder: index + 1,
+    }));
+
+    setTasks(updatedTasks);
+
+    // Update backend for the moved task
+    try {
+      await techniquePlanAPI.updateTaskPriority(
+        active.id as string,
+        newIndex + 1
+      );
+    } catch (error) {
+      console.error('Failed to update task priority:', error);
+      // Revert on error by refetching
+      fetchTasks();
+    }
+  };
+
+  const handleAddTask = async () => {
+    if (!user?.id) return;
+
+    try {
+      const playerId = user.playerId || user.id;
+
+      const newTaskData = {
+        playerId,
+        title: 'Ny teknisk oppgave',
+        description: 'Beskriv den tekniske oppgaven her',
+        technicalArea: 'swing',
+        pLevel: 'P1.0',
+        repetitions: 0,
+        priorityOrder: tasks.length + 1,
+        priority: 'medium' as const,
+      };
+
+      const response = await techniquePlanAPI.createTask(newTaskData);
+      const apiTask = response.data.data;
+
+      const newTask: TechnicalTask = {
+        id: apiTask.id,
+        pLevel: apiTask.pLevel || 'P1.0',
+        description: apiTask.description,
+        imageUrl: apiTask.imageUrls && apiTask.imageUrls.length > 0 ? apiTask.imageUrls[0] : undefined,
+        videoUrl: apiTask.videoUrl,
+        repetitions: apiTask.repetitions || 0,
+        priorityOrder: apiTask.priorityOrder || 0,
+        status: apiTask.status as any || 'active',
+        drills: [],
+        responsible: [],
+        progressImages: [],
+        progressVideos: [],
+      };
+
+      setTasks([...tasks, newTask]);
+      setExpandedTaskId(newTask.id);
+    } catch (error) {
+      console.error('Failed to create task:', error);
+      setError('Failed to create task');
+    }
   };
 
   if (loading) {
@@ -514,7 +698,7 @@ export default function TechnicalPlanView() {
               {/* Header */}
               <div className="flex items-center justify-between">
                 <div>
-                  <h2 className="text-xl font-bold text-tier-navy">Utviklingsområder</h2>
+                  <SectionTitle style={{ marginBottom: 0 }}>Utviklingsområder</SectionTitle>
                   <p className="text-sm text-tier-text-secondary mt-1">
                     P-nivåer i prioritert rekkefølge (dra for å endre prioritet)
                   </p>
@@ -581,27 +765,39 @@ export default function TechnicalPlanView() {
                   <Card>
                     <CardContent className="p-12 text-center">
                       <Target className="w-16 h-16 text-tier-text-tertiary mx-auto mb-4" />
-                      <h3 className="text-lg font-semibold text-tier-navy mb-2">
+                      <SubSectionTitle style={{ marginBottom: '0.5rem' }}>
                         Ingen oppgaver ennå
-                      </h3>
+                      </SubSectionTitle>
                       <p className="text-sm text-tier-text-secondary mb-4">
                         Opprett din første tekniske oppgave ved å klikke på knappen over
                       </p>
                     </CardContent>
                   </Card>
                 ) : (
-                  tasks
-                    .sort((a, b) => a.priorityOrder - b.priorityOrder)
-                    .map(task => (
-                      <TechnicalTaskCard
-                        key={task.id}
-                        task={task}
-                        onUpdate={handleUpdateTask}
-                        onDelete={handleDeleteTask}
-                        onToggleExpand={handleToggleExpand}
-                        isExpanded={expandedTaskId === task.id}
-                      />
-                    ))
+                  <DndContext
+                    sensors={sensors}
+                    collisionDetection={closestCenter}
+                    onDragEnd={handleDragEnd}
+                  >
+                    <SortableContext
+                      items={tasks.map(t => t.id)}
+                      strategy={verticalListSortingStrategy}
+                    >
+                      {tasks
+                        .sort((a, b) => a.priorityOrder - b.priorityOrder)
+                        .map(task => (
+                          <SortableTaskCard
+                            key={task.id}
+                            task={task}
+                            onUpdate={handleUpdateTask}
+                            onDelete={handleDeleteTask}
+                            onToggleExpand={handleToggleExpand}
+                            onRefresh={fetchTasks}
+                            isExpanded={expandedTaskId === task.id}
+                          />
+                        ))}
+                    </SortableContext>
+                  </DndContext>
                 )}
               </div>
             </div>

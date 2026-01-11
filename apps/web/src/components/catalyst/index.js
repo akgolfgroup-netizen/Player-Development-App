@@ -1,7 +1,7 @@
 /**
  * Catalyst UI Kit - Component Exports
  *
- * TIER Golf Academy implementation of Tailwind CSS Catalyst components.
+ * TIER Golf implementation of Tailwind CSS Catalyst components.
  * These components are styled with the TIER Golf design system colors.
  */
 

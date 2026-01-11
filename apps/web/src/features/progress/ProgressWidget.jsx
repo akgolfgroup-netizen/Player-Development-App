@@ -1,5 +1,5 @@
 /**
- * TIER Golf Academy - Progress Widget
+ * TIER Golf - Progress Widget
  * Design System v3.0 - Premium Light
  *
  * Compact progress overview widget.

@@ -11,6 +11,7 @@
 
 import React from 'react';
 import { PageHeader } from '../../components/layout/PageHeader';
+import { SubSectionTitle, CardTitle } from '../../components/typography/Headings';
 
 export default function AnalyseRapporterHub() {
   return (
@@ -33,7 +34,7 @@ export default function AnalyseRapporterHub() {
               </div>
               <span className="text-xs text-tier-text-secondary">3 dager siden</span>
             </div>
-            <h3 className="text-lg font-semibold text-tier-navy mb-2">Desember 2024 - Månedsrapport</h3>
+            <SubSectionTitle style={{ marginBottom: 0 }} className="text-lg font-semibold text-tier-navy mb-2">Desember 2024 - Månedsrapport</SubSectionTitle>
             <p className="text-sm text-tier-text-secondary mb-4">
               Vurdering av din utvikling i desember med fokus på putting og short game forbedringer.
             </p>
@@ -51,7 +52,7 @@ export default function AnalyseRapporterHub() {
               </div>
               <span className="text-xs text-tier-text-secondary">5 uker siden</span>
             </div>
-            <h3 className="text-lg font-semibold text-tier-navy mb-2">Q4 2024 - Kvartalsrapport</h3>
+            <SubSectionTitle style={{ marginBottom: 0 }} className="text-lg font-semibold text-tier-navy mb-2">Q4 2024 - Kvartalsrapport</SubSectionTitle>
             <p className="text-sm text-tier-text-secondary mb-4">
               Oppsummering av fjerde kvartal med betydelig fremgang i handicap og teknisk utvikling.
             </p>
@@ -65,7 +66,7 @@ export default function AnalyseRapporterHub() {
 
         {/* All Reports Table */}
         <div className="mt-8 bg-white rounded-xl border border-tier-border-default p-6">
-          <h3 className="text-lg font-semibold text-tier-navy mb-4">Alle rapporter</h3>
+          <SubSectionTitle style={{ marginBottom: 0 }} className="text-lg font-semibold text-tier-navy mb-4">Alle rapporter</SubSectionTitle>
           <div className="overflow-x-auto">
             <table className="w-full">
               <thead>
@@ -121,7 +122,7 @@ export default function AnalyseRapporterHub() {
           <div className="flex items-start gap-3">
             <span className="text-2xl">[Info]</span>
             <div>
-              <h4 className="text-sm font-semibold text-tier-navy mb-1">Rapporteringsplan</h4>
+              <CardTitle style={{ marginBottom: 0 }} className="text-sm font-semibold text-tier-navy mb-1">Rapporteringsplan</CardTitle>
               <p className="text-sm text-tier-text-secondary">
                 Du mottar månedsrapporter ved slutten av hver måned og kvartalsrapporter hvert tredje måned.
                 Rapportene oppsummerer din utvikling, evaluerer måloppnåelse og setter nye fokusområder.

@@ -1,5 +1,5 @@
 /**
- * TIER Golf Academy - Evaluation Stats Dashboard
+ * TIER Golf - Evaluation Stats Dashboard
  * Design System v3.0 - Premium Light
  *
  * Shows:

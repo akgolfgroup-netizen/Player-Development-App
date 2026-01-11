@@ -1,5 +1,5 @@
 /**
- * TIER Golf Academy - Player Comparison Tool
+ * TIER Golf - Player Comparison Tool
  * Design System v3.0 - Premium Light
  *
  * Multi-select player comparison with radar chart visualization.
@@ -26,7 +26,7 @@ import { analyticsAPI, coachesAPI } from '../../services/api';
 import PageHeader from '../../ui/raw-blocks/PageHeader.raw';
 import StateCard from '../../ui/composites/StateCard';
 import Button from '../../ui/primitives/Button';
-import { SectionTitle } from '../../components/typography/Headings';
+import { SectionTitle, SubSectionTitle } from '../../components/typography/Headings';
 
 // Types matching backend MultiPlayerComparison interface
 interface PlayerComparisonRow {
@@ -296,9 +296,9 @@ export const PlayerComparisonTool: React.FC = () => {
             <div className="bg-tier-white rounded-2xl w-full max-w-md max-h-[80vh] overflow-hidden">
               <div className="p-4 border-b border-tier-border-default">
                 <div className="flex items-center justify-between mb-3">
-                  <h3 className="text-lg font-semibold text-tier-navy">
+                  <SubSectionTitle style={{ marginBottom: 0 }}>
                     Velg spiller
-                  </h3>
+                  </SubSectionTitle>
                   <button
                     onClick={() => {
                       setShowPlayerPicker(false);

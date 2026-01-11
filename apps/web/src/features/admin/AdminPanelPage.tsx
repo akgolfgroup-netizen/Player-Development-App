@@ -5,6 +5,7 @@
 
 import React, { useState } from 'react';
 import { Shield, Activity, Flag, Headphones, DollarSign, Plus, Edit2, Trash2, CheckCircle, XCircle, FileText } from 'lucide-react';
+import { SubSectionTitle, SectionTitle } from '../../components/typography/Headings';
 import {
   useSystemStatus,
   useFeatureFlags,
@@ -307,7 +308,7 @@ const TiersTab: React.FC = () => {
       {tiers.map((tier: any) => (
         <Card key={tier.id}>
           <div className="p-6">
-            <h3 className="text-xl font-bold text-tier-navy mb-2">{tier.name}</h3>
+            <SubSectionTitle style={{ marginBottom: '0.5rem' }}>{tier.name}</SubSectionTitle>
             <p className="text-3xl font-bold text-tier-navy mb-4">${tier.price}<span className="text-sm text-tier-text-secondary">/{tier.interval}</span></p>
             <div className="space-y-2">
               {Object.entries(tier.features).map(([feature, enabled]: [string, any]) => (
@@ -358,7 +359,7 @@ const CreateFeatureFlagModal: React.FC<CreateFeatureFlagModalProps> = ({ onClose
   return (
     <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center p-4 z-50">
       <div className="bg-white rounded-xl max-w-md w-full p-6">
-        <h2 className="text-xl font-bold text-tier-navy mb-4">New Feature Flag</h2>
+        <SectionTitle style={{ marginBottom: '1rem' }}>New Feature Flag</SectionTitle>
         <form onSubmit={handleSubmit} className="space-y-4">
           <div>
             <label className="block text-sm font-medium text-tier-navy mb-1">Key</label>

@@ -12,7 +12,7 @@
 import React, { useState, useMemo } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { Search, Star, Play, Filter, Plus, Dumbbell } from 'lucide-react';
-import { PageTitle, SectionTitle } from '../../../components/typography';
+import { PageTitle, SectionTitle, SubSectionTitle, CardTitle } from '../../../components/typography';
 import { exercises, getExercisesByCategory, getFavoriteExercises, type Exercise } from '../../../lib/coachMockData';
 import { exerciseCategories, difficultyLevels } from '../../../config/coach-navigation';
 
@@ -62,7 +62,7 @@ function ExerciseCard({
         <div className="flex-1 min-w-0">
           {/* Header */}
           <div className="flex items-start justify-between gap-2 mb-1">
-            <h3 className="font-semibold text-tier-navy truncate">{exercise.name}</h3>
+            <CardTitle style={{ marginBottom: 0 }}>{exercise.name}</CardTitle>
             {exercise.isFavorite && (
               <Star size={16} className="text-yellow-500 fill-yellow-500 shrink-0" />
             )}
@@ -252,9 +252,9 @@ export default function CoachExercises() {
       {filteredExercises.length === 0 ? (
         <div className="text-center py-16 bg-tier-white rounded-xl border border-tier-border-default">
           <Dumbbell size={48} className="mx-auto text-tier-text-tertiary mb-4" />
-          <h3 className="text-lg font-semibold text-tier-navy mb-2">
+          <SubSectionTitle style={{ marginBottom: 8 }}>
             Ingen øvelser funnet
-          </h3>
+          </SubSectionTitle>
           <p className="text-tier-text-secondary">
             Prøv å endre søk eller filter.
           </p>

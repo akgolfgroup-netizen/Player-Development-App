@@ -439,6 +439,7 @@ describe('Tabs.composite', () => {
           label: 'Tab 1',
           content: (
             <div>
+              {/* eslint-disable-next-line react/forbid-elements */}
               <h3>Title</h3>
               <p>Paragraph</p>
               <button>Action</button>

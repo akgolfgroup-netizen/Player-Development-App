@@ -15,6 +15,7 @@ import { useTrackMan } from '../../hooks/useTrackMan';
 import Button from '../../ui/primitives/Button';
 import StateCard from '../../ui/composites/StateCard';
 import { track } from '../../analytics/track';
+import { PageTitle, SubSectionTitle } from '../../components/typography';
 
 // ═══════════════════════════════════════════
 // TAILWIND CLASSES
@@ -133,7 +134,7 @@ export function ClubGappingChart({
       <div className={`${tw.container} ${className}`}>
         {/* Header */}
         <div className={tw.header}>
-          <h1 className={tw.title}>Club Gapping</h1>
+          <PageTitle style={{ marginBottom: 0 }}>Club Gapping</PageTitle>
           <div className={tw.headerActions}>
             {onBack && (
               <Button variant="secondary" onClick={onBack}>
@@ -152,7 +153,7 @@ export function ClubGappingChart({
 
         <div className={tw.emptyState}>
           <div className={tw.emptyIcon}>ruler</div>
-          <h3 className={tw.emptyTitle}>Ingen gapping-data</h3>
+          <SubSectionTitle style={{ marginBottom: 0 }}>Ingen gapping-data</SubSectionTitle>
           <p className={tw.emptyDescription}>
             Klikk "Beregn Gapping" for å analysere distanser basert på tidligere økter
           </p>
@@ -181,7 +182,7 @@ export function ClubGappingChart({
     <div className={`${tw.container} ${className}`}>
       {/* Header */}
       <div className={tw.header}>
-        <h1 className={tw.title}>Club Gapping Analyse</h1>
+        <PageTitle style={{ marginBottom: 0 }}>Club Gapping Analyse</PageTitle>
         <div className={tw.headerActions}>
           {onBack && (
             <Button variant="secondary" onClick={onBack}>
@@ -200,7 +201,7 @@ export function ClubGappingChart({
 
       {/* Info Card */}
       <div className={tw.infoCard}>
-        <h3 className={tw.infoTitle}>Om Club Gapping</h3>
+        <SubSectionTitle style={{ marginBottom: '8px' }}>Om Club Gapping</SubSectionTitle>
         <p className={tw.infoText}>
           Club gapping viser gjennomsnittlig distanse for hver kølle og avstanden mellom dem.
           Ideelt gap er 8-15 meter mellom køller. For små gap (&lt;8m) betyr overlap, og for store gap (&gt;20m) betyr hull i settet.

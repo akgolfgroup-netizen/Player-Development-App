@@ -6,6 +6,7 @@
 import React from 'react';
 import { Trophy, MapPin, Wind, Droplets, Thermometer, Eye } from 'lucide-react';
 import { useBestCoursesToday } from '../../../hooks/useWeather';
+import { SubSectionTitle } from '../../../ui/primitives/typography';
 
 const BestCoursesToday: React.FC = () => {
   const { courses, loading, error } = useBestCoursesToday(15);
@@ -55,7 +56,7 @@ const BestCoursesToday: React.FC = () => {
             </div>
 
             {/* Course Info */}
-            <h3 className="text-lg font-semibold text-tier-navy mb-1">{item.course?.name || 'Ukjent bane'}</h3>
+            <SubSectionTitle style={{ marginBottom: 0 }}>{item.course?.name || 'Ukjent bane'}</SubSectionTitle>
             <div className="flex items-center gap-1 text-sm text-tier-text-secondary mb-4">
               <MapPin size={14} />
               <span>{item.course?.city || 'N/A'}</span>
@@ -122,7 +123,7 @@ const BestCoursesToday: React.FC = () => {
       {courses.length === 0 && (
         <div className="bg-white rounded-xl border border-tier-border-default p-12 text-center">
           <div className="text-6xl mb-4">[Weather]</div>
-          <h3 className="text-lg font-semibold text-tier-navy mb-2">Ingen data tilgjengelig</h3>
+          <SubSectionTitle style={{ marginBottom: 0 }}>Ingen data tilgjengelig</SubSectionTitle>
           <p className="text-tier-text-secondary">Kunne ikke hente værdata for baner akkurat nå.</p>
         </div>
       )}

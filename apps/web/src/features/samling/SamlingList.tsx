@@ -1,5 +1,5 @@
 /**
- * TIER Golf Academy - Samling List
+ * TIER Golf - Samling List
  * Display all samlinger for the coach
  */
 
@@ -16,6 +16,7 @@ import {
 } from 'lucide-react';
 import api from '../../services/api';
 import { PageHeader } from '../../ui/raw-blocks';
+import { SubSectionTitle } from '../../components/typography';
 
 interface Samling {
   id: string;
@@ -205,9 +206,9 @@ const SamlingList: React.FC = () => {
           borderRadius: '12px',
         }}>
           <Calendar size={48} style={{ color: 'var(--text-tertiary)', marginBottom: '16px' }} />
-          <h3 style={{ color: 'var(--text-primary)', margin: '0 0 8px' }}>
+          <SubSectionTitle style={{ marginBottom: '8px' }}>
             Ingen samlinger enna
-          </h3>
+          </SubSectionTitle>
           <p style={{ color: 'var(--text-secondary)', margin: '0 0 16px' }}>
             Opprett din forste samling for a komme i gang
           </p>
@@ -286,14 +287,9 @@ const SamlingList: React.FC = () => {
                 </div>
 
                 {/* Title */}
-                <h3 style={{
-                  fontSize: '18px',
-                  fontWeight: 600,
-                  color: 'var(--text-primary)',
-                  margin: '0 0 8px'
-                }}>
+                <SubSectionTitle style={{ marginBottom: '8px' }}>
                   {samling.name}
-                </h3>
+                </SubSectionTitle>
 
                 {/* Description */}
                 {samling.description && (

@@ -604,9 +604,9 @@ const Testresultater: React.FC<TestresultaterProps> = ({
                     textAlign: 'center'
                   }}>
                     <Target style={{ width: '48px', height: '48px', color: 'var(--text-muted)', marginBottom: 'var(--spacing-4)' }} />
-                    <h3 style={{ fontSize: 'var(--font-size-headline)', fontWeight: 600, color: 'var(--text-primary)', marginBottom: 'var(--spacing-2)' }}>
+                    <SubSectionTitle style={{ marginBottom: 'var(--spacing-2)' }}>
                       Ingen testresultater
-                    </h3>
+                    </SubSectionTitle>
                     <p style={{ fontSize: 'var(--font-size-footnote)', color: 'var(--text-tertiary)', marginBottom: 'var(--spacing-4)', maxWidth: '320px' }}>
                       Ingen testresultater i denne kategorien enda. Testresultater vises her etter at de er registrert.
                     </p>

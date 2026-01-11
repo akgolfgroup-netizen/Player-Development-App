@@ -34,7 +34,7 @@ import Badge from '../../ui/primitives/Badge.primitive';
 import Button from '../../ui/primitives/Button';
 import StateCard from '../../ui/composites/StateCard';
 import { PageHeader } from '../../components/layout/PageHeader';
-import { SectionTitle, SubSectionTitle } from '../../components/typography/Headings';
+import { PageTitle, SectionTitle, SubSectionTitle } from '../../components/typography/Headings';
 import useTestResults, { TestResult, CoachNote } from '../../hooks/useTestResults';
 
 // ============================================================================
@@ -360,7 +360,7 @@ const TestDetailPage: React.FC = () => {
         <div style={styles.headerContent}>
           <div style={styles.testIcon}>{test.icon}</div>
           <div>
-            <h1 style={styles.testName}>{test.name}</h1>
+            <PageTitle style={{ marginBottom: 0 }}>{test.name}</PageTitle>
             <p style={styles.testCategory}>{test.category}</p>
           </div>
         </div>

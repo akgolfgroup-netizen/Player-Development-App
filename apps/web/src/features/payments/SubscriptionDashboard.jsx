@@ -14,6 +14,7 @@ import React, { useState, useCallback } from 'react';
 import { useSubscriptions } from '../../hooks/useSubscriptions';
 import Button from '../../ui/primitives/Button';
 import StateCard from '../../ui/composites/StateCard';
+import { SectionTitle, SubSectionTitle } from '../../ui/components/typography';
 import { track } from '../../analytics/track';
 import { PageHeader } from '../../ui/raw-blocks';
 
@@ -235,7 +236,7 @@ export function SubscriptionDashboard({ className = '' }) {
       {/* Current Subscription */}
       {subscription ? (
         <div className={tw.section}>
-          <h2 className={tw.sectionTitle}>Current Subscription</h2>
+          <SectionTitle style={{ marginBottom: 0 }} className={tw.sectionTitle}>Current Subscription</SectionTitle>
 
           <div className={tw.currentPlanCard}>
             <div className={tw.planHeader}>
@@ -297,7 +298,7 @@ export function SubscriptionDashboard({ className = '' }) {
       ) : (
         <div className={tw.emptyState}>
           <div className={tw.emptyIcon}>📋</div>
-          <h3 className={tw.emptyTitle}>No Active Subscription</h3>
+          <SubSectionTitle style={{ marginBottom: 0 }} className={tw.emptyTitle}>No Active Subscription</SubSectionTitle>
           <p className={tw.emptyDescription}>
             Choose a plan below to get started with your golf training
           </p>
@@ -306,9 +307,9 @@ export function SubscriptionDashboard({ className = '' }) {
 
       {/* Available Plans */}
       <div className={tw.section}>
-        <h2 className={tw.sectionTitle}>
+        <SectionTitle style={{ marginBottom: 0 }} className={tw.sectionTitle}>
           {subscription ? 'Change Plan' : 'Choose a Plan'}
-        </h2>
+        </SectionTitle>
 
         <div className={tw.plansGrid}>
           {Object.entries(PLANS).map(([tier, plan]) => {

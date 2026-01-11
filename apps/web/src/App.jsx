@@ -28,6 +28,7 @@ import ProtectedRoute from './components/guards/ProtectedRoute';
 import PublicRoute from './components/guards/PublicRoute';
 import ErrorBoundary from './components/ErrorBoundary';
 import LoadingState from './components/ui/LoadingState';
+import { PageTitle } from './components/typography/Headings';
 import Toast from './components/Toast';
 import VideoNotificationManager from './components/VideoNotificationManager';
 import NotificationManager from './components/NotificationManager';
@@ -339,7 +340,7 @@ const PlayerLayout = ({ children, title, subtitle, actions }) => (
       <div className="mb-6">
         <div className="flex items-start justify-between gap-4 mb-2">
           <div>
-            {title && <h1 className="text-[26px] font-bold text-ak-text-primary leading-tight">{title}</h1>}
+            {title && <PageTitle className="text-[26px] font-bold text-ak-text-primary leading-tight" style={{ marginBottom: 0 }}>{title}</PageTitle>}
             {subtitle && <p className="text-[14px] text-ak-text-secondary mt-1">{subtitle}</p>}
           </div>
           {actions && <div className="flex-shrink-0">{actions}</div>}

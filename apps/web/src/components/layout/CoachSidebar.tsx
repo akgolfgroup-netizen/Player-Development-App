@@ -1,5 +1,5 @@
 /**
- * TIER Golf Academy - Coach Sidebar
+ * TIER Golf - Coach Sidebar
  * Design System v3.0 - Premium Light
  *
  * Sidebar navigation for coaches.

@@ -1,5 +1,5 @@
 /**
- * TIER Golf Academy - Player Sidebar
+ * TIER Golf - Player Sidebar
  * Design System v3.0 - Forest Green (Premium Light)
  *
  * Sidebar navigation for players.

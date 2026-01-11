@@ -1,5 +1,5 @@
 /**
- * TIER Golf Academy - Service Worker
+ * TIER Golf - Service Worker
  * Handles push notifications, caching, and offline support
  *
  * IMPORTANT: This service worker uses BUILD_SHA-scoped caches.
@@ -175,7 +175,7 @@ self.addEventListener('push', (event) => {
   console.log('[SW] Push notification received');
 
   let data = {
-    title: 'TIER Golf Academy',
+    title: 'TIER Golf',
     body: 'Du har en ny varsling',
     icon: '/logo192.webp',
     badge: '/icons/icon-72.webp',

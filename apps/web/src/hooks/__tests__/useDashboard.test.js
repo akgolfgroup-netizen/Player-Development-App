@@ -92,7 +92,7 @@ describe('useDashboard', () => {
         id: 'test-1',
         title: 'Kategoritest Q1',
         date: '2026-01-20',
-        location: 'TIER Golf Academy',
+        location: 'TIER Golf',
       },
       breakingPoints: [
         {

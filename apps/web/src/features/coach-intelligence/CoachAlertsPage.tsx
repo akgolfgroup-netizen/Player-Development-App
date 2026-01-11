@@ -1,5 +1,5 @@
 /**
- * TIER Golf Academy - Coach Alerts Page
+ * TIER Golf - Coach Alerts Page
  *
  * Archetype: A - List/Index Page
  * Purpose: Display actionable alerts for coach attention

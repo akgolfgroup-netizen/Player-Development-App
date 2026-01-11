@@ -155,6 +155,9 @@ model User {
   collections       Collection[]
   pushSubscriptions PushSubscription[]
 
+  // Technique plan relations
+  techniqueTaskAssignments TechniqueTaskResponsible[]
+
   @@index([tenantId])
   @@index([email])
   @@map("users")
@@ -620,10 +623,10 @@ model TrainingSession {
   completedAt      DateTime? @map("completed_at") @db.Timestamptz(6)
 
   // PHASE 5: Recurrence & Repetition
-  recurrenceRule   String?   @map("recurrence_rule") @db.VarChar(255) // RRULE format (FREQ=WEEKLY;COUNT=5)
+  recurrenceRule    String?   @map("recurrence_rule") @db.VarChar(255) // RRULE format (FREQ=WEEKLY;COUNT=5)
   recurrenceEndDate DateTime? @map("recurrence_end_date") @db.Date
-  recurrenceCount  Int?      @map("recurrence_count")
-  parentSessionId  String?   @map("parent_session_id") @db.Uuid
+  recurrenceCount   Int?      @map("recurrence_count")
+  parentSessionId   String?   @map("parent_session_id") @db.Uuid
 
   createdAt DateTime @default(now()) @map("created_at") @db.Timestamptz(6)
   updatedAt DateTime @default(now()) @updatedAt @map("updated_at") @db.Timestamptz(6)
@@ -635,9 +638,9 @@ model TrainingSession {
   areaPerformance TrainingAreaPerformance[]
 
   // PHASE 5: Session exercises and recurrence
-  exercises        SessionExercise[]
-  parentSession    TrainingSession?  @relation("RecurringSession", fields: [parentSessionId], references: [id], onDelete: Cascade)
-  childSessions    TrainingSession[] @relation("RecurringSession")
+  exercises     SessionExercise[]
+  parentSession TrainingSession?  @relation("RecurringSession", fields: [parentSessionId], references: [id], onDelete: Cascade)
+  childSessions TrainingSession[] @relation("RecurringSession")
 
   @@index([playerId])
   @@index([coachId])
@@ -896,8 +899,9 @@ model Exercise {
   updatedAt               DateTime @default(now()) @updatedAt @map("updated_at") @db.Timestamptz(6)
 
   // Relations
-  tenant          Tenant            @relation(fields: [tenantId], references: [id], onDelete: Cascade)
-  sessionExercises SessionExercise[] // PHASE 5: Used in session exercises
+  tenant              Tenant               @relation(fields: [tenantId], references: [id], onDelete: Cascade)
+  sessionExercises    SessionExercise[] // PHASE 5: Used in session exercises
+  techniqueTaskDrills TechniqueTaskDrill[] // P-System drill assignments
 
   @@index([tenantId])
   @@index([exerciseType])
@@ -2652,7 +2656,7 @@ model Goal {
   updatedAt DateTime @default(now()) @updatedAt @map("updated_at") @db.Timestamptz(6)
 
   // Relations
-  user             User               @relation(fields: [userId], references: [id], onDelete: Cascade)
+  user             User              @relation(fields: [userId], references: [id], onDelete: Cascade)
   goalProgressions GoalProgression[]
 
   @@index([userId])
@@ -2671,13 +2675,13 @@ model GoalStreak {
   userId String @unique @map("user_id") @db.Uuid
 
   // Streak tracking
-  currentStreak  Int      @default(0) @map("current_streak") // Consecutive days with activity
-  longestStreak  Int      @default(0) @map("longest_streak") // Personal best
+  currentStreak    Int       @default(0) @map("current_streak") // Consecutive days with activity
+  longestStreak    Int       @default(0) @map("longest_streak") // Personal best
   lastActivityDate DateTime? @map("last_activity_date") @db.Date // Last day with goal progress
 
   // Streak status: active (updated today/yesterday), at_risk (about to expire), frozen (1-day grace period used), inactive
-  streakStatus   String   @default("inactive") @map("streak_status") @db.VarChar(20)
-  freezeUsed     Boolean  @default(false) @map("freeze_used") // Whether user has used their 1-day grace period
+  streakStatus String  @default("inactive") @map("streak_status") @db.VarChar(20)
+  freezeUsed   Boolean @default(false) @map("freeze_used") // Whether user has used their 1-day grace period
 
   createdAt DateTime @default(now()) @map("created_at") @db.Timestamptz(6)
   updatedAt DateTime @default(now()) @updatedAt @map("updated_at") @db.Timestamptz(6)
@@ -3800,14 +3804,14 @@ model SessionPackage {
 // ════════════════════════════════════════════════════════════════════════════
 
 model WebhookEvent {
-  id             String   @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
-  stripeEventId  String   @unique @map("stripe_event_id") @db.VarChar(255)
-  eventType      String   @map("event_type") @db.VarChar(100)
-  eventData      Json     @map("event_data") @db.JsonB
-  processed      Boolean  @default(false)
-  processedAt    DateTime? @map("processed_at") @db.Timestamptz(6)
-  error          String?  @db.Text
-  createdAt      DateTime @default(now()) @map("created_at") @db.Timestamptz(6)
+  id            String    @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  stripeEventId String    @unique @map("stripe_event_id") @db.VarChar(255)
+  eventType     String    @map("event_type") @db.VarChar(100)
+  eventData     Json      @map("event_data") @db.JsonB
+  processed     Boolean   @default(false)
+  processedAt   DateTime? @map("processed_at") @db.Timestamptz(6)
+  error         String?   @db.Text
+  createdAt     DateTime  @default(now()) @map("created_at") @db.Timestamptz(6)
 
   @@index([eventType])
   @@index([processed])
@@ -4235,17 +4239,65 @@ model TechniqueTask {
   priority      String    @default("medium") @db.VarChar(10) // 'low', 'medium', 'high'
   dueDate       DateTime? @map("due_date") @db.Date
   completedAt   DateTime? @map("completed_at") @db.Timestamptz(6)
-  createdAt     DateTime  @default(now()) @map("created_at") @db.Timestamptz(6)
-  updatedAt     DateTime  @default(now()) @updatedAt @map("updated_at") @db.Timestamptz(6)
+
+  // P-System specific fields
+  pLevel        String? @map("p_level") @db.VarChar(5) // P1.0, P2.0, ..., P10.0
+  repetitions   Int     @default(0) // Number of repetitions tracked
+  priorityOrder Int     @default(0) @map("priority_order") // For drag-and-drop ordering
+  imageUrls     Json    @default("[]") @map("image_urls") @db.JsonB // Progress images
+
+  createdAt DateTime @default(now()) @map("created_at") @db.Timestamptz(6)
+  updatedAt DateTime @default(now()) @updatedAt @map("updated_at") @db.Timestamptz(6)
 
   // Relations
   player   Player  @relation(fields: [playerId], references: [id], onDelete: Cascade)
   tenant   Tenant? @relation(fields: [tenantId], references: [id])
   tenantId String? @db.Uuid
 
+  // P-System relations
+  drills      TechniqueTaskDrill[]
+  responsible TechniqueTaskResponsible[]
+
   @@index([playerId, status])
   @@index([createdById])
+  @@index([playerId, pLevel])
+  @@index([playerId, priorityOrder])
   @@map("technique_tasks")
+}
+
+model TechniqueTaskDrill {
+  id         String   @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  taskId     String   @map("task_id") @db.Uuid
+  exerciseId String   @map("exercise_id") @db.Uuid
+  orderIndex Int      @default(0) @map("order_index")
+  notes      String?  @db.Text
+  createdAt  DateTime @default(now()) @map("created_at") @db.Timestamptz(6)
+
+  // Relations
+  task     TechniqueTask @relation(fields: [taskId], references: [id], onDelete: Cascade)
+  exercise Exercise      @relation(fields: [exerciseId], references: [id], onDelete: Cascade)
+
+  @@unique([taskId, exerciseId])
+  @@index([taskId])
+  @@index([exerciseId])
+  @@map("technique_task_drills")
+}
+
+model TechniqueTaskResponsible {
+  id         String   @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  taskId     String   @map("task_id") @db.Uuid
+  userId     String   @map("user_id") @db.Uuid
+  role       String?  @db.VarChar(50) // 'primary_coach', 'swing_coach', 'putting_coach', 'player'
+  assignedAt DateTime @default(now()) @map("assigned_at") @db.Timestamptz(6)
+
+  // Relations
+  task TechniqueTask @relation(fields: [taskId], references: [id], onDelete: Cascade)
+  user User          @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@unique([taskId, userId])
+  @@index([taskId])
+  @@index([userId])
+  @@map("technique_task_responsible")
 }
 
 model TechniqueGoal {
@@ -4346,7 +4398,7 @@ model AnnualPlanPeriod {
   updatedAt   DateTime @default(now()) @updatedAt @map("updated_at") @db.Timestamptz(6)
 
   // Relations
-  player                    Player                      @relation(fields: [playerId], references: [id], onDelete: Cascade)
+  player                     Player                       @relation(fields: [playerId], references: [id], onDelete: Cascade)
   periodTrainingDistribution PeriodTrainingDistribution[]
 
   @@index([playerId])
@@ -4375,16 +4427,16 @@ model PeriodTrainingDistribution {
 // ============================================================================
 
 model SchoolPlan {
-  id          String   @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
-  playerId    String   @map("player_id") @db.Uuid
-  title       String   @db.VarChar(255)
-  description String?  @db.Text
+  id          String    @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  playerId    String    @map("player_id") @db.Uuid
+  title       String    @db.VarChar(255)
+  description String?   @db.Text
   dueDate     DateTime? @map("due_date") @db.Date
-  type        String?  @db.VarChar(50) // exam, assignment, project, test, other
-  status      String   @default("pending") @db.VarChar(20) // pending, in_progress, completed, cancelled
-  priority    String   @default("medium") @db.VarChar(20) // low, medium, high, urgent
-  createdAt   DateTime @default(now()) @map("created_at") @db.Timestamptz(6)
-  updatedAt   DateTime @default(now()) @updatedAt @map("updated_at") @db.Timestamptz(6)
+  type        String?   @db.VarChar(50) // exam, assignment, project, test, other
+  status      String    @default("pending") @db.VarChar(20) // pending, in_progress, completed, cancelled
+  priority    String    @default("medium") @db.VarChar(20) // low, medium, high, urgent
+  createdAt   DateTime  @default(now()) @map("created_at") @db.Timestamptz(6)
+  updatedAt   DateTime  @default(now()) @updatedAt @map("updated_at") @db.Timestamptz(6)
 
   // Relations
   player Player @relation(fields: [playerId], references: [id], onDelete: Cascade)

@@ -6,6 +6,7 @@
 import React, { useState } from 'react';
 import { Trophy, Target, Award, Clock, Zap, TrendingUp } from 'lucide-react';
 import { useBountyBoard } from '../../../hooks/usePlayerInsights';
+import { SectionTitle, SubSectionTitle, CardTitle } from '../../../components/typography';
 
 interface BountyBoardViewProps {
   data: any;
@@ -67,7 +68,7 @@ const BountyBoardView: React.FC<BountyBoardViewProps> = ({ data: initialData }) 
       {/* Header */}
       <div className="flex items-start justify-between mb-3">
         <div className="flex-1">
-          <h4 className="font-bold text-tier-navy mb-1">{bounty.titleNo || bounty.title}</h4>
+          <CardTitle style={{ marginBottom: '0.25rem' }}>{bounty.titleNo || bounty.title}</CardTitle>
           <p className="text-sm text-tier-text-secondary">
             {bounty.descriptionNo || bounty.description}
           </p>
@@ -182,10 +183,10 @@ const BountyBoardView: React.FC<BountyBoardViewProps> = ({ data: initialData }) 
 
       {/* Active Bounties */}
       <div>
-        <h3 className="text-lg font-semibold text-tier-navy mb-4 flex items-center gap-2">
+        <SubSectionTitle className="flex items-center gap-2">
           <Target size={20} className="text-tier-info" />
           Aktive Bounties ({data.activeBounties?.length || 0})
-        </h3>
+        </SubSectionTitle>
         {data.activeBounties && data.activeBounties.length > 0 ? (
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
             {data.activeBounties.map((bounty: any) => (
@@ -202,10 +203,10 @@ const BountyBoardView: React.FC<BountyBoardViewProps> = ({ data: initialData }) 
 
       {/* Available Bounties */}
       <div>
-        <h3 className="text-lg font-semibold text-tier-navy mb-4 flex items-center gap-2">
+        <SubSectionTitle className="flex items-center gap-2">
           <TrendingUp size={20} className="text-tier-success" />
           Tilgjengelige Bounties ({data.availableBounties?.length || 0})
-        </h3>
+        </SubSectionTitle>
         {data.availableBounties && data.availableBounties.length > 0 ? (
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
             {data.availableBounties.map((bounty: any) => (
@@ -223,10 +224,10 @@ const BountyBoardView: React.FC<BountyBoardViewProps> = ({ data: initialData }) 
       {/* Completed Bounties */}
       {data.completedBounties && data.completedBounties.length > 0 && (
         <div>
-          <h3 className="text-lg font-semibold text-tier-navy mb-4 flex items-center gap-2">
+          <SubSectionTitle className="flex items-center gap-2">
             <Trophy size={20} className="text-tier-success" />
             Fullførte Bounties ({data.completedBounties.length})
-          </h3>
+          </SubSectionTitle>
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
             {data.completedBounties.slice(0, 6).map((bounty: any) => (
               <BountyCard key={bounty.id} bounty={bounty} />
@@ -252,16 +253,16 @@ const BountyBoardView: React.FC<BountyBoardViewProps> = ({ data: initialData }) 
             className="bg-white rounded-xl p-6 max-w-2xl w-full max-h-[80vh] overflow-y-auto"
             onClick={(e) => e.stopPropagation()}
           >
-            <h2 className="text-2xl font-bold text-tier-navy mb-4">
+            <SectionTitle>
               {selectedBounty.titleNo || selectedBounty.title}
-            </h2>
+            </SectionTitle>
             <p className="text-tier-text-secondary mb-6">
               {selectedBounty.descriptionNo || selectedBounty.description}
             </p>
 
             {selectedBounty.recommendedExercises && selectedBounty.recommendedExercises.length > 0 && (
               <div className="mb-6">
-                <h3 className="font-semibold text-tier-navy mb-3">Anbefalte øvelser:</h3>
+                <SubSectionTitle style={{ marginBottom: '0.75rem' }}>Anbefalte øvelser:</SubSectionTitle>
                 <div className="space-y-2">
                   {selectedBounty.recommendedExercises.map((exercise: any, idx: number) => (
                     <div key={idx} className="bg-tier-surface-base rounded-lg p-3">

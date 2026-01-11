@@ -1,5 +1,5 @@
 /**
- * TIER Golf Academy - Coach Create Modal
+ * TIER Golf - Coach Create Modal
  * Design System v3.0 - Premium Light
  *
  * Modal for creating new coach accounts.
@@ -10,6 +10,7 @@ import React, { useState } from 'react';
 import { X, Loader2, UserPlus } from 'lucide-react';
 import { coachesAPI } from '../../services/api';
 import Button from '../../ui/primitives/Button';
+import { SectionTitle } from '../../components/typography/Headings';
 
 interface CoachCreateModalProps {
   isOpen: boolean;
@@ -85,9 +86,9 @@ export const CoachCreateModal: React.FC<CoachCreateModalProps> = ({
             <div className="w-10 h-10 rounded-xl bg-tier-navy/10 flex items-center justify-center">
               <UserPlus size={20} className="text-tier-navy" />
             </div>
-            <h2 className="text-lg font-semibold text-tier-navy">
+            <SectionTitle style={{ marginBottom: 0 }}>
               Opprett ny trener
-            </h2>
+            </SectionTitle>
           </div>
           <button
             onClick={onClose}

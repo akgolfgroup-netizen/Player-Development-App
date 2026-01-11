@@ -15,6 +15,7 @@ import React, { useState, useCallback, useEffect } from 'react';
 import { useKeyframes } from '../../hooks/useKeyframes';
 import Button from '../../ui/primitives/Button';
 import { track } from '../../analytics/track';
+import { SubSectionTitle } from '../typography/Headings';
 
 // ═══════════════════════════════════════════
 // TAILWIND CLASSES
@@ -216,7 +217,7 @@ export function KeyframeGallery({
       <div className={`${tw.container} ${className}`}>
         <div className={tw.emptyState}>
           <div className={tw.emptyIcon}>📸</div>
-          <h3 className={tw.emptyTitle}>No Keyframes Yet</h3>
+          <SubSectionTitle className={tw.emptyTitle} style={{ marginBottom: 0 }}>No Keyframes Yet</SubSectionTitle>
           <p className={tw.emptyDescription}>
             Capture important moments from the video by extracting keyframes at specific timestamps.
           </p>
@@ -230,10 +231,10 @@ export function KeyframeGallery({
       <div className={`${tw.container} ${className}`}>
         {/* Header */}
         <div className={tw.header}>
-          <h3 className={tw.title}>
+          <SubSectionTitle className={tw.title} style={{ marginBottom: 0 }}>
             Keyframes
             <span className={tw.count}>({keyframes.length})</span>
-          </h3>
+          </SubSectionTitle>
         </div>
 
         {/* Keyframe Grid */}
@@ -296,7 +297,7 @@ export function KeyframeGallery({
       {editingKeyframe && (
         <div className={tw.editModal} onClick={handleCancelEdit}>
           <div className={tw.editCard} onClick={(e) => e.stopPropagation()}>
-            <h3 className={tw.editTitle}>Edit Keyframe</h3>
+            <SubSectionTitle className={tw.editTitle} style={{ marginBottom: 0 }}>Edit Keyframe</SubSectionTitle>
             <input
               type="text"
               placeholder="Label"

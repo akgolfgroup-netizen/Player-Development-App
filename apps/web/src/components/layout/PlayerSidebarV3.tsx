@@ -1,7 +1,7 @@
 /**
  * ============================================================
  * PlayerSidebarV3 - Forenklet flat sidebar (Fase 2 UX)
- * TIER Golf Academy Design System v3.1
+ * TIER Golf Design System v3.1
  * ============================================================
  *
  * Ny sidebar med kun 4 toppnivåvalg uten nesting:

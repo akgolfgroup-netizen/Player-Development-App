@@ -18,6 +18,7 @@ import Button from '../../ui/primitives/Button';
 import StateCard from '../../ui/composites/StateCard';
 import { track } from '../../analytics/track';
 import { PageHeader } from '../../ui/raw-blocks';
+import { SubSectionTitle } from '../../components/typography';
 
 // ═══════════════════════════════════════════
 // TAILWIND CLASSES
@@ -178,7 +179,7 @@ export function TrackManSessionDashboard({
       {filteredSessions.length === 0 ? (
         <div className={tw.emptyState}>
           <div className={tw.emptyIcon}>Stats</div>
-          <h3 className={tw.emptyTitle}>Ingen økter funnet</h3>
+          <SubSectionTitle style={{ marginBottom: 0 }}>Ingen okter funnet</SubSectionTitle>
           <p className={tw.emptyDescription}>
             {searchQuery
               ? 'Ingen økter matcher søket ditt'
@@ -200,9 +201,9 @@ export function TrackManSessionDashboard({
             >
               <div className={tw.cardHeader}>
                 <div>
-                  <h3 className={tw.cardTitle}>
+                  <SubSectionTitle style={{ marginBottom: 0 }}>
                     {session.location || 'Launch Monitor Økt'}
-                  </h3>
+                  </SubSectionTitle>
                   <p className={tw.cardDate}>
                     {new Date(session.date).toLocaleDateString('nb-NO', {
                       year: 'numeric',

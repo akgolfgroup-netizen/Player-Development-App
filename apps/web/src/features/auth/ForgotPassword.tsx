@@ -1,5 +1,5 @@
 /**
- * TIER Golf Academy - Forgot Password Page
+ * TIER Golf - Forgot Password Page
  *
  * Archetype: D - System/Auth Page
  * Purpose: Request password reset link

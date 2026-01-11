@@ -12,6 +12,7 @@ import FocusAreaSelector from './components/FocusAreaSelector';
 import { PageHeader } from '../../components/layout/PageHeader';
 import LoadingSpinner from '../../components/LoadingSpinner';
 import Button from '../../ui/primitives/Button';
+import { SubSectionTitle, CardTitle } from '../../components/typography';
 
 const FocusEnginePage: React.FC = () => {
   const { user } = useAuth();
@@ -65,9 +66,9 @@ const FocusEnginePage: React.FC = () => {
         <div className="max-w-2xl mx-auto">
           <div className="bg-white rounded-xl border border-tier-border-default p-8 text-center">
             <div className="text-tier-error text-4xl mb-4">[Warning]</div>
-            <h3 className="text-lg font-semibold text-tier-navy mb-2">
+            <SubSectionTitle style={{ marginBottom: 8 }}>
               Kunne ikke laste anbefalinger
-            </h3>
+            </SubSectionTitle>
             <p className="text-tier-text-secondary mb-4">{error}</p>
             <Button variant="primary" onClick={refetch}>
               Prøv igjen
@@ -97,7 +98,7 @@ const FocusEnginePage: React.FC = () => {
                 <Brain size={32} />
               </div>
               <div className="flex-1">
-                <h3 className="text-xl font-bold mb-2">AI-analyse</h3>
+                <SubSectionTitle style={{ marginBottom: 8 }}>AI-analyse</SubSectionTitle>
                 <p className="text-white/90 mb-4">{summary.analysis}</p>
                 <div className="grid grid-cols-3 gap-4">
                   <div>
@@ -124,7 +125,7 @@ const FocusEnginePage: React.FC = () => {
 
         {/* Actions */}
         <div className="flex items-center justify-between mb-6">
-          <h3 className="text-xl font-semibold text-tier-navy">Anbefalte fokusområder</h3>
+          <SubSectionTitle style={{ marginBottom: 0 }}>Anbefalte fokusområder</SubSectionTitle>
           <div className="flex gap-2">
             <Button
               variant="secondary"
@@ -175,9 +176,9 @@ const FocusEnginePage: React.FC = () => {
         ) : (
           <div className="bg-white rounded-xl border border-tier-border-default p-12 text-center">
             <div className="text-tier-text-secondary text-4xl mb-4">[Target]</div>
-            <h3 className="text-lg font-semibold text-tier-navy mb-2">
+            <SubSectionTitle style={{ marginBottom: 8 }}>
               Ingen anbefalinger tilgjengelig
-            </h3>
+            </SubSectionTitle>
             <p className="text-tier-text-secondary mb-4">
               Gjennomfør flere tester for at AI-motoren skal kunne gi deg personlige anbefalinger.
             </p>
@@ -189,17 +190,17 @@ const FocusEnginePage: React.FC = () => {
 
         {/* Info section */}
         <div className="mt-8 bg-white rounded-xl border border-tier-border-default p-6">
-          <h3 className="text-lg font-semibold text-tier-navy mb-3">Om treningsfokus</h3>
+          <SubSectionTitle style={{ marginBottom: 12 }}>Om treningsfokus</SubSectionTitle>
           <div className="grid md:grid-cols-2 gap-6 text-sm text-tier-text-secondary">
             <div>
-              <h4 className="font-semibold text-tier-navy mb-2">Hvordan fungerer det?</h4>
+              <CardTitle style={{ marginBottom: 8 }}>Hvordan fungerer det?</CardTitle>
               <p>
                 AI-motoren analyserer dine testresultater, prestasjonshistorikk og
                 utviklingsmønstre for å identifisere områder med størst forbedringspotensial.
               </p>
             </div>
             <div>
-              <h4 className="font-semibold text-tier-navy mb-2">Hvordan bruke anbefalingene?</h4>
+              <CardTitle style={{ marginBottom: 8 }}>Hvordan bruke anbefalingene?</CardTitle>
               <p>
                 Start med de høyest prioriterte områdene. Hver anbefaling inkluderer forklaring,
                 forventet effekt og estimert tid for å nå målnivået.

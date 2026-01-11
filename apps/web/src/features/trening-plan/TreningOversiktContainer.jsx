@@ -7,6 +7,7 @@ import {
 } from 'lucide-react';
 import { PageHeader } from '../../components/layout/PageHeader';
 import Card from '../../ui/primitives/Card';
+import { SectionTitle, SubSectionTitle } from '../../ui/primitives/typography';
 
 // ============================================================================
 // MOCK DATA - Will be replaced with API data
@@ -345,16 +346,9 @@ const CategoryCard = ({ title, color, links, expandedItems, onToggleExpand }) =>
       backgroundColor: `${color}08`,
       borderBottom: `2px solid ${color}`,
     }}>
-      <h3 style={{
-        fontSize: '13px',
-        fontWeight: 700,
-        color: color,
-        margin: 0,
-        textTransform: 'uppercase',
-        letterSpacing: '0.5px',
-      }}>
+      <SubSectionTitle style={{ marginBottom: 0, color: color, textTransform: 'uppercase', letterSpacing: '0.5px' }}>
         {title}
-      </h3>
+      </SubSectionTitle>
     </div>
 
     {/* Card Links */}
@@ -511,14 +505,9 @@ const TreningOversiktContainer = () => {
           <div style={{ display: 'flex', alignItems: 'center', gap: '16px', marginBottom: '20px' }}>
             <span style={{ fontSize: '40px' }}>{greeting.emoji}</span>
             <div>
-              <h2 style={{
-                fontSize: '22px',
-                fontWeight: 700,
-                color: 'var(--text-primary)',
-                margin: 0,
-              }}>
+              <SectionTitle style={{ marginBottom: 0 }}>
                 {greeting.title}
-              </h2>
+              </SectionTitle>
               <p style={{
                 fontSize: '14px',
                 color: 'var(--text-secondary)',

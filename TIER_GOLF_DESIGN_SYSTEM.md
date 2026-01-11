@@ -1745,4 +1745,4 @@ npm install @fontsource/inter @fontsource/dm-sans
 ---
 
 *TIER Golf Design System*  
-*© 2025 TIER Golf / TIER Golf Academy*
+*© 2025 TIER Golf / TIER Golf*

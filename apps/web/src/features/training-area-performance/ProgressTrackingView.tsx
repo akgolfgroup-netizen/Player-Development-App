@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import api from '../../services/api';
 import { LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip, Legend, ResponsiveContainer, BarChart, Bar } from 'recharts';
 import { PageHeader } from '../../ui/raw-blocks';
+import { SectionTitle } from '../../ui/primitives/typography';
 
 const TRAINING_AREAS = [
   { value: 'TEE', label: 'Tee' },
@@ -124,7 +125,7 @@ export const ProgressTrackingView: React.FC = () => {
 
       {/* Filters */}
       <div className="bg-white rounded-lg shadow p-6">
-        <h2 className="text-xl font-semibold text-gray-900 mb-4">Filtrer statistikk</h2>
+        <SectionTitle style={{ marginBottom: 0 }}>Filtrer statistikk</SectionTitle>
         <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
           <div>
             <label htmlFor="training-area" className="block text-sm font-medium text-gray-700 mb-2">
@@ -219,7 +220,7 @@ export const ProgressTrackingView: React.FC = () => {
             <>
               {/* Success Rate Trend */}
               <div className="bg-white rounded-lg shadow p-6">
-                <h2 className="text-xl font-semibold text-gray-900 mb-4">Suksessrate over tid</h2>
+                <SectionTitle style={{ marginBottom: 0 }}>Suksessrate over tid</SectionTitle>
                 <ResponsiveContainer width="100%" height={300}>
                   <LineChart data={stats.recentPerformances}>
                     <CartesianGrid strokeDasharray="3 3" />
@@ -252,7 +253,7 @@ export const ProgressTrackingView: React.FC = () => {
 
               {/* Consistency Score Trend */}
               <div className="bg-white rounded-lg shadow p-6">
-                <h2 className="text-xl font-semibold text-gray-900 mb-4">Konsistensscore over tid</h2>
+                <SectionTitle style={{ marginBottom: 0 }}>Konsistensscore over tid</SectionTitle>
                 <ResponsiveContainer width="100%" height={300}>
                   <BarChart data={stats.recentPerformances}>
                     <CartesianGrid strokeDasharray="3 3" />
@@ -285,7 +286,7 @@ export const ProgressTrackingView: React.FC = () => {
           {/* Recent Performances Table */}
           {stats.recentPerformances.length > 0 && (
             <div className="bg-white rounded-lg shadow p-6">
-              <h2 className="text-xl font-semibold text-gray-900 mb-4">Siste økter</h2>
+              <SectionTitle style={{ marginBottom: 0 }}>Siste økter</SectionTitle>
               <div className="overflow-x-auto">
                 <table className="min-w-full divide-y divide-gray-200">
                   <thead className="bg-gray-50">
@@ -332,7 +333,7 @@ export const ProgressTrackingView: React.FC = () => {
           {/* Next Level Requirements */}
           {stats.nextLevelRequirements && (
             <div className="bg-gradient-to-r from-blue-50 to-purple-50 rounded-lg shadow p-6 border border-blue-200">
-              <h2 className="text-xl font-semibold text-gray-900 mb-4">Neste nivå krav</h2>
+              <SectionTitle style={{ marginBottom: 0 }}>Neste nivå krav</SectionTitle>
               <div className="space-y-3">
                 <div className="flex items-center justify-between">
                   <span className="text-sm font-medium text-gray-700">Nåværende nivå:</span>

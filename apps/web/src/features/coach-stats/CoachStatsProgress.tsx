@@ -1,5 +1,5 @@
 /**
- * TIER Golf Academy - Coach Stats Progress
+ * TIER Golf - Coach Stats Progress
  * Design System v3.0 - Premium Light
  *
  * Shows players who are making positive progress.

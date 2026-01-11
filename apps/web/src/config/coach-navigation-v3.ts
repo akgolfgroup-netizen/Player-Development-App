@@ -1,6 +1,6 @@
 /**
  * ============================================================
- * COACH NAVIGATION V3 - TIER Golf Academy
+ * COACH NAVIGATION V3 - TIER Golf
  * ============================================================
  *
  * Ny 5-modus navigasjonsstruktur med fargekodet områder:

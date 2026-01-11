@@ -1,5 +1,5 @@
 /**
- * TIER Golf Academy - Tournament Data Service
+ * TIER Golf - Tournament Data Service
  *
  * Handles tournament data fetching from API and provides
  * deterministic seed data when API is unavailable.
@@ -466,9 +466,9 @@ const PGA_TOUR_2026: BaseTournament[] = [
  * Academy/Club Tournaments (for demo/testing)
  */
 const ACADEMY_CLUB_2026: BaseTournament[] = [
-  { id: 'club-2026-01', name: 'TIER Golf Academy Spring Cup', startDate: '2026-04-18', endDate: '2026-04-18', venue: 'Miklagard Golf', city: 'Kløfta', country: 'NO', tour: 'academy', status: 'upcoming', maxParticipants: 60, currentParticipants: 0, entryFee: 350, format: '18 hull stableford', description: 'Intern turnering for TIER Golf Academy' },
-  { id: 'club-2026-02', name: 'TIER Golf Academy Summer Championship', startDate: '2026-07-04', endDate: '2026-07-04', venue: 'Miklagard Golf', city: 'Kløfta', country: 'NO', tour: 'academy', status: 'upcoming', maxParticipants: 60, currentParticipants: 0, entryFee: 450, format: '18 hull slagspill', description: 'Akademiets sommermesterskap' },
-  { id: 'club-2026-03', name: 'TIER Golf Academy Fall Classic', startDate: '2026-09-12', endDate: '2026-09-12', venue: 'Miklagard Golf', city: 'Kløfta', country: 'NO', tour: 'academy', status: 'upcoming', maxParticipants: 60, currentParticipants: 0, entryFee: 350, format: '18 hull stableford', description: 'Høstturnering' },
+  { id: 'club-2026-01', name: 'TIER Golf Spring Cup', startDate: '2026-04-18', endDate: '2026-04-18', venue: 'Miklagard Golf', city: 'Kløfta', country: 'NO', tour: 'academy', status: 'upcoming', maxParticipants: 60, currentParticipants: 0, entryFee: 350, format: '18 hull stableford', description: 'Intern turnering for TIER Golf' },
+  { id: 'club-2026-02', name: 'TIER Golf Summer Championship', startDate: '2026-07-04', endDate: '2026-07-04', venue: 'Miklagard Golf', city: 'Kløfta', country: 'NO', tour: 'academy', status: 'upcoming', maxParticipants: 60, currentParticipants: 0, entryFee: 450, format: '18 hull slagspill', description: 'Akademiets sommermesterskap' },
+  { id: 'club-2026-03', name: 'TIER Golf Fall Classic', startDate: '2026-09-12', endDate: '2026-09-12', venue: 'Miklagard Golf', city: 'Kløfta', country: 'NO', tour: 'academy', status: 'upcoming', maxParticipants: 60, currentParticipants: 0, entryFee: 350, format: '18 hull stableford', description: 'Høstturnering' },
 ];
 
 // ============================================================================

@@ -5,6 +5,7 @@
 
 import React, { useState } from 'react';
 import { Button } from '../../ui/primitives';
+import { SectionTitle } from '../../ui/primitives/typography';
 import api from '../../services/api';
 
 interface LogPerformanceFormProps {
@@ -150,7 +151,7 @@ export const LogTrainingAreaPerformanceForm: React.FC<LogPerformanceFormProps> =
 
   return (
     <div style={styles.container}>
-      <h2 style={styles.title}>Logg treningsområde-prestasjon</h2>
+      <SectionTitle style={{ marginBottom: 0 }}>Logg treningsområde-prestasjon</SectionTitle>
 
       {error && (
         <div style={styles.error}>

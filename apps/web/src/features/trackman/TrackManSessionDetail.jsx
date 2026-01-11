@@ -16,6 +16,7 @@ import { useTrackMan } from '../../hooks/useTrackMan';
 import Button from '../../ui/primitives/Button';
 import StateCard from '../../ui/composites/StateCard';
 import { track } from '../../analytics/track';
+import { PageTitle, SubSectionTitle } from '../../components/typography';
 
 // ═══════════════════════════════════════════
 // TAILWIND CLASSES
@@ -184,9 +185,9 @@ export function TrackManSessionDetail({
       {/* Header */}
       <div className={tw.header}>
         <div className={tw.headerContent}>
-          <h1 className={tw.title}>
+          <PageTitle style={{ marginBottom: '8px' }}>
             {selectedSession.location || 'Launch Monitor Økt'}
-          </h1>
+          </PageTitle>
           <p className={tw.subtitle}>
             {new Date(selectedSession.date).toLocaleDateString('nb-NO', {
               year: 'numeric',
@@ -280,7 +281,7 @@ export function TrackManSessionDetail({
       {filteredShots.length === 0 ? (
         <div className={tw.emptyState}>
           <div className={tw.emptyIcon}>🏌️</div>
-          <h3 className={tw.emptyTitle}>Ingen slag funnet</h3>
+          <SubSectionTitle style={{ marginBottom: 0 }}>Ingen slag funnet</SubSectionTitle>
           <p className={tw.emptyDescription}>
             {clubFilter !== 'all'
               ? `Ingen slag med ${clubFilter} i denne økten`

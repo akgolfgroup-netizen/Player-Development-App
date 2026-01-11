@@ -5,6 +5,7 @@
 
 import React, { useState } from 'react';
 import { MessageCircle, Calendar, Trash2, Archive, Edit2, CheckCircle, X, ChevronDown, ChevronUp } from 'lucide-react';
+import { SectionTitle, SubSectionTitle } from '../../components/typography/Headings';
 import {
   useAIConversations,
   useAIConversation,
@@ -171,7 +172,7 @@ const AIConversationsHistoryPage: React.FC = () => {
           <div className="lg:col-span-1">
             <Card>
               <div className="p-4">
-                <h2 className="text-lg font-semibold text-tier-navy mb-4">Samtaler</h2>
+                <SectionTitle style={{ marginBottom: '1rem' }}>Samtaler</SectionTitle>
                 {conversationsLoading ? (
                   <p className="text-center text-tier-text-secondary py-8">Laster...</p>
                 ) : conversationsError ? (
@@ -280,7 +281,7 @@ const AIConversationsHistoryPage: React.FC = () => {
                 {!selectedConversationId ? (
                   <div className="text-center py-12">
                     <MessageCircle size={64} className="mx-auto text-tier-text-tertiary mb-4" />
-                    <h3 className="text-lg font-semibold text-tier-navy mb-2">Velg en samtale</h3>
+                    <SubSectionTitle style={{ marginBottom: '0.5rem' }}>Velg en samtale</SubSectionTitle>
                     <p className="text-sm text-tier-text-secondary">Velg en samtale fra listen for å se innholdet</p>
                   </div>
                 ) : conversationLoading ? (
@@ -290,7 +291,7 @@ const AIConversationsHistoryPage: React.FC = () => {
                 ) : conversation ? (
                   <div>
                     <div className="mb-6 pb-4 border-b border-tier-border-default">
-                      <h2 className="text-xl font-bold text-tier-navy mb-2">{conversation.title}</h2>
+                      <SectionTitle style={{ marginBottom: '0.5rem' }}>{conversation.title}</SectionTitle>
                       <div className="flex items-center gap-4 text-sm text-tier-text-secondary">
                         <div className="flex items-center gap-1">
                           <Calendar size={14} />

@@ -96,7 +96,7 @@ const StatusProgressContent: React.FC = () => {
                 <Zap size={24} color="white" />
               </div>
               <div>
-                <h2 style={styles.statusTitle}>Din status</h2>
+                <SectionTitle style={{ marginBottom: 0 }}>Din status</SectionTitle>
                 <p style={styles.statusSubtitle}>Basert på dine siste resultater</p>
               </div>
             </div>

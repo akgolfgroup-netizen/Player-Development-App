@@ -10,6 +10,7 @@ import React, { useState } from 'react';
 import { X, Loader2, AlertTriangle } from 'lucide-react';
 import { featureFlagsAPI } from '../../services/api';
 import Button from '../../ui/primitives/Button';
+import { SectionTitle } from '../../components/typography/Headings';
 
 interface FeatureFlag {
   id: string;
@@ -66,9 +67,9 @@ export const DeleteFlagModal: React.FC<DeleteFlagModalProps> = ({
             <div className="w-10 h-10 rounded-xl bg-red-50 flex items-center justify-center">
               <AlertTriangle size={20} className="text-red-600" />
             </div>
-            <h2 className="text-lg font-semibold text-tier-navy">
+            <SectionTitle style={{ marginBottom: 0 }}>
               Slett funksjonsflagg
-            </h2>
+            </SectionTitle>
           </div>
           <button
             onClick={onClose}

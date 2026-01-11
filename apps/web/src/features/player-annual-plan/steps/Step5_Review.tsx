@@ -12,6 +12,7 @@ import { PERIOD_LABELS } from '../utils/periodDefaults';
 import { exportToPDF, exportToICal } from '../utils/planExport';
 import type { Period } from '../hooks/usePlayerAnnualPlan';
 import { Calendar, Target, TrendingUp, Download, FileText } from 'lucide-react';
+import { SectionTitle, SubSectionTitle, CardTitle } from '../../../components/typography';
 
 interface Step5ReviewProps {
   basicInfo: {
@@ -69,7 +70,7 @@ export function Step5Review({
   return (
     <div className="max-w-3xl mx-auto space-y-6">
       <div className="space-y-2">
-        <h2 className="text-2xl font-bold text-tier-navy">Din årsplan er klar!</h2>
+        <SectionTitle style={{ marginBottom: 0 }}>Din årsplan er klar!</SectionTitle>
         <p className="text-tier-gray">
           Gjennomgå detaljene og lagre planen din
         </p>
@@ -104,7 +105,7 @@ export function Step5Review({
 
       {/* Timeline */}
       <Card className="p-6 space-y-4">
-        <h3 className="text-lg font-semibold text-tier-navy">Tidslinje</h3>
+        <SubSectionTitle style={{ marginBottom: 0 }}>Tidslinje</SubSectionTitle>
         <PeriodTimeline
           periods={periods}
           startDate={basicInfo.startDate}
@@ -114,7 +115,7 @@ export function Step5Review({
 
       {/* Periods Details */}
       <Card className="p-6 space-y-4">
-        <h3 className="text-lg font-semibold text-tier-navy">Perioder</h3>
+        <SubSectionTitle style={{ marginBottom: 0 }}>Perioder</SubSectionTitle>
         <div className="space-y-3">
           {periods.map((period, index) => {
             const start = new Date(period.startDate);
@@ -134,9 +135,9 @@ export function Step5Review({
                 />
                 <div className="flex-1 space-y-1">
                   <div className="flex items-center space-x-2">
-                    <h4 className="font-semibold text-tier-navy">
+                    <CardTitle style={{ marginBottom: 0 }}>
                       {index + 1}. {period.name}
-                    </h4>
+                    </CardTitle>
                     <Badge variant="outline" className="text-xs">
                       {PERIOD_LABELS[period.type]}
                     </Badge>
@@ -159,7 +160,7 @@ export function Step5Review({
       {/* Short-term Goals */}
       {shortTermGoals.length > 0 && (
         <Card className="p-6 space-y-3">
-          <h3 className="text-lg font-semibold text-tier-navy">Kortsiktige mål (6-12 måneder)</h3>
+          <SubSectionTitle style={{ marginBottom: 0 }}>Kortsiktige mål (6-12 måneder)</SubSectionTitle>
           <ul className="space-y-2">
             {shortTermGoals.map((goal, index) => (
               <li key={index} className="flex items-start space-x-2">
@@ -174,7 +175,7 @@ export function Step5Review({
       {/* Long-term Goals */}
       {longTermGoals.length > 0 && (
         <Card className="p-6 space-y-3">
-          <h3 className="text-lg font-semibold text-tier-navy">Langsiktige mål (1-3 år)</h3>
+          <SubSectionTitle style={{ marginBottom: 0 }}>Langsiktige mål (1-3 år)</SubSectionTitle>
           <ul className="space-y-2">
             {longTermGoals.map((goal, index) => (
               <li key={index} className="flex items-start space-x-2">

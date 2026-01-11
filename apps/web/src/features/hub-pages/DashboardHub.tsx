@@ -32,6 +32,7 @@ import ProfileImageUpload from '../../components/profile/ProfileImageUpload';
 import { useToast } from '../../components/shadcn/use-toast';
 import { Link } from 'react-router-dom';
 import { Target } from 'lucide-react';
+import { SubSectionTitle } from '../../components/typography';
 
 interface DashboardHubProps {
   playerName?: string;
@@ -110,9 +111,9 @@ export default function DashboardHub({
 
             {/* 3. Focus Cards - Max 4 cards */}
             <section>
-              <h3 className="text-lg font-semibold text-tier-navy mb-4">
+              <SubSectionTitle className="text-lg font-semibold text-tier-navy mb-4">
                 Din fokus denne uken
-              </h3>
+              </SubSectionTitle>
               <FocusCardsGrid>
                 <WeeklyGoalCard
                   goalName="Treningsøkter"

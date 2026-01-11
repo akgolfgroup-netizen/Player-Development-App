@@ -27,7 +27,12 @@ export class TechniquePlanService {
   // =========================================================================
 
   async createTask(
-    input: CreateTaskInput,
+    input: CreateTaskInput & {
+      pLevel?: string;
+      repetitions?: number;
+      priorityOrder?: number;
+      imageUrls?: string[];
+    },
     createdById: string,
     creatorType: 'coach' | 'player',
     tenantId: string
@@ -46,10 +51,29 @@ export class TechniquePlanService {
         targetMetrics: input.targetMetrics || undefined,
         priority: input.priority,
         dueDate: input.dueDate ? new Date(input.dueDate) : null,
+        // P-System fields
+        pLevel: input.pLevel,
+        repetitions: input.repetitions ?? 0,
+        priorityOrder: input.priorityOrder ?? 0,
+        imageUrls: input.imageUrls || [],
       },
       include: {
         player: {
           select: { firstName: true, lastName: true },
+        },
+        drills: {
+          include: {
+            exercise: {
+              select: { id: true, name: true, exerciseType: true },
+            },
+          },
+        },
+        responsible: {
+          include: {
+            user: {
+              select: { id: true, firstName: true, lastName: true, role: true },
+            },
+          },
         },
       },
     });
@@ -66,13 +90,14 @@ export class TechniquePlanService {
     });
   }
 
-  async listTasks(query: ListTasksQuery, tenantId: string) {
+  async listTasks(query: ListTasksQuery & { pLevel?: string }, tenantId: string) {
     const where: any = { tenantId };
 
     if (query.playerId) where.playerId = query.playerId;
     if (query.status) where.status = query.status;
     if (query.technicalArea) where.technicalArea = query.technicalArea;
     if (query.creatorType) where.creatorType = query.creatorType;
+    if (query.pLevel) where.pLevel = query.pLevel;
 
     const [tasks, total] = await Promise.all([
       this.prisma.techniqueTask.findMany({
@@ -81,8 +106,24 @@ export class TechniquePlanService {
           player: {
             select: { firstName: true, lastName: true },
           },
+          drills: {
+            include: {
+              exercise: {
+                select: { id: true, name: true, exerciseType: true },
+              },
+            },
+            orderBy: { orderIndex: 'asc' },
+          },
+          responsible: {
+            include: {
+              user: {
+                select: { id: true, firstName: true, lastName: true, role: true },
+              },
+            },
+          },
         },
         orderBy: [
+          { priorityOrder: 'asc' },
           { priority: 'desc' },
           { createdAt: 'desc' },
         ],
@@ -95,7 +136,16 @@ export class TechniquePlanService {
     return { tasks, total };
   }
 
-  async updateTask(taskId: string, input: UpdateTaskInput, _tenantId: string) {
+  async updateTask(
+    taskId: string,
+    input: UpdateTaskInput & {
+      pLevel?: string;
+      repetitions?: number;
+      priorityOrder?: number;
+      imageUrls?: string[];
+    },
+    _tenantId: string
+  ) {
     const data: any = {};
 
     if (input.title !== undefined) data.title = input.title;
@@ -115,12 +165,32 @@ export class TechniquePlanService {
       data.dueDate = input.dueDate ? new Date(input.dueDate) : null;
     }
 
+    // P-System fields
+    if (input.pLevel !== undefined) data.pLevel = input.pLevel;
+    if (input.repetitions !== undefined) data.repetitions = input.repetitions;
+    if (input.priorityOrder !== undefined) data.priorityOrder = input.priorityOrder;
+    if (input.imageUrls !== undefined) data.imageUrls = input.imageUrls;
+
     return this.prisma.techniqueTask.update({
       where: { id: taskId },
       data,
       include: {
         player: {
           select: { firstName: true, lastName: true },
+        },
+        drills: {
+          include: {
+            exercise: {
+              select: { id: true, name: true, exerciseType: true },
+            },
+          },
+        },
+        responsible: {
+          include: {
+            user: {
+              select: { id: true, firstName: true, lastName: true, role: true },
+            },
+          },
         },
       },
     });
@@ -138,6 +208,267 @@ export class TechniquePlanService {
 
     return this.prisma.techniqueTask.delete({
       where: { id: taskId },
+    });
+  }
+
+  // =========================================================================
+  // P-SYSTEM ENHANCEMENTS
+  // =========================================================================
+
+  /**
+   * Add a drill/exercise to a technique task
+   */
+  async addDrillToTask(
+    taskId: string,
+    exerciseId: string,
+    orderIndex: number = 0,
+    notes?: string,
+    tenantId?: string
+  ) {
+    // Verify task exists and belongs to tenant (if provided)
+    const task = await this.prisma.techniqueTask.findFirst({
+      where: { id: taskId, ...(tenantId && { tenantId }) },
+    });
+
+    if (!task) {
+      throw new Error('Task not found');
+    }
+
+    // Verify exercise exists
+    const exercise = await this.prisma.exercise.findUnique({
+      where: { id: exerciseId },
+    });
+
+    if (!exercise) {
+      throw new Error('Exercise not found');
+    }
+
+    return this.prisma.techniqueTaskDrill.create({
+      data: {
+        taskId,
+        exerciseId,
+        orderIndex,
+        notes,
+      },
+      include: {
+        exercise: {
+          select: {
+            id: true,
+            name: true,
+            description: true,
+            exerciseType: true,
+            learningPhases: true,
+          },
+        },
+      },
+    });
+  }
+
+  /**
+   * Remove a drill from a technique task
+   */
+  async removeDrillFromTask(taskId: string, drillLinkId: string, tenantId?: string) {
+    const drillLink = await this.prisma.techniqueTaskDrill.findFirst({
+      where: {
+        id: drillLinkId,
+        taskId,
+      },
+      include: {
+        task: true,
+      },
+    });
+
+    if (!drillLink) {
+      throw new Error('Drill assignment not found');
+    }
+
+    if (tenantId && drillLink.task.tenantId !== tenantId) {
+      throw new Error('Unauthorized');
+    }
+
+    return this.prisma.techniqueTaskDrill.delete({
+      where: { id: drillLinkId },
+    });
+  }
+
+  /**
+   * Assign a responsible person (coach/player) to a technique task
+   */
+  async assignResponsible(
+    taskId: string,
+    userId: string,
+    role?: string,
+    tenantId?: string
+  ) {
+    // Verify task exists
+    const task = await this.prisma.techniqueTask.findFirst({
+      where: { id: taskId, ...(tenantId && { tenantId }) },
+    });
+
+    if (!task) {
+      throw new Error('Task not found');
+    }
+
+    // Verify user exists
+    const user = await this.prisma.user.findUnique({
+      where: { id: userId },
+      select: { id: true, firstName: true, lastName: true, role: true },
+    });
+
+    if (!user) {
+      throw new Error('User not found');
+    }
+
+    return this.prisma.techniqueTaskResponsible.create({
+      data: {
+        taskId,
+        userId,
+        role: role || user.role,
+      },
+      include: {
+        user: {
+          select: {
+            id: true,
+            firstName: true,
+            lastName: true,
+            role: true,
+          },
+        },
+      },
+    });
+  }
+
+  /**
+   * Remove a responsible person from a technique task
+   */
+  async removeResponsible(taskId: string, responsibleId: string, tenantId?: string) {
+    const responsible = await this.prisma.techniqueTaskResponsible.findFirst({
+      where: {
+        id: responsibleId,
+        taskId,
+      },
+      include: {
+        task: true,
+      },
+    });
+
+    if (!responsible) {
+      throw new Error('Responsible assignment not found');
+    }
+
+    if (tenantId && responsible.task.tenantId !== tenantId) {
+      throw new Error('Unauthorized');
+    }
+
+    return this.prisma.techniqueTaskResponsible.delete({
+      where: { id: responsibleId },
+    });
+  }
+
+  /**
+   * Update task priority order (for drag-and-drop reordering)
+   */
+  async updateTaskPriority(taskId: string, newPriorityOrder: number, tenantId?: string) {
+    const task = await this.prisma.techniqueTask.findFirst({
+      where: { id: taskId, ...(tenantId && { tenantId }) },
+    });
+
+    if (!task) {
+      throw new Error('Task not found');
+    }
+
+    return this.prisma.techniqueTask.update({
+      where: { id: taskId },
+      data: { priorityOrder: newPriorityOrder },
+    });
+  }
+
+  /**
+   * Get tasks filtered by P-level
+   */
+  async getTasksByPLevel(playerId: string, pLevel: string, tenantId: string) {
+    return this.prisma.techniqueTask.findMany({
+      where: {
+        playerId,
+        pLevel,
+        tenantId,
+      },
+      include: {
+        drills: {
+          include: {
+            exercise: {
+              select: {
+                id: true,
+                name: true,
+                description: true,
+                exerciseType: true,
+              },
+            },
+          },
+          orderBy: { orderIndex: 'asc' },
+        },
+        responsible: {
+          include: {
+            user: {
+              select: {
+                id: true,
+                firstName: true,
+                lastName: true,
+                role: true,
+              },
+            },
+          },
+        },
+      },
+      orderBy: { priorityOrder: 'asc' },
+    });
+  }
+
+  /**
+   * Get complete task with all relations (for P-System view)
+   */
+  async getTaskWithFullDetails(taskId: string, tenantId?: string) {
+    return this.prisma.techniqueTask.findFirst({
+      where: {
+        id: taskId,
+        ...(tenantId && { tenantId }),
+      },
+      include: {
+        player: {
+          select: {
+            id: true,
+            firstName: true,
+            lastName: true,
+          },
+        },
+        drills: {
+          include: {
+            exercise: {
+              select: {
+                id: true,
+                name: true,
+                description: true,
+                exerciseType: true,
+                learningPhases: true,
+                videoUrl: true,
+              },
+            },
+          },
+          orderBy: { orderIndex: 'asc' },
+        },
+        responsible: {
+          include: {
+            user: {
+              select: {
+                id: true,
+                firstName: true,
+                lastName: true,
+                role: true,
+              },
+            },
+          },
+        },
+      },
     });
   }
 

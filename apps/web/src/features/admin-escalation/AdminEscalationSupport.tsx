@@ -1,5 +1,5 @@
 /**
- * TIER Golf Academy - Admin Escalation / Support
+ * TIER Golf - Admin Escalation / Support
  *
  * Archetype: A - List/Index Page
  * Purpose: Handle operational issues and escalations

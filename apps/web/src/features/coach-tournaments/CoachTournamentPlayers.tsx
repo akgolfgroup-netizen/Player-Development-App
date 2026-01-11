@@ -1,5 +1,5 @@
 /**
- * TIER Golf Academy - Coach Tournament Players
+ * TIER Golf - Coach Tournament Players
  * Design System v3.0 - Premium Light
  *
  * MIGRATED TO PAGE ARCHITECTURE - Zero inline styles
@@ -119,7 +119,7 @@ export default function CoachTournamentPlayers() {
         avatarColor: 'rgb(var(--status-success-rgb))',
         category: 'B',
         upcomingTournaments: [
-          { id: 'e4', tournamentId: 't2', tournamentName: 'TIER Golf Academy Cup', date: '2025-01-20', location: 'Miklagard', status: 'registered', category: 'open' },
+          { id: 'e4', tournamentId: 't2', tournamentName: 'TIER Golf Cup', date: '2025-01-20', location: 'Miklagard', status: 'registered', category: 'open' },
         ],
         totalThisYear: 5,
         lastTournament: '2025-02-28',
@@ -145,7 +145,7 @@ export default function CoachTournamentPlayers() {
         avatarColor: 'rgb(var(--status-error-rgb))',
         category: 'C',
         upcomingTournaments: [
-          { id: 'e8', tournamentId: 't2', tournamentName: 'TIER Golf Academy Cup', date: '2025-01-20', location: 'Miklagard', status: 'registered', category: 'open' },
+          { id: 'e8', tournamentId: 't2', tournamentName: 'TIER Golf Cup', date: '2025-01-20', location: 'Miklagard', status: 'registered', category: 'open' },
         ],
         totalThisYear: 3,
         lastTournament: '2025-01-15',
@@ -158,7 +158,7 @@ export default function CoachTournamentPlayers() {
         category: 'B',
         upcomingTournaments: [
           { id: 'e9', tournamentId: 't1', tournamentName: 'NM Junior 2025', date: '2025-06-15', location: 'Oslo GK', status: 'pending', category: 'junior' },
-          { id: 'e10', tournamentId: 't2', tournamentName: 'TIER Golf Academy Cup', date: '2025-01-20', location: 'Miklagard', status: 'registered', category: 'open' },
+          { id: 'e10', tournamentId: 't2', tournamentName: 'TIER Golf Cup', date: '2025-01-20', location: 'Miklagard', status: 'registered', category: 'open' },
         ],
         totalThisYear: 6,
         lastTournament: '2025-02-20',
@@ -170,7 +170,7 @@ export default function CoachTournamentPlayers() {
   const generateMockTournaments = (): Tournament[] => {
     return [
       { id: 't1', name: 'NM Junior 2025', date: '2025-06-15', location: 'Oslo GK', category: 'junior', registrationDeadline: '2025-05-30', status: 'registration_open' },
-      { id: 't2', name: 'TIER Golf Academy Cup', date: '2025-01-20', location: 'Miklagard', category: 'open', registrationDeadline: '2025-01-15', status: 'registration_open' },
+      { id: 't2', name: 'TIER Golf Cup', date: '2025-01-20', location: 'Miklagard', category: 'open', registrationDeadline: '2025-01-15', status: 'registration_open' },
       { id: 't3', name: 'NGF Tour - Runde 3', date: '2025-05-10', location: 'Borre GK', category: 'elite', registrationDeadline: '2025-05-01', status: 'registration_open' },
       { id: 't4', name: 'Nordisk Mesterskap', date: '2025-07-20', location: 'København', category: 'junior', registrationDeadline: '2025-06-30', status: 'registration_open' },
       { id: 't5', name: 'Sommerturneringen', date: '2025-07-05', location: 'Losby GK', category: 'open', registrationDeadline: '2025-06-28', status: 'registration_open' },

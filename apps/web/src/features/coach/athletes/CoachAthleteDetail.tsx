@@ -12,7 +12,7 @@
 import React from 'react';
 import { useParams, useNavigate, Link } from 'react-router-dom';
 import { ArrowLeft, Video, TrendingUp, ClipboardList, FileText, ChevronRight, Target } from 'lucide-react';
-import { PageTitle, SectionTitle } from '../../../components/typography';
+import { PageTitle, SectionTitle, SubSectionTitle } from '../../../components/typography';
 import { getAthleteById, type Athlete } from '../../../lib/coachMockData';
 import { athleteDetailActions, athleteStatusOptions } from '../../../config/coach-navigation';
 
@@ -104,7 +104,7 @@ function AthleteNotFound() {
       <div className="w-20 h-20 rounded-full bg-tier-surface-base flex items-center justify-center mx-auto mb-4">
         <FileText size={40} className="text-tier-text-tertiary" />
       </div>
-      <h2 className="text-xl font-semibold text-tier-navy mb-2">Spiller ikke funnet</h2>
+      <SectionTitle style={{ marginBottom: 8 }}>Spiller ikke funnet</SectionTitle>
       <p className="text-tier-text-secondary mb-6">
         Denne spilleren finnes ikke eller du har ikke tilgang.
       </p>

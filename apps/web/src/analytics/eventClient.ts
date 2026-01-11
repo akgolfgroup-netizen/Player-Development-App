@@ -1,7 +1,7 @@
 /**
  * ============================================================
  * Event Client - Standardisert event-logging
- * TIER Golf Academy
+ * TIER Golf
  * ============================================================
  *
  * Sentral event-klient som sikrer konsistent event-struktur

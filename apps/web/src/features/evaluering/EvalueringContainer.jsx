@@ -1,5 +1,5 @@
 /**
- * TIER Golf Academy - Evaluering Container
+ * TIER Golf - Evaluering Container
  * Design System v3.0 - Premium Light
  *
  * Player evaluations overview with stats and filtering.

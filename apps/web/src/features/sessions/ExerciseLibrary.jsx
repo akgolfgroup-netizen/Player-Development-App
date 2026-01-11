@@ -1,5 +1,5 @@
 /**
- * TIER Golf Academy - Exercise Library
+ * TIER Golf - Exercise Library
  * Design System v3.0 - Premium Light
  *
  * Exercise library with structured training protocols.
@@ -11,7 +11,7 @@ import React, { useState } from 'react';
 import { Heart, Plus, Clock, ChevronDown, ChevronUp } from 'lucide-react';
 import StateCard from '../../ui/composites/StateCard';
 import Button from '../../ui/primitives/Button';
-import { SubSectionTitle } from '../../components/typography';
+import { SectionTitle, SubSectionTitle } from '../../components/typography';
 
 // ============================================================
 // AK GOLF KATEGORI HIERARKI v2.0 - Komplett filter-system
@@ -861,9 +861,9 @@ export default function ExerciseLibrary({ onSelectExercise, onClose }) {
             onClick={(e) => e.stopPropagation()}
           >
             <div className="flex justify-between items-center mb-5">
-              <h2 className="m-0 text-xl font-bold text-tier-navy">
+              <SectionTitle style={{ marginBottom: 0 }}>
                 Legg til ny øvelse
-              </h2>
+              </SectionTitle>
               <button
                 onClick={() => setShowAddExerciseModal(false)}
                 className="bg-transparent border-none text-2xl text-tier-text-secondary cursor-pointer hover:text-tier-navy"

@@ -1,5 +1,5 @@
 /**
- * TIER Golf Academy - Verify Reset Token Page
+ * TIER Golf - Verify Reset Token Page
  *
  * Archetype: D - System/Auth Page
  * Purpose: Verify password reset token before redirecting to reset form

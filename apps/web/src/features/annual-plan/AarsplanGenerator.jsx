@@ -5,6 +5,7 @@ import {
   Check, Plus, X, Loader2, Sparkles, CheckCircle, ArrowRight
 } from 'lucide-react';
 import { PageHeader } from '../../components/layout/PageHeader';
+import { SectionTitle, SubSectionTitle, CardTitle } from '../../components/typography/Headings';
 import { useAuth } from '../../contexts/AuthContext';
 import apiClient from '../../services/apiClient';
 import { toast } from 'sonner';
@@ -55,9 +56,9 @@ const FormCard = ({ children, title, subtitle, icon: Icon }) => (
       <div className="mb-5">
         <div className="flex items-center gap-3 mb-1">
           {Icon && <Icon size={24} color="var(--accent)" />}
-          <h3 className="text-lg font-semibold m-0 text-text-primary">
+          <SubSectionTitle style={{ marginBottom: 0 }}>
             {title}
-          </h3>
+          </SubSectionTitle>
         </div>
         {subtitle && (
           <p className={`text-sm m-0 text-text-secondary ${Icon ? 'ml-9' : ''}`}>
@@ -430,9 +431,9 @@ const Step4Review = ({ formData }) => {
         <div className="grid gap-5">
           {/* Basics */}
           <div>
-            <h4 className="text-sm font-semibold mb-2 text-text-secondary">
+            <CardTitle style={{ marginBottom: '0.5rem' }} className="text-sm text-text-secondary">
               GRUNNLEGGENDE
-            </h4>
+            </CardTitle>
             <div className="grid grid-cols-[repeat(auto-fit,minmax(150px,1fr))] gap-3">
               <div className="p-3 rounded-lg bg-bg-secondary">
                 <div className="text-xs text-text-secondary">Startdato</div>
@@ -459,9 +460,9 @@ const Step4Review = ({ formData }) => {
 
           {/* Schedule */}
           <div>
-            <h4 className="text-sm font-semibold mb-2 text-text-secondary">
+            <CardTitle style={{ marginBottom: '0.5rem' }} className="text-sm text-text-secondary">
               TRENINGSPLAN
-            </h4>
+            </CardTitle>
             <div className="grid grid-cols-[repeat(auto-fit,minmax(150px,1fr))] gap-3">
               <div className="p-3 rounded-lg bg-bg-secondary">
                 <div className="text-xs text-text-secondary">Timer/uke</div>
@@ -478,9 +479,9 @@ const Step4Review = ({ formData }) => {
 
           {/* Tournaments */}
           <div>
-            <h4 className="text-sm font-semibold mb-2 text-text-secondary">
+            <CardTitle style={{ marginBottom: '0.5rem' }} className="text-sm text-text-secondary">
               TURNERINGER ({formData.tournaments.length})
-            </h4>
+            </CardTitle>
             {formData.tournaments.length > 0 ? (
               <div className="flex flex-col gap-2">
                 {formData.tournaments.map((t, i) => (
@@ -506,9 +507,9 @@ const Step4Review = ({ formData }) => {
 
       <div className="p-5 rounded-xl text-center bg-success-muted border border-success-muted">
         <Sparkles size={32} color="var(--status-success)" className="mb-3" />
-        <h3 className="text-lg font-semibold mb-2 m-0 text-text-primary">
+        <SubSectionTitle style={{ marginBottom: '0.5rem' }}>
           Klar til å generere!
-        </h3>
+        </SubSectionTitle>
         <p className="text-sm m-0 text-text-secondary">
           Klikk "Generer årsplan" for å lage din personlige 12-måneders treningsplan
         </p>
@@ -544,9 +545,9 @@ const SuccessScreen = ({ result, planId, onViewPlan, onViewCalendar, onSyncToSes
       <CheckCircle size={40} color="var(--status-success)" />
     </div>
 
-    <h2 className="text-2xl font-semibold mb-2 m-0 text-text-primary">
+    <SectionTitle style={{ marginBottom: '0.5rem' }}>
       Årsplan opprettet!
-    </h2>
+    </SectionTitle>
     <p className="text-base mb-8 m-0 text-text-secondary">
       Din 12-måneders treningsplan er klar
     </p>

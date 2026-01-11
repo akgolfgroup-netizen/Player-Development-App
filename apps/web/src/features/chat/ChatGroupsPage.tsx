@@ -7,6 +7,7 @@ import React, { useState, useEffect } from 'react';
 import { MessageCircle, Users, Send, Plus } from 'lucide-react';
 import { Page } from '../../ui/components/Page';
 import { Button, Input } from '../../ui/primitives';
+import { SubSectionTitle } from '../../ui/primitives/typography';
 import chatAPI from '../../services/chatAPI';
 import { useAuth } from '../../contexts/AuthContext';
 
@@ -154,7 +155,7 @@ export const ChatGroupsPage: React.FC = () => {
                 justifyContent: 'space-between',
               }}
             >
-              <h3 style={{ fontSize: 16, fontWeight: 600, margin: 0 }}>Grupper</h3>
+              <SubSectionTitle style={{ fontSize: 16, fontWeight: 600, marginBottom: 0 }}>Grupper</SubSectionTitle>
               <Button variant="outline" size="sm" leftIcon={<Plus size={16} />}>
                 Ny
               </Button>
@@ -282,9 +283,9 @@ export const ChatGroupsPage: React.FC = () => {
                     borderBottom: '1px solid rgb(var(--border-color))',
                   }}
                 >
-                  <h3 style={{ fontSize: 16, fontWeight: 600, margin: 0 }}>
+                  <SubSectionTitle style={{ fontSize: 16, fontWeight: 600, marginBottom: 0 }}>
                     {selectedGroup.name}
-                  </h3>
+                  </SubSectionTitle>
                   {selectedGroup.description && (
                     <p
                       style={{

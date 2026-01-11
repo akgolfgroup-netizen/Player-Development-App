@@ -14,6 +14,7 @@ import {
   MessageSquare,
 } from 'lucide-react';
 import Button from '../../../ui/primitives/Button';
+import { SubSectionTitle } from '../../../components/typography/Headings';
 
 interface Booking {
   id: string;
@@ -199,9 +200,9 @@ const BookingsList: React.FC<Props> = ({ bookings, onCancel, loading }) => {
     return (
       <div className="bg-white rounded-xl border border-tier-border-default p-8 text-center">
         <Calendar size={48} className="text-tier-text-secondary mx-auto mb-4" />
-        <h3 className="text-lg font-semibold text-tier-navy mb-2">
+        <SubSectionTitle style={{ marginBottom: '0.5rem' }}>
           Ingen bestillinger ennå
-        </h3>
+        </SubSectionTitle>
         <p className="text-tier-text-secondary mb-4">
           Når du bestiller en time, vil den vises her.
         </p>
@@ -217,9 +218,9 @@ const BookingsList: React.FC<Props> = ({ bookings, onCancel, loading }) => {
       {/* Pending Bookings */}
       {groupedBookings.pending.length > 0 && (
         <div>
-          <h3 className="text-lg font-semibold text-tier-navy mb-4">
+          <SubSectionTitle style={{ marginBottom: '1rem' }}>
             Venter på bekreftelse ({groupedBookings.pending.length})
-          </h3>
+          </SubSectionTitle>
           <div className="grid gap-4">
             {groupedBookings.pending.map((booking) => renderBookingCard(booking))}
           </div>
@@ -229,9 +230,9 @@ const BookingsList: React.FC<Props> = ({ bookings, onCancel, loading }) => {
       {/* Confirmed Bookings */}
       {groupedBookings.confirmed.length > 0 && (
         <div>
-          <h3 className="text-lg font-semibold text-tier-navy mb-4">
+          <SubSectionTitle style={{ marginBottom: '1rem' }}>
             Bekreftede timer ({groupedBookings.confirmed.length})
-          </h3>
+          </SubSectionTitle>
           <div className="grid gap-4">
             {groupedBookings.confirmed.map((booking) => renderBookingCard(booking))}
           </div>
@@ -241,9 +242,9 @@ const BookingsList: React.FC<Props> = ({ bookings, onCancel, loading }) => {
       {/* Past Bookings */}
       {groupedBookings.past.length > 0 && (
         <div>
-          <h3 className="text-lg font-semibold text-tier-navy mb-4">
+          <SubSectionTitle style={{ marginBottom: '1rem' }}>
             Tidligere timer ({groupedBookings.past.length})
-          </h3>
+          </SubSectionTitle>
           <div className="grid gap-4">
             {groupedBookings.past.map((booking) => renderBookingCard(booking))}
           </div>

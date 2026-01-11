@@ -22,6 +22,7 @@ import { Popover, PopoverContent, PopoverTrigger } from '../../components/shadcn
 import { StandardPageHeader } from '../../components/layout/StandardPageHeader';
 import Button from '../../ui/primitives/Button';
 import Card from '../../ui/primitives/Card';
+import { SubSectionTitle } from '../../components/typography';
 import { format, isSameDay, startOfMonth, endOfMonth, eachDayOfInterval } from 'date-fns';
 import { nb } from 'date-fns/locale';
 
@@ -166,7 +167,7 @@ const SessionDetails: React.FC<SessionDetailsProps> = ({ session, onAction }) =>
       <div className="w-80 p-4">
         <div className="flex items-center gap-2 mb-3">
           <div className={`w-3 h-3 rounded-full ${config.color}`} />
-          <h3 className="text-base font-semibold text-tier-navy m-0">Hviledag</h3>
+          <SubSectionTitle style={{ marginBottom: 0 }}>Hviledag</SubSectionTitle>
         </div>
         <p className="text-sm text-tier-text-secondary m-0">
           Restitusjon er viktig! Nyt hviledagen din.
@@ -185,9 +186,9 @@ const SessionDetails: React.FC<SessionDetailsProps> = ({ session, onAction }) =>
         <div className="flex-1 min-w-0">
           <div className="flex items-center gap-2 mb-1">
             <div className={`w-3 h-3 rounded-full ${config.color} flex-shrink-0`} />
-            <h3 className="text-base font-semibold text-tier-navy m-0 truncate">
+            <SubSectionTitle className="truncate" style={{ marginBottom: 0 }}>
               {session.type}
-            </h3>
+            </SubSectionTitle>
           </div>
           <p className="text-xs text-tier-text-secondary m-0">
             {format(session.date, 'EEEE d. MMMM yyyy', { locale: nb })}
@@ -399,16 +400,16 @@ export const DailyTrainingCalendar: React.FC<DailyTrainingCalendarProps> = ({ pl
           <div className="p-6">
             {selectedSession ? (
               <>
-                <h3 className="text-lg font-semibold text-tier-navy mb-4">
+                <SubSectionTitle className="mb-4">
                   {isSameDay(selectedDate, new Date()) ? 'Dagens trening' : 'Valgt økt'}
-                </h3>
+                </SubSectionTitle>
                 <SessionDetails session={selectedSession} onAction={handleAction} />
               </>
             ) : (
               <>
-                <h3 className="text-lg font-semibold text-tier-navy mb-4">
+                <SubSectionTitle className="mb-4">
                   {isSameDay(selectedDate, new Date()) ? 'Ingen økt i dag' : 'Ingen økt'}
-                </h3>
+                </SubSectionTitle>
                 <p className="text-sm text-tier-text-secondary mb-4">
                   {isSameDay(selectedDate, new Date())
                     ? 'Ingen økt planlagt for i dag. Vil du opprette en?'
@@ -432,7 +433,7 @@ export const DailyTrainingCalendar: React.FC<DailyTrainingCalendarProps> = ({ pl
       {/* Stats Summary */}
       <Card className="mt-6">
         <div className="p-6">
-          <h3 className="text-base font-semibold text-tier-navy mb-4">Denne måneden</h3>
+          <SubSectionTitle className="mb-4">Denne måneden</SubSectionTitle>
           <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
             <div className="text-center p-4 bg-tier-surface-base rounded-lg">
               <div className="text-2xl font-bold text-tier-navy mb-1">

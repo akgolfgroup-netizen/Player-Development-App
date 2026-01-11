@@ -1,6 +1,6 @@
 // @ts-nocheck
 /**
- * Dashboard V5 - TIER Golf Academy
+ * Dashboard V5 - TIER Golf
  *
  * Clean, modern player dashboard using the design system.
  * Mobile-first responsive layout with semantic tokens.

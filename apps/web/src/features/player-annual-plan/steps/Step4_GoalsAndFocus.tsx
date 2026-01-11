@@ -9,6 +9,7 @@ import { Button } from '../../../components/shadcn/button';
 import { Input } from '../../../components/shadcn/input';
 import { Label } from '../../../components/shadcn/label';
 import { Plus, X } from 'lucide-react';
+import { SectionTitle } from '../../../components/typography';
 
 interface Step4GoalsAndFocusProps {
   shortTermGoals: string[];
@@ -63,9 +64,9 @@ export function Step4GoalsAndFocus({
   return (
     <div className="max-w-2xl mx-auto space-y-6">
       <div className="space-y-2">
-        <h2 className="text-2xl font-bold text-tier-navy">
+        <SectionTitle style={{ marginBottom: 0 }}>
           Hva er dine mål?
-        </h2>
+        </SectionTitle>
         <p className="text-tier-gray">
           Definer både kortsiktige og langsiktige mål for din utvikling
         </p>

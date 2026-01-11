@@ -129,10 +129,10 @@ test.describe('DOM Injection Detection', () => {
     expect(images, 'Found icon_128.png on /aarsplan - Blaze extension detected').toBe(0);
   });
 
-  test('should only contain TIER Golf Academy elements', async ({ page }) => {
+  test('should only contain TIER Golf elements', async ({ page }) => {
     // Verify our app is actually loaded
     const title = await page.title();
-    expect(title).toBe('TIER Golf Academy');
+    expect(title).toBe('TIER Golf');
 
     // Should contain our own branding - check for TIER Golf text or logo
     const tierGolfText = await page.getByText(/TIER Golf/i).count();

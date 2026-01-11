@@ -16,6 +16,7 @@ import React from 'react';
 import { Bot, X, MessageCircle } from 'lucide-react';
 import { useAICoach } from '../context/AICoachContext';
 import type { GuideConfig } from '../types';
+import { SubSectionTitle } from '../../../components/typography/Headings';
 
 // =============================================================================
 // Types
@@ -140,7 +141,7 @@ export function AICoachGuide({
             <Bot size={20} />
           </div>
           <div>
-            <h3 className="text-base font-semibold text-tier-navy m-0 mb-0.5">{config.title}</h3>
+            <SubSectionTitle style={{ marginBottom: 2 }}>{config.title}</SubSectionTitle>
             <span className="text-xs text-tier-navy font-medium">AI Coach</span>
           </div>
         </div>

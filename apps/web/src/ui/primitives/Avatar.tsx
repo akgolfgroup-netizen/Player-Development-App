@@ -1,5 +1,5 @@
 /**
- * TIER Golf Academy - Avatar Component
+ * TIER Golf - Avatar Component
  * Premium Light System: Stone × Midnight Blue × Emerald × Soft Gold
  *
  * Rules:

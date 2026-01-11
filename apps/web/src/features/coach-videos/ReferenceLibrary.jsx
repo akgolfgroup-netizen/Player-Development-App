@@ -1,5 +1,5 @@
 /**
- * TIER Golf Academy - Reference Library
+ * TIER Golf - Reference Library
  * Design System v3.0 - Premium Light
  *
  * Library for coach demo videos, pro references, and drill instructions

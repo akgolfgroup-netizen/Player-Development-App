@@ -65,6 +65,7 @@ import {
 } from '../../components/shadcn';
 import { TrainingCategoryBadge } from '../../components/shadcn/golf';
 import { cn } from 'lib/utils';
+import { PageTitle, SectionTitle, SubSectionTitle, CardTitle } from '../../components/typography/Headings';
 
 // Session type labels
 const SESSION_TYPE_LABELS: Record<string, string> = {
@@ -402,9 +403,9 @@ function EmptyState({ onCreateNew }: EmptyStateProps) {
       textAlign: 'center'
     }}>
       <Calendar style={{ width: '48px', height: '48px', color: 'var(--text-muted)', marginBottom: 'var(--spacing-4)' }} />
-      <h3 style={{ fontSize: 'var(--font-size-headline)', fontWeight: 600, color: 'var(--text-primary)', marginBottom: 'var(--spacing-2)' }}>
+      <SubSectionTitle style={{ marginBottom: 'var(--spacing-2)' }}>
         Ingen økter funnet
-      </h3>
+      </SubSectionTitle>
       <p style={{ fontSize: 'var(--font-size-footnote)', color: 'var(--text-tertiary)', marginBottom: 'var(--spacing-4)', maxWidth: '320px' }}>
         Du har ingen treningsøkter som matcher filtrene dine. Opprett en ny økt for å komme i gang.
       </p>

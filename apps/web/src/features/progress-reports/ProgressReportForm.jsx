@@ -15,6 +15,7 @@ import React, { useState, useEffect, useCallback } from 'react';
 import { useProgressReports } from '../../hooks/useProgressReports';
 import Button from '../../ui/primitives/Button';
 import { track } from '../../analytics/track';
+import { SectionTitle } from '../../components/typography/Headings';
 
 // ═══════════════════════════════════════════
 // TAILWIND CLASSES
@@ -251,9 +252,9 @@ export function ProgressReportForm({
     <div className={`${tw.container} ${className}`}>
       {/* Header */}
       <div className={tw.header}>
-        <h2 className={tw.title}>
+        <SectionTitle style={{ marginBottom: 0 }}>
           {report?.id ? 'Rediger Rapport' : 'Ny Fremdriftsrapport'}
-        </h2>
+        </SectionTitle>
         <button onClick={handleAutoGenerate} className={tw.autoGenerateButton} disabled={saving}>
           sparkles Auto-generer
         </button>

@@ -1,5 +1,5 @@
 /**
- * TIER Golf Academy - Conversation View
+ * TIER Golf - Conversation View
  * Design System v3.0 - Premium Light
  *
  * Chat-visning for en enkelt samtale.

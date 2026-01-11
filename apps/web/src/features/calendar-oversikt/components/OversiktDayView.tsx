@@ -15,6 +15,7 @@ import {
   EVENT_SOURCE_COLORS,
   formatDateKey,
 } from '../types';
+import { SubSectionTitle } from '../../../components/typography/Headings';
 
 export const OversiktDayView: React.FC<OversiktDayViewProps> = ({
   date,
@@ -136,12 +137,11 @@ export const OversiktDayView: React.FC<OversiktDayViewProps> = ({
                   </div>
 
                   {/* Title */}
-                  <h3
-                    className="text-sm font-semibold"
-                    style={{ color: colors.text }}
+                  <SubSectionTitle
+                    style={{ color: colors.text, marginBottom: 0 }}
                   >
                     {event.title}
-                  </h3>
+                  </SubSectionTitle>
 
                   {/* Time */}
                   {!event.isAllDay && (

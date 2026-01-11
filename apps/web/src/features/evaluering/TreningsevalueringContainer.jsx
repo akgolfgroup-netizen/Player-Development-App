@@ -1,5 +1,5 @@
 /**
- * TIER Golf Academy - Treningsevaluering Container
+ * TIER Golf - Treningsevaluering Container
  * Design System v3.0 - Premium Light
  *
  * Training session evaluations with session type filtering.

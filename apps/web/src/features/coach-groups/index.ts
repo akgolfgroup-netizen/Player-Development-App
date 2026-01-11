@@ -1,5 +1,5 @@
 /**
- * TIER Golf Academy - Coach Groups Feature
+ * TIER Golf - Coach Groups Feature
  * Export all coach group components
  */
 

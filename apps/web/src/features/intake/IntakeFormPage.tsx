@@ -19,6 +19,7 @@ import LifestyleStep from './steps/LifestyleStep';
 import EquipmentStep from './steps/EquipmentStep';
 import LearningStep from './steps/LearningStep';
 import IntakeFormStepper from './components/IntakeFormStepper';
+import { SectionTitle } from '../../components/typography';
 
 type StepId = 'background' | 'availability' | 'goals' | 'weaknesses' | 'health' | 'lifestyle' | 'equipment' | 'learning';
 
@@ -151,7 +152,7 @@ const IntakeFormPage: React.FC = () => {
       <div className="min-h-screen bg-tier-surface-base flex items-center justify-center p-6">
         <div className="max-w-md w-full bg-white rounded-xl border border-tier-border-default p-8 text-center">
           <CheckCircle size={64} className="text-tier-success mx-auto mb-4" />
-          <h2 className="text-2xl font-bold text-tier-navy mb-2">Takk for din innsending!</h2>
+          <SectionTitle className="text-2xl font-bold text-tier-navy mb-2">Takk for din innsending!</SectionTitle>
           <p className="text-tier-text-secondary mb-6">
             Vi har mottatt din inntak-vurdering. Din treningsplan vil snart bli generert basert på informasjonen du har gitt.
           </p>
@@ -205,7 +206,7 @@ const IntakeFormPage: React.FC = () => {
         {/* Step Content */}
         <div className="bg-white rounded-xl border border-tier-border-default p-6 mb-6">
           <div className="mb-6">
-            <h2 className="text-xl font-semibold text-tier-navy mb-1">{currentStep.label}</h2>
+            <SectionTitle className="text-xl font-semibold text-tier-navy mb-1">{currentStep.label}</SectionTitle>
             <p className="text-sm text-tier-text-secondary">{currentStep.description}</p>
           </div>
 

@@ -1,5 +1,5 @@
 /**
- * TIER Golf Academy - Session Create Form
+ * TIER Golf - Session Create Form
  * Design System v3.0 - Premium Light
  *
  * Basert på AK-formelsystemet fra KATEGORI_HIERARKI v2.0
@@ -37,6 +37,7 @@ import {
   CheckCircle,
 } from 'lucide-react';
 import Button from '../../ui/primitives/Button';
+import { CardTitle } from '../../components/typography';
 import {
   useLegacyTrainingAreas,
   useLegacyPhases,
@@ -368,9 +369,9 @@ function TrainingAreaSelector({ selected, onChange, pyramidCategory }) {
     <div className="space-y-4">
       {Object.entries(trainingAreas).map(([groupKey, group]) => (
         <div key={groupKey}>
-          <h4 className="text-xs font-semibold text-tier-text-secondary mb-2 uppercase tracking-wide">
+          <CardTitle className="text-xs font-semibold text-tier-text-secondary mb-2 uppercase tracking-wide">
             {group.label}
-          </h4>
+          </CardTitle>
           <div className="grid grid-cols-3 gap-2">
             {group.areas.map((area) => {
               const isSelected = selected?.includes(area.code);

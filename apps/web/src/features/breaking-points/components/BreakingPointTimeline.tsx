@@ -5,6 +5,7 @@
 
 import React, { useState } from 'react';
 import { TrendingUp, TrendingDown, MinusCircle } from 'lucide-react';
+import { SubSectionTitle, CardTitle } from '../../../components/typography/Headings';
 
 interface TimelineBreakingPoint {
   id: string;
@@ -58,7 +59,7 @@ const BreakingPointTimeline: React.FC<Props> = ({
     return (
       <div className={`bg-white rounded-xl border border-tier-border-default p-12 text-center ${className}`}>
         <div className="text-tier-text-secondary text-4xl mb-4">[Chart]</div>
-        <h3 className="text-lg font-semibold text-tier-navy mb-2">Ingen vendepunkter ennå</h3>
+        <SubSectionTitle style={{ marginBottom: '0.5rem' }}>Ingen vendepunkter ennå</SubSectionTitle>
         <p className="text-tier-text-secondary">
           Når systemet identifiserer betydelige endringer i prestasjonen din, vil de vises her.
         </p>
@@ -68,7 +69,7 @@ const BreakingPointTimeline: React.FC<Props> = ({
 
   return (
     <div className={`bg-white rounded-xl border border-tier-border-default p-6 ${className}`}>
-      <h3 className="text-lg font-semibold text-tier-navy mb-6">Tidslinje</h3>
+      <SubSectionTitle style={{ marginBottom: '1.5rem' }}>Tidslinje</SubSectionTitle>
 
       {/* Timeline */}
       <div className="relative">
@@ -115,9 +116,9 @@ const BreakingPointTimeline: React.FC<Props> = ({
                           day: 'numeric',
                         })}
                       </div>
-                      <h4 className="text-base font-semibold text-tier-navy mb-1">
+                      <CardTitle style={{ marginBottom: '0.25rem' }}>
                         {point.title}
-                      </h4>
+                      </CardTitle>
                       <div className="text-sm text-tier-text-secondary">{point.area}</div>
                     </div>
                     <div className="text-right">

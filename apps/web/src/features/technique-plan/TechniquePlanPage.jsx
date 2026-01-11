@@ -16,6 +16,7 @@ import GoalProgressCard from './components/GoalProgressCard';
 import TrackmanImport from './components/TrackmanImport';
 import { TECHNICAL_AREAS, METRIC_LABELS, PRIORITY_LABELS } from './types';
 import { PageHeader } from '../../ui/raw-blocks';
+import { SectionTitle, SubSectionTitle } from '../../components/typography';
 
 const TABS = [
   { id: 'tasks', label: 'Oppgaver' },
@@ -113,7 +114,7 @@ export default function TechniquePlanPage() {
       {activeTab === 'tasks' && (
         <div>
           <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '16px' }}>
-            <h2 style={{ margin: 0, fontSize: '18px' }}>Teknikkoppgaver</h2>
+            <SectionTitle style={{ margin: 0 }}>Teknikkoppgaver</SectionTitle>
             <button
               onClick={() => setShowCreateTask(true)}
               style={{
@@ -276,7 +277,7 @@ export default function TechniquePlanPage() {
       {activeTab === 'goals' && (
         <div>
           <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '16px' }}>
-            <h2 style={{ margin: 0, fontSize: '18px' }}>Teknikk-mal</h2>
+            <SectionTitle style={{ margin: 0 }}>Teknikk-mal</SectionTitle>
             <button
               onClick={() => setShowCreateGoal(true)}
               style={{
@@ -414,7 +415,7 @@ export default function TechniquePlanPage() {
 
       {activeTab === 'stats' && (
         <div>
-          <h2 style={{ margin: '0 0 16px 0', fontSize: '18px' }}>TrackMan-statistikk</h2>
+          <SectionTitle style={{ margin: '0 0 16px 0' }}>TrackMan-statistikk</SectionTitle>
 
           {statsLoading ? (
             <p>Laster...</p>
@@ -434,9 +435,9 @@ export default function TechniquePlanPage() {
                     border: '1px solid var(--color-border)',
                   }}
                 >
-                  <h3 style={{ margin: '0 0 16px 0', fontSize: '16px' }}>
+                  <SubSectionTitle style={{ margin: '0 0 16px 0' }}>
                     {METRIC_LABELS[metric] || metric}
-                  </h3>
+                  </SubSectionTitle>
                   <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '12px', fontSize: '14px' }}>
                     <div>
                       <span style={{ color: 'var(--color-text-muted)' }}>Snitt</span>
@@ -470,7 +471,7 @@ export default function TechniquePlanPage() {
 
       {activeTab === 'import' && (
         <div>
-          <h2 style={{ margin: '0 0 16px 0', fontSize: '18px' }}>Importer TrackMan-data</h2>
+          <SectionTitle style={{ margin: '0 0 16px 0' }}>Importer TrackMan-data</SectionTitle>
           <TrackmanImport playerId={playerId} onUpload={uploadCSV} imports={imports} />
         </div>
       )}

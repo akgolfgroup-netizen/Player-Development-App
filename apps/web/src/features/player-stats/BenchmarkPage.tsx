@@ -135,7 +135,7 @@ const BenchmarkPage: React.FC = () => {
                 <Trophy size={28} color="white" />
               </div>
               <div>
-                <h2 style={styles.heroTitle}>Din posisjon</h2>
+                <SectionTitle style={{ marginBottom: 0 }}>Din posisjon</SectionTitle>
                 <p style={styles.heroSubtitle}>Slik ligger du an mot de beste</p>
               </div>
             </div>

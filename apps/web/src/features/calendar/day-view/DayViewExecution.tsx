@@ -46,7 +46,7 @@ const generateMockData = (date: Date): { workouts: Workout[]; externalEvents: Ex
       status: 'scheduled',
       isRecommended: true,
       isAllDay: false,
-      location: 'TIER Golf Academy',
+      location: 'TIER Golf',
       description: 'Fokus på korte putter (1-3 meter) med vekt på linjekontroll og hastighet.',
     },
   ];

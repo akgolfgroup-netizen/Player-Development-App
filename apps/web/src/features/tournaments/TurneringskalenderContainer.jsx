@@ -34,7 +34,7 @@ const MOCK_TOURNAMENTS = [
   },
   {
     id: 't2',
-    name: 'TIER Golf Academy Cup',
+    name: 'TIER Golf Cup',
     type: 'club',
     category: 'open',
     startDate: '2025-04-20',
@@ -46,7 +46,7 @@ const MOCK_TOURNAMENTS = [
     currentParticipants: 45,
     status: 'registration_open',
     isRegistered: true,
-    description: 'Intern turnering for TIER Golf Academy medlemmer.',
+    description: 'Intern turnering for TIER Golf medlemmer.',
     format: '18 hull stableford',
     fee: 350,
   },

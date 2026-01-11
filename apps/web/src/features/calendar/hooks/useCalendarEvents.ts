@@ -189,7 +189,7 @@ function generateWeekSeedEvents(weekStart: Date): CalendarEvent[] {
     status: 'completed',
     category: 'training',
     duration: 90,
-    location: 'TIER Golf Academy',
+    location: 'TIER Golf',
     badges: ['Fullført'],
   });
 

@@ -8,6 +8,7 @@ import { Target, TrendingUp, TrendingDown } from 'lucide-react';
 import { BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer, Legend, ReferenceLine } from 'recharts';
 import { useApproachSkill } from '../../../hooks/useDataGolf';
 import LoadingSpinner from '../../../components/LoadingSpinner';
+import { SubSectionTitle, CardTitle } from '../../../components/typography';
 
 interface Props {
   playerId: string;
@@ -49,7 +50,7 @@ const ApproachSkillBreakdown: React.FC<Props> = ({ playerId, className = '' }) =
     return (
       <div className="bg-white rounded-xl border border-tier-border-default p-8 text-center">
         <div className="text-tier-error text-4xl mb-4">[Warning]</div>
-        <h3 className="text-lg font-semibold text-tier-navy mb-2">Kunne ikke laste approach skill</h3>
+        <SubSectionTitle style={{ marginBottom: 8 }}>Kunne ikke laste approach skill</SubSectionTitle>
         <p className="text-tier-text-secondary">{error}</p>
       </div>
     );
@@ -59,7 +60,7 @@ const ApproachSkillBreakdown: React.FC<Props> = ({ playerId, className = '' }) =
     return (
       <div className="bg-white rounded-xl border border-tier-border-default p-8 text-center">
         <Target size={48} className="text-tier-text-secondary mx-auto mb-4" />
-        <h3 className="text-lg font-semibold text-tier-navy mb-2">Ingen approach-data</h3>
+        <SubSectionTitle style={{ marginBottom: 8 }}>Ingen approach-data</SubSectionTitle>
         <p className="text-tier-text-secondary">
           Gjennomfør approach-tester for å se detaljert analyse
         </p>
@@ -80,7 +81,7 @@ const ApproachSkillBreakdown: React.FC<Props> = ({ playerId, className = '' }) =
       <div className="flex items-center gap-3 p-6 border-b border-tier-border-default">
         <Target size={24} className="text-tier-navy" />
         <div>
-          <h3 className="text-lg font-semibold text-tier-navy">Approach Skill Breakdown</h3>
+          <SubSectionTitle style={{ marginBottom: 0 }}>Approach Skill Breakdown</SubSectionTitle>
           <p className="text-sm text-tier-text-secondary">Nærhet til flagg etter distanse</p>
         </div>
       </div>
@@ -160,7 +161,7 @@ const ApproachSkillBreakdown: React.FC<Props> = ({ playerId, className = '' }) =
       {/* Insights */}
       {approachSkill?.insights && (
         <div className="p-6 border-t border-tier-border-default">
-          <h4 className="text-md font-semibold text-tier-navy mb-3">Innsikt</h4>
+          <CardTitle style={{ marginBottom: 12 }}>Innsikt</CardTitle>
           <div className="space-y-2">
             {approachSkill.insights.map((insight: string, index: number) => (
               <div key={index} className="p-3 bg-tier-info-light rounded-lg text-sm text-tier-navy">

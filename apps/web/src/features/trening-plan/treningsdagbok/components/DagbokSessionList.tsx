@@ -12,6 +12,7 @@ import { BookOpen, Loader2 } from 'lucide-react';
 import type { DagbokSession, DagbokSessionListProps } from '../types';
 import { DagbokSessionRow } from './DagbokSessionRow';
 import { SESSION_ROW_HEIGHT, OVERSCAN_COUNT } from '../constants';
+import { SubSectionTitle } from '../../../../ui/primitives/typography';
 
 // Virtualization disabled - react-window not installed
 // When/if react-window is added, uncomment the import below:
@@ -247,7 +248,7 @@ export const DagbokSessionList: React.FC<DagbokSessionListProps> = ({
       <div className={className} style={styles.container}>
         <div style={styles.emptyContainer}>
           <BookOpen style={styles.emptyIcon} />
-          <h3 style={styles.emptyTitle}>Ingen økter</h3>
+          <SubSectionTitle style={{ marginBottom: 0 }}>Ingen økter</SubSectionTitle>
           <p style={styles.emptyMessage}>{emptyMessage}</p>
         </div>
       </div>

@@ -25,6 +25,7 @@ import {
   Save,
   AlertCircle,
 } from 'lucide-react';
+import { SectionTitle, SubSectionTitle } from '../../components/typography';
 import { useAuth } from '../../contexts/AuthContext';
 import api from '../../services/api';
 import type {
@@ -327,7 +328,7 @@ export default function TestRegistrationForm({
           <KategoriIcon size={28} style={{ color: config.color }} />
         </div>
         <div className="flex-1">
-          <h2 className="text-xl font-bold text-tier-navy">{test.navn}</h2>
+          <SectionTitle style={{ marginBottom: 0 }}>{test.navn}</SectionTitle>
           <p className="text-sm text-tier-text-secondary mt-1">{test.beskrivelse}</p>
         </div>
       </div>
@@ -578,7 +579,7 @@ export default function TestRegistrationForm({
               <KategoriIcon size={20} style={{ color: config.color }} />
             </div>
             <div>
-              <h3 className="font-semibold text-tier-navy">{test.navn}</h3>
+              <SubSectionTitle style={{ marginBottom: 0 }}>{test.navn}</SubSectionTitle>
               <p className="text-xs text-tier-text-secondary">
                 {step === 'instructions' && 'Instruksjoner'}
                 {step === 'recording' && `Registrerer slag (${completedShots}/${shots.length})`}

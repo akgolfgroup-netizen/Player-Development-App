@@ -5,6 +5,7 @@
 
 import React from 'react';
 import { MessageCircle, User, Users } from 'lucide-react';
+import { SubSectionTitle } from '../../../ui/primitives/typography';
 
 interface Participant {
   id: string;
@@ -72,7 +73,7 @@ const ConversationList: React.FC<Props> = ({
         <div className="bg-tier-surface-secondary rounded-full p-6 mb-4">
           <MessageCircle size={48} className="text-tier-text-tertiary" />
         </div>
-        <h3 className="text-lg font-semibold text-tier-navy mb-2">Ingen samtaler ennå</h3>
+        <SubSectionTitle className="text-lg font-semibold text-tier-navy mb-2">Ingen samtaler ennå</SubSectionTitle>
         <p className="text-sm text-tier-text-secondary text-center">
           Start en ny samtale for å komme i gang
         </p>
@@ -112,13 +113,14 @@ const ConversationList: React.FC<Props> = ({
             {/* Content */}
             <div className="flex-1 min-w-0">
               <div className="flex items-baseline justify-between mb-1">
-                <h3
+                <SubSectionTitle
                   className={`text-sm font-semibold truncate ${
                     hasUnread ? 'text-tier-navy' : 'text-tier-text-primary'
                   }`}
+                  style={{ marginBottom: 0 }}
                 >
                   {conversation.name}
-                </h3>
+                </SubSectionTitle>
                 {conversation.lastMessage && (
                   <span className="text-xs text-tier-text-secondary ml-2 flex-shrink-0">
                     {formatTime(conversation.lastMessage.sentAt)}

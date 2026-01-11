@@ -5,6 +5,7 @@
 
 import React, { useState } from 'react';
 import { Folder, Plus, Edit2, Trash2, FolderPlus, Video, Target, Calendar, X } from 'lucide-react';
+import { PageTitle, SectionTitle, SubSectionTitle } from '../../components/typography/Headings';
 import {
   useCollections,
   useCollection,
@@ -118,7 +119,7 @@ const CollectionsPage: React.FC = () => {
           <div className="flex items-center justify-between mb-2">
             <div className="flex items-center gap-3">
               <Folder size={28} className="text-tier-navy" />
-              <h1 className="text-3xl font-bold text-tier-navy mb-0">Samlinger</h1>
+              <PageTitle style={{ marginBottom: 0 }}>Samlinger</PageTitle>
             </div>
             <Button variant="primary" leftIcon={<Plus size={16} />} onClick={() => setShowCreateModal(true)}>
               Ny samling
@@ -132,7 +133,7 @@ const CollectionsPage: React.FC = () => {
           <div className="lg:col-span-1">
             <Card>
               <div className="p-4">
-                <h2 className="text-lg font-semibold text-tier-navy mb-4">Mine samlinger</h2>
+                <SectionTitle style={{ marginBottom: '1rem' }}>Mine samlinger</SectionTitle>
                 {loading ? (
                   <p className="text-center text-tier-text-secondary py-8">Laster...</p>
                 ) : error ? (
@@ -211,7 +212,7 @@ const CollectionsPage: React.FC = () => {
                 {!selectedCollectionId ? (
                   <div className="text-center py-12">
                     <Folder size={64} className="mx-auto text-tier-text-tertiary mb-4" />
-                    <h3 className="text-lg font-semibold text-tier-navy mb-2">Velg en samling</h3>
+                    <SubSectionTitle style={{ marginBottom: '0.5rem' }}>Velg en samling</SubSectionTitle>
                     <p className="text-sm text-tier-text-secondary">Velg en samling fra listen for å se innholdet</p>
                   </div>
                 ) : collectionLoading ? (
@@ -221,7 +222,7 @@ const CollectionsPage: React.FC = () => {
                 ) : collection ? (
                   <div>
                     <div className="mb-6 pb-4 border-b border-tier-border-default">
-                      <h2 className="text-xl font-bold text-tier-navy mb-2">{collection?.name || 'Untitled'}</h2>
+                      <SectionTitle style={{ marginBottom: '0.5rem' }}>{collection?.name || 'Untitled'}</SectionTitle>
                       {collection?.description && (
                         <p className="text-sm text-tier-text-secondary mb-3">{collection.description}</p>
                       )}
@@ -259,7 +260,7 @@ const CollectionsPage: React.FC = () => {
                     ) : (
                       <div className="text-center py-12">
                         <Target size={48} className="mx-auto text-tier-text-tertiary mb-4" />
-                        <h3 className="text-lg font-semibold text-tier-navy mb-2">Tom samling</h3>
+                        <SubSectionTitle style={{ marginBottom: '0.5rem' }}>Tom samling</SubSectionTitle>
                         <p className="text-sm text-tier-text-secondary mb-4">
                           Legg til videoer, øvelser eller planer i denne samlingen
                         </p>
@@ -283,7 +284,7 @@ const CollectionsPage: React.FC = () => {
         {showCreateModal && (
           <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center p-4 z-50">
             <div className="bg-white rounded-xl max-w-md w-full p-6">
-              <h2 className="text-xl font-bold text-tier-navy mb-4">Ny samling</h2>
+              <SectionTitle style={{ marginBottom: '1rem' }}>Ny samling</SectionTitle>
               <form onSubmit={handleCreate} className="space-y-4">
                 <div>
                   <label className="block text-sm font-medium text-tier-navy mb-1">Navn</label>
@@ -339,7 +340,7 @@ const CollectionsPage: React.FC = () => {
         {showEditModal && editingCollection && (
           <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center p-4 z-50">
             <div className="bg-white rounded-xl max-w-md w-full p-6">
-              <h2 className="text-xl font-bold text-tier-navy mb-4">Rediger samling</h2>
+              <SectionTitle style={{ marginBottom: '1rem' }}>Rediger samling</SectionTitle>
               <form onSubmit={handleUpdate} className="space-y-4">
                 <div>
                   <label className="block text-sm font-medium text-tier-navy mb-1">Navn</label>

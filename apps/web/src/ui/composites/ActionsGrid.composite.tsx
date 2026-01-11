@@ -1,5 +1,5 @@
 /**
- * TIER Golf Academy - Actions Grid
+ * TIER Golf - Actions Grid
  * Design System v3.0
  *
  * A responsive grid of action cards for quick navigation

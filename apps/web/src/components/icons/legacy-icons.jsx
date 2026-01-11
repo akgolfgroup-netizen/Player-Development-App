@@ -1,5 +1,5 @@
 /**
- * TIER Golf Academy - Custom Icon Library
+ * TIER Golf - Custom Icon Library
  * Based on Figma Kit Blue Palette 01
  *
  * Specifications:

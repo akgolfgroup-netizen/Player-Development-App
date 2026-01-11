@@ -1,5 +1,5 @@
 /**
- * TIER Golf Academy - Network Status Hook
+ * TIER Golf - Network Status Hook
  *
  * Provides real-time network connectivity status.
  * Used for offline indicators and sync decisions.

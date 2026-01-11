@@ -1,6 +1,6 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 /**
- * TIER Golf Academy - Notification Center
+ * TIER Golf - Notification Center
  *
  * Archetype: A - List/Index Page
  * Purpose: Display all notifications and updates for the player

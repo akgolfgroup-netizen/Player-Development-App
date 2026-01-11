@@ -6,6 +6,7 @@
 import React from 'react';
 import { Target, TrendingUp, Zap, Info } from 'lucide-react';
 import Button from '../../../ui/primitives/Button';
+import { SubSectionTitle } from '../../../components/typography';
 
 interface FocusRecommendation {
   id: string;
@@ -64,9 +65,9 @@ const FocusRecommendationCard: React.FC<Props> = ({
             <Target size={24} />
           </div>
           <div>
-            <h3 className="text-lg font-bold text-tier-navy mb-1">
+            <SubSectionTitle style={{ marginBottom: 4 }}>
               {recommendation.focusArea}
-            </h3>
+            </SubSectionTitle>
             <div className="text-sm text-tier-text-secondary">{recommendation.category}</div>
           </div>
         </div>

@@ -5,6 +5,7 @@
 
 import React from 'react';
 import { METRIC_LABELS, STATUS_LABELS } from '../types';
+import { SubSectionTitle } from '../../../components/typography';
 
 export default function GoalProgressCard({ goal, onUpdate }) {
   const progressColor =
@@ -28,7 +29,7 @@ export default function GoalProgressCard({ goal, onUpdate }) {
     >
       <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', marginBottom: '12px' }}>
         <div>
-          <h3 style={{ margin: '0 0 4px 0', fontSize: '16px', fontWeight: 600 }}>{goal.title}</h3>
+          <SubSectionTitle style={{ margin: '0 0 4px 0' }}>{goal.title}</SubSectionTitle>
           <span style={{ fontSize: '13px', color: 'var(--color-text-secondary)' }}>
             {METRIC_LABELS[goal.metricType] || goal.metricType}
           </span>

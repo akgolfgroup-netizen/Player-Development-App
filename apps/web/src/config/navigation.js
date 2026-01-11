@@ -1,9 +1,9 @@
 /**
  * ============================================================
- * SPILLER NAVIGASJONSKONFIGURASJON - TIER Golf Academy
+ * SPILLER NAVIGASJONSKONFIGURASJON - TIER Golf
  * ============================================================
  *
- * Komplett navigasjon for spillere i TIER Golf Academy.
+ * Komplett navigasjon for spillere i TIER Golf.
  * Basert på fullstendig database-skjema analyse.
  *
  * STRUKTUR:

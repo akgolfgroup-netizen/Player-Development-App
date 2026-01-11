@@ -8,6 +8,7 @@
 import React, { useState, useRef } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { CheckCircle, ChevronDown, TrendingDown, Trophy, Star, Target, Smile, Flag, Brain, Dumbbell } from 'lucide-react';
+import { PageTitle, SectionTitle, SubSectionTitle } from '../../ui/components/typography';
 import { useAuth } from '../../contexts/AuthContext';
 import { intakeAPI } from '../../services/api';
 import { SwingIcon } from '../../components/icons';
@@ -188,9 +189,9 @@ export default function OnboardingPageV2() {
         <div className="mb-6">
           <TIERGolfFullLogo height={64} variant="light" />
         </div>
-        <h1 className="text-4xl md:text-5xl font-bold text-white mb-4">
+        <PageTitle style={{ marginBottom: 0 }} className="text-4xl md:text-5xl font-bold text-white mb-4">
           Velkommen til<br />TIER Golf!
-        </h1>
+        </PageTitle>
         <p className="text-xl text-white/80 mb-8 max-w-md">
           La oss bygge din personlige treningsplan sammen
         </p>
@@ -214,9 +215,9 @@ export default function OnboardingPageV2() {
 
           {/* Section 1: User Type */}
           <section className="mb-12">
-            <h2 className="text-2xl font-bold text-tier-navy mb-2">
+            <SectionTitle style={{ marginBottom: 0 }} className="text-2xl font-bold text-tier-navy mb-2">
               1. Hvem er du?
-            </h2>
+            </SectionTitle>
             <p className="text-tier-text-secondary mb-6">Velg din rolle</p>
 
             <div className="grid grid-cols-2 gap-4">
@@ -229,7 +230,7 @@ export default function OnboardingPageV2() {
                 }`}
               >
                 <div className="text-3xl mb-3">[User]</div>
-                <h3 className="font-semibold text-tier-navy mb-1">Spiller</h3>
+                <SubSectionTitle style={{ marginBottom: 0 }} className="font-semibold text-tier-navy mb-1">Spiller</SubSectionTitle>
                 <p className="text-sm text-tier-text-secondary">
                   Få personlig treningsplan og track fremgang
                 </p>
@@ -244,7 +245,7 @@ export default function OnboardingPageV2() {
                 }`}
               >
                 <div className="text-3xl mb-3">graduation-cap</div>
-                <h3 className="font-semibold text-tier-navy mb-1">Coach</h3>
+                <SubSectionTitle style={{ marginBottom: 0 }} className="font-semibold text-tier-navy mb-1">Coach</SubSectionTitle>
                 <p className="text-sm text-tier-text-secondary">
                   Håndter spillere og lag treningsprogram
                 </p>
@@ -254,9 +255,9 @@ export default function OnboardingPageV2() {
 
           {/* Section 2: School */}
           <section className="mb-12">
-            <h2 className="text-2xl font-bold text-tier-navy mb-2">
+            <SectionTitle style={{ marginBottom: 0 }} className="text-2xl font-bold text-tier-navy mb-2">
               2. Hvilken skole går du på?
-            </h2>
+            </SectionTitle>
             <p className="text-tier-text-secondary mb-6">Skriv inn skolens navn</p>
 
             <div>
@@ -272,9 +273,9 @@ export default function OnboardingPageV2() {
 
           {/* Section 3: Goals */}
           <section className="mb-12">
-            <h2 className="text-2xl font-bold text-tier-navy mb-2">
+            <SectionTitle style={{ marginBottom: 0 }} className="text-2xl font-bold text-tier-navy mb-2">
               3. Hva er dine mål?
-            </h2>
+            </SectionTitle>
             <p className="text-tier-text-secondary mb-6">Velg ett eller flere</p>
 
             <div className="flex flex-wrap gap-3">
@@ -296,9 +297,9 @@ export default function OnboardingPageV2() {
 
           {/* Section 4: Current Level */}
           <section className="mb-12">
-            <h2 className="text-2xl font-bold text-tier-navy mb-2">
+            <SectionTitle style={{ marginBottom: 0 }} className="text-2xl font-bold text-tier-navy mb-2">
               4. Ditt nåværende nivå
-            </h2>
+            </SectionTitle>
             <p className="text-tier-text-secondary mb-6">Fortell oss om din erfaring</p>
 
             <div className="space-y-6">
@@ -365,9 +366,9 @@ export default function OnboardingPageV2() {
 
           {/* Section 5: Focus Areas */}
           <section className="mb-12">
-            <h2 className="text-2xl font-bold text-tier-navy mb-2">
+            <SectionTitle style={{ marginBottom: 0 }} className="text-2xl font-bold text-tier-navy mb-2">
               5. Fokusområder
-            </h2>
+            </SectionTitle>
             <p className="text-tier-text-secondary mb-6">Hva vil du jobbe mest med?</p>
 
             <div className="grid grid-cols-2 md:grid-cols-3 gap-3">
@@ -390,9 +391,9 @@ export default function OnboardingPageV2() {
 
           {/* Section 6: Training Frequency */}
           <section className="mb-12">
-            <h2 className="text-2xl font-bold text-tier-navy mb-2">
+            <SectionTitle style={{ marginBottom: 0 }} className="text-2xl font-bold text-tier-navy mb-2">
               6. Treningsfrekvens
-            </h2>
+            </SectionTitle>
             <p className="text-tier-text-secondary mb-6">Hvor mange økter per uke?</p>
 
             <div className="flex items-center gap-4">
@@ -419,9 +420,9 @@ export default function OnboardingPageV2() {
 
           {/* Summary */}
           <section className="mb-8 p-6 bg-tier-navy/5 rounded-2xl border border-tier-navy/20">
-            <h3 className="font-semibold text-tier-navy mb-4">
+            <SubSectionTitle style={{ marginBottom: 0 }} className="font-semibold text-tier-navy mb-4">
               Din plan vil inneholde:
-            </h3>
+            </SubSectionTitle>
             <div className="space-y-2">
               <div className="flex items-center gap-2 text-tier-navy">
                 <CheckCircle size={18} className="text-tier-success" />
@@ -474,7 +475,7 @@ export default function OnboardingPageV2() {
         <div className="fixed inset-0 bg-black/80 flex items-center justify-center z-50">
           <div className="text-center">
             <div className="text-6xl mb-4">[Celebration]</div>
-            <h2 className="text-3xl font-bold text-white mb-2">Gratulerer!</h2>
+            <SectionTitle style={{ marginBottom: 0 }} className="text-3xl font-bold text-white mb-2">Gratulerer!</SectionTitle>
             <p className="text-white/80 mb-4">
               Din personlige treningsplan er klar!
             </p>

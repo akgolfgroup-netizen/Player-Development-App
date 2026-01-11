@@ -1,5 +1,5 @@
 /**
- * TIER Golf Academy - Authentication Page Layout
+ * TIER Golf - Authentication Page Layout
  *
  * Centered layout for login, register, and password reset pages.
  * Features TIER Golf branding and styling using semantic tokens.
@@ -21,7 +21,7 @@ export default function AuthPageLayout({ children, title, subtitle }) {
           />
           <div>
             <p className="text-lg font-semibold text-ak-text-primary dark:text-ak-text-inverse">
-              TIER Golf Academy
+              TIER Golf
             </p>
             <p className="text-sm text-ak-text-muted">
               Individuell Utviklingsplan
@@ -55,7 +55,7 @@ export default function AuthPageLayout({ children, title, subtitle }) {
 
           {/* Footer */}
           <p className="mt-6 text-center text-xs text-ak-text-muted">
-            © {new Date().getFullYear()} TIER Golf Academy. Alle rettigheter reservert.
+            © {new Date().getFullYear()} TIER Golf. Alle rettigheter reservert.
           </p>
         </div>
       </main>

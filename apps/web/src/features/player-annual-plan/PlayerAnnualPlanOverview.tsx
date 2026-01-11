@@ -15,6 +15,7 @@ import { exportToPDF, exportToICal } from './utils/planExport';
 import { Plus, Calendar, Target, TrendingUp, Download, FileText, ChevronDown, ChevronUp, Bell } from 'lucide-react';
 import PageHeader from '../../ui/raw-blocks/PageHeader.raw';
 import PageContainer from '../../ui/raw-blocks/PageContainer.raw';
+import { PageTitle, SectionTitle, SubSectionTitle, CardTitle } from '../../components/typography/Headings';
 
 export function PlayerAnnualPlanOverview() {
   const navigate = useNavigate();
@@ -94,9 +95,9 @@ export function PlayerAnnualPlanOverview() {
         <PageContainer paddingY="md" background="base">
           <div className="text-center py-12">
             <Calendar className="w-16 h-16 text-tier-navy mx-auto mb-4" />
-            <h2 className="text-2xl font-bold text-tier-navy mb-2">
+            <SectionTitle style={{ marginBottom: '0.5rem' }}>
               Ingen årsplan funnet
-            </h2>
+            </SectionTitle>
             <p className="text-tier-text-secondary mb-6">
               Opprett en årsplan for å strukturere din treningssesong
             </p>
@@ -205,7 +206,7 @@ export function PlayerAnnualPlanOverview() {
         {/* Timeline */}
         <Card className="p-6 space-y-4">
           <div className="flex items-center justify-between">
-            <h2 className="text-xl font-semibold text-tier-navy">Tidslinje</h2>
+            <SectionTitle style={{ marginBottom: 0 }}>Tidslinje</SectionTitle>
             <Badge variant="outline" className="text-xs">
               {plan.status}
             </Badge>
@@ -219,7 +220,7 @@ export function PlayerAnnualPlanOverview() {
 
         {/* Periods Details */}
         <Card className="p-6 space-y-4">
-          <h2 className="text-xl font-semibold text-tier-navy">Perioder</h2>
+          <SectionTitle style={{ marginBottom: 0 }}>Perioder</SectionTitle>
           <div className="space-y-4">
             {periods.map((period, index) => {
               const start = new Date(period.startDate);
@@ -246,9 +247,9 @@ export function PlayerAnnualPlanOverview() {
                     <div className="flex-1 space-y-2">
                       <div className="flex items-center justify-between">
                         <div className="flex items-center space-x-2">
-                          <h3 className="text-lg font-semibold text-tier-navy">
+                          <SubSectionTitle style={{ marginBottom: 0 }}>
                             {index + 1}. {period.name}
-                          </h3>
+                          </SubSectionTitle>
                           <Badge variant="outline" className="text-xs">
                             {PERIOD_LABELS[period.type as 'E' | 'G' | 'S' | 'T']}
                           </Badge>

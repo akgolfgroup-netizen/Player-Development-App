@@ -1,5 +1,5 @@
 /**
- * TIER Golf Academy - Player Video Feed
+ * TIER Golf - Player Video Feed
  * Design System v3.0 - Premium Light
  *
  * Feed of all player videos for coach review

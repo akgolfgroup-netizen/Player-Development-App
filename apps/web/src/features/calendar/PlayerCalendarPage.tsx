@@ -33,6 +33,7 @@ import Button from '../../ui/primitives/Button';
 import { CalendarSkeleton } from '../../ui/skeletons';
 import { RefreshCw, Info, Clock } from 'lucide-react';
 import clsx from 'clsx';
+import { SectionTitle } from '../../components/typography/Headings';
 
 const MONTH_NAMES = [
   'Januar', 'Februar', 'Mars', 'April', 'Mai', 'Juni',
@@ -306,9 +307,9 @@ const PlayerCalendarPage: React.FC = () => {
 
           {/* Upcoming events */}
           <section className="mt-10">
-            <h2 className="text-base font-semibold text-tier-navy">
+            <SectionTitle style={{ marginBottom: 0 }}>
               Kommende økter
-            </h2>
+            </SectionTitle>
             <ol className="mt-4 space-y-1 text-sm leading-6 text-tier-text-secondary">
               {enhancedEvents
                 .filter((e) => e.date >= new Date().toISOString().split('T')[0])
@@ -345,9 +346,9 @@ const PlayerCalendarPage: React.FC = () => {
 
           {/* Color legend */}
           <section className="mt-8 pt-6 border-t border-tier-border-default">
-            <h2 className="text-sm font-medium text-tier-navy mb-3">
+            <SectionTitle style={{ marginBottom: '0.75rem' }}>
               Fargekoder
-            </h2>
+            </SectionTitle>
             <CalendarColorLegend orientation="vertical" />
           </section>
         </div>

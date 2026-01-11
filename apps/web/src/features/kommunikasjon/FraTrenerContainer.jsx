@@ -1,5 +1,5 @@
 /**
- * TIER Golf Academy - Fra Trener Container
+ * TIER Golf - Fra Trener Container
  * Design System v3.0 - Premium Light
  *
  * Coach messages and feedback for players.

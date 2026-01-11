@@ -1,5 +1,5 @@
 /**
- * TIER Golf Academy - Admin App Shell
+ * TIER Golf - Admin App Shell
  * Design System v3.0 - Blue Palette 01
  *
  * Layout wrapper for admin portal routes.

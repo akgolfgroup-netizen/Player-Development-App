@@ -14,6 +14,7 @@ import React, { useState, useCallback } from 'react';
 import { extractKeyframe } from '../../services/videoApi';
 import Button from '../../ui/primitives/Button';
 import { track } from '../../analytics/track';
+import { SubSectionTitle } from '../typography/Headings';
 
 // ═══════════════════════════════════════════
 // TAILWIND CLASSES
@@ -167,7 +168,7 @@ export function KeyframeExtractor({
     <div className={`${tw.container} ${className}`}>
       {/* Header */}
       <div className={tw.header}>
-        <h3 className={tw.title}>📸 Keyframe Extraction</h3>
+        <SubSectionTitle className={tw.title} style={{ marginBottom: 0 }}>📸 Keyframe Extraction</SubSectionTitle>
         <button
           onClick={handleCaptureFrame}
           disabled={!videoElement || saving}

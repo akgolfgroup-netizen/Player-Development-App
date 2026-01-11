@@ -173,7 +173,7 @@ export default function Sidebar() {
           onClose={() => setShowLogoutConfirm(false)}
           onConfirm={handleLogout}
           title="Logg ut"
-          message="Er du sikker på at du vil logge ut av TIER Golf Academy?"
+          message="Er du sikker på at du vil logge ut av TIER Golf?"
           confirmLabel="Logg ut"
           cancelLabel="Avbryt"
           variant="warning"
@@ -459,7 +459,7 @@ export default function Sidebar() {
         onClose={() => setShowLogoutConfirm(false)}
         onConfirm={handleLogout}
         title="Logg ut"
-        message="Er du sikker på at du vil logge ut av TIER Golf Academy?"
+        message="Er du sikker på at du vil logge ut av TIER Golf?"
         confirmLabel="Logg ut"
         cancelLabel="Avbryt"
         variant="warning"

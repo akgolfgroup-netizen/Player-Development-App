@@ -5,6 +5,7 @@
 
 import React, { useState } from 'react';
 import { GripVertical, ChevronUp, ChevronDown } from 'lucide-react';
+import { SubSectionTitle } from '../../../components/typography';
 
 interface FocusArea {
   id: string;
@@ -72,7 +73,7 @@ const FocusAreaSelector: React.FC<Props> = ({
   return (
     <div className={`bg-white rounded-xl border border-tier-border-default ${className}`}>
       <div className="p-6 border-b border-tier-border-default">
-        <h3 className="text-lg font-semibold text-tier-navy mb-2">Juster prioriteringer</h3>
+        <SubSectionTitle style={{ marginBottom: 8 }}>Juster prioriteringer</SubSectionTitle>
         <p className="text-sm text-tier-text-secondary">
           Flytt områder opp eller ned for å justere prioritet
         </p>

@@ -1,5 +1,5 @@
 /**
- * TIER Golf Academy - Coach Session Template Editor
+ * TIER Golf - Coach Session Template Editor
  * Design System v3.0 - Blue Palette 01
  *
  * Drag-and-drop editor for creating and editing training session templates.

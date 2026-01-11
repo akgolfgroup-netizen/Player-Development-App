@@ -7,6 +7,7 @@ import {
   StreakIndicator,
 } from './index';
 import { CheckCircle, AlertTriangle, XCircle, Info } from 'lucide-react';
+import { PageTitle, SectionTitle, SubSectionTitle, CardTitle } from '../typography/Headings';
 
 /**
  * TIER Component Showcase
@@ -31,9 +32,9 @@ export function TierShowcase() {
             alt="TIER Golf"
             className="h-12 mx-auto mb-4"
           />
-          <h1 className="font-display text-5xl font-bold text-tier-navy mb-2">
+          <PageTitle className="font-display text-5xl font-bold text-tier-navy mb-2">
             TIER Component Showcase
-          </h1>
+          </PageTitle>
           <p className="text-lg text-text-secondary">
             Design System v1.0 - All komponenter
           </p>
@@ -41,14 +42,14 @@ export function TierShowcase() {
 
         {/* Buttons Section */}
         <section className="space-y-6">
-          <h2 className="font-display text-3xl font-bold text-tier-navy">
+          <SectionTitle className="font-display text-3xl font-bold text-tier-navy">
             Buttons
-          </h2>
+          </SectionTitle>
 
           <div className="bg-white rounded-xl p-8 space-y-6">
             {/* Variants */}
             <div>
-              <h3 className="font-semibold text-lg mb-4">Variants</h3>
+              <SubSectionTitle className="font-semibold text-lg mb-4" style={{ marginBottom: '1rem' }}>Variants</SubSectionTitle>
               <div className="flex flex-wrap gap-3">
                 <TierButton variant="primary">Primary</TierButton>
                 <TierButton variant="secondary">Secondary</TierButton>
@@ -59,7 +60,7 @@ export function TierShowcase() {
 
             {/* Sizes */}
             <div>
-              <h3 className="font-semibold text-lg mb-4">Sizes</h3>
+              <SubSectionTitle className="font-semibold text-lg mb-4" style={{ marginBottom: '1rem' }}>Sizes</SubSectionTitle>
               <div className="flex flex-wrap items-center gap-3">
                 <TierButton size="sm">Small</TierButton>
                 <TierButton size="md">Medium</TierButton>
@@ -69,7 +70,7 @@ export function TierShowcase() {
 
             {/* States */}
             <div>
-              <h3 className="font-semibold text-lg mb-4">States</h3>
+              <SubSectionTitle className="font-semibold text-lg mb-4" style={{ marginBottom: '1rem' }}>States</SubSectionTitle>
               <div className="flex flex-wrap gap-3">
                 <TierButton>Normal</TierButton>
                 <TierButton disabled>Disabled</TierButton>
@@ -80,14 +81,14 @@ export function TierShowcase() {
 
         {/* Cards Section */}
         <section className="space-y-6">
-          <h2 className="font-display text-3xl font-bold text-tier-navy">
+          <SectionTitle className="font-display text-3xl font-bold text-tier-navy">
             Cards
-          </h2>
+          </SectionTitle>
 
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
             {/* Base Card */}
             <TierCard>
-              <h3 className="font-semibold text-lg mb-2">Base Card</h3>
+              <SubSectionTitle className="font-semibold text-lg mb-2" style={{ marginBottom: '0.5rem' }}>Base Card</SubSectionTitle>
               <p className="text-sm text-text-secondary">
                 Standard card med border og padding
               </p>
@@ -95,7 +96,7 @@ export function TierShowcase() {
 
             {/* Elevated Card */}
             <TierCard variant="elevated">
-              <h3 className="font-semibold text-lg mb-2">Elevated Card</h3>
+              <SubSectionTitle className="font-semibold text-lg mb-2" style={{ marginBottom: '0.5rem' }}>Elevated Card</SubSectionTitle>
               <p className="text-sm text-text-secondary">
                 Card med shadow effekt
               </p>
@@ -103,7 +104,7 @@ export function TierShowcase() {
 
             {/* Hoverable Card */}
             <TierCard hoverable>
-              <h3 className="font-semibold text-lg mb-2">Hoverable Card</h3>
+              <SubSectionTitle className="font-semibold text-lg mb-2" style={{ marginBottom: '0.5rem' }}>Hoverable Card</SubSectionTitle>
               <p className="text-sm text-text-secondary">
                 Hover over meg!
               </p>
@@ -112,7 +113,7 @@ export function TierShowcase() {
 
           {/* Category Cards */}
           <div>
-            <h3 className="font-semibold text-xl mb-4">Category Cards</h3>
+            <SubSectionTitle className="font-semibold text-xl mb-4" style={{ marginBottom: '1rem' }}>Category Cards</SubSectionTitle>
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
               {['A', 'D', 'F', 'H', 'J'].map((cat) => (
                 <TierCard key={cat} variant="category" category={cat}>
@@ -121,7 +122,7 @@ export function TierShowcase() {
                       {cat}
                     </div>
                     <div>
-                      <h4 className="font-semibold">Kategori {cat}</h4>
+                      <CardTitle className="font-semibold" style={{ marginBottom: 0 }}>Kategori {cat}</CardTitle>
                       <p className="text-xs text-text-muted">
                         {CategoryRing.categoryNames[cat]}
                       </p>
@@ -134,7 +135,7 @@ export function TierShowcase() {
 
           {/* Tier Cards */}
           <div>
-            <h3 className="font-semibold text-xl mb-4">Tier Cards</h3>
+            <SubSectionTitle className="font-semibold text-xl mb-4" style={{ marginBottom: '1rem' }}>Tier Cards</SubSectionTitle>
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
               {['bronze', 'silver', 'gold', 'platinum'].map((tier) => (
                 <TierCard key={tier} variant="tier" tier={tier}>
@@ -142,7 +143,7 @@ export function TierShowcase() {
                     <div className={`w-16 h-16 mx-auto mb-2 rounded-full bg-badge-tier-${tier} flex items-center justify-center`}>
                       <span className="text-2xl">Trophy</span>
                     </div>
-                    <h4 className="font-semibold capitalize">{tier}</h4>
+                    <CardTitle className="font-semibold capitalize" style={{ marginBottom: 0 }}>{tier}</CardTitle>
                   </div>
                 </TierCard>
               ))}
@@ -152,14 +153,14 @@ export function TierShowcase() {
 
         {/* Badges Section */}
         <section className="space-y-6">
-          <h2 className="font-display text-3xl font-bold text-tier-navy">
+          <SectionTitle className="font-display text-3xl font-bold text-tier-navy">
             Badges
-          </h2>
+          </SectionTitle>
 
           <div className="bg-white rounded-xl p-8 space-y-6">
             {/* Variants */}
             <div>
-              <h3 className="font-semibold text-lg mb-4">Variants</h3>
+              <SubSectionTitle className="font-semibold text-lg mb-4" style={{ marginBottom: '1rem' }}>Variants</SubSectionTitle>
               <div className="flex flex-wrap gap-3">
                 <TierBadge variant="primary">Primary</TierBadge>
                 <TierBadge variant="gold">Gold</TierBadge>
@@ -181,7 +182,7 @@ export function TierShowcase() {
 
             {/* Sizes */}
             <div>
-              <h3 className="font-semibold text-lg mb-4">Sizes</h3>
+              <SubSectionTitle className="font-semibold text-lg mb-4" style={{ marginBottom: '1rem' }}>Sizes</SubSectionTitle>
               <div className="flex flex-wrap items-center gap-3">
                 <TierBadge size="sm">Small</TierBadge>
                 <TierBadge size="md">Medium</TierBadge>
@@ -193,13 +194,13 @@ export function TierShowcase() {
 
         {/* Gamification Section */}
         <section className="space-y-6">
-          <h2 className="font-display text-3xl font-bold text-tier-navy">
+          <SectionTitle className="font-display text-3xl font-bold text-tier-navy">
             Gamification
-          </h2>
+          </SectionTitle>
 
           {/* Category Rings */}
           <div className="bg-white rounded-xl p-8">
-            <h3 className="font-semibold text-xl mb-6">Category Rings</h3>
+            <SubSectionTitle className="font-semibold text-xl mb-6" style={{ marginBottom: '1.5rem' }}>Category Rings</SubSectionTitle>
 
             <div className="mb-6">
               <label className="block text-sm font-medium mb-2">
@@ -233,7 +234,7 @@ export function TierShowcase() {
 
           {/* Streak Indicator */}
           <div className="bg-white rounded-xl p-8">
-            <h3 className="font-semibold text-xl mb-6">Streak Indicator</h3>
+            <SubSectionTitle className="font-semibold text-xl mb-6" style={{ marginBottom: '1.5rem' }}>Streak Indicator</SubSectionTitle>
 
             <div className="mb-6">
               <label className="block text-sm font-medium mb-2">
@@ -259,14 +260,14 @@ export function TierShowcase() {
 
         {/* Color Palette */}
         <section className="space-y-6">
-          <h2 className="font-display text-3xl font-bold text-tier-navy">
+          <SectionTitle className="font-display text-3xl font-bold text-tier-navy">
             Color Palette
-          </h2>
+          </SectionTitle>
 
           <div className="bg-white rounded-xl p-8 space-y-6">
             {/* Primary Colors */}
             <div>
-              <h3 className="font-semibold text-lg mb-4">Primary Colors</h3>
+              <SubSectionTitle className="font-semibold text-lg mb-4" style={{ marginBottom: '1rem' }}>Primary Colors</SubSectionTitle>
               <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
                 <ColorSwatch color="bg-tier-navy" name="Navy" hex="rgb(var(--tier-navy))" />
                 <ColorSwatch color="bg-tier-gold" name="Gold" hex="rgb(var(--tier-gold))" />
@@ -276,7 +277,7 @@ export function TierShowcase() {
 
             {/* Category Colors */}
             <div>
-              <h3 className="font-semibold text-lg mb-4">Category A-K</h3>
+              <SubSectionTitle className="font-semibold text-lg mb-4" style={{ marginBottom: '1rem' }}>Category A-K</SubSectionTitle>
               <div className="grid grid-cols-3 md:grid-cols-6 lg:grid-cols-11 gap-3">
                 {['a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i', 'j', 'k'].map((cat) => (
                   <ColorSwatch
@@ -290,7 +291,7 @@ export function TierShowcase() {
 
             {/* Status Colors */}
             <div>
-              <h3 className="font-semibold text-lg mb-4">Status Colors</h3>
+              <SubSectionTitle className="font-semibold text-lg mb-4" style={{ marginBottom: '1rem' }}>Status Colors</SubSectionTitle>
               <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
                 <ColorSwatch color="bg-status-success" name="Success" hex="rgb(var(--status-success))" />
                 <ColorSwatch color="bg-status-warning" name="Warning" hex="rgb(var(--status-warning))" />

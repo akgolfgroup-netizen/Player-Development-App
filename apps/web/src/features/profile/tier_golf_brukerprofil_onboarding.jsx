@@ -323,7 +323,7 @@ const TIERGolfBrukerprofilOnboarding = ({ profile: apiProfile = null }) => {
       meta: {
         version: '1.0',
         createdAt: new Date().toISOString(),
-        system: 'TIER Golf Academy IUP System'
+        system: 'TIER Golf IUP System'
       },
       personalInfo: {
         fullName: `${formData.firstName} ${formData.middleName} ${formData.lastName}`.replace(/\s+/g, ' ').trim(),
@@ -1436,7 +1436,7 @@ const TIERGolfBrukerprofilOnboarding = ({ profile: apiProfile = null }) => {
             {/* Consent checkboxes */}
             {[
               { name: 'consentBasic', label: 'Samtykke 1: Grunnleggende bruk', required: true, 
-                desc: 'Jeg samtykker til at TIER Golf Academy lagrer og behandler mine personopplysninger for å lage og følge opp min individuelle utviklingsplan.' },
+                desc: 'Jeg samtykker til at TIER Golf lagrer og behandler mine personopplysninger for å lage og følge opp min individuelle utviklingsplan.' },
               { name: 'consentAnalysis', label: 'Samtykke 2: Anonymisert analyse', required: false,
                 desc: 'Jeg samtykker til at mine prestasjonsdata (uten navn) kan brukes til statistisk analyse.' },
               { name: 'consentSharing', label: 'Samtykke 3: Deling med trenere', required: false,
@@ -1766,7 +1766,7 @@ const TIERGolfBrukerprofilOnboarding = ({ profile: apiProfile = null }) => {
       
       {/* Footer */}
       <div style={{ textAlign: 'center', marginTop: spacing.lg, fontSize: '12px', color: colors.textMuted }}>
-        TIER Golf Academy × Team Norway Golf | IUP System v1.2
+        TIER Golf × Team Norway Golf | IUP System v1.2
       </div>
     </div>
   );

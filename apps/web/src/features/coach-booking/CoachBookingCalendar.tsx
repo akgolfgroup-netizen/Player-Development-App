@@ -1,6 +1,6 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 /**
- * TIER Golf Academy - Coach Booking Calendar
+ * TIER Golf - Coach Booking Calendar
  * Design System v3.0 - Premium Light (Modernized)
  *
  * MIGRATED TO PAGE ARCHITECTURE - Zero inline styles
@@ -27,6 +27,7 @@ import {
 import Button from '../../ui/primitives/Button';
 import PageHeader from '../../ui/raw-blocks/PageHeader.raw';
 import BookingCreateDialog, { BookingFormData } from './BookingCreateDialog';
+import { SectionTitle, SubSectionTitle } from '../../ui/primitives/typography';
 
 // ============================================================================
 // MODERN STATUS STYLING
@@ -443,10 +444,10 @@ export default function CoachBookingCalendar() {
             </button>
           </div>
           <div className="h-6 w-px bg-gray-200" />
-          <h2 className="text-lg font-semibold text-gray-900 tracking-tight">
+          <SectionTitle className="text-lg font-semibold text-gray-900 tracking-tight" style={{ marginBottom: 0 }}>
             {weekDates[0].toLocaleDateString('nb-NO', { day: 'numeric', month: 'long' })} -{' '}
             {weekDates[6].toLocaleDateString('nb-NO', { day: 'numeric', month: 'long', year: 'numeric' })}
-          </h2>
+          </SectionTitle>
         </div>
 
         <button
@@ -675,9 +676,9 @@ export default function CoachBookingCalendar() {
                     {selectedSlot.booking.playerInitials}
                   </div>
                   <div>
-                    <h3 className="text-lg font-semibold text-gray-900 m-0">
+                    <SubSectionTitle className="text-lg font-semibold text-gray-900" style={{ marginBottom: 0 }}>
                       {selectedSlot.booking.playerName}
-                    </h3>
+                    </SubSectionTitle>
                     <div className="flex items-center gap-2 mt-1">
                       {SESSION_TYPE_ICONS[selectedSlot.booking.sessionType] || <User size={14} className="text-gray-400" />}
                       <span className="text-sm text-gray-600">

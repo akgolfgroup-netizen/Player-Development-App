@@ -10,6 +10,7 @@ import React, { useState } from 'react';
 import { X, Loader2, Flag } from 'lucide-react';
 import { featureFlagsAPI } from '../../services/api';
 import Button from '../../ui/primitives/Button';
+import { SectionTitle } from '../../components/typography/Headings';
 
 interface CreateFlagModalProps {
   isOpen: boolean;
@@ -87,9 +88,9 @@ export const CreateFlagModal: React.FC<CreateFlagModalProps> = ({
             <div className="w-10 h-10 rounded-xl bg-tier-navy/10 flex items-center justify-center">
               <Flag size={20} className="text-tier-navy" />
             </div>
-            <h2 className="text-lg font-semibold text-tier-navy">
+            <SectionTitle style={{ marginBottom: 0 }}>
               Opprett nytt funksjonsflagg
-            </h2>
+            </SectionTitle>
           </div>
           <button
             onClick={onClose}

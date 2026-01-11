@@ -30,6 +30,7 @@ import {
   Video,
 } from 'lucide-react';
 import { PageHeader } from '../../ui/raw-blocks';
+import { SectionTitle, CardTitle } from '../../components/typography';
 
 // Colors - Using TIER Golf Design System tokens
 const COLORS = {
@@ -329,7 +330,7 @@ export default function TrainingCategorySystemPage() {
             <BookOpen size={26} />
           </div>
           <div>
-            <h2 style={{ fontSize: 20, fontWeight: 600, margin: '0 0 10px' }}>Hva er dette?</h2>
+            <SectionTitle style={{ fontSize: 20, fontWeight: 600, margin: '0 0 10px', marginBottom: 10, color: 'inherit' }}>Hva er dette?</SectionTitle>
             <p style={{ fontSize: 15, lineHeight: 1.7, margin: 0, opacity: 0.95 }}>
               Treningskategorisystemet er et rammeverk for å beskrive, planlegge og analysere
               golftrening på en presis og systematisk måte. Hver treningsøkt får en unik kode som
@@ -415,9 +416,9 @@ export default function TrainingCategorySystemPage() {
         </Paragraph>
 
         {/* Video boxes for training areas */}
-        <h4 style={{ fontSize: 14, fontWeight: 600, color: COLORS.textDark, marginBottom: 14, marginTop: 20 }}>
+        <CardTitle style={{ fontSize: 14, fontWeight: 600, color: COLORS.textDark, marginBottom: 14, marginTop: 20 }}>
           Forklaringsvideoer for treningsområder
-        </h4>
+        </CardTitle>
         <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(150px, 1fr))', gap: 12, marginBottom: 28 }}>
           {[
             { code: 'TEE', name: 'Tee Total', color: 'rgb(var(--tier-navy))' },
@@ -478,9 +479,9 @@ export default function TrainingCategorySystemPage() {
           ))}
         </div>
 
-        <h4 style={{ fontSize: 14, fontWeight: 600, color: COLORS.textDark, marginBottom: 14, marginTop: 20 }}>
+        <CardTitle style={{ fontSize: 14, fontWeight: 600, color: COLORS.textDark, marginBottom: 14, marginTop: 20 }}>
           Full Swing (5 områder)
-        </h4>
+        </CardTitle>
         <DataTable
           headers={['Kode', 'Område', 'Typisk klubb']}
           rows={[
@@ -492,9 +493,9 @@ export default function TrainingCategorySystemPage() {
           ]}
         />
 
-        <h4 style={{ fontSize: 14, fontWeight: 600, color: COLORS.textDark, margin: '24px 0 14px' }}>
+        <CardTitle style={{ fontSize: 14, fontWeight: 600, color: COLORS.textDark, margin: '24px 0 14px' }}>
           Kortspill (4 områder)
-        </h4>
+        </CardTitle>
         <DataTable
           headers={['Kode', 'Område', 'Beskrivelse']}
           rows={[
@@ -505,9 +506,9 @@ export default function TrainingCategorySystemPage() {
           ]}
         />
 
-        <h4 style={{ fontSize: 14, fontWeight: 600, color: COLORS.textDark, margin: '24px 0 14px' }}>
+        <CardTitle style={{ fontSize: 14, fontWeight: 600, color: COLORS.textDark, margin: '24px 0 14px' }}>
           Putting (7 avstander)
-        </h4>
+        </CardTitle>
         <DataTable
           headers={['Kode', 'Avstand', 'Beskrivelse']}
           rows={[
@@ -556,9 +557,9 @@ bevegelse  armer     inn       synlig    under press`}</CodeBlock>
         </InfoBox>
 
         {/* Video explanation boxes for each L-phase */}
-        <h4 style={{ fontSize: 14, fontWeight: 600, color: COLORS.textDark, margin: '28px 0 16px' }}>
+        <CardTitle style={{ fontSize: 14, fontWeight: 600, color: COLORS.textDark, margin: '28px 0 16px' }}>
           Forklaringsvideoer for L-fasene
-        </h4>
+        </CardTitle>
         <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(180px, 1fr))', gap: 12 }}>
           {[
             { code: 'L-KROPP', name: 'Kropp', desc: 'Isolert bevegelse', color: 'rgb(var(--status-success))' },
@@ -733,24 +734,24 @@ Follow-through:               P8.0 → P9.0 → P10.0`}</CodeBlock>
           følger et fast mønster avhengig av type trening.
         </Paragraph>
 
-        <h4 style={{ fontSize: 14, fontWeight: 600, color: COLORS.textDark, marginBottom: 12 }}>
+        <CardTitle style={{ fontSize: 14, fontWeight: 600, color: COLORS.textDark, marginBottom: 12 }}>
           Full Swing (med CS)
-        </h4>
+        </CardTitle>
         <CodeBlock>[Pyramide]_[Område]_L-[fase]_CS[nivå]_M[miljø]_PR[press]_[P-posisjon]</CodeBlock>
 
-        <h4 style={{ fontSize: 14, fontWeight: 600, color: COLORS.textDark, margin: '20px 0 12px' }}>
+        <CardTitle style={{ fontSize: 14, fontWeight: 600, color: COLORS.textDark, margin: '20px 0 12px' }}>
           Kortspill (uten CS)
-        </h4>
+        </CardTitle>
         <CodeBlock>[Pyramide]_[Område]_L-[fase]_M[miljø]_PR[press]_[P-posisjon]</CodeBlock>
 
-        <h4 style={{ fontSize: 14, fontWeight: 600, color: COLORS.textDark, margin: '20px 0 12px' }}>
+        <CardTitle style={{ fontSize: 14, fontWeight: 600, color: COLORS.textDark, margin: '20px 0 12px' }}>
           Putting
-        </h4>
+        </CardTitle>
         <CodeBlock>[Pyramide]_[Område]_L-[fase]_M[miljø]_PR[press]_[Fokus]_[Faser]</CodeBlock>
 
-        <h4 style={{ fontSize: 14, fontWeight: 600, color: COLORS.textDark, margin: '24px 0 14px' }}>
+        <CardTitle style={{ fontSize: 14, fontWeight: 600, color: COLORS.textDark, margin: '24px 0 14px' }}>
           Eksempler
-        </h4>
+        </CardTitle>
 
         <div style={{ display: 'flex', flexDirection: 'column', gap: 14 }}>
           {[
@@ -825,9 +826,9 @@ Follow-through:               P8.0 → P9.0 → P10.0`}</CodeBlock>
             },
           ].map((item, i) => (
             <div key={i}>
-              <h4 style={{ fontSize: 15, fontWeight: 600, color: COLORS.textDark, margin: '0 0 8px' }}>
+              <CardTitle style={{ fontSize: 15, fontWeight: 600, color: COLORS.textDark, margin: '0 0 8px' }}>
                 {item.title}
-              </h4>
+              </CardTitle>
               <p style={{ fontSize: 14, color: COLORS.textMuted, margin: 0, lineHeight: 1.6 }}>
                 {item.text}
               </p>

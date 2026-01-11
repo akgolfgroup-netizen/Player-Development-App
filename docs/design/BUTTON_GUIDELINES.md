@@ -1,7 +1,7 @@
 # Button Color Guidelines
 ## TIER Golf Design System v3.1
 
-Dette dokumentet beskriver button-fargehierarkiet for TIER Golf Academy appen.
+Dette dokumentet beskriver button-fargehierarkiet for TIER Golf appen.
 
 ---
 

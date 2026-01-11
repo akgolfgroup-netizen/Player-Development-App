@@ -1052,7 +1052,7 @@ export default function PlayerIntakeSystem() {
               <ClipboardList className="w-6 h-6 text-white" />
             </div>
             <div>
-              <PageTitle className="text-2xl font-bold text-gray-900">TIER Golf Academy</PageTitle>
+              <PageTitle className="text-2xl font-bold text-gray-900">TIER Golf</PageTitle>
               <p className="text-gray-500">Player Intake & Follow-up System</p>
             </div>
           </div>

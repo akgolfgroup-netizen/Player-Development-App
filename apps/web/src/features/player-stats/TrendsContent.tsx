@@ -268,7 +268,7 @@ const TrendsContent: React.FC = () => {
         <Card padding="spacious">
           <div style={styles.emptyState}>
             <BarChart3 size={48} style={{ opacity: 0.3, marginBottom: 16, color: 'var(--text-tertiary)' }} />
-            <h3 style={styles.emptyTitle}>Ikke nok data enna</h3>
+            <SubSectionTitle style={{ marginBottom: 0 }}>Ikke nok data enna</SubSectionTitle>
             <p style={styles.emptyText}>
               Fullfør flere treningsøkter og tester for å se din utvikling over tid.
               Vi trenger minst 2 ukers data for å vise trender.

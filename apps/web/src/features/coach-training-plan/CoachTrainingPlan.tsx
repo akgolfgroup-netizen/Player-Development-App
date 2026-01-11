@@ -1,5 +1,5 @@
 /**
- * TIER Golf Academy - Coach Training Plan (View Only)
+ * TIER Golf - Coach Training Plan (View Only)
  * Design System v3.0 - Premium Light
  *
  * MIGRATED TO PAGE ARCHITECTURE - Zero inline styles

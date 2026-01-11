@@ -18,6 +18,7 @@ import Button from '../../ui/primitives/Button';
 import StateCard from '../../ui/composites/StateCard';
 import { track } from '../../analytics/track';
 import { PageHeader } from '../../ui/raw-blocks';
+import { SubSectionTitle } from '../../components/typography';
 
 // ═══════════════════════════════════════════
 // TAILWIND CLASSES
@@ -218,7 +219,7 @@ export function TournamentPrepDashboard({
       {filteredPreparations.length === 0 ? (
         <div className={tw.emptyState}>
           <div className={tw.emptyIcon}></div>
-          <h3 className={tw.emptyTitle}>Ingen forberedelser funnet</h3>
+          <SubSectionTitle style={{ marginBottom: 0 }}>Ingen forberedelser funnet</SubSectionTitle>
           <p className={tw.emptyDescription}>
             {searchQuery
               ? 'Ingen forberedelser matcher søket ditt'
@@ -243,9 +244,9 @@ export function TournamentPrepDashboard({
                 onClick={() => handleView(prep)}
               >
                 <div className={tw.cardHeader}>
-                  <h3 className={tw.cardTitle}>
+                  <SubSectionTitle style={{ marginBottom: 0, flex: 1 }}>
                     {prep.tournament?.name || 'Ukjent turnering'}
-                  </h3>
+                  </SubSectionTitle>
                   <span className={tw.statusBadge[isReady ? 'ready' : 'draft']}>
                     {isReady ? '✓ Klar' : '⏳ Pågår'}
                   </span>

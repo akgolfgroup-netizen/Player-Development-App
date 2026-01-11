@@ -9,6 +9,7 @@ import { useAuth } from '../../../contexts/AuthContext';
 import { useImportTrackManCSV, useImportTrackManPDF, useTrackManImports } from '../../../hooks/useTechniquePlan';
 import Button from '../../../ui/primitives/Button';
 import Card from '../../../ui/primitives/Card';
+import { SectionTitle, SubSectionTitle, CardTitle } from '../../../components/typography';
 
 interface TrackManImportModalProps {
   onClose: () => void;
@@ -71,7 +72,7 @@ const TrackManImportModal: React.FC<TrackManImportModalProps> = ({ onClose, onSu
         {/* Header */}
         <div className="flex items-center justify-between p-6 border-b border-tier-border-default">
           <div>
-            <h2 className="text-2xl font-bold text-tier-navy">TrackMan Import</h2>
+            <SectionTitle style={{ marginBottom: 0 }}>TrackMan Import</SectionTitle>
             <p className="text-sm text-tier-text-secondary mt-1">
               Last opp TrackMan CSV eller PDF for å spore teknisk fremgang
             </p>
@@ -119,9 +120,9 @@ const TrackManImportModal: React.FC<TrackManImportModalProps> = ({ onClose, onSu
                 onClick={() => fileInputRef.current?.click()}
               >
                 <Upload size={48} className="mx-auto text-tier-text-secondary mb-4" />
-                <h3 className="text-lg font-semibold text-tier-navy mb-2">
+                <SubSectionTitle style={{ marginBottom: '0.5rem' }}>
                   {selectedFile ? selectedFile.name : 'Velg fil eller dra og slipp'}
-                </h3>
+                </SubSectionTitle>
                 <p className="text-sm text-tier-text-secondary mb-4">
                   Støtter TrackMan CSV og PDF filer
                 </p>
@@ -209,10 +210,10 @@ const TrackManImportModal: React.FC<TrackManImportModalProps> = ({ onClose, onSu
 
               {/* Help Text */}
               <div className="bg-tier-navy-light rounded-lg p-4">
-                <h4 className="font-semibold text-tier-navy mb-2 flex items-center gap-2">
+                <CardTitle style={{ marginBottom: '0.5rem' }} className="flex items-center gap-2">
                   <FileText size={16} />
                   Om TrackMan Import
-                </h4>
+                </CardTitle>
                 <ul className="text-sm text-tier-text-secondary space-y-1">
                   <li>• CSV: Standard TrackMan CSV eksportfil</li>
                   <li>• PDF: TrackMan kombinert rapport</li>
@@ -233,7 +234,7 @@ const TrackManImportModal: React.FC<TrackManImportModalProps> = ({ onClose, onSu
               ) : imports.length === 0 ? (
                 <div className="text-center py-12">
                   <FileText size={48} className="mx-auto text-tier-text-tertiary mb-4" />
-                  <h3 className="text-lg font-semibold text-tier-navy mb-2">Ingen importer ennå</h3>
+                  <SubSectionTitle style={{ marginBottom: '0.5rem' }}>Ingen importer ennå</SubSectionTitle>
                   <p className="text-sm text-tier-text-secondary">
                     Last opp din første TrackMan-fil for å starte sporingen
                   </p>

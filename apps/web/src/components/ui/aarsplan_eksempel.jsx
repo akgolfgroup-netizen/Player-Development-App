@@ -460,7 +460,7 @@ const AarsplanGolf = () => {
                   ))}
                 </div>
                 
-                {/* TIER Golf Academy Parameters */}
+                {/* TIER Golf Parameters */}
                 <div className="mt-4 pt-3 border-t border-slate-100">
                   <div className="grid grid-cols-3 gap-2 text-center">
                     <div className="bg-slate-50 rounded-lg p-2">
@@ -542,7 +542,7 @@ const AarsplanGolf = () => {
       {/* Footer */}
       <div className="max-w-7xl mx-auto mt-6 text-center">
         <p className="font-body text-sm text-slate-400">
-          TIER Golf Academy Ã— Team Norway Golf â€” Individuell Utviklingsplan
+          TIER Golf Ã— Team Norway Golf â€” Individuell Utviklingsplan
         </p>
       </div>
     </div>

@@ -1,5 +1,5 @@
 /**
- * TIER Golf Academy - Quick Actions Widget
+ * TIER Golf - Quick Actions Widget
  * Design System v3.0 - Premium Light
  *
  * Today's training quick actions: start, complete, skip, substitute.

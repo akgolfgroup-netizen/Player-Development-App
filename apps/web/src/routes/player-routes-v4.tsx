@@ -1,6 +1,6 @@
 /**
  * ============================================================
- * PLAYER ROUTES V4 - TIER Golf Academy
+ * PLAYER ROUTES V4 - TIER Golf
  * ============================================================
  *
  * V4 Changes from V3:
@@ -22,6 +22,7 @@
 import React, { lazy, Suspense } from 'react';
 import { Route, Navigate } from 'react-router-dom';
 import LoadingSpinner from '../components/LoadingSpinner';
+import { PageTitle } from '../components/typography';
 
 // ============================================================
 // Lazy-loaded Hub Pages
@@ -87,7 +88,7 @@ const MerKunnskap = lazy(() => Promise.resolve({ default: () => <PlaceholderPage
 const MerNotater = lazy(() => Promise.resolve({
   default: () => (
     <div style={{ padding: 32, minHeight: '100vh', backgroundColor: '#f5f5f0' }}>
-      <h1 style={{ fontSize: 24, fontWeight: 700, marginBottom: 8, color: '#1a365d' }}>Notater</h1>
+      <PageTitle style={{ fontSize: 24, fontWeight: 700, marginBottom: 8, color: '#1a365d' }}>Notater</PageTitle>
       <p style={{ color: '#6B7280', marginBottom: 24 }}>Treningsdagbok og refleksjoner</p>
       <div style={{ padding: 24, backgroundColor: 'white', borderRadius: 12, border: '1px solid #e5e7eb' }}>
         <p style={{ color: '#6B7280', textAlign: 'center' }}>Ingen notater ennå. Start med å opprette ditt første notat.</p>
@@ -122,7 +123,7 @@ interface PlaceholderPageProps {
 function PlaceholderPage({ title }: PlaceholderPageProps) {
   return (
     <div style={{ padding: 32 }}>
-      <h1 style={{ fontSize: 24, fontWeight: 700, marginBottom: 16 }}>{title}</h1>
+      <PageTitle style={{ fontSize: 24, fontWeight: 700, marginBottom: 16 }}>{title}</PageTitle>
       <p style={{ color: '#6B7280' }}>Denne siden er under utvikling.</p>
     </div>
   );

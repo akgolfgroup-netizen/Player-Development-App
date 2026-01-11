@@ -192,7 +192,7 @@ const generateMockAthletes = (): Athlete[] => {
         {
           id: 'e4',
           tournamentId: 't2',
-          tournamentName: 'TIER Golf Academy Cup',
+          tournamentName: 'TIER Golf Cup',
           date: '2025-01-20',
           location: 'Miklagard',
           status: 'registered',
@@ -263,7 +263,7 @@ const generateMockAthletes = (): Athlete[] => {
         {
           id: 'e8',
           tournamentId: 't2',
-          tournamentName: 'TIER Golf Academy Cup',
+          tournamentName: 'TIER Golf Cup',
           date: '2025-01-20',
           location: 'Miklagard',
           status: 'pending',
@@ -293,7 +293,7 @@ const generateMockAthletes = (): Athlete[] => {
         {
           id: 'e10',
           tournamentId: 't2',
-          tournamentName: 'TIER Golf Academy Cup',
+          tournamentName: 'TIER Golf Cup',
           date: '2025-01-20',
           location: 'Miklagard',
           status: 'registered',

@@ -15,6 +15,7 @@ import { useAuth } from '../../contexts/AuthContext';
 import Card from '../../ui/primitives/Card';
 import Button from '../../ui/primitives/Button';
 import PageHeader from '../../components/layout/PageHeader';
+import { SectionTitle, SubSectionTitle } from '../../components/typography/Headings';
 
 interface Calibration {
   id: string;
@@ -108,7 +109,7 @@ const CalibrationPage: React.FC = () => {
           <Card>
             <div className="p-12 text-center">
               <Target size={64} className="mx-auto text-tier-text-tertiary mb-4" />
-              <h3 className="text-xl font-bold text-tier-navy mb-2">Ingen kalibrering funnet</h3>
+              <SubSectionTitle style={{ marginBottom: '0.5rem' }}>Ingen kalibrering funnet</SubSectionTitle>
               <p className="text-tier-text-secondary mb-6">
                 Kalibrer klubbhastighetene dine for mer nøyaktige testberegninger og anbefalinger.
               </p>
@@ -124,7 +125,7 @@ const CalibrationPage: React.FC = () => {
               <div className="p-6">
                 <div className="flex items-start justify-between mb-6">
                   <div>
-                    <h2 className="text-xl font-bold text-tier-navy mb-1">Din kalibrering</h2>
+                    <SectionTitle style={{ marginBottom: '0.25rem' }}>Din kalibrering</SectionTitle>
                     <p className="text-sm text-tier-text-secondary">
                       Sist oppdatert: {new Date(calibration.calibrationDate).toLocaleDateString('no-NO')}
                     </p>
@@ -200,7 +201,7 @@ const CalibrationPage: React.FC = () => {
             {/* Club Details */}
             <Card>
               <div className="p-6">
-                <h3 className="text-lg font-semibold text-tier-navy mb-4">Kalibrerte klubber</h3>
+                <SubSectionTitle style={{ marginBottom: '1rem' }}>Kalibrerte klubber</SubSectionTitle>
                 <div className="space-y-2">
                   {calibration.clubs && Array.isArray(calibration.clubs) && calibration.clubs.map((club: any, idx: number) => {
                     const clubInfo = CLUB_TYPES.find((c) => c.value === club.clubType);
@@ -359,9 +360,9 @@ const CalibrationWizard: React.FC<CalibrationWizardProps> = ({
     <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center p-4 z-50">
       <div className="bg-white rounded-xl max-w-4xl w-full p-6 max-h-[90vh] overflow-y-auto">
         <div className="flex items-center justify-between mb-6">
-          <h2 className="text-2xl font-bold text-tier-navy">
+          <SectionTitle style={{ marginBottom: 0 }}>
             {existingCalibration ? 'Rediger kalibrering' : 'Ny kalibrering'}
-          </h2>
+          </SectionTitle>
           <button onClick={onClose} className="p-2 hover:bg-tier-surface-base rounded">
             <AlertCircle size={20} className="text-tier-text-secondary" />
           </button>
@@ -385,7 +386,7 @@ const CalibrationWizard: React.FC<CalibrationWizardProps> = ({
           {/* Step 1: Select Clubs */}
           {currentStep === 0 && (
             <div>
-              <h3 className="text-lg font-semibold text-tier-navy mb-4">Velg klubber å kalibrere</h3>
+              <SubSectionTitle style={{ marginBottom: '1rem' }}>Velg klubber å kalibrere</SubSectionTitle>
               <p className="text-sm text-tier-text-secondary mb-6">
                 Driver er obligatorisk. Velg andre klubber du ønsker å kalibrere.
               </p>
@@ -421,7 +422,7 @@ const CalibrationWizard: React.FC<CalibrationWizardProps> = ({
           {/* Step 2: Enter Speeds */}
           {currentStep === 1 && (
             <div>
-              <h3 className="text-lg font-semibold text-tier-navy mb-4">Registrer klubbhastigheter</h3>
+              <SubSectionTitle style={{ marginBottom: '1rem' }}>Registrer klubbhastigheter</SubSectionTitle>
               <p className="text-sm text-tier-text-secondary mb-6">
                 Slå 3 slag med hver klubbe og registrer hastighetene (40-150 m/s).
               </p>
@@ -468,7 +469,7 @@ const CalibrationWizard: React.FC<CalibrationWizardProps> = ({
           {/* Step 3: Notes & Submit */}
           {currentStep === 2 && (
             <div>
-              <h3 className="text-lg font-semibold text-tier-navy mb-4">Notater (valgfritt)</h3>
+              <SubSectionTitle style={{ marginBottom: '1rem' }}>Notater (valgfritt)</SubSectionTitle>
               <textarea
                 value={notes}
                 onChange={(e) => setNotes(e.target.value)}

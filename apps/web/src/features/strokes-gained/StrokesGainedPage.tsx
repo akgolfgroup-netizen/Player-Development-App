@@ -9,6 +9,7 @@ import { useAuth } from '../../contexts/AuthContext';
 import StrokesGainedDashboardPro from './StrokesGainedDashboardPro';
 import StrokesGainedHistory from './StrokesGainedHistory';
 import StrokesGainedComparison from './StrokesGainedComparison';
+import { PageTitle, SubSectionTitle, CardTitle } from '../../components/typography';
 
 type TabType = 'overview' | 'history' | 'comparison';
 
@@ -39,7 +40,7 @@ const StrokesGainedPage: React.FC = () => {
       <div className="max-w-7xl mx-auto">
         {/* Page Header */}
         <div className="mb-6">
-          <h1 className="text-3xl font-bold text-tier-navy mb-2">Strokes Gained Analytics</h1>
+          <PageTitle style={{ marginBottom: 0 }}>Strokes Gained Analytics</PageTitle>
           <p className="text-tier-text-secondary">
             Avansert statistikkanalyse av din spillprestasjon
           </p>
@@ -83,17 +84,17 @@ const StrokesGainedPage: React.FC = () => {
 
         {/* Info Footer */}
         <div className="mt-8 p-6 bg-white rounded-xl border border-tier-border-default">
-          <h3 className="text-lg font-semibold text-tier-navy mb-3">💡 Om Strokes Gained</h3>
+          <SubSectionTitle style={{ marginBottom: '0.75rem' }}>💡 Om Strokes Gained</SubSectionTitle>
           <div className="grid md:grid-cols-2 gap-6 text-sm text-tier-text-secondary">
             <div>
-              <h4 className="font-semibold text-tier-navy mb-2">Hva er Strokes Gained?</h4>
+              <CardTitle style={{ marginBottom: '0.5rem' }}>Hva er Strokes Gained?</CardTitle>
               <p>
                 Strokes Gained er en avansert statistikk som måler hvor mange slag du vinner eller taper
                 i forhold til et benchmark (f.eks. tour-gjennomsnitt eller dine konkurrenter).
               </p>
             </div>
             <div>
-              <h4 className="font-semibold text-tier-navy mb-2">Hvordan tolke tallene?</h4>
+              <CardTitle style={{ marginBottom: '0.5rem' }}>Hvordan tolke tallene?</CardTitle>
               <p>
                 Positive tall (+0.5) betyr du er bedre enn benchmark.
                 Negative tall (-0.3) indikerer forbedringsområder.

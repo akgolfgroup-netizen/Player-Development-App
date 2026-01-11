@@ -1,6 +1,6 @@
 /**
  * ============================================================
- * COACH NAVIGATION CONFIG - TIER Golf Academy
+ * COACH NAVIGATION CONFIG - TIER Golf
  * ============================================================
  *
  * Single source of truth for coach navigation.

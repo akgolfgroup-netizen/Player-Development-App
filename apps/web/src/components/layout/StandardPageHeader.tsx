@@ -1,7 +1,7 @@
 /**
  * StandardPageHeader
  *
- * Konsistent page header for alle sider i TIER Golf Academy.
+ * Konsistent page header for alle sider i TIER Golf.
  * Følger Design System v3.0 - Premium Light.
  *
  * Format: [Ikon] Tittel

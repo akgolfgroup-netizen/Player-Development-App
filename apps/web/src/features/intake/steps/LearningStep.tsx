@@ -3,6 +3,7 @@
  */
 
 import React, { useState, useEffect } from 'react';
+import { CardTitle } from '../../../components/typography';
 
 interface Props {
   data?: any;
@@ -132,7 +133,7 @@ const LearningStep: React.FC<Props> = ({ data, onComplete }) => {
 
       {/* Info Box */}
       <div className="bg-tier-success-light border border-tier-success rounded-lg p-4">
-        <h4 className="text-sm font-semibold text-tier-navy mb-2">Nesten ferdig!</h4>
+        <CardTitle className="text-sm font-semibold text-tier-navy mb-2">Nesten ferdig!</CardTitle>
         <p className="text-xs text-tier-text-secondary mb-2">
           Ved å forstå hvordan du lærer best og hva som motiverer deg, kan vi lage en treningsplan
           som passer din personlighet og læringsstil. Dette øker sjansen for langsiktig suksess.

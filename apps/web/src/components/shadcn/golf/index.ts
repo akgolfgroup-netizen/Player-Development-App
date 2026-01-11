@@ -1,4 +1,4 @@
-// Golf-specific premium components for TIER Golf Academy
+// Golf-specific premium components for TIER Golf
 export { PlayerStatCard } from "./player-stat-card"
 export { TrainingCategoryBadge, type TrainingCategory } from "./training-category-badge"
 export { SkillRadar } from "./skill-radar"

@@ -4,6 +4,7 @@
  */
 
 import React, { useState, useCallback } from 'react';
+import { CardTitle } from '../../../components/typography';
 
 export default function TrackmanImport({ playerId, onUpload, imports = [] }) {
   const [isDragging, setIsDragging] = useState(false);
@@ -165,9 +166,9 @@ export default function TrackmanImport({ playerId, onUpload, imports = [] }) {
       {/* Import history */}
       {imports.length > 0 && (
         <div style={{ marginTop: '24px' }}>
-          <h4 style={{ margin: '0 0 12px 0', fontSize: '14px', color: 'var(--color-text-secondary)' }}>
+          <CardTitle style={{ margin: '0 0 12px 0' }}>
             Tidligere importer
-          </h4>
+          </CardTitle>
           <div style={{ background: 'var(--color-surface)', borderRadius: '8px', overflow: 'hidden' }}>
             {imports.slice(0, 5).map((imp) => (
               <div

@@ -1,5 +1,5 @@
 /**
- * TIER Golf Academy - AI Plan Suggestions Component
+ * TIER Golf - AI Plan Suggestions Component
  * Design System v3.0 - Premium Light
  *
  * Provides AI-generated training plan suggestions for coaches.
@@ -11,6 +11,7 @@
 import React, { useState, useCallback } from 'react';
 import { Sparkles, Target, Calendar, TrendingUp, Loader2, AlertCircle, ChevronDown, ChevronUp, CheckCircle2 } from 'lucide-react';
 import { getPlanSuggestions, PlanSuggestionResponse } from '../../services/aiService';
+import { SubSectionTitle } from '../../components/typography/Headings';
 
 interface Props {
   playerId: string;
@@ -96,9 +97,9 @@ export default function AIPlanSuggestions({ playerId, playerName = 'Spiller', on
             <Sparkles size={20} className="text-tier-navy" />
           </div>
           <div>
-            <h3 className="m-0 text-[17px] font-semibold text-tier-navy">
+            <SubSectionTitle style={{ marginBottom: 0 }}>
               AI Treningsassistent
-            </h3>
+            </SubSectionTitle>
             <p className="m-0 mt-0.5 text-[13px] text-tier-text-secondary">
               Få personlige anbefalinger for {playerName}
             </p>

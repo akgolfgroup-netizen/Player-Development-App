@@ -13,6 +13,7 @@
 import React, { useState, useMemo, useCallback } from 'react';
 import { ChevronLeft, ChevronRight, Plus, Search, Settings } from 'lucide-react';
 import type { CalendarEvent } from '../../hooks/useCalendarEvents';
+import { PageTitle, SubSectionTitle } from '../../../../components/typography/Headings';
 import MiniCalendar from './MiniCalendar';
 import CalendarList from './CalendarList';
 import NotionWeekGrid from './NotionWeekGrid';
@@ -62,7 +63,7 @@ const NotionCalendar: React.FC<NotionCalendarProps> = ({
     { id: 'work-kjoring', name: 'Work – Kjøring', color: 'blue', visible: true },
     { id: 'work-pause', name: 'Work – Pause', color: 'gray', visible: true },
     { id: 'work-mote', name: 'Work – Møte', color: 'purple', visible: true },
-    { id: 'work-tier-golf', name: 'Work – TIER Golf Academy', color: 'green', visible: true },
+    { id: 'work-tier-golf', name: 'Work – TIER Golf', color: 'green', visible: true },
     { id: 'life-calendar', name: 'Life calendar | Time blocking', color: 'teal', visible: true },
     { id: 'familie', name: 'Familie', color: 'pink', visible: true },
   ];
@@ -229,14 +230,14 @@ const NotionCalendar: React.FC<NotionCalendarProps> = ({
               </button>
             </div>
 
-            <h1 className="text-xl font-semibold text-gray-900">
+            <PageTitle style={{ marginBottom: 0 }}>
               {headerTitle}
               {weekLabel && (
                 <span className="ml-2 text-sm font-normal text-gray-400">
                   {weekLabel}
                 </span>
               )}
-            </h1>
+            </PageTitle>
           </div>
 
           {/* Right: View toggle + Today + Search */}
@@ -317,7 +318,7 @@ const NotionCalendar: React.FC<NotionCalendarProps> = ({
 
       {/* Right Sidebar - Useful shortcuts (optional) */}
       <div className="w-52 flex-shrink-0 border-l border-gray-200 p-4 hidden xl:block">
-        <h3 className="text-sm font-semibold text-gray-700 mb-3">Useful shortcuts</h3>
+        <SubSectionTitle style={{ marginBottom: '0.75rem' }}>Useful shortcuts</SubSectionTitle>
         <div className="space-y-2 text-xs text-gray-500">
           <div className="flex justify-between">
             <span>Command menu</span>

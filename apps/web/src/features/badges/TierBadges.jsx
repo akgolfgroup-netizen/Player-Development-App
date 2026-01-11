@@ -4,6 +4,7 @@ import { useAuth } from '../../contexts/AuthContext';
 import { badgesAPI } from '../../services/api';
 import { Trophy, Award, TrendingUp } from 'lucide-react';
 import { PageHeader } from '../../ui/raw-blocks';
+import { SubSectionTitle } from '../../components/typography/Headings';
 
 /**
  * TIER Golf Badges Gallery
@@ -310,9 +311,9 @@ export function TierBadges() {
           <TierCard className="p-12">
             <div className="text-center">
               <Trophy className="w-16 h-16 text-gray-300 mx-auto mb-4" />
-              <h3 className="font-display text-lg font-semibold text-tier-navy mb-2">
+              <SubSectionTitle style={{ marginBottom: '0.5rem' }}>
                 Ingen badges funnet
-              </h3>
+              </SubSectionTitle>
               <p className="text-text-muted mb-4">
                 Prøv å endre filterne dine
               </p>

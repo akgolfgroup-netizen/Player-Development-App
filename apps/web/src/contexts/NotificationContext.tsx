@@ -273,7 +273,7 @@ export const NotificationProvider: React.FC<NotificationProviderProps> = ({ chil
 
     // Also show push notification if enabled and app is in background
     if (options.showPush && document.hidden && pushPermission === PUSH_PERMISSION.GRANTED) {
-      showPushNotification(options.title || 'TIER Golf Academy', {
+      showPushNotification(options.title || 'TIER Golf', {
         body: message,
         tag: options.tag,
         onClick: options.action,

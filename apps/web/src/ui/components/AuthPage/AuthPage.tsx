@@ -19,6 +19,7 @@
  */
 
 import React, { createContext, useContext } from 'react';
+import { PageTitle, SectionTitle } from '../../../components/typography';
 
 // ============================================================================
 // TYPES
@@ -101,9 +102,9 @@ function AuthPageLogo({ children, title, subtitle }: AuthPageLogoProps) {
     <div className="text-center mb-8">
       <div className="flex justify-center mb-4">{children}</div>
       {title && (
-        <h1 className="text-xl font-bold text-tier-text-primary mb-1">
+        <PageTitle className="text-xl font-bold text-tier-text-primary mb-1" style={{ marginBottom: 0 }}>
           {title}
-        </h1>
+        </PageTitle>
       )}
       {subtitle && (
         <p className="text-sm text-tier-text-secondary">
@@ -122,9 +123,9 @@ function AuthPageCard({ children, title }: AuthPageCardProps) {
   return (
     <div className="bg-tier-surface-card rounded-2xl p-8 shadow-tier-elevated">
       {title && (
-        <h2 className="text-xl font-bold text-tier-text-primary text-center mb-6">
+        <SectionTitle className="text-xl font-bold text-tier-text-primary text-center mb-6" style={{ marginBottom: 0 }}>
           {title}
-        </h2>
+        </SectionTitle>
       )}
       {children}
     </div>

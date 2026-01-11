@@ -1,7 +1,7 @@
 /**
  * ============================================================
  * URL Redirects - Legacy → V2 Routes
- * TIER Golf Academy
+ * TIER Golf
  * ============================================================
  *
  * Håndterer redirects fra gammel URL-struktur til ny.

@@ -8,6 +8,7 @@
 import React from 'react';
 import { Target, Trophy, TrendingUp } from 'lucide-react';
 import { cn } from 'lib/utils';
+import { SectionTitle } from '../../../components/typography';
 
 export interface GoalsWelcomeHeaderProps {
   /** User's display name */
@@ -139,9 +140,9 @@ export function GoalsWelcomeHeader({
         <div className="flex-1">
           {/* Greeting */}
           <div className="flex items-center gap-2 mb-2">
-            <h2 className="text-2xl font-bold text-gray-900 dark:text-white">
+            <SectionTitle style={{ marginBottom: 0 }} className="text-2xl font-bold text-gray-900 dark:text-white">
               {greeting}, {userName}!
-            </h2>
+            </SectionTitle>
             <ProgressIcon className={cn(
               "h-6 w-6 animate-pulse",
               totalProgress >= 75 ? "text-amber-500" : totalProgress >= 50 ? "text-blue-500" : "text-gray-400"

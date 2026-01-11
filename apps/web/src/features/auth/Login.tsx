@@ -1,5 +1,5 @@
 /**
- * TIER Golf Academy - Login Page
+ * TIER Golf - Login Page
  *
  * Archetype: D - System/Auth Page
  * Purpose: User authentication

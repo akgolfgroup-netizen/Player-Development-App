@@ -1,5 +1,5 @@
 /**
- * TIER Golf Academy - Notification Settings Component
+ * TIER Golf - Notification Settings Component
  * Design System v3.0 - Blue Palette 01
  *
  * Allows users to configure push notifications and real-time updates.

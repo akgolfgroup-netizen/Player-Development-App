@@ -22,6 +22,9 @@ export { default as Switch } from './Switch.primitive';
 export { default as Checkbox } from './Checkbox.primitive';
 export { default as Alert } from './Alert.primitive';
 
+// Typography (re-exported from components/typography)
+export { PageTitle, SectionTitle, SubSectionTitle, CardTitle } from './typography';
+
 // Legacy exports (deprecated - use new components above)
 // export { default as BadgeLegacy } from './Badge.legacy';
 // export { default as AvatarLegacy } from './Avatar.legacy';

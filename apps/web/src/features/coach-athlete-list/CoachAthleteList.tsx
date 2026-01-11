@@ -1,5 +1,5 @@
 /**
- * TIER Golf Academy - Coach Athlete List
+ * TIER Golf - Coach Athlete List
  *
  * Archetype: A - List/Index Page
  * Purpose: Provide neutral access to athletes for a coach

@@ -28,7 +28,7 @@ import {
   Inbox,
   MailOpen,
 } from 'lucide-react';
-import { PageTitle, SectionTitle } from '../../../components/typography';
+import { PageTitle, SectionTitle, SubSectionTitle, CardTitle } from '../../../components/typography';
 import { messages, scheduledMessages, inboxMessages, type Message } from '../../../lib/coachMockData';
 import { messageCategories } from '../../../config/coach-navigation';
 
@@ -163,9 +163,9 @@ function MessageCard({
           </div>
 
           {/* Subject */}
-          <h3 className={`text-tier-navy mb-1 truncate ${isUnread ? 'font-bold' : 'font-semibold'}`}>
+          <CardTitle style={{ marginBottom: 4 }}>
             {message.subject}
-          </h3>
+          </CardTitle>
 
           {/* Preview */}
           <p className="text-sm text-tier-text-secondary mb-2 line-clamp-2">
@@ -389,7 +389,7 @@ export default function CoachMessages() {
       {filteredMessages.length === 0 ? (
         <div className="text-center py-16 bg-tier-white rounded-xl border border-tier-border-default">
           <Mail size={48} className="mx-auto text-tier-text-tertiary mb-4" />
-          <h3 className="text-lg font-semibold text-tier-navy mb-2">
+          <SubSectionTitle style={{ marginBottom: 8 }}>
             {activeTab === 'inbox'
               ? 'Ingen meldinger i innboksen'
               : activeTab === 'new'
@@ -397,7 +397,7 @@ export default function CoachMessages() {
               : activeTab === 'scheduled'
               ? 'Ingen planlagte meldinger'
               : 'Ingen meldinger'}
-          </h3>
+          </SubSectionTitle>
           <p className="text-tier-text-secondary mb-4">
             {activeTab === 'inbox'
               ? 'Du har ingen meldinger i innboksen.'

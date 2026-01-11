@@ -1,5 +1,5 @@
 /**
- * TIER Golf Academy - Card Component
+ * TIER Golf - Card Component
  * Premium Light System: Stone × Midnight Blue × Emerald × Soft Gold
  *
  * Rules:

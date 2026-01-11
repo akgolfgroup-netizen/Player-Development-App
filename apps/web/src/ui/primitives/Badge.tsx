@@ -1,5 +1,5 @@
 /**
- * TIER Golf Academy - Badge/Tag Component
+ * TIER Golf - Badge/Tag Component
  * Premium Light System: Stone × Midnight Blue × Emerald × Soft Gold
  *
  * NOW POWERED BY CATALYST UI

@@ -1,5 +1,5 @@
 /**
- * TIER Golf Academy - AI Chat Widget
+ * TIER Golf - AI Chat Widget
  *
  * Floating chat widget for AI Coach interactions.
  * Provides conversational interface to the AI coach.
@@ -23,6 +23,7 @@ import {
   ChatMessage,
   ChatRequest,
 } from '../../services/aiService';
+import { SubSectionTitle } from '../typography/Headings';
 
 // =============================================================================
 // Types
@@ -219,7 +220,7 @@ const AIChatWidget: React.FC<AIChatWidgetProps> = ({
             {messages.length === 0 ? (
               <div style={styles.welcomeContainer}>
                 <Bot size={48} style={{ color: 'var(--accent)', opacity: 0.5 }} />
-                <h3 style={styles.welcomeTitle}>Hei! Jeg er din AI Golf Coach</h3>
+                <SubSectionTitle style={{ ...styles.welcomeTitle, marginBottom: 0 }}>Hei! Jeg er din AI Golf Coach</SubSectionTitle>
                 <p style={styles.welcomeText}>
                   Spør meg om trening, teknikk, mentale strategier eller målsetting.
                 </p>

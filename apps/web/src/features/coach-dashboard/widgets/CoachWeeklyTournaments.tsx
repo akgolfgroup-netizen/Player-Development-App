@@ -1,5 +1,5 @@
 /**
- * TIER Golf Academy - Coach Weekly Tournaments Widget
+ * TIER Golf - Coach Weekly Tournaments Widget
  * Design System v3.0 - Semantic CSS Variables
  *
  * Viser ukens turneringer med spillerdeltakelse.
@@ -16,6 +16,7 @@ import {
   ChevronRight,
 } from 'lucide-react';
 import Button from '../../../ui/primitives/Button';
+import { SubSectionTitle, CardTitle } from '../../../ui/primitives/typography';
 
 interface TournamentPlayer {
   id: string;
@@ -188,16 +189,16 @@ export default function CoachWeeklyTournaments({ onViewAll }: CoachWeeklyTournam
             <Trophy size={20} style={{ color: 'var(--status-warning)' }} />
           </div>
           <div>
-            <h3
+            <SubSectionTitle
               style={{
                 fontSize: '17px',
                 fontWeight: 600,
                 color: 'var(--text-primary)',
-                margin: 0,
+                marginBottom: 0,
               }}
             >
               Ukens turneringer
-            </h3>
+            </SubSectionTitle>
             <span
               style={{
                 fontSize: '13px',
@@ -268,16 +269,16 @@ export default function CoachWeeklyTournaments({ onViewAll }: CoachWeeklyTournam
                 >
                   <div>
                     <div style={{ display: 'flex', alignItems: 'center', gap: '8px', marginBottom: '4px' }}>
-                      <h4
+                      <CardTitle
                         style={{
                           fontSize: '15px',
                           fontWeight: 600,
                           color: 'var(--text-primary)',
-                          margin: 0,
+                          marginBottom: 0,
                         }}
                       >
                         {tournament.name}
-                      </h4>
+                      </CardTitle>
                       <span
                         style={{
                           padding: '2px 8px',

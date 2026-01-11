@@ -26,6 +26,7 @@ import {
 } from 'lucide-react';
 import { useAICoach } from '../context/AICoachContext';
 import { DEFAULT_QUICK_ACTIONS } from '../types';
+import { SubSectionTitle } from '../../../components/typography/Headings';
 
 // =============================================================================
 // Component
@@ -141,9 +142,9 @@ export function AICoachPanel() {
                   <Bot size={32} className="text-tier-navy" />
                 </div>
                 <div className="space-y-2">
-                  <h3 className="text-lg font-bold text-tier-navy m-0">
+                  <SubSectionTitle style={{ marginBottom: 0 }}>
                     AI Golf Coach
-                  </h3>
+                  </SubSectionTitle>
                   <p className="text-sm text-tier-text-secondary m-0 max-w-[260px]">
                     Din personlige treningsassistent for golf
                   </p>

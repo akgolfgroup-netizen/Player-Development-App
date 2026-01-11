@@ -14,6 +14,7 @@ import React, { useState, useEffect, useCallback } from 'react';
 import { useTournamentPrep } from '../../hooks/useTournamentPrep';
 import Button from '../../ui/primitives/Button';
 import { track } from '../../analytics/track';
+import { SectionTitle, SubSectionTitle } from '../../components/typography';
 
 // ═══════════════════════════════════════════
 // TAILWIND CLASSES
@@ -145,12 +146,12 @@ export function CourseStrategyBuilder({
     <div className={`${tw.container} ${className}`}>
       {/* Header */}
       <div className={tw.header}>
-        <h2 className={tw.title}>Banestrategi</h2>
+        <SectionTitle style={{ marginBottom: 0 }}>Banestrategi</SectionTitle>
       </div>
 
       {/* Info Card */}
       <div className={tw.infoCard}>
-        <h3 className={tw.infoTitle}>Tips for banestrategi</h3>
+        <SubSectionTitle style={{ marginBottom: '8px' }}>Tips for banestrategi</SubSectionTitle>
         <p className={tw.infoText}>
           Definer en overordnet strategi for banen basert på spillerens styrker,
           værets påvirkning, og banens utfordringer. Dette vil hjelpe deg å planlegge

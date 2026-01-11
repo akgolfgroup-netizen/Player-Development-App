@@ -16,6 +16,7 @@ import { useInvoices } from '../../hooks/useInvoices';
 import Button from '../../ui/primitives/Button';
 import Badge from '../../ui/primitives/Badge.primitive';
 import StateCard from '../../ui/composites/StateCard';
+import { SubSectionTitle } from '../../ui/components/typography';
 import { track } from '../../analytics/track';
 import { PageHeader } from '../../ui/raw-blocks';
 
@@ -224,7 +225,7 @@ export function InvoiceList({ className = '' }) {
       {filteredInvoices.length === 0 ? (
         <div className={tw.emptyState}>
           <div className={tw.emptyIcon}>📄</div>
-          <h3 className={tw.emptyTitle}>No Invoices Found</h3>
+          <SubSectionTitle style={{ marginBottom: 0 }} className={tw.emptyTitle}>No Invoices Found</SubSectionTitle>
           <p className={tw.emptyDescription}>
             {searchQuery || statusFilter !== 'all'
               ? 'No invoices match your filters'

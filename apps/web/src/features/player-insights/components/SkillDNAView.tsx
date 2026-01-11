@@ -5,6 +5,7 @@
 
 import React from 'react';
 import { Dna, TrendingUp, TrendingDown, Minus, Users, Target } from 'lucide-react';
+import { SubSectionTitle, CardTitle } from '../../../components/typography';
 
 interface SkillDNAViewProps {
   data: any;
@@ -15,7 +16,7 @@ const SkillDNAView: React.FC<SkillDNAViewProps> = ({ data }) => {
     return (
       <div className="bg-white rounded-xl border border-tier-border-default p-12 text-center">
         <Dna size={64} className="mb-4 mx-auto text-tier-text-secondary" />
-        <h3 className="text-lg font-semibold text-tier-navy mb-2">Ingen Skill DNA data</h3>
+        <SubSectionTitle style={{ marginBottom: '0.5rem' }}>Ingen Skill DNA data</SubSectionTitle>
         <p className="text-tier-text-secondary">
           Trenger flere testresultater for å generere ditt ferdighetsprofil.
         </p>
@@ -81,10 +82,10 @@ const SkillDNAView: React.FC<SkillDNAViewProps> = ({ data }) => {
 
       {/* Skill Dimensions */}
       <div className="bg-white rounded-xl border border-tier-border-default p-6">
-        <h3 className="text-lg font-semibold text-tier-navy mb-6 flex items-center gap-2">
+        <SubSectionTitle className="flex items-center gap-2" style={{ marginBottom: '1.5rem' }}>
           <Dna size={20} className="text-tier-info" />
           Ferdighetsdimensjoner
-        </h3>
+        </SubSectionTitle>
 
         <div className="space-y-4">
           {dimensionsList.map(({ key, label, icon }) => {
@@ -140,7 +141,7 @@ const SkillDNAView: React.FC<SkillDNAViewProps> = ({ data }) => {
       {/* Strengths and Weaknesses */}
       <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
         <div className="bg-tier-success-light rounded-xl border border-tier-success p-6">
-          <h3 className="text-lg font-semibold text-tier-navy mb-4">Styrker</h3>
+          <SubSectionTitle>Styrker</SubSectionTitle>
           {strengths && strengths.length > 0 ? (
             <ul className="space-y-2">
               {strengths.map((strength: string, idx: number) => (
@@ -156,7 +157,7 @@ const SkillDNAView: React.FC<SkillDNAViewProps> = ({ data }) => {
         </div>
 
         <div className="bg-tier-warning-light rounded-xl border border-tier-warning p-6">
-          <h3 className="text-lg font-semibold text-tier-navy mb-4">Svakheter</h3>
+          <SubSectionTitle>Svakheter</SubSectionTitle>
           {weaknesses && weaknesses.length > 0 ? (
             <ul className="space-y-2">
               {weaknesses.map((weakness: string, idx: number) => (
@@ -175,10 +176,10 @@ const SkillDNAView: React.FC<SkillDNAViewProps> = ({ data }) => {
       {/* Pro Matches */}
       {proMatches && proMatches.length > 0 && (
         <div className="bg-white rounded-xl border border-tier-border-default p-6">
-          <h3 className="text-lg font-semibold text-tier-navy mb-4 flex items-center gap-2">
+          <SubSectionTitle className="flex items-center gap-2">
             <Users size={20} className="text-tier-info" />
             Du matcher disse proffspillerne
-          </h3>
+          </SubSectionTitle>
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
             {proMatches.map((match: any, idx: number) => (
               <div
@@ -187,7 +188,7 @@ const SkillDNAView: React.FC<SkillDNAViewProps> = ({ data }) => {
               >
                 <div className="flex items-start justify-between mb-3">
                   <div>
-                    <h4 className="font-bold text-tier-navy">{match.proName}</h4>
+                    <CardTitle style={{ marginBottom: 0 }}>{match.proName}</CardTitle>
                     <div className="text-xs text-tier-text-secondary mt-1">{match.insight}</div>
                   </div>
                   <div className="text-right">
@@ -225,7 +226,7 @@ const SkillDNAView: React.FC<SkillDNAViewProps> = ({ data }) => {
 
       {/* DNA Visualization Placeholder */}
       <div className="bg-white rounded-xl border border-tier-border-default p-6">
-        <h3 className="text-lg font-semibold text-tier-navy mb-4">DNA Visualisering</h3>
+        <SubSectionTitle>DNA Visualisering</SubSectionTitle>
         <div className="text-sm text-tier-text-secondary text-center py-12">
           Radar chart / spider diagram kommer her (krever chart library)
           <div className="mt-2 text-xs">6-dimensjonal visualisering av ditt ferdighetsprofil</div>

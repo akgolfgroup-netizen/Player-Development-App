@@ -16,6 +16,7 @@ import { useStrokesGained } from '../../hooks/useStrokesGained';
 import Button from '../../ui/primitives/Button';
 import StateCard from '../../ui/composites/StateCard';
 import { track } from '../../analytics/track';
+import { PageTitle, SectionTitle, SubSectionTitle } from '../../components/typography';
 
 // ═══════════════════════════════════════════
 // TAILWIND CLASSES
@@ -123,7 +124,7 @@ export function StrokesGainedDashboard({
     return (
       <div className={`${tw.container} ${className}`}>
         <div className={tw.header}>
-          <h1 className={tw.title}>Strokes Gained Analytics</h1>
+          <PageTitle style={{ marginBottom: 0 }}>Strokes Gained Analytics</PageTitle>
         </div>
         <StateCard
           variant="info"
@@ -140,7 +141,7 @@ export function StrokesGainedDashboard({
     <div className={`${tw.container} ${className}`}>
       {/* Header */}
       <div className={tw.header}>
-        <h1 className={tw.title}>Strokes Gained Analytics</h1>
+        <PageTitle style={{ marginBottom: 0 }}>Strokes Gained Analytics</PageTitle>
         <div className={tw.headerActions}>
           {onBack && (
             <Button variant="secondary" onClick={onBack}>
@@ -162,7 +163,7 @@ export function StrokesGainedDashboard({
 
       {/* Info Card */}
       <div className={tw.infoCard}>
-        <h3 className={tw.infoTitle}>💡 Om Strokes Gained</h3>
+        <SubSectionTitle style={{ marginBottom: 0 }}>💡 Om Strokes Gained</SubSectionTitle>
         <p className={tw.infoText}>
           Strokes Gained måler hvor mange slag du vinner eller taper sammenlignet med et benchmark.
           Positive verdier betyr du er bedre enn gjennomsnittet, negative verdier betyr det er et forbedringsområde.
@@ -205,13 +206,13 @@ export function StrokesGainedDashboard({
 
       {/* Category Breakdown */}
       <div>
-        <h2 className={tw.sectionTitle}>Kategori Breakdown</h2>
+        <SectionTitle style={{ marginBottom: '1rem' }}>Kategori Breakdown</SectionTitle>
         <div className={tw.categoryGrid}>
           {/* Approach */}
           {data.byCategory?.approach && (
             <div className={tw.categoryCard}>
               <div className={tw.categoryHeader}>
-                <h3 className={tw.categoryTitle}>Approach</h3>
+                <SubSectionTitle style={{ marginBottom: 0 }}>Approach</SubSectionTitle>
                 <span className={tw.categoryIcon}>🎯</span>
               </div>
               <div className={`${tw.categoryValue} ${getValueClass(data.byCategory.approach.value)}`}>
@@ -231,7 +232,7 @@ export function StrokesGainedDashboard({
           {data.byCategory?.around_green && (
             <div className={tw.categoryCard}>
               <div className={tw.categoryHeader}>
-                <h3 className={tw.categoryTitle}>Around Green</h3>
+                <SubSectionTitle style={{ marginBottom: 0 }}>Around Green</SubSectionTitle>
                 <span className={tw.categoryIcon}>⛳</span>
               </div>
               <div className={`${tw.categoryValue} ${getValueClass(data.byCategory.around_green.value)}`}>
@@ -251,7 +252,7 @@ export function StrokesGainedDashboard({
           {data.byCategory?.putting && (
             <div className={tw.categoryCard}>
               <div className={tw.categoryHeader}>
-                <h3 className={tw.categoryTitle}>Putting</h3>
+                <SubSectionTitle style={{ marginBottom: 0 }}>Putting</SubSectionTitle>
                 <span className={tw.categoryIcon}>🏌️</span>
               </div>
               <div className={`${tw.categoryValue} ${getValueClass(data.byCategory.putting.value)}`}>
@@ -272,7 +273,7 @@ export function StrokesGainedDashboard({
       {/* Trends */}
       {data.weeklyTrend && data.weeklyTrend.length > 0 && (
         <div className={tw.trendsSection}>
-          <h2 className={tw.sectionTitle}>Utvikling Over Tid</h2>
+          <SectionTitle style={{ marginBottom: '1rem' }}>Utvikling Over Tid</SectionTitle>
           <div className={tw.trendsChart}>
             📊 Trend-diagram kommer snart
           </div>
@@ -282,7 +283,7 @@ export function StrokesGainedDashboard({
       {/* Recent Tests */}
       {data.recentTests && data.recentTests.length > 0 && (
         <div className={tw.recentTestsSection}>
-          <h2 className={tw.sectionTitle}>Nylige Tester</h2>
+          <SectionTitle style={{ marginBottom: '1rem' }}>Nylige Tester</SectionTitle>
           <div className={tw.testsList}>
             {data.recentTests.map((test, index) => (
               <div key={index} className={tw.testItem}>

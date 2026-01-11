@@ -1,5 +1,5 @@
 /**
- * TIER Golf Academy - Admin System Overview
+ * TIER Golf - Admin System Overview
  *
  * Archetype: A - List/Index Page
  * Purpose: System-level visibility (status, feature flags)

@@ -1,6 +1,6 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 /**
- * TIER Golf Academy - Tournament Details Panel
+ * TIER Golf - Tournament Details Panel
  *
  * Side panel (desktop) / bottom sheet (mobile) for tournament details.
  * Shows full tournament info with action buttons.

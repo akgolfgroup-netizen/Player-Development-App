@@ -20,6 +20,7 @@ import MessageComposer from './components/MessageComposer';
 import { PageHeader } from '../../components/layout/PageHeader';
 import LoadingSpinner from '../../components/LoadingSpinner';
 import Button from '../../ui/primitives/Button';
+import { SubSectionTitle } from '../../ui/primitives/typography';
 
 const ChatPage: React.FC = () => {
   const { user } = useAuth();
@@ -137,9 +138,9 @@ const ChatPage: React.FC = () => {
         <div className="max-w-2xl mx-auto">
           <div className="bg-white rounded-xl border border-tier-border-default p-8 text-center">
             <div className="text-tier-error text-4xl mb-4">⚠️</div>
-            <h3 className="text-lg font-semibold text-tier-navy mb-2">
+            <SubSectionTitle className="text-lg font-semibold text-tier-navy mb-2">
               Kunne ikke laste samtaler
-            </h3>
+            </SubSectionTitle>
             <p className="text-tier-text-secondary mb-4">{conversationsError}</p>
             <Button variant="primary" onClick={refetchConversations}>
               Prøv igjen
@@ -185,9 +186,9 @@ const ChatPage: React.FC = () => {
         {/* Conversation list */}
         <div className="w-80 bg-white border-r border-tier-border-default flex flex-col">
           <div className="p-4 border-b border-tier-border-default">
-            <h3 className="text-sm font-semibold text-tier-navy">
+            <SubSectionTitle className="text-sm font-semibold text-tier-navy" style={{ marginBottom: 0 }}>
               Samtaler ({conversations.length})
-            </h3>
+            </SubSectionTitle>
           </div>
           <div className="flex-1 overflow-y-auto">
             <ConversationList
@@ -217,9 +218,9 @@ const ChatPage: React.FC = () => {
                     )}
                   </div>
                   <div>
-                    <h3 className="font-semibold text-tier-navy">
+                    <SubSectionTitle className="font-semibold text-tier-navy" style={{ marginBottom: 0 }}>
                       {selectedConversation.name}
-                    </h3>
+                    </SubSectionTitle>
                     <p className="text-xs text-tier-text-secondary">
                       {participants.length} deltakere
                     </p>
@@ -261,9 +262,9 @@ const ChatPage: React.FC = () => {
               <div className="bg-tier-surface-secondary rounded-full p-6 mb-4">
                 <MessageCircle size={48} className="text-tier-text-tertiary" />
               </div>
-              <h3 className="text-lg font-semibold text-tier-navy mb-2">
+              <SubSectionTitle className="text-lg font-semibold text-tier-navy mb-2">
                 Velg en samtale
-              </h3>
+              </SubSectionTitle>
               <p className="text-sm text-tier-text-secondary text-center">
                 Klikk på en samtale fra listen til venstre for å starte
               </p>

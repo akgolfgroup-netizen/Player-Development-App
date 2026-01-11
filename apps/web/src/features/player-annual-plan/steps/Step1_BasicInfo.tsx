@@ -9,6 +9,7 @@ import { Button } from '../../../components/shadcn/button';
 import { Input } from '../../../components/shadcn/input';
 import { Label } from '../../../components/shadcn/label';
 import { RadioGroup, RadioGroupItem } from '../../../components/shadcn/radio-group';
+import { SectionTitle } from '../../../components/typography';
 
 interface Step1BasicInfoProps {
   basicInfo: {
@@ -48,7 +49,7 @@ export function Step1BasicInfo({
   return (
     <div className="max-w-2xl mx-auto space-y-6">
       <div className="space-y-2">
-        <h2 className="text-2xl font-bold text-tier-navy">Opprett din årsplan</h2>
+        <SectionTitle style={{ marginBottom: 0 }}>Opprett din årsplan</SectionTitle>
         <p className="text-tier-gray">
           La oss starte med grunnleggende informasjon om din treningsplan
         </p>

@@ -1,5 +1,5 @@
 /**
- * TIER Golf Academy - Button Component
+ * TIER Golf - Button Component
  * Premium Light System: Stone × Midnight Blue × Emerald × Soft Gold
  *
  * NOW POWERED BY CATALYST UI

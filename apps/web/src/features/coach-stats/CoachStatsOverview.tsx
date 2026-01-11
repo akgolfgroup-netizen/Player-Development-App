@@ -1,5 +1,5 @@
 /**
- * TIER Golf Academy - Coach Stats Overview
+ * TIER Golf - Coach Stats Overview
  * Design System v3.0 - Premium Light
  *
  * Hovedoversikt over spillerstatistikk for trenere.

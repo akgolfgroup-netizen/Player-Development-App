@@ -1,4 +1,4 @@
-# TIER Golf Academy - Master Implementeringsplan
+# TIER Golf - Master Implementeringsplan
 
 **Opprettet**: 2026-01-08
 **Status**: I gang

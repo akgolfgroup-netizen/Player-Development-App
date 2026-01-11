@@ -13,7 +13,7 @@
 import React, { useState, useMemo } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { Bell, Video, ClipboardList, MessageSquare, Trophy, Stethoscope, CheckCircle, Filter } from 'lucide-react';
-import { PageTitle } from '../../../components/typography';
+import { PageTitle, SubSectionTitle } from '../../../components/typography';
 import { alertsFeed, getUnreadAlerts, type Alert } from '../../../lib/coachMockData';
 import { coachAlertTypes } from '../../../config/coach-navigation';
 
@@ -225,9 +225,9 @@ export default function CoachAlerts() {
       {filteredAlerts.length === 0 ? (
         <div className="text-center py-16 bg-tier-white rounded-xl border border-tier-border-default">
           <Bell size={48} className="mx-auto text-tier-text-tertiary mb-4" />
-          <h3 className="text-lg font-semibold text-tier-navy mb-2">
+          <SubSectionTitle style={{ marginBottom: 8 }}>
             {filter === 'unread' ? 'Ingen uleste varsler' : 'Ingen varsler'}
-          </h3>
+          </SubSectionTitle>
           <p className="text-tier-text-secondary">
             {filter === 'unread'
               ? 'Du har lest alle varsler!'

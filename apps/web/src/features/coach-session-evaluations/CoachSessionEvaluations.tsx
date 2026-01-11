@@ -1,7 +1,7 @@
 // @ts-nocheck
 /* eslint-disable @typescript-eslint/no-explicit-any */
 /**
- * TIER Golf Academy - Coach Session Evaluations
+ * TIER Golf - Coach Session Evaluations
  * Design System v3.0 - Blue Palette 01
  *
  * Purpose:

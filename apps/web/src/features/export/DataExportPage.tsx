@@ -10,6 +10,7 @@ import Card from '../../ui/primitives/Card';
 import Button from '../../ui/primitives/Button';
 import PageHeader from '../../components/layout/PageHeader';
 import apiClient from '../../services/apiClient';
+import { SubSectionTitle, CardTitle } from '../../components/typography';
 
 const DataExportPage: React.FC = () => {
   const { user } = useAuth();
@@ -112,7 +113,7 @@ const DataExportPage: React.FC = () => {
                     {exp.icon}
                   </div>
                   <div>
-                    <h3 className="font-semibold text-tier-navy mb-1">{exp.title}</h3>
+                    <SubSectionTitle style={{ marginBottom: 4 }}>{exp.title}</SubSectionTitle>
                     <p className="text-sm text-tier-text-secondary">{exp.description}</p>
                   </div>
                 </div>
@@ -134,7 +135,7 @@ const DataExportPage: React.FC = () => {
             <div className="flex items-start gap-3">
               <FileText size={20} className="text-tier-info flex-shrink-0 mt-1" />
               <div>
-                <h4 className="font-semibold text-tier-navy mb-1">Om dataeksport</h4>
+                <CardTitle style={{ marginBottom: 4 }}>Om dataeksport</CardTitle>
                 <p className="text-sm text-tier-text-secondary">
                   Alle dine data tilhører deg. Du kan når som helst eksportere komplett historikk av
                   treninger, tester, mål og fremgang. Filene er i standardformater (PDF/Excel) og kan

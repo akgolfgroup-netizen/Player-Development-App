@@ -1,5 +1,5 @@
 /**
- * TIER Golf Academy - Tournament Hierarchy Configuration
+ * TIER Golf - Tournament Hierarchy Configuration
  *
  * This file defines the mapping rules for recommending player categories
  * based on tournament tour type and other criteria.
@@ -172,7 +172,7 @@ export const HIERARCHY_RULES: HierarchyRule[] = [
     tour: 'academy',
     primaryCategory: 'E',
     adjacentCategories: ['D'],
-    description: 'Akademiturnering - TIER Golf Academy interne turneringer',
+    description: 'Akademiturnering - TIER Golf interne turneringer',
     confidence: 'high',
     defaultPurpose: 'TRENING',
     competitionLevel: 'trenings_turnering',

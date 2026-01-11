@@ -1,5 +1,5 @@
 /**
- * TIER Golf Academy - Progress Dashboard
+ * TIER Golf - Progress Dashboard
  * Design System v3.0 - Premium Light
  *
  * Redesigned progress tracking with modern visualizations,
@@ -23,6 +23,7 @@ import {
   HelpCircle,
 } from 'lucide-react';
 import StateCard from '../../ui/composites/StateCard';
+import { SectionTitle, SubSectionTitle } from '../../components/typography/Headings';
 
 // ============================================================================
 // TOOLTIP COMPONENT
@@ -298,7 +299,7 @@ export default function ProgressDashboard({ data }) {
         {/* Main Progress Ring */}
         <div className="lg:col-span-1 bg-gradient-to-br from-tier-navy to-tier-navy/80 rounded-3xl p-6 text-white">
           <div className="flex flex-col items-center text-center">
-            <h2 className="text-lg font-medium opacity-90 mb-4">Gjennomføringsgrad</h2>
+            <SectionTitle style={{ marginBottom: 0 }}>Gjennomføringsgrad</SectionTitle>
             <div className="relative mb-4">
               <ProgressRing
                 progress={overview.completionRate}
@@ -367,7 +368,7 @@ export default function ProgressDashboard({ data }) {
               <BarChart3 size={20} className="text-tier-navy" />
             </div>
             <div>
-              <h3 className="font-semibold text-tier-navy">12-ukers aktivitet</h3>
+              <SubSectionTitle style={{ marginBottom: 0 }}>12-ukers aktivitet</SubSectionTitle>
               <p className="text-sm text-tier-text-secondary">Din treningshistorikk</p>
             </div>
           </div>
@@ -436,7 +437,7 @@ export default function ProgressDashboard({ data }) {
           </div>
           <div className="flex-1">
             <div className="flex items-center gap-2">
-              <h3 className="font-semibold text-tier-navy">Treningsfokus</h3>
+              <SubSectionTitle style={{ marginBottom: 0 }}>Treningsfokus</SubSectionTitle>
               <Tooltip text="Viser fordeling av treningstid på de fire hovedområdene i golf">
                 <HelpCircle size={16} className="text-tier-text-tertiary hover:text-tier-navy transition-colors" />
               </Tooltip>
@@ -467,13 +468,13 @@ export default function ProgressDashboard({ data }) {
             <Award size={28} />
           </div>
           <div className="flex-1">
-            <h3 className="font-semibold text-lg">
+            <SubSectionTitle style={{ marginBottom: 0 }}>
               {overview.completionRate >= 80
                 ? 'Fantastisk innsats!'
                 : overview.completionRate >= 50
                 ? 'Du er på god vei!'
                 : 'Tid for å ta grep!'}
-            </h3>
+            </SubSectionTitle>
             <p className="text-sm opacity-90 mt-1">
               {overview.completionRate >= 80
                 ? `Du har fullført ${overview.totalSessionsCompleted} økter denne måneden. Fortsett slik!`

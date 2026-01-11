@@ -1,5 +1,5 @@
 /**
- * TIER Golf Academy - Offline Indicator
+ * TIER Golf - Offline Indicator
  *
  * Shows network status and pending sync count.
  * Displays banner when offline, toast when coming back online.

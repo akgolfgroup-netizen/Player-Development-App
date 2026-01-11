@@ -1,5 +1,5 @@
 /**
- * TIER Golf Academy - Meldinger Container
+ * TIER Golf - Meldinger Container
  * Design System v3.0 - Premium Light
  *
  * Messaging system with conversations and chat view.

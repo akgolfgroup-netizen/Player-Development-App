@@ -5,6 +5,7 @@
 
 import React, { useState } from 'react';
 import { TECHNICAL_AREAS, PRIORITY_LABELS, STATUS_LABELS } from '../types';
+import { SubSectionTitle } from '../../../components/typography';
 
 const priorityColors = {
   high: 'var(--color-error)',
@@ -46,7 +47,7 @@ export default function TaskCard({ task, onUpdate, onDelete }) {
                 background: priorityColors[task.priority] || priorityColors.medium,
               }}
             />
-            <h3 style={{ margin: 0, fontSize: '16px', fontWeight: 600 }}>{task.title}</h3>
+            <SubSectionTitle style={{ margin: 0 }}>{task.title}</SubSectionTitle>
             {task.videoUrl && (
               <span style={{ fontSize: '12px', color: 'var(--color-primary)' }}>Video</span>
             )}

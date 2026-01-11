@@ -1,6 +1,6 @@
 // @ts-nocheck
 /**
- * TIER Golf Academy - Tournament Calendar Page
+ * TIER Golf - Tournament Calendar Page
  *
  * Main tournament discovery and planning surface.
  * List-first design with robust filtering.

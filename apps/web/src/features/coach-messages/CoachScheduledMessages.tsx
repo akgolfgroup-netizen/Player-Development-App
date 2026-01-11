@@ -1,6 +1,6 @@
 // @ts-nocheck
 /**
- * TIER Golf Academy - Coach Scheduled Messages
+ * TIER Golf - Coach Scheduled Messages
  * Design System v3.0 - Premium Light
  *
  * Timeline view of scheduled messages for coaches.

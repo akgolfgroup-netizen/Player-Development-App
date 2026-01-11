@@ -6,6 +6,7 @@
 import React from 'react';
 import { Calendar, Clock, ChevronLeft, ChevronRight } from 'lucide-react';
 import Button from '../../../ui/primitives/Button';
+import { SubSectionTitle } from '../../../components/typography/Headings';
 
 interface AvailabilitySlot {
   id: string;
@@ -91,9 +92,9 @@ const AvailabilityCalendar: React.FC<Props> = ({
       <div className="flex items-center justify-between p-4 border-b border-tier-border-default">
         <div className="flex items-center gap-2">
           <Calendar size={20} className="text-tier-navy" />
-          <h3 className="text-lg font-semibold text-tier-navy">
+          <SubSectionTitle style={{ marginBottom: 0 }}>
             Tilgjengelige timer
-          </h3>
+          </SubSectionTitle>
         </div>
         <div className="flex items-center gap-2">
           <Button

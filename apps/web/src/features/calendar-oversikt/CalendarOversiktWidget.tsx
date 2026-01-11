@@ -9,6 +9,7 @@
 import React, { useMemo } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { Calendar, ChevronRight } from 'lucide-react';
+import { SubSectionTitle } from '../../components/typography/Headings';
 
 import { useUnifiedCalendar } from './hooks/useUnifiedCalendar';
 import { EventLegend } from './components/EventLegend';
@@ -90,9 +91,9 @@ export const CalendarOversiktWidget: React.FC<CalendarOversiktWidgetProps> = ({
       <div className="flex items-center justify-between mb-4">
         <div className="flex items-center gap-2">
           <Calendar size={18} className="text-tier-text-secondary" />
-          <h3 className="text-headline text-tier-navy">
+          <SubSectionTitle style={{ marginBottom: 0 }}>
             Kalender Oversikt
-          </h3>
+          </SubSectionTitle>
         </div>
         <button
           onClick={handleViewAll}

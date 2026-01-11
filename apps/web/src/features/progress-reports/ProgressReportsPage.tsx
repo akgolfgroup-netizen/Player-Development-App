@@ -6,6 +6,7 @@
 import React, { useState } from 'react';
 import { FileText, Calendar, Award, TrendingUp, CheckCircle } from 'lucide-react';
 import { PageHeader } from '../../components/layout/PageHeader';
+import { SectionTitle, SubSectionTitle } from '../../components/typography/Headings';
 import { useProgressReports } from '../../hooks/useProgressReports';
 import { useAuth } from '../../contexts/AuthContext';
 
@@ -103,7 +104,7 @@ const ProgressReportsPage: React.FC = () => {
               Lukk
             </button>
           </div>
-          <h2 className="text-3xl font-bold text-tier-navy mb-2">Fremdriftsrapport</h2>
+          <SectionTitle style={{ marginBottom: 0 }}>Fremdriftsrapport</SectionTitle>
           <div className="flex items-center gap-4 text-sm text-tier-text-secondary">
             <div className="flex items-center gap-2">
               <Calendar size={16} />
@@ -123,10 +124,10 @@ const ProgressReportsPage: React.FC = () => {
         <div className="p-8 space-y-8">
           {/* Summary */}
           <div>
-            <h3 className="text-xl font-bold text-tier-navy mb-3 flex items-center gap-2">
+            <SubSectionTitle style={{ marginBottom: 0 }}>
               <FileText size={20} />
               Sammendrag
-            </h3>
+            </SubSectionTitle>
             <p className="text-tier-text-secondary leading-relaxed">{report.summary}</p>
           </div>
 
@@ -155,10 +156,10 @@ const ProgressReportsPage: React.FC = () => {
           {/* Strengths */}
           {report.strengths && report.strengths.length > 0 && (
             <div>
-              <h3 className="text-xl font-bold text-tier-navy mb-3 flex items-center gap-2">
+              <SubSectionTitle style={{ marginBottom: 0 }}>
                 <Award size={20} className="text-tier-success" />
                 Styrker
-              </h3>
+              </SubSectionTitle>
               <ul className="space-y-2">
                 {report.strengths.map((strength: string, idx: number) => (
                   <li key={idx} className="flex items-start gap-3 text-tier-text-secondary">
@@ -173,10 +174,10 @@ const ProgressReportsPage: React.FC = () => {
           {/* Areas for Improvement */}
           {report.areasForImprovement && report.areasForImprovement.length > 0 && (
             <div>
-              <h3 className="text-xl font-bold text-tier-navy mb-3 flex items-center gap-2">
+              <SubSectionTitle style={{ marginBottom: 0 }}>
                 <TrendingUp size={20} className="text-tier-warning" />
                 Områder for forbedring
-              </h3>
+              </SubSectionTitle>
               <ul className="space-y-2">
                 {report.areasForImprovement.map((area: string, idx: number) => (
                   <li key={idx} className="flex items-start gap-3 text-tier-text-secondary">
@@ -191,7 +192,7 @@ const ProgressReportsPage: React.FC = () => {
           {/* Goals */}
           {report.goals && report.goals.length > 0 && (
             <div>
-              <h3 className="text-xl font-bold text-tier-navy mb-3">Mål for neste periode</h3>
+              <SubSectionTitle style={{ marginBottom: 0 }}>Mål for neste periode</SubSectionTitle>
               <ul className="space-y-2">
                 {report.goals.map((goal: string, idx: number) => (
                   <li key={idx} className="flex items-start gap-3 text-tier-text-secondary">
@@ -206,7 +207,7 @@ const ProgressReportsPage: React.FC = () => {
           {/* Next Steps */}
           {report.nextSteps && report.nextSteps.length > 0 && (
             <div>
-              <h3 className="text-xl font-bold text-tier-navy mb-3">Neste steg</h3>
+              <SubSectionTitle style={{ marginBottom: 0 }}>Neste steg</SubSectionTitle>
               <ul className="space-y-2">
                 {report.nextSteps.map((step: string, idx: number) => (
                   <li key={idx} className="flex items-start gap-3 text-tier-text-secondary">
@@ -271,7 +272,7 @@ const ProgressReportsPage: React.FC = () => {
         ) : (
           <div className="bg-white rounded-xl border border-tier-border-default p-12 text-center">
             <div className="text-6xl mb-4">[Chart]</div>
-            <h3 className="text-lg font-semibold text-tier-navy mb-2">Ingen rapporter ennå</h3>
+            <SubSectionTitle style={{ marginBottom: 0 }}>Ingen rapporter ennå</SubSectionTitle>
             <p className="text-tier-text-secondary">
               Din trener vil dele fremdriftsrapporter med deg her
             </p>

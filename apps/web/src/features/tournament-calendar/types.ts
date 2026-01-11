@@ -1,5 +1,5 @@
 /**
- * TIER Golf Academy - Tournament Calendar Types
+ * TIER Golf - Tournament Calendar Types
  *
  * Type definitions for the tournament calendar feature.
  * Follows the spec requirements for tournament ingestion,

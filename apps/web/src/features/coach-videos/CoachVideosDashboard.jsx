@@ -1,5 +1,5 @@
 /**
- * TIER Golf Academy - Coach Videos Dashboard
+ * TIER Golf - Coach Videos Dashboard
  * Design System v3.0 - Premium Light
  *
  * Main dashboard for coaches to review and manage player videos

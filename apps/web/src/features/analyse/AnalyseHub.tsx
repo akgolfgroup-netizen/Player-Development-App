@@ -27,6 +27,7 @@ import {
   ChevronRight
 } from 'lucide-react';
 import PageHeader from '../../ui/raw-blocks/PageHeader.raw';
+import { SubSectionTitle, SectionTitle } from '../../components/typography/Headings';
 
 // Sparkline Component
 interface SparklineProps {
@@ -187,9 +188,9 @@ export default function AnalyseHub() {
                 </div>
 
                 {/* Title & Description */}
-                <h3 className="text-xl font-semibold text-tier-navy mb-2 group-hover:text-tier-info transition-colors">
+                <SubSectionTitle className="text-xl font-semibold text-tier-navy mb-2 group-hover:text-tier-info transition-colors">
                   {card.title}
-                </h3>
+                </SubSectionTitle>
                 <p className="text-sm text-tier-text-secondary mb-4">
                   {card.description}
                 </p>
@@ -227,7 +228,7 @@ export default function AnalyseHub() {
 
         {/* Recent Activity Section */}
         <div className="mt-12">
-          <h3 className="text-xl font-semibold text-tier-navy mb-6">Siste aktivitet</h3>
+          <SectionTitle className="text-xl font-semibold text-tier-navy mb-6">Siste aktivitet</SectionTitle>
           <div className="bg-white rounded-xl border border-tier-border-default p-6">
             <div className="space-y-4">
               {/* Activity items - placeholder for now */}
@@ -290,9 +291,9 @@ export default function AnalyseHub() {
 
         {/* Info Box */}
         <div className="mt-8 bg-tier-info-light border border-tier-info rounded-xl p-6">
-          <h3 className="text-lg font-semibold text-tier-info mb-2">
+          <SubSectionTitle className="text-lg font-semibold text-tier-info mb-2">
             Ny navigasjonsstruktur
-          </h3>
+          </SubSectionTitle>
           <p className="text-sm text-tier-navy">
             Vi har redesignet "Min utvikling" til "Analyse" med en mer intuitiv struktur.
             Alle dine tidligere funksjoner er fortsatt tilgjengelige, men nå organisert i

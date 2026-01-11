@@ -17,6 +17,7 @@ import { useInvoices } from '../../hooks/useInvoices';
 import Button from '../../ui/primitives/Button';
 import StateCard from '../../ui/composites/StateCard';
 import PageHeader from '../../ui/raw-blocks/PageHeader.raw';
+import { SubSectionTitle } from '../../ui/components/typography';
 import { track } from '../../analytics/track';
 
 // ═══════════════════════════════════════════
@@ -281,7 +282,7 @@ export function InvoiceDetail({ className = '' }) {
       {/* Line Items */}
       <div className={tw.card}>
         <div className={tw.section}>
-          <h3 className={tw.sectionTitle}>Items</h3>
+          <SubSectionTitle style={{ marginBottom: 0 }} className={tw.sectionTitle}>Items</SubSectionTitle>
 
           <table className={tw.lineItemsTable}>
             <thead className={tw.thead}>

@@ -1,5 +1,5 @@
 /**
- * TIER Golf Academy - Admin Coach Management
+ * TIER Golf - Admin Coach Management
  *
  * Archetype: A - List/Index Page
  * Purpose: Manage coach accounts as system users

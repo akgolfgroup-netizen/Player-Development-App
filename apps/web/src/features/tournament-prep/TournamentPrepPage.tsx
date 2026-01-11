@@ -11,6 +11,7 @@ import { PageHeader } from '../../components/layout/PageHeader';
 import { TournamentPrepDashboard } from './TournamentPrepDashboard';
 import { CourseStrategyBuilder } from './CourseStrategyBuilder';
 import { PreTournamentChecklist } from './PreTournamentChecklist';
+import { SectionTitle } from '../../components/typography';
 
 type Tab = 'overview' | 'strategy' | 'checklist';
 
@@ -43,7 +44,7 @@ const TournamentPrepPage: React.FC = () => {
       <div className="min-h-screen bg-tier-surface-base flex items-center justify-center p-6">
         <div className="max-w-md w-full bg-white rounded-xl border border-tier-border-default p-8 text-center">
           <div className="text-tier-error text-5xl mb-4">⚠️</div>
-          <h2 className="text-2xl font-bold text-tier-navy mb-2">Kunne ikke laste</h2>
+          <SectionTitle style={{ marginBottom: '8px' }}>Kunne ikke laste</SectionTitle>
           <p className="text-tier-text-secondary">{error}</p>
         </div>
       </div>

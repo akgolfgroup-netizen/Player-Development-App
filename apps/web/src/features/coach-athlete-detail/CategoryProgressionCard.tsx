@@ -19,6 +19,7 @@ import {
   Zap,
 } from 'lucide-react';
 import { analyticsAPI } from '../../services/api';
+import { SubSectionTitle } from '../../ui/primitives/typography';
 
 // ============================================================================
 // TYPES
@@ -186,7 +187,7 @@ export default function CategoryProgressionCard({
               <TrendingUp size={20} className="text-tier-navy" />
             </div>
             <div>
-              <h3 className="font-semibold text-tier-navy">Kategori-progresjon</h3>
+              <SubSectionTitle className="font-semibold text-tier-navy" style={{ marginBottom: 0 }}>Kategori-progresjon</SubSectionTitle>
               <p className="text-sm text-tier-text-secondary">
                 Fremgang mot neste nivå
               </p>

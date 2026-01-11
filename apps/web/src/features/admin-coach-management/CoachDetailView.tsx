@@ -1,5 +1,5 @@
 /**
- * TIER Golf Academy - Coach Detail View (Admin)
+ * TIER Golf - Coach Detail View (Admin)
  * Design System v3.0 - Premium Light
  *
  * Detailed view of a coach for admin users.

@@ -1,5 +1,5 @@
 /**
- * TIER Golf Academy - Coach Tournament Results
+ * TIER Golf - Coach Tournament Results
  * Design System v3.0 - Premium Light
  *
  * MIGRATED TO PAGE ARCHITECTURE - Zero inline styles

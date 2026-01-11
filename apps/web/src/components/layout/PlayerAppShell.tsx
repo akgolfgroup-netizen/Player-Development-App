@@ -1,5 +1,5 @@
 /**
- * TIER Golf Academy - Player App Shell
+ * TIER Golf - Player App Shell
  * Design System v3.1 - Navy × Gold (Premium Light)
  *
  * Layout wrapper for player portal routes.

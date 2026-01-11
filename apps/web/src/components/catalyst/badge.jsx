@@ -32,7 +32,7 @@ const colors = {
   pink: 'bg-pink-400/15 text-pink-700 group-data-hover:bg-pink-400/25 dark:bg-pink-400/10 dark:text-pink-400 dark:group-data-hover:bg-pink-400/20',
   rose: 'bg-rose-400/15 text-rose-700 group-data-hover:bg-rose-400/25 dark:bg-rose-400/10 dark:text-rose-400 dark:group-data-hover:bg-rose-400/20',
   zinc: 'bg-zinc-600/10 text-zinc-700 group-data-hover:bg-zinc-600/20 dark:bg-white/5 dark:text-zinc-400 dark:group-data-hover:bg-white/10',
-  // TIER Golf Academy Custom Colors (using CSS variables from tailwind.config.js)
+  // TIER Golf Custom Colors (using CSS variables from tailwind.config.js)
   primary: 'bg-ak-primary/15 text-ak-primary group-data-hover:bg-ak-primary/25 dark:bg-ak-primary-light/20 dark:text-ak-primary-light dark:group-data-hover:bg-ak-primary-light/30',
   gold: 'bg-ak-gold/20 text-ak-gold group-data-hover:bg-ak-gold/30 dark:bg-ak-gold/15 dark:text-ak-gold dark:group-data-hover:bg-ak-gold/25',
   success: 'bg-ak-success/15 text-ak-success group-data-hover:bg-ak-success/25 dark:bg-ak-success/20 dark:text-ak-success dark:group-data-hover:bg-ak-success/30',

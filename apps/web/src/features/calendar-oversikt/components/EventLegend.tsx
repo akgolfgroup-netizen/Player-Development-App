@@ -9,6 +9,7 @@
 
 import React from 'react';
 import { EVENT_SOURCE_COLORS, UnifiedEventSource, EventLegendProps } from '../types';
+import { CardTitle } from '../../../components/typography/Headings';
 
 const ALL_SOURCES: UnifiedEventSource[] = [
   'golf_teknikk',
@@ -59,12 +60,11 @@ export const EventLegend: React.FC<EventLegendProps> = ({
         border: '1px solid var(--calendar-border)',
       }}
     >
-      <h4
-        className="text-xs font-semibold mb-2"
-        style={{ color: 'var(--calendar-text-secondary)' }}
+      <CardTitle
+        style={{ color: 'var(--calendar-text-secondary)', marginBottom: '0.5rem' }}
       >
         Fargekoder
-      </h4>
+      </CardTitle>
       <div className="grid grid-cols-2 gap-2">
         {filteredSources.map((source) => {
           const colors = EVENT_SOURCE_COLORS[source];

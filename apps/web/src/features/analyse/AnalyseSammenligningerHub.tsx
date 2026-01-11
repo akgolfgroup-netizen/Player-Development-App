@@ -15,6 +15,7 @@
 import React, { useState, useEffect } from 'react';
 import { useSearchParams } from 'react-router-dom';
 import { PageHeader } from '../../components/layout/PageHeader';
+import { SubSectionTitle } from '../../components/typography/Headings';
 
 // Tab type
 type SammenligningTab = 'peer' | 'proff' | 'multi';
@@ -25,7 +26,7 @@ function PeerComparisonTab() {
     <div className="space-y-6">
       {/* Peer Group Overview */}
       <div className="bg-white rounded-xl border border-tier-border-default p-6">
-        <h3 className="text-lg font-semibold text-tier-navy mb-4">Din peer group</h3>
+        <SubSectionTitle style={{ marginBottom: 0 }} className="text-lg font-semibold text-tier-navy mb-4">Din peer group</SubSectionTitle>
         <div className="flex items-center gap-4 mb-6">
           <div className="flex-1">
             <div className="text-sm text-tier-text-secondary mb-1">Din rangering</div>
@@ -60,7 +61,7 @@ function PeerComparisonTab() {
 
       {/* Comparison Chart */}
       <div className="bg-white rounded-xl border border-tier-border-default p-6">
-        <h3 className="text-lg font-semibold text-tier-navy mb-4">Sammenligning med peer group</h3>
+        <SubSectionTitle style={{ marginBottom: 0 }} className="text-lg font-semibold text-tier-navy mb-4">Sammenligning med peer group</SubSectionTitle>
         <div className="h-96 bg-tier-surface-base rounded-lg flex items-center justify-center text-tier-text-secondary">
           [Peer comparison chart - viser deg vs peer average]
         </div>
@@ -68,7 +69,7 @@ function PeerComparisonTab() {
 
       {/* Category Breakdown */}
       <div className="bg-white rounded-xl border border-tier-border-default p-6">
-        <h3 className="text-lg font-semibold text-tier-navy mb-4">Kategori-sammenligning</h3>
+        <SubSectionTitle style={{ marginBottom: 0 }} className="text-lg font-semibold text-tier-navy mb-4">Kategori-sammenligning</SubSectionTitle>
         <div className="space-y-4">
           <div>
             <div className="flex items-center justify-between mb-2">
@@ -119,7 +120,7 @@ function ProffComparisonTab() {
     <div className="space-y-6">
       {/* Tour Selection */}
       <div className="bg-white rounded-xl border border-tier-border-default p-6">
-        <h3 className="text-lg font-semibold text-tier-navy mb-4">Velg tour for sammenligning</h3>
+        <SubSectionTitle style={{ marginBottom: 0 }} className="text-lg font-semibold text-tier-navy mb-4">Velg tour for sammenligning</SubSectionTitle>
         <div className="flex gap-2">
           <button className="px-4 py-2 bg-tier-info text-white rounded-lg text-sm font-medium">
             PGA Tour
@@ -138,7 +139,7 @@ function ProffComparisonTab() {
 
       {/* Tour Average Comparison */}
       <div className="bg-white rounded-xl border border-tier-border-default p-6">
-        <h3 className="text-lg font-semibold text-tier-navy mb-4">Sammenligning med PGA Tour snitt</h3>
+        <SubSectionTitle style={{ marginBottom: 0 }} className="text-lg font-semibold text-tier-navy mb-4">Sammenligning med PGA Tour snitt</SubSectionTitle>
         <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-6">
           <div className="text-center p-4 bg-tier-surface-base rounded-lg">
             <div className="text-sm text-tier-text-secondary mb-1">Driving Distance</div>
@@ -166,7 +167,7 @@ function ProffComparisonTab() {
 
       {/* Search Specific Pro */}
       <div className="bg-white rounded-xl border border-tier-border-default p-6">
-        <h3 className="text-lg font-semibold text-tier-navy mb-4">Sammenlign med spesifikk proff</h3>
+        <SubSectionTitle style={{ marginBottom: 0 }} className="text-lg font-semibold text-tier-navy mb-4">Sammenlign med spesifikk proff</SubSectionTitle>
         <div className="mb-4">
           <input
             type="text"
@@ -187,7 +188,7 @@ function MultiPlayerComparisonTab() {
     <div className="space-y-6">
       {/* Player Selection */}
       <div className="bg-white rounded-xl border border-tier-border-default p-6">
-        <h3 className="text-lg font-semibold text-tier-navy mb-4">Velg spillere å sammenligne</h3>
+        <SubSectionTitle style={{ marginBottom: 0 }} className="text-lg font-semibold text-tier-navy mb-4">Velg spillere å sammenligne</SubSectionTitle>
         <div className="mb-4">
           <input
             type="text"
@@ -218,7 +219,7 @@ function MultiPlayerComparisonTab() {
 
       {/* Comparison Table */}
       <div className="bg-white rounded-xl border border-tier-border-default p-6 overflow-x-auto">
-        <h3 className="text-lg font-semibold text-tier-navy mb-4">Statistikk-sammenligning</h3>
+        <SubSectionTitle style={{ marginBottom: 0 }} className="text-lg font-semibold text-tier-navy mb-4">Statistikk-sammenligning</SubSectionTitle>
         <table className="w-full">
           <thead>
             <tr className="border-b border-tier-border-default">
@@ -259,7 +260,7 @@ function MultiPlayerComparisonTab() {
 
       {/* Visual Comparison Chart */}
       <div className="bg-white rounded-xl border border-tier-border-default p-6">
-        <h3 className="text-lg font-semibold text-tier-navy mb-4">Visuell sammenligning</h3>
+        <SubSectionTitle style={{ marginBottom: 0 }} className="text-lg font-semibold text-tier-navy mb-4">Visuell sammenligning</SubSectionTitle>
         <div className="h-80 bg-tier-surface-base rounded-lg flex items-center justify-center text-tier-text-secondary">
           [Multi-player comparison chart - radar eller bar chart]
         </div>

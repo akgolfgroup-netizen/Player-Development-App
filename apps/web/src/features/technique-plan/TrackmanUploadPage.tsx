@@ -7,6 +7,7 @@ import React, { useState, useRef } from 'react';
 import { Upload, FileText, AlertCircle, CheckCircle2, Loader2, X } from 'lucide-react';
 import { StandardPageHeader } from '../../components/layout/StandardPageHeader';
 import api from '../../services/api';
+import { SectionTitle } from '../../components/typography';
 
 interface UploadResult {
   success: boolean;
@@ -197,7 +198,7 @@ export const TrackmanUploadPage: React.FC = () => {
       <div className="container mx-auto px-4 py-8 max-w-4xl">
         {/* Upload Area */}
         <div className="bg-white rounded-lg shadow-tier-white p-6 mb-8">
-          <h2 className="text-xl font-semibold text-tier-navy mb-4">Last opp fil</h2>
+          <SectionTitle style={{ marginBottom: '1rem' }}>Last opp fil</SectionTitle>
 
           <div
             className={`relative border-2 border-dashed rounded-lg p-8 transition-colors ${
@@ -309,7 +310,7 @@ export const TrackmanUploadPage: React.FC = () => {
 
         {/* Import History */}
         <div className="bg-white rounded-lg shadow-tier-white p-6">
-          <h2 className="text-xl font-semibold text-tier-navy mb-4">Importhistorikk</h2>
+          <SectionTitle style={{ marginBottom: '1rem' }}>Importhistorikk</SectionTitle>
 
           {loadingHistory ? (
             <div className="flex items-center justify-center py-8">

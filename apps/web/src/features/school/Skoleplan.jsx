@@ -1,5 +1,5 @@
 /**
- * TIER Golf Academy - Skoleplan
+ * TIER Golf - Skoleplan
  * Design System v3.0 - Premium Light
  *
  * School schedule management with subjects, timetable, and tasks.

@@ -1,5 +1,5 @@
 /**
- * TIER Golf Academy - 404 Not Found Page
+ * TIER Golf - 404 Not Found Page
  *
  * Archetype: Special (Error State)
  * Purpose: Display friendly 404 error for non-existent routes

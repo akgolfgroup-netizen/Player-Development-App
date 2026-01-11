@@ -15,6 +15,7 @@ import React, { useState, useCallback } from 'react';
 import { useTrackMan } from '../../hooks/useTrackMan';
 import Button from '../../ui/primitives/Button';
 import { track } from '../../analytics/track';
+import { SectionTitle, SubSectionTitle } from '../../components/typography';
 
 // ═══════════════════════════════════════════
 // TAILWIND CLASSES
@@ -156,12 +157,12 @@ export function TrackManImporter({
     <div className={`${tw.container} ${className}`}>
       {/* Header */}
       <div className={tw.header}>
-        <h2 className={tw.title}>Importer TrackMan Data</h2>
+        <SectionTitle style={{ marginBottom: 0 }}>Importer TrackMan Data</SectionTitle>
       </div>
 
       {/* Info Card */}
       <div className={tw.infoCard}>
-        <h3 className={tw.infoTitle}>📄 Støttede filformater</h3>
+        <SubSectionTitle style={{ marginBottom: '8px' }}>Stottede filformater</SubSectionTitle>
         <p className={tw.infoText}>
           Last opp en CSV-fil eksportert fra TrackMan. Filen bør inneholde kolonner for:
           Club, Carry Distance, Total Distance, Ball Speed, Club Speed, Launch Angle, Spin Rate.
@@ -182,7 +183,7 @@ export function TrackManImporter({
       {!file ? (
         <label className={tw.uploadSection}>
           <div className={tw.uploadIcon}>📁</div>
-          <h3 className={tw.uploadTitle}>Klikk for å velge fil</h3>
+          <SubSectionTitle style={{ marginBottom: '8px' }}>Klikk for å velge fil</SubSectionTitle>
           <p className={tw.uploadDescription}>
             Eller dra og slipp CSV-fil her
           </p>
@@ -211,9 +212,9 @@ export function TrackManImporter({
           {/* Preview */}
           {previewData && (
             <div className={tw.previewSection}>
-              <h3 className={tw.previewTitle}>
+              <SubSectionTitle style={{ marginBottom: '12px' }}>
                 Forhåndsvisning ({previewData.rows.length} av {previewData.totalRows} rader)
-              </h3>
+              </SubSectionTitle>
               <table className={tw.previewTable}>
                 <thead className={tw.thead}>
                   <tr>

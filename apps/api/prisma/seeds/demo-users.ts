@@ -112,6 +112,52 @@ export async function seedDemoUsers() {
       console.log('   ✅ Updated coach user: coach@demo.com (Jørn Johnsen)');
     }
 
+    // Create Coach Availability - for booking system
+    const today = new Date();
+    const validFrom = new Date(today.getFullYear(), today.getMonth(), 1); // First of current month
+
+    // Delete existing availability for this coach to avoid duplicates
+    await prisma.availability.deleteMany({
+      where: { coachId: coach.id },
+    });
+
+    // Create availability for Monday-Friday (dayOfWeek: 1-5)
+    const availabilitySlots = [
+      // Monday - dayOfWeek: 1
+      { dayOfWeek: 1, startTime: '09:00', endTime: '12:00', slotDuration: 60 },
+      { dayOfWeek: 1, startTime: '13:00', endTime: '17:00', slotDuration: 60 },
+      // Tuesday - dayOfWeek: 2
+      { dayOfWeek: 2, startTime: '09:00', endTime: '12:00', slotDuration: 60 },
+      { dayOfWeek: 2, startTime: '13:00', endTime: '17:00', slotDuration: 60 },
+      // Wednesday - dayOfWeek: 3
+      { dayOfWeek: 3, startTime: '09:00', endTime: '12:00', slotDuration: 60 },
+      { dayOfWeek: 3, startTime: '13:00', endTime: '17:00', slotDuration: 60 },
+      // Thursday - dayOfWeek: 4
+      { dayOfWeek: 4, startTime: '09:00', endTime: '12:00', slotDuration: 60 },
+      { dayOfWeek: 4, startTime: '13:00', endTime: '17:00', slotDuration: 60 },
+      // Friday - dayOfWeek: 5
+      { dayOfWeek: 5, startTime: '09:00', endTime: '12:00', slotDuration: 60 },
+      { dayOfWeek: 5, startTime: '14:00', endTime: '16:00', slotDuration: 60 },
+      // Saturday - dayOfWeek: 6
+      { dayOfWeek: 6, startTime: '10:00', endTime: '14:00', slotDuration: 60 },
+    ];
+
+    for (const slot of availabilitySlots) {
+      await prisma.availability.create({
+        data: {
+          coachId: coach.id,
+          dayOfWeek: slot.dayOfWeek,
+          startTime: slot.startTime,
+          endTime: slot.endTime,
+          slotDuration: slot.slotDuration,
+          maxBookings: 1,
+          validFrom: validFrom,
+          isActive: true,
+        },
+      });
+    }
+    console.log('   ✅ Created coach availability (Mon-Sat, 11 time slots)');
+
     // Create Players - Real profiles
     // All players are members at Oslo GK, attend WANG Toppidrett Oslo, and are Team Norway Junior players
     const playersData = [

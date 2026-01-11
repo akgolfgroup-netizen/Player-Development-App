@@ -5,6 +5,7 @@
 
 import React from 'react';
 import { Mountain, TrendingUp, TrendingDown, Award, Calendar } from 'lucide-react';
+import { SectionTitle, SubSectionTitle } from '../../../components/typography';
 
 interface SGJourneyViewProps {
   data: any;
@@ -15,7 +16,7 @@ const SGJourneyView: React.FC<SGJourneyViewProps> = ({ data }) => {
     return (
       <div className="bg-white rounded-xl border border-tier-border-default p-12 text-center">
         <TrendingUp size={64} className="mb-4 mx-auto text-tier-text-secondary" />
-        <h3 className="text-lg font-semibold text-tier-navy mb-2">Ingen SG Journey data</h3>
+        <SubSectionTitle style={{ marginBottom: '0.5rem' }}>Ingen SG Journey data</SubSectionTitle>
         <p className="text-tier-text-secondary">
           Trenger flere testresultater for å beregne din SG Journey.
         </p>
@@ -32,7 +33,7 @@ const SGJourneyView: React.FC<SGJourneyViewProps> = ({ data }) => {
         <div className="flex items-center gap-3 mb-6">
           <Mountain size={32} className="text-tier-info" />
           <div>
-            <h2 className="text-2xl font-bold text-tier-navy">{position.currentLevel.nameno}</h2>
+            <SectionTitle style={{ marginBottom: 0 }}>{position.currentLevel.nameno}</SectionTitle>
             <p className="text-tier-text-secondary">{position.currentLevel.description}</p>
           </div>
         </div>
@@ -85,14 +86,14 @@ const SGJourneyView: React.FC<SGJourneyViewProps> = ({ data }) => {
       {/* Trends */}
       <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
         <div className="bg-white rounded-xl border border-tier-border-default p-6">
-          <h3 className="text-lg font-semibold text-tier-navy mb-4 flex items-center gap-2">
+          <SubSectionTitle className="flex items-center gap-2">
             {position.trend30Days >= 0 ? (
               <TrendingUp className="text-tier-success" size={20} />
             ) : (
               <TrendingDown className="text-tier-error" size={20} />
             )}
             Trends
-          </h3>
+          </SubSectionTitle>
           <div className="space-y-3">
             <div className="flex justify-between items-center">
               <span className="text-sm text-tier-text-secondary">30 dager</span>
@@ -121,7 +122,7 @@ const SGJourneyView: React.FC<SGJourneyViewProps> = ({ data }) => {
 
         {/* Category Breakdown */}
         <div className="bg-white rounded-xl border border-tier-border-default p-6">
-          <h3 className="text-lg font-semibold text-tier-navy mb-4">SG Fordeling</h3>
+          <SubSectionTitle>SG Fordeling</SubSectionTitle>
           <div className="space-y-3">
             <div>
               <div className="flex justify-between text-sm mb-1">
@@ -183,10 +184,10 @@ const SGJourneyView: React.FC<SGJourneyViewProps> = ({ data }) => {
       {/* Milestones */}
       {milestones && milestones.length > 0 && (
         <div className="bg-white rounded-xl border border-tier-border-default p-6">
-          <h3 className="text-lg font-semibold text-tier-navy mb-4 flex items-center gap-2">
+          <SubSectionTitle className="flex items-center gap-2">
             <Award size={20} className="text-tier-warning" />
             Milepæler
-          </h3>
+          </SubSectionTitle>
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
             {milestones.map((milestone: any) => (
               <div
@@ -222,7 +223,7 @@ const SGJourneyView: React.FC<SGJourneyViewProps> = ({ data }) => {
       {/* Historical Chart Placeholder */}
       {history && history.length > 0 && (
         <div className="bg-white rounded-xl border border-tier-border-default p-6">
-          <h3 className="text-lg font-semibold text-tier-navy mb-4">Historikk</h3>
+          <SubSectionTitle>Historikk</SubSectionTitle>
           <div className="text-sm text-tier-text-secondary text-center py-8">
             SG historikk graf kommer her (krever chart library)
             <div className="mt-2 text-xs">

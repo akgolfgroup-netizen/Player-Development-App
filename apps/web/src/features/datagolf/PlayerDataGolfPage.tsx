@@ -13,6 +13,7 @@ import ApproachSkillBreakdown from './components/ApproachSkillBreakdown';
 import Button from '../../ui/primitives/Button';
 import { PageHeader } from '../../components/layout/PageHeader';
 import LoadingSpinner from '../../components/LoadingSpinner';
+import { SubSectionTitle, CardTitle } from '../../components/typography';
 
 type Tour = 'pga' | 'european' | 'lpga';
 
@@ -89,7 +90,7 @@ const PlayerDataGolfPage: React.FC = () => {
         <div className="bg-white rounded-xl border border-tier-border-default p-6 mb-6">
           <div className="flex items-center gap-2 mb-4">
             <Trophy size={20} className="text-tier-navy" />
-            <h3 className="text-lg font-semibold text-tier-navy">Velg tour</h3>
+            <SubSectionTitle style={{ marginBottom: 0 }}>Velg tour</SubSectionTitle>
           </div>
           <div className="flex gap-3">
             {TOUR_OPTIONS.map((tour) => (
@@ -114,7 +115,7 @@ const PlayerDataGolfPage: React.FC = () => {
           <div className="flex items-center justify-between mb-4">
             <div className="flex items-center gap-2">
               <Users size={20} className="text-tier-navy" />
-              <h3 className="text-lg font-semibold text-tier-navy">Sammenlign med spesifikk spiller</h3>
+              <SubSectionTitle style={{ marginBottom: 0 }}>Sammenlign med spesifikk spiller</SubSectionTitle>
             </div>
             {!showProSearch && !selectedProPlayer && (
               <Button variant="secondary" size="sm" onClick={() => setShowProSearch(true)}>
@@ -152,7 +153,7 @@ const PlayerDataGolfPage: React.FC = () => {
         {comparisonError && !loading && (
           <div className="bg-white rounded-xl border border-tier-border-default p-8 text-center">
             <div className="text-tier-error text-4xl mb-4">[Warning]</div>
-            <h3 className="text-lg font-semibold text-tier-navy mb-2">Kunne ikke laste data</h3>
+            <SubSectionTitle style={{ marginBottom: 8 }}>Kunne ikke laste data</SubSectionTitle>
             <p className="text-tier-text-secondary">{comparisonError}</p>
           </div>
         )}
@@ -161,9 +162,9 @@ const PlayerDataGolfPage: React.FC = () => {
         {!loading && comparison && (
           <>
             <div className="mb-6">
-              <h3 className="text-xl font-semibold text-tier-navy mb-4">
+              <SubSectionTitle style={{ marginBottom: 16 }}>
                 Din prestasjon vs {TOUR_OPTIONS.find((t) => t.value === selectedTour)?.label}
-              </h3>
+              </SubSectionTitle>
               <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-4">
                 {/* Example stats - these would come from the API */}
                 <TourComparisonCard
@@ -225,26 +226,26 @@ const PlayerDataGolfPage: React.FC = () => {
 
             {/* Approach skill breakdown */}
             <div className="mb-6">
-              <h3 className="text-xl font-semibold text-tier-navy mb-4 flex items-center gap-2">
+              <SubSectionTitle style={{ marginBottom: 16, display: 'flex', alignItems: 'center', gap: 8 }}>
                 <Target size={24} />
                 Approach Skill Analyse
-              </h3>
+              </SubSectionTitle>
               <ApproachSkillBreakdown playerId={playerId} />
             </div>
 
             {/* Insights */}
             <div className="bg-white rounded-xl border border-tier-border-default p-6">
-              <h3 className="text-lg font-semibold text-tier-navy mb-4">Styrker og svakheter</h3>
+              <SubSectionTitle style={{ marginBottom: 16 }}>Styrker og svakheter</SubSectionTitle>
               <div className="grid md:grid-cols-2 gap-4">
                 <div className="p-4 bg-tier-success-light rounded-lg">
-                  <h4 className="font-semibold text-tier-success mb-2">Dine styrker</h4>
+                  <CardTitle style={{ marginBottom: 8 }} className="text-tier-success">Dine styrker</CardTitle>
                   <ul className="text-sm text-tier-navy space-y-1">
                     <li>• Short game (over tour-snitt)</li>
                     <li>• Putting fra kort distanse</li>
                   </ul>
                 </div>
                 <div className="p-4 bg-tier-warning-light rounded-lg">
-                  <h4 className="font-semibold text-tier-warning mb-2">Forbedringsområder</h4>
+                  <CardTitle style={{ marginBottom: 8 }} className="text-tier-warning">Forbedringsområder</CardTitle>
                   <ul className="text-sm text-tier-navy space-y-1">
                     <li>• Driving distanse (under tour-snitt)</li>
                     <li>• Greens i regulering</li>

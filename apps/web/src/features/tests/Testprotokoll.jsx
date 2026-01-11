@@ -163,9 +163,9 @@ const TestCard = ({ test, playerCategory = 'B', result = null }) => {
           <div className="flex-1 min-w-0">
             <div className="flex items-start justify-between gap-2">
               <div className="min-w-0">
-                <h3 className="font-semibold text-tier-navy text-[15px] truncate group-hover:text-tier-navy transition-colors">
+                <SubSectionTitle className="text-[15px] truncate group-hover:text-tier-navy transition-colors" style={{ marginBottom: 0 }}>
                   {test.shortName}
-                </h3>
+                </SubSectionTitle>
                 <p className="text-xs text-tier-text-tertiary mt-0.5">
                   Test {test.testNumber} · {test.duration}
                 </p>
@@ -219,9 +219,9 @@ const CategorySection = ({ category, tests, playerCategory, results }) => {
         >
           <CategoryIcon size={18} style={{ color: config.color }} />
         </div>
-        <h2 className="text-lg font-semibold text-tier-navy">
+        <SectionTitle style={{ marginBottom: 0 }}>
           {config.label}
-        </h2>
+        </SectionTitle>
         <span className="text-sm text-tier-text-tertiary">
           ({tests.length} {tests.length === 1 ? 'test' : 'tester'})
         </span>
@@ -453,7 +453,7 @@ const TIERGolfTestprotokoll = ({ player: apiPlayer = null, tests: apiTests = nul
       {Object.keys(filteredTestsByCategory).length === 0 && searchQuery && (
         <div className="text-center py-12 bg-tier-surface-base rounded-xl">
           <Search size={48} className="mx-auto mb-4 text-tier-text-tertiary" />
-          <h3 className="font-semibold text-tier-navy mb-2">Ingen tester funnet</h3>
+          <SubSectionTitle style={{ marginBottom: '8px' }}>Ingen tester funnet</SubSectionTitle>
           <p className="text-tier-text-secondary">
             Prøv et annet søkeord eller fjern filteret
           </p>
@@ -467,7 +467,7 @@ const TIERGolfTestprotokoll = ({ player: apiPlayer = null, tests: apiTests = nul
             <Activity size={20} className="text-tier-navy" />
           </div>
           <div>
-            <h3 className="font-semibold text-tier-navy mb-1">Om testprotokollen</h3>
+            <SubSectionTitle style={{ marginBottom: '4px' }}>Om testprotokollen</SubSectionTitle>
             <p className="text-sm text-tier-text-secondary leading-relaxed">
               Testprotokollen inneholder 20 offisielle tester basert på Team Norway standarder.
               Benchmark gjennomføres hver 3. uke (uke 3, 6, 9, 12, osv.). For kategori {player.category} kreves
@@ -496,7 +496,7 @@ const TIERGolfTestprotokoll = ({ player: apiPlayer = null, tests: apiTests = nul
           <div className="bg-white rounded-2xl w-full max-w-2xl max-h-[85vh] overflow-hidden flex flex-col shadow-2xl">
             {/* Header */}
             <div className="flex items-center justify-between p-4 border-b border-tier-border-default">
-              <h2 className="text-lg font-semibold text-tier-navy">Velg test å registrere</h2>
+              <SectionTitle style={{ marginBottom: 0 }}>Velg test å registrere</SectionTitle>
               <button
                 onClick={() => setShowNewTestModal(false)}
                 className="p-2 hover:bg-tier-surface-base rounded-lg transition-colors"
@@ -540,9 +540,9 @@ const TIERGolfTestprotokoll = ({ player: apiPlayer = null, tests: apiTests = nul
                         <CategoryIcon size={20} style={{ color: config.color }} />
                       </div>
                       <div className="flex-1 min-w-0">
-                        <h3 className="font-medium text-tier-navy text-sm group-hover:text-tier-navy transition-colors">
+                        <SubSectionTitle className="text-sm group-hover:text-tier-navy transition-colors" style={{ marginBottom: 0, fontWeight: 500 }}>
                           {test.shortName}
-                        </h3>
+                        </SubSectionTitle>
                         <p className="text-xs text-tier-text-tertiary truncate">
                           {config.label} · {test.attempts || 6} forsøk
                         </p>

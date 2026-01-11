@@ -1,5 +1,5 @@
 /**
- * TIER Golf Academy - Coach Stats Regression
+ * TIER Golf - Coach Stats Regression
  * Design System v3.0 - Premium Light
  *
  * Shows players who need attention due to negative trends.

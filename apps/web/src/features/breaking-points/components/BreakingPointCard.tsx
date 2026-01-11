@@ -5,6 +5,7 @@
 
 import React from 'react';
 import { AlertTriangle, TrendingDown, TrendingUp, MinusCircle, Calendar, Target } from 'lucide-react';
+import { SubSectionTitle } from '../../../components/typography/Headings';
 
 interface BreakingPoint {
   id: string;
@@ -71,7 +72,7 @@ const BreakingPointCard: React.FC<Props> = ({ breakingPoint, onClick, className 
             <div className={`text-xs font-semibold ${config.colorClasses} mb-1`}>
               {config.label}
             </div>
-            <h3 className="text-lg font-bold text-tier-navy">{breakingPoint.title}</h3>
+            <SubSectionTitle style={{ marginBottom: 0 }}>{breakingPoint.title}</SubSectionTitle>
             <div className="text-sm text-tier-text-secondary">{breakingPoint.area}</div>
           </div>
         </div>

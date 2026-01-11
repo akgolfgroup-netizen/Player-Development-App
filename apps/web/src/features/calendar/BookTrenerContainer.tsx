@@ -12,6 +12,7 @@ import {
   Calendar, Clock, User, ChevronLeft, ChevronRight, Check,
   Video, MapPin, Star, Loader2
 } from 'lucide-react';
+import { toast } from 'sonner';
 import { PageHeader } from '../../components/layout/PageHeader';
 import apiClient from '../../services/apiClient';
 import Button from '../../ui/primitives/Button';
@@ -423,10 +424,11 @@ interface BookingSummaryProps {
   slot: TimeSlot | null;
   sessionType: SessionType | null;
   onConfirm: () => void;
+  isSubmitting?: boolean;
 }
 
-const BookingSummary: React.FC<BookingSummaryProps> = ({ coach, date, slot, sessionType, onConfirm }) => {
-  const canBook = coach && date && slot && sessionType;
+const BookingSummary: React.FC<BookingSummaryProps> = ({ coach, date, slot, sessionType, onConfirm, isSubmitting }) => {
+  const canBook = coach && date && slot && sessionType && !isSubmitting;
 
   return (
     <div className="bg-tier-white rounded-[14px] p-4">
@@ -476,7 +478,14 @@ const BookingSummary: React.FC<BookingSummaryProps> = ({ coach, date, slot, sess
         disabled={!canBook}
         className="w-full mt-4"
       >
-        Bekreft booking
+        {isSubmitting ? (
+          <span className="flex items-center justify-center gap-2">
+            <Loader2 size={16} className="animate-spin" />
+            Booker...
+          </span>
+        ) : (
+          'Bekreft booking'
+        )}
       </Button>
     </div>
   );
@@ -595,16 +604,39 @@ const BookTrenerContainer: React.FC = () => {
       });
 
       setBookingSuccess(true);
+
+      // Show success toast
+      const dateStr = new Date(selectedDate).toLocaleDateString('nb-NO', {
+        weekday: 'long',
+        day: 'numeric',
+        month: 'long'
+      });
+      toast.success('Booking bekreftet!', {
+        description: `${selectedSessionType.label} med ${selectedCoach.name} - ${dateStr} kl. ${selectedSlot.time}`,
+        duration: 5000,
+      });
+
+      // Reset form after successful booking
+      setSelectedDate(null);
+      setSelectedSlot(null);
+      setSelectedSessionType(null);
+      setAvailableSlots({});
     } catch (err) {
       console.error('Booking failed:', err);
-      setBookingError((err as Error).message || 'Kunne ikke fullføre bestillingen');
+      const errorMessage = (err as Error).message || 'Kunne ikke fullføre bestillingen';
+      setBookingError(errorMessage);
+
+      // Show error toast
+      toast.error('Booking feilet', {
+        description: errorMessage,
+        duration: 5000,
+      });
     } finally {
       setIsSubmitting(false);
     }
   };
 
   // Unused state for future implementation
-  void isSubmitting;
   void bookingSuccess;
   void bookingError;
 
@@ -681,6 +713,7 @@ const BookTrenerContainer: React.FC = () => {
             slot={selectedSlot}
             sessionType={selectedSessionType}
             onConfirm={handleConfirm}
+            isSubmitting={isSubmitting}
           />
         </div>
       </div>

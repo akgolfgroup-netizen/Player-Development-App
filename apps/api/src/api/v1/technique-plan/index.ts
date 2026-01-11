@@ -92,6 +92,133 @@ export async function techniquePlanRoutes(app: FastifyInstance): Promise<void> {
   });
 
   // =========================================================================
+  // P-SYSTEM: DRILLS
+  // =========================================================================
+
+  // Add drill to task
+  app.post<{ Params: { id: string }; Body: { exerciseId: string; orderIndex?: number; notes?: string } }>(
+    '/tasks/:id/drills',
+    { preHandler: authenticateUser },
+    async (request, reply) => {
+      const { exerciseId, orderIndex, notes } = request.body;
+      const drill = await service.addDrillToTask(
+        request.params.id,
+        exerciseId,
+        orderIndex,
+        notes,
+        request.user!.tenantId
+      );
+
+      return reply.status(201).send({ success: true, data: drill });
+    }
+  );
+
+  // Remove drill from task
+  app.delete<{ Params: { id: string; drillId: string } }>(
+    '/tasks/:id/drills/:drillId',
+    { preHandler: authenticateUser },
+    async (request, reply) => {
+      await service.removeDrillFromTask(
+        request.params.id,
+        request.params.drillId,
+        request.user!.tenantId
+      );
+
+      return reply.send({ success: true });
+    }
+  );
+
+  // =========================================================================
+  // P-SYSTEM: RESPONSIBLE PERSONS
+  // =========================================================================
+
+  // Assign responsible person to task
+  app.post<{ Params: { id: string }; Body: { userId: string; role?: string } }>(
+    '/tasks/:id/responsible',
+    { preHandler: authenticateUser },
+    async (request, reply) => {
+      const { userId, role } = request.body;
+      const responsible = await service.assignResponsible(
+        request.params.id,
+        userId,
+        role,
+        request.user!.tenantId
+      );
+
+      return reply.status(201).send({ success: true, data: responsible });
+    }
+  );
+
+  // Remove responsible person from task
+  app.delete<{ Params: { id: string; responsibleId: string } }>(
+    '/tasks/:id/responsible/:responsibleId',
+    { preHandler: authenticateUser },
+    async (request, reply) => {
+      await service.removeResponsible(
+        request.params.id,
+        request.params.responsibleId,
+        request.user!.tenantId
+      );
+
+      return reply.send({ success: true });
+    }
+  );
+
+  // =========================================================================
+  // P-SYSTEM: PRIORITY & P-LEVEL
+  // =========================================================================
+
+  // Update task priority order (drag-and-drop)
+  app.patch<{ Params: { id: string }; Body: { priorityOrder: number } }>(
+    '/tasks/:id/priority',
+    { preHandler: authenticateUser },
+    async (request, reply) => {
+      const { priorityOrder } = request.body;
+      const task = await service.updateTaskPriority(
+        request.params.id,
+        priorityOrder,
+        request.user!.tenantId
+      );
+
+      return reply.send({ success: true, data: task });
+    }
+  );
+
+  // Get tasks by P-level
+  app.get<{ Querystring: { playerId: string; pLevel: string } }>(
+    '/tasks/by-p-level',
+    { preHandler: authenticateUser },
+    async (request, reply) => {
+      const { playerId, pLevel } = request.query;
+      const tasks = await service.getTasksByPLevel(
+        playerId,
+        pLevel,
+        request.user!.tenantId
+      );
+
+      return reply.send({ success: true, data: tasks });
+    }
+  );
+
+  // Get task with full details (including drills and responsible persons)
+  app.get<{ Params: { id: string } }>(
+    '/tasks/:id/full',
+    { preHandler: authenticateUser },
+    async (request, reply) => {
+      const task = await service.getTaskWithFullDetails(
+        request.params.id,
+        request.user!.tenantId
+      );
+
+      if (!task) {
+        return reply.status(404).send({ success: false, error: 'Task not found' });
+      }
+
+      return reply.send({ success: true, data: task });
+    }
+  );
+
+  // =========================================================================
   // GOALS
   // =========================================================================
 

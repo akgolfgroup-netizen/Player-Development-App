@@ -16,6 +16,7 @@ import React, { useState, useCallback } from 'react';
 import { usePaymentHistory } from '../../hooks/usePaymentHistory';
 import Button from '../../ui/primitives/Button';
 import StateCard from '../../ui/composites/StateCard';
+import { SectionTitle, SubSectionTitle } from '../../ui/components/typography';
 import { track } from '../../analytics/track';
 
 // ═══════════════════════════════════════════
@@ -183,7 +184,7 @@ export function PaymentHistory({ className = '' }) {
     <div className={`${tw.container} ${className}`}>
       {/* Header */}
       <div className={tw.header}>
-        <h2 className={tw.title}>Payment History</h2>
+        <SectionTitle style={{ marginBottom: 0 }} className={tw.title}>Payment History</SectionTitle>
       </div>
 
       {/* Summary Cards */}
@@ -277,7 +278,7 @@ export function PaymentHistory({ className = '' }) {
       {filteredTransactions.length === 0 ? (
         <div className={tw.emptyState}>
           <div className={tw.emptyIcon}>💳</div>
-          <h3 className={tw.emptyTitle}>No Transactions Found</h3>
+          <SubSectionTitle style={{ marginBottom: 0 }} className={tw.emptyTitle}>No Transactions Found</SubSectionTitle>
           <p className={tw.emptyDescription}>
             {searchQuery || typeFilter !== 'all' || statusFilter !== 'all'
               ? 'No transactions match your filters'

@@ -15,6 +15,7 @@ import {
   PERIOD_DEFAULTS,
 } from '../utils/periodDefaults';
 import type { Period } from '../hooks/usePlayerAnnualPlan';
+import { SectionTitle } from '../../../components/typography';
 
 interface Step3PeriodDetailsProps {
   selectedPeriodTypes: Array<'E' | 'G' | 'S' | 'T'>;
@@ -131,9 +132,9 @@ export function Step3PeriodDetails({
             className="w-6 h-6 rounded"
             style={{ backgroundColor: colors.primary }}
           />
-          <h2 className="text-2xl font-bold text-tier-navy">
+          <SectionTitle style={{ marginBottom: 0 }}>
             Periode {currentPeriodIndex + 1}: {PERIOD_LABELS[currentPeriod.type]}
-          </h2>
+          </SectionTitle>
         </div>
         <p className="text-tier-gray">
           Tilpass detaljer for denne perioden

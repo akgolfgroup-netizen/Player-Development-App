@@ -1,5 +1,5 @@
 /**
- * TIER Golf Academy - Premium Intake Form V2
+ * TIER Golf - Premium Intake Form V2
  * Design System v3.0 - Premium Light
  *
  * MIGRATED TO PAGE ARCHITECTURE - Minimal inline styles (dynamic colors)

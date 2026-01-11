@@ -1,6 +1,6 @@
 /**
  * ============================================================
- * SPILLER NAVIGASJON V2 - TIER Golf Academy
+ * SPILLER NAVIGASJON V2 - TIER Golf
  * ============================================================
  *
  * Forenklet 5-modus navigasjonsstruktur for spillerportalen.

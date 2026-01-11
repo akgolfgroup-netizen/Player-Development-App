@@ -1,5 +1,5 @@
 /**
- * TIER Golf Academy - Admin Tier Management
+ * TIER Golf - Admin Tier Management
  *
  * Archetype: A - List/Index Page
  * Purpose: Manage subscription tiers as billing configuration

@@ -16,6 +16,7 @@ import { useVideos as usePlayerVideos } from '../../hooks/useVideos';
 import Card from '../../ui/primitives/Card';
 import Button from '../../ui/primitives/Button';
 import PageHeader from '../../components/layout/PageHeader';
+import { SectionTitle, SubSectionTitle } from '../../components/typography/Headings';
 
 const VideoComparisonPage: React.FC = () => {
   const [selectedComparisonId, setSelectedComparisonId] = useState<string | null>(null);
@@ -60,7 +61,7 @@ const VideoComparisonPage: React.FC = () => {
           <div className="lg:col-span-1">
             <Card>
               <div className="p-4">
-                <h2 className="text-lg font-semibold text-tier-navy mb-4">Mine sammenligninger</h2>
+                <SectionTitle style={{ marginBottom: '1rem' }} className="text-lg font-semibold text-tier-navy">Mine sammenligninger</SectionTitle>
                 {loading ? (
                   <p className="text-center text-tier-text-secondary py-8">Laster...</p>
                 ) : error ? (
@@ -128,7 +129,7 @@ const VideoComparisonPage: React.FC = () => {
                 {!selectedComparisonId ? (
                   <div className="text-center py-12">
                     <Play size={64} className="mx-auto text-tier-text-tertiary mb-4" />
-                    <h3 className="text-lg font-semibold text-tier-navy mb-2">Velg en sammenligning</h3>
+                    <SubSectionTitle style={{ marginBottom: '0.5rem' }} className="text-lg font-semibold text-tier-navy">Velg en sammenligning</SubSectionTitle>
                     <p className="text-sm text-tier-text-secondary">Velg en sammenligning fra listen for å se videoene side-ved-side</p>
                   </div>
                 ) : comparisonLoading ? (
@@ -192,9 +193,9 @@ const ComparisonViewer: React.FC<ComparisonViewerProps> = ({ comparison }) => {
   return (
     <div>
       <div className="mb-6 pb-4 border-b border-tier-border-default">
-        <h2 className="text-xl font-bold text-tier-navy mb-2">
+        <SectionTitle style={{ marginBottom: '0.5rem' }} className="text-xl font-bold text-tier-navy">
           {comparison.title || 'Sammenligning uten tittel'}
-        </h2>
+        </SectionTitle>
         {comparison.notes && (
           <p className="text-sm text-tier-text-secondary">{comparison.notes}</p>
         )}
@@ -306,7 +307,7 @@ const CreateComparisonModal: React.FC<CreateComparisonModalProps> = ({ onClose, 
   return (
     <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center p-4 z-50">
       <div className="bg-white rounded-xl max-w-2xl w-full p-6 max-h-[90vh] overflow-y-auto">
-        <h2 className="text-xl font-bold text-tier-navy mb-4">Ny video sammenligning</h2>
+        <SectionTitle style={{ marginBottom: '1rem' }} className="text-xl font-bold text-tier-navy">Ny video sammenligning</SectionTitle>
         <form onSubmit={handleSubmit} className="space-y-4">
           <div>
             <label className="block text-sm font-medium text-tier-navy mb-1">Tittel (valgfri)</label>
@@ -451,7 +452,7 @@ const EditComparisonModal: React.FC<EditComparisonModalProps> = ({ comparison, o
   return (
     <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center p-4 z-50">
       <div className="bg-white rounded-xl max-w-2xl w-full p-6">
-        <h2 className="text-xl font-bold text-tier-navy mb-4">Rediger sammenligning</h2>
+        <SectionTitle style={{ marginBottom: '1rem' }} className="text-xl font-bold text-tier-navy">Rediger sammenligning</SectionTitle>
         <form onSubmit={handleSubmit} className="space-y-4">
           <div>
             <label className="block text-sm font-medium text-tier-navy mb-1">Tittel</label>

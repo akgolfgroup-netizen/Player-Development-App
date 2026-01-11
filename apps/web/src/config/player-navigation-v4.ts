@@ -1,6 +1,6 @@
 /**
  * ============================================================
- * PLAYER NAVIGATION V4 - TIER Golf Academy
+ * PLAYER NAVIGATION V4 - TIER Golf
  * ============================================================
  *
  * Hub-basert navigasjonsstruktur med redusert menyompleksitet:

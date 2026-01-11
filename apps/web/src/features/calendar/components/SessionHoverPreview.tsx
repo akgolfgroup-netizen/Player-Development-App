@@ -14,6 +14,7 @@ import React from 'react';
 import * as Tooltip from '@radix-ui/react-tooltip';
 import { Clock, Target, MapPin } from 'lucide-react';
 import type { CalendarEvent } from '../hooks/useCalendarEvents';
+import { CardTitle } from '../../../components/typography/Headings';
 
 interface SessionHoverPreviewProps {
   event: CalendarEvent;
@@ -43,9 +44,9 @@ export const SessionHoverPreview: React.FC<SessionHoverPreviewProps> = ({
           >
             <div className="space-y-2">
               {/* Title */}
-              <h4 className="text-sm font-semibold text-tier-navy m-0">
+              <CardTitle style={{ marginBottom: 0 }}>
                 {event.title}
-              </h4>
+              </CardTitle>
 
               {/* Time & Duration */}
               <div className="flex items-center gap-2 text-xs text-tier-text-secondary">

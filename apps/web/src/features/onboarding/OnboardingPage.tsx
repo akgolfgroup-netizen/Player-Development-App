@@ -1,5 +1,5 @@
 /**
- * OnboardingPage - TIER Golf Academy
+ * OnboardingPage - TIER Golf
  *
  * Multi-step onboarding wizard that collects player intake data
  * and generates an annual training plan.
@@ -11,6 +11,7 @@ import {
   ChevronRight, ChevronLeft, Check, User, Trophy, Activity,
   AlertTriangle, Calendar, Clock, Target, Loader2
 } from 'lucide-react';
+import { PageTitle, SectionTitle } from '../../ui/components/typography';
 import { useAuth } from '../../contexts/AuthContext';
 import { intakeAPI, trainingPlanAPI } from '../../services/api';
 import { AKLogo } from '../../components/branding/AKLogo';
@@ -241,9 +242,9 @@ export default function OnboardingPage() {
       <div style={{ marginBottom: 32 }}>
         <AKLogo size={80} color="var(--tier-navy)" />
       </div>
-      <h1 style={{ fontSize: 28, fontWeight: 700, marginBottom: 16, color: 'var(--tier-navy)' }}>
-        Velkommen til TIER Golf Academy, {user?.firstName}!
-      </h1>
+      <PageTitle style={{ fontSize: 28, fontWeight: 700, marginBottom: 16, color: 'var(--tier-navy)' }}>
+        Velkommen til TIER Golf, {user?.firstName}!
+      </PageTitle>
       <p style={{ fontSize: 16, color: 'var(--text-secondary)', maxWidth: 500, margin: '0 auto 32px' }}>
         Vi skal nå samle litt informasjon om deg for å lage en personlig årsplan
         tilpasset dine mål og tilgjengelighet.
@@ -256,7 +257,7 @@ export default function OnboardingPage() {
 
   const renderBackground = () => (
     <div style={{ padding: '20px' }}>
-      <h2 style={{ fontSize: 20, fontWeight: 600, marginBottom: 24 }}>Din golf-bakgrunn</h2>
+      <SectionTitle style={{ fontSize: 20, fontWeight: 600, marginBottom: 24 }}>Din golf-bakgrunn</SectionTitle>
 
       <div style={{ marginBottom: 24 }}>
         <label style={{ display: 'block', marginBottom: 8, fontWeight: 500 }}>
@@ -335,7 +336,7 @@ export default function OnboardingPage() {
 
   const renderAvailability = () => (
     <div style={{ padding: '20px' }}>
-      <h2 style={{ fontSize: 20, fontWeight: 600, marginBottom: 24 }}>Tilgjengelighet</h2>
+      <SectionTitle style={{ fontSize: 20, fontWeight: 600, marginBottom: 24 }}>Tilgjengelighet</SectionTitle>
 
       <div style={{ marginBottom: 24 }}>
         <label style={{ display: 'block', marginBottom: 8, fontWeight: 500 }}>
@@ -399,7 +400,7 @@ export default function OnboardingPage() {
 
   const renderGoals = () => (
     <div style={{ padding: '20px' }}>
-      <h2 style={{ fontSize: 20, fontWeight: 600, marginBottom: 24 }}>Dine mål</h2>
+      <SectionTitle style={{ fontSize: 20, fontWeight: 600, marginBottom: 24 }}>Dine mål</SectionTitle>
 
       <div style={{ marginBottom: 24 }}>
         <label style={{ display: 'block', marginBottom: 8, fontWeight: 500 }}>
@@ -467,7 +468,7 @@ export default function OnboardingPage() {
 
   const renderWeaknesses = () => (
     <div style={{ padding: '20px' }}>
-      <h2 style={{ fontSize: 20, fontWeight: 600, marginBottom: 24 }}>Fokusområder</h2>
+      <SectionTitle style={{ fontSize: 20, fontWeight: 600, marginBottom: 24 }}>Fokusområder</SectionTitle>
 
       <div style={{ marginBottom: 24 }}>
         <label style={{ display: 'block', marginBottom: 8, fontWeight: 500 }}>
@@ -528,7 +529,7 @@ export default function OnboardingPage() {
 
   const renderHealth = () => (
     <div style={{ padding: '20px' }}>
-      <h2 style={{ fontSize: 20, fontWeight: 600, marginBottom: 24 }}>Helse og fysikk</h2>
+      <SectionTitle style={{ fontSize: 20, fontWeight: 600, marginBottom: 24 }}>Helse og fysikk</SectionTitle>
 
       <div style={{ marginBottom: 24 }}>
         <label style={{ display: 'block', marginBottom: 8, fontWeight: 500 }}>
@@ -595,9 +596,9 @@ export default function OnboardingPage() {
           }}>
             <Check size={40} color="white" />
           </div>
-          <h2 style={{ fontSize: 24, fontWeight: 700, marginBottom: 16 }}>
+          <SectionTitle style={{ fontSize: 24, fontWeight: 700, marginBottom: 16 }}>
             Din årsplan er klar!
-          </h2>
+          </SectionTitle>
           <p style={{ color: 'var(--text-secondary)', marginBottom: 24 }}>
             Vi har laget en personlig treningsplan basert på dine mål og tilgjengelighet.
           </p>
@@ -607,9 +608,9 @@ export default function OnboardingPage() {
         </>
       ) : (
         <>
-          <h2 style={{ fontSize: 24, fontWeight: 700, marginBottom: 16 }}>
+          <SectionTitle style={{ fontSize: 24, fontWeight: 700, marginBottom: 16 }}>
             Alt klart!
-          </h2>
+          </SectionTitle>
           <p style={{ color: 'var(--text-secondary)', marginBottom: 32 }}>
             Vi har nå all informasjonen vi trenger for å lage din personlige årsplan.
           </p>

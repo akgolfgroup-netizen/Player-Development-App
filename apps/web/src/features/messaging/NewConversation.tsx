@@ -1,5 +1,5 @@
 /**
- * TIER Golf Academy - New Conversation
+ * TIER Golf - New Conversation
  * Design System v3.0 - Premium Light
  *
  * Komponent for å starte en ny samtale.

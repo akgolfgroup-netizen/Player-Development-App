@@ -8,6 +8,7 @@ import { Search, MapPin, Users } from 'lucide-react';
 import { useSearchCourses } from '../../../hooks/useGolfCourses';
 import Input from '../../../ui/primitives/Input';
 import Button from '../../../ui/primitives/Button';
+import { SubSectionTitle } from '../../../ui/primitives/typography';
 
 const CourseSearch: React.FC = () => {
   const [query, setQuery] = useState('');
@@ -30,7 +31,7 @@ const CourseSearch: React.FC = () => {
     <div className="space-y-4">
       {/* Search Form */}
       <div className="bg-white rounded-xl border border-tier-border-default p-6">
-        <h3 className="text-lg font-semibold text-tier-navy mb-4">Søk etter golfbaner</h3>
+        <SubSectionTitle style={{ marginBottom: 0 }}>Søk etter golfbaner</SubSectionTitle>
 
         <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mb-4">
           <Input
@@ -93,7 +94,7 @@ const CourseSearch: React.FC = () => {
                     key={course.id}
                     className="bg-white rounded-xl border border-tier-border-default p-6 hover:border-tier-info hover:shadow-md transition-all"
                   >
-                    <h3 className="text-lg font-semibold text-tier-navy mb-2">{course.name}</h3>
+                    <SubSectionTitle style={{ marginBottom: 0 }}>{course.name}</SubSectionTitle>
 
                     {course.club && (
                       <div className="flex items-center gap-2 text-sm text-tier-text-secondary mb-3">
@@ -130,7 +131,7 @@ const CourseSearch: React.FC = () => {
               {courses.length === 0 && (
                 <div className="bg-white rounded-xl border border-tier-border-default p-12 text-center">
                   <div className="text-6xl mb-4">🔍</div>
-                  <h3 className="text-lg font-semibold text-tier-navy mb-2">Ingen resultater</h3>
+                  <SubSectionTitle style={{ marginBottom: 0 }}>Ingen resultater</SubSectionTitle>
                   <p className="text-tier-text-secondary">Prøv et annet søkeord eller filtrer mindre spesifikt</p>
                 </div>
               )}
@@ -143,7 +144,7 @@ const CourseSearch: React.FC = () => {
       {!hasSearched && (
         <div className="bg-white rounded-xl border border-tier-border-default p-12 text-center">
           <Search size={48} className="text-tier-text-secondary mx-auto mb-4" />
-          <h3 className="text-lg font-semibold text-tier-navy mb-2">Søk etter golfbaner</h3>
+          <SubSectionTitle style={{ marginBottom: 0 }}>Søk etter golfbaner</SubSectionTitle>
           <p className="text-tier-text-secondary">
             Fyll inn minst ett søkefelt og klikk "Søk" for å finne golfbaner globalt
           </p>

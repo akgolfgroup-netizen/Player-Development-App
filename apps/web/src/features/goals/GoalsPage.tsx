@@ -1,5 +1,5 @@
 /**
- * TIER Golf Academy - Goals Page
+ * TIER Golf - Goals Page
  *
  * Archetype: A - List/Index Page
  * Purpose: View and manage player goals

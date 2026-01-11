@@ -13,7 +13,7 @@
 import React, { useEffect, useState } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import { ArrowLeft, Target, TrendingUp, CheckCircle, XCircle, AlertCircle } from 'lucide-react';
-import { PageTitle, SectionTitle } from '../../../components/typography';
+import { PageTitle, SectionTitle, SubSectionTitle, CardTitle } from '../../../components/typography';
 import { getAthleteById } from '../../../lib/coachMockData';
 
 // Test categories
@@ -104,9 +104,9 @@ function TestResultCard({ test }: { test: typeof MOCK_TEST_RESULTS[0] }) {
               <XCircle size={16} className="text-red-600" />
             )}
           </div>
-          <h3 className="font-semibold text-tier-navy text-sm">
+          <CardTitle style={{ marginBottom: 0 }}>
             {test.testName}
-          </h3>
+          </CardTitle>
         </div>
         <span className={`text-2xl ${trendColor}`}>{trendIcon}</span>
       </div>
@@ -202,9 +202,9 @@ export default function CoachAthleteTests() {
         <div className="w-20 h-20 rounded-full bg-tier-surface-base flex items-center justify-center mx-auto mb-4">
           <AlertCircle size={40} className="text-tier-text-tertiary" />
         </div>
-        <h2 className="text-xl font-semibold text-tier-navy mb-2">
+        <SectionTitle style={{ marginBottom: 8 }}>
           Spiller ikke funnet
-        </h2>
+        </SectionTitle>
         <button
           onClick={() => navigate('/coach/athletes')}
           className="px-6 py-3 bg-tier-navy text-white rounded-lg font-medium hover:bg-tier-navy/90 transition-colors mt-4"

@@ -10,6 +10,7 @@ import { useBreakingPoints } from '../../hooks/useBreakingPoints';
 import BreakingPointTimeline from './components/BreakingPointTimeline';
 import BreakingPointCard from './components/BreakingPointCard';
 import { PageHeader } from '../../components/layout/PageHeader';
+import { SubSectionTitle } from '../../components/typography/Headings';
 import LoadingSpinner from '../../components/LoadingSpinner';
 import Button from '../../ui/primitives/Button';
 
@@ -89,7 +90,7 @@ const BreakingPointsPage: React.FC = () => {
         <div className="max-w-2xl mx-auto">
           <div className="bg-white rounded-xl border border-tier-border-default p-8 text-center">
             <div className="text-tier-error text-4xl mb-4">[Warning]</div>
-            <h3 className="text-lg font-semibold text-tier-navy mb-2">Kunne ikke laste vendepunkter</h3>
+            <SubSectionTitle style={{ marginBottom: '0.5rem' }}>Kunne ikke laste vendepunkter</SubSectionTitle>
             <p className="text-tier-text-secondary mb-4">{error}</p>
             <Button variant="primary" onClick={refetch}>
               Prøv igjen
@@ -175,7 +176,7 @@ const BreakingPointsPage: React.FC = () => {
         {/* Breaking point cards */}
         {cardPoints.length > 0 && (
           <div className="mb-6">
-            <h3 className="text-xl font-semibold text-tier-navy mb-4">Detaljer</h3>
+            <SubSectionTitle style={{ marginBottom: '1rem' }}>Detaljer</SubSectionTitle>
             <div className="grid md:grid-cols-2 gap-4">
               {cardPoints.map((point: any) => (
                 <BreakingPointCard
@@ -192,9 +193,9 @@ const BreakingPointsPage: React.FC = () => {
         {cardPoints.length === 0 && (
           <div className="bg-white rounded-xl border border-tier-border-default p-12 text-center">
             <div className="text-tier-text-secondary text-4xl mb-4">[Chart]</div>
-            <h3 className="text-lg font-semibold text-tier-navy mb-2">
+            <SubSectionTitle style={{ marginBottom: '0.5rem' }}>
               Ingen vendepunkter funnet
-            </h3>
+            </SubSectionTitle>
             <p className="text-tier-text-secondary">
               {filter === 'all'
                 ? 'Fortsett å trene og registrere tester, så vil systemet identifisere vendepunkter automatisk.'

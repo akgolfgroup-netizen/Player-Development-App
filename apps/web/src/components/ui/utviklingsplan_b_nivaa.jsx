@@ -328,7 +328,7 @@ const UtviklingsplanApp = () => {
         </table>
       </div>
 
-      {/* TIER Golf Academy parametre */}
+      {/* TIER Golf parametre */}
       <div style={{
         background: `linear-gradient(135deg, ${colors.forest} 0%, ${colors.forestLight} 100%)`,
         padding: '20px',
@@ -518,7 +518,7 @@ const UtviklingsplanApp = () => {
             </div>
             <div style={{ background: 'white', padding: '15px', borderRadius: '8px' }}>
               <div style={{ fontWeight: 'bold', marginBottom: '10px', color: currentPeriod.color }}>
-                TIER Golf Academy Parametre - {currentPeriod.name}
+                TIER Golf Parametre - {currentPeriod.name}
               </div>
               <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '10px', fontSize: '12px' }}>
                 <div style={{ background: tokenColors.gray100, padding: '10px', borderRadius: '6px' }}>
@@ -1187,7 +1187,7 @@ const UtviklingsplanApp = () => {
         justifyContent: 'space-between'
       }}>
         <div>
-          <strong>TIER Golf Academy</strong> | Metodikk basert på Team Norway Golf & WANG 6-årsplan
+          <strong>TIER Golf</strong> | Metodikk basert på Team Norway Golf & WANG 6-årsplan
         </div>
         <div>
           Øktformel: <span style={{ fontFamily: 'monospace', background: 'rgba(255,255,255,0.1)', padding: '2px 6px', borderRadius: '3px' }}>

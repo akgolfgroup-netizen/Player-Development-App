@@ -1,4 +1,5 @@
 import React, { createContext, useContext } from 'react';
+import { PageTitle, SectionTitle } from '../../../components/typography';
 
 /**
  * Page Component System
@@ -215,9 +216,9 @@ function PageHeader({
 
           {/* Title and Subtitle */}
           <div className="flex-1 min-w-0">
-            <h1 className="text-2xl sm:text-3xl font-bold text-ak-text-primary leading-tight">
+            <PageTitle className="text-2xl sm:text-3xl font-bold text-ak-text-primary leading-tight" style={{ marginBottom: 0 }}>
               {title}
-            </h1>
+            </PageTitle>
             {subtitle && (
               <p className="mt-1 text-sm text-ak-text-secondary">
                 {subtitle}
@@ -325,9 +326,9 @@ function PageSection({
         <div className="flex justify-between items-start gap-4 mb-4">
           <div className="flex-1 min-w-0">
             {title && (
-              <h2 className="text-lg font-semibold text-ak-text-primary">
+              <SectionTitle className="text-lg font-semibold text-ak-text-primary" style={{ marginBottom: 0 }}>
                 {title}
-              </h2>
+              </SectionTitle>
             )}
             {description && (
               <p className="mt-1 text-sm text-ak-text-secondary">
@@ -453,9 +454,9 @@ function PageErrorState() {
           <path d="M12 8v4M12 16h.01" />
         </svg>
       </div>
-      <h2 className="text-xl font-semibold text-ak-text-primary mb-2">
+      <SectionTitle className="text-xl font-semibold text-ak-text-primary mb-2" style={{ marginBottom: 0 }}>
         Noe gikk galt
-      </h2>
+      </SectionTitle>
       <p className="text-ak-text-secondary mb-6">
         Vi kunne ikke laste inn denne siden. Vennligst prøv igjen.
       </p>
@@ -479,9 +480,9 @@ function PageEmptyState() {
           <path d="M12 10v6M9 13l3-3 3 3" />
         </svg>
       </div>
-      <h2 className="text-xl font-semibold text-ak-text-primary mb-2">
+      <SectionTitle className="text-xl font-semibold text-ak-text-primary mb-2" style={{ marginBottom: 0 }}>
         Ingen data
-      </h2>
+      </SectionTitle>
       <p className="text-ak-text-secondary">
         Det er ingenting å vise her ennå.
       </p>
@@ -498,9 +499,9 @@ function PageUnauthorizedState() {
           <path d="M7 11V7a5 5 0 0 1 10 0v4" />
         </svg>
       </div>
-      <h2 className="text-xl font-semibold text-ak-text-primary mb-2">
+      <SectionTitle className="text-xl font-semibold text-ak-text-primary mb-2" style={{ marginBottom: 0 }}>
         Ingen tilgang
-      </h2>
+      </SectionTitle>
       <p className="text-ak-text-secondary">
         Du har ikke tilgang til denne siden.
       </p>

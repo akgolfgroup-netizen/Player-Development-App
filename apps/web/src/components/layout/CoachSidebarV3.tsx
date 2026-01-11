@@ -1,7 +1,7 @@
 /**
  * ============================================================
  * CoachSidebarV3 - Forenklet flat sidebar for trenere (Fase 1 UX)
- * TIER Golf Academy Design System v3.1
+ * TIER Golf Design System v3.1
  * ============================================================
  *
  * Ny sidebar med kun 5 toppnivåvalg uten nesting:

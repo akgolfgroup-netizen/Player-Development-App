@@ -1,7 +1,7 @@
 /**
  * ============================================================
  * PlayerSidebarV2 - Forenklet 5-modus sidebar
- * TIER Golf Academy Design System v3.0
+ * TIER Golf Design System v3.0
  *
  * MIGRATED TO PAGE ARCHITECTURE - Minimal inline styles (dynamic colors)
  * ============================================================

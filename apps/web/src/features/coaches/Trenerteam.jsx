@@ -1,5 +1,5 @@
 /**
- * TIER Golf Academy - Trenerteam Screen
+ * TIER Golf - Trenerteam Screen
  * Design System v3.0 - Premium Light
  *
  * IUP App - Individuell Utviklingsplan

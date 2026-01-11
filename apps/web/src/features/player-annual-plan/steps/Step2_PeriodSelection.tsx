@@ -9,6 +9,7 @@ import { Button } from '../../../components/shadcn/button';
 import { Checkbox } from '../../../components/shadcn/checkbox';
 import { Label } from '../../../components/shadcn/label';
 import { PERIOD_LABELS, PERIOD_DESCRIPTIONS, PERIOD_COLORS } from '../utils/periodDefaults';
+import { SectionTitle } from '../../../components/typography';
 
 interface Step2PeriodSelectionProps {
   selectedPeriodTypes: Array<'E' | 'G' | 'S' | 'T'>;
@@ -52,9 +53,9 @@ export function Step2PeriodSelection({
   return (
     <div className="max-w-2xl mx-auto space-y-6">
       <div className="space-y-2">
-        <h2 className="text-2xl font-bold text-tier-navy">
+        <SectionTitle style={{ marginBottom: 0 }}>
           Hvilke treningsperioder vil du ha?
-        </h2>
+        </SectionTitle>
         <p className="text-tier-gray">
           Velg periodene som passer best for din sesong
         </p>

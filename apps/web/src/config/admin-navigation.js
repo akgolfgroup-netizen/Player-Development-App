@@ -1,9 +1,9 @@
 /**
  * ============================================================
- * ADMIN NAVIGASJONSKONFIGURASJON - TIER Golf Academy
+ * ADMIN NAVIGASJONSKONFIGURASJON - TIER Golf
  * ============================================================
  *
- * Navigasjon for administratorer i TIER Golf Academy systemet.
+ * Navigasjon for administratorer i TIER Golf systemet.
  * Basert på COACH_ADMIN_IMPLEMENTATION_CONTRACT.md
  *
  * VIKTIG:

@@ -1,4 +1,4 @@
-# TIER Golf Academy - Integrasjonsplan for Full Demo
+# TIER Golf - Integrasjonsplan for Full Demo
 
 **Opprettet**: 2026-01-08
 **Status**: Planlegging
@@ -117,7 +117,7 @@ export const sendEmail = async ({ to, subject, html, text }) => {
 // 3. Email templates
 export const emailTemplates = {
   welcome: (name) => ({
-    subject: 'Velkommen til TIER Golf Academy',
+    subject: 'Velkommen til TIER Golf',
     html: `<h1>Velkommen, ${name}!</h1>...`,
   }),
 
@@ -195,7 +195,7 @@ router.post('/register', async (req, res) => {
 # Backend .env
 SENDGRID_API_KEY=SG.xxxxxxxxxxxxx
 SENDGRID_FROM_EMAIL=noreply@iup-golf.com
-SENDGRID_FROM_NAME=TIER Golf Academy
+SENDGRID_FROM_NAME=TIER Golf
 FRONTEND_URL=http://localhost:3000
 
 # Alternative: Resend
@@ -238,7 +238,7 @@ RESEND_API_KEY=re_xxxxxxxxxxxxx
 #### 1. Google Cloud Console Setup
 ```
 1. Gå til https://console.cloud.google.com/
-2. Opprett nytt prosjekt: "TIER Golf Academy"
+2. Opprett nytt prosjekt: "TIER Golf"
 3. Enable "Google+ API"
 4. Credentials → Create Credentials → OAuth 2.0 Client ID
 5. Application type: Web application
@@ -578,7 +578,7 @@ STRIPE_PRICE_ELITE=price_xxxxx
 #### 1. Sentry Account Setup
 ```
 1. Opprett Sentry-konto: https://sentry.io/signup/
-2. Create project: "TIER Golf Academy - Web"
+2. Create project: "TIER Golf - Web"
 3. Platform: React
 4. Kopier DSN (Data Source Name)
 ```

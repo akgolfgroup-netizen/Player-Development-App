@@ -1,5 +1,5 @@
 /**
- * TIER Golf Academy - AI Coach Service
+ * TIER Golf - AI Coach Service
  *
  * Provides interface to the AI Coach backend API.
  * Handles chat, recommendations, and analysis requests.

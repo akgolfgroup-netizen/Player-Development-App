@@ -5,6 +5,7 @@
 
 import React from 'react';
 import { MessageCircle, Pencil, Play, Trash2 } from 'lucide-react';
+import { SubSectionTitle } from '../../../ui/primitives/typography';
 
 interface Annotation {
   id: string;
@@ -70,9 +71,9 @@ const AnnotationTimeline: React.FC<Props> = ({
   return (
     <div className={`bg-white border border-tier-border-default rounded-lg p-4 ${className}`}>
       <div className="mb-3">
-        <h3 className="text-sm font-semibold text-tier-navy mb-1">
+        <SubSectionTitle style={{ marginBottom: 0 }}>
           Annoteringer ({annotations.length})
-        </h3>
+        </SubSectionTitle>
         <p className="text-xs text-tier-text-secondary">
           Klikk på en annotering for å hoppe til tidspunktet
         </p>

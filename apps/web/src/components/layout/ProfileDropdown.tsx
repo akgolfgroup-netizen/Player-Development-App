@@ -1,5 +1,5 @@
 /**
- * TIER Golf Academy - Profile Dropdown
+ * TIER Golf - Profile Dropdown
  * Design System v3.0 - Forest Green (Premium Light)
  *
  * Avatar dropdown-meny med profil og innstillinger.

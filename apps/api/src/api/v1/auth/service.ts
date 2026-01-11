@@ -20,6 +20,7 @@ export interface AuthResponse {
     role: string;
     tenantId: string;
     onboardingComplete?: boolean;
+    profileImageUrl?: string;
   };
 }
 
@@ -36,6 +37,7 @@ interface UserWithOptionalPlayerId {
   playerId?: string;
   coachId?: string;
   onboardingComplete?: boolean;
+  profileImageUrl?: string | null;
 }
 
 export class AuthService {
@@ -159,13 +161,15 @@ export class AuthService {
     // If user is a player, look up their player ID and onboarding status
     let playerId: string | undefined;
     let onboardingComplete: boolean | undefined;
+    let profileImageUrl: string | null | undefined;
     if (user.role === 'player') {
       const player = await this.prisma.player.findFirst({
         where: { email: user.email },
-        select: { id: true, onboardingComplete: true },
+        select: { id: true, onboardingComplete: true, profileImageUrl: true },
       });
       playerId = player?.id;
       onboardingComplete = player?.onboardingComplete ?? false;
+      profileImageUrl = player?.profileImageUrl;
     }
 
     // If user is a coach, look up their coach ID
@@ -173,13 +177,14 @@ export class AuthService {
     if (user.role === 'coach') {
       const coach = await this.prisma.coach.findFirst({
         where: { email: user.email, tenantId: user.tenantId },
-        select: { id: true },
+        select: { id: true, profileImageUrl: true },
       });
       coachId = coach?.id;
+      profileImageUrl = coach?.profileImageUrl;
     }
 
     // Generate tokens with playerId/coachId/onboardingComplete if available
-    const userWithExtra = { ...user, playerId, coachId, onboardingComplete };
+    const userWithExtra = { ...user, playerId, coachId, onboardingComplete, profileImageUrl };
     return this.generateAuthResponse(userWithExtra);
   }
 
@@ -359,6 +364,7 @@ export class AuthService {
         role: user.role,
         tenantId: user.tenantId,
         onboardingComplete: user.onboardingComplete,
+        profileImageUrl: user.profileImageUrl || undefined,
       },
     };
     return response;

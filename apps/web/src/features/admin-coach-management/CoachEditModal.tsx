@@ -1,5 +1,5 @@
 /**
- * TIER Golf Academy - Coach Edit Modal
+ * TIER Golf - Coach Edit Modal
  * Design System v3.0 - Premium Light
  *
  * Modal for editing existing coach accounts.
@@ -10,6 +10,7 @@ import React, { useState, useEffect } from 'react';
 import { X, Loader2, UserCog, Trash2 } from 'lucide-react';
 import { coachesAPI } from '../../services/api';
 import Button from '../../ui/primitives/Button';
+import { SectionTitle, SubSectionTitle } from '../../components/typography/Headings';
 
 interface Coach {
   id: string;
@@ -126,9 +127,9 @@ export const CoachEditModal: React.FC<CoachEditModalProps> = ({
             <div className="w-10 h-10 rounded-xl bg-tier-navy/10 flex items-center justify-center">
               <UserCog size={20} className="text-tier-navy" />
             </div>
-            <h2 className="text-lg font-semibold text-tier-navy">
+            <SectionTitle style={{ marginBottom: 0 }}>
               Rediger trener
-            </h2>
+            </SectionTitle>
           </div>
           <button
             onClick={onClose}
@@ -145,9 +146,9 @@ export const CoachEditModal: React.FC<CoachEditModalProps> = ({
               <div className="w-16 h-16 mx-auto mb-4 rounded-full bg-tier-error/10 flex items-center justify-center">
                 <Trash2 size={32} className="text-tier-error" />
               </div>
-              <h3 className="text-lg font-semibold text-tier-navy mb-2">
+              <SubSectionTitle style={{ marginBottom: 8 }}>
                 Slett trener?
-              </h3>
+              </SubSectionTitle>
               <p className="text-sm text-tier-text-secondary mb-6">
                 Er du sikker på at du vil slette{' '}
                 <span className="font-medium text-tier-navy">

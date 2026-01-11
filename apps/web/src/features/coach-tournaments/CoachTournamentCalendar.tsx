@@ -1,5 +1,5 @@
 /**
- * TIER Golf Academy - Coach Tournament Calendar
+ * TIER Golf - Coach Tournament Calendar
  * Design System v3.0 - Premium Light
  *
  * MIGRATED TO PAGE ARCHITECTURE - Zero inline styles
@@ -360,9 +360,9 @@ export default function CoachTournamentCalendar() {
       <div className="py-6 px-6">
         <div className="flex items-center justify-between mb-5">
           <div>
-            <h1 className="text-[28px] font-semibold text-tier-navy m-0 mb-1">
+            <PageTitle style={{ marginBottom: 4 }}>
               Turneringskalender
-            </h1>
+            </PageTitle>
             <p className="text-[15px] text-tier-text-secondary m-0">
               Oversikt over turneringer og spillerdeltakelse
             </p>
@@ -490,7 +490,7 @@ export default function CoachTournamentCalendar() {
                           <TypeIcon size={24} className="text-tier-warning" />
                         </div>
                         <div>
-                          <SubSectionTitle className="text-[17px] font-semibold text-tier-navy m-0">
+                          <SubSectionTitle style={{ marginBottom: 0 }}>
                             {tournament.name}
                           </SubSectionTitle>
                           <div className="flex items-center gap-2 mt-1">
@@ -637,7 +637,7 @@ export default function CoachTournamentCalendar() {
           />
           <div className="fixed top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 bg-tier-white rounded-xl p-6 w-[500px] max-w-[90vw] max-h-[80vh] overflow-auto z-[101] shadow-2xl">
             <div className="flex items-center justify-between mb-5">
-              <SectionTitle className="text-xl font-semibold text-tier-navy m-0">
+              <SectionTitle style={{ marginBottom: 0 }}>
                 {selectedTournament.name}
               </SectionTitle>
               <button
@@ -673,7 +673,7 @@ export default function CoachTournamentCalendar() {
 
             {selectedTournament.myPlayers.length > 0 && (
               <div className="mb-5">
-                <CardTitle className="text-[15px] font-semibold text-tier-navy mb-3">
+                <CardTitle style={{ marginBottom: 12 }}>
                   Påmeldte spillere
                 </CardTitle>
                 <div className="flex flex-col gap-2">
@@ -768,9 +768,9 @@ export default function CoachTournamentCalendar() {
                   <MessageSquare size={20} className="text-tier-navy" />
                 </div>
                 <div>
-                  <h2 className="text-lg font-semibold text-tier-navy m-0">
+                  <SectionTitle style={{ marginBottom: 0 }}>
                     Send melding
-                  </h2>
+                  </SectionTitle>
                   <p className="text-sm text-tier-text-secondary">
                     {messageTournament.name}
                   </p>

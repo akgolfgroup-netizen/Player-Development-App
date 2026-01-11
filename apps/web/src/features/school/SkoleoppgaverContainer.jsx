@@ -1,5 +1,5 @@
 /**
- * TIER Golf Academy - Skoleoppgaver Container
+ * TIER Golf - Skoleoppgaver Container
  * Design System v3.0 - Premium Light
  *
  * School assignments tracking with subject filtering.

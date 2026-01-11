@@ -1,4 +1,4 @@
-# TIER Golf Academy - IUP Platform
+# TIER Golf - IUP Platform
 
 > Production-ready Individual Development Plan (IUP) platform for junior golf training academies
 
@@ -37,7 +37,7 @@
 
 ## Overview
 
-Enterprise-grade coaching platform for TIER Golf Academy with production-ready monitoring, security, and DevOps infrastructure.
+Enterprise-grade coaching platform for TIER Golf with production-ready monitoring, security, and DevOps infrastructure.
 
 ## Prosjekt på et Øyeblikk
 
@@ -450,7 +450,7 @@ See [CONTRIBUTING.md](./CONTRIBUTING.md) for guidelines.
 
 ## License
 
-Proprietary - TIER Golf Academy
+Proprietary - TIER Golf
 © 2025 All Rights Reserved
 
 ---

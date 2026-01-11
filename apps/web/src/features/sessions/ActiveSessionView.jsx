@@ -1,5 +1,5 @@
 /**
- * TIER Golf Academy - Active Session View
+ * TIER Golf - Active Session View
  * Design System v3.0 - Premium Light
  *
  * Focused training view with timer and block navigation.

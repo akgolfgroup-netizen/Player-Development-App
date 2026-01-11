@@ -25,6 +25,7 @@ import { StandardPageHeader } from '../../components/layout/StandardPageHeader';
 import Button from '../../ui/primitives/Button';
 import Card from '../../ui/primitives/Card';
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from '../../components/shadcn/dialog';
+import { SubSectionTitle } from '../../components/typography';
 
 // ============================================================================
 // TYPES
@@ -252,9 +253,9 @@ const DrillCard: React.FC<DrillCardProps> = ({
                 <span className="text-tier-navy">★</span>
               )}
             </div>
-            <h3 className="text-base font-semibold text-tier-navy m-0 mb-1">
+            <SubSectionTitle style={{ margin: 0, marginBottom: 4 }}>
               {drill.name}
-            </h3>
+            </SubSectionTitle>
             <p className="text-sm text-tier-text-secondary m-0">
               {drill.description}
             </p>
@@ -518,9 +519,9 @@ export const DrillManagementPage: React.FC = () => {
         <Card>
           <div className="p-12 text-center">
             <Dumbbell size={48} className="mx-auto text-tier-text-tertiary mb-4" />
-            <h3 className="text-lg font-semibold text-tier-navy mb-2">
+            <SubSectionTitle style={{ marginBottom: 8 }}>
               Ingen øvelser funnet
-            </h3>
+            </SubSectionTitle>
             <p className="text-sm text-tier-text-secondary mb-4">
               {filterPyramide !== 'all' || filterArea !== 'all'
                 ? 'Prøv å justere filtrene for å se flere øvelser.'

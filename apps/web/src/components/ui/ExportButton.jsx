@@ -125,7 +125,7 @@ export default function ExportButton({
         pdf.setFontSize(8);
         pdf.setTextColor(180, 180, 180);
         pdf.text(
-          `TIER Golf Academy - Side ${i} av ${pageCount}`,
+          `TIER Golf - Side ${i} av ${pageCount}`,
           pdf.internal.pageSize.getWidth() / 2,
           pdf.internal.pageSize.getHeight() - 10,
           { align: 'center' }

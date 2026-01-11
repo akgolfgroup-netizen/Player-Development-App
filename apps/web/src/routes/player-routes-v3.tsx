@@ -1,6 +1,6 @@
 /**
  * ============================================================
- * PLAYER ROUTES V3 - TIER Golf Academy
+ * PLAYER ROUTES V3 - TIER Golf
  * ============================================================
  *
  * Rutedefinisjoner for spillerportalen med 5-område struktur.
@@ -18,6 +18,7 @@
 import React, { lazy, Suspense } from 'react';
 import { Route, Navigate } from 'react-router-dom';
 import LoadingSpinner from '../components/LoadingSpinner';
+import { PageTitle } from '../components/typography';
 
 // ============================================================
 // Lazy-loaded Hub Pages
@@ -120,7 +121,7 @@ interface PlaceholderPageProps {
 function PlaceholderPage({ title }: PlaceholderPageProps) {
   return (
     <div style={{ padding: 32 }}>
-      <h1 style={{ fontSize: 24, fontWeight: 700, marginBottom: 16 }}>{title}</h1>
+      <PageTitle style={{ fontSize: 24, fontWeight: 700, marginBottom: 16 }}>{title}</PageTitle>
       <p style={{ color: '#6B7280' }}>Denne siden er under utvikling.</p>
     </div>
   );

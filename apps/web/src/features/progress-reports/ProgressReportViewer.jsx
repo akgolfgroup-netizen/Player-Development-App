@@ -14,6 +14,7 @@ import React, { useCallback } from 'react';
 import Button from '../../ui/primitives/Button';
 import StateCard from '../../ui/composites/StateCard';
 import { track } from '../../analytics/track';
+import { PageTitle, SectionTitle } from '../../components/typography/Headings';
 
 // ═══════════════════════════════════════════
 // TAILWIND CLASSES
@@ -83,9 +84,9 @@ export function ProgressReportViewer({ className = '', report, onBack }) {
       {/* Header */}
       <div className={tw.header}>
         <div className={tw.headerContent}>
-          <h1 className={tw.title}>
+          <PageTitle style={{ marginBottom: 0 }}>
             {report.title || `Fremdriftsrapport for ${report.player?.name || 'Spiller'}`}
-          </h1>
+          </PageTitle>
           <p className={tw.subtitle}>
             Periode: {new Date(report.periodStart).toLocaleDateString('nb-NO')} -{' '}
             {new Date(report.periodEnd).toLocaleDateString('nb-NO')}
@@ -135,10 +136,10 @@ export function ProgressReportViewer({ className = '', report, onBack }) {
 
         {/* Highlights Section */}
         <div className={tw.section}>
-          <h2 className={tw.sectionTitle}>
+          <SectionTitle style={{ marginBottom: 0 }}>
             <span className={tw.sectionIcon}>[Star]</span>
             Høydepunkter
-          </h2>
+          </SectionTitle>
           {report.highlights ? (
             <p className={tw.sectionContent}>{report.highlights}</p>
           ) : (
@@ -148,10 +149,10 @@ export function ProgressReportViewer({ className = '', report, onBack }) {
 
         {/* Areas for Improvement Section */}
         <div className={tw.section}>
-          <h2 className={tw.sectionTitle}>
+          <SectionTitle style={{ marginBottom: 0 }}>
             <span className={tw.sectionIcon}>[TrendUp]</span>
             Forbedringsområder
-          </h2>
+          </SectionTitle>
           {report.areasForImprovement ? (
             <p className={tw.sectionContent}>{report.areasForImprovement}</p>
           ) : (
@@ -161,10 +162,10 @@ export function ProgressReportViewer({ className = '', report, onBack }) {
 
         {/* Goals for Next Period Section */}
         <div className={tw.section}>
-          <h2 className={tw.sectionTitle}>
+          <SectionTitle style={{ marginBottom: 0 }}>
             <span className={tw.sectionIcon}>[Target]</span>
             Mål for neste periode
-          </h2>
+          </SectionTitle>
           {report.goalsForNextPeriod ? (
             <p className={tw.sectionContent}>{report.goalsForNextPeriod}</p>
           ) : (
@@ -175,10 +176,10 @@ export function ProgressReportViewer({ className = '', report, onBack }) {
         {/* Coach Comments Section */}
         {report.coachComments && (
           <div className={tw.section}>
-            <h2 className={tw.sectionTitle}>
+            <SectionTitle style={{ marginBottom: 0 }}>
               <span className={tw.sectionIcon}>[Chat]</span>
               Trenerkommentarer
-            </h2>
+            </SectionTitle>
             <p className={tw.sectionContent}>{report.coachComments}</p>
           </div>
         )}

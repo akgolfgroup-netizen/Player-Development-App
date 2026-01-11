@@ -1,5 +1,5 @@
 /**
- * TIER Golf Academy - Session Detail View
+ * TIER Golf - Session Detail View
  * Design System v3.0 - Premium Light
  *
  * Viser full økt med AK-formel hierarki og alle blokker.
@@ -25,6 +25,7 @@ import {
 } from 'lucide-react';
 import PageHeader from '../../ui/raw-blocks/PageHeader.raw';
 import { Button } from '../../ui/primitives';
+import { SubSectionTitle } from '../../components/typography';
 
 // =============================================================================
 // AK HIERARCHY CONSTANTS (from useAKFormula)
@@ -572,10 +573,10 @@ export default function SessionDetailView({ session, onBack, onStartSession }) {
 
         {/* Blocks section */}
         <div className="mb-4">
-          <h3 className="text-sm font-semibold text-tier-navy mb-3 flex items-center gap-2">
+          <SubSectionTitle className="text-sm mb-3 flex items-center gap-2">
             <Target size={16} />
             Treningsblokker
-          </h3>
+          </SubSectionTitle>
 
           {blocks.map((block, index) => (
             <SessionBlock
