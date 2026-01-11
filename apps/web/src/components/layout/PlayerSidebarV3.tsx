@@ -281,7 +281,6 @@ export default function PlayerSidebarV3({
       />
       <div>
         <div className="text-tier-navy font-bold text-lg">TIER Golf</div>
-        <div className="text-tier-text-tertiary text-xs">Academy</div>
       </div>
     </Link>
   );

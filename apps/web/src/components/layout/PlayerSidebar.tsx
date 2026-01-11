@@ -448,9 +448,6 @@ export default function PlayerSidebar({ user, unreadMessages = 0, onLogout }: Pl
             <div style={{ color: 'var(--bg-primary)', fontWeight: 600, fontSize: '16px' }}>
               TIER Golf
             </div>
-            <div style={{ color: 'rgba(255, 255, 255, 0.5)', fontSize: '12px' }}>
-              Academy
-            </div>
           </div>
         </Link>
       </div>
