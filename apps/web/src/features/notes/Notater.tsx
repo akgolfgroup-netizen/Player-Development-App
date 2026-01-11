@@ -579,7 +579,7 @@ const Notater: React.FC<NotaterProps> = ({
         <div className="fixed inset-0 bg-black/50 z-50 flex items-center justify-center p-4">
           <Card className="w-full max-w-2xl max-h-[90vh] overflow-y-auto" padding={false}>
             {/* Modal Header */}
-            <div className="sticky top-0 bg-tier-white border-b border-tier-border-default p-4 flex items-center justify-between">
+            <div className=" bg-tier-white border-b border-tier-border-default p-4 flex items-center justify-between">
               <div className="flex items-center gap-3">
                 <span className="text-tier-warning">
                   {renderMoodIcon(selectedNote.mood, 28)}

@@ -66,14 +66,14 @@ const defaultFormData: IntakeFormData = {
   currentHandicap: 15,
   averageScore: 85,
   roundsPerYear: 30,
-  trainingHistory: 'some',
+  trainingHistory: 'regular',
 
   hoursPerWeek: 10,
   preferredDays: ['monday', 'wednesday', 'friday'],
   facilityAccess: ['range', 'course'],
   homeEquipment: [],
 
-  primaryGoal: 'handicap',
+  primaryGoal: 'lower_handicap',
   targetHandicap: 10,
   targetScore: 80,
   timeframe: '12_months',
@@ -128,6 +128,31 @@ export default function OnboardingPage() {
     }
 
     try {
+      // Map day names to numbers (0=Sunday, 1=Monday, etc.)
+      const dayNameToNumber: Record<string, number> = {
+        sunday: 0, monday: 1, tuesday: 2, wednesday: 3,
+        thursday: 4, friday: 5, saturday: 6,
+      };
+      const preferredDaysAsNumbers = formData.preferredDays
+        .map(day => dayNameToNumber[day.toLowerCase()])
+        .filter((n): n is number => n !== undefined);
+
+      // Map trainingHistory to valid enum
+      const trainingHistoryMap: Record<string, string> = {
+        none: 'none', some: 'sporadic', sporadic: 'sporadic',
+        regular: 'regular', systematic: 'systematic',
+      };
+      const validTrainingHistory = trainingHistoryMap[formData.trainingHistory] || 'regular';
+
+      // Map primaryGoal to valid enum
+      const goalMap: Record<string, string> = {
+        handicap: 'lower_handicap', lower_handicap: 'lower_handicap',
+        tournament: 'compete_tournaments', compete_tournaments: 'compete_tournaments',
+        consistency: 'consistency', enjoy: 'enjoy_more', enjoy_more: 'enjoy_more',
+        specific: 'specific_skill', specific_skill: 'specific_skill',
+      };
+      const validPrimaryGoal = goalMap[formData.primaryGoal] || 'lower_handicap';
+
       // Submit intake form to backend
       const intakePayload = {
         playerId: user.playerId,
@@ -136,30 +161,48 @@ export default function OnboardingPage() {
           currentHandicap: formData.currentHandicap,
           averageScore: formData.averageScore,
           roundsPerYear: formData.roundsPerYear,
-          trainingHistory: formData.trainingHistory,
+          trainingHistory: validTrainingHistory,
         },
         availability: {
           hoursPerWeek: formData.hoursPerWeek,
-          preferredDays: formData.preferredDays,
-          facilityAccess: formData.facilityAccess,
-          homeEquipment: formData.homeEquipment,
+          preferredDays: preferredDaysAsNumbers,
+          canTravelToFacility: formData.facilityAccess.length > 0,
+          hasHomeEquipment: formData.homeEquipment.length > 0,
         },
         goals: {
-          primaryGoal: formData.primaryGoal,
+          primaryGoal: validPrimaryGoal,
           targetHandicap: formData.targetHandicap,
           targetScore: formData.targetScore,
           timeframe: formData.timeframe,
-          tournaments: formData.tournaments,
+          tournaments: formData.tournaments?.map(t => ({
+            name: typeof t === 'string' ? t : (t as any).name || 'Tournament',
+            date: new Date(),
+            importance: 'minor' as const,
+          })),
         },
         weaknesses: {
-          biggestFrustration: formData.biggestFrustration,
+          biggestFrustration: formData.biggestFrustration || 'Ingen spesifikk',
           problemAreas: formData.problemAreas,
           mentalChallenges: formData.mentalChallenges,
-          physicalLimitations: formData.physicalLimitations,
+          physicalLimitations: formData.physicalLimitations?.map(p => ({
+            area: 'back' as const,
+            severity: 'mild' as const,
+            affectsSwing: false,
+          })),
         },
         health: {
-          currentInjuries: formData.currentInjuries,
-          pastInjuries: formData.pastInjuries,
+          currentInjuries: formData.currentInjuries?.map(i => ({
+            type: typeof i === 'string' ? i : 'injury',
+            resolved: false,
+            requiresModification: false,
+            affectedAreas: [],
+          })) || [],
+          injuryHistory: formData.pastInjuries?.map(i => ({
+            type: typeof i === 'string' ? i : 'injury',
+            resolved: true,
+            requiresModification: false,
+            affectedAreas: [],
+          })) || [],
           chronicConditions: formData.chronicConditions,
           mobilityIssues: formData.mobilityIssues,
           ageGroup: formData.ageGroup,

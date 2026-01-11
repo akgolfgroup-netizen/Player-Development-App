@@ -10,6 +10,7 @@ import { Camera, Upload, X } from 'lucide-react';
 import { Avatar, AvatarImage, AvatarFallback } from '../shadcn';
 import { useToast } from '../shadcn/use-toast';
 import { cn } from 'lib/utils';
+import { SubSectionTitle } from '../typography/Headings';
 
 interface ProfileImageUploadProps {
   currentImageUrl?: string;
@@ -272,7 +273,7 @@ export function ProfileImageUploadCard({
 
   return (
     <div className="bg-white rounded-lg border-2 border-gray-200 p-6">
-      <h3 className="text-lg font-semibold mb-4">Profilbilde</h3>
+      <SubSectionTitle className="text-lg font-semibold mb-4">Profilbilde</SubSectionTitle>
 
       <div className="flex flex-col sm:flex-row items-center gap-6">
         {/* Current image */}

@@ -8,6 +8,7 @@
 import React from 'react';
 import { cn } from '../../lib/utils';
 import { Trophy } from 'lucide-react';
+import { SubSectionTitle } from '../typography/Headings';
 
 export interface Badge {
   id: string;
@@ -47,9 +48,9 @@ export function BadgeShowcase({
   return (
     <div className={cn('space-y-3', className)}>
       {title && (
-        <h3 className="text-sm font-semibold text-gray-700 dark:text-gray-300 uppercase tracking-wide">
+        <SubSectionTitle className="text-sm font-semibold text-gray-700 dark:text-gray-300 uppercase tracking-wide" style={{ fontSize: '0.875rem' }}>
           {title}
-        </h3>
+        </SubSectionTitle>
       )}
 
       <div className="flex gap-3">

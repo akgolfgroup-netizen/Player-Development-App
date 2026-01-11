@@ -299,7 +299,7 @@ export const CalendarDayView: React.FC<CalendarDayViewProps> = ({
     }
 
     return (
-      <div className="sticky top-0 z-20 px-4 py-3 border-b bg-tier-white border-tier-border-default">
+      <div className=" px-4 py-3 border-b bg-tier-white border-tier-border-default">
         {/* Date header */}
         <div className="text-sm font-medium mb-2 text-tier-text-tertiary">
           {formatDate(date)}

@@ -165,7 +165,7 @@ const NotionWeekGrid: React.FC<NotionWeekGridProps> = ({
   return (
     <div className="flex flex-col h-full">
       {/* Header row - Day names and dates */}
-      <div className="flex border-b border-gray-200 bg-white sticky top-0 z-20">
+      <div className="flex border-b border-gray-200 bg-white ">
         {/* Time column spacer */}
         <div className="w-14 flex-shrink-0 border-r border-gray-100" />
 

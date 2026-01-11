@@ -69,7 +69,7 @@ const PageHeader: React.FC<PageHeaderProps> = ({
       className={`
         w-full bg-tier-white rounded-[14px]
         ${divider ? 'border-b border-tier-border-default' : ''}
-        ${sticky ? 'sticky top-0 z-40 backdrop-blur-sm bg-tier-white/95' : ''}
+        ${sticky ? 'sticky top-0 z-50 backdrop-blur-sm bg-tier-white/95' : ''}
         ${className}
       `.trim()}
     >

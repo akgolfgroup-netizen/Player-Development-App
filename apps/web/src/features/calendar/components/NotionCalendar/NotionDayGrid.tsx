@@ -158,7 +158,7 @@ const NotionDayGrid: React.FC<NotionDayGridProps> = ({
   return (
     <div className="flex flex-col h-full">
       {/* Header */}
-      <div className="flex border-b border-gray-200 bg-white sticky top-0 z-20">
+      <div className="flex border-b border-gray-200 bg-white ">
         <div className="w-14 flex-shrink-0 border-r border-gray-100" />
         <div className="flex-1 flex flex-col items-center justify-center py-3">
           <span className="text-xs text-gray-500 font-medium">{dayName}</span>

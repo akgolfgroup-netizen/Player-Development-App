@@ -227,7 +227,7 @@ export const CalendarWeekGrid: React.FC<CalendarWeekGridProps> = ({
   return (
     <div className="flex h-full flex-col">
       {/* Sticky header with day names */}
-      <div className="sticky top-0 z-30 flex-none bg-tier-white shadow-sm ring-1 ring-black/5 dark:ring-white/10 sm:pr-8">
+      <div className=" flex-none bg-tier-white shadow-sm ring-1 ring-black/5 dark:ring-white/10 sm:pr-8">
         {/* Mobile day header */}
         <div className="grid grid-cols-7 text-sm leading-6 text-tier-text-tertiary sm:hidden">
           {weekDates.map((date, idx) => {

@@ -161,9 +161,9 @@ const DashboardV2: React.FC<DashboardV2Props> = ({ playerName, playerId }) => {
             />
             <StatsCard label="Streak" value="12" unit="dager" />
             <StatsCard
-              label="Handicap"
-              value="5.4"
-              change={{ value: '0.3', direction: 'down' }}
+              label="Snitt Score"
+              value="74"
+              change={{ value: '1.2', direction: 'down' }}
             />
           </StatsGrid>
         </AsyncBoundary>

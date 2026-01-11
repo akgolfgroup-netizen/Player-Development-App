@@ -19,6 +19,7 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
 import { cn } from '../../lib/utils';
+import { SubSectionTitle } from '../typography/Headings';
 import {
   Target,
   Flame,
@@ -157,7 +158,7 @@ export function FocusCard({
             <Icon size={20} className={colors.icon} />
           </div>
           <div>
-            <h3 className="font-semibold text-tier-navy">{title}</h3>
+            <SubSectionTitle className="font-semibold text-tier-navy" style={{ marginBottom: 0 }}>{title}</SubSectionTitle>
             {subtitle && (
               <p className="text-sm text-tier-text-secondary">{subtitle}</p>
             )}

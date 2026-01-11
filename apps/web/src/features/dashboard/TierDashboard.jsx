@@ -57,8 +57,8 @@ export function TierDashboard({ dashboardData }) {
       hoursGoal: stats.hoursGoal || 10,
       testsCompleted: stats.testsCompleted || 0,
       testsTotal: stats.testsTotal || 5,
-      handicap: player.handicap || stats.handicap || 0,
-      handicapChange: stats.handicapChange || 0,
+      averageScore: player.averageScore || stats.averageScore || player.handicap || stats.handicap || 0,
+      averageScoreChange: stats.averageScoreChange || stats.handicapChange || 0,
     },
     categoryProgress: {
       category: categoryProgress.category || player.category || 'K',
@@ -156,12 +156,12 @@ export function TierDashboard({ dashboardData }) {
 
             <StatCard
               icon={TrendingUp}
-              value={playerData.stats.handicap.toFixed(1)}
-              label="Handicap"
-              trend={playerData.stats.handicapChange}
+              value={playerData.stats.averageScore.toFixed(1)}
+              label="Snitt Score"
+              trend={playerData.stats.averageScoreChange}
               trendLabel="fra forrige måned"
               iconColor="rgb(var(--category-f))"
-              context="På vei mot under 18!"
+              context="På vei mot under 74!"
             />
           </div>
         </div>

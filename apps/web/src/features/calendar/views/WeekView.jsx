@@ -159,7 +159,7 @@ const WeekView = ({
       {/* Week Days Header */}
       <div
         ref={containerNav}
-        className="sticky top-0 z-30 flex-none bg-tier-white shadow ring-1 ring-black/5"
+        className=" flex-none bg-tier-white shadow ring-1 ring-black/5"
       >
         <div className="grid grid-cols-7 text-sm leading-6 text-tier-text-secondary sm:hidden">
           {weekDates.map((date, idx) => {

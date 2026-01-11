@@ -50,9 +50,11 @@ interface ChatGroup {
   }>;
 }
 
+type MessageFilterType = 'all' | 'trenere' | 'grupper' | 'samlinger' | 'turneringer' | 'personer';
+
 interface MessageCenterProps {
   userId?: string;
-  filterType?: 'all' | 'unread' | 'coach';
+  filterType?: MessageFilterType;
 }
 
 // ============================================================================
@@ -94,7 +96,7 @@ export default function MessageCenter({ userId, filterType: initialFilterType }:
   const [conversations, setConversations] = useState<ChatGroup[]>([]);
   const [loading, setLoading] = useState(true);
   const [searchQuery, setSearchQuery] = useState('');
-  const [filterType, setFilterType] = useState<'all' | 'unread' | 'coach'>(initialFilterType || 'all');
+  const [filterType, setFilterType] = useState<MessageFilterType>(initialFilterType || 'all');
   const [showContacts, setShowContacts] = useState(false);
   const [contacts, setContacts] = useState<Member[]>([]);
 
@@ -260,10 +262,24 @@ export default function MessageCenter({ userId, filterType: initialFilterType }:
       }
 
       // Type filter
-      if (filterType === 'unread' && conv.unreadCount === 0) {
+      if (filterType === 'all') {
+        return true;
+      }
+      if (filterType === 'trenere' && conv.groupType !== 'coach_player') {
         return false;
       }
-      if (filterType === 'coach' && conv.groupType !== 'coach_player') {
+      if (filterType === 'grupper' && conv.groupType !== 'team') {
+        return false;
+      }
+      if (filterType === 'samlinger') {
+        // Filter for gathering/camp conversations (would need metadata in real implementation)
+        return conv.name.toLowerCase().includes('samling');
+      }
+      if (filterType === 'turneringer') {
+        // Filter for tournament conversations (would need metadata in real implementation)
+        return conv.name.toLowerCase().includes('turnering');
+      }
+      if (filterType === 'personer' && conv.groupType !== 'direct') {
         return false;
       }
 
@@ -300,16 +316,19 @@ export default function MessageCenter({ userId, filterType: initialFilterType }:
         </div>
 
         {/* Filter buttons */}
-        <div className="flex gap-1">
+        <div className="flex gap-1 overflow-x-auto">
           {[
             { key: 'all', label: 'Alle' },
-            { key: 'unread', label: 'Uleste' },
-            { key: 'coach', label: 'Trener' },
+            { key: 'trenere', label: 'Trenere' },
+            { key: 'grupper', label: 'Grupper' },
+            { key: 'samlinger', label: 'Samlinger' },
+            { key: 'turneringer', label: 'Turneringer' },
+            { key: 'personer', label: 'Personer' },
           ].map((filter) => (
             <button
               key={filter.key}
-              onClick={() => setFilterType(filter.key as 'all' | 'unread' | 'coach')}
-              className={`px-3.5 py-2 text-[13px] font-medium rounded cursor-pointer border transition-colors ${
+              onClick={() => setFilterType(filter.key as MessageFilterType)}
+              className={`px-3.5 py-2 text-[13px] font-medium rounded cursor-pointer border transition-colors whitespace-nowrap ${
                 filterType === filter.key
                   ? 'bg-tier-navy text-white border-tier-navy'
                   : 'bg-tier-white text-tier-navy border-tier-border-default hover:border-tier-navy'

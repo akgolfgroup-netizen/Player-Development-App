@@ -18,8 +18,8 @@ import {
   Separator,
 } from '../../components/shadcn';
 import { SectionTitle } from '../../components/typography/Headings';
-import { HandicapDisplay } from '../../components/shadcn/golf';
-import { PageHeader } from '../../ui/raw-blocks';
+import PageHeader from '../../ui/raw-blocks/PageHeader.raw';
+import PageContainer from '../../ui/raw-blocks/PageContainer.raw';
 import { cn } from 'lib/utils';
 
 // ============================================================================
@@ -182,12 +182,14 @@ const ProfileView: React.FC<ProfileViewProps> = ({ profile, onUpdate }) => {
   const initials = `${profile.firstName?.[0] || ''}${profile.lastName?.[0] || ''}`;
 
   return (
-    <div className="max-w-5xl mx-auto p-6 space-y-6">
+    <div className="min-h-screen bg-tier-surface-base">
       <PageHeader
         title="Min Profil"
-        subtitle="Administrer personlig informasjon, golfdata og innstillinger"
-        helpText="Komplett oversikt over din profil med personlig informasjon, kontaktdetaljer, golfstatistikk og treningsdata. Se handicap, kategori, WAGR-rangering og nødkontakt. Rediger profil for å oppdatere informasjon."
+        subtitle="Din personlige profil og informasjon"
+        sticky={true}
       />
+      <PageContainer paddingY="md" background="base" fullWidth={true}>
+        <div className="space-y-6">
 
       {/* Profile Header Card */}
       <Card>
@@ -208,10 +210,10 @@ const ProfileView: React.FC<ProfileViewProps> = ({ profile, onUpdate }) => {
                   {profile.club || 'Ingen klubb registrert'}
                   {profile.category && ` • Kategori ${profile.category}`}
                 </p>
-                {profile.handicap && (
+                {profile.averageScore && (
                   <Badge className="mt-2 bg-achievement text-white border-0">
                     <Trophy className="w-3 h-3 mr-1" />
-                    HCP {profile.handicap}
+                    Snitt {profile.averageScore}
                   </Badge>
                 )}
               </div>
@@ -228,10 +230,10 @@ const ProfileView: React.FC<ProfileViewProps> = ({ profile, onUpdate }) => {
       <Card>
         <CardContent className="p-5">
           <div className="grid grid-cols-2 sm:grid-cols-4 gap-4">
-            <StatItem value={profile.handicap} label="Handicap" highlight />
-            <StatItem value={profile.averageScore} label="Snittslag" />
+            <StatItem value={profile.averageScore} label="Snitt Score" highlight />
             <StatItem value={profile.category} label="Kategori" />
             <StatItem value={age} label="Alder" />
+            <StatItem value={profile.wagrRank} label="WAGR Rank" />
           </div>
         </CardContent>
       </Card>
@@ -296,19 +298,19 @@ const ProfileView: React.FC<ProfileViewProps> = ({ profile, onUpdate }) => {
             value={profile.club}
           />
           <ProfileField
-            icon={<Award className="w-4 h-4" />}
-            label="Handicap"
-            value={profile.handicap}
-          />
-          <ProfileField
             icon={<Target className="w-4 h-4" />}
-            label="Snittscore"
+            label="Snitt Score"
             value={profile.averageScore}
           />
           <ProfileField
             icon={<Award className="w-4 h-4" />}
             label="WAGR-rangering"
             value={profile.wagrRank}
+          />
+          <ProfileField
+            icon={<Calendar className="w-4 h-4" />}
+            label="Kategori"
+            value={profile.category}
           />
         </ProfileSection>
 
@@ -368,6 +370,8 @@ const ProfileView: React.FC<ProfileViewProps> = ({ profile, onUpdate }) => {
           </p>
         </CardContent>
       </Card>
+        </div>
+      </PageContainer>
     </div>
   );
 };

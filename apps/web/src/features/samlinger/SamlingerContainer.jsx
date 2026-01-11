@@ -361,10 +361,10 @@ const PastCampCard = ({ camp }) => {
 const FilterBar = ({ activeFilter, onFilterChange }) => {
   const filters = [
     { key: 'all', label: 'Alle' },
-    { key: 'registered', label: 'Mine samlinger' },
-    { key: 'training', label: 'Trening' },
-    { key: 'intensive', label: 'Intensiv' },
-    { key: 'elite', label: 'Elite' },
+    { key: 'private', label: 'Privat' },
+    { key: 'club', label: 'Klubb' },
+    { key: 'school', label: 'Skole' },
+    { key: 'federation', label: 'Forbund' },
   ];
 
   return (
@@ -602,8 +602,13 @@ const SamlingerContainer = () => {
 
   const filteredCamps = camps.filter((c) => {
     if (filter === 'all') return true;
-    if (filter === 'registered') return c.isRegistered;
-    return c.type === filter;
+    // TODO: Add category field to camp data from backend
+    // For now, show all camps for category filters
+    if (filter === 'private') return c.category === 'private' || false;
+    if (filter === 'club') return c.category === 'club' || false;
+    if (filter === 'school') return c.category === 'school' || false;
+    if (filter === 'federation') return c.category === 'federation' || false;
+    return true;
   });
 
   const handleRegister = (campId) => {
@@ -627,8 +632,6 @@ const SamlingerContainer = () => {
     <div className="min-h-screen bg-tier-surface-base">
       <PageHeader
         title="Samlinger"
-        subtitle="Treningssamlinger og leirer"
-        helpText="Oversikt over planlagte treningssamlinger, leirer og spesialeventer. Se påmeldinger, datoer, program og praktisk informasjon for hver samling."
       />
 
       <div className="p-6 w-full">
@@ -645,12 +648,6 @@ const SamlingerContainer = () => {
               {camps.filter(c => c.isRegistered).length}
             </div>
             <div className="text-xs text-tier-text-secondary">Pameldt</div>
-          </div>
-          <div className="bg-tier-white rounded-xl p-4 text-center">
-            <div className="text-2xl font-bold text-gold-500">
-              {PAST_CAMPS.length}
-            </div>
-            <div className="text-xs text-tier-text-secondary">Deltatt i ar</div>
           </div>
           <div className="bg-tier-white rounded-xl p-4 text-center">
             <div className="text-2xl font-bold text-tier-navy">

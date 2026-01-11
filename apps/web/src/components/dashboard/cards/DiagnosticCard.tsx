@@ -15,6 +15,7 @@
 import * as React from 'react';
 import { cn } from '../../../lib/utils';
 import { formatSG, getSGSemantic, getSGColorStyle } from '../../../utils/sgFormatting';
+import { SubSectionTitle } from '../../typography/Headings';
 
 export interface DiagnosticCardProps {
   /** Category/metric name */
@@ -194,9 +195,9 @@ export function DiagnosticSection({
 }) {
   return (
     <div className={cn('space-y-3', className)}>
-      <h3 className="text-sm font-semibold text-[rgb(var(--text-secondary))] uppercase tracking-wide">
+      <SubSectionTitle className="text-sm font-semibold text-[rgb(var(--text-secondary))] uppercase tracking-wide" style={{ fontSize: '0.875rem' }}>
         {title}
-      </h3>
+      </SubSectionTitle>
       {children}
     </div>
   );

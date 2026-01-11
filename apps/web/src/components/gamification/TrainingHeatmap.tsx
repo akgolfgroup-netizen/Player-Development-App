@@ -7,6 +7,7 @@
 
 import React from 'react';
 import { cn } from '../../lib/utils';
+import { SubSectionTitle } from '../typography/Headings';
 
 export interface TrainingDay {
   date: string; // ISO date string (YYYY-MM-DD)
@@ -53,9 +54,9 @@ export function TrainingHeatmap({
   return (
     <div className={cn('space-y-3', className)}>
       {title && (
-        <h3 className="text-sm font-semibold text-gray-700 dark:text-gray-300">
+        <SubSectionTitle className="text-sm font-semibold text-gray-700 dark:text-gray-300" style={{ fontSize: '0.875rem' }}>
           {title}
-        </h3>
+        </SubSectionTitle>
       )}
 
       <div className="inline-flex flex-col gap-1">

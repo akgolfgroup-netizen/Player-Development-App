@@ -50,14 +50,6 @@ const SGJourneyView: React.FC<SGJourneyViewProps> = ({ data }) => {
           </div>
 
           <div>
-            <div className="text-sm text-tier-text-secondary mb-1">Høydemeter</div>
-            <div className="text-3xl font-bold text-tier-info">{position.altitudeMeters}m</div>
-            <div className="text-xs text-tier-success mt-1">
-              +{position.totalClimbed}m totalt klatret
-            </div>
-          </div>
-
-          <div>
             <div className="text-sm text-tier-text-secondary mb-1">Til neste nivå</div>
             <div className="text-2xl font-bold text-tier-navy">
               {position.sgToNextLevel > 0 ? '+' : ''}

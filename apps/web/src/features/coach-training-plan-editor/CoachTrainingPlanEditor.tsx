@@ -705,7 +705,7 @@ export default function CoachTrainingPlanEditor({
 
         {/* AI Panel */}
         {showAIPanel && (
-          <div className="sticky top-6 self-start">
+          <div className=" self-start">
             <AIPlanSuggestions
               playerId={athleteId}
               playerName={athleteName}

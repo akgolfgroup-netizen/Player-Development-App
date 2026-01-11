@@ -252,7 +252,7 @@ function PageToolbar({ children, sticky = false }: PageToolbarProps) {
       className={`
         flex items-center gap-3 flex-wrap
         bg-ak-surface-card p-4 rounded-lg shadow-ak-card mb-4
-        ${sticky ? 'sticky top-0 z-10 backdrop-blur-sm' : ''}
+        ${sticky ? ' backdrop-blur-sm' : ''}
       `.trim().replace(/\s+/g, ' ')}
     >
       {children}

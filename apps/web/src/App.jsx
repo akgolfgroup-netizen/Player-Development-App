@@ -134,6 +134,7 @@ const ShotPhaseComparison = lazy(() => import('./features/trening-plan/ShotPhase
 const DailyTrainingCalendar = lazy(() => import('./features/sessions/DailyTrainingCalendar'));
 const DrillManagementPage = lazy(() => import('./features/drills/DrillManagementPage'));
 const TechniquePlanPage = lazy(() => import('./features/technique-plan/TechniquePlanPage'));
+const TechnicalPlanView = lazy(() => import('./features/technique-plan/TechnicalPlanView'));
 const TrackmanUploadPage = lazy(() => import('./features/technique-plan/TrackmanUploadPage'));
 
 // Kalender
@@ -173,6 +174,7 @@ const ActiveSessionViewContainer = lazy(() => import('./features/sessions/Active
 const SessionReflectionFormContainer = lazy(() => import('./features/sessions/SessionReflectionFormContainer'));
 const SessionEvaluationFormContainer = lazy(() => import('./features/sessions/SessionEvaluationFormContainer'));
 const SessionCreateFormContainer = lazy(() => import('./features/sessions/SessionCreateFormContainer'));
+const QuickSessionRegistration = lazy(() => import('./features/sessions/QuickSessionRegistration'));
 const EvaluationStatsDashboardContainer = lazy(() => import('./features/sessions/EvaluationStatsDashboardContainer'));
 const SessionsListContainer = lazy(() => import('./features/sessions/SessionsListContainer'));
 const ExerciseLibraryContainer = lazy(() => import('./features/sessions/ExerciseLibraryContainer'));
@@ -1238,6 +1240,13 @@ function App() {
               </PlayerLayout>
             </ProtectedRoute>
           } />
+          <Route path="/session/quick" element={
+            <ProtectedRoute>
+              <Suspense fallback={<LoadingState />}>
+                <QuickSessionRegistration />
+              </Suspense>
+            </ProtectedRoute>
+          } />
           <Route path="/session/:sessionId" element={
             <ProtectedRoute>
               <PlayerLayout title="Øktdetaljer" subtitle="Se og rediger økten">
@@ -1336,6 +1345,13 @@ function App() {
               <PlayerLayout title="Teknisk plan" subtitle="Fokusområder og teknikk">
                 <TekniskPlanContainer />
               </PlayerLayout>
+            </ProtectedRoute>
+          } />
+          <Route path="/plan/teknisk-plan" element={
+            <ProtectedRoute>
+              <Suspense fallback={<LoadingState />}>
+                <TechnicalPlanView />
+              </Suspense>
             </ProtectedRoute>
           } />
 

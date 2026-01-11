@@ -24,6 +24,7 @@ import {
   TooltipProvider,
   TooltipTrigger,
 } from '../shadcn/tooltip';
+import { PageTitle } from '../typography/Headings';
 
 interface StandardPageHeaderProps {
   /** Lucide icon component */
@@ -59,9 +60,9 @@ export const StandardPageHeader: React.FC<StandardPageHeaderProps> = ({
                 <Icon size={20} className="text-ak-primary" />
               </div>
             )}
-            <h1 className="text-2xl font-bold text-ak-text-primary m-0 leading-tight">
+            <PageTitle className="text-2xl font-bold text-ak-text-primary m-0 leading-tight" style={{ marginBottom: 0 }}>
               {title}
-            </h1>
+            </PageTitle>
             {helpText && (
               <TooltipProvider delayDuration={200}>
                 <Tooltip>

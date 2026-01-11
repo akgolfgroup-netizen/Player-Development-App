@@ -7,10 +7,11 @@
  *
  * HOVEDOMRÅDER:
  * 1. Dashboard (Hjem) - Oversikt og sammendrag
- * 2. Trening (Grønn)  - Logging, økter, øvelser, testing
- * 3. Analyse (Blå)    - Fremgang, statistikk, sammenligninger (erstatter "Min utvikling")
- * 4. Plan (Gul/Amber) - Kalender, mål, turneringer
- * 5. Mer (Lilla)      - Profil, innstillinger, ressurser
+ * 2. Målsetninger (Gul) - Mål og progresjon
+ * 3. Planlegger (Amber) - Årsplan, treningsplan, skoleplan, turneringer
+ * 4. Trening (Grønn)  - Logging, økter, øvelser, testing
+ * 5. Analyse (Blå)    - Fremgang, statistikk, sammenligninger (erstatter "Min utvikling")
+ * 6. Mer (Lilla)      - Profil, innstillinger, ressurser
  *
  * VIKTIGE ENDRINGER I V4:
  * - "Min utvikling" → "Analyse" (17 menyitems → 6 hub-items)
@@ -121,56 +122,69 @@ export const playerNavigationV4: NavArea[] = [
   },
 
   // ────────────────────────────────────────────────────────────
-  // 2. PLAN - Kalender, mål, turneringer (AMBER)
+  // 2. MÅLSETNINGER - Mål og progresjon (GUL)
   // ────────────────────────────────────────────────────────────
   {
-    id: 'plan',
-    label: 'Plan',
-    icon: 'CalendarIcon',
+    id: 'maalsetninger',
+    label: 'Målsetninger',
+    icon: 'TargetIcon',
     color: 'amber',
-    href: '/plan',
-    hubPath: '/plan',
+    href: '/maalsetninger',
+    hubPath: '/maalsetninger',
     sections: [
       {
-        id: 'kalender',
-        label: 'Kalender',
+        id: 'maal',
+        label: 'Målsetninger',
         items: [
-          { href: '/plan/kalender', label: 'Kalender', icon: 'CalendarIcon', description: 'Din kalender' },
-          { href: '/plan/booking', label: 'Booking', icon: 'CalendarIcon', description: 'Book treningstid' },
-          { href: '/plan/sesonger', label: 'Sesongplanlegging', icon: 'CalendarIcon', description: 'Planlegg treningssesonger' },
-          { href: '/samlinger', label: 'Samlinger', icon: 'GolfFlagIcon', description: 'Treningssamlinger' },
-        ],
-      },
-      {
-        id: 'skole',
-        label: 'Skole',
-        items: [
-          { href: '/plan/skole', label: 'Skoleplan', icon: 'CalendarIcon', description: 'Skoletimer, fag og oppgaver' },
-          { href: '/plan/intake', label: 'Inntak/Onboarding', icon: 'ClipboardIcon', description: 'Fyll ut spillerprofil og vurdering' },
-        ],
-      },
-      {
-        id: 'mal',
-        label: 'Mål',
-        items: [
-          { href: '/plan/maal', label: 'Målsetninger', icon: 'TargetIcon', description: 'Dine mål' },
-          { href: '/plan/aarsplan', label: 'Årsplan', icon: 'ScorecardIcon', description: 'Langsiktig plan' },
-        ],
-      },
-      {
-        id: 'turneringer',
-        label: 'Turneringer',
-        items: [
-          { href: '/plan/turneringer', label: 'Turneringskalender', icon: 'GolfFlagIcon', description: 'Alle turneringer' },
-          { href: '/plan/turneringer/mine', label: 'Mine turneringer', icon: 'GolfFlagIcon', description: 'Påmeldte turneringer' },
-          { href: '/plan/turneringsforberedelse', label: 'Turneringsforberedelse', icon: 'TargetIcon', description: 'Banestrategi og sjekkliste' },
+          { href: '/maalsetninger/mine', label: 'Mine målsetninger', icon: 'TargetIcon', description: 'Resultatmål og prosessmål' },
+          { href: '/maalsetninger/progresjon', label: 'Progresjon', icon: 'TrendingUpIcon', description: 'Målprogresjon og fremgang' },
         ],
       },
     ],
   },
 
   // ────────────────────────────────────────────────────────────
-  // 3. TRENING - Logging, økter, øvelser, testing (GRØNN)
+  // 3. PLANLEGGER - Årsplan, treningsplan, skoleplan (AMBER/ORANGE)
+  // ────────────────────────────────────────────────────────────
+  {
+    id: 'planlegger',
+    label: 'Planlegger',
+    icon: 'CalendarIcon',
+    color: 'amber',
+    href: '/planlegger',
+    hubPath: '/planlegger',
+    sections: [
+      {
+        id: 'planer',
+        label: 'Planer',
+        items: [
+          { href: '/planlegger/aarsplan', label: 'Årsplan', icon: 'ScorecardIcon', description: 'Periodisering og årsplan' },
+          { href: '/planlegger/treningsplan', label: 'Treningsplan', icon: 'CalendarIcon', description: 'Ukentlig treningsplan' },
+          { href: '/planlegger/skoleplan', label: 'Skoleplan', icon: 'CalendarIcon', description: 'Skoletimer, prøver og innleveringer' },
+        ],
+      },
+      {
+        id: 'turneringer',
+        label: 'Turneringer',
+        items: [
+          { href: '/planlegger/turneringer/mine', label: 'Mine turneringer', icon: 'GolfFlagIcon', description: 'Påmeldte turneringer' },
+          { href: '/planlegger/turneringer', label: 'Turneringskalender', icon: 'GolfFlagIcon', description: 'Alle turneringer' },
+          { href: '/planlegger/turneringsforberedelse', label: 'Turneringsforberedelse', icon: 'TargetIcon', description: 'Banestrategi og sjekkliste' },
+        ],
+      },
+      {
+        id: 'diverse',
+        label: 'Diverse',
+        items: [
+          { href: '/planlegger/booking', label: 'Booking', icon: 'CalendarIcon', description: 'Book treningstid' },
+          { href: '/samlinger', label: 'Samlinger', icon: 'GolfFlagIcon', description: 'Treningssamlinger' },
+        ],
+      },
+    ],
+  },
+
+  // ────────────────────────────────────────────────────────────
+  // 4. TRENING - Logging, økter, øvelser, testing (GRØNN)
   // ────────────────────────────────────────────────────────────
   {
     id: 'trening',
@@ -229,7 +243,7 @@ export const playerNavigationV4: NavArea[] = [
   },
 
   // ────────────────────────────────────────────────────────────
-  // 4. ANALYSE - Fremgang, statistikk, sammenligninger (BLÅ)
+  // 5. ANALYSE - Fremgang, statistikk, sammenligninger (BLÅ)
   // ────────────────────────────────────────────────────────────
   // VIKTIG: Dette erstatter "Min utvikling" og reduserer 17 items til 6 hubs
   // ────────────────────────────────────────────────────────────
@@ -281,7 +295,7 @@ export const playerNavigationV4: NavArea[] = [
   },
 
   // ────────────────────────────────────────────────────────────
-  // 5. MER - Profil, innstillinger, ressurser (LILLA)
+  // 6. MER - Profil, innstillinger, ressurser (LILLA)
   // ────────────────────────────────────────────────────────────
   {
     id: 'mer',
@@ -297,8 +311,8 @@ export const playerNavigationV4: NavArea[] = [
         label: 'Profil',
         items: [
           { href: '/mer/profil', label: 'Min profil', icon: 'ProfileIcon', description: 'Din profil' },
-          { href: '/mer/profil/rediger', label: 'Rediger profil', icon: 'EditIcon', description: 'Oppdater info' },
           { href: '/mer/trenerteam', label: 'Trenerteam', icon: 'ProfileIcon', description: 'Dine trenere' },
+          { href: '/mer/intake', label: 'Inntak/Onboarding', icon: 'ClipboardIcon', description: 'Fyll ut spillerprofil og vurdering' },
         ],
       },
       {
@@ -314,13 +328,7 @@ export const playerNavigationV4: NavArea[] = [
         id: 'ressurser',
         label: 'Ressurser',
         items: [
-          { href: '/mer/kunnskap', label: 'Kunnskapsbase', icon: 'LessonsIcon', description: 'Artikler og guider' },
           { href: '/plan/kalender?action=book', label: 'Book trener', icon: 'UsersIcon', description: 'Bestill time med trener' },
-          { href: '/mer/notater', label: 'Notater', icon: 'ScorecardIcon', description: 'Dine notater' },
-          { href: '/mer/baner-vaer', label: 'Baner & Vær', icon: 'CloudIcon', description: 'Finn beste baner basert på værforhold' },
-          { href: '/mer/ai-historikk', label: 'AI Treningshistorikk', icon: 'ChatIcon', description: 'Se tidligere AI-samtaler' },
-          { href: '/mer/samlinger', label: 'Samlinger', icon: 'FolderIcon', description: 'Organiser videoer, øvelser og planer' },
-          { href: '/mer/eksporter', label: 'Eksporter data', icon: 'DownloadIcon', description: 'Last ned dine data som PDF eller Excel' },
           { href: '/mer/arkiv', label: 'Arkiv', icon: 'ArchiveIcon', description: 'Administrer arkiverte elementer' },
           { href: '/mer/betaling', label: 'Betaling & Fakturering', icon: 'CreditCardIcon', description: 'Administrer betalingsmåter og abonnementer' },
         ],
@@ -492,14 +500,30 @@ export const routeRedirectsV4: Record<string, string> = {
   '/tren/testing/krav': '/analyse/tester?tab=krav',
 
   // ===================================================================
-  // PLAN REDIRECTS - V2 → V3 (unchanged from v3)
+  // PLAN → PLANLEGGER & MÅLSETNINGER REDIRECTS (V4 restructure)
   // ===================================================================
-  '/planlegg': '/plan',
-  '/planlegg/ukeplan': '/plan/ukeplan',
-  '/planlegg/kalender': '/plan/kalender',
-  '/planlegg/turneringer/kalender': '/plan/turneringer',
-  '/planlegg/turneringer/mine': '/plan/turneringer/mine',
-  '/analyser/mal': '/plan/maal',
+  // Old /plan/* paths redirected to new structure
+  '/plan': '/planlegger',
+  '/plan/kalender': '/planlegger/treningsplan',
+  '/plan/aarsplan': '/planlegger/aarsplan',
+  '/plan/skole': '/planlegger/skoleplan',
+  '/plan/turneringer': '/planlegger/turneringer',
+  '/plan/turneringer/mine': '/planlegger/turneringer/mine',
+  '/plan/turneringsforberedelse': '/planlegger/turneringsforberedelse',
+  '/plan/booking': '/planlegger/booking',
+  '/plan/sesonger': '/planlegger/aarsplan',
+  '/plan/intake': '/mer/intake',
+
+  // Målsetninger
+  '/plan/maal': '/maalsetninger/mine',
+  '/analyser/mal': '/maalsetninger/mine',
+
+  // Legacy V2 → V4
+  '/planlegg': '/planlegger',
+  '/planlegg/ukeplan': '/planlegger/treningsplan',
+  '/planlegg/kalender': '/planlegger/treningsplan',
+  '/planlegg/turneringer/kalender': '/planlegger/turneringer',
+  '/planlegg/turneringer/mine': '/planlegger/turneringer/mine',
 
   // ===================================================================
   // MER REDIRECTS - V2 → V3 (unchanged from v3)
@@ -536,11 +560,17 @@ export const areaTabsConfig = {
     { href: '/analyse/tester', label: 'Tester', icon: 'ClipboardList' },
     { href: '/analyse/prestasjoner', label: 'Prestasjoner', icon: 'Award' },
   ],
-  plan: [
-    { href: '/plan', label: 'Oversikt', icon: 'LayoutDashboard' },
-    { href: '/plan/maal', label: 'Mål', icon: 'Target' },
-    { href: '/plan/kalender', label: 'Planlegger', icon: 'Calendar' },
-    { href: '/plan/turneringer', label: 'Turneringer', icon: 'Trophy' },
+  maalsetninger: [
+    { href: '/maalsetninger', label: 'Oversikt', icon: 'LayoutDashboard' },
+    { href: '/maalsetninger/mine', label: 'Mine mål', icon: 'Target' },
+    { href: '/maalsetninger/progresjon', label: 'Progresjon', icon: 'TrendingUp' },
+  ],
+  planlegger: [
+    { href: '/planlegger', label: 'Oversikt', icon: 'LayoutDashboard' },
+    { href: '/planlegger/aarsplan', label: 'Årsplan', icon: 'Calendar' },
+    { href: '/planlegger/treningsplan', label: 'Treningsplan', icon: 'Calendar' },
+    { href: '/planlegger/skoleplan', label: 'Skoleplan', icon: 'BookOpen' },
+    { href: '/planlegger/turneringer/mine', label: 'Turneringer', icon: 'Trophy' },
   ],
   // Video tabs - consolidated from separate pages
   video: [

@@ -1,7 +1,7 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 /**
  * TIER Golf Academy - Coach Booking Calendar
- * Design System v3.0 - Premium Light
+ * Design System v3.0 - Premium Light (Modernized)
  *
  * MIGRATED TO PAGE ARCHITECTURE - Zero inline styles
  *
@@ -18,34 +18,52 @@ import {
   Check,
   X,
   Settings,
+  Calendar,
+  User,
+  Video,
+  Target,
+  AlertCircle,
 } from 'lucide-react';
-import Card from '../../ui/primitives/Card';
 import Button from '../../ui/primitives/Button';
 import PageHeader from '../../ui/raw-blocks/PageHeader.raw';
-import { SectionTitle, SubSectionTitle } from '../../components/typography/Headings';
 import BookingCreateDialog, { BookingFormData } from './BookingCreateDialog';
 
 // ============================================================================
-// CLASS MAPPINGS
+// MODERN STATUS STYLING
 // ============================================================================
 
 const SLOT_STATUS_CLASSES = {
   booked: {
-    bg: 'bg-tier-navy/15',
-    border: 'border-l-tier-navy',
+    bg: 'bg-teal-50',
+    border: 'border-l-teal-500',
+    hoverBg: 'hover:bg-teal-100',
+    ring: 'ring-teal-200',
   },
   pending: {
-    bg: 'bg-tier-warning/15',
-    border: 'border-l-tier-warning',
+    bg: 'bg-amber-50',
+    border: 'border-l-amber-400',
+    hoverBg: 'hover:bg-amber-100',
+    ring: 'ring-amber-200',
   },
   blocked: {
-    bg: 'bg-tier-surface-base',
-    border: 'border-l-tier-border-default',
+    bg: 'bg-gray-100',
+    border: 'border-l-gray-300',
+    hoverBg: '',
+    ring: 'ring-gray-200',
   },
   available: {
-    bg: 'bg-tier-white',
-    border: 'border-l-tier-border-default',
+    bg: 'bg-white',
+    border: 'border-l-transparent',
+    hoverBg: 'hover:bg-tier-navy/5',
+    ring: 'ring-tier-navy/20',
   },
+};
+
+// Session type icons
+const SESSION_TYPE_ICONS: Record<string, React.ReactNode> = {
+  'Individuell økt': <User size={12} className="text-teal-600" />,
+  'Videoanalyse': <Video size={12} className="text-purple-600" />,
+  'På banen': <Target size={12} className="text-green-600" />,
 };
 
 interface BookingSlot {
@@ -322,7 +340,10 @@ export default function CoachBookingCalendar() {
   if (loading) {
     return (
       <div className="min-h-screen bg-tier-surface-base flex items-center justify-center">
-        <div className="w-12 h-12 border-4 border-tier-border-default border-t-tier-navy rounded-full animate-spin" />
+        <div className="flex flex-col items-center gap-4">
+          <div className="w-12 h-12 border-4 border-gray-200 border-t-tier-navy rounded-full animate-spin" />
+          <p className="text-sm text-gray-500 font-medium">Laster kalender...</p>
+        </div>
       </div>
     );
   }
@@ -335,20 +356,26 @@ export default function CoachBookingCalendar() {
         subtitle="Administrer dine bookinger og tilgjengelighet"
         helpText="Ukentlig kalendervisning av alle dine bookinger. Se bekreftet og ventende timer, tilgjengelige slots og blokkert tid. Klikk på et tidspunkt for å opprette en ny booking eller administrere eksisterende."
         actions={
-          <div className="flex gap-2.5">
-            <Button
-              variant="secondary"
-              leftIcon={<Clock size={18} />}
+          <div className="flex gap-3">
+            <button
               onClick={() => navigate('/coach/booking/requests')}
-              className={stats.pending > 0 ? 'border-tier-warning text-tier-warning' : ''}
+              className={`
+                relative flex items-center gap-2 py-2.5 px-4 rounded-xl text-sm font-medium
+                transition-all duration-150 border-2
+                ${stats.pending > 0
+                  ? 'bg-amber-50 border-amber-300 text-amber-700 hover:bg-amber-100 hover:border-amber-400'
+                  : 'bg-white border-gray-200 text-gray-700 hover:bg-gray-50 hover:border-gray-300'
+                }
+              `}
             >
+              <Clock size={18} />
               Forespørsler
               {stats.pending > 0 && (
-                <span className="ml-2 py-0.5 px-2 bg-tier-warning text-tier-navy rounded-full text-xs font-semibold">
+                <span className="ml-1 py-0.5 px-2.5 bg-amber-400 text-white rounded-full text-xs font-bold shadow-sm animate-pulse">
                   {stats.pending}
                 </span>
               )}
-            </Button>
+            </button>
             <Button
               variant="primary"
               leftIcon={<Settings size={18} />}
@@ -360,103 +387,155 @@ export default function CoachBookingCalendar() {
         }
       />
 
-      {/* Quick stats below header */}
-      <div className="px-6 pb-4">
-        <div className="flex gap-4">
-          <div className="flex items-center gap-2 py-2 px-3.5 bg-tier-navy/10 rounded-lg">
-            <div className="w-2 h-2 rounded-full bg-tier-navy" />
-            <span className="text-[13px] text-tier-navy">
-              <strong>{stats.booked}</strong> bookede
-            </span>
+      {/* Modern Stats Dashboard */}
+      <div className="px-6 pb-5">
+        <div className="flex flex-wrap gap-3">
+          {/* Booked stats */}
+          <div className="group flex items-center gap-3 py-2.5 px-4 bg-gradient-to-r from-teal-50 to-teal-100/50 rounded-xl border border-teal-200/60 shadow-sm hover:shadow-md transition-all duration-200">
+            <div className="w-10 h-10 rounded-lg bg-teal-500 flex items-center justify-center shadow-sm">
+              <Check size={18} className="text-white" />
+            </div>
+            <div>
+              <p className="text-2xl font-bold text-teal-700 leading-none">{stats.booked}</p>
+              <p className="text-xs text-teal-600/80 mt-0.5 font-medium">Bekreftede</p>
+            </div>
           </div>
-          <div className="flex items-center gap-2 py-2 px-3.5 bg-tier-warning/10 rounded-lg">
-            <div className="w-2 h-2 rounded-full bg-tier-warning" />
-            <span className="text-[13px] text-tier-navy">
-              <strong>{stats.pending}</strong> ventende
-            </span>
+
+          {/* Pending stats */}
+          <div className="group flex items-center gap-3 py-2.5 px-4 bg-gradient-to-r from-amber-50 to-amber-100/50 rounded-xl border border-amber-200/60 shadow-sm hover:shadow-md transition-all duration-200">
+            <div className="w-10 h-10 rounded-lg bg-amber-400 flex items-center justify-center shadow-sm">
+              <Clock size={18} className="text-white" />
+            </div>
+            <div>
+              <p className="text-2xl font-bold text-amber-700 leading-none">{stats.pending}</p>
+              <p className="text-xs text-amber-600/80 mt-0.5 font-medium">Venter</p>
+            </div>
           </div>
-          <div className="flex items-center gap-2 py-2 px-3.5 bg-tier-success/10 rounded-lg">
-            <div className="w-2 h-2 rounded-full bg-tier-success" />
-            <span className="text-[13px] text-tier-navy">
-              <strong>{stats.available}</strong> ledige
-            </span>
+
+          {/* Available stats */}
+          <div className="group flex items-center gap-3 py-2.5 px-4 bg-gradient-to-r from-emerald-50 to-emerald-100/50 rounded-xl border border-emerald-200/60 shadow-sm hover:shadow-md transition-all duration-200">
+            <div className="w-10 h-10 rounded-lg bg-emerald-500 flex items-center justify-center shadow-sm">
+              <Calendar size={18} className="text-white" />
+            </div>
+            <div>
+              <p className="text-2xl font-bold text-emerald-700 leading-none">{stats.available}</p>
+              <p className="text-xs text-emerald-600/80 mt-0.5 font-medium">Ledige</p>
+            </div>
           </div>
         </div>
       </div>
 
-      {/* Calendar navigation */}
-      <div className="bg-tier-white py-4 px-6 flex items-center justify-between border-b border-tier-border-default">
-        <div className="flex items-center gap-3">
-          <button
-            onClick={goToPreviousWeek}
-            className="w-9 h-9 rounded-lg bg-tier-surface-base border-none flex items-center justify-center cursor-pointer"
-          >
-            <ChevronLeft size={20} className="text-tier-navy" />
-          </button>
-          <button
-            onClick={goToNextWeek}
-            className="w-9 h-9 rounded-lg bg-tier-surface-base border-none flex items-center justify-center cursor-pointer"
-          >
-            <ChevronRight size={20} className="text-tier-navy" />
-          </button>
-          <SectionTitle className="m-0">
+      {/* Modern Calendar Navigation */}
+      <div className="bg-white py-4 px-6 flex items-center justify-between border-y border-gray-200/80 shadow-sm">
+        <div className="flex items-center gap-4">
+          <div className="flex items-center bg-gray-100 rounded-lg p-1">
+            <button
+              onClick={goToPreviousWeek}
+              className="w-9 h-9 rounded-md bg-transparent hover:bg-white flex items-center justify-center cursor-pointer transition-all duration-150 border-none"
+            >
+              <ChevronLeft size={20} className="text-gray-600" />
+            </button>
+            <button
+              onClick={goToNextWeek}
+              className="w-9 h-9 rounded-md bg-transparent hover:bg-white flex items-center justify-center cursor-pointer transition-all duration-150 border-none"
+            >
+              <ChevronRight size={20} className="text-gray-600" />
+            </button>
+          </div>
+          <div className="h-6 w-px bg-gray-200" />
+          <h2 className="text-lg font-semibold text-gray-900 tracking-tight">
             {weekDates[0].toLocaleDateString('nb-NO', { day: 'numeric', month: 'long' })} -{' '}
             {weekDates[6].toLocaleDateString('nb-NO', { day: 'numeric', month: 'long', year: 'numeric' })}
-          </SectionTitle>
+          </h2>
         </div>
 
         <button
           onClick={goToToday}
-          className="py-2 px-4 bg-tier-white border border-tier-border-default rounded-lg text-[13px] font-medium text-tier-navy cursor-pointer"
+          className="py-2 px-4 bg-tier-navy text-white rounded-lg text-sm font-medium cursor-pointer hover:bg-tier-navy-dark transition-colors duration-150 border-none shadow-sm"
         >
           I dag
         </button>
       </div>
 
-      {/* Calendar grid */}
+      {/* Modern Calendar Grid */}
       <div className="p-6 overflow-x-auto">
-        <div className="grid grid-cols-[60px_repeat(7,1fr)] gap-px bg-tier-border-default rounded-xl overflow-hidden min-w-[900px]">
+        <div className="bg-white rounded-2xl shadow-tier-card border border-gray-200/60 overflow-hidden min-w-[900px]">
           {/* Header row */}
-          <div className="bg-tier-surface-base p-3" />
-          {weekDates.map((date) => {
-            const isToday = date.toDateString() === new Date().toDateString();
-            const daySchedule = schedule.find(
-              (s) => s.date === date.toISOString().split('T')[0]
-            );
-            const bookedCount = daySchedule?.slots.filter((s) => s.status === 'booked').length || 0;
+          <div className="grid grid-cols-[70px_repeat(7,1fr)] border-b border-gray-200">
+            <div className="bg-gray-50/50 p-3" />
+            {weekDates.map((date) => {
+              const isToday = date.toDateString() === new Date().toDateString();
+              const isWeekend = date.getDay() === 0 || date.getDay() === 6;
+              const daySchedule = schedule.find(
+                (s) => s.date === date.toISOString().split('T')[0]
+              );
+              const bookedCount = daySchedule?.slots.filter((s) => s.status === 'booked').length || 0;
+              const pendingCount = daySchedule?.slots.filter((s) => s.status === 'pending').length || 0;
 
-            return (
-              <div
-                key={date.toISOString()}
-                className={`p-3 text-center ${isToday ? 'bg-tier-navy/5' : 'bg-tier-surface-base'}`}
-              >
-                <p className="text-[11px] text-tier-text-secondary m-0 uppercase">
-                  {date.toLocaleDateString('nb-NO', { weekday: 'short' })}
-                </p>
-                <p className={`text-lg font-semibold mt-1 m-0 ${isToday ? 'text-tier-navy' : 'text-tier-navy'}`}>
-                  {date.getDate()}
-                </p>
-                {bookedCount > 0 && (
-                  <p className="text-[10px] text-tier-navy mt-1 m-0">
-                    {bookedCount} booking{bookedCount > 1 ? 'er' : ''}
+              return (
+                <div
+                  key={date.toISOString()}
+                  className={`p-4 text-center border-l border-gray-200/60 transition-colors duration-200 ${
+                    isToday
+                      ? 'bg-tier-navy/5'
+                      : isWeekend
+                        ? 'bg-gray-50/30'
+                        : 'bg-white'
+                  }`}
+                >
+                  <p className={`text-[11px] font-medium uppercase tracking-wider m-0 ${
+                    isWeekend ? 'text-gray-400' : 'text-gray-500'
+                  }`}>
+                    {date.toLocaleDateString('nb-NO', { weekday: 'short' })}
                   </p>
-                )}
-              </div>
-            );
-          })}
+                  <div className={`inline-flex items-center justify-center w-10 h-10 rounded-full mt-1 ${
+                    isToday
+                      ? 'bg-tier-navy text-white shadow-sm'
+                      : ''
+                  }`}>
+                    <span className={`text-xl font-semibold ${
+                      isToday ? 'text-white' : isWeekend ? 'text-gray-400' : 'text-gray-900'
+                    }`}>
+                      {date.getDate()}
+                    </span>
+                  </div>
+                  {(bookedCount > 0 || pendingCount > 0) && (
+                    <div className="flex items-center justify-center gap-1.5 mt-2">
+                      {bookedCount > 0 && (
+                        <span className="inline-flex items-center px-1.5 py-0.5 bg-teal-100 text-teal-700 rounded text-[10px] font-medium">
+                          {bookedCount}
+                        </span>
+                      )}
+                      {pendingCount > 0 && (
+                        <span className="inline-flex items-center px-1.5 py-0.5 bg-amber-100 text-amber-700 rounded text-[10px] font-medium">
+                          {pendingCount}
+                        </span>
+                      )}
+                    </div>
+                  )}
+                </div>
+              );
+            })}
 
-          {/* Time slots */}
+          </div>
+
+          {/* Time slots grid */}
           {['09:00', '10:00', '11:00', '12:00', '13:00', '14:00', '15:00', '16:00', '17:00'].map(
             (time) => (
-              <React.Fragment key={time}>
-                <div className={`bg-tier-white p-2 text-xs text-tier-text-secondary text-right ${time === '12:00' ? 'border-t-2 border-tier-border-default' : ''}`}>
-                  {time}
+              <div key={time} className={`grid grid-cols-[70px_repeat(7,1fr)] ${time === '12:00' ? 'border-t-2 border-gray-200' : 'border-t border-gray-100'}`}>
+                {/* Time label */}
+                <div className="bg-gray-50/50 px-3 py-3 flex items-start justify-end">
+                  <span className="text-xs font-medium text-gray-500">{time}</span>
                 </div>
+
+                {/* Day slots */}
                 {weekDates.map((date) => {
                   const dateStr = date.toISOString().split('T')[0];
+                  const isWeekend = date.getDay() === 0 || date.getDay() === 6;
                   const daySchedule = schedule.find((s) => s.date === dateStr);
                   const slot = daySchedule?.slots.find((s) => s.startTime === time);
                   const statusClasses = slot ? getStatusClasses(slot.status) : getStatusClasses('available');
+                  const isClickable = slot?.booking || slot?.status === 'available';
 
                   return (
                     <div
@@ -473,83 +552,172 @@ export default function CoachBookingCalendar() {
                           setCreateDialogOpen(true);
                         }
                       }}
-                      className={`p-2 min-h-[60px] ${statusClasses.bg} ${slot?.booking ? `border-l-[3px] ${statusClasses.border}` : ''} ${slot?.booking || slot?.status === 'available' ? 'cursor-pointer hover:bg-tier-navy/5' : 'cursor-default'} ${time === '12:00' ? 'border-t-2 border-t-tier-border-default' : ''}`}
+                      className={`
+                        relative p-2 min-h-[72px] border-l border-gray-100
+                        transition-all duration-150 group
+                        ${statusClasses.bg}
+                        ${slot?.booking ? `border-l-[3px] ${statusClasses.border}` : ''}
+                        ${isClickable ? `cursor-pointer ${statusClasses.hoverBg}` : 'cursor-default'}
+                        ${isWeekend && !slot?.booking ? 'bg-gray-50/30' : ''}
+                      `}
                     >
+                      {/* Booking card */}
                       {slot?.booking && (
-                        <div>
-                          <div className="flex items-center gap-1.5 mb-1">
-                            <div className="w-6 h-6 rounded-full bg-tier-navy text-white flex items-center justify-center text-[10px] font-semibold">
+                        <div className={`
+                          h-full rounded-lg p-2
+                          ${slot.status === 'pending' ? 'bg-amber-50/80' : 'bg-teal-50/80'}
+                          group-hover:shadow-sm transition-shadow duration-150
+                        `}>
+                          {/* Avatar and name */}
+                          <div className="flex items-center gap-2 mb-1.5">
+                            <div className={`
+                              w-7 h-7 rounded-full flex items-center justify-center text-[11px] font-semibold shadow-sm
+                              ${slot.status === 'pending'
+                                ? 'bg-gradient-to-br from-amber-400 to-amber-500 text-white'
+                                : 'bg-gradient-to-br from-teal-500 to-teal-600 text-white'
+                              }
+                            `}>
                               {slot.booking.playerInitials}
                             </div>
-                            <span className="text-xs font-medium text-tier-navy overflow-hidden text-ellipsis whitespace-nowrap">
+                            <span className="text-sm font-medium text-gray-900 truncate flex-1">
                               {slot.booking.playerName}
                             </span>
                           </div>
-                          <p className="text-[11px] text-tier-text-secondary m-0">
-                            {slot.booking.sessionType}
-                          </p>
-                          {slot.status === 'pending' && (
-                            <span className="inline-block mt-1 py-0.5 px-1.5 bg-tier-warning text-tier-navy rounded text-[9px] font-semibold">
-                              VENTER
+
+                          {/* Session type with icon */}
+                          <div className="flex items-center gap-1.5">
+                            {SESSION_TYPE_ICONS[slot.booking.sessionType] || <User size={12} className="text-gray-400" />}
+                            <span className="text-[11px] text-gray-600 truncate">
+                              {slot.booking.sessionType}
                             </span>
+                          </div>
+
+                          {/* Pending badge */}
+                          {slot.status === 'pending' && (
+                            <div className="flex items-center gap-1 mt-2">
+                              <span className="inline-flex items-center gap-1 py-0.5 px-2 bg-amber-400 text-white rounded-full text-[10px] font-semibold shadow-sm">
+                                <AlertCircle size={10} />
+                                Venter svar
+                              </span>
+                            </div>
                           )}
                         </div>
                       )}
+
+                      {/* Blocked slot with diagonal stripes */}
                       {slot?.status === 'blocked' && (
-                        <p className="text-[11px] text-tier-text-secondary m-0 italic">
-                          Blokkert
-                        </p>
+                        <div className="h-full rounded-lg relative overflow-hidden bg-gray-100">
+                          {/* Diagonal stripe pattern */}
+                          <div
+                            className="absolute inset-0 opacity-30"
+                            style={{
+                              backgroundImage: `repeating-linear-gradient(
+                                -45deg,
+                                transparent,
+                                transparent 4px,
+                                #9ca3af 4px,
+                                #9ca3af 8px
+                              )`
+                            }}
+                          />
+                          <div className="relative z-10 flex items-center justify-center h-full">
+                            <span className="text-xs font-medium text-gray-500 bg-gray-100/90 px-2 py-0.5 rounded">
+                              Blokkert
+                            </span>
+                          </div>
+                        </div>
+                      )}
+
+                      {/* Available slot hover indicator */}
+                      {slot?.status === 'available' && (
+                        <div className="absolute inset-2 rounded-lg border-2 border-dashed border-transparent group-hover:border-tier-navy/20 transition-colors duration-150 flex items-center justify-center">
+                          <span className="text-xs text-gray-400 opacity-0 group-hover:opacity-100 transition-opacity duration-150">
+                            + Ny booking
+                          </span>
+                        </div>
                       )}
                     </div>
                   );
                 })}
-              </React.Fragment>
+              </div>
             )
           )}
         </div>
       </div>
 
-      {/* Slot detail modal */}
+      {/* Modern Slot Detail Modal */}
       {selectedSlot && selectedSlot.booking && (
         <>
+          {/* Backdrop with blur */}
           <div
-            className="fixed inset-0 bg-black/50 z-[100]"
+            className="fixed inset-0 bg-black/40 backdrop-blur-sm z-[100] animate-fade-in"
             onClick={() => setSelectedSlot(null)}
           />
-          <div className="fixed top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 bg-tier-white rounded-xl p-6 w-[400px] max-w-[90vw] z-[101] shadow-lg">
-            <div className="flex items-center justify-between mb-5">
-              <SubSectionTitle className="m-0">
-                Booking-detaljer
-              </SubSectionTitle>
-              <button
-                onClick={() => setSelectedSlot(null)}
-                className="w-8 h-8 rounded bg-tier-surface-base border-none flex items-center justify-center cursor-pointer"
-              >
-                <X size={18} className="text-tier-text-secondary" />
-              </button>
-            </div>
 
-            <div className="mb-5">
-              <div className="flex items-center gap-3 mb-4">
-                <div className="w-12 h-12 rounded-full bg-tier-navy text-white flex items-center justify-center text-base font-semibold">
-                  {selectedSlot.booking.playerInitials}
+          {/* Modal */}
+          <div className="fixed top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 bg-white rounded-2xl w-[420px] max-w-[92vw] z-[101] shadow-2xl overflow-hidden animate-fade-in">
+            {/* Header with status color */}
+            <div className={`px-6 py-4 ${
+              selectedSlot.status === 'pending'
+                ? 'bg-gradient-to-r from-amber-50 to-amber-100/50'
+                : 'bg-gradient-to-r from-teal-50 to-teal-100/50'
+            }`}>
+              <div className="flex items-center justify-between">
+                <div className="flex items-center gap-3">
+                  {/* Avatar */}
+                  <div className={`
+                    w-14 h-14 rounded-xl flex items-center justify-center text-lg font-bold shadow-md
+                    ${selectedSlot.status === 'pending'
+                      ? 'bg-gradient-to-br from-amber-400 to-amber-500 text-white'
+                      : 'bg-gradient-to-br from-teal-500 to-teal-600 text-white'
+                    }
+                  `}>
+                    {selectedSlot.booking.playerInitials}
+                  </div>
+                  <div>
+                    <h3 className="text-lg font-semibold text-gray-900 m-0">
+                      {selectedSlot.booking.playerName}
+                    </h3>
+                    <div className="flex items-center gap-2 mt-1">
+                      {SESSION_TYPE_ICONS[selectedSlot.booking.sessionType] || <User size={14} className="text-gray-400" />}
+                      <span className="text-sm text-gray-600">
+                        {selectedSlot.booking.sessionType}
+                      </span>
+                    </div>
+                  </div>
                 </div>
-                <div>
-                  <p className="text-[17px] font-semibold text-tier-navy m-0">
-                    {selectedSlot.booking.playerName}
-                  </p>
-                  <p className="text-xs text-tier-text-secondary mt-0.5 m-0">
-                    {selectedSlot.booking.sessionType}
-                  </p>
-                </div>
+                <button
+                  onClick={() => setSelectedSlot(null)}
+                  className="w-9 h-9 rounded-lg bg-white/80 hover:bg-white border-none flex items-center justify-center cursor-pointer transition-colors shadow-sm"
+                >
+                  <X size={18} className="text-gray-500" />
+                </button>
               </div>
 
-              <div className="flex gap-3 mb-3">
-                <div className="flex-1 p-3 bg-tier-surface-base rounded-lg">
-                  <p className="text-xs text-tier-text-secondary m-0">
+              {/* Status badge */}
+              {selectedSlot.status === 'pending' && (
+                <div className="mt-3 inline-flex items-center gap-1.5 px-3 py-1.5 bg-amber-400 text-white rounded-full text-xs font-semibold shadow-sm">
+                  <AlertCircle size={12} />
+                  Venter på godkjenning
+                </div>
+              )}
+              {selectedSlot.status === 'booked' && (
+                <div className="mt-3 inline-flex items-center gap-1.5 px-3 py-1.5 bg-teal-500 text-white rounded-full text-xs font-semibold shadow-sm">
+                  <Check size={12} />
+                  Bekreftet
+                </div>
+              )}
+            </div>
+
+            {/* Content */}
+            <div className="p-6">
+              {/* Date and time cards */}
+              <div className="grid grid-cols-2 gap-3 mb-4">
+                <div className="p-4 bg-gray-50 rounded-xl border border-gray-100">
+                  <p className="text-xs font-medium text-gray-500 uppercase tracking-wide m-0">
                     Dato
                   </p>
-                  <p className="text-[15px] text-tier-navy mt-1 m-0">
+                  <p className="text-base font-semibold text-gray-900 mt-1.5 m-0 capitalize">
                     {new Date(selectedSlot.date).toLocaleDateString('nb-NO', {
                       weekday: 'long',
                       day: 'numeric',
@@ -557,53 +725,63 @@ export default function CoachBookingCalendar() {
                     })}
                   </p>
                 </div>
-                <div className="flex-1 p-3 bg-tier-surface-base rounded-lg">
-                  <p className="text-xs text-tier-text-secondary m-0">
-                    Tid
+                <div className="p-4 bg-gray-50 rounded-xl border border-gray-100">
+                  <p className="text-xs font-medium text-gray-500 uppercase tracking-wide m-0">
+                    Tidspunkt
                   </p>
-                  <p className="text-[15px] text-tier-navy mt-1 m-0">
+                  <p className="text-base font-semibold text-gray-900 mt-1.5 m-0">
                     {selectedSlot.startTime} - {selectedSlot.endTime}
                   </p>
                 </div>
               </div>
 
+              {/* Notes */}
               {selectedSlot.booking.notes && (
-                <div className="p-3 bg-tier-navy/5 rounded-lg border-l-[3px] border-l-tier-navy">
-                  <p className="text-xs text-tier-text-secondary m-0">
-                    Notat fra spiller
-                  </p>
-                  <p className="text-[15px] text-tier-navy mt-1 m-0">
-                    {selectedSlot.booking.notes}
-                  </p>
+                <div className="p-4 bg-blue-50 rounded-xl border border-blue-100 mb-4">
+                  <div className="flex items-start gap-2">
+                    <div className="w-6 h-6 rounded-full bg-blue-100 flex items-center justify-center flex-shrink-0 mt-0.5">
+                      <User size={12} className="text-blue-600" />
+                    </div>
+                    <div>
+                      <p className="text-xs font-medium text-blue-600 m-0">
+                        Notat fra spiller
+                      </p>
+                      <p className="text-sm text-gray-700 mt-1 m-0 leading-relaxed">
+                        {selectedSlot.booking.notes}
+                      </p>
+                    </div>
+                  </div>
                 </div>
               )}
-            </div>
 
-            {selectedSlot.status === 'pending' ? (
-              <div className="flex gap-3">
+              {/* Actions */}
+              {selectedSlot.status === 'pending' ? (
+                <div className="flex gap-3">
+                  <button
+                    onClick={() => handleDecline(selectedSlot.id)}
+                    className="flex-1 flex items-center justify-center gap-2 py-3 px-4 bg-white text-red-600 border-2 border-red-200 hover:border-red-300 hover:bg-red-50 rounded-xl text-sm font-semibold cursor-pointer transition-all duration-150"
+                  >
+                    <X size={18} />
+                    Avslå
+                  </button>
+                  <button
+                    onClick={() => handleApprove(selectedSlot.id)}
+                    className="flex-1 flex items-center justify-center gap-2 py-3 px-4 bg-gradient-to-r from-teal-500 to-teal-600 hover:from-teal-600 hover:to-teal-700 text-white border-none rounded-xl text-sm font-semibold cursor-pointer shadow-md hover:shadow-lg transition-all duration-150"
+                  >
+                    <Check size={18} />
+                    Godkjenn
+                  </button>
+                </div>
+              ) : (
                 <button
-                  onClick={() => handleDecline(selectedSlot.id)}
-                  className="flex-1 flex items-center justify-center gap-2 p-3 bg-tier-white text-tier-error border border-tier-error rounded-lg text-sm font-semibold cursor-pointer"
+                  onClick={() => navigate(`/coach/athletes/${selectedSlot.booking?.id}`)}
+                  className="w-full flex items-center justify-center gap-2 py-3 px-4 bg-tier-navy hover:bg-tier-navy-dark text-white border-none rounded-xl text-sm font-semibold cursor-pointer shadow-md hover:shadow-lg transition-all duration-150"
                 >
-                  <X size={18} />
-                  Avslå
+                  <User size={18} />
+                  Se spillerprofil
                 </button>
-                <button
-                  onClick={() => handleApprove(selectedSlot.id)}
-                  className="flex-1 flex items-center justify-center gap-2 p-3 bg-tier-success text-white border-none rounded-lg text-sm font-semibold cursor-pointer"
-                >
-                  <Check size={18} />
-                  Godkjenn
-                </button>
-              </div>
-            ) : (
-              <button
-                onClick={() => navigate(`/coach/athletes/${selectedSlot.booking?.id}`)}
-                className="w-full p-3 bg-tier-navy text-white border-none rounded-lg text-sm font-semibold cursor-pointer"
-              >
-                Se spillerprofil
-              </button>
-            )}
+              )}
+            </div>
           </div>
         </>
       )}

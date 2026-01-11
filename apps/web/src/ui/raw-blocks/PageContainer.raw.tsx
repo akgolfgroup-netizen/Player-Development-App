@@ -32,6 +32,8 @@ export interface PageContainerProps {
   className?: string;
   /** Vertical padding */
   paddingY?: 'none' | 'sm' | 'md' | 'lg';
+  /** Full width without max-width constraint */
+  fullWidth?: boolean;
 }
 
 const PageContainer: React.FC<PageContainerProps> = ({
@@ -39,6 +41,7 @@ const PageContainer: React.FC<PageContainerProps> = ({
   background = 'base',
   className = '',
   paddingY = 'md',
+  fullWidth = false,
 }) => {
   const bgClasses = {
     base: 'bg-tier-surface-base',
@@ -58,8 +61,8 @@ const PageContainer: React.FC<PageContainerProps> = ({
     <div className={`w-full ${bgClasses[background]} ${className}`.trim()}>
       {/* Full-width wrapper with responsive horizontal padding */}
       <div className="w-full px-4 md:px-6 lg:px-8">
-        {/* Max-width content area matching PageHeader */}
-        <div className={`max-w-[1200px] mx-auto ${paddingClasses[paddingY]}`.trim()}>
+        {/* Max-width content area matching PageHeader (or full width if specified) */}
+        <div className={`${fullWidth ? 'w-full' : 'max-w-[1200px]'} mx-auto ${paddingClasses[paddingY]}`.trim()}>
           {children}
         </div>
       </div>

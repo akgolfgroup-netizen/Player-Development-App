@@ -53,7 +53,7 @@ export const OversiktDayView: React.FC<OversiktDayViewProps> = ({
     >
       {/* Date header */}
       <div
-        className="sticky top-0 z-10 px-4 py-4 border-b"
+        className=" px-4 py-4 border-b"
         style={{
           backgroundColor: isToday
             ? 'var(--calendar-surface-today)'

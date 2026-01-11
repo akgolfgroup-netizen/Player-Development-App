@@ -808,7 +808,7 @@ const TIERGolfBrukerprofilOnboarding = ({ profile: apiProfile = null }) => {
                   <option value="Mor">Mor</option>
                   <option value="Far">Far</option>
                   <option value="Fosterforelder">Fosterforelder</option>
-                  <option value="Verge">Verge</option>
+                  <option value="Fullmakt">Fullmakt</option>
                   <option value="Annen">Annen</option>
                 </select>
               </div>

@@ -29,6 +29,8 @@ export interface CalendarEvent {
   isAllDay?: boolean;
   weeklyFocus?: string; // For recommended sessions
   badges?: string[];
+  description?: string; // Session description for hover preview
+  focusAreas?: string[]; // Focus areas for hover preview
 }
 
 export interface UseCalendarEventsResult {

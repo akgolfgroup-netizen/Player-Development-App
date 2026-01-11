@@ -184,7 +184,7 @@ export const playerNavigationV3: NavArea[] = [
         id: 'logging',
         label: 'Logg',
         items: [
-          { href: '/trening/logg', label: 'Logg treningsøkt', icon: 'AddIcon', description: 'Registrer treningsøkt' },
+          { href: '/trening/logg', label: 'Registrer treningsøkt', icon: 'AddIcon', description: 'Registrer treningsøkt' },
           { href: '/trening/dagbok', label: 'Treningshistorikk', icon: 'ScorecardIcon', description: 'Se treningshistorikk' },
           { href: '/training/statistics', label: 'Treningsanalyse', icon: 'StatsIcon', description: 'Ukentlig/månedlig statistikk og analyse' },
         ],
@@ -193,7 +193,7 @@ export const playerNavigationV3: NavArea[] = [
         id: 'ovelser',
         label: 'Teknisk plan',
         items: [
-          { href: '/trening/teknikkplan', label: 'Teknikkplan', icon: 'TargetIcon', description: 'Teknisk utviklingsplan' },
+          { href: '/plan/teknisk-plan', label: 'P-System (P1.0-P10.0)', icon: 'TargetIcon', description: 'Teknisk utviklingsplan P-system' },
           { href: '/trening/ovelser', label: 'Øvelser', icon: 'ClubIcon', description: 'Øvelsesbibliotek' },
           { href: '/trening/videoer', label: 'Videoer', icon: 'VideoIcon', description: 'Instruksjonsvideoer' },
           { href: '/videos/compare', label: 'Sammenlign videoer', icon: 'CompareIcon', description: 'Sammenlign videoer side-ved-side' },
@@ -274,7 +274,6 @@ export const playerNavigationV3: NavArea[] = [
         label: 'Profil',
         items: [
           { href: '/mer/profil', label: 'Min profil', icon: 'ProfileIcon', description: 'Din profil' },
-          { href: '/mer/profil/rediger', label: 'Rediger profil', icon: 'EditIcon', description: 'Oppdater info' },
           { href: '/mer/trenerteam', label: 'Trenerteam', icon: 'ProfileIcon', description: 'Dine trenere' },
         ],
       },
@@ -317,10 +316,16 @@ export const playerNavigationV3: NavArea[] = [
  */
 export const playerQuickActionsV3 = [
   {
-    label: 'Logg trening',
+    label: 'Planlegg ny økt',
     icon: 'AddIcon',
-    href: '/trening/logg',
+    href: '/session/new',
     variant: 'primary' as const,
+  },
+  {
+    label: 'Hurtigregistrering',
+    icon: 'ClockIcon',
+    href: '/session/quick',
+    variant: 'secondary' as const,
   },
   {
     label: 'Registrer test',

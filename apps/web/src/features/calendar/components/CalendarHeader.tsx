@@ -7,7 +7,7 @@
  * Header for the calendar with:
  * - Month/Year label (contextual)
  * - Week label (when view=week)
- * - View switcher: DAG | UKE | MÅNED | ÅR (segmented control)
+ * - View switcher: Dag | Uke | Måned | År (segmented control)
  * - Today button ("I dag")
  * - Next/Prev navigation
  * - Primary action: "Ny økt"
@@ -34,10 +34,10 @@ interface CalendarHeaderProps {
 }
 
 const VIEW_OPTIONS: { value: CalendarView; label: string; tooltip: string }[] = [
-  { value: 'day', label: 'DAG', tooltip: 'Vis detaljert timeplan for én dag med alle økter' },
-  { value: 'week', label: 'UKE', tooltip: 'Vis 7-dagers ukesoversikt med økter fordelt på dager' },
-  { value: 'month', label: 'MÅNED', tooltip: 'Vis hele måneden med økter merket på datoene' },
-  { value: 'year', label: 'ÅR', tooltip: 'Vis årsoversikt med treningsfordeling per måned' },
+  { value: 'day', label: 'Dag', tooltip: 'Vis detaljert timeplan for én dag med alle økter' },
+  { value: 'week', label: 'Uke', tooltip: 'Vis 7-dagers ukesoversikt med økter fordelt på dager' },
+  { value: 'month', label: 'Måned', tooltip: 'Vis hele måneden med økter merket på datoene' },
+  { value: 'year', label: 'År', tooltip: 'Vis årsoversikt med treningsfordeling per måned' },
 ];
 
 export const CalendarHeader: React.FC<CalendarHeaderProps> = ({

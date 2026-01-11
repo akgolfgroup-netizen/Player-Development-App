@@ -536,12 +536,12 @@ const RessurserContainer = () => {
     );
   };
 
+  const unreadCount = resources.filter(r => r.isNew && !r.isSaved).length;
+
   return (
     <div className="min-h-screen bg-tier-surface-base">
       <PageHeader
         title="Ressurser"
-        subtitle="Videoer, artikler og læringsmateriale"
-        helpText="Tilgang til læringsressurser, treningsvideoer, artikler og veiledninger. Utvid din kunnskap om golfteknikk, trening og mental prestasjon."
       />
 
       <div className="p-6 w-full">
@@ -551,25 +551,19 @@ const RessurserContainer = () => {
             <div className="text-2xl font-bold text-tier-navy">
               {resources.length}
             </div>
-            <div className="text-xs text-tier-text-secondary">Ressurser</div>
-          </div>
-          <div className="bg-tier-white rounded-xl p-4 text-center">
-            <div className="text-2xl font-bold text-tier-error">
-              {resources.filter(r => r.type === 'video').length}
-            </div>
-            <div className="text-xs text-tier-text-secondary">Videoer</div>
+            <div className="text-xs text-tier-text-secondary">Totalt</div>
           </div>
           <div className="bg-tier-white rounded-xl p-4 text-center">
             <div className="text-2xl font-bold text-tier-success">
-              {resources.filter(r => r.type === 'article').length}
+              {unreadCount}
             </div>
-            <div className="text-xs text-tier-text-secondary">Artikler</div>
+            <div className="text-xs text-tier-text-secondary">Nye</div>
           </div>
           <div className="bg-tier-white rounded-xl p-4 text-center">
-            <div className="text-2xl font-bold text-amber-500">
+            <div className="text-2xl font-bold text-tier-navy">
               {savedResources.length}
             </div>
-            <div className="text-xs text-tier-text-secondary">Lagret</div>
+            <div className="text-xs text-tier-text-secondary">Mine ressurser</div>
           </div>
         </div>
 
@@ -595,12 +589,12 @@ const RessurserContainer = () => {
           />
         </div>
 
-        {/* Saved Resources Section */}
+        {/* Mine Resources Section */}
         {savedResources.length > 0 && category === 'all' && !searchQuery && (
           <div className="mb-8">
             <SectionTitle className="text-lg font-semibold text-tier-navy m-0 mb-4 flex items-center gap-2">
               <BookmarkCheck size={20} className="text-tier-navy" />
-              Lagrede ressurser
+              Mine ressurser
             </SectionTitle>
             <div className="grid grid-cols-[repeat(auto-fill,minmax(280px,1fr))] gap-4">
               {savedResources.slice(0, 3).map((resource) => (

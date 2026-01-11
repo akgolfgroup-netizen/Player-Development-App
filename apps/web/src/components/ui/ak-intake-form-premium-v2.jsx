@@ -1427,7 +1427,7 @@ export default function AKIntakeFormV2() {
       {/* Header - Hidden on welcome and complete */}
       {!isWelcome && !isComplete && (
         <header 
-          className="sticky top-0 z-50 border-b backdrop-blur-sm"
+          className=" border-b backdrop-blur-sm"
           style={{ backgroundColor: `${colors.white}F5`, borderColor: colors.borderLight }}
         >
           <div className="max-w-2xl mx-auto px-6 py-4">

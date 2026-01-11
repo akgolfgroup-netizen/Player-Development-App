@@ -33,6 +33,8 @@ import {
   FileText,
   ChevronDown,
   ChevronUp,
+  Repeat,
+  CheckCircle,
 } from 'lucide-react';
 import Button from '../../ui/primitives/Button';
 import {
@@ -42,6 +44,13 @@ import {
   useLegacyEnvironments,
   useLegacyPressureLevels,
 } from '../../hooks/useTrainingConfig';
+import {
+  TrainingPyramidSelector,
+  RecurrenceSelector,
+  DurationSlider,
+  ExerciseSelector,
+  SessionSummary,
+} from './components';
 
 // ============================================================================
 // CONSTANTS - AK-formel Hierarki v2.0
@@ -131,45 +140,48 @@ const TRAINING_AREAS = {
   },
 };
 
-// L-Faser (Motorisk læring)
+// L-Faser (Motorisk læring) - FASE 5 Updated
 const L_PHASES = [
-  { code: 'L-KROPP', label: 'Kropp', description: 'Kun kroppsbevegelse, ingen utstyr', icon: 'Body', csRange: 'CS0' },
-  { code: 'L-ARM', label: 'Arm', description: 'Kropp + armer, ingen kølle/ball', icon: 'Arm', csRange: 'CS0' },
-  { code: 'L-KØLLE', label: 'Kølle', description: 'Kropp + armer + kølle, ingen ball', icon: 'Golf', csRange: 'CS20-40' },
-  { code: 'L-BALL', label: 'Ball', description: 'Alt inkludert, lav hastighet', icon: 'Circle', csRange: 'CS40-60' },
-  { code: 'L-AUTO', label: 'Auto', description: 'Full hastighet, automatisert', icon: 'Zap', csRange: 'CS70-100' },
+  { code: 'L1', label: 'L1 - Bevegelse kun med kropp', description: 'Kun kroppsbevegelse, ingen utstyr', icon: 'Body', csRange: null, showCS: false },
+  { code: 'L2', label: 'L2 - Kropp + armer', description: 'Kropp + armer, ingen kølle/ball', icon: 'Arm', csRange: null, showCS: false },
+  { code: 'L3', label: 'L3 - Med golfkølle u/golfball', description: 'Med golfkølle uten golfball', icon: 'Golf', csRange: '40-60%', showCS: true },
+  { code: 'L4', label: 'L4 - Bevegelse med golfball', description: 'Bevegelse med golfball', icon: 'Circle', csRange: '50-70%', showCS: true },
+  { code: 'L5', label: 'L5 - Automatisk bevegelse', description: 'Full hastighet, automatisert', icon: 'Zap', csRange: '80-100%', showCS: true },
 ];
 
-// CS-Nivåer (Clubspeed)
+// CS-Nivåer (Clubspeed) - FASE 5 Updated: Range 50% → 110%
 const CS_LEVELS = [
-  { code: 'CS0', value: 0, label: '0%', description: 'Fysisk trening (off-course)' },
-  { code: 'CS20', value: 20, label: '20%', description: 'Ekstrem sakte, kun posisjon' },
-  { code: 'CS30', value: 30, label: '30%', description: 'Veldig sakte, bevegelsesflyt' },
-  { code: 'CS40', value: 40, label: '40%', description: 'Langsom, fokus på mønster' },
   { code: 'CS50', value: 50, label: '50%', description: 'Moderat, komfortsone' },
-  { code: 'CS60', value: 60, label: '60%', description: 'Økt hastighet, begynner utfordre' },
+  { code: 'CS55', value: 55, label: '55%', description: 'Lett økt tempo' },
+  { code: 'CS60', value: 60, label: '60%', description: 'Økt hastighet' },
+  { code: 'CS65', value: 65, label: '65%', description: 'Middels tempo' },
   { code: 'CS70', value: 70, label: '70%', description: 'Konkurranselignende' },
-  { code: 'CS80', value: 80, label: '80%', description: 'Høy intensitet' },
+  { code: 'CS75', value: 75, label: '75%', description: 'Høy intensitet' },
+  { code: 'CS80', value: 80, label: '80%', description: 'Veldig høy intensitet' },
+  { code: 'CS85', value: 85, label: '85%', description: 'Nær maksimal' },
   { code: 'CS90', value: 90, label: '90%', description: 'Nær-maksimal' },
+  { code: 'CS95', value: 95, label: '95%', description: 'Nesten full innsats' },
   { code: 'CS100', value: 100, label: '100%', description: 'Maksimal innsats' },
+  { code: 'CS105', value: 105, label: '105%', description: 'Over maksimal (overspeed)' },
+  { code: 'CS110', value: 110, label: '110%', description: 'Maksimal overspeed' },
 ];
 
-// M-Miljø (Fysisk kontekst)
+// M-Miljø (Fysisk kontekst) - FASE 5 Updated
 const M_ENVIRONMENTS = [
-  { code: 'M0', label: 'Off-course', description: 'Gym, hjemme, ikke golf-spesifikt', icon: 'Dumbbell' },
-  { code: 'M1', label: 'Innendørs', description: 'Nett, simulator, Trackman', icon: 'Home' },
-  { code: 'M2', label: 'Range', description: 'Utendørs, matte eller gress', icon: 'Building' },
-  { code: 'M3', label: 'Øvingsfelt', description: 'Kortbane, chipping green, putting green', icon: 'Flag' },
-  { code: 'M4', label: 'Bane trening', description: 'Treningsrunde på bane', icon: 'Trees' },
-  { code: 'M5', label: 'Bane turnering', description: 'Turneringsrunde', icon: 'Trophy' },
+  { code: 'M0', label: 'Utenfor vanlig treningsarena', description: 'F.eks gym, hjemme, hagen', icon: 'Dumbbell' },
+  { code: 'M1', label: 'Range', description: 'Driving range, matte eller gress', icon: 'Building' },
+  { code: 'M2', label: 'Simulator', description: 'Innendørs simulator, Trackman', icon: 'Home' },
+  { code: 'M3', label: 'Øvingsfelt', description: 'Chipping green, putting green', icon: 'Flag' },
+  { code: 'M4', label: 'Bane (Trening)', description: 'Treningsrunde på bane', icon: 'Trees' },
+  { code: 'M5', label: 'Bane (Spill)', description: 'Spillrunde, turnering', icon: 'Trophy' },
 ];
 
-// PR-Press (Fysisk & Mental belastning)
+// PR-Press/Belastning (Fysisk & Mental) - FASE 5 Updated
 const PR_LEVELS = [
-  { code: 'PR1', label: 'Ingen', description: 'Utforskende, ingen konsekvens', icon: 'Smile' },
-  { code: 'PR2', label: 'Selvmonitorering', description: 'Måltall, tracking, men ingen sosial', icon: 'BarChart' },
-  { code: 'PR3', label: 'Sosial', description: 'Med andre, observert', icon: 'Users' },
-  { code: 'PR4', label: 'Konkurranse', description: 'Innsats, spill mot andre', icon: 'Flame' },
+  { code: 'PR1', label: 'Ingen press', description: 'Du trener alene', icon: 'Smile' },
+  { code: 'PR2', label: 'Datadrevet', description: 'Feedback fra tester, måleutstyr', icon: 'BarChart' },
+  { code: 'PR3', label: 'Sosial', description: 'Sammen med andre spillere eller trenere', icon: 'Users' },
+  { code: 'PR4', label: 'Inter konkurranse', description: 'Konkurranse utenfor turnering', icon: 'Flame' },
   { code: 'PR5', label: 'Turnering', description: 'Resultat teller, ranking', icon: 'Trophy' },
 ];
 
@@ -392,11 +404,14 @@ function TrainingAreaSelector({ selected, onChange, pyramidCategory }) {
 }
 
 function LPhaseSelector({ selected, onChange }) {
-  const phases = useLegacyPhases();
+  // FASE 5: Use local L_PHASES with updated definitions
+  const phases = L_PHASES;
   return (
     <div className="space-y-2">
       <div className="text-xs text-tier-text-secondary mb-3 p-3 bg-tier-surface-base rounded-lg">
-        <strong>L-Fase progresjon:</strong> L-KROPP → L-ARM → L-KØLLE → L-BALL → L-AUTO
+        <strong>L-Fase progresjon:</strong> L1 → L2 → L3 → L4 → L5
+        <br />
+        <span className="text-[10px]">CS (Clubspeed) vises kun for L3-L5</span>
       </div>
       {phases.map((phase) => {
         const isSelected = selected === phase.code;
@@ -413,15 +428,14 @@ function LPhaseSelector({ selected, onChange }) {
           >
             <span className="text-2xl">{phase.icon}</span>
             <div className="flex-1">
-              <div className="flex items-center gap-2">
-                <span className="font-mono font-bold text-sm text-tier-navy">{phase.code}</span>
-                <span className="font-medium">{phase.label}</span>
-              </div>
+              <div className="font-medium text-sm text-tier-navy">{phase.label}</div>
               <div className="text-xs text-tier-text-secondary">{phase.description}</div>
             </div>
-            <span className="text-xs text-tier-text-tertiary bg-tier-surface-base px-2 py-1 rounded">
-              {phase.csRange}
-            </span>
+            {phase.showCS && phase.csRange && (
+              <span className="text-xs text-tier-text-tertiary bg-tier-surface-base px-2 py-1 rounded">
+                CS: {phase.csRange}
+              </span>
+            )}
             {isSelected && <span className="text-tier-navy text-lg">✓</span>}
           </button>
         );
@@ -765,6 +779,9 @@ export default function SessionCreateForm({
     environment: true,
     press: true,
     position: true,
+    recurrence: true, // FASE 5
+    exercises: true, // FASE 5
+    summary: true, // FASE 5
     drills: true,
     notes: true,
   });
@@ -772,7 +789,7 @@ export default function SessionCreateForm({
   const [formData, setFormData] = useState({
     // Grunninfo
     sessionDate: initialValues.sessionDate || new Date().toISOString().slice(0, 16),
-    duration: initialValues.duration || 60,
+    duration: initialValues.duration || 30,
     location: initialValues.location || '',
 
     // AK-formel komponenter
@@ -788,7 +805,13 @@ export default function SessionCreateForm({
     // Turnering-spesifikt
     tournamentType: initialValues.tournamentType || null,
 
-    // Øvelser
+    // FASE 5: Recurrence
+    recurrence: initialValues.recurrence || { rule: null, endDate: null, count: null },
+
+    // FASE 5: Exercises
+    exercises: initialValues.exercises || [],
+
+    // Øvelser (legacy - keep for backward compatibility)
     drills: initialValues.drills || [],
 
     // Notater
@@ -862,6 +885,12 @@ export default function SessionCreateForm({
       // Putting-spesifikke felter
       puttingFocus: formData.puttingFocus || undefined,
       puttingPhases: formData.puttingPhases || undefined,
+      // FASE 5: Recurrence
+      recurrenceRule: formData.recurrence?.rule || undefined,
+      recurrenceEndDate: formData.recurrence?.endDate || undefined,
+      recurrenceCount: formData.recurrence?.count || undefined,
+      // FASE 5: Exercises
+      exercises: formData.exercises?.length > 0 ? formData.exercises : undefined,
       // Andre felter
       focusArea: formData.trainingAreas?.join(',') || undefined,
       drillIds: formData.drills?.filter(d => d.id).map(d => d.id) || undefined,
@@ -874,7 +903,7 @@ export default function SessionCreateForm({
   return (
     <div className="bg-tier-surface-base min-h-screen">
       {/* Header */}
-      <div className="flex justify-between items-center p-4 bg-tier-white border-b border-tier-border-default sticky top-0 z-10">
+      <div className="flex justify-between items-center p-4 bg-tier-white border-b border-tier-border-default">
         <Button variant="ghost" onClick={onCancel} leftIcon={<ChevronLeft size={20} />}>
           Avbryt
         </Button>
@@ -914,28 +943,11 @@ export default function SessionCreateForm({
               />
             </div>
 
-            <div>
-              <label className="block mb-1 text-xs font-medium text-tier-text-secondary">
-                <Clock size={14} className="inline mr-1" />
-                Varighet
-              </label>
-              <div className="flex flex-wrap gap-2">
-                {DURATION_OPTIONS.map((mins) => (
-                  <button
-                    key={mins}
-                    type="button"
-                    onClick={() => updateField('duration', mins)}
-                    className={`py-2 px-4 rounded-lg border transition-all ${
-                      formData.duration === mins
-                        ? 'bg-tier-navy text-white border-tier-navy'
-                        : 'bg-tier-surface-base border-tier-border-default'
-                    }`}
-                  >
-                    {mins} min
-                  </button>
-                ))}
-              </div>
-            </div>
+            {/* FASE 5: Duration Slider */}
+            <DurationSlider
+              value={formData.duration}
+              onChange={(value) => updateField('duration', value)}
+            />
 
             <div>
               <label className="block mb-1 text-xs font-medium text-tier-text-secondary">
@@ -964,7 +976,7 @@ export default function SessionCreateForm({
           collapsed={collapsedSections.pyramid}
           onToggle={() => toggleSection('pyramid')}
         >
-          <PyramidCategorySelector
+          <TrainingPyramidSelector
             selected={formData.pyramidCategory}
             onChange={(value) => {
               updateField('pyramidCategory', value);
@@ -973,7 +985,10 @@ export default function SessionCreateForm({
                 updateField('mEnvironment', 'M5');
                 updateField('prPress', 'PR5');
               }
+              // Auto-expand next section after selection
+              setCollapsedSections(prev => ({ ...prev, pyramid: true, area: false }));
             }}
+            onBack={null} // No back button in form context
           />
           {errors.pyramidCategory && (
             <span className="text-tier-error text-xs mt-2 block">{errors.pyramidCategory}</span>
@@ -1109,11 +1124,56 @@ export default function SessionCreateForm({
           />
         </FormSection>
 
-        {/* 10. Notater */}
+        {/* FASE 5: Recurrence */}
+        <FormSection
+          title="Repetisjon"
+          icon={Repeat}
+          number="8"
+          collapsed={collapsedSections.recurrence}
+          onToggle={() => toggleSection('recurrence')}
+          optional
+        >
+          <RecurrenceSelector
+            value={formData.recurrence}
+            onChange={(value) => updateField('recurrence', value)}
+          />
+        </FormSection>
+
+        {/* FASE 5: Exercises */}
+        <FormSection
+          title="Øvelser"
+          icon={Dumbbell}
+          number="9"
+          collapsed={collapsedSections.exercises}
+          onToggle={() => toggleSection('exercises')}
+          optional
+        >
+          <ExerciseSelector
+            value={formData.exercises}
+            onChange={(value) => updateField('exercises', value)}
+            maxExercises={5}
+          />
+        </FormSection>
+
+        {/* FASE 5: Session Summary */}
+        <FormSection
+          title="Oppsummering"
+          icon={CheckCircle}
+          number="10"
+          collapsed={collapsedSections.summary}
+          onToggle={() => toggleSection('summary')}
+        >
+          <SessionSummary
+            exercises={formData.exercises}
+            sessionData={formData}
+          />
+        </FormSection>
+
+        {/* 11. Notater */}
         <FormSection
           title="Notater"
           icon={FileText}
-          number={showCS ? (showPosition ? '10' : '9') : (showPosition ? '9' : '8')}
+          number="11"
           collapsed={collapsedSections.notes}
           onToggle={() => toggleSection('notes')}
           optional

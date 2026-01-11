@@ -502,7 +502,7 @@ const WeeklyGoalsWidget = memo(({ goals, onToggle, onAddGoal, onViewAll, loading
       title="Ukens mål"
       icon={Target}
       action={onViewAll}
-      actionLabel="Se alle →"
+      actionLabel="Se treningsplan →"
       loading={loading}
       error={error}
       empty={goals.length === 0}
@@ -1403,9 +1403,10 @@ const TIERGolfDashboard = () => {
         title="Dashboard"
         subtitle="Din oversikt over trening, mål og utvikling"
         helpText="Hjemmesiden din med oversikt over dagens økter, ukens mål, kommende tester og turneringer. Se fremgang, treningsstatistikk og meldinger fra trener på ett sted."
+        sticky={true}
       />
 
-      <PageContainer paddingY="md" background="base">
+      <PageContainer paddingY="md" background="base" fullWidth={true}>
         <div id="dashboard-export" className="dashboard-layout" style={styles.dashboard}>
           {/* Export Button - Full Width */}
           <div className="dashboard-full-width" style={{ display: 'flex', justifyContent: 'flex-end', marginBottom: '-8px' }}>
@@ -1476,7 +1477,7 @@ const TIERGolfDashboard = () => {
                 goals={goals}
                 onToggle={toggleGoal}
                 onAddGoal={() => navigate('/maalsetninger/new')}
-                onViewAll={() => navigate('/maalsetninger')}
+                onViewAll={() => navigate('/kalender')}
                 loading={loading}
               />
             </div>

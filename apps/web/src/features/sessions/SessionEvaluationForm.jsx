@@ -327,7 +327,7 @@ export default function SessionEvaluationForm({
   return (
     <div className="bg-tier-white min-h-screen font-sans">
       {/* Header */}
-      <div className="bg-tier-navy text-white p-6 sticky top-0 z-10">
+      <div className="bg-tier-navy text-white p-6">
         <div className="flex items-center justify-between">
           <Button variant="ghost" onClick={onCancel} className="text-white p-1">
             <ChevronLeft size={24} />

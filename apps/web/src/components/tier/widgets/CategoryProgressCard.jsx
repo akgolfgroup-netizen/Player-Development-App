@@ -5,6 +5,7 @@ import { TierCard } from '../TierCard';
 import { CategoryRing } from '../CategoryRing';
 import { TierBadge } from '../TierBadge';
 import { TierButton } from '../TierButton';
+import { SubSectionTitle, CardTitle } from '../../typography/Headings';
 
 /**
  * TIER Golf Category Progress Card
@@ -107,9 +108,9 @@ export function CategoryProgressCard({
 
           <div className="flex-1">
             <div className="flex items-center gap-2 mb-1">
-              <h3 className="font-display text-xl font-bold text-tier-navy">
+              <SubSectionTitle className="font-display text-xl font-bold text-tier-navy" style={{ marginBottom: 0 }}>
                 Kategori {category}
-              </h3>
+              </SubSectionTitle>
               <TierBadge variant="gold" size="sm">
                 {completedTests}/{totalTests}
               </TierBadge>
@@ -122,9 +123,9 @@ export function CategoryProgressCard({
       {/* Body section */}
       {!compact && tests.length > 0 && (
         <div className="px-6 py-4">
-          <h4 className="text-sm font-semibold text-tier-navy mb-3">
+          <CardTitle className="text-sm font-semibold text-tier-navy mb-3">
             Tester ({completedTests}/{totalTests})
-          </h4>
+          </CardTitle>
 
           <div className="space-y-2">
             {tests.map((test) => (

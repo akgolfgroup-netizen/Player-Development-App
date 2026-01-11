@@ -18,6 +18,7 @@
 
 import React from 'react';
 import { Link } from 'react-router-dom';
+import { SubSectionTitle } from '../typography/Headings';
 import { cn } from '../../lib/utils';
 import {
   AlertCircle,
@@ -142,7 +143,7 @@ export function AttentionItems({
     <div className={cn('space-y-3', className)}>
       {/* Header */}
       <div className="flex items-center justify-between">
-        <h3 className="font-semibold text-tier-navy flex items-center gap-2">
+        <SubSectionTitle className="font-semibold text-tier-navy flex items-center gap-2" style={{ marginBottom: 0 }}>
           <Bell size={18} className="text-tier-text-tertiary" />
           {title}
           {items.length > 0 && (
@@ -150,7 +151,7 @@ export function AttentionItems({
               {items.length}
             </span>
           )}
-        </h3>
+        </SubSectionTitle>
 
         {showViewAll && hasMore && (viewAllHref || onViewAll) && (
           <ViewAllButton href={viewAllHref} onClick={onViewAll} />

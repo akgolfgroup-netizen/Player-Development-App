@@ -126,7 +126,7 @@ export const OversiktWeekView: React.FC<OversiktWeekViewProps> = ({
     >
       {/* Header row with day names */}
       <div
-        className="flex border-b sticky top-0 z-20"
+        className="flex border-b "
         style={{
           backgroundColor: 'var(--calendar-surface-base)',
           borderColor: 'var(--calendar-border)',

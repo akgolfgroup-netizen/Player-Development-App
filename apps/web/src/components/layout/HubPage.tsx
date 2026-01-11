@@ -25,6 +25,7 @@ import { navigationColors } from '../../config/navigation-tokens';
 import PageHeader from '../../ui/raw-blocks/PageHeader.raw';
 import PageContainer from '../../ui/raw-blocks/PageContainer.raw';
 import { AreaTabs } from '../navigation/AreaTabs';
+import { SubSectionTitle } from '../typography/Headings';
 
 const { ChevronRight } = LucideIcons;
 
@@ -253,12 +254,12 @@ function SectionCard({ section, colors }: SectionCardProps) {
         className="px-5 py-4 border-b border-tier-border-subtle"
         style={{ backgroundColor: colors.surface }}
       >
-        <h3
+        <SubSectionTitle
           className="text-tier-footnote font-semibold uppercase tracking-wide m-0"
-          style={{ color: colors.text }}
+          style={{ color: colors.text, marginBottom: 0 }}
         >
           {section.label}
-        </h3>
+        </SubSectionTitle>
       </div>
 
       {/* Section Items */}

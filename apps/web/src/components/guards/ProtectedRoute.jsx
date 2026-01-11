@@ -5,6 +5,7 @@ import { ShieldX, ArrowLeft, Home } from 'lucide-react';
 import StateCard from '../../ui/composites/StateCard';
 import Button from '../../ui/primitives/Button';
 import Card from '../../ui/primitives/Card';
+import { OnboardingGuard } from './OnboardingGuard';
 
 const ProtectedRoute = ({ children, requiredRole }) => {
   const { user, loading } = useAuth();
@@ -92,7 +93,11 @@ const ProtectedRoute = ({ children, requiredRole }) => {
     );
   }
 
-  return children;
+  return (
+    <OnboardingGuard>
+      {children}
+    </OnboardingGuard>
+  );
 };
 
 export default ProtectedRoute;

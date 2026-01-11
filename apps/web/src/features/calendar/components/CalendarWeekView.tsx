@@ -17,6 +17,7 @@
 
 import React, { useMemo, useEffect, useRef, useState } from 'react';
 import type { CalendarEvent } from '../hooks/useCalendarEvents';
+import { SessionHoverPreview } from './SessionHoverPreview';
 
 interface CalendarWeekViewProps {
   weekDates: Date[];
@@ -201,7 +202,7 @@ export const CalendarWeekView: React.FC<CalendarWeekViewProps> = ({
   return (
     <div className="flex flex-col h-full bg-tier-white">
       {/* Header row with day names - sticky */}
-      <div className="flex border-b-2 border-tier-border-default sticky top-0 z-20 bg-tier-white shadow-sm">
+      <div className="flex border-b-2 border-tier-border-default  bg-tier-white shadow-sm">
         {/* Time column header */}
         <div className="w-16 flex-shrink-0 border-r-2 border-tier-border-default" />
 
@@ -305,63 +306,71 @@ export const CalendarWeekView: React.FC<CalendarWeekViewProps> = ({
                   const positionStyle = getEventStyle(event);
                   const colors = getEventColors(event);
 
+                  // Calculate duration in minutes
+                  const [startHour, startMin] = event.start.split(':').map(Number);
+                  const [endHour, endMin] = event.end.split(':').map(Number);
+                  const durationMinutes = (endHour * 60 + endMin) - (startHour * 60 + startMin);
+                  const isShortSession = durationMinutes < 30;
+
                   return (
-                    <div
-                      key={event.id}
-                      className="px-1.5 py-1 rounded cursor-pointer overflow-hidden hover:opacity-90 transition-opacity"
-                      style={{
-                        ...positionStyle,
-                        left: `${groupIdx * groupWidth}%`,
-                        width: `${groupWidth - 2}%`,
-                        marginLeft: '4px',
-                        marginRight: '4px',
-                        backgroundColor: colors.bg,
-                        borderLeft: `3px solid ${colors.border}`,
-                        borderStyle: event.status === 'ghost' ? 'dashed' : 'solid',
-                      }}
-                      onClick={() => onEventClick(event)}
-                    >
-                      {/* Time */}
-                      <div className="text-[10px] font-medium text-tier-text-tertiary">
-                        {event.start}
-                      </div>
-
-                      {/* Title */}
+                    <SessionHoverPreview key={event.id} event={event}>
                       <div
-                        className="text-xs font-medium truncate"
-                        style={{ color: colors.text }}
+                        data-event="true"
+                        className="px-1.5 py-1 rounded cursor-pointer overflow-hidden hover:opacity-90 transition-opacity"
+                        style={{
+                          ...positionStyle,
+                          left: `${groupIdx * groupWidth}%`,
+                          width: `${groupWidth - 2}%`,
+                          marginLeft: '4px',
+                          marginRight: '4px',
+                          backgroundColor: colors.bg,
+                          borderLeft: `3px solid ${colors.border}`,
+                          borderStyle: event.status === 'ghost' ? 'dashed' : 'solid',
+                        }}
+                        onClick={() => onEventClick(event)}
                       >
-                        {event.title}
+                        {/* Time */}
+                        <div className={`font-medium text-tier-text-tertiary ${isShortSession ? 'text-[8px]' : 'text-[10px]'}`}>
+                          {event.start}
+                        </div>
+
+                        {/* Title */}
+                        <div
+                          className={`font-medium ${isShortSession ? 'text-[8px] line-clamp-1' : 'text-xs truncate'}`}
+                          style={{ color: colors.text }}
+                        >
+                          {event.title}
+                        </div>
+
+                        {/* Location - only show for longer sessions */}
+                        {!isShortSession && event.location && (
+                          <div className="text-[10px] truncate text-tier-text-tertiary">
+                            {event.location}
+                          </div>
+                        )}
+
+                        {/* Badges - only show for longer sessions */}
+                        {!isShortSession && event.badges && event.badges.length > 0 && (
+                          <div className="flex gap-1 mt-1 flex-wrap">
+                            {event.badges.slice(0, 2).map((badge) => {
+                              const badgeClasses =
+                                badge === 'Anbefalt' ? 'bg-tier-navy/10 text-tier-navy' :
+                                badge === 'Fullført' ? 'bg-tier-success/10 text-tier-success' :
+                                badge === 'Pågår' ? 'bg-tier-warning/10 text-tier-warning' :
+                                'bg-tier-surface-base text-tier-text-secondary';
+                              return (
+                                <span
+                                  key={badge}
+                                  className={`text-[9px] px-1 py-0.5 rounded ${badgeClasses}`}
+                                >
+                                  {badge}
+                                </span>
+                              );
+                            })}
+                          </div>
+                        )}
                       </div>
-
-                      {/* Location */}
-                      {event.location && (
-                        <div className="text-[10px] truncate text-tier-text-tertiary">
-                          {event.location}
-                        </div>
-                      )}
-
-                      {/* Badges */}
-                      {event.badges && event.badges.length > 0 && (
-                        <div className="flex gap-1 mt-1 flex-wrap">
-                          {event.badges.slice(0, 2).map((badge) => {
-                            const badgeClasses =
-                              badge === 'Anbefalt' ? 'bg-tier-navy/10 text-tier-navy' :
-                              badge === 'Fullført' ? 'bg-tier-success/10 text-tier-success' :
-                              badge === 'Pågår' ? 'bg-tier-warning/10 text-tier-warning' :
-                              'bg-tier-surface-base text-tier-text-secondary';
-                            return (
-                              <span
-                                key={badge}
-                                className={`text-[9px] px-1 py-0.5 rounded ${badgeClasses}`}
-                              >
-                                {badge}
-                              </span>
-                            );
-                          })}
-                        </div>
-                      )}
-                    </div>
+                    </SessionHoverPreview>
                   );
                 });
               })}

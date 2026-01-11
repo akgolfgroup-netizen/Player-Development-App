@@ -3,6 +3,7 @@ import { User } from 'lucide-react';
 import { cn } from '../../../lib/utils';
 import { StreakIndicator } from '../StreakIndicator';
 import { TierBadge } from '../TierBadge';
+import { PageTitle } from '../../typography/Headings';
 
 /**
  * TIER Golf Player Header Widget
@@ -88,9 +89,9 @@ export function PlayerHeader({
         <div className="text-sm text-text-muted mb-1">{greeting},</div>
 
         {/* Name */}
-        <h1 className="font-display text-3xl font-bold text-tier-navy mb-2">
+        <PageTitle className="font-display text-3xl font-bold text-tier-navy mb-2" style={{ marginBottom: '0.5rem' }}>
           {name}
-        </h1>
+        </PageTitle>
 
         {/* Badges row */}
         <div className="flex items-center gap-2">

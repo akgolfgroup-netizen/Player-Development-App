@@ -84,7 +84,17 @@ const MerTrenerteam = lazy(() => Promise.resolve({ default: () => <PlaceholderPa
 const MerMeldinger = lazy(() => import('../features/chat/ChatPage'));
 const MerFeedback = lazy(() => Promise.resolve({ default: () => <PlaceholderPage title="Trenerfeedback" /> }));
 const MerKunnskap = lazy(() => Promise.resolve({ default: () => <PlaceholderPage title="Kunnskapsbase" /> }));
-const MerNotater = lazy(() => Promise.resolve({ default: () => <PlaceholderPage title="Notater" /> }));
+const MerNotater = lazy(() => Promise.resolve({
+  default: () => (
+    <div style={{ padding: 32, minHeight: '100vh', backgroundColor: '#f5f5f0' }}>
+      <h1 style={{ fontSize: 24, fontWeight: 700, marginBottom: 8, color: '#1a365d' }}>Notater</h1>
+      <p style={{ color: '#6B7280', marginBottom: 24 }}>Treningsdagbok og refleksjoner</p>
+      <div style={{ padding: 24, backgroundColor: 'white', borderRadius: 12, border: '1px solid #e5e7eb' }}>
+        <p style={{ color: '#6B7280', textAlign: 'center' }}>Ingen notater ennå. Start med å opprette ditt første notat.</p>
+      </div>
+    </div>
+  )
+}));
 const MerInnstillinger = lazy(() => Promise.resolve({ default: () => <PlaceholderPage title="Innstillinger" /> }));
 const MerSupport = lazy(() => import('../features/support/SupportPage'));
 const MerVarsler = lazy(() => Promise.resolve({ default: () => <PlaceholderPage title="Varselinnstillinger" /> }));

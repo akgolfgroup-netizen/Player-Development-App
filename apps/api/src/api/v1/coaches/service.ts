@@ -802,4 +802,126 @@ export class CoachService {
 
     return { success, failed };
   }
+
+  // =========================================================================
+  // PLAYER ASSIGNMENT OPERATIONS
+  // =========================================================================
+
+  /**
+   * Assign a player to a coach
+   */
+  async assignPlayerToCoach(
+    tenantId: string,
+    coachId: string,
+    playerId: string
+  ): Promise<any> {
+    // Verify coach exists
+    const coach = await this.prisma.coach.findFirst({
+      where: { id: coachId, tenantId },
+    });
+    if (!coach) {
+      throw new Error('Coach not found');
+    }
+
+    // Verify player exists and get current state
+    const player = await this.prisma.player.findFirst({
+      where: { id: playerId, tenantId },
+    });
+    if (!player) {
+      throw new Error('Player not found');
+    }
+
+    // Check if player already has a coach
+    if (player.coachId) {
+      if (player.coachId === coachId) {
+        throw new Error('Player is already assigned to this coach');
+      }
+      throw new Error('Player is already assigned to another coach');
+    }
+
+    // Assign player to coach
+    const updatedPlayer = await this.prisma.player.update({
+      where: { id: playerId },
+      data: { coachId },
+      include: {
+        user: {
+          select: {
+            id: true,
+            email: true,
+            firstName: true,
+            lastName: true,
+          },
+        },
+      },
+    });
+
+    return updatedPlayer;
+  }
+
+  /**
+   * Unassign a player from a coach
+   */
+  async unassignPlayerFromCoach(
+    tenantId: string,
+    coachId: string,
+    playerId: string
+  ): Promise<void> {
+    // Verify player exists and belongs to this coach
+    const player = await this.prisma.player.findFirst({
+      where: { id: playerId, tenantId, coachId },
+    });
+    if (!player) {
+      throw new Error('Player not found or not assigned to this coach');
+    }
+
+    // Remove coach assignment
+    await this.prisma.player.update({
+      where: { id: playerId },
+      data: { coachId: null },
+    });
+  }
+
+  /**
+   * Get available players (without a coach) for assignment
+   */
+  async getAvailablePlayers(
+    tenantId: string,
+    search?: string
+  ): Promise<any[]> {
+    const where: any = {
+      tenantId,
+      coachId: null,
+    };
+
+    if (search) {
+      where.OR = [
+        { firstName: { contains: search, mode: 'insensitive' } },
+        { lastName: { contains: search, mode: 'insensitive' } },
+        { user: { email: { contains: search, mode: 'insensitive' } } },
+      ];
+    }
+
+    const players = await this.prisma.player.findMany({
+      where,
+      select: {
+        id: true,
+        firstName: true,
+        lastName: true,
+        handicap: true,
+        category: true,
+        user: {
+          select: {
+            email: true,
+          },
+        },
+      },
+      take: 50,
+      orderBy: [
+        { lastName: 'asc' },
+        { firstName: 'asc' },
+      ],
+    });
+
+    return players;
+  }
 }

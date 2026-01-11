@@ -6,6 +6,9 @@ import { useToast } from '../../components/shadcn/use-toast';
 import LoadingState from '../../components/ui/LoadingState';
 import ErrorState from '../../components/ui/ErrorState';
 import CoachAthleteList from './CoachAthleteList';
+import { PlayerAssignment } from '../coach/athletes';
+import { Button } from '../../components/shadcn';
+import { UserPlus } from 'lucide-react';
 
 // Transform AthleteDTO to the format expected by CoachAthleteList
 type Athlete = {
@@ -26,6 +29,7 @@ const CoachAthleteListContainer: React.FC = () => {
   const [error, setError] = useState<Error | null>(null);
   const [athletes, setAthletes] = useState<AthleteDTO[]>([]);
   const [usingFallback, setUsingFallback] = useState(false);
+  const [showAssignment, setShowAssignment] = useState(false);
 
   const fetchAthletes = useCallback(async () => {
     try {
@@ -114,11 +118,40 @@ const CoachAthleteListContainer: React.FC = () => {
     );
   }
 
+  const handlePlayerAssigned = () => {
+    // Refresh the list when a player is assigned
+    fetchAthletes();
+  };
+
   return (
-    <CoachAthleteList
-      athletes={transformedAthletes}
-      onSelectAthlete={handleSelectAthlete}
-    />
+    <div className="space-y-4">
+      {/* Add Player Button */}
+      <div className="flex justify-end">
+        <Button
+          onClick={() => setShowAssignment(true)}
+          className="flex items-center gap-2"
+        >
+          <UserPlus className="w-4 h-4" />
+          Legg til spiller
+        </Button>
+      </div>
+
+      {/* Player Assignment Modal */}
+      {showAssignment && (
+        <div className="fixed inset-0 bg-black/50 flex items-center justify-center z-50 p-4">
+          <PlayerAssignment
+            onPlayerAssigned={handlePlayerAssigned}
+            onClose={() => setShowAssignment(false)}
+          />
+        </div>
+      )}
+
+      {/* Athletes List */}
+      <CoachAthleteList
+        athletes={transformedAthletes}
+        onSelectAthlete={handleSelectAthlete}
+      />
+    </div>
   );
 };
 

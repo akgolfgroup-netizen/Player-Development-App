@@ -60,11 +60,21 @@ export function useSportConfig(enabled = true): UseSportConfigResult {
   const [sportId, setSportId] = useState<SportId>(DEFAULT_SPORT_ID);
   const [apiConfig, setApiConfig] = useState<SportConfigData | null>(null);
   const [hasCustomConfig, setHasCustomConfig] = useState(false);
-  const [isLoading, setIsLoading] = useState(enabled);
+  const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
 
   const fetchConfig = useCallback(async () => {
     if (!enabled) return;
+
+    // Check for auth token - if not present, use defaults immediately
+    const token = localStorage.getItem('accessToken');
+    if (!token) {
+      setSportId(DEFAULT_SPORT_ID);
+      setApiConfig(null);
+      setHasCustomConfig(false);
+      setIsLoading(false);
+      return;
+    }
 
     setIsLoading(true);
     setError(null);

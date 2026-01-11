@@ -18,6 +18,7 @@ import React from 'react';
 import { Link } from 'react-router-dom';
 import { cn } from '../../lib/utils';
 import { LucideIcon } from 'lucide-react';
+import { SectionTitle } from '../typography/Headings';
 
 export interface QuickAction {
   label: string;
@@ -49,9 +50,9 @@ export function QuickActions({
   return (
     <section className={cn('mb-6', className)}>
       {title && (
-        <h2 className="text-sm font-semibold text-tier-text-secondary uppercase tracking-wider mb-3">
+        <SectionTitle className="text-sm font-semibold text-tier-text-secondary uppercase tracking-wider mb-3" style={{ fontSize: '0.875rem', marginBottom: '0.75rem' }}>
           {title}
-        </h2>
+        </SectionTitle>
       )}
       <div className={cn('grid gap-3', gridCols[columns])}>
         {actions.map((action) => (

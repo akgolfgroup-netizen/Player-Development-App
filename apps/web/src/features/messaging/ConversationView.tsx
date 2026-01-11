@@ -41,6 +41,11 @@ interface Message {
     senderName: string;
   };
   isRead: boolean;
+  readBy?: Array<{
+    userId: string;
+    userName: string;
+    readAt: string;
+  }>;
   createdAt: string;
   isOwn: boolean;
 }
@@ -403,11 +408,22 @@ export default function ConversationView() {
                         {formatTime(message.createdAt)}
                       </span>
                       {message.isOwn && (
-                        message.isRead ? (
-                          <CheckCheck size={14} className="text-white/70" />
-                        ) : (
-                          <Check size={14} className="text-white/70" />
-                        )
+                        <div
+                          className="relative group"
+                          title={
+                            message.readBy && message.readBy.length > 0
+                              ? `Lest av ${message.readBy.map(r => r.userName).join(', ')}`
+                              : message.isRead
+                              ? 'Lest'
+                              : 'Sendt'
+                          }
+                        >
+                          {message.isRead ? (
+                            <CheckCheck size={14} className="text-tier-success" />
+                          ) : (
+                            <Check size={14} className="text-white/70" />
+                          )}
+                        </div>
                       )}
                     </div>
                   </div>

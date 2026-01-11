@@ -198,7 +198,7 @@ const TimelineHeader: React.FC<TimelineHeaderProps> = ({
   }
 
   return (
-    <div className="sticky top-0 bg-tier-white z-10 border-b border-tier-border-default">
+    <div className=" bg-tier-white z-10 border-b border-tier-border-default">
       <div className="flex items-center justify-between p-4">
         <div className="flex items-center gap-2">
           <Calendar size={18} className="text-tier-text-secondary" />

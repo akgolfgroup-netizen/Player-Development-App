@@ -334,7 +334,7 @@ export const DecisionAnchor: React.FC<DecisionAnchorProps> = ({
 
   return (
     <div
-      className="sticky top-0 z-50 bg-tier-white border-b border-tier-border-default p-4"
+      className=" bg-tier-white border-b border-tier-border-default p-4"
       role="region"
       aria-label="Dagens beslutning"
     >

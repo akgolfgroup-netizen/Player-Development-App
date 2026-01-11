@@ -16,6 +16,7 @@ import { seedTrainingPlan } from './seeds/training-plan';
 import { seedSkole } from './seeds/skole';
 import { seedTrainingSessions } from './seeds/training-sessions';
 import { seedDataGolfPlayers } from './seeds/datagolf-players';
+import { seedPremiumPlayers } from './seeds/seed-premium-players';
 
 async function main() {
   console.log('🌱 Starting database seeding...\n');
@@ -51,6 +52,9 @@ async function main() {
     // 9. Seed DataGolf pro players (for comparison feature)
     await seedDataGolfPlayers();
 
+    // 10. Seed premium players with comprehensive data (25 hrs/week)
+    await seedPremiumPlayers();
+
     console.log('\n✅ All seeds completed successfully!');
     console.log('\n📊 Summary of seeded data:');
     console.log('   • Demo users (admin, coach, player)');
@@ -67,6 +71,10 @@ async function main() {
     console.log('   • Training sessions (30 days history)');
     console.log('   • Weekly and monthly training stats');
     console.log('   • DataGolf pro players (30 players)');
+    console.log('   • Premium players (3 players with 25 hrs/week plans)');
+    console.log('   • 365 daily assignments per premium player');
+    console.log('   • 52 weeks periodization per premium player');
+    console.log('   • Historical sessions and comprehensive stats');
   } catch (error) {
     console.error('❌ Seeding failed:', error);
     throw error;

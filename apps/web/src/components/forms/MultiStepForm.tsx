@@ -21,6 +21,7 @@ import React, { useState, useCallback, useMemo } from 'react';
 import { cn } from '../../lib/utils';
 import { Check, ChevronLeft, ChevronRight, Circle } from 'lucide-react';
 import { Button } from '../shadcn/button';
+import { SectionTitle } from '../typography/Headings';
 
 export interface FormStep {
   id: string;
@@ -148,7 +149,7 @@ export function MultiStepForm({
 
       {/* Step Header */}
       <div className="mb-6">
-        <h2 className="text-xl font-bold text-tier-navy flex items-center gap-3">
+        <SectionTitle className="text-xl font-bold text-tier-navy flex items-center gap-3" style={{ marginBottom: 0 }}>
           {currentStepData?.icon}
           {currentStepData?.title}
           {currentStepData?.isOptional && (
@@ -156,7 +157,7 @@ export function MultiStepForm({
               (valgfritt)
             </span>
           )}
-        </h2>
+        </SectionTitle>
         {currentStepData?.description && (
           <p className="text-tier-text-secondary mt-1">
             {currentStepData.description}

@@ -270,6 +270,121 @@ export async function coachRoutes(app: FastifyInstance): Promise<void> {
   );
 
   /**
+   * Assign a player to the authenticated coach
+   */
+  app.post<{ Params: { playerId: string } }>(
+    '/me/players/:playerId',
+    {
+      preHandler: preHandlers,
+      schema: {
+        description: 'Assign a player to the authenticated coach',
+        tags: ['coaches'],
+        security: [{ bearerAuth: [] }],
+        params: {
+          type: 'object',
+          required: ['playerId'],
+          properties: {
+            playerId: { type: 'string', format: 'uuid' },
+          },
+        },
+        response: {
+          200: { type: 'object', additionalProperties: true },
+          403: { $ref: 'Error#' },
+          404: { $ref: 'Error#' },
+          409: { $ref: 'Error#' },
+        },
+      },
+    },
+    async (request: FastifyRequest<{ Params: { playerId: string } }>, reply: FastifyReply) => {
+      const coachId = request.user?.coachId;
+      if (!coachId) {
+        return reply.code(403).send({ success: false, error: { message: 'Not a coach' } });
+      }
+      const player = await coachService.assignPlayerToCoach(
+        request.tenant!.id,
+        coachId,
+        request.params.playerId
+      );
+      return reply.send({ success: true, data: player });
+    }
+  );
+
+  /**
+   * Unassign a player from the authenticated coach
+   */
+  app.delete<{ Params: { playerId: string } }>(
+    '/me/players/:playerId',
+    {
+      preHandler: preHandlers,
+      schema: {
+        description: 'Unassign a player from the authenticated coach',
+        tags: ['coaches'],
+        security: [{ bearerAuth: [] }],
+        params: {
+          type: 'object',
+          required: ['playerId'],
+          properties: {
+            playerId: { type: 'string', format: 'uuid' },
+          },
+        },
+        response: {
+          200: { type: 'object', additionalProperties: true },
+          403: { $ref: 'Error#' },
+          404: { $ref: 'Error#' },
+        },
+      },
+    },
+    async (request: FastifyRequest<{ Params: { playerId: string } }>, reply: FastifyReply) => {
+      const coachId = request.user?.coachId;
+      if (!coachId) {
+        return reply.code(403).send({ success: false, error: { message: 'Not a coach' } });
+      }
+      await coachService.unassignPlayerFromCoach(
+        request.tenant!.id,
+        coachId,
+        request.params.playerId
+      );
+      return reply.send({ success: true, message: 'Player unassigned successfully' });
+    }
+  );
+
+  /**
+   * Get available players (without a coach) for assignment
+   */
+  app.get<{ Querystring: { search?: string } }>(
+    '/available-players',
+    {
+      preHandler: preHandlers,
+      schema: {
+        description: 'Get players without a coach, available for assignment',
+        tags: ['coaches'],
+        security: [{ bearerAuth: [] }],
+        querystring: {
+          type: 'object',
+          properties: {
+            search: { type: 'string', description: 'Search by name or email' },
+          },
+        },
+        response: {
+          200: { type: 'object', additionalProperties: true },
+          403: { $ref: 'Error#' },
+        },
+      },
+    },
+    async (request: FastifyRequest<{ Querystring: { search?: string } }>, reply: FastifyReply) => {
+      const coachId = request.user?.coachId;
+      if (!coachId) {
+        return reply.code(403).send({ success: false, error: { message: 'Not a coach' } });
+      }
+      const players = await coachService.getAvailablePlayers(
+        request.tenant!.id,
+        request.query.search
+      );
+      return reply.send({ success: true, data: players });
+    }
+  );
+
+  /**
    * Get current coach's alerts (uses auth user)
    */
   app.get<{ Querystring: { unread?: boolean } }>(

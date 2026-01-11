@@ -7,15 +7,16 @@
  * MIGRATED TO PAGE ARCHITECTURE - Zero inline styles
  */
 
-import React, { useState } from 'react';
+import React, { useState, useEffect, useCallback } from 'react';
 import {
   Calendar, Clock, User, ChevronLeft, ChevronRight, Check,
-  Video, MapPin, Star
+  Video, MapPin, Star, Loader2
 } from 'lucide-react';
 import { PageHeader } from '../../components/layout/PageHeader';
 import apiClient from '../../services/apiClient';
 import Button from '../../ui/primitives/Button';
 import { SubSectionTitle, CardTitle } from '../../components/typography/Headings';
+import { useAuth } from '../../contexts/AuthContext';
 
 // ============================================================================
 // TYPES
@@ -45,65 +46,34 @@ interface SessionType {
   price: number;
 }
 
-// ============================================================================
-// MOCK DATA
-// ============================================================================
+// API response types
+interface CoachApiResponse {
+  id: string;
+  firstName: string;
+  lastName: string;
+  email: string;
+  specializations?: string[];
+  certifications?: string[];
+  status: string;
+  profileImageUrl?: string;
+  avatar?: string;
+}
 
-const COACHES: Coach[] = [
-  {
-    id: 'c1',
-    name: 'Anders Kristiansen',
-    role: 'Hovedtrener',
-    specialties: ['Sving', 'Teknikk', 'Mental trening'],
-    avatar: null,
-    rating: 4.9,
-    reviews: 45,
-    nextAvailable: '2025-01-20',
-  },
-  {
-    id: 'c2',
-    name: 'Maria Hansen',
-    role: 'Kortspill-spesialist',
-    specialties: ['Kortspill', 'Bunker', 'Putting'],
-    avatar: null,
-    rating: 4.8,
-    reviews: 32,
-    nextAvailable: '2025-01-19',
-  },
-  {
-    id: 'c3',
-    name: 'Erik Olsen',
-    role: 'Fysisk trener',
-    specialties: ['Styrke', 'Mobilitet', 'Skadeforebygging'],
-    avatar: null,
-    rating: 4.7,
-    reviews: 28,
-    nextAvailable: '2025-01-21',
-  },
-];
+// API returns availability rules, not individual slots
+interface AvailabilityRule {
+  id: string;
+  coachId: string;
+  dayOfWeek: number;
+  startTime: string;  // "09:00" format
+  endTime: string;    // "17:00" format
+  slotDuration: number;
+  maxBookings: number;
+  isActive: boolean;
+}
 
-const AVAILABLE_SLOTS: Record<string, TimeSlot[]> = {
-  '2025-01-20': [
-    { time: '09:00', duration: 60, available: true },
-    { time: '10:00', duration: 60, available: false },
-    { time: '11:00', duration: 60, available: true },
-    { time: '13:00', duration: 60, available: true },
-    { time: '14:00', duration: 60, available: true },
-    { time: '15:00', duration: 60, available: false },
-  ],
-  '2025-01-21': [
-    { time: '09:00', duration: 60, available: true },
-    { time: '10:00', duration: 60, available: true },
-    { time: '11:00', duration: 60, available: false },
-    { time: '13:00', duration: 60, available: true },
-  ],
-  '2025-01-22': [
-    { time: '10:00', duration: 60, available: true },
-    { time: '11:00', duration: 60, available: true },
-    { time: '14:00', duration: 60, available: true },
-    { time: '15:00', duration: 60, available: true },
-  ],
-};
+// ============================================================================
+// SESSION TYPES CONFIG
+// ============================================================================
 
 const SESSION_TYPES: SessionType[] = [
   { id: 'individual', label: 'Individuell økt', duration: 60, price: 800 },
@@ -111,6 +81,69 @@ const SESSION_TYPES: SessionType[] = [
   { id: 'on_course', label: 'På banen', duration: 90, price: 1200 },
   { id: 'online', label: 'Online økt', duration: 45, price: 500 },
 ];
+
+// ============================================================================
+// HELPER FUNCTIONS
+// ============================================================================
+
+function mapApiCoachToCoach(apiCoach: CoachApiResponse): Coach {
+  // Combine specializations and certifications for display
+  const specialties = [
+    ...(apiCoach.specializations || []),
+    ...(apiCoach.certifications || [])
+  ];
+
+  return {
+    id: apiCoach.id,
+    name: `${apiCoach.firstName} ${apiCoach.lastName}`,
+    role: apiCoach.specializations?.[0] || 'Trener',
+    specialties: specialties.slice(0, 3),
+    avatar: apiCoach.avatar || apiCoach.profileImageUrl || null,
+    rating: 4.8, // Default rating - would come from reviews in real system
+    reviews: 0,
+    nextAvailable: new Date().toISOString().split('T')[0],
+  };
+}
+
+function mapAvailabilityToSlots(availabilityRules: AvailabilityRule[], selectedDate: string): TimeSlot[] {
+  // Get day of week for the selected date (0=Sun, 1=Mon, etc.)
+  const date = new Date(selectedDate);
+  const dayOfWeek = date.getDay();
+
+  // Find matching availability rule for this day
+  const matchingRule = availabilityRules.find(rule => rule.dayOfWeek === dayOfWeek && rule.isActive);
+
+  if (!matchingRule) {
+    return [];
+  }
+
+  // Generate time slots from the rule
+  const slots: TimeSlot[] = [];
+  const [startHour, startMin] = matchingRule.startTime.split(':').map(Number);
+  const [endHour, endMin] = matchingRule.endTime.split(':').map(Number);
+  const slotDuration = matchingRule.slotDuration || 60;
+
+  let currentHour = startHour;
+  let currentMin = startMin;
+
+  while (currentHour < endHour || (currentHour === endHour && currentMin < endMin)) {
+    const timeStr = `${currentHour.toString().padStart(2, '0')}:${currentMin.toString().padStart(2, '0')}`;
+    slots.push({
+      time: timeStr,
+      duration: slotDuration,
+      available: true, // Would check bookings in real implementation
+    });
+
+    // Advance by slot duration
+    currentMin += slotDuration;
+    while (currentMin >= 60) {
+      currentMin -= 60;
+      currentHour += 1;
+    }
+  }
+
+  return slots;
+}
 
 // ============================================================================
 // COACH CARD
@@ -178,9 +211,10 @@ const CoachCard: React.FC<CoachCardProps> = ({ coach, selected, onSelect }) => (
 interface DateSelectorProps {
   selectedDate: string | null;
   onSelectDate: (date: string) => void;
+  availableSlots: Record<string, TimeSlot[]>;
 }
 
-const DateSelector: React.FC<DateSelectorProps> = ({ selectedDate, onSelectDate }) => {
+const DateSelector: React.FC<DateSelectorProps> = ({ selectedDate, onSelectDate, availableSlots }) => {
   const [weekOffset, setWeekOffset] = useState(0);
 
   const getWeekDates = () => {
@@ -221,7 +255,7 @@ const DateSelector: React.FC<DateSelectorProps> = ({ selectedDate, onSelectDate 
         {weekDates.map((date) => {
           const dateStr = date.toISOString().split('T')[0];
           const isSelected = dateStr === selectedDate;
-          const hasSlots = AVAILABLE_SLOTS[dateStr]?.some((s) => s.available);
+          const hasSlots = availableSlots[dateStr]?.some((s) => s.available);
           const isToday = date.toDateString() === new Date().toDateString();
           const isPast = date < new Date(new Date().setHours(0, 0, 0, 0));
 
@@ -265,10 +299,12 @@ interface TimeSlotsProps {
   date: string | null;
   selectedSlot: TimeSlot | null;
   onSelectSlot: (slot: TimeSlot) => void;
+  availableSlots: Record<string, TimeSlot[]>;
+  loading?: boolean;
 }
 
-const TimeSlots: React.FC<TimeSlotsProps> = ({ date, selectedSlot, onSelectSlot }) => {
-  const slots = date ? AVAILABLE_SLOTS[date] || [] : [];
+const TimeSlots: React.FC<TimeSlotsProps> = ({ date, selectedSlot, onSelectSlot, availableSlots, loading }) => {
+  const slots = date ? availableSlots[date] || [] : [];
 
   if (!date) {
     return (
@@ -276,6 +312,17 @@ const TimeSlots: React.FC<TimeSlotsProps> = ({ date, selectedSlot, onSelectSlot 
         <Calendar size={32} className="text-tier-text-secondary mb-2 mx-auto" />
         <p className="text-sm text-tier-text-secondary m-0">
           Velg en dato for å se tilgjengelige tider
+        </p>
+      </div>
+    );
+  }
+
+  if (loading) {
+    return (
+      <div className="bg-tier-white rounded-[14px] p-6 text-center">
+        <Loader2 size={32} className="text-tier-navy mb-2 mx-auto animate-spin" />
+        <p className="text-sm text-tier-text-secondary m-0">
+          Henter tilgjengelige tider...
         </p>
       </div>
     );
@@ -382,7 +429,7 @@ const BookingSummary: React.FC<BookingSummaryProps> = ({ coach, date, slot, sess
   const canBook = coach && date && slot && sessionType;
 
   return (
-    <div className="bg-tier-white rounded-[14px] p-4 sticky top-5">
+    <div className="bg-tier-white rounded-[14px] p-4">
       <SubSectionTitle className="text-[15px] font-semibold text-tier-navy mb-4">
         Bookingoppsummering
       </SubSectionTitle>
@@ -406,7 +453,7 @@ const BookingSummary: React.FC<BookingSummaryProps> = ({ coach, date, slot, sess
       )}
 
       {sessionType && (
-        <div className="flex items-center gap-2.5 mb-4 p-2.5 bg-tier-surface-base rounded-lg">
+        <div className="flex items-center gap-2.5 mb-3 p-2.5 bg-tier-surface-base rounded-lg">
           <Clock size={16} className="text-tier-text-secondary" />
           <span className="text-[13px] text-tier-navy">
             {sessionType.label} ({sessionType.duration} min)
@@ -415,7 +462,7 @@ const BookingSummary: React.FC<BookingSummaryProps> = ({ coach, date, slot, sess
       )}
 
       {sessionType && (
-        <div className="flex justify-between items-center py-3 border-t border-tier-border-default mb-4">
+        <div className="flex justify-between items-center py-3 border-t border-tier-border-default">
           <span className="text-sm text-tier-text-secondary">Total</span>
           <span className="text-lg font-bold text-tier-navy">
             {sessionType.price} kr
@@ -427,7 +474,7 @@ const BookingSummary: React.FC<BookingSummaryProps> = ({ coach, date, slot, sess
         variant="primary"
         onClick={onConfirm}
         disabled={!canBook}
-        className="w-full"
+        className="w-full mt-4"
       >
         Bekreft booking
       </Button>
@@ -440,16 +487,94 @@ const BookingSummary: React.FC<BookingSummaryProps> = ({ coach, date, slot, sess
 // ============================================================================
 
 const BookTrenerContainer: React.FC = () => {
+  // Auth context
+  const { user } = useAuth();
+
+  // Selection state
   const [selectedCoach, setSelectedCoach] = useState<Coach | null>(null);
   const [selectedDate, setSelectedDate] = useState<string | null>(null);
   const [selectedSlot, setSelectedSlot] = useState<TimeSlot | null>(null);
   const [selectedSessionType, setSelectedSessionType] = useState<SessionType | null>(null);
+
+  // Data state
+  const [coaches, setCoaches] = useState<Coach[]>([]);
+  const [availableSlots, setAvailableSlots] = useState<Record<string, TimeSlot[]>>({});
+
+  // Loading/error state
+  const [isLoadingCoaches, setIsLoadingCoaches] = useState(true);
+  const [isLoadingAvailability, setIsLoadingAvailability] = useState(false);
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [bookingSuccess, setBookingSuccess] = useState(false);
   const [bookingError, setBookingError] = useState<string | null>(null);
 
+  // Fetch coaches on mount
+  useEffect(() => {
+    const fetchCoaches = async () => {
+      try {
+        setIsLoadingCoaches(true);
+        const response = await apiClient.get('/coaches');
+        // API returns { success: true, data: { coaches: [...] } }
+        const apiCoaches = response.data?.data?.coaches || response.data?.coaches || [];
+        const mappedCoaches = apiCoaches.map(mapApiCoachToCoach);
+        setCoaches(mappedCoaches);
+      } catch (err) {
+        console.error('Failed to fetch coaches:', err);
+        // Keep empty array on error
+      } finally {
+        setIsLoadingCoaches(false);
+      }
+    };
+
+    fetchCoaches();
+  }, []);
+
+  // Fetch availability when coach or date changes
+  const fetchAvailability = useCallback(async (coachId: string, date: string) => {
+    try {
+      setIsLoadingAvailability(true);
+      // Get availability for the selected date
+      const startDate = date;
+      const endDate = date;
+      const response = await apiClient.get(`/coaches/${coachId}/availability`, {
+        params: { startDate, endDate }
+      });
+
+      // API returns { success: true, data: [...availability rules...] }
+      const availabilityRules = response.data?.data || response.data?.slots || [];
+      const slots = Array.isArray(availabilityRules) ? mapAvailabilityToSlots(availabilityRules, date) : [];
+
+      setAvailableSlots(prev => ({
+        ...prev,
+        [date]: slots
+      }));
+    } catch (err) {
+      console.error('Failed to fetch availability:', err);
+      // Set empty slots on error
+      setAvailableSlots(prev => ({
+        ...prev,
+        [date]: []
+      }));
+    } finally {
+      setIsLoadingAvailability(false);
+    }
+  }, []);
+
+  // Fetch availability when coach or date changes
+  useEffect(() => {
+    if (selectedCoach && selectedDate) {
+      fetchAvailability(selectedCoach.id, selectedDate);
+    }
+  }, [selectedCoach, selectedDate, fetchAvailability]);
+
   const handleConfirm = async () => {
     if (!selectedCoach || !selectedDate || !selectedSlot || !selectedSessionType) {
+      return;
+    }
+
+    // Get playerId from user context
+    const playerId = user?.playerId || user?.id;
+    if (!playerId) {
+      setBookingError('Kunne ikke finne bruker-ID');
       return;
     }
 
@@ -462,6 +587,7 @@ const BookTrenerContainer: React.FC = () => {
       const endTime = new Date(startTime.getTime() + selectedSessionType.duration * 60000);
 
       await apiClient.post('/bookings', {
+        playerId,
         coachId: selectedCoach.id,
         sessionType: selectedSessionType.id,
         startTime: startTime.toISOString(),
@@ -491,23 +617,34 @@ const BookTrenerContainer: React.FC = () => {
         actions={null}
       />
 
-      <div className="py-4 px-6 max-w-7xl mx-auto grid grid-cols-[1fr_320px] gap-6">
+      <div className="py-4 px-6 max-w-7xl mx-auto grid grid-cols-[1fr_320px] gap-6 items-start">
         <div>
           {/* Coach Selection */}
           <div className="mb-6">
             <SubSectionTitle className="text-sm font-semibold text-tier-navy mb-3">
               Velg trener
             </SubSectionTitle>
-            <div className="flex flex-col gap-2.5">
-              {COACHES.map((coach) => (
-                <CoachCard
-                  key={coach.id}
-                  coach={coach}
-                  selected={selectedCoach?.id === coach.id}
-                  onSelect={setSelectedCoach}
-                />
-              ))}
-            </div>
+            {isLoadingCoaches ? (
+              <div className="flex items-center justify-center py-8">
+                <Loader2 size={24} className="text-tier-navy animate-spin mr-2" />
+                <span className="text-tier-text-secondary">Henter trenere...</span>
+              </div>
+            ) : coaches.length === 0 ? (
+              <div className="bg-tier-white rounded-xl p-6 text-center">
+                <p className="text-tier-text-secondary">Ingen trenere tilgjengelig</p>
+              </div>
+            ) : (
+              <div className="flex flex-col gap-2.5">
+                {coaches.map((coach) => (
+                  <CoachCard
+                    key={coach.id}
+                    coach={coach}
+                    selected={selectedCoach?.id === coach.id}
+                    onSelect={setSelectedCoach}
+                  />
+                ))}
+              </div>
+            )}
           </div>
 
           {/* Date Selection */}
@@ -517,6 +654,7 @@ const BookTrenerContainer: React.FC = () => {
               setSelectedDate(date);
               setSelectedSlot(null);
             }}
+            availableSlots={availableSlots}
           />
 
           {/* Time Slots */}
@@ -524,6 +662,8 @@ const BookTrenerContainer: React.FC = () => {
             date={selectedDate}
             selectedSlot={selectedSlot}
             onSelectSlot={setSelectedSlot}
+            availableSlots={availableSlots}
+            loading={isLoadingAvailability}
           />
 
           {/* Session Type */}
@@ -534,7 +674,7 @@ const BookTrenerContainer: React.FC = () => {
         </div>
 
         {/* Booking Summary */}
-        <div>
+        <div className="sticky top-4 self-start">
           <BookingSummary
             coach={selectedCoach}
             date={selectedDate}

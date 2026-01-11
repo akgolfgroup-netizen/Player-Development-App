@@ -826,9 +826,7 @@ const LoggTreningContainer = () => {
   return (
     <div className="min-h-screen bg-tier-surface-base">
       <PageHeader
-        title="Logg treningsøkt"
-        subtitle="Registrer gjennomført treningsøkt med AK-formel"
-        helpText="Registrer og dokumenter treningsøkter basert på AK-formel hierarkiet (FYS → TEK → SLAG → SPILL → TURN). Velg økttype, kategorier, fase (L), miljø (M), nivå (CS) og press (PR). Legg til varighet, notater og evaluering av energi og fokus. Økten lagres automatisk i treningsdagboken."
+        title="Registrer treningsøkt"
       />
       {/* Session Type Selector */}
       <div className="bg-tier-white rounded-[14px] p-4 mb-5">

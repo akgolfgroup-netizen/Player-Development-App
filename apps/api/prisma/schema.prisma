@@ -266,6 +266,8 @@ model Player {
   handicap            Decimal?  @db.Decimal(4, 1)
   wagrRank            Int?      @map("wagr_rank")
   club                String?   @db.VarChar(200)
+  targetCategory      String?   @map("target_category") @db.Char(1) // Target skill category (A-K)
+  careerGoal          String?   @map("career_goal") @db.Text // Long-term career aspiration
   coachId             String?   @map("coach_id") @db.Uuid
   parentId            String?   @map("parent_id") @db.Uuid
   currentPeriod       String    @default("G") @map("current_period") @db.VarChar(1) // E/G/S/T
@@ -343,6 +345,10 @@ model Player {
 
   // Skoleplan
   fag Fag[]
+
+  // Annual Plan
+  annualPlanPeriods AnnualPlanPeriod[]
+  schoolPlans       SchoolPlan[]
 
   @@index([tenantId])
   @@index([category])
@@ -613,6 +619,12 @@ model TrainingSession {
   autoCompletedAt  DateTime? @map("auto_completed_at") @db.Timestamptz(6)
   completedAt      DateTime? @map("completed_at") @db.Timestamptz(6)
 
+  // PHASE 5: Recurrence & Repetition
+  recurrenceRule   String?   @map("recurrence_rule") @db.VarChar(255) // RRULE format (FREQ=WEEKLY;COUNT=5)
+  recurrenceEndDate DateTime? @map("recurrence_end_date") @db.Date
+  recurrenceCount  Int?      @map("recurrence_count")
+  parentSessionId  String?   @map("parent_session_id") @db.Uuid
+
   createdAt DateTime @default(now()) @map("created_at") @db.Timestamptz(6)
   updatedAt DateTime @default(now()) @updatedAt @map("updated_at") @db.Timestamptz(6)
 
@@ -622,6 +634,11 @@ model TrainingSession {
   assignedFrom    DailyTrainingAssignment[]
   areaPerformance TrainingAreaPerformance[]
 
+  // PHASE 5: Session exercises and recurrence
+  exercises        SessionExercise[]
+  parentSession    TrainingSession?  @relation("RecurringSession", fields: [parentSessionId], references: [id], onDelete: Cascade)
+  childSessions    TrainingSession[] @relation("RecurringSession")
+
   @@index([playerId])
   @@index([coachId])
   @@index([sessionDate])
@@ -630,6 +647,33 @@ model TrainingSession {
   @@index([pressure])
   @@index([learningPhase])
   @@map("training_sessions")
+}
+
+// ============================================================================
+// SESSION EXERCISES (PHASE 5)
+// ============================================================================
+
+model SessionExercise {
+  id                   String   @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  sessionId            String   @map("session_id") @db.Uuid
+  exerciseId           String?  @map("exercise_id") @db.Uuid
+  title                String   @db.VarChar(255)
+  description          String?  @db.Text
+  estimatedDuration    Int?     @map("estimated_duration") // minutes
+  estimatedRepetitions Int?     @map("estimated_repetitions")
+  orderIndex           Int      @default(0) @map("order_index")
+  notes                String?  @db.Text
+  createdAt            DateTime @default(now()) @map("created_at") @db.Timestamptz(6)
+  updatedAt            DateTime @default(now()) @updatedAt @map("updated_at") @db.Timestamptz(6)
+
+  // Relations
+  session  TrainingSession @relation(fields: [sessionId], references: [id], onDelete: Cascade)
+  exercise Exercise?       @relation(fields: [exerciseId], references: [id], onDelete: SetNull)
+
+  @@index([sessionId])
+  @@index([exerciseId])
+  @@index([sessionId, orderIndex])
+  @@map("session_exercises")
 }
 
 model TrainingAreaPerformance {
@@ -852,7 +896,8 @@ model Exercise {
   updatedAt               DateTime @default(now()) @updatedAt @map("updated_at") @db.Timestamptz(6)
 
   // Relations
-  tenant Tenant @relation(fields: [tenantId], references: [id], onDelete: Cascade)
+  tenant          Tenant            @relation(fields: [tenantId], references: [id], onDelete: Cascade)
+  sessionExercises SessionExercise[] // PHASE 5: Used in session exercises
 
   @@index([tenantId])
   @@index([exerciseType])
@@ -2607,7 +2652,8 @@ model Goal {
   updatedAt DateTime @default(now()) @updatedAt @map("updated_at") @db.Timestamptz(6)
 
   // Relations
-  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+  user             User               @relation(fields: [userId], references: [id], onDelete: Cascade)
+  goalProgressions GoalProgression[]
 
   @@index([userId])
   @@index([status])
@@ -4283,4 +4329,87 @@ model SportConfig {
 
   @@index([sportId])
   @@map("sport_configs")
+}
+
+// ============================================================================
+// ANNUAL PLAN PERIODS (FASE 1)
+// ============================================================================
+
+model AnnualPlanPeriod {
+  id          String   @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  playerId    String   @map("player_id") @db.Uuid
+  periodType  String   @map("period_type") @db.VarChar(50) // 'evaluation', 'base_training', 'specialization', 'tournament'
+  startDate   DateTime @map("start_date") @db.Date
+  endDate     DateTime @map("end_date") @db.Date
+  weeklyHours Int      @map("weekly_hours")
+  createdAt   DateTime @default(now()) @map("created_at") @db.Timestamptz(6)
+  updatedAt   DateTime @default(now()) @updatedAt @map("updated_at") @db.Timestamptz(6)
+
+  // Relations
+  player                    Player                      @relation(fields: [playerId], references: [id], onDelete: Cascade)
+  periodTrainingDistribution PeriodTrainingDistribution[]
+
+  @@index([playerId])
+  @@index([startDate, endDate])
+  @@map("annual_plan_periods")
+}
+
+model PeriodTrainingDistribution {
+  id           String   @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  periodId     String   @map("period_id") @db.Uuid
+  category     String   @db.VarChar(50) // 'physical', 'technique', 'golf_shots', 'course_play', 'tournament'
+  hoursPerWeek Decimal? @map("hours_per_week") @db.Decimal(5, 2)
+  percentage   Decimal? @db.Decimal(5, 2)
+  createdAt    DateTime @default(now()) @map("created_at") @db.Timestamptz(6)
+
+  // Relations
+  period AnnualPlanPeriod @relation(fields: [periodId], references: [id], onDelete: Cascade)
+
+  @@unique([periodId, category])
+  @@index([periodId])
+  @@map("period_training_distribution")
+}
+
+// ============================================================================
+// NAVIGATION RESTRUCTURE MODELS (Phase 3)
+// ============================================================================
+
+model SchoolPlan {
+  id          String   @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  playerId    String   @map("player_id") @db.Uuid
+  title       String   @db.VarChar(255)
+  description String?  @db.Text
+  dueDate     DateTime? @map("due_date") @db.Date
+  type        String?  @db.VarChar(50) // exam, assignment, project, test, other
+  status      String   @default("pending") @db.VarChar(20) // pending, in_progress, completed, cancelled
+  priority    String   @default("medium") @db.VarChar(20) // low, medium, high, urgent
+  createdAt   DateTime @default(now()) @map("created_at") @db.Timestamptz(6)
+  updatedAt   DateTime @default(now()) @updatedAt @map("updated_at") @db.Timestamptz(6)
+
+  // Relations
+  player Player @relation(fields: [playerId], references: [id], onDelete: Cascade)
+
+  @@index([playerId])
+  @@index([dueDate])
+  @@index([status])
+  @@map("school_plans")
+}
+
+model GoalProgression {
+  id        String   @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  goalId    String   @map("goal_id") @db.Uuid
+  date      DateTime @db.Date
+  value     Decimal  @db.Decimal(10, 2)
+  notes     String?  @db.Text
+  createdAt DateTime @default(now()) @map("created_at") @db.Timestamptz(6)
+  updatedAt DateTime @default(now()) @updatedAt @map("updated_at") @db.Timestamptz(6)
+
+  // Relations
+  goal Goal @relation(fields: [goalId], references: [id], onDelete: Cascade)
+
+  @@unique([goalId, date])
+  @@index([goalId])
+  @@index([date])
+  @@index([goalId, date(sort: Desc)])
+  @@map("goal_progression")
 }
